@@ -24,7 +24,7 @@ struct ha_flag_type ha_flag_vars_ss = {
 	.receivedtoken = false,
 	.deliveredtoken = false,
 	.rec_ok = false,
-	.ha_id = FM80_ID,
+	.ha_id = COMEDI_ID,
 	.var_update = 0,
 };
 
@@ -159,7 +159,7 @@ void timer_callback(int32_t signum)
 }
 
 /*
- * MQTT Broker errors are fatal
+ * MQTT Broker connection errors can be fatal
  */
 void connlost(void *context, char *cause)
 {
@@ -309,68 +309,31 @@ int32_t msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_messag
 		}
 		ret = -1;
 		ha_flag->rec_ok = false;
-		E.fm80 = false;
-		E.dumpload = false;
-		E.homeassistant = false;
+		E.comedi = false;
 		goto error_exit;
 	}
 
 	/*
-	 * MQTT messages from the FM80 Q84 interface
+	 * MQTT messages for COMEDI
 	 */
-	if (ha_flag->ha_id == FM80_ID) {
 #ifdef DEBUG_REC
-		fprintf(fout, "FM80 MQTT data\r\n");
+	fprintf(fout, "COMEDI MQTT data\r\n");
 #endif
-		cJSON *data_result = json;
+	cJSON *data_result = json;
 
-		data_result = cJSON_GetObjectItemCaseSensitive(json, "system");
+	data_result = cJSON_GetObjectItemCaseSensitive(json, "Comedi_Request");
 
-		if (cJSON_IsString(data_result) && (data_result->valuestring != NULL)) {
-			fprintf(fout, "%s Name: %s\n", "DLname", data_result->valuestring);
-			ret = true;
-		}
-
-		E.fm80 = true;
+	if (cJSON_IsString(data_result) && (data_result->valuestring != NULL)) {
+		fprintf(fout, "%s Comedi Trigger from MQTT server, Topic %s %s\n", log_time(false), topicName, data_result->valuestring);
+		fflush(fout);
+		ret = true;
 	}
-
-	/*
-	 * MQTT messages from the K42 dumpload/gti interface
-	 */
-	if (ha_flag->ha_id == DUMPLOAD_ID) {
-#ifdef DEBUG_REC
-		fprintf(fout, "DUMPLOAD MQTT data\r\n");
-#endif
-		cJSON *data_result = json;
-
-		if (cJSON_IsString(data_result) && (data_result->valuestring != NULL)) {
-			fprintf(fout, "%s Name: %s\n", "name", data_result->valuestring);
-			ret = true;
-		}
-
-		E.dumpload = true;
-	}
-
-	/*
-	 * MQTT messages from the Linux HA_ENERGY interface
-	 */
-	if (ha_flag->ha_id == HA_ID) {
-#ifdef DEBUG_REC
-		fprintf(fout, "Home Assistant MQTT data\r\n");
-#endif
-		cJSON *data_result = json;
-
-		if (cJSON_IsString(data_result) && (data_result->valuestring != NULL)) {
-			fprintf(fout, "%s Name: %s\n", "system", data_result->valuestring);
-			ret = true;
-		}
-
-		E.homeassistant = true;
-	}
+	E.comedi = true;
 
 	// done with processing MQTT async message, set state flags
 	ha_flag->receivedtoken = true;
 	ha_flag->rec_ok = true;
+	ha_flag_vars_ss.runner = true; // send data in response to received message of any type
 	/*
 	 * exit and delete/free resources. In steps depending of possible error conditions
 	 */
@@ -392,6 +355,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 {
 	cJSON *json;
 	time_t rawtime;
+	static uint32_t spam = 0;
 
 	MQTTClient_message pubmsg = MQTTClient_message_initializer;
 	MQTTClient_deliveryToken token;
@@ -405,7 +369,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	set_dac_volts(0, E.dac[0]);
 	set_dac_volts(1, E.dac[1]);
 	E.do_16b = bmc.dataout.dio_buf;
-	E.di_16b = get_dio_bit(0)+ (get_dio_bit(1)<<1)+ (get_dio_bit(2)<<2)+ (get_dio_bit(3)<<3)+ (get_dio_bit(4)<<4);
+	E.di_16b = get_dio_bit(0)+ (get_dio_bit(1) << 1)+ (get_dio_bit(2) << 2)+ (get_dio_bit(3) << 3)+ (get_dio_bit(4) << 4);
 
 	E.mqtt_count++;
 	E.sequence++;
@@ -437,9 +401,14 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		while (ha_flag_vars_ss.deliveredtoken != token) {
 			usleep(TOKEN_DELAY);
 			if (waiting++ > MQTT_RETRY) {
-				fprintf(fout, "%s SW mqtt_bmc_data, Still Waiting, timeout\r\n", log_time(false));
-				fflush(fout);
+				if (spam++ > 1) {
+					fprintf(fout, "%s SW mqtt_bmc_data, Still Waiting, timeout\r\n", log_time(false));
+					fflush(fout);
+					spam = 0;
+				}
 				break;
+			} else {
+				spam = 0;
 			}
 		};
 	}

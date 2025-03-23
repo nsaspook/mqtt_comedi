@@ -35,7 +35,7 @@ extern "C" {
 #include <ifaddrs.h>
 #include "MQTTClient.h"
 
-#define LOG_VERSION     "V0.01"
+#define LOG_VERSION     "V0.02"
 #define MQTT_VERSION    "V3.11"
 #define TNAME  "maint9"
 #define LADDRESS        "tcp://127.0.0.1:1883"
@@ -63,7 +63,7 @@ extern "C" {
 #define SPACING_USEC    500 * 1000
 #define USEC_SEC        1000000L
 
-#define CMD_SEC         10
+#define CMD_SEC         30
 #define TIME_SYNC_SEC   30
 
 #define SBUF_SIZ        16  // short buffer string size
@@ -80,7 +80,7 @@ extern "C" {
         extern struct energy_type E;
 
         struct energy_type {
-                volatile bool once_gti, once_ac, iammeter, fm80, dumpload, homeassistant, once_gti_zero;
+                volatile bool once_gti, once_ac, iammeter, fm80, dumpload, homeassistant, once_gti_zero, comedi;
                 volatile double gti_low_adj, ac_low_adj, dl_excess_adj;
                 volatile bool ac_sw_on, gti_sw_on, ac_sw_status, gti_sw_status, solar_shutdown, solar_mode, startup, ac_mismatch, dc_mismatch, mode_mismatch, dl_excess;
                 volatile uint32_t speed_go, im_delay, im_display, gti_delay, sequence, mqtt_count;
