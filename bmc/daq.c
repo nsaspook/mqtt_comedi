@@ -70,6 +70,8 @@ int init_daq(double min_range, double max_range, int range_update)
 		HAS_AO = true;
 	}
 
+	fprintf(fout, "Comedi DAQ Board Name: %s, Driver: %s\r\n", comedi_get_board_name(it),comedi_get_driver_name(it));
+
 	fprintf(fout, "Subdev AI  %i ", subdev_ai);
 	channels_ai = comedi_get_n_channels(it, subdev_ai);
 	fprintf(fout, "Analog  Channels %i ", channels_ai);
