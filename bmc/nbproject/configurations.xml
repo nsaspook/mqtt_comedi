@@ -4,7 +4,11 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>bmc.h</itemPath>
+      <itemPath>bmc_mqtt.h</itemPath>
       <itemPath>daq.h</itemPath>
+      <itemPath>mqtt_rec.h</itemPath>
+      <itemPath>mqtt_vars.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -14,6 +18,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>bmc.c</itemPath>
+      <itemPath>bmc_mqtt.c</itemPath>
       <itemPath>daq.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -46,9 +51,19 @@
       </compileType>
       <item path="bmc.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="bmc.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="bmc_mqtt.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="bmc_mqtt.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="daq.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="daq.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="mqtt_rec.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="mqtt_vars.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -74,14 +89,28 @@
         <linkerTool>
           <linkerLibItems>
             <linkerOptionItem>`pkg-config --libs comedilib`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs libcjson`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs libcurl`</linkerOptionItem>
+            <linkerLibStdlibItem>Mathematics</linkerLibStdlibItem>
+            <linkerLibLibItem>paho-mqtt3c</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
       <item path="bmc.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="bmc.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="bmc_mqtt.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="bmc_mqtt.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="daq.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="daq.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="mqtt_rec.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="mqtt_vars.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

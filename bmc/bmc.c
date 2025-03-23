@@ -14,12 +14,47 @@
 #include <stdbool.h>
 #include <comedilib.h>
 #include "daq.h"
-
-
-
-void led_lightshow(int);
+#include "bmc.h"
+#include "mqtt_rec.h"
+#include "mqtt_vars.h"
+#include "bmc_mqtt.h"
 
 volatile struct bmcdata bmc; /* DIO buffer */
+
+struct energy_type E = {
+	.once_gti = true,
+	.once_ac = true,
+	.once_gti_zero = true,
+	.iammeter = false,
+	.fm80 = false,
+	.dumpload = false,
+	.homeassistant = false,
+	.ac_low_adj = 0.0f,
+	.gti_low_adj = 0.0f,
+	.ac_sw_on = true,
+	.gti_sw_on = true,
+	.im_delay = 0,
+	.gti_delay = 0,
+	.im_display = 0,
+	.rc = 0,
+	.speed_go = 0,
+	.ac_sw_status = false,
+	.gti_sw_status = false,
+	.solar_mode = false,
+	.solar_shutdown = false,
+	.startup = true,
+	.ac_mismatch = false,
+	.dc_mismatch = false,
+	.mode_mismatch = false,
+	.dl_excess = false,
+	.dl_excess_adj = 0.0f,
+};
+
+
+// Comedi I/O device type
+const char *board_name = "NO_BOARD", *driver_name = "NO_DRIVER";
+
+FILE* fout; // logging stream
 
 /* ripped from http://aquaticus.info/pwm-sine-wave */
 
@@ -97,9 +132,14 @@ int main(int argc, char *argv[])
 	int do_ao_only = false;
 	uint8_t i = 0, j = 75;
 
+	/*
+	 * start the MQTT processing
+	 */
+	bmc_mqtt_init();
+
 	if (do_ao_only) {
 		if (init_dac(0.0, 25.0, false) < 0) {
-			printf("Missing Analog AO subdevice\n");
+			fprintf(fout, "Missing Analog AO subdevice\n");
 			return -1;
 		}
 
@@ -111,21 +151,34 @@ int main(int argc, char *argv[])
 	} else {
 
 		if (init_daq(0.0, 25.0, false) < 0) {
-			printf("Missing Analog subdevice(s)\n");
+			fprintf(fout, "Missing Analog subdevice(s)\n");
 			return -1;
 		}
 		if (init_dio() < 0) {
-			printf("Missing Digital subdevice(s)\n");
+			fprintf(fout, "Missing Digital subdevice(s)\n");
 			return -1;
 		}
-		
-		set_dac_raw(0,255); // show max Voltage
 
+		//		set_dac_raw(0, 255); // show max Voltage
+
+		E.dac[0] = 1.23f;
+		E.dac[1] = 3.21f;
+
+		E.do_16b = 0x01;
+		E.di_16b = 0x10;
+
+		fflush(fout);
 		while (1) {
 			get_data_sample();
-			if (!bmc.datain.D0)
+			if (!bmc.datain.D0) {
 				led_lightshow(10);
+			}
+			if (ha_flag_vars_ss.runner) {
+				comedi_push_mqtt();
+				ha_flag_vars_ss.runner = false;
+			}
 		}
+
 	}
 	return 0;
 }

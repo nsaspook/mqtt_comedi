@@ -70,31 +70,31 @@ int init_daq(double min_range, double max_range, int range_update)
 		HAS_AO = true;
 	}
 
-	printf("Subdev AI  %i ", subdev_ai);
+	fprintf(fout, "Subdev AI  %i ", subdev_ai);
 	channels_ai = comedi_get_n_channels(it, subdev_ai);
-	printf("Analog  Channels %i ", channels_ai);
+	fprintf(fout, "Analog  Channels %i ", channels_ai);
 	maxdata_ai = comedi_get_maxdata(it, subdev_ai, i);
-	printf("Maxdata %i ", maxdata_ai);
+	fprintf(fout, "Maxdata %i ", maxdata_ai);
 	ranges_ai = comedi_get_n_ranges(it, subdev_ai, i);
-	printf("Ranges %i ", ranges_ai);
+	fprintf(fout, "Ranges %i ", ranges_ai);
 	ad_range = comedi_get_range(it, subdev_ai, i, range_ai);
 	if (range_update) {
 		ad_range->min = min_range;
 		ad_range->max = max_range;
 	}
-	printf(": ad_range .min = %.3f, max = %.3f\r\n", ad_range->min,
+	fprintf(fout, ": ad_range .min = %.3f, max = %.3f\r\n", ad_range->min,
 		ad_range->max);
 
 	if (HAS_AO) {
-		printf("Subdev AO  %i ", subdev_ao);
+		fprintf(fout, "Subdev AO  %i ", subdev_ao);
 		channels_ao = comedi_get_n_channels(it, subdev_ao);
-		printf("Analog  Channels %i ", channels_ao);
+		fprintf(fout, "Analog  Channels %i ", channels_ao);
 		maxdata_ao = comedi_get_maxdata(it, subdev_ao, i);
-		printf("Maxdata %i ", maxdata_ao);
+		fprintf(fout, "Maxdata %i ", maxdata_ao);
 		ranges_ao = comedi_get_n_ranges(it, subdev_ao, i);
-		printf("Ranges %i ", ranges_ao);
+		fprintf(fout, "Ranges %i ", ranges_ao);
 		da_range = comedi_get_range(it, subdev_ao, i, range_ao);
-		printf(": da_range .min = %.3f, max = %.3f\r\n", da_range->min,
+		fprintf(fout, ": da_range .min = %.3f, max = %.3f\r\n", da_range->min,
 			da_range->max);
 	}
 
@@ -126,15 +126,15 @@ int init_dac(double min_range, double max_range, int range_update)
 	}
 
 	if (HAS_AO) {
-		printf("Subdev AO  %i ", subdev_ao);
+		fprintf(fout, "Subdev AO  %i ", subdev_ao);
 		channels_ao = comedi_get_n_channels(it, subdev_ao);
-		printf("Analog  Channels %i ", channels_ao);
+		fprintf(fout, "Analog  Channels %i ", channels_ao);
 		maxdata_ao = comedi_get_maxdata(it, subdev_ao, i);
-		printf("Maxdata %i ", maxdata_ao);
+		fprintf(fout, "Maxdata %i ", maxdata_ao);
 		ranges_ao = comedi_get_n_ranges(it, subdev_ao, i);
-		printf("Ranges %i ", ranges_ao);
+		fprintf(fout, "Ranges %i ", ranges_ao);
 		da_range = comedi_get_range(it, subdev_ao, i, range_ao);
-		printf(": da_range .min = %.3f, max = %.3f\r\n", da_range->min,
+		fprintf(fout, ": da_range .min = %.3f, max = %.3f\r\n", da_range->min,
 			da_range->max);
 	}
 
@@ -282,29 +282,29 @@ int init_dio(void)
 		PWM_OPEN = false;
 	}
 
-	printf("Subdev DI  %i ", subdev_di);
+	fprintf(fout, "Subdev DI  %i ", subdev_di);
 	channels_di = comedi_get_n_channels(it, subdev_di);
-	printf("Digital Channels %i ", channels_di);
+	fprintf(fout, "Digital Channels %i ", channels_di);
 	maxdata_di = comedi_get_maxdata(it, subdev_di, i);
-	printf("Maxdata %i ", maxdata_di);
+	fprintf(fout, "Maxdata %i ", maxdata_di);
 	ranges_di = comedi_get_n_ranges(it, subdev_di, i);
-	printf("Ranges %i \r\n", ranges_di);
+	fprintf(fout, "Ranges %i \r\n", ranges_di);
 
-	printf("Subdev DO  %i ", subdev_do);
+	fprintf(fout, "Subdev DO  %i ", subdev_do);
 	channels_do = comedi_get_n_channels(it, subdev_do);
-	printf("Digital Channels %i ", channels_do);
+	fprintf(fout, "Digital Channels %i ", channels_do);
 	maxdata_do = comedi_get_maxdata(it, subdev_do, i);
-	printf("Maxdata %i ", maxdata_do);
+	fprintf(fout, "Maxdata %i ", maxdata_do);
 	ranges_do = comedi_get_n_ranges(it, subdev_do, i);
-	printf("Ranges %i \r\n", ranges_do);
+	fprintf(fout, "Ranges %i \r\n", ranges_do);
 
-	printf("Subdev COU %i ", subdev_counter);
+	fprintf(fout, "Subdev COU %i ", subdev_counter);
 	channels_counter = comedi_get_n_channels(it, subdev_counter);
-	printf("Digital Channels %i ", channels_counter);
+	fprintf(fout, "Digital Channels %i ", channels_counter);
 	maxdata_counter = comedi_get_maxdata(it, subdev_counter, i);
-	printf("Maxdata %i ", maxdata_counter);
+	fprintf(fout, "Maxdata %i ", maxdata_counter);
 	ranges_counter = comedi_get_n_ranges(it, subdev_counter, i);
-	printf("Ranges %i \r\n", ranges_counter);
+	fprintf(fout, "Ranges %i \r\n", ranges_counter);
 	DIO_OPEN = true;
 	return 0;
 }
@@ -312,8 +312,6 @@ int init_dio(void)
 int get_data_sample(void)
 {
 	unsigned int obits;
-	//	bmc.pv_voltage = get_adc_volts(PVV_C);
-	//	bmc.cc_voltage = get_adc_volts(CCV_C);
 
 	bmc.datain.D0 = get_dio_bit(0);
 

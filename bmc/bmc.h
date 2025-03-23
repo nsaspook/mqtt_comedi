@@ -11,36 +11,88 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include <stdlib.h>
+#include <stdio.h> /* for printf() */
+#include <unistd.h>
+#include <stdint.h>
+#include <string.h>
 #include <stdbool.h>
+#include <signal.h>
+#include <time.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/time.h>
+#include <errno.h>
+#include <cjson/cJSON.h>
+#include <curl/curl.h>
+#include <pthread.h>
+#include <sys/stat.h>
+#include <syslog.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <ifaddrs.h>
+#include "MQTTClient.h"
 
-	struct didata {
-		uint32_t D0 : 1; // 
-		uint32_t D1 : 1; // 
-		uint32_t D2 : 1; // 
-		uint32_t D3 : 1; // 
-		uint32_t D4 : 1; // 
-		uint32_t D5 : 1; // 
-		uint32_t D6 : 1; // 
-		uint32_t D7 : 1; // 
-	} ditype;
+#define LOG_VERSION     "V0.01"
+#define MQTT_VERSION    "V3.11"
+#define TNAME  "maint9"
+#define LADDRESS        "tcp://127.0.0.1:1883"
+#ifdef __amd64
+#define ADDRESS         "tcp://10.1.1.172:1883"
+#else
+#define ADDRESS         "tcp://10.1.1.172:1883"
+#endif
+#define CLIENTID1       "Energy_Mqtt_BMC1"
+#define CLIENTID2       "Energy_Mqtt_BMC2"
+#define CLIENTID3       "Energy_Mqtt_BMC3"
+#define TOPIC_P         "comedi/bmc/data/bmc"
+#define TOPIC_SPAM      "comedi/bmc/data/spam"
+#define TOPIC_PACA      "home-assistant/comedi/bmc"
+#define TOPIC_PACB      "mateq84/data/#"
+#define TOPIC_AI        "comedi/bmc/data/ai"
+#define TOPIC_AO        "comedi/bmc/data/ao"
+#define TOPIC_DI        "comedi/bmc/data/di"
+#define TOPIC_DO        "comedi/bmc/data/do"
+#define QOS             1
 
-	union dio_buf_type {
-		uint32_t dio_buf;
-		struct didata d;
-	};
+#define TOPIC_SS        "mateq84/data/solar" // receive data testing
 
-	typedef struct bmcdata {
-		double pv_voltage, cc_voltage, input_voltage, b1_voltage, b2_voltage, system_voltage, logic_voltage;
-		double pv_current, cc_current, battery_current;
-		struct didata datain;
-		union dio_buf_type dataout;
-		int32_t adc_sample[32];
-		int32_t dac_sample[32];
-		int32_t utc;
-	}
-	bmctype;
+#define TIMEOUT         10000L
+#define SPACING_USEC    500 * 1000
+#define USEC_SEC        1000000L
 
-	void led_lightshow(int);
+#define CMD_SEC         10
+#define TIME_SYNC_SEC   30
+
+#define SBUF_SIZ        16  // short buffer string size
+#define RBUF_SIZ        82
+#define SYSLOG_SIZ      512
+
+#define LOG_TO_FILE         "/public/bmc/bmc_comedi.log"
+#define LOG_TO_FILE_ALT     "/tmp/bmc_comedi.log"
+
+#define MQTT_RECONN     3
+#define KAI             60
+
+        extern FILE* fout; // logging stream
+        extern struct energy_type E;
+
+        struct energy_type {
+                volatile bool once_gti, once_ac, iammeter, fm80, dumpload, homeassistant, once_gti_zero;
+                volatile double gti_low_adj, ac_low_adj, dl_excess_adj;
+                volatile bool ac_sw_on, gti_sw_on, ac_sw_status, gti_sw_status, solar_shutdown, solar_mode, startup, ac_mismatch, dc_mismatch, mode_mismatch, dl_excess;
+                volatile uint32_t speed_go, im_delay, im_display, gti_delay, sequence, mqtt_count;
+                volatile int32_t rc, sane;
+                volatile uint32_t ten_sec_clock, log_spam, log_time_reset;
+                pthread_mutex_t ha_lock;
+                volatile int16_t di_16b, do_16b;
+                double adc[16], dac[16];
+                MQTTClient client_p, client_sd, client_ha;
+        };
+
+        void led_lightshow(int);
 
 #ifdef __cplusplus
 }

@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/bmc.o \
+	${OBJECTDIR}/bmc_mqtt.o \
 	${OBJECTDIR}/daq.o
 
 
@@ -67,6 +68,11 @@ ${OBJECTDIR}/bmc.o: bmc.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bmc.o bmc.c
+
+${OBJECTDIR}/bmc_mqtt.o: bmc_mqtt.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bmc_mqtt.o bmc_mqtt.c
 
 ${OBJECTDIR}/daq.o: daq.c
 	${MKDIR} -p ${OBJECTDIR}
