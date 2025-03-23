@@ -161,8 +161,8 @@ int main(int argc, char *argv[])
 
 		//		set_dac_raw(0, 255); // show max Voltage
 
-		E.dac[0] = 1.23f;
-		E.dac[1] = 3.21f;
+		E.dac[0] = 2.50f;
+		E.dac[1] = 3.33f;
 
 		E.do_16b = 0x01;
 		E.di_16b = 0x10;
