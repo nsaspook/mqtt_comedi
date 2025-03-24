@@ -147,13 +147,13 @@ char * log_time(bool log)
 
 /*
  * data update timer flag
- * and 10 second software time clock
+ * and CMD_SEC seconds software time clock
  */
 void timer_callback(int32_t signum)
 {
 	signal(signum, timer_callback);
 	ha_flag_vars_ss.runner = true;
-	E.ten_sec_clock++;
+	E.thirty_sec_clock++;
 	E.log_time_reset++;
 
 }
@@ -236,7 +236,7 @@ void bmc_mqtt_init(void)
 
 	/*
 	 * set the timer for MQTT publishing sample speed
-	 * CMD_SEC         10
+	 * CMD_SEC sets the time in seconds
 	 */
 	setitimer(ITIMER_REAL, &new_timer, &old_timer);
 	signal(SIGALRM, timer_callback);
@@ -366,6 +366,12 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 
 	E.adc[0] = get_adc_volts(0);
 	E.adc[1] = get_adc_volts(1);
+
+#ifdef DAC_TESTING
+	E.dac[0] = E.adc[0];
+	E.dac[1] = E.adc[1];
+#endif
+
 	set_dac_volts(0, E.dac[0]);
 	set_dac_volts(1, E.dac[1]);
 	E.do_16b = bmc.dataout.dio_buf;

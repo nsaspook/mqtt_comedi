@@ -70,11 +70,17 @@ extern "C" {
 #define RBUF_SIZ        82
 #define SYSLOG_SIZ      512
 
-#define LOG_TO_FILE         "/public/bmc/bmc_comedi.log"
+#define LOG_TO_FILE         "/var/log/bmc/bmc_comedi.log"
 #define LOG_TO_FILE_ALT     "/tmp/bmc_comedi.log"
 
 #define MQTT_RECONN     3
 #define KAI             60
+
+        /*
+         * system testing defines
+         * all should be undefined for normal operation
+         */
+#define DAC_TESTING
 
         extern FILE* fout; // logging stream
         extern struct energy_type E;
@@ -85,7 +91,7 @@ extern "C" {
                 volatile bool ac_sw_on, gti_sw_on, ac_sw_status, gti_sw_status, solar_shutdown, solar_mode, startup, ac_mismatch, dc_mismatch, mode_mismatch, dl_excess;
                 volatile uint32_t speed_go, im_delay, im_display, gti_delay, sequence, mqtt_count;
                 volatile int32_t rc, sane;
-                volatile uint32_t ten_sec_clock, log_spam, log_time_reset;
+                volatile uint32_t thirty_sec_clock, log_spam, log_time_reset;
                 pthread_mutex_t ha_lock;
                 volatile int16_t di_16b, do_16b;
                 double adc[16], dac[16];

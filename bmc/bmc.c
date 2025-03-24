@@ -159,7 +159,6 @@ int main(int argc, char *argv[])
 			return -1;
 		}
 
-		//		set_dac_raw(0, 255); // show max Voltage
 
 		E.dac[0] = 2.50f;
 		E.dac[1] = 3.33f;
@@ -169,6 +168,7 @@ int main(int argc, char *argv[])
 
 		fflush(fout);
 		while (true) {
+			usleep(MAIN_DELAY); // sample rate ~1 msec
 			get_data_sample();
 			if (!bmc.datain.D0) {
 				led_lightshow(10);
