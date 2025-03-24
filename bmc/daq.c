@@ -1,3 +1,10 @@
+/*
+ * \file daq.c
+ */
+
+
+
+
 #include <stdio.h> /* for printf() */
 #include <unistd.h>
 #include <stdbool.h>

@@ -28,7 +28,7 @@ struct ha_flag_type ha_flag_vars_ss = {
 	.var_update = 0,
 };
 
-/*
+/** \file bmc_mqtt.c
  * show all assigned networking addresses and types
  * on the current machine
  */

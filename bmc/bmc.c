@@ -1,4 +1,4 @@
-/*
+/** \file bmc.c
  * Demo code for driver testing, a simple console display of data inputs and voltage
  *
  * This file may be freely modified, distributed, and combined with
