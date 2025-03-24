@@ -1,0 +1,95 @@
+\doxysection{daq.\+h}
+\hypertarget{daq_8h_source}{}\label{daq_8h_source}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*\ }}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ File:\ \ \ daq.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *\ Author:\ root}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ Created\ on\ September\ 21,\ 2012,\ 6:49\ PM}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#ifndef\ DAQ\_H}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ DAQ\_H}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{00012\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#define\ PVV\_C\ \ \ 0}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ CCV\_C\ \ \ 1}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#define\ SYV\_C\ \ \ 2}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ B1V\_C\ \ \ 3}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#define\ B2V\_C\ \ \ 4}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#define\ INV\_C\ \ \ 5}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#define\ VD5\_C\ \ \ 7}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#define\ PVC\_C\ \ \ 8}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#define\ CCC\_C\ \ \ 9}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#define\ BAC\_C\ \ \ 10\ \ \ \ }}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#define\ LPCHANC\ \ \ \ \ \ \ \ 16}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#define\ JUST\_BITS\ false}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#include\ <comedilib.h>}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#include\ "{}bmc.h"{}}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdidata}{didata}}\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ D0\ :\ 1;\ \textcolor{comment}{//\ }}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ D1\ :\ 1;\ \textcolor{comment}{//\ }}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ D2\ :\ 1;\ \textcolor{comment}{//\ }}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ D3\ :\ 1;\ \textcolor{comment}{//\ }}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ D4\ :\ 1;\ \textcolor{comment}{//\ }}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ D5\ :\ 1;\ \textcolor{comment}{//\ }}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ D6\ :\ 1;\ \textcolor{comment}{//\ }}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ D7\ :\ 1;\ \textcolor{comment}{//\ }}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \textcolor{keyword}{union\ }\mbox{\hyperlink{uniondio__buf__type}{dio\_buf\_type}}\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ dio\_buf;}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdidata}{didata}}\ d;}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structbmcdata}{bmcdata}}\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ pv\_voltage,\ cc\_voltage,\ input\_voltage,\ b1\_voltage,\ b2\_voltage,\ system\_voltage,\ logic\_voltage;}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ pv\_current,\ cc\_current,\ battery\_current;}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdidata}{didata}}\ datain;}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{union\ }\mbox{\hyperlink{uniondio__buf__type}{dio\_buf\_type}}\ dataout;}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int32\_t\ adc\_sample[32];}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int32\_t\ dac\_sample[32];}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int32\_t\ utc;}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ bmctype;}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structbmcdata}{bmcdata}}\ bmc;}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdidata}{didata}}\ datain;}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{struct\ }dodata\ dataout;}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{int}\ maxdata\_ai,\ ranges\_ai,\ channels\_ai;}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{int}\ maxdata\_ao,\ ranges\_ao,\ channels\_ao;}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{int}\ maxdata\_di,\ ranges\_di,\ channels\_di,\ datain\_di;}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{int}\ maxdata\_do,\ ranges\_do,\ channels\_do,\ datain\_do;}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{int}\ maxdata\_counter,\ ranges\_counter,\ channels\_counter,\ datain\_counter;}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ init\_daq(\textcolor{keywordtype}{double},\ \textcolor{keywordtype}{double},\ \textcolor{keywordtype}{int});}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ init\_dac(\textcolor{keywordtype}{double},\ \textcolor{keywordtype}{double},\ \textcolor{keywordtype}{int});}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ init\_dio(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ adc\_range(\textcolor{keywordtype}{double},\ \textcolor{keywordtype}{double});}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ dac\_range(\textcolor{keywordtype}{double},\ \textcolor{keywordtype}{double});}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ get\_adc\_volts(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ set\_dac\_volts(\textcolor{keywordtype}{int},\ \textcolor{keywordtype}{double});}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ set\_dac\_raw(\textcolor{keywordtype}{int},\ lsampl\_t);}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ get\_dio\_bit(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ put\_dio\_bit(\textcolor{keywordtype}{int},\ \textcolor{keywordtype}{int});}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ set\_dio\_input(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ set\_dio\_output(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ get\_data\_sample(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ lp\_filter(\textcolor{keywordtype}{double},\ \textcolor{keywordtype}{int},\ \textcolor{keywordtype}{int});}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{00086\ \}}
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ DAQ\_H\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00090\ }
+
+\end{DoxyCode}

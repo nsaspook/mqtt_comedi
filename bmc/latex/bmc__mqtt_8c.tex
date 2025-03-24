@@ -1,0 +1,126 @@
+\doxysection{bmc\+\_\+mqtt.\+c File Reference}
+\hypertarget{bmc__mqtt_8c}{}\label{bmc__mqtt_8c}\index{bmc\_mqtt.c@{bmc\_mqtt.c}}
+{\ttfamily \#include "{}bmc\+\_\+mqtt.\+h"{}}\newline
+Include dependency graph for bmc\+\_\+mqtt.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{bmc__mqtt_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{bmc__mqtt_8c_a0e3152830cd54954f6745ba7ae42ff42}\label{bmc__mqtt_8c_a0e3152830cd54954f6745ba7ae42ff42} 
+void {\bfseries show\+IP} (void)
+\item 
+\Hypertarget{bmc__mqtt_8c_afb5539e439feb0f55b20b1812e23f34e}\label{bmc__mqtt_8c_afb5539e439feb0f55b20b1812e23f34e} 
+void {\bfseries skeleton\+\_\+daemon} (void)
+\item 
+\Hypertarget{bmc__mqtt_8c_a18b19ee666a9edc39d904a474ddee1d9}\label{bmc__mqtt_8c_a18b19ee666a9edc39d904a474ddee1d9} 
+char \texorpdfstring{$\ast$}{*} {\bfseries log\+\_\+time} (bool log)
+\item 
+\Hypertarget{bmc__mqtt_8c_aa39b8400b702a022ed3aaa4940cf4e15}\label{bmc__mqtt_8c_aa39b8400b702a022ed3aaa4940cf4e15} 
+void {\bfseries timer\+\_\+callback} (int32\+\_\+t signum)
+\item 
+void \mbox{\hyperlink{bmc__mqtt_8c_a2a87ef47168dc639b307a285b8cb4462}{connlost}} (void \texorpdfstring{$\ast$}{*}context, char \texorpdfstring{$\ast$}{*}cause)
+\item 
+\Hypertarget{bmc__mqtt_8c_a4a79780b9057489f0740020d6bae250f}\label{bmc__mqtt_8c_a4a79780b9057489f0740020d6bae250f} 
+void {\bfseries delivered} (void \texorpdfstring{$\ast$}{*}context, MQTTClient\+\_\+delivery\+Token dt)
+\item 
+\Hypertarget{bmc__mqtt_8c_a54f0ea5507a2068e1501043652357a4a}\label{bmc__mqtt_8c_a54f0ea5507a2068e1501043652357a4a} 
+void {\bfseries bmc\+\_\+mqtt\+\_\+init} (void)
+\item 
+\Hypertarget{bmc__mqtt_8c_aeb7f1edb73f2b51c6df601678ca4df22}\label{bmc__mqtt_8c_aeb7f1edb73f2b51c6df601678ca4df22} 
+int32\+\_\+t {\bfseries msgarrvd} (void \texorpdfstring{$\ast$}{*}context, char \texorpdfstring{$\ast$}{*}topic\+Name, int topic\+Len, MQTTClient\+\_\+message \texorpdfstring{$\ast$}{*}message)
+\item 
+\Hypertarget{bmc__mqtt_8c_a8888b45133e89225b2be298298f3e0a7}\label{bmc__mqtt_8c_a8888b45133e89225b2be298298f3e0a7} 
+void {\bfseries mqtt\+\_\+bmc\+\_\+data} (MQTTClient client\+\_\+p, const char \texorpdfstring{$\ast$}{*}topic\+\_\+p)
+\item 
+\Hypertarget{bmc__mqtt_8c_ad028f76c3adbc84c58138d75381d444e}\label{bmc__mqtt_8c_ad028f76c3adbc84c58138d75381d444e} 
+void {\bfseries comedi\+\_\+push\+\_\+mqtt} (void)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+struct itimerval \mbox{\hyperlink{bmc__mqtt_8c_a14ddb1f381c3b1a58448a5668f29bb5c}{new\+\_\+timer}}
+\item 
+\Hypertarget{bmc__mqtt_8c_abd3227d62200e602c74491707a402e23}\label{bmc__mqtt_8c_abd3227d62200e602c74491707a402e23} 
+struct itimerval {\bfseries old\+\_\+timer}
+\item 
+\Hypertarget{bmc__mqtt_8c_a57469fe2e06b847a09c408d6a8adb6fa}\label{bmc__mqtt_8c_a57469fe2e06b847a09c408d6a8adb6fa} 
+time\+\_\+t {\bfseries rawtime}
+\item 
+\Hypertarget{bmc__mqtt_8c_a2188c27eaf301ddaee5291573d372e69}\label{bmc__mqtt_8c_a2188c27eaf301ddaee5291573d372e69} 
+MQTTClient\+\_\+connect\+Options {\bfseries conn\+\_\+opts\+\_\+p} = MQTTClient\+\_\+connect\+Options\+\_\+initializer
+\item 
+\Hypertarget{bmc__mqtt_8c_aaabdc1064c8e541e51137a5b9a56d6af}\label{bmc__mqtt_8c_aaabdc1064c8e541e51137a5b9a56d6af} 
+MQTTClient\+\_\+connect\+Options {\bfseries conn\+\_\+opts\+\_\+sd} = MQTTClient\+\_\+connect\+Options\+\_\+initializer
+\item 
+\Hypertarget{bmc__mqtt_8c_adea920858bf413236aa2658f7d49ede7}\label{bmc__mqtt_8c_adea920858bf413236aa2658f7d49ede7} 
+MQTTClient\+\_\+connect\+Options {\bfseries conn\+\_\+opts\+\_\+ha} = MQTTClient\+\_\+connect\+Options\+\_\+initializer
+\item 
+\Hypertarget{bmc__mqtt_8c_a54ec132fd248befe31c04f4eb787af1c}\label{bmc__mqtt_8c_a54ec132fd248befe31c04f4eb787af1c} 
+MQTTClient\+\_\+message {\bfseries pubmsg} = MQTTClient\+\_\+message\+\_\+initializer
+\item 
+\Hypertarget{bmc__mqtt_8c_a2ba92fd6abf4e3954194600bbbbe3d5e}\label{bmc__mqtt_8c_a2ba92fd6abf4e3954194600bbbbe3d5e} 
+MQTTClient\+\_\+delivery\+Token {\bfseries token}
+\item 
+\Hypertarget{bmc__mqtt_8c_a309dd9af8762ae249ec20b89790077e1}\label{bmc__mqtt_8c_a309dd9af8762ae249ec20b89790077e1} 
+char {\bfseries hname} \mbox{[}256\mbox{]}
+\item 
+\Hypertarget{bmc__mqtt_8c_a53e9185f4c46ea86c015ce0a3082636a}\label{bmc__mqtt_8c_a53e9185f4c46ea86c015ce0a3082636a} 
+char \texorpdfstring{$\ast$}{*} {\bfseries hname\+\_\+ptr} = hname
+\item 
+\Hypertarget{bmc__mqtt_8c_a0302e6410ed78eb873656e89c5eb7398}\label{bmc__mqtt_8c_a0302e6410ed78eb873656e89c5eb7398} 
+size\+\_\+t {\bfseries hname\+\_\+len} = 12
+\item 
+struct \mbox{\hyperlink{structha__flag__type}{ha\+\_\+flag\+\_\+type}} \mbox{\hyperlink{bmc__mqtt_8c_a300fe8f759de831a9cf50f5a86c85e23}{ha\+\_\+flag\+\_\+vars\+\_\+ss}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{bmc__mqtt_8c_a2a87ef47168dc639b307a285b8cb4462}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!connlost@{connlost}}
+\index{connlost@{connlost}!bmc\_mqtt.c@{bmc\_mqtt.c}}
+\doxysubsubsection{\texorpdfstring{connlost()}{connlost()}}
+{\footnotesize\ttfamily \label{bmc__mqtt_8c_a2a87ef47168dc639b307a285b8cb4462} 
+void connlost (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{context}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{cause}{}\end{DoxyParamCaption})}
+
+trouble in River-\/city
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{bmc__mqtt_8c_a300fe8f759de831a9cf50f5a86c85e23}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!ha\_flag\_vars\_ss@{ha\_flag\_vars\_ss}}
+\index{ha\_flag\_vars\_ss@{ha\_flag\_vars\_ss}!bmc\_mqtt.c@{bmc\_mqtt.c}}
+\doxysubsubsection{\texorpdfstring{ha\_flag\_vars\_ss}{ha\_flag\_vars\_ss}}
+{\footnotesize\ttfamily \label{bmc__mqtt_8c_a300fe8f759de831a9cf50f5a86c85e23} 
+struct \mbox{\hyperlink{structha__flag__type}{ha\+\_\+flag\+\_\+type}} ha\+\_\+flag\+\_\+vars\+\_\+ss}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .runner\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\ \ \ \ .receivedtoken\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\ \ \ \ .deliveredtoken\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\ \ \ \ .rec\_ok\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\ \ \ \ .ha\_id\ =\ COMEDI\_ID,}
+\DoxyCodeLine{\ \ \ \ .var\_update\ =\ 0,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\Hypertarget{bmc__mqtt_8c_a14ddb1f381c3b1a58448a5668f29bb5c}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!new\_timer@{new\_timer}}
+\index{new\_timer@{new\_timer}!bmc\_mqtt.c@{bmc\_mqtt.c}}
+\doxysubsubsection{\texorpdfstring{new\_timer}{new\_timer}}
+{\footnotesize\ttfamily \label{bmc__mqtt_8c_a14ddb1f381c3b1a58448a5668f29bb5c} 
+struct itimerval new\+\_\+timer}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .it\_value.tv\_sec\ =\ CMD\_SEC,}
+\DoxyCodeLine{\ \ \ \ .it\_value.tv\_usec\ =\ 0,}
+\DoxyCodeLine{\ \ \ \ .it\_interval.tv\_sec\ =\ CMD\_SEC,}
+\DoxyCodeLine{\ \ \ \ .it\_interval.tv\_usec\ =\ 0,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}

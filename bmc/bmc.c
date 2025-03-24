@@ -168,13 +168,13 @@ int main(int argc, char *argv[])
 		E.di_16b = 0x10;
 
 		fflush(fout);
-		while (1) {
+		while (true) {
 			get_data_sample();
 			if (!bmc.datain.D0) {
 				led_lightshow(10);
 			}
-			if (ha_flag_vars_ss.runner) {
-				comedi_push_mqtt();
+			if (ha_flag_vars_ss.runner) { // 30 second timer or trigger from mqtt
+				comedi_push_mqtt(); // send json formatted data to the mqtt server
 				ha_flag_vars_ss.runner = false;
 			}
 		}
