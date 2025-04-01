@@ -80,7 +80,7 @@ extern "C" {
          * system testing defines
          * all should be undefined for normal operation
          */
-#define DAC_TESTING
+//#define DAC_TESTING
 
         extern FILE* fout; // logging stream
         extern struct energy_type E;

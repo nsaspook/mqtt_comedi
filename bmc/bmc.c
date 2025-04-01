@@ -160,8 +160,8 @@ int main(int argc, char *argv[])
 		}
 
 
-		E.dac[0] = 2.50f;
-		E.dac[1] = 3.33f;
+		E.dac[0] = 0.0f;
+		E.dac[1] = 0.0f;
 
 		E.do_16b = 0x01;
 		E.di_16b = 0x10;
