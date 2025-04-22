@@ -15,8 +15,6 @@
 #include <comedilib.h>
 #include "daq.h"
 #include "bmc.h"
-#include "mqtt_rec.h"
-#include "mqtt_vars.h"
 #include "bmc_mqtt.h"
 
 volatile struct bmcdata bmc; /* DIO buffer */
@@ -174,7 +172,7 @@ int main(int argc, char *argv[])
 			if (!bmc.datain.D0) {
 				led_lightshow(1);
 			}
-			if (ha_flag_vars_ss.runner) { // 30 second timer or trigger from mqtt
+			if (ha_flag_vars_ss.runner) { // timer or trigger from mqtt
 				comedi_push_mqtt(); // send json formatted data to the mqtt server
 				ha_flag_vars_ss.runner = false;
 			}

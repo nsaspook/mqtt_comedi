@@ -8,10 +8,41 @@ extern "C" {
 
 #include "bmc.h"
 #include "daq.h"
-#include "mqtt_rec.h"
-#include "mqtt_vars.h"
 
 #define MQTT_RETRY 10
+
+#define HA_SW_DELAY     400000  // usecs
+#define TOKEN_DELAY     600
+#define GTI_TOKEN_DELAY 300
+
+#define MAIN_DELAY      1000 // 1msec comedi sample rate max
+
+#define QOS             1
+
+#define RDEV_SIZE        10
+
+#define SLEEP_CODE      0
+#define FLOAT_CODE      1
+        //#define DEBUG_REC
+        //#define GET_DEBUG
+
+#define MBMQTT  1024
+
+        enum mqtt_id {
+                P8055_ID,
+                FM80_ID,
+                DUMPLOAD_ID,
+                HA_ID,
+                COMEDI_ID,
+                LAST_MQTT_ID,
+        };
+
+        struct ha_flag_type {
+                volatile MQTTClient_deliveryToken deliveredtoken, receivedtoken;
+                volatile bool runner, rec_ok;
+                int32_t ha_id;
+                volatile int32_t var_update, energy_mode;
+        };
 
         extern struct ha_flag_type ha_flag_vars_ss;
 
