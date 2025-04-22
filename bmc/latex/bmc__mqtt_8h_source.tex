@@ -11,30 +11,61 @@
 \DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00008}00008\ }
 \DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00009}00009\ \textcolor{preprocessor}{\#include\ "{}bmc.h"{}}}
 \DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}daq.h"{}}}
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00011}00011\ \textcolor{preprocessor}{\#include\ "{}mqtt\_rec.h"{}}}
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00012}00012\ \textcolor{preprocessor}{\#include\ "{}mqtt\_vars.h"{}}}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00012}00012\ \textcolor{preprocessor}{\#define\ MQTT\_RETRY\ 10}}
 \DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00013}00013\ }
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00014}00014\ \textcolor{preprocessor}{\#define\ MQTT\_RETRY\ 10}}
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00015}00015\ }
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00016}00016\ \ \ \ \ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structha__flag__type}{ha\_flag\_type}}\ ha\_flag\_vars\_ss;}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00014}00014\ \textcolor{preprocessor}{\#define\ HA\_SW\_DELAY\ \ \ \ \ 400000\ \ }\textcolor{comment}{//\ usecs}}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00015}00015\ \textcolor{preprocessor}{\#define\ TOKEN\_DELAY\ \ \ \ \ 600}}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00016}00016\ \textcolor{preprocessor}{\#define\ GTI\_TOKEN\_DELAY\ 300}}
 \DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00017}00017\ }
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00018}00018\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ mqtt\_bmc\_data(MQTTClient,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *);}
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00019}00019\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ delivered(\textcolor{keywordtype}{void}\ *,\ MQTTClient\_deliveryToken);}
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00020}00020\ \ \ \ \ \ \ \ \ int32\_t\ msgarrvd(\textcolor{keywordtype}{void}\ *,\ \textcolor{keywordtype}{char}\ *,\ \textcolor{keywordtype}{int},\ MQTTClient\_message\ *);}
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00021}00021\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{bmc__mqtt_8c_a2a87ef47168dc639b307a285b8cb4462}{connlost}}(\textcolor{keywordtype}{void}\ *,\ \textcolor{keywordtype}{char}\ *);}
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00022}00022\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ showIP(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00023}00023\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ skeleton\_daemon(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00024}00024\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ bmc\_mqtt\_init(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00025}00025\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ *\ log\_time(\textcolor{keywordtype}{bool});}
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00026}00026\ }
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00027}00027\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ timer\_callback(int32\_t);}
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00028}00028\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ comedi\_push\_mqtt(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00029}00029\ }
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00030}00030\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00031}00031\ \}}
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00032}00032\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00033}00033\ }
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00034}00034\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ BMC\_MQTT\_H\ */}\textcolor{preprocessor}{}}
-\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00018}00018\ \textcolor{preprocessor}{\#define\ MAIN\_DELAY\ \ \ \ \ \ 1000\ }\textcolor{comment}{//\ 1msec\ comedi\ sample\ rate\ max}}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00019}00019\ }
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00020}00020\ \textcolor{preprocessor}{\#define\ QOS\ \ \ \ \ \ \ \ \ \ \ \ \ 1}}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00022}00022\ \textcolor{preprocessor}{\#define\ RDEV\_SIZE\ \ \ \ \ \ \ \ 10}}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00024}00024\ \textcolor{preprocessor}{\#define\ SLEEP\_CODE\ \ \ \ \ \ 0}}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00025}00025\ \textcolor{preprocessor}{\#define\ FLOAT\_CODE\ \ \ \ \ \ 1}}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00026}00026\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\#define\ DEBUG\_REC}}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00027}00027\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\#define\ GET\_DEBUG}}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00029}00029\ \textcolor{preprocessor}{\#define\ MBMQTT\ \ 1024}}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00031}00031\ \ \ \ \ \ \ \ \ \textcolor{keyword}{enum}\ mqtt\_id\ \{}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00032}00032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ P8055\_ID,}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00033}00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FM80\_ID,}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00034}00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ DUMPLOAD\_ID,}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00035}00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ HA\_ID,}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00036}00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ COMEDI\_ID,}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00037}00037\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ LAST\_MQTT\_ID,}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00038}00038\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00039}00039\ }
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00040}\mbox{\hyperlink{structha__flag__type}{00040}}\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structha__flag__type}{ha\_flag\_type}}\ \{}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00041}00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ MQTTClient\_deliveryToken\ deliveredtoken,\ receivedtoken;}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00042}00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ runner,\ rec\_ok;}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int32\_t\ ha\_id;}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00044}00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int32\_t\ var\_update,\ energy\_mode;}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00045}00045\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00046}00046\ }
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00047}00047\ \ \ \ \ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structha__flag__type}{ha\_flag\_type}}\ ha\_flag\_vars\_ss;}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00048}00048\ }
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00049}00049\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ mqtt\_bmc\_data(MQTTClient,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *);}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00050}00050\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ delivered(\textcolor{keywordtype}{void}\ *,\ MQTTClient\_deliveryToken);}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00051}00051\ \ \ \ \ \ \ \ \ int32\_t\ msgarrvd(\textcolor{keywordtype}{void}\ *,\ \textcolor{keywordtype}{char}\ *,\ \textcolor{keywordtype}{int},\ MQTTClient\_message\ *);}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00052}00052\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{bmc__mqtt_8c_a2a87ef47168dc639b307a285b8cb4462}{connlost}}(\textcolor{keywordtype}{void}\ *,\ \textcolor{keywordtype}{char}\ *);}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00053}00053\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ showIP(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00054}00054\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ skeleton\_daemon(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00055}00055\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ bmc\_mqtt\_init(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00056}00056\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ *\ log\_time(\textcolor{keywordtype}{bool});}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00058}00058\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ timer\_callback(int32\_t);}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00059}00059\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ comedi\_push\_mqtt(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00061}00061\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00062}00062\ \}}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00063}00063\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00064}00064\ }
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00065}00065\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ BMC\_MQTT\_H\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{\Hypertarget{bmc__mqtt_8h_source_l00066}00066\ }
 
 \end{DoxyCode}
