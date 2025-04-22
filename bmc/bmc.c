@@ -149,19 +149,20 @@ int main(int argc, char *argv[])
 			set_dac_raw(1, sine_wave[255 - j++] << 4);
 		}
 	} else {
-
+#ifndef DIGITAL_ONLY
 		if (init_daq(0.0, 25.0, false) < 0) {
 			fprintf(fout, "Missing Analog subdevice(s)\n");
 			return -1;
 		}
+#endif
 		if (init_dio() < 0) {
 			fprintf(fout, "Missing Digital subdevice(s)\n");
 			return -1;
 		}
 
 
-		E.dac[0] = 0.0f;
-		E.dac[1] = 0.0f;
+		E.dac[0] = 1.23f;
+		E.dac[1] = 3.21f;
 
 		E.do_16b = 0x01;
 		E.di_16b = 0x10;
@@ -171,7 +172,7 @@ int main(int argc, char *argv[])
 			usleep(MAIN_DELAY); // sample rate ~1 msec
 			get_data_sample();
 			if (!bmc.datain.D0) {
-				led_lightshow(10);
+				led_lightshow(1);
 			}
 			if (ha_flag_vars_ss.runner) { // 30 second timer or trigger from mqtt
 				comedi_push_mqtt(); // send json formatted data to the mqtt server

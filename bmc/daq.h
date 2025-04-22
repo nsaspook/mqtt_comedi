@@ -26,6 +26,8 @@ extern "C" {
 #define LPCHANC        16
 
 #define JUST_BITS false
+        
+#define HV_SCALE        83.6f
 
 #include <stdint.h>
 #include <comedilib.h>

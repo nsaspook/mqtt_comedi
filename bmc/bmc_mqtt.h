@@ -10,9 +10,9 @@ extern "C" {
 #include "daq.h"
 #include "mqtt_rec.h"
 #include "mqtt_vars.h"
-        
+
 #define MQTT_RETRY 10
-        
+
         extern struct ha_flag_type ha_flag_vars_ss;
 
         void mqtt_bmc_data(MQTTClient, const char *);

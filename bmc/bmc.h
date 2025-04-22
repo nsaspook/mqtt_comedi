@@ -35,7 +35,7 @@ extern "C" {
 #include <ifaddrs.h>
 #include "MQTTClient.h"
 
-#define LOG_VERSION     "V0.02"
+#define LOG_VERSION     "V0.03"
 #define MQTT_VERSION    "V3.11"
 #define TNAME  "maint9"
 #define LADDRESS        "tcp://127.0.0.1:1883"
@@ -50,20 +50,20 @@ extern "C" {
 #define TOPIC_P         "comedi/bmc/data/bmc"
 #define TOPIC_SPAM      "comedi/bmc/data/spam"
 #define TOPIC_PACA      "home-assistant/comedi/bmc"
-#define TOPIC_PACB      "mateq84/data/#"
+//#define TOPIC_PACB      "mateq84/data/#"
 #define TOPIC_AI        "comedi/bmc/data/ai"
 #define TOPIC_AO        "comedi/bmc/data/ao"
 #define TOPIC_DI        "comedi/bmc/data/di"
 #define TOPIC_DO        "comedi/bmc/data/do"
 #define QOS             1
 
-#define TOPIC_SS        "mateq84/data/solar" // receive data testing
+//#define TOPIC_SS        "mateq84/data/solar" // receive data testing
 
 #define TIMEOUT         10000L
 #define SPACING_USEC    500 * 1000
 #define USEC_SEC        1000000L
 
-#define CMD_SEC         30
+#define CMD_SEC         1
 #define TIME_SYNC_SEC   30
 
 #define SBUF_SIZ        16  // short buffer string size
@@ -81,6 +81,8 @@ extern "C" {
          * all should be undefined for normal operation
          */
 //#define DAC_TESTING
+        //digital only
+//#define DIGITAL_ONLY
 
         extern FILE* fout; // logging stream
         extern struct energy_type E;
