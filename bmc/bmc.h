@@ -35,7 +35,7 @@ extern "C" {
 #include <ifaddrs.h>
 #include "MQTTClient.h"
 
-#define LOG_VERSION     "V0.04"
+#define LOG_VERSION     "V0.05"
 #define MQTT_VERSION    "V3.11"
 #define TNAME  "maint9"
 #define LADDRESS        "tcp://127.0.0.1:1883"

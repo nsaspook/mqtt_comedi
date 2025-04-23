@@ -30,6 +30,22 @@ struct ha_flag_type ha_flag_vars_ss = {
 	.var_update = 0,
 };
 
+struct ha_daq_hosts_type ha_daq_host = {
+	.hosts[0] = "10.1.1.30",
+	.hosts[1] = "10.1.1.39",
+	.hosts[2] = "10.1.1.30",
+	.hosts[3] = "10.1.1.39",
+	.hname[0] = "RDAQ1",
+	.hname[1] = "RDAQ2",
+	.hname[2] = "RDAQ1",
+	.hname[3] = "RDAQ2",
+	.clients[0] = "Energy_Mqtt_BMC1",
+	.clients[1] = "Energy_Mqtt_BMC2",
+	.clients[2] = "Energy_Mqtt_BMC1",
+	.clients[3] = "Energy_Mqtt_BMC2",
+	.hindex = 0,
+};
+
 double ac0_filter(const double);
 double ac1_filter(const double);
 
@@ -61,6 +77,13 @@ void showIP(void)
 			}
 			printf("\tInterface : <%s>\n", ifa->ifa_name);
 			printf("\t  Address : <%s>\n", host);
+
+			if (strcmp(host, &ha_daq_host.hosts[0][0]) == 0) {
+				ha_daq_host.hindex = 0;
+			}
+			if (strcmp(host, &ha_daq_host.hosts[1][0]) == 0) {
+				ha_daq_host.hindex = 1;
+			}
 		}
 	}
 
@@ -247,24 +270,24 @@ void bmc_mqtt_init(void)
 	signal(SIGALRM, timer_callback);
 
 	if (strncmp(hname, TNAME, 6) == 0) {
-		MQTTClient_create(&E.client_p, LADDRESS, CLIENTID1,
+		MQTTClient_create(&E.client_p, LADDRESS, (const char *) &ha_daq_host.clients[ha_daq_host.hindex],
 			MQTTCLIENT_PERSISTENCE_NONE, NULL);
 		conn_opts_p.keepAliveInterval = KAI;
 		conn_opts_p.cleansession = 1;
 		hname_ptr = LADDRESS;
 	} else {
-		MQTTClient_create(&E.client_p, ADDRESS, CLIENTID1,
+		MQTTClient_create(&E.client_p, ADDRESS, (const char *) &ha_daq_host.clients[ha_daq_host.hindex],
 			MQTTCLIENT_PERSISTENCE_NONE, NULL);
 		conn_opts_p.keepAliveInterval = KAI;
 		conn_opts_p.cleansession = 1;
 		hname_ptr = ADDRESS;
 	}
 
-	fprintf(fout, "\r\n%s Connect MQTT server %s, %s\n", log_time(false), hname_ptr, CLIENTID1);
+	fprintf(fout, "\r\n%s Connect MQTT server %s, %s\n", log_time(false), hname_ptr, (const char *) &ha_daq_host.clients[ha_daq_host.hindex]);
 	fflush(fout);
 	MQTTClient_setCallbacks(E.client_p, &ha_flag_vars_ss, connlost, msgarrvd, delivered);
 	if ((E.rc = MQTTClient_connect(E.client_p, &conn_opts_p)) != MQTTCLIENT_SUCCESS) {
-		fprintf(fout, "%s Failed to connect MQTT server, return code %d %s, %s\n", log_time(false), E.rc, hname_ptr, CLIENTID1);
+		fprintf(fout, "%s Failed to connect MQTT server, return code %d %s, %s\n", log_time(false), E.rc, hname_ptr, (const char *) &ha_daq_host.clients[ha_daq_host.hindex]);
 		fflush(fout);
 		pthread_mutex_destroy(&E.ha_lock);
 		exit(EXIT_FAILURE);
@@ -423,18 +446,25 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	E.mqtt_count++;
 	E.sequence++;
 	json = cJSON_CreateObject();
-	cJSON_AddStringToObject(json, "RDAQ1name", CLIENTID1);
-	cJSON_AddNumberToObject(json, "RDAQ1sequence", E.sequence);
-	cJSON_AddNumberToObject(json, "RDAQ1mqtt_do_16b", (double) E.do_16b);
-	cJSON_AddNumberToObject(json, "RDAQ1http_di_16b", (double) E.di_16b);
-	cJSON_AddNumberToObject(json, "RDAQ1bmc_adc0", E.adc[0]);
-	cJSON_AddNumberToObject(json, "RDAQ1bmc_adc1", E.adc[1]);
-	cJSON_AddNumberToObject(json, "RDAQ1bmc_dac0", E.dac[0]);
-	cJSON_AddNumberToObject(json, "RDAQ1bmc_dac1", E.dac[1]);
-	cJSON_AddStringToObject(json, "RDAQ1build_date", FW_Date);
-	cJSON_AddStringToObject(json, "RDAQ1build_time", FW_Time);
+	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "name", 64);
+	cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (const char *)&ha_daq_host.clients[ha_daq_host.hindex]);
+	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "sequence", 64);
+	cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.sequence);
+	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "mqtt_do_16b", 64);
+	cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (double) E.do_16b);
+	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "mqtt_di_16b", 64);
+	cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (double) E.di_16b);
+	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_adc0", 64);
+	cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[0]);
+	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_adc1", 64);
+	cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[1]);
+	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "build_date", 64);
+	cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], FW_Date);
+	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "build_time", 64);
+	cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], FW_Time);
 	time(&rawtime);
-	cJSON_AddNumberToObject(json, "RDAQ1sequence_time", (double) rawtime);
+	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "sequence_time", 64);
+	cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (double) rawtime);
 	// convert the cJSON object to a JSON string
 	char *json_str = cJSON_Print(json);
 

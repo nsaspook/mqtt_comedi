@@ -44,6 +44,13 @@ extern "C" {
                 volatile int32_t var_update, energy_mode;
         };
 
+        struct ha_daq_hosts_type {
+                const char hosts[4][NI_MAXHOST];
+                const char clients[4][NI_MAXHOST];
+                char hname[4][NI_MAXHOST];
+                uint8_t hindex;
+        };
+
         extern struct ha_flag_type ha_flag_vars_ss;
 
         void mqtt_bmc_data(MQTTClient, const char *);
