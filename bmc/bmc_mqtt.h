@@ -48,10 +48,12 @@ extern "C" {
                 const char hosts[4][NI_MAXHOST];
                 const char clients[4][NI_MAXHOST];
                 char hname[4][NI_MAXHOST];
+                double scaler[4];
                 uint8_t hindex;
         };
 
-        extern struct ha_flag_type ha_flag_vars_ss;
+        extern struct ha_flag_type ha_flag_vars_ss, ha_daq_hosts_type;
+        extern struct ha_daq_hosts_type ha_daq_host;
 
         void mqtt_bmc_data(MQTTClient, const char *);
         void delivered(void *, MQTTClient_deliveryToken);

@@ -214,8 +214,8 @@ double get_adc_volts(int chan)
 	bmc.adc_sample[chan] = data[0];
 
 	ad_range->min = 0.0f;
-	ad_range->max = HV_SCALE;
-	
+	ad_range->max = ha_daq_host.scaler[ha_daq_host.hindex];
+
 	return comedi_to_phys(data[0], ad_range, maxdata_ai);
 }
 

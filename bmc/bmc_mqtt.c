@@ -43,6 +43,10 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.clients[1] = "Energy_Mqtt_BMC2",
 	.clients[2] = "Energy_Mqtt_BMC1",
 	.clients[3] = "Energy_Mqtt_BMC2",
+	.scaler[0] =  HV_SCALE0,
+	.scaler[1] =  HV_SCALE1,
+	.scaler[2] =  HV_SCALE2,
+	.scaler[3] =  HV_SCALE3,
 	.hindex = 0,
 };
 

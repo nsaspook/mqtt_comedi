@@ -34,6 +34,7 @@ extern "C" {
 #include <netdb.h>
 #include <ifaddrs.h>
 #include "MQTTClient.h"
+#include "bmc_mqtt.h"
 
 #define LOG_VERSION     "V0.05"
 #define MQTT_VERSION    "V3.11"

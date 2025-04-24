@@ -26,8 +26,11 @@ extern "C" {
 #define LPCHANC        16
 
 #define JUST_BITS false
-        
-#define HV_SCALE        83.6f
+
+#define HV_SCALE0        83.6f
+#define HV_SCALE1        83.6f
+#define HV_SCALE2        83.6f
+#define HV_SCALE3        83.6f
 
 #include <stdint.h>
 #include <comedilib.h>
@@ -63,7 +66,7 @@ extern "C" {
         extern volatile struct bmcdata bmc;
         extern struct didata datain;
         extern struct dodata dataout;
-        
+
         extern int maxdata_ai, ranges_ai, channels_ai;
         extern int maxdata_ao, ranges_ao, channels_ao;
         extern int maxdata_di, ranges_di, channels_di, datain_di;
