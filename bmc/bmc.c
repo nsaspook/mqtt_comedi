@@ -170,7 +170,7 @@ int main(int argc, char *argv[])
 			usleep(MAIN_DELAY); // sample rate ~1 msec
 			get_data_sample();
 			if (!bmc.datain.D0) {
-				led_lightshow(1);
+				led_lightshow(0);
 			}
 			if (ha_flag_vars_ss.runner) { // timer or trigger from mqtt
 				comedi_push_mqtt(); // send json formatted data to the mqtt server

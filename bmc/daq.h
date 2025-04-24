@@ -26,11 +26,15 @@ extern "C" {
 #define LPCHANC        16
 
 #define JUST_BITS false
-
+/*
+ * scale adc result into calibrated units
+ */
 #define HV_SCALE0        83.6f
-#define HV_SCALE1        83.6f
+#define HV_SCALE1        74.4f
 #define HV_SCALE2        83.6f
 #define HV_SCALE3        83.6f
+        
+#define OVER_SAMP       16
 
 #include <stdint.h>
 #include <comedilib.h>

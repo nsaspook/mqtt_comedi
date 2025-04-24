@@ -33,20 +33,20 @@ struct ha_flag_type ha_flag_vars_ss = {
 struct ha_daq_hosts_type ha_daq_host = {
 	.hosts[0] = "10.1.1.30",
 	.hosts[1] = "10.1.1.39",
-	.hosts[2] = "10.1.1.30",
-	.hosts[3] = "10.1.1.39",
+	.hosts[2] = "10.1.2.30",
+	.hosts[3] = "10.1.2.39",
 	.hname[0] = "RDAQ1",
 	.hname[1] = "RDAQ2",
-	.hname[2] = "RDAQ1",
-	.hname[3] = "RDAQ2",
+	.hname[2] = "RDAQ3",
+	.hname[3] = "RDAQ4",
 	.clients[0] = "Energy_Mqtt_BMC1",
 	.clients[1] = "Energy_Mqtt_BMC2",
-	.clients[2] = "Energy_Mqtt_BMC1",
-	.clients[3] = "Energy_Mqtt_BMC2",
-	.scaler[0] =  HV_SCALE0,
-	.scaler[1] =  HV_SCALE1,
-	.scaler[2] =  HV_SCALE2,
-	.scaler[3] =  HV_SCALE3,
+	.clients[2] = "Energy_Mqtt_BMC3",
+	.clients[3] = "Energy_Mqtt_BMC4",
+	.scaler[0] = HV_SCALE0,
+	.scaler[1] = HV_SCALE1,
+	.scaler[2] = HV_SCALE2,
+	.scaler[3] = HV_SCALE3,
 	.hindex = 0,
 };
 
@@ -388,6 +388,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	cJSON *json;
 	time_t rawtime;
 	static uint32_t spam = 0;
+	double over_sample;
 
 	MQTTClient_message pubmsg = MQTTClient_message_initializer;
 	MQTTClient_deliveryToken token;
@@ -397,38 +398,17 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	fflush(fout);
 
 #ifndef DIGITAL_ONLY
-	E.adc[0] = ac0_filter(get_adc_volts(0)); // over-sample avg
-	E.adc[0] = ac0_filter(get_adc_volts(0));
-	E.adc[0] = ac0_filter(get_adc_volts(0));
-	E.adc[0] = ac0_filter(get_adc_volts(0));
-	E.adc[0] = ac0_filter(get_adc_volts(0));
-	E.adc[0] = ac0_filter(get_adc_volts(0));
-	E.adc[0] = ac0_filter(get_adc_volts(0));
-	E.adc[0] = ac0_filter(get_adc_volts(0));
-	E.adc[0] = ac0_filter(get_adc_volts(0)); // over-sample avg
-	E.adc[0] = ac0_filter(get_adc_volts(0));
-	E.adc[0] = ac0_filter(get_adc_volts(0));
-	E.adc[0] = ac0_filter(get_adc_volts(0));
-	E.adc[0] = ac0_filter(get_adc_volts(0));
-	E.adc[0] = ac0_filter(get_adc_volts(0));
-	E.adc[0] = ac0_filter(get_adc_volts(0));
-	E.adc[0] = ac0_filter(get_adc_volts(0));
-	E.adc[1] = ac1_filter(get_adc_volts(1));
-	E.adc[1] = ac1_filter(get_adc_volts(1));
-	E.adc[1] = ac1_filter(get_adc_volts(1));
-	E.adc[1] = ac1_filter(get_adc_volts(1));
-	E.adc[1] = ac1_filter(get_adc_volts(1));
-	E.adc[1] = ac1_filter(get_adc_volts(1));
-	E.adc[1] = ac1_filter(get_adc_volts(1));
-	E.adc[1] = ac1_filter(get_adc_volts(1));
-	E.adc[1] = ac1_filter(get_adc_volts(1));
-	E.adc[1] = ac1_filter(get_adc_volts(1));
-	E.adc[1] = ac1_filter(get_adc_volts(1));
-	E.adc[1] = ac1_filter(get_adc_volts(1));
-	E.adc[1] = ac1_filter(get_adc_volts(1));
-	E.adc[1] = ac1_filter(get_adc_volts(1));
-	E.adc[1] = ac1_filter(get_adc_volts(1));
-	E.adc[1] = ac1_filter(get_adc_volts(1));
+	over_sample = 0.0f; // over-sample avg
+	for (int i = 0; i < OVER_SAMP; i++) {
+		over_sample += ac0_filter(get_adc_volts(0));
+	}
+	E.adc[0] = over_sample / (double) OVER_SAMP;
+
+	over_sample = 0.0f; // over-sample avg
+	for (int i = 0; i < OVER_SAMP; i++) {
+		over_sample += ac1_filter(get_adc_volts(1));
+	}
+	E.adc[1] = over_sample / (double) OVER_SAMP;
 
 #ifdef DAC_TESTING
 	E.dac[0] = E.adc[0];
@@ -451,7 +431,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	E.sequence++;
 	json = cJSON_CreateObject();
 	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "name", 64);
-	cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (const char *)&ha_daq_host.clients[ha_daq_host.hindex]);
+	cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (const char *) &ha_daq_host.clients[ha_daq_host.hindex]);
 	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "sequence", 64);
 	cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.sequence);
 	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "mqtt_do_16b", 64);
