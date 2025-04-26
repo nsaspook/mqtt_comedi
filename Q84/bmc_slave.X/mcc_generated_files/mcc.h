@@ -59,11 +59,10 @@
 #include "dma1.h"
 #include "tmr2.h"
 #include "memory.h"
-#include "uart3.h"
 #include "uart2.h"
 #include "uart1.h"
 #include "spi1.h"
-#include "pwm2_16bit.h"
+#include "spi2.h"
 
 
 

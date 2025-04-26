@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=secs_q84.X
+PROJECTNAME=bmc_slave.X
 
 # Active Configuration
 DEFAULTCONF=default

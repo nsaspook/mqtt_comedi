@@ -1,26 +1,24 @@
 /**
-  Generated Interrupt Manager Header File
+  SPI2 Generated Driver API Header File
 
-  @Company:
+  @Company
     Microchip Technology Inc.
 
-  @File Name:
-    interrupt_manager.h
+  @File Name
+    spi2.h
 
-  @Summary:
-    This is the Interrupt Manager file generated using PIC10 / PIC12 / PIC16 / PIC18 MCUs
+  @Summary
+    This is the generated header file for the SPI2 driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
 
-  @Description:
-    This header file provides implementations for global interrupt handling.
-    For individual peripheral handlers please see the peripheral driver for
-    all modules selected in the GUI.
+  @Description
+    This header file provides APIs for driver for SPI2.
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8
         Device            :  PIC18F47Q84
-        Driver Version    :  2.12
+        Driver Version    :  3.0.0
     The generated drivers are tested against the following:
         Compiler          :  XC8 2.36 and above or later
-        MPLAB 	          :  MPLAB X 6.00
+        MPLAB             :  MPLAB X 6.00
 */
 
 /*
@@ -46,46 +44,38 @@
     SOFTWARE.
 */
 
-#include "interrupt_manager.h"
-#include "mcc.h"
-
-void  INTERRUPT_Initialize (void)
-{
-    INTCON0bits.IPEN = 1;
-
-    bool state = (unsigned char)GIE;
-    GIE = 0;
-    IVTLOCK = 0x55;
-    IVTLOCK = 0xAA;
-    IVTLOCKbits.IVTLOCKED = 0x00; // unlock IVT
-
-    IVTBASEU = 0;
-    IVTBASEH = 0;
-    IVTBASEL = 8;
-
-    IVTLOCK = 0x55;
-    IVTLOCK = 0xAA;
-    IVTLOCKbits.IVTLOCKED = 0x01; // lock IVT
-
-    GIE = state;
-
-    // Assign peripheral interrupt priority vectors
-    IPR2bits.DMA1SCNTIP = 1;
-    IPR2bits.DMA1ORIP = 1;
-    IPR8bits.U2TXIP = 1;
-    IPR8bits.U2RXIP = 1;
-    IPR9bits.U3TXIP = 1;
-    IPR9bits.U3RXIP = 1;
-    IPR4bits.U1TXIP = 1;
-    IPR4bits.U1RXIP = 1;
-    IPR15bits.TMR6IP = 0;
-    IPR8bits.TMR5IP = 0;
-}
-
-void __interrupt(irq(default),base(8)) Default_ISR()
-{
-}
+#ifndef SPI2_MASTER_H
+#define SPI2_MASTER_H
 
 /**
- End of File
+  Section: Included Files
 */
+
+#include <stdio.h>
+#include <stdint.h>
+#include <stdbool.h>
+
+/* SPI interfaces */
+typedef enum { 
+    SPI2_DEFAULT
+} spi2_modes_t;
+
+typedef void (*spi2InterruptHandler_t)(void);
+
+void SPI2_Initialize(void);
+bool SPI2_Open(spi2_modes_t spi2UniqueConfiguration);
+void SPI2_Close(void);
+uint8_t SPI2_ExchangeByte(uint8_t data);
+void SPI2_ExchangeBlock(void *block, size_t blockSize);
+void SPI2_WriteBlock(void *block, size_t blockSize);
+void SPI2_ReadBlock(void *block, size_t blockSize);
+void SPI2_WriteByte(uint8_t byte);
+uint8_t SPI2_ReadByte(void);
+
+void (*SPI2_InterruptHandler)(void);
+void SPI2_SetInterruptHandler(spi2InterruptHandler_t handler);
+void (*SPI2_RxInterruptHandler)(void);
+void SPI2_SetRxInterruptHandler(spi2InterruptHandler_t handler);
+void (*SPI2_TxInterruptHandler)(void);
+void SPI2_SetTxInterruptHandler(spi2InterruptHandler_t handler);
+#endif //SPI2_H

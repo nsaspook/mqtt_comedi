@@ -13749,7 +13749,7 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <part name="VSS9" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="VSS10" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="ANALOG" library="con-lstb" library_urn="urn:adsk.eagle:library:162" deviceset="MA10-1" device="" package3d_urn="urn:adsk.eagle:package:8346/1" value="Analog"/>
-<part name="DIGITAL" library="con-lstb" library_urn="urn:adsk.eagle:library:162" deviceset="MA10-1" device="" package3d_urn="urn:adsk.eagle:package:8346/1" value="Digtal"/>
+<part name="DIG_ANA" library="con-lstb" library_urn="urn:adsk.eagle:library:162" deviceset="MA10-1" device="" package3d_urn="urn:adsk.eagle:package:8346/1" value="Digtal/Analog"/>
 <part name="TTL_SERIAL" library="con-lstb" library_urn="urn:adsk.eagle:library:162" deviceset="MA04-1" device="" package3d_urn="urn:adsk.eagle:package:8337/1" value="TTL Serial"/>
 <part name="VSS13" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="C11" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-US" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="0.1uf"/>
@@ -13825,7 +13825,6 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <part name="VSS14" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="R1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="0ohm"/>
 <part name="VDD8" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VDD" device=""/>
-<part name="CANBUS" library="con-lstb" library_urn="urn:adsk.eagle:library:162" deviceset="MA06-1" device="" package3d_urn="urn:adsk.eagle:package:8340/1" value="CANBUS"/>
 <part name="P+4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GLORY" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2" value="GLORY"/>
 <part name="VSS17" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
@@ -13846,13 +13845,14 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <part name="C15" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-US" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="10uf"/>
 <part name="VSS24" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="VSS25" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
-<part name="CANBUS_TERM" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="120 ohm"/>
 <part name="R2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="M1206" package3d_urn="urn:adsk.eagle:package:23566/2" value="11k"/>
 <part name="R10" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="M1206" package3d_urn="urn:adsk.eagle:package:23566/2" value="750 ohm"/>
 <part name="VSS27" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="R11" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="M1206" package3d_urn="urn:adsk.eagle:package:23566/2" value="11k"/>
 <part name="R12" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="M1206" package3d_urn="urn:adsk.eagle:package:23566/2" value="750 ohm"/>
 <part name="VSS32" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
+<part name="SPI2" library="con-lstb" library_urn="urn:adsk.eagle:library:162" deviceset="MA06-1" device="" package3d_urn="urn:adsk.eagle:package:8340/1" value="SPI2"/>
+<part name="VSS33" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -13933,7 +13933,7 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <attribute name="VALUE" x="-49.53" y="30.48" size="1.778" layer="96"/>
 <attribute name="NAME" x="-49.53" y="61.722" size="1.778" layer="95"/>
 </instance>
-<instance part="DIGITAL" gate="1" x="-48.26" y="10.16" smashed="yes">
+<instance part="DIG_ANA" gate="1" x="-48.26" y="10.16" smashed="yes">
 <attribute name="VALUE" x="-49.53" y="-5.08" size="1.778" layer="96"/>
 <attribute name="NAME" x="-49.53" y="26.162" size="1.778" layer="95"/>
 </instance>
@@ -14201,10 +14201,6 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <instance part="VDD8" gate="G$1" x="353.06" y="104.14" smashed="yes" rot="R270">
 <attribute name="VALUE" x="353.06" y="101.6" size="1.778" layer="96"/>
 </instance>
-<instance part="CANBUS" gate="1" x="307.34" y="-17.78" smashed="yes" rot="R180">
-<attribute name="VALUE" x="308.61" y="-5.08" size="1.778" layer="96" rot="R180"/>
-<attribute name="NAME" x="308.61" y="-26.162" size="1.778" layer="95" rot="R180"/>
-</instance>
 <instance part="P+4" gate="VCC" x="93.98" y="0" smashed="yes">
 <attribute name="VALUE" x="91.44" y="-2.54" size="1.778" layer="96" rot="R90"/>
 </instance>
@@ -14274,10 +14270,6 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <instance part="VSS25" gate="G$1" x="345.44" y="12.7" smashed="yes">
 <attribute name="VALUE" x="353.06" y="15.24" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="CANBUS_TERM" gate="G$1" x="271.78" y="-15.24" smashed="yes" rot="R270">
-<attribute name="NAME" x="273.2786" y="-11.43" size="1.778" layer="95" rot="R270"/>
-<attribute name="VALUE" x="268.478" y="-11.43" size="1.778" layer="96" rot="R270"/>
-</instance>
 <instance part="R2" gate="G$1" x="-20.32" y="50.8" smashed="yes">
 <attribute name="NAME" x="-16.51" y="52.2986" size="1.778" layer="95"/>
 <attribute name="VALUE" x="-21.59" y="52.578" size="1.778" layer="96"/>
@@ -14299,6 +14291,13 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 </instance>
 <instance part="VSS32" gate="G$1" x="-15.24" y="35.56" smashed="yes">
 <attribute name="VALUE" x="-12.7" y="35.56" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="SPI2" gate="1" x="127" y="20.32" smashed="yes">
+<attribute name="VALUE" x="125.73" y="7.62" size="1.778" layer="96"/>
+<attribute name="NAME" x="125.73" y="28.702" size="1.778" layer="95"/>
+</instance>
+<instance part="VSS33" gate="G$1" x="134.62" y="10.16" smashed="yes">
+<attribute name="VALUE" x="137.16" y="5.08" size="1.778" layer="96" rot="R180"/>
 </instance>
 </instances>
 <busses>
@@ -14380,7 +14379,7 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <junction x="-25.4" y="53.34"/>
 </segment>
 <segment>
-<pinref part="DIGITAL" gate="1" pin="8"/>
+<pinref part="DIG_ANA" gate="1" pin="8"/>
 <pinref part="VDD7" gate="G$1" pin="VDD"/>
 <junction x="-40.64" y="17.78"/>
 </segment>
@@ -14424,13 +14423,6 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <pinref part="R1" gate="G$1" pin="2"/>
 <pinref part="VDD8" gate="G$1" pin="VDD"/>
 <junction x="350.52" y="104.14"/>
-</segment>
-<segment>
-<wire x1="287.02" y1="-20.32" x2="299.72" y2="-20.32" width="0.1524" layer="91"/>
-<pinref part="CANBUS" gate="1" pin="5"/>
-<junction x="299.72" y="-20.32"/>
-<junction x="287.02" y="-20.32"/>
-<label x="289.56" y="-20.32" size="1.778" layer="95"/>
 </segment>
 <segment>
 <pinref part="F1" gate="G$1" pin="2"/>
@@ -14570,7 +14562,7 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <junction x="-40.64" y="55.88"/>
 </segment>
 <segment>
-<pinref part="DIGITAL" gate="1" pin="9"/>
+<pinref part="DIG_ANA" gate="1" pin="9"/>
 <pinref part="VSS12" gate="G$1" pin="VSS"/>
 <junction x="-40.64" y="20.32"/>
 </segment>
@@ -14664,13 +14656,6 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <junction x="345.44" y="99.06"/>
 </segment>
 <segment>
-<wire x1="287.02" y1="-10.16" x2="299.72" y2="-10.16" width="0.1524" layer="91"/>
-<pinref part="CANBUS" gate="1" pin="1"/>
-<junction x="299.72" y="-10.16"/>
-<junction x="287.02" y="-10.16"/>
-<label x="289.56" y="-10.16" size="1.778" layer="95"/>
-</segment>
-<segment>
 <pinref part="GLORY" gate="G$1" pin="1"/>
 <wire x1="86.36" y1="86.36" x2="101.6" y2="86.36" width="0.1524" layer="91"/>
 <pinref part="VSS17" gate="G$1" pin="VSS"/>
@@ -14733,6 +14718,11 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <pinref part="R12" gate="G$1" pin="1"/>
 <pinref part="VSS32" gate="G$1" pin="VSS"/>
 <junction x="-15.24" y="38.1"/>
+</segment>
+<segment>
+<pinref part="SPI2" gate="1" pin="1"/>
+<pinref part="VSS33" gate="G$1" pin="VSS"/>
+<junction x="134.62" y="12.7"/>
 </segment>
 </net>
 <net name="CPU_CLK" class="0">
@@ -14994,7 +14984,7 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <junction x="274.32" y="71.12"/>
 </segment>
 </net>
-<net name="DB0" class="0">
+<net name="SS2" class="0">
 <segment>
 <wire x1="38.1" y1="17.78" x2="25.4" y2="17.78" width="0.1524" layer="91"/>
 <label x="25.4" y="17.78" size="1.778" layer="95"/>
@@ -15003,7 +14993,7 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 </segment>
 <segment>
 <wire x1="-27.94" y1="0" x2="-40.64" y2="0" width="0.1524" layer="91"/>
-<pinref part="DIGITAL" gate="1" pin="1"/>
+<pinref part="DIG_ANA" gate="1" pin="1"/>
 <junction x="-40.64" y="0"/>
 <junction x="-27.94" y="0"/>
 <label x="-35.56" y="0" size="1.778" layer="95"/>
@@ -15015,8 +15005,15 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <junction x="213.36" y="25.4"/>
 <label x="213.36" y="15.24" size="1.778" layer="95" rot="R90"/>
 </segment>
+<segment>
+<wire x1="147.32" y1="15.24" x2="134.62" y2="15.24" width="0.1524" layer="91"/>
+<pinref part="SPI2" gate="1" pin="2"/>
+<junction x="134.62" y="15.24"/>
+<junction x="147.32" y="15.24"/>
+<label x="137.16" y="15.24" size="1.778" layer="95"/>
+</segment>
 </net>
-<net name="DB1" class="0">
+<net name="SCK2" class="0">
 <segment>
 <wire x1="86.36" y1="17.78" x2="99.06" y2="17.78" width="0.1524" layer="91"/>
 <label x="93.98" y="17.78" size="1.778" layer="95"/>
@@ -15025,7 +15022,7 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 </segment>
 <segment>
 <wire x1="-40.64" y1="2.54" x2="-27.94" y2="2.54" width="0.1524" layer="91"/>
-<pinref part="DIGITAL" gate="1" pin="2"/>
+<pinref part="DIG_ANA" gate="1" pin="2"/>
 <junction x="-40.64" y="2.54"/>
 <junction x="-27.94" y="2.54"/>
 <label x="-35.56" y="2.54" size="1.778" layer="95"/>
@@ -15037,6 +15034,13 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <junction x="210.82" y="25.4"/>
 <label x="210.82" y="15.24" size="1.778" layer="95" rot="R90"/>
 </segment>
+<segment>
+<wire x1="134.62" y1="17.78" x2="147.32" y2="17.78" width="0.1524" layer="91"/>
+<pinref part="SPI2" gate="1" pin="3"/>
+<junction x="134.62" y="17.78"/>
+<junction x="147.32" y="17.78"/>
+<label x="137.16" y="17.78" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="CS" class="0">
 <segment>
@@ -15047,7 +15051,7 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 </segment>
 <segment>
 <wire x1="-40.64" y1="5.08" x2="-27.94" y2="5.08" width="0.1524" layer="91"/>
-<pinref part="DIGITAL" gate="1" pin="3"/>
+<pinref part="DIG_ANA" gate="1" pin="3"/>
 <junction x="-40.64" y="5.08"/>
 <junction x="-27.94" y="5.08"/>
 <label x="-35.56" y="5.08" size="1.778" layer="95"/>
@@ -15067,7 +15071,7 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <label x="33.02" y="-25.4" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="CANRX" class="0">
+<net name="SPI2_REQ" class="0">
 <segment>
 <wire x1="86.36" y1="48.26" x2="111.76" y2="48.26" width="0.1524" layer="91"/>
 <label x="101.6" y="48.26" size="1.778" layer="95"/>
@@ -15083,21 +15087,14 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <label x="182.88" y="-20.32" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="287.02" y1="-12.7" x2="299.72" y2="-12.7" width="0.1524" layer="91"/>
-<pinref part="CANBUS" gate="1" pin="2"/>
-<junction x="299.72" y="-12.7"/>
-<junction x="287.02" y="-12.7"/>
-<label x="289.56" y="-12.7" size="1.778" layer="95"/>
-</segment>
-<segment>
-<wire x1="271.78" y1="-10.16" x2="271.78" y2="2.54" width="0.1524" layer="91"/>
-<pinref part="CANBUS_TERM" gate="G$1" pin="1"/>
-<junction x="271.78" y="-10.16"/>
-<junction x="271.78" y="2.54"/>
-<label x="271.78" y="-2.54" size="1.778" layer="95"/>
+<wire x1="134.62" y1="25.4" x2="147.32" y2="25.4" width="0.1524" layer="91"/>
+<pinref part="SPI2" gate="1" pin="6"/>
+<junction x="134.62" y="25.4"/>
+<junction x="147.32" y="25.4"/>
+<label x="137.16" y="25.4" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="CANTX" class="0">
+<net name="SDO2" class="0">
 <segment>
 <wire x1="86.36" y1="58.42" x2="111.76" y2="58.42" width="0.1524" layer="91"/>
 <label x="101.6" y="58.42" size="1.778" layer="95"/>
@@ -15112,18 +15109,11 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <label x="205.74" y="-66.04" size="1.778" layer="95" rot="R90"/>
 </segment>
 <segment>
-<wire x1="299.72" y1="-15.24" x2="287.02" y2="-15.24" width="0.1524" layer="91"/>
-<pinref part="CANBUS" gate="1" pin="3"/>
-<junction x="299.72" y="-15.24"/>
-<junction x="287.02" y="-15.24"/>
-<label x="289.56" y="-15.24" size="1.778" layer="95"/>
-</segment>
-<segment>
-<wire x1="271.78" y1="-20.32" x2="271.78" y2="-33.02" width="0.1524" layer="91"/>
-<pinref part="CANBUS_TERM" gate="G$1" pin="2"/>
-<junction x="271.78" y="-20.32"/>
-<junction x="271.78" y="-33.02"/>
-<label x="271.78" y="-30.48" size="1.778" layer="95"/>
+<wire x1="147.32" y1="22.86" x2="134.62" y2="22.86" width="0.1524" layer="91"/>
+<pinref part="SPI2" gate="1" pin="5"/>
+<junction x="134.62" y="22.86"/>
+<junction x="147.32" y="22.86"/>
+<label x="137.16" y="22.86" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="PC_TX2" class="0">
@@ -15224,7 +15214,7 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 </segment>
 <segment>
 <wire x1="-27.94" y1="7.62" x2="-40.64" y2="7.62" width="0.1524" layer="91"/>
-<pinref part="DIGITAL" gate="1" pin="4"/>
+<pinref part="DIG_ANA" gate="1" pin="4"/>
 <junction x="-40.64" y="7.62"/>
 <junction x="-27.94" y="7.62"/>
 <label x="-35.56" y="7.62" size="1.778" layer="95"/>
@@ -15252,7 +15242,7 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 </segment>
 <segment>
 <wire x1="-40.64" y1="10.16" x2="-27.94" y2="10.16" width="0.1524" layer="91"/>
-<pinref part="DIGITAL" gate="1" pin="5"/>
+<pinref part="DIG_ANA" gate="1" pin="5"/>
 <junction x="-40.64" y="10.16"/>
 <junction x="-27.94" y="10.16"/>
 <label x="-35.56" y="10.16" size="1.778" layer="95"/>
@@ -15275,7 +15265,7 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 </segment>
 <segment>
 <wire x1="-40.64" y1="12.7" x2="-27.94" y2="12.7" width="0.1524" layer="91"/>
-<pinref part="DIGITAL" gate="1" pin="6"/>
+<pinref part="DIG_ANA" gate="1" pin="6"/>
 <junction x="-40.64" y="12.7"/>
 <junction x="-27.94" y="12.7"/>
 <label x="-35.56" y="12.7" size="1.778" layer="95"/>
@@ -15317,7 +15307,7 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <label x="236.22" y="-7.62" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="RELAY" class="0">
+<net name="RELAY0" class="0">
 <segment>
 <wire x1="38.1" y1="48.26" x2="25.4" y2="48.26" width="0.1524" layer="91"/>
 <junction x="25.4" y="48.26"/>
@@ -15470,7 +15460,7 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <label x="226.06" y="43.18" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="RD7" class="0">
+<net name="DEBUG1" class="0">
 <segment>
 <wire x1="86.36" y1="40.64" x2="111.76" y2="40.64" width="0.1524" layer="91"/>
 <junction x="111.76" y="40.64"/>
@@ -15499,7 +15489,7 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <label x="226.06" y="45.72" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="RB5" class="0">
+<net name="SDI2" class="0">
 <segment>
 <wire x1="86.36" y1="60.96" x2="109.22" y2="60.96" width="0.1524" layer="91"/>
 <junction x="109.22" y="60.96"/>
@@ -15527,8 +15517,15 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <junction x="236.22" y="48.26"/>
 <label x="226.06" y="48.26" size="1.778" layer="95"/>
 </segment>
+<segment>
+<wire x1="134.62" y1="20.32" x2="147.32" y2="20.32" width="0.1524" layer="91"/>
+<pinref part="SPI2" gate="1" pin="4"/>
+<junction x="134.62" y="20.32"/>
+<junction x="147.32" y="20.32"/>
+<label x="137.16" y="20.32" size="1.778" layer="95"/>
+</segment>
 </net>
-<net name="DERE" class="0">
+<net name="RC2" class="0">
 <segment>
 <wire x1="38.1" y1="25.4" x2="15.24" y2="25.4" width="0.1524" layer="91"/>
 <junction x="15.24" y="25.4"/>
@@ -15542,13 +15539,6 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <junction x="220.98" y="12.7"/>
 <junction x="220.98" y="25.4"/>
 <label x="220.98" y="15.24" size="1.778" layer="95" rot="R90"/>
-</segment>
-<segment>
-<wire x1="287.02" y1="-17.78" x2="299.72" y2="-17.78" width="0.1524" layer="91"/>
-<pinref part="CANBUS" gate="1" pin="4"/>
-<junction x="299.72" y="-17.78"/>
-<junction x="287.02" y="-17.78"/>
-<label x="289.56" y="-17.78" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$4" class="0">
@@ -15663,7 +15653,7 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <label x="182.88" y="-27.94" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="UC_TX" class="0">
+<net name="ANC6" class="0">
 <segment>
 <wire x1="86.36" y1="27.94" x2="111.76" y2="27.94" width="0.1524" layer="91"/>
 <label x="93.98" y="27.94" size="1.778" layer="95"/>
@@ -15672,7 +15662,7 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 </segment>
 <segment>
 <wire x1="-40.64" y1="15.24" x2="-27.94" y2="15.24" width="0.1524" layer="91"/>
-<pinref part="DIGITAL" gate="1" pin="7"/>
+<pinref part="DIG_ANA" gate="1" pin="7"/>
 <junction x="-40.64" y="15.24"/>
 <junction x="-27.94" y="15.24"/>
 <label x="-35.56" y="15.24" size="1.778" layer="95"/>
@@ -15685,7 +15675,7 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 <label x="200.66" y="15.24" size="1.778" layer="95" rot="R90"/>
 </segment>
 </net>
-<net name="UC_RX" class="0">
+<net name="ANC7" class="0">
 <segment>
 <wire x1="86.36" y1="30.48" x2="111.76" y2="30.48" width="0.1524" layer="91"/>
 <label x="93.98" y="30.48" size="1.778" layer="95"/>
@@ -15694,7 +15684,7 @@ Source: &lt;a href="https://www.ti.com/lit/ds/symlink/ref3425.pdf?ts=16267221886
 </segment>
 <segment>
 <wire x1="-40.64" y1="22.86" x2="-27.94" y2="22.86" width="0.1524" layer="91"/>
-<pinref part="DIGITAL" gate="1" pin="10"/>
+<pinref part="DIG_ANA" gate="1" pin="10"/>
 <label x="-35.56" y="22.86" size="1.778" layer="95"/>
 <junction x="-40.64" y="22.86"/>
 <junction x="-27.94" y="22.86"/>
