@@ -39,7 +39,7 @@ void mode_lamp_bright(void)
  */
 bool help_button(void)
 {
-	if (!RB0_GetValue()) { // debounce and delay for button press
+	if (!MISC_GetValue()) { // debounce and delay for button press
 		V.help = true;
 		if (TimerDone(TMR_HELP)) {
 			return true;
@@ -266,6 +266,7 @@ D_CODES set_temp_display_help(const D_CODES new_response_info)
  */
 void log_serial(uint8_t * data, uint16_t len)
 {
+#ifdef DDDD
 	uint16_t idx = 0;
 
 	if (len == 0) {
@@ -286,6 +287,7 @@ void log_serial(uint8_t * data, uint16_t len)
 		}
 	}
 	RELAY0_SetLow();
+#endif
 }
 
 /**
@@ -297,6 +299,7 @@ void log_serial(uint8_t * data, uint16_t len)
  */
 void logging_cmds(void)
 {
+#ifdef DDDD
 	static uint8_t value[] = {0, 0, 0, 0}, vi = 0;
 	static uint8_t utc_value[DEF_TIME_SIZE] = {0};
 	static bool utc = false;
@@ -401,6 +404,7 @@ void logging_cmds(void)
 			break;
 		}
 	}
+#endif
 }
 
 void set_time(const time_t t)

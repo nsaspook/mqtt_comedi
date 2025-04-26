@@ -39649,7 +39649,7 @@ unsigned char __t3rd16on(void);
 # 1 "./mcc_generated_files/device_config.h" 1
 # 51 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/pin_manager.h" 1
-# 390 "./mcc_generated_files/pin_manager.h"
+# 602 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
 # 52 "./mcc_generated_files/mcc.h" 2
 
@@ -39672,8 +39672,13 @@ typedef uint16_t adc_result_t;
 
 typedef enum
 {
+    channel_ANA0 = 0x0,
     channel_ANA1 = 0x1,
     channel_ANA2 = 0x2,
+    channel_ANA4 = 0x4,
+    channel_ANA5 = 0x5,
+    channel_ANC6 = 0x16,
+    channel_ANC7 = 0x17,
     channel_VSS = 0x3B,
     channel_Temp = 0x3C,
     channel_DAC1 = 0x3D,
@@ -39690,87 +39695,87 @@ typedef enum
 {
     CONTEXT_1,
 } ADC_context_t;
-# 114 "./mcc_generated_files/adc.h"
+# 119 "./mcc_generated_files/adc.h"
 void ADC_Initialize(void);
-# 145 "./mcc_generated_files/adc.h"
+# 150 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_EnableChannelSequencer(void);
-# 167 "./mcc_generated_files/adc.h"
+# 172 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_DisableChannelSequencer(void);
-# 199 "./mcc_generated_files/adc.h"
+# 204 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_StartChannelSequencer(void);
-# 222 "./mcc_generated_files/adc.h"
+# 227 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_SelectContext(ADC_context_t context);
-# 244 "./mcc_generated_files/adc.h"
+# 249 "./mcc_generated_files/adc.h"
 void ADC_EnableChannelScan(ADC_context_t context);
-# 268 "./mcc_generated_files/adc.h"
+# 273 "./mcc_generated_files/adc.h"
 void ADC_DisableChannelScan(ADC_context_t context);
-# 295 "./mcc_generated_files/adc.h"
+# 300 "./mcc_generated_files/adc.h"
 void ADC_StartConversion(ADC_channel_t channel);
-# 321 "./mcc_generated_files/adc.h"
+# 326 "./mcc_generated_files/adc.h"
 _Bool ADC_IsConversionDone(void);
-# 347 "./mcc_generated_files/adc.h"
+# 352 "./mcc_generated_files/adc.h"
 adc_result_t ADC_GetConversionResult(void);
-# 373 "./mcc_generated_files/adc.h"
+# 378 "./mcc_generated_files/adc.h"
 adc_result_t ADC_GetSingleConversion(ADC_channel_t channel);
-# 398 "./mcc_generated_files/adc.h"
+# 403 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_StopConversion(void);
-# 422 "./mcc_generated_files/adc.h"
+# 427 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_SetStopOnInterrupt(void);
-# 450 "./mcc_generated_files/adc.h"
+# 455 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_DischargeSampleCapacitor(void);
-# 474 "./mcc_generated_files/adc.h"
+# 479 "./mcc_generated_files/adc.h"
 void ADC_LoadAcquisitionRegister(uint16_t acquisitionValue);
-# 498 "./mcc_generated_files/adc.h"
+# 503 "./mcc_generated_files/adc.h"
 void ADC_SetPrechargeTime(uint16_t prechargeTime);
-# 522 "./mcc_generated_files/adc.h"
+# 527 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_SetRepeatCount(uint8_t repeatCount);
-# 546 "./mcc_generated_files/adc.h"
+# 551 "./mcc_generated_files/adc.h"
 uint8_t ADC_GetCurrentCountofConversions(void);
-# 569 "./mcc_generated_files/adc.h"
+# 574 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_ClearAccumulator(void);
-# 593 "./mcc_generated_files/adc.h"
+# 598 "./mcc_generated_files/adc.h"
 uint24_t ADC_GetAccumulatorValue(void);
-# 620 "./mcc_generated_files/adc.h"
+# 625 "./mcc_generated_files/adc.h"
 _Bool ADC_HasAccumulatorOverflowed(void);
-# 644 "./mcc_generated_files/adc.h"
+# 649 "./mcc_generated_files/adc.h"
 uint16_t ADC_GetFilterValue(void);
-# 668 "./mcc_generated_files/adc.h"
+# 673 "./mcc_generated_files/adc.h"
 uint16_t ADC_GetPreviousResult(void);
-# 692 "./mcc_generated_files/adc.h"
+# 697 "./mcc_generated_files/adc.h"
 void ADC_DefineSetPoint(uint16_t setPoint);
-# 716 "./mcc_generated_files/adc.h"
+# 721 "./mcc_generated_files/adc.h"
 void ADC_SetUpperThreshold(uint16_t upperThreshold);
-# 740 "./mcc_generated_files/adc.h"
+# 745 "./mcc_generated_files/adc.h"
 void ADC_SetLowerThreshold(uint16_t lowerThreshold);
-# 765 "./mcc_generated_files/adc.h"
+# 770 "./mcc_generated_files/adc.h"
 uint16_t ADC_GetErrorCalculation(void);
-# 789 "./mcc_generated_files/adc.h"
+# 794 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_EnableDoubleSampling(void);
-# 813 "./mcc_generated_files/adc.h"
+# 818 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_EnableContinuousConversion(void);
-# 837 "./mcc_generated_files/adc.h"
+# 842 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_DisableContinuousConversion(void);
-# 864 "./mcc_generated_files/adc.h"
+# 869 "./mcc_generated_files/adc.h"
 _Bool ADC_HasErrorCrossedUpperThreshold(void);
-# 891 "./mcc_generated_files/adc.h"
+# 896 "./mcc_generated_files/adc.h"
 _Bool ADC_HasErrorCrossedLowerThreshold(void);
-# 916 "./mcc_generated_files/adc.h"
+# 921 "./mcc_generated_files/adc.h"
 uint8_t ADC_GetConversionStageStatus(void);
-# 937 "./mcc_generated_files/adc.h"
+# 942 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_EnableChargePump(void);
-# 958 "./mcc_generated_files/adc.h"
+# 963 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_DisableChargePump(void);
-# 987 "./mcc_generated_files/adc.h"
+# 992 "./mcc_generated_files/adc.h"
 void ADC_SetADIInterruptHandler(void (* InterruptHandler)(void));
-# 1016 "./mcc_generated_files/adc.h"
+# 1021 "./mcc_generated_files/adc.h"
 void ADC_SetActiveClockTuningInterruptHandler(void (* InterruptHandler)(void));
-# 1045 "./mcc_generated_files/adc.h"
+# 1050 "./mcc_generated_files/adc.h"
 void ADC_SetContext1ThresholdInterruptHandler(void (* InterruptHandler)(void));
-# 1074 "./mcc_generated_files/adc.h"
+# 1079 "./mcc_generated_files/adc.h"
 void ADC_SetContext2ThresholdInterruptHandler(void (* InterruptHandler)(void));
-# 1103 "./mcc_generated_files/adc.h"
+# 1108 "./mcc_generated_files/adc.h"
 void ADC_SetContext3ThresholdInterruptHandler(void (* InterruptHandler)(void));
-# 1132 "./mcc_generated_files/adc.h"
+# 1137 "./mcc_generated_files/adc.h"
 void ADC_SetContext4ThresholdInterruptHandler(void (* InterruptHandler)(void));
 # 57 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/tmr5.h" 1
@@ -40519,58 +40524,6 @@ void DATAEE_WriteByte(uint16_t bAdd, uint8_t bData);
 # 225 "./mcc_generated_files/memory.h"
 uint8_t DATAEE_ReadByte(uint16_t bAdd);
 # 62 "./mcc_generated_files/mcc.h" 2
-# 1 "./mcc_generated_files/uart3.h" 1
-# 74 "./mcc_generated_files/uart3.h"
-typedef union {
-    struct {
-        unsigned perr : 1;
-        unsigned ferr : 1;
-        unsigned oerr : 1;
-        unsigned reserved : 5;
-    };
-    uint8_t status;
-}uart3_status_t;
-
-
-
-
-extern volatile uint8_t uart3TxBufferRemaining;
-extern volatile uint8_t uart3RxCount;
-# 115 "./mcc_generated_files/uart3.h"
-void UART3_Initialize(void);
-# 163 "./mcc_generated_files/uart3.h"
-_Bool UART3_is_rx_ready(void);
-# 211 "./mcc_generated_files/uart3.h"
-_Bool UART3_is_tx_ready(void);
-# 258 "./mcc_generated_files/uart3.h"
-_Bool UART3_is_tx_done(void);
-# 306 "./mcc_generated_files/uart3.h"
-uart3_status_t UART3_get_last_status(void);
-# 355 "./mcc_generated_files/uart3.h"
-uint8_t UART3_Read(void);
-# 380 "./mcc_generated_files/uart3.h"
-void UART3_Write(uint8_t txData);
-# 401 "./mcc_generated_files/uart3.h"
-void UART3_Transmit_ISR(void);
-# 422 "./mcc_generated_files/uart3.h"
-void UART3_Receive_ISR(void);
-# 443 "./mcc_generated_files/uart3.h"
-void UART3_RxDataHandler(void);
-# 461 "./mcc_generated_files/uart3.h"
-void UART3_SetFramingErrorHandler(void (* interruptHandler)(void));
-# 479 "./mcc_generated_files/uart3.h"
-void UART3_SetOverrunErrorHandler(void (* interruptHandler)(void));
-# 497 "./mcc_generated_files/uart3.h"
-void UART3_SetErrorHandler(void (* interruptHandler)(void));
-# 517 "./mcc_generated_files/uart3.h"
-void (*UART3_RxInterruptHandler)(void);
-# 535 "./mcc_generated_files/uart3.h"
-void (*UART3_TxInterruptHandler)(void);
-# 555 "./mcc_generated_files/uart3.h"
-void UART3_SetRxInterruptHandler(void (* InterruptHandler)(void));
-# 573 "./mcc_generated_files/uart3.h"
-void UART3_SetTxInterruptHandler(void (* InterruptHandler)(void));
-# 63 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/uart2.h" 1
 # 74 "./mcc_generated_files/uart2.h"
 typedef union {
@@ -40624,7 +40577,7 @@ void (*UART2_TxInterruptHandler)(void);
 void UART2_SetRxInterruptHandler(void (* InterruptHandler)(void));
 # 575 "./mcc_generated_files/uart2.h"
 void UART2_SetTxInterruptHandler(void (* InterruptHandler)(void));
-# 64 "./mcc_generated_files/mcc.h" 2
+# 63 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/uart1.h" 1
 # 74 "./mcc_generated_files/uart1.h"
 typedef union {
@@ -40678,7 +40631,7 @@ void UART1_SetRxInterruptHandler(void (* InterruptHandler)(void));
 void UART1_SetTxInterruptHandler(void (* InterruptHandler)(void));
 
 void UART1_put_buffer(uint8_t);
-# 65 "./mcc_generated_files/mcc.h" 2
+# 64 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/spi1.h" 1
 # 59 "./mcc_generated_files/spi1.h"
 typedef enum {
@@ -40694,41 +40647,39 @@ void SPI1_WriteBlock(void *block, size_t blockSize);
 void SPI1_ReadBlock(void *block, size_t blockSize);
 void SPI1_WriteByte(uint8_t byte);
 uint8_t SPI1_ReadByte(void);
+# 65 "./mcc_generated_files/mcc.h" 2
+# 1 "./mcc_generated_files/spi2.h" 1
+# 59 "./mcc_generated_files/spi2.h"
+typedef enum {
+    SPI2_DEFAULT
+} spi2_modes_t;
+
+typedef void (*spi2InterruptHandler_t)(void);
+
+void SPI2_Initialize(void);
+_Bool SPI2_Open(spi2_modes_t spi2UniqueConfiguration);
+void SPI2_Close(void);
+uint8_t SPI2_ExchangeByte(uint8_t data);
+void SPI2_ExchangeBlock(void *block, size_t blockSize);
+void SPI2_WriteBlock(void *block, size_t blockSize);
+void SPI2_ReadBlock(void *block, size_t blockSize);
+void SPI2_WriteByte(uint8_t byte);
+uint8_t SPI2_ReadByte(void);
+
+void (*SPI2_InterruptHandler)(void);
+void SPI2_SetInterruptHandler(spi2InterruptHandler_t handler);
+void (*SPI2_RxInterruptHandler)(void);
+void SPI2_SetRxInterruptHandler(spi2InterruptHandler_t handler);
+void (*SPI2_TxInterruptHandler)(void);
+void SPI2_SetTxInterruptHandler(spi2InterruptHandler_t handler);
 # 66 "./mcc_generated_files/mcc.h" 2
-# 1 "./mcc_generated_files/pwm2_16bit.h" 1
-# 63 "./mcc_generated_files/pwm2_16bit.h"
-void PWM2_16BIT_Initialize(void);
-
-
-
-
-
-
-void PWM2_16BIT_Enable();
-# 79 "./mcc_generated_files/pwm2_16bit.h"
-void PWM2_16BIT_Disable();
-# 96 "./mcc_generated_files/pwm2_16bit.h"
-void PWM2_16BIT_WritePeriodRegister(uint16_t periodCount);
-# 114 "./mcc_generated_files/pwm2_16bit.h"
-void PWM2_16BIT_SetSlice1Output1DutyCycleRegister(uint16_t value);
-# 131 "./mcc_generated_files/pwm2_16bit.h"
-void PWM2_16BIT_SetSlice1Output2DutyCycleRegister(uint16_t value);
-# 148 "./mcc_generated_files/pwm2_16bit.h"
-void PWM2_16BIT_LoadBufferRegisters(void);
-# 169 "./mcc_generated_files/pwm2_16bit.h"
-void PWM2_16BIT_Slice1Output1_SetInterruptHandler(void (* InterruptHandler)(void));
-# 189 "./mcc_generated_files/pwm2_16bit.h"
-void PWM2_16BIT_Slice1Output2_SetInterruptHandler(void (* InterruptHandler)(void));
-# 209 "./mcc_generated_files/pwm2_16bit.h"
-void PWM2_16BIT_Period_SetInterruptHandler(void (* InterruptHandler)(void));
-# 67 "./mcc_generated_files/mcc.h" 2
-# 81 "./mcc_generated_files/mcc.h"
+# 80 "./mcc_generated_files/mcc.h"
 void SYSTEM_Initialize(void);
-# 94 "./mcc_generated_files/mcc.h"
+# 93 "./mcc_generated_files/mcc.h"
 void OSCILLATOR_Initialize(void);
-# 107 "./mcc_generated_files/mcc.h"
+# 106 "./mcc_generated_files/mcc.h"
 void PMD_Initialize(void);
-# 119 "./mcc_generated_files/mcc.h"
+# 118 "./mcc_generated_files/mcc.h"
 void SystemArbiter_Initialize(void);
 # 168 "main.c" 2
 
@@ -41343,7 +41294,7 @@ time_t time(time_t *);
 # 175 "main.c" 2
 # 184 "main.c"
 extern struct spi_link_type spi_link;
-const char *build_date = "Apr 25 2025", *build_time = "14:29:19";
+const char *build_date = "Apr 26 2025", *build_time = "07:40:41";
 
 const char * GEM_TEXT [] = {
  "DISABLE",

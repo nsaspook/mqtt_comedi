@@ -39285,7 +39285,7 @@ unsigned char __t1rd16on(void);
 unsigned char __t3rd16on(void);
 # 34 "/opt/microchip/xc8/v3.00/pic/include/xc.h" 2 3
 # 55 "mcc_generated_files/pin_manager.h" 2
-# 390 "mcc_generated_files/pin_manager.h"
+# 602 "mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
 # 50 "mcc_generated_files/pin_manager.c" 2
 
@@ -39298,28 +39298,28 @@ void PIN_MANAGER_Initialize(void)
 
 
 
-    LATE = 0x01;
-    LATD = 0xC8;
+    LATE = 0x07;
+    LATD = 0xF8;
     LATA = 0x00;
-    LATB = 0x1E;
-    LATC = 0x02;
+    LATB = 0x1F;
+    LATC = 0x06;
 
 
 
 
-    TRISE = 0x06;
+    TRISE = 0x00;
     TRISA = 0xFF;
-    TRISB = 0xE1;
-    TRISC = 0xD5;
-    TRISD = 0x31;
+    TRISB = 0xE0;
+    TRISC = 0xD1;
+    TRISD = 0x07;
 
 
 
 
-    ANSELD = 0x30;
-    ANSELC = 0xC4;
+    ANSELD = 0x00;
+    ANSELC = 0xC0;
     ANSELB = 0xC0;
-    ANSELE = 0x06;
+    ANSELE = 0x00;
     ANSELA = 0xFF;
 
 
@@ -39359,16 +39359,16 @@ void PIN_MANAGER_Initialize(void)
     INLVLE = 0x0F;
 # 127 "mcc_generated_files/pin_manager.c"
     U2RXPPS = 0x18;
-    RD2PPS = 0x1B;
     SPI1SCKPPS = 0x13;
+    SPI2SSPPS = 0x19;
+    SPI2SDIPPS = 0x0D;
     RC3PPS = 0x31;
     RC1PPS = 0x20;
-    RB4PPS = 0x26;
-    RD1PPS = 0x1A;
+    RB4PPS = 0x35;
     RC5PPS = 0x32;
-    U3RXPPS = 0x08;
     U1RXPPS = 0x10;
     RD6PPS = 0x23;
+    SPI2SCKPPS = 0x1A;
     SPI1SDIPPS = 0x14;
 }
 
