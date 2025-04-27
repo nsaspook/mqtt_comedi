@@ -39649,7 +39649,7 @@ unsigned char __t3rd16on(void);
 # 1 "./mcc_generated_files/device_config.h" 1
 # 51 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/pin_manager.h" 1
-# 590 "./mcc_generated_files/pin_manager.h"
+# 602 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
 # 52 "./mcc_generated_files/mcc.h" 2
 
@@ -41225,7 +41225,7 @@ time_t time(time_t *);
 # 176 "main.c" 2
 # 185 "main.c"
 extern struct spi_link_type spi_link;
-const char *build_date = "Apr 27 2025", *build_time = "00:21:47";
+const char *build_date = "Apr 27 2025", *build_time = "09:55:32";
 
 const char * GEM_TEXT [] = {
     "DISABLE",

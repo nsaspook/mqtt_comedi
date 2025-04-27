@@ -151,8 +151,8 @@ void ADC_Initialize(void)
     //ADMATH registers not updated; 
     ADSTAT = 0x00;
 
-    //ADNREF VSS; ADPREF VDD; 
-    ADREF = 0x00;
+    //ADNREF VSS; ADPREF external; 
+    ADREF = 0x02;
     
     //CHEN channel content is not included; SSI scan sequence continues; 
     ADCSEL1 = 0x00;
@@ -166,6 +166,8 @@ void ADC_Initialize(void)
     //Clear ADC Context Threshold Interrupt Flag
     PIR2bits.ADCH1IF = 0;
     
+    //Set ADC interrupt enable bit
+    PIE1bits.ADIE = 1;
 
     //Configure interrupt handlers
     ADC_SetADIInterruptHandler(ADC_DefaultADI_ISR);

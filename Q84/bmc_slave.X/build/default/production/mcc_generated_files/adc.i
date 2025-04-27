@@ -39510,7 +39510,7 @@ void ADC_Initialize(void)
     ADSTAT = 0x00;
 
 
-    ADREF = 0x00;
+    ADREF = 0x02;
 
 
     ADCSEL1 = 0x00;
@@ -39524,6 +39524,8 @@ void ADC_Initialize(void)
 
     PIR2bits.ADCH1IF = 0;
 
+
+    PIE1bits.ADIE = 1;
 
 
     ADC_SetADIInterruptHandler(ADC_DefaultADI_ISR);
