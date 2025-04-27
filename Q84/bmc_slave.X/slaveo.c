@@ -96,201 +96,146 @@
 #define NO		LOW
 #define YES		HIGH
 
-#include <xc.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include "mconfig.h"
+#include "slaveo.h"
 
-struct spi_link_type_ss { // internal state table
-	uint8_t SPI_DATA : 1;
-	uint8_t ADC_DATA : 1;
-	uint8_t PORT_DATA : 1;
-	uint8_t CHAR_DATA : 1;
-	uint8_t REMOTE_LINK : 1;
-	uint8_t REMOTE_DATA_DONE : 1;
-	uint8_t LOW_BITS : 1;
-};
+volatile struct spi_link_type_ss spi_comm_ss = {false, false, false, false, false, false, false};
+volatile struct spi_stat_type_ss spi_stat_ss = {0}, report_stat_ss = {0};
 
-struct spi_stat_type_ss {
-	volatile uint32_t adc_count, adc_error_count,
-	port_count, port_error_count,
-	char_count, char_error_count,
-	slave_int_count, last_slave_int_count,
-	comm_count;
-	volatile uint8_t comm_ok;
-};
-
-struct serial_bounce_buffer_type_ss {
-	uint8_t data[2];
-	uint32_t place;
-};
-
-static volatile struct spi_link_type_ss spi_comm = {false, false, false, false, false, false, false};
-static volatile struct spi_stat_type_ss spi_stat = {0}, report_stat = {0};
-
-static volatile uint8_t data_in2, adc_buffer_ptr = 0,
-	adc_channel = 0;
+static volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0;
 
 static volatile uint16_t adc_buffer[64] = {0}, adc_data_in = 0;
+static uint8_t channel = 0, link, upper, command, char_rxtmp, char_txtmp, cmd_dummy = CMD_DUMMY;
 
-void InterruptHandlerHigh(void)
-{
-	static uint8_t channel = 0, link, upper, command, char_rxtmp, cmd_dummy = CMD_DUMMY;
+void slaveo_adc_isr(void) {
 
-	/* we only get this when the master  wants data, the slave never generates one */
-	if (PIR3bits.SSP2IF) { // SPI port #2 SLAVE receiver
-		PIR3bits.SSP2IF = LOW;
-		spi_stat.slave_int_count++;
-		data_in2 = SPI2RXB;
-		command = data_in2 & HI_NIBBLE;
-
-		if (command == CMD_ADC_GO) { // Found a GO for a conversion command
-			spi_comm.ADC_DATA = false;
-			if (data_in2 & ADC_SWAP_MASK) {
-				upper = true;
-			} else {
-				upper = false;
-			}
-			channel = data_in2 & LO_NIBBLE;
-			if (channel >= 5) channel += 6; // skip missing channels
-			if (channel == 12 || channel > 19) channel = 0; // invalid so set to 0
-
-			if (!ADCON0bits.GO) {
-				ADCON0 = ((channel << 2) & 0b00111100) | (ADCON0 & 0b11000011);
-				adc_buffer[channel] = 0xffff; // fill with bits
-				ADCON0bits.GO = HIGH; // start a conversion
-			} else {
-				ADCON0bits.GO = LOW; // stop a conversion
-				SPI2TXB = CMD_DUMMY; // Tell master  we are here
-			}
-			spi_comm.REMOTE_LINK = true;
-			link = true;
-			/* reset link data timer if we are talking */
-			// reload 1 second timer
-			//INTCONbits.TMR0IF = LOW; //clear possible interrupt flag	
-		}
-		if (data_in2 == CMD_DUMMY_CFG) {
-			SPI2TXB = CMD_DUMMY; // Tell master  we are here
-		}
-
-		if ((data_in2 == CMD_ZERO) && spi_comm.ADC_DATA) { // don't sent unless we have valid data
-			spi_stat.last_slave_int_count = spi_stat.slave_int_count;
-			if (upper) {
-				SPI2TXB = ADRESH;
-			} else {
-				SPI2TXB = ADRESL; // stuff with lower 8 bits
-			}
-		}
-		if (data_in2 == CMD_ADC_DATA) {
-			if (spi_comm.ADC_DATA) {
-				if (upper) {
-					SPI2TXB = ADRESL; // stuff with lower 8 bits
-				} else {
-					SPI2TXB = ADRESH;
-				}
-				spi_stat.last_slave_int_count = spi_stat.slave_int_count;
-			} else {
-				SPI2TXB = CMD_DUMMY;
-			}
-		}
-		if (command == CMD_CHAR_RX) {
-			SPI2TXB = char_rxtmp; // Send current RX buffer contents
-			cmd_dummy = CMD_DUMMY; // clear rx bit
-		}
-	}
-
-	if (PIR1bits.ADIF) { // ADC conversion complete flag
-		PIR1bits.ADIF = LOW;
-		spi_stat.adc_count++; // just keep count
-		adc_buffer[channel] = (uint16_t) ADRES; // data is ready but must be written to the SPI buffer before a master command is received 
-		if (upper) { /* same as CMD_ZERO */
-			SPI2TXB = ADRESH;
-		} else {
-			SPI2TXB = ADRESL; // stuff with lower 8 bits
-		}
-		spi_comm.ADC_DATA = true; // so the transmit buffer will not be overwritten, WCOL set
-	}
+    PIR1bits.ADIF = LOW;
+    spi_stat_ss.adc_count++; // just keep count
+    adc_buffer[channel] = (uint16_t) ADRES; // data is ready but must be written to the SPI buffer before a master command is received 
+    if (upper) { /* same as CMD_ZERO */
+        SPI2TXB = ADRESH;
+    } else {
+        SPI2TXB = ADRESL; // stuff with lower 8 bits
+    }
+    spi_comm_ss.ADC_DATA = true; // so the transmit buffer will not be overwritten
 }
 
-void config_pic(void)
-{
-	return;
+void check_slaveo(void) /* SPI Master/Slave loopback */ {
+    if (SPI2STATUSbits.TXWE || SPI2STATUSbits.RXRE) { // check for overruns/collisions
+        spi_stat_ss.adc_error_count++;
+    }
+}
 
-	//	OSCCON = 0x70; // internal osc 16mhz, CONFIG OPTION 4XPLL for 64MHZ
-	OSCTUNE = 0xC0; // 4x pll
-	TRISC = 0b11111100; // [0..1] outputs for DIAG leds [2..7] for analog
-	LATC = 0x00; // all LEDS on
-	TRISAbits.TRISA6 = 0; // CPU clock out
+/*
+ * setup the interrupt call backs and data structures
+ */
+void init_slaveo(void) {
+    SPI2_SetInterruptHandler(slaveo_spi_isr);
+    SPI2_SetRxInterruptHandler(slaveo_rx_isr);
+    SPI2_SetTxInterruptHandler(slaveo_tx_isr);
+    TMR0_StartTimer();
+    TMR0_SetInterruptHandler(slaveo_time_isr);
+}
 
-	TRISBbits.TRISB1 = 1; // SSP2 pins clock in SLAVE
-	TRISBbits.TRISB2 = 1; // SDI
-	TRISBbits.TRISB3 = 0; // SDO
-	TRISBbits.TRISB0 = 1; // SS2
+void slaveo_rx_isr(void) {
 
-	/* ADC channels setup */
-	TRISAbits.TRISA0 = HIGH; // an0
-	TRISAbits.TRISA1 = HIGH; // an1
-	TRISAbits.TRISA2 = HIGH; // an2
-	TRISAbits.TRISA3 = HIGH; // an3
-	TRISAbits.TRISA5 = HIGH; // an4
-	TRISBbits.TRISB4 = HIGH; // an11
-	TRISBbits.TRISB0 = HIGH; // an12 SS2, don't use for analog
-	TRISBbits.TRISB5 = HIGH; // an13
-	TRISCbits.TRISC2 = HIGH; // an14
-	TRISCbits.TRISC3 = HIGH; // an15
-	TRISCbits.TRISC4 = HIGH; // an16
-	TRISCbits.TRISC5 = HIGH; // an17
-	TRISCbits.TRISC6 = HIGH; // an17
-	TRISCbits.TRISC7 = HIGH; // an18
+    /* we only get this when the master  wants data, the slave never generates one */
+    { // SPI port #2 SLAVE receiver
+        spi_stat_ss.slave_int_count++;
+        data_in2 = SPI2RXB;
+        command = data_in2 & HI_NIBBLE;
 
-	TRISBbits.TRISB4 = 1; // QEI encoder inputs
-	TRISBbits.TRISB5 = 1;
-	TRISBbits.TRISB6 = LOW; /* outputs */
-	TRISBbits.TRISB7 = LOW;
+        if (UART1_is_rx_ready()) { // we need to read the buffer in sync with the *_CHAR_* commands so it's polled
+            char_rxtmp = UART1_Read();
+            cmd_dummy |= UART_DUMMY_MASK; // We have real USART data waiting
+            spi_comm_ss.CHAR_DATA = true;
+        }
 
-	ANSELA = 0b00101111; // analog bit enables
-	ANSELB = 0b00110000; // analog bit enables
-	ANSELC = 0b11111100; // analog bit enables
-	//	VREFCON0 = 0b11100000; // ADC voltage ref 2.048 volts
-	//	OpenADC(ADC_FOSC_64 & ADC_RIGHT_JUST & ADC_4_TAD, ADC_CH0 & ADC_INT_ON, ADC_REF_FVR_BUF & ADC_REF_VDD_VSS); // open ADC channel
+        if (command == CMD_CHAR_GO) {
+            char_txtmp = (data_in2 & LO_NIBBLE); // read lower 4 bits
+            SPI2TXB = char_rxtmp; // send current receive data to master
+            spi_stat_ss.char_count++;
+        }
 
+        if (command == CMD_CHAR_DATA) { // get upper 4 bits send bits and send the data
+            if (UART1_is_tx_ready()) { // The USART send buffer is ready
+                UART1_Write(((data_in2 & LO_NIBBLE) << 4) | char_txtmp);
+            } else {
+            }
+            SPI2TXB = cmd_dummy; // send rx status first, the next SPI transfer will contain it.
+            cmd_dummy = CMD_DUMMY; // clear rx bit
+            spi_comm_ss.CHAR_DATA = false;
+            spi_comm_ss.REMOTE_LINK = true;
+            /* reset link data timer if we are talking */
+            TMR0_Reload();
+        }
 
-	PIE1bits.ADIE = HIGH; // the ADC interrupt enable bit
-	IPR1bits.ADIP = HIGH; // ADC use high pri
+        if (command == CMD_ADC_GO) { // Found a GO for a conversion command
+            spi_stat_ss.adc_count++;
+            spi_comm_ss.ADC_DATA = false;
+            if (data_in2 & ADC_SWAP_MASK) {
+                upper = true;
+            } else {
+                upper = false;
+            }
+            channel = data_in2 & LO_NIBBLE;
+            if (channel >= 5) channel += 6; // skip missing channels
+            if (channel == 12 || channel > 19) channel = 0; // invalid so set to 0
 
+            if (!ADCON0bits.GO) {
+                ADCON0 = ((channel << 2) & 0b00111100) | (ADCON0 & 0b11000011);
+                adc_buffer[channel] = 0xffff; // fill with bits
+                ADCON0bits.GO = HIGH; // start a conversion
+            } else {
+                ADCON0bits.GO = LOW; // stop a conversion
+                SPI2TXB = CMD_DUMMY; // Tell master  we are here
+                spi_stat_ss.adc_error_count++;
+            }
+            spi_comm_ss.REMOTE_LINK = true;
+            link = true;
+            TMR0_Reload();
+        }
+        if (data_in2 == CMD_DUMMY_CFG) {
+            SPI2TXB = CMD_DUMMY; // Tell master  we are here
+        }
 
-	//	OpenSPI2(SLV_SSON, MODE_11, SMPMID); // Must be SMPMID in slave mode
-	//	SPI_BUF = CMD_DUMMY_CFG;
+        if ((data_in2 == CMD_ZERO) && spi_comm_ss.ADC_DATA) { // don't sent unless we have valid data
+            spi_stat_ss.last_slave_int_count = spi_stat_ss.slave_int_count;
+            if (upper) {
+                SPI2TXB = ADRESH;
+            } else {
+                SPI2TXB = ADRESL; // stuff with lower 8 bits
+            }
+        }
+        if (data_in2 == CMD_ADC_DATA) {
+            if (spi_comm_ss.ADC_DATA) {
+                if (upper) {
+                    SPI2TXB = ADRESL; // stuff with lower 8 bits
+                } else {
+                    SPI2TXB = ADRESH;
+                }
+                spi_stat_ss.last_slave_int_count = spi_stat_ss.slave_int_count;
+            } else {
+                SPI2TXB = CMD_DUMMY;
+            }
+        }
+        if (command == CMD_CHAR_RX) {
+            SPI2TXB = char_rxtmp; // Send current RX buffer contents
+            cmd_dummy = CMD_DUMMY; // clear rx bit
+        }
+    }
+}
 
-
-	/* System activity timer, can reset the processor */
-	//	OpenTimer0(TIMER_INT_ON & T0_16BIT & T0_SOURCE_INT & T0_PS_1_256);
-	//	WriteTimer0(TIMEROFFSET); //      start timer0 at 1 second ticks
-
-	/* clear SPI module possible flag and enable interrupts*/
-	//	PIR3bits.SSP2IF = LOW;
-	//	PIE3bits.SSP2IE = HIGH;
-	/* Enable interrupt priority */
-	//	RCONbits.IPEN = 1;
-	/* Enable all high priority interrupts */
-	//	INTCONbits.GIEH = 1;
-	/* clear any SSP error bits */
-	//	SSP2CON1bits.WCOL = SSP2CON1bits.SSPOV = LOW;
-
+void slaveo_tx_isr(void) {
 
 }
 
-void init_slaveo(void) /* SPI Master/Slave loopback */
-{
-	int16_t i, j, k = 0, num_ai_chan = 0;
-	uint8_t stuff;
+void slaveo_spi_isr(void) {
 
-	config_pic(); // setup the slave for work
+}
 
-	if (SSP2CON1bits.WCOL || SSP2CON1bits.SSPOV) { // check for overruns/collisions
-		SSP2CON1bits.WCOL = SSP2CON1bits.SSPOV = 0;
-		spi_stat.adc_error_count = spi_stat.adc_count - spi_stat.adc_error_count;
-	}
-
+void slaveo_time_isr(void) {
+    if (SPI2STATUSbits.TXWE || SPI2STATUSbits.RXRE) { // check for overruns/collisions
+        spi_stat_ss.adc_error_count++;
+    }
+    DLED_SetLow();
 }

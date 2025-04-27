@@ -54,12 +54,13 @@ void SYSTEM_Initialize(void)
     ADC_Initialize();
     PIN_MANAGER_Initialize();
     OSCILLATOR_Initialize();
-    TMR6_Initialize();
     DMA1_Initialize();
     TMR2_Initialize();
+    TMR0_Initialize();
+    TMR6_Initialize();
     TMR5_Initialize();
-    UART2_Initialize();
     UART1_Initialize();
+    UART2_Initialize();
     SPI1_Initialize();
     SPI2_Initialize();
     SystemArbiter_Initialize();
