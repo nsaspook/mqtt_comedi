@@ -300,7 +300,6 @@ void main(void) {
     RLED_SetLow(); // start complete power-up serial speed setups, LEDS OFF
     MLED_SetLow();
     DLED_SetLow();
-    RELAY0_SetLow();
     temp_lock = true;
     if (V.speed_spin) { // update the speed lock status byte
         DATAEE_WriteByte(UART_SPEED_LOCK_EADR, temp_lock);

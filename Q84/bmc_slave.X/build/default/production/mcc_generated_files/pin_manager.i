@@ -39285,12 +39285,26 @@ unsigned char __t1rd16on(void);
 unsigned char __t3rd16on(void);
 # 34 "/opt/microchip/xc8/v3.00/pic/include/xc.h" 2 3
 # 55 "mcc_generated_files/pin_manager.h" 2
-# 614 "mcc_generated_files/pin_manager.h"
+# 634 "mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
+# 648 "mcc_generated_files/pin_manager.h"
+void IOCBF6_ISR(void);
+# 671 "mcc_generated_files/pin_manager.h"
+void IOCBF6_SetInterruptHandler(void (* InterruptHandler)(void));
+# 695 "mcc_generated_files/pin_manager.h"
+extern void (*IOCBF6_InterruptHandler)(void);
+# 719 "mcc_generated_files/pin_manager.h"
+void IOCBF6_DefaultInterruptHandler(void);
 # 50 "mcc_generated_files/pin_manager.c" 2
+# 1 "mcc_generated_files/interrupt_manager.h" 1
+# 109 "mcc_generated_files/interrupt_manager.h"
+void INTERRUPT_Initialize (void);
+# 51 "mcc_generated_files/pin_manager.c" 2
 
 
 
+
+void (*IOCBF6_InterruptHandler)(void);
 
 
 void PIN_MANAGER_Initialize(void)
@@ -39318,7 +39332,7 @@ void PIN_MANAGER_Initialize(void)
 
     ANSELD = 0x20;
     ANSELC = 0xC0;
-    ANSELB = 0xC0;
+    ANSELB = 0x80;
     ANSELE = 0x00;
     ANSELA = 0xFF;
 
@@ -39327,7 +39341,7 @@ void PIN_MANAGER_Initialize(void)
 
     WPUD = 0x09;
     WPUE = 0x04;
-    WPUB = 0x21;
+    WPUB = 0x61;
     WPUA = 0x00;
     WPUC = 0x01;
 
@@ -39336,7 +39350,7 @@ void PIN_MANAGER_Initialize(void)
 
     ODCONE = 0x00;
     ODCONA = 0x00;
-    ODCONB = 0x00;
+    ODCONB = 0x01;
     ODCONC = 0x00;
     ODCOND = 0x00;
 
@@ -39357,7 +39371,27 @@ void PIN_MANAGER_Initialize(void)
     INLVLC = 0xFF;
     INLVLD = 0xFF;
     INLVLE = 0x0F;
-# 127 "mcc_generated_files/pin_manager.c"
+
+
+
+
+
+
+    IOCBFbits.IOCBF6 = 0;
+
+    IOCBNbits.IOCBN6 = 1;
+
+    IOCBPbits.IOCBP6 = 0;
+
+
+
+
+    IOCBF6_SetInterruptHandler(IOCBF6_DefaultInterruptHandler);
+
+
+    PIE0bits.IOCIE = 1;
+
+
     U2RXPPS = 0x18;
     SPI1SCKPPS = 0x13;
     SPI2SSPPS = 0x19;
@@ -39372,6 +39406,41 @@ void PIN_MANAGER_Initialize(void)
     SPI1SDIPPS = 0x14;
 }
 
-void PIN_MANAGER_IOC(void)
+void __attribute__((picinterrupt(("irq(IOC),base(8)")))) PIN_MANAGER_IOC()
 {
+
+    if(IOCBFbits.IOCBF6 == 1)
+    {
+        IOCBF6_ISR();
+    }
+}
+
+
+
+
+void IOCBF6_ISR(void) {
+
+
+
+
+    if(IOCBF6_InterruptHandler)
+    {
+        IOCBF6_InterruptHandler();
+    }
+    IOCBFbits.IOCBF6 = 0;
+}
+
+
+
+
+void IOCBF6_SetInterruptHandler(void (* InterruptHandler)(void)){
+    IOCBF6_InterruptHandler = InterruptHandler;
+}
+
+
+
+
+void IOCBF6_DefaultInterruptHandler(void){
+
+
 }

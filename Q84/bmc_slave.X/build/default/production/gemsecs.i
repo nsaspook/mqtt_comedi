@@ -39740,8 +39740,16 @@ void SPI1_WriteByte(uint8_t byte);
 uint8_t SPI1_ReadByte(void);
 # 19 "./vconfig.h" 2
 # 1 "./mcc_generated_files/pin_manager.h" 1
-# 614 "./mcc_generated_files/pin_manager.h"
+# 634 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
+# 648 "./mcc_generated_files/pin_manager.h"
+void IOCBF6_ISR(void);
+# 671 "./mcc_generated_files/pin_manager.h"
+void IOCBF6_SetInterruptHandler(void (* InterruptHandler)(void));
+# 695 "./mcc_generated_files/pin_manager.h"
+extern void (*IOCBF6_InterruptHandler)(void);
+# 719 "./mcc_generated_files/pin_manager.h"
+void IOCBF6_DefaultInterruptHandler(void);
 # 20 "./vconfig.h" 2
 # 136 "./vconfig.h"
     struct spi_link_type {

@@ -39289,8 +39289,16 @@ unsigned char __t3rd16on(void);
 # 1 "./mcc_generated_files/device_config.h" 1
 # 51 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/pin_manager.h" 1
-# 614 "./mcc_generated_files/pin_manager.h"
+# 634 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
+# 648 "./mcc_generated_files/pin_manager.h"
+void IOCBF6_ISR(void);
+# 671 "./mcc_generated_files/pin_manager.h"
+void IOCBF6_SetInterruptHandler(void (* InterruptHandler)(void));
+# 695 "./mcc_generated_files/pin_manager.h"
+extern void (*IOCBF6_InterruptHandler)(void);
+# 719 "./mcc_generated_files/pin_manager.h"
+void IOCBF6_DefaultInterruptHandler(void);
 # 52 "./mcc_generated_files/mcc.h" 2
 
 # 1 "/opt/microchip/xc8/v3.00/pic/include/c99/stdbool.h" 1 3
@@ -41045,17 +41053,6 @@ void mode_lamp_bright(void)
 
 _Bool help_button(void)
 {
- if (!PORTEbits.RE1) {
-  V.help = 1;
-  if (TimerDone(TMR_HELP)) {
-   return 1;
-  }
- }
-
- if (!V.help) {
-  StartTimer(TMR_HELP, 300);
- }
-
  return 0;
 }
 
@@ -41272,12 +41269,12 @@ D_CODES set_temp_display_help(const D_CODES new_response_info)
 
 void log_serial(uint8_t * data, uint16_t len)
 {
-# 291 "mconfig.c"
+# 280 "mconfig.c"
 }
-# 300 "mconfig.c"
+# 289 "mconfig.c"
 void logging_cmds(void)
 {
-# 408 "mconfig.c"
+# 397 "mconfig.c"
 }
 
 void set_time(const time_t t)

@@ -39,17 +39,6 @@ void mode_lamp_bright(void)
  */
 bool help_button(void)
 {
-	if (!MISC_GetValue()) { // debounce and delay for button press
-		V.help = true;
-		if (TimerDone(TMR_HELP)) {
-			return true;
-		}
-	}
-
-	if (!V.help) {
-		StartTimer(TMR_HELP, BDELAY);
-	}
-
 	return false;
 }
 

@@ -281,6 +281,26 @@
 #define RB5_SetAnalogMode()         do { ANSELBbits.ANSELB5 = 1; } while(0)
 #define RB5_SetDigitalMode()        do { ANSELBbits.ANSELB5 = 0; } while(0)
 
+// get/set TIC_INT aliases
+#define TIC_INT_TRIS                 TRISBbits.TRISB6
+#define TIC_INT_LAT                  LATBbits.LATB6
+#define TIC_INT_PORT                 PORTBbits.RB6
+#define TIC_INT_WPU                  WPUBbits.WPUB6
+#define TIC_INT_OD                   ODCONBbits.ODCB6
+#define TIC_INT_ANS                  ANSELBbits.ANSELB6
+#define TIC_INT_SetHigh()            do { LATBbits.LATB6 = 1; } while(0)
+#define TIC_INT_SetLow()             do { LATBbits.LATB6 = 0; } while(0)
+#define TIC_INT_Toggle()             do { LATBbits.LATB6 = ~LATBbits.LATB6; } while(0)
+#define TIC_INT_GetValue()           PORTBbits.RB6
+#define TIC_INT_SetDigitalInput()    do { TRISBbits.TRISB6 = 1; } while(0)
+#define TIC_INT_SetDigitalOutput()   do { TRISBbits.TRISB6 = 0; } while(0)
+#define TIC_INT_SetPullup()          do { WPUBbits.WPUB6 = 1; } while(0)
+#define TIC_INT_ResetPullup()        do { WPUBbits.WPUB6 = 0; } while(0)
+#define TIC_INT_SetPushPull()        do { ODCONBbits.ODCB6 = 0; } while(0)
+#define TIC_INT_SetOpenDrain()       do { ODCONBbits.ODCB6 = 1; } while(0)
+#define TIC_INT_SetAnalogMode()      do { ANSELBbits.ANSELB6 = 1; } while(0)
+#define TIC_INT_SetDigitalMode()     do { ANSELBbits.ANSELB6 = 0; } while(0)
+
 // get/set RB7 procedures
 #define RB7_SetHigh()            do { LATBbits.LATB7 = 1; } while(0)
 #define RB7_SetLow()             do { LATBbits.LATB7 = 0; } while(0)
@@ -561,25 +581,25 @@
 #define MCZ_CS_SetAnalogMode()      do { ANSELEbits.ANSELE0 = 1; } while(0)
 #define MCZ_CS_SetDigitalMode()     do { ANSELEbits.ANSELE0 = 0; } while(0)
 
-// get/set MISC aliases
-#define MISC_TRIS                 TRISEbits.TRISE1
-#define MISC_LAT                  LATEbits.LATE1
-#define MISC_PORT                 PORTEbits.RE1
-#define MISC_WPU                  WPUEbits.WPUE1
-#define MISC_OD                   ODCONEbits.ODCE1
-#define MISC_ANS                  ANSELEbits.ANSELE1
-#define MISC_SetHigh()            do { LATEbits.LATE1 = 1; } while(0)
-#define MISC_SetLow()             do { LATEbits.LATE1 = 0; } while(0)
-#define MISC_Toggle()             do { LATEbits.LATE1 = ~LATEbits.LATE1; } while(0)
-#define MISC_GetValue()           PORTEbits.RE1
-#define MISC_SetDigitalInput()    do { TRISEbits.TRISE1 = 1; } while(0)
-#define MISC_SetDigitalOutput()   do { TRISEbits.TRISE1 = 0; } while(0)
-#define MISC_SetPullup()          do { WPUEbits.WPUE1 = 1; } while(0)
-#define MISC_ResetPullup()        do { WPUEbits.WPUE1 = 0; } while(0)
-#define MISC_SetPushPull()        do { ODCONEbits.ODCE1 = 0; } while(0)
-#define MISC_SetOpenDrain()       do { ODCONEbits.ODCE1 = 1; } while(0)
-#define MISC_SetAnalogMode()      do { ANSELEbits.ANSELE1 = 1; } while(0)
-#define MISC_SetDigitalMode()     do { ANSELEbits.ANSELE1 = 0; } while(0)
+// get/set TIC_CS aliases
+#define TIC_CS_TRIS                 TRISEbits.TRISE1
+#define TIC_CS_LAT                  LATEbits.LATE1
+#define TIC_CS_PORT                 PORTEbits.RE1
+#define TIC_CS_WPU                  WPUEbits.WPUE1
+#define TIC_CS_OD                   ODCONEbits.ODCE1
+#define TIC_CS_ANS                  ANSELEbits.ANSELE1
+#define TIC_CS_SetHigh()            do { LATEbits.LATE1 = 1; } while(0)
+#define TIC_CS_SetLow()             do { LATEbits.LATE1 = 0; } while(0)
+#define TIC_CS_Toggle()             do { LATEbits.LATE1 = ~LATEbits.LATE1; } while(0)
+#define TIC_CS_GetValue()           PORTEbits.RE1
+#define TIC_CS_SetDigitalInput()    do { TRISEbits.TRISE1 = 1; } while(0)
+#define TIC_CS_SetDigitalOutput()   do { TRISEbits.TRISE1 = 0; } while(0)
+#define TIC_CS_SetPullup()          do { WPUEbits.WPUE1 = 1; } while(0)
+#define TIC_CS_ResetPullup()        do { WPUEbits.WPUE1 = 0; } while(0)
+#define TIC_CS_SetPushPull()        do { ODCONEbits.ODCE1 = 0; } while(0)
+#define TIC_CS_SetOpenDrain()       do { ODCONEbits.ODCE1 = 1; } while(0)
+#define TIC_CS_SetAnalogMode()      do { ANSELEbits.ANSELE1 = 1; } while(0)
+#define TIC_CS_SetDigitalMode()     do { ANSELEbits.ANSELE1 = 0; } while(0)
 
 // get/set SS_CS aliases
 #define SS_CS_TRIS                 TRISEbits.TRISE2
@@ -613,6 +633,90 @@
  */
 void PIN_MANAGER_Initialize (void);
 
+
+
+/**
+ * @Param
+    none
+ * @Returns
+    none
+ * @Description
+    Interrupt on Change Handler for the IOCBF6 pin functionality
+ * @Example
+    IOCBF6_ISR();
+ */
+void IOCBF6_ISR(void);
+
+/**
+  @Summary
+    Interrupt Handler Setter for IOCBF6 pin interrupt-on-change functionality
+
+  @Description
+    Allows selecting an interrupt handler for IOCBF6 at application runtime
+    
+  @Preconditions
+    Pin Manager intializer called
+
+  @Returns
+    None.
+
+  @Param
+    InterruptHandler function pointer.
+
+  @Example
+    PIN_MANAGER_Initialize();
+    IOCBF6_SetInterruptHandler(MyInterruptHandler);
+
+*/
+void IOCBF6_SetInterruptHandler(void (* InterruptHandler)(void));
+
+/**
+  @Summary
+    Dynamic Interrupt Handler for IOCBF6 pin
+
+  @Description
+    This is a dynamic interrupt handler to be used together with the IOCBF6_SetInterruptHandler() method.
+    This handler is called every time the IOCBF6 ISR is executed and allows any function to be registered at runtime.
+    
+  @Preconditions
+    Pin Manager intializer called
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    PIN_MANAGER_Initialize();
+    IOCBF6_SetInterruptHandler(IOCBF6_InterruptHandler);
+
+*/
+extern void (*IOCBF6_InterruptHandler)(void);
+
+/**
+  @Summary
+    Default Interrupt Handler for IOCBF6 pin
+
+  @Description
+    This is a predefined interrupt handler to be used together with the IOCBF6_SetInterruptHandler() method.
+    This handler is called every time the IOCBF6 ISR is executed. 
+    
+  @Preconditions
+    Pin Manager intializer called
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    PIN_MANAGER_Initialize();
+    IOCBF6_SetInterruptHandler(IOCBF6_DefaultInterruptHandler);
+
+*/
+void IOCBF6_DefaultInterruptHandler(void);
 
 
 

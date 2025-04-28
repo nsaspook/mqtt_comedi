@@ -39292,8 +39292,16 @@ unsigned char __t3rd16on(void);
 # 1 "mcc_generated_files/device_config.h" 1
 # 51 "mcc_generated_files/mcc.h" 2
 # 1 "mcc_generated_files/pin_manager.h" 1
-# 614 "mcc_generated_files/pin_manager.h"
+# 634 "mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
+# 648 "mcc_generated_files/pin_manager.h"
+void IOCBF6_ISR(void);
+# 671 "mcc_generated_files/pin_manager.h"
+void IOCBF6_SetInterruptHandler(void (* InterruptHandler)(void));
+# 695 "mcc_generated_files/pin_manager.h"
+extern void (*IOCBF6_InterruptHandler)(void);
+# 719 "mcc_generated_files/pin_manager.h"
+void IOCBF6_DefaultInterruptHandler(void);
 # 52 "mcc_generated_files/mcc.h" 2
 
 # 1 "/opt/microchip/xc8/v3.00/pic/include/c99/stdbool.h" 1 3
@@ -40532,14 +40540,15 @@ void INTERRUPT_Initialize (void)
     GIE = state;
 
 
-    IPR1bits.ADIP = 1;
     IPR5bits.SPI2TXIP = 1;
     IPR5bits.SPI2IP = 1;
     IPR5bits.SPI2RXIP = 1;
+    IPR1bits.ADIP = 1;
     IPR2bits.DMA1SCNTIP = 1;
     IPR2bits.DMA1ORIP = 1;
     IPR8bits.U2TXIP = 1;
     IPR8bits.U2RXIP = 1;
+    IPR0bits.IOCIP = 1;
     IPR4bits.U1TXIP = 1;
     IPR4bits.U1RXIP = 1;
     IPR3bits.TMR0IP = 1;

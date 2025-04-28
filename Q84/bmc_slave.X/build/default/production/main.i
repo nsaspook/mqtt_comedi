@@ -39649,8 +39649,16 @@ unsigned char __t3rd16on(void);
 # 1 "./mcc_generated_files/device_config.h" 1
 # 51 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/pin_manager.h" 1
-# 614 "./mcc_generated_files/pin_manager.h"
+# 634 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
+# 648 "./mcc_generated_files/pin_manager.h"
+void IOCBF6_ISR(void);
+# 671 "./mcc_generated_files/pin_manager.h"
+void IOCBF6_SetInterruptHandler(void (* InterruptHandler)(void));
+# 695 "./mcc_generated_files/pin_manager.h"
+extern void (*IOCBF6_InterruptHandler)(void);
+# 719 "./mcc_generated_files/pin_manager.h"
+void IOCBF6_DefaultInterruptHandler(void);
 # 52 "./mcc_generated_files/mcc.h" 2
 
 # 1 "/opt/microchip/xc8/v3.00/pic/include/c99/stdbool.h" 1 3
@@ -41235,7 +41243,7 @@ time_t time(time_t *);
 # 176 "main.c" 2
 # 185 "main.c"
 extern struct spi_link_type spi_link;
-const char *build_date = "Apr 27 2025", *build_time = "17:29:18";
+const char *build_date = "Apr 28 2025", *build_time = "15:41:53";
 
 const char * GEM_TEXT [] = {
     "DISABLE",
@@ -41352,7 +41360,6 @@ void main(void) {
     do { LATBbits.LATB2 = 0; } while(0);
     do { LATBbits.LATB1 = 0; } while(0);
     do { LATBbits.LATB3 = 0; } while(0);
-    do { LATEbits.LATE0 = 0; } while(0);
     temp_lock = 1;
     if (V.speed_spin) {
         DATAEE_WriteByte(0x03F1, temp_lock);
