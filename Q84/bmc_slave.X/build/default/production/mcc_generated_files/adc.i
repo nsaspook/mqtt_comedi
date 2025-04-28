@@ -39309,6 +39309,7 @@ typedef enum
     channel_ANA5 = 0x5,
     channel_ANC6 = 0x16,
     channel_ANC7 = 0x17,
+    channel_AND5 = 0x1D,
     channel_VSS = 0x3B,
     channel_Temp = 0x3C,
     channel_DAC1 = 0x3D,
@@ -39325,87 +39326,87 @@ typedef enum
 {
     CONTEXT_1,
 } ADC_context_t;
-# 119 "mcc_generated_files/adc.h"
+# 120 "mcc_generated_files/adc.h"
 void ADC_Initialize(void);
-# 150 "mcc_generated_files/adc.h"
+# 151 "mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_EnableChannelSequencer(void);
-# 172 "mcc_generated_files/adc.h"
+# 173 "mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_DisableChannelSequencer(void);
-# 204 "mcc_generated_files/adc.h"
+# 205 "mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_StartChannelSequencer(void);
-# 227 "mcc_generated_files/adc.h"
+# 228 "mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_SelectContext(ADC_context_t context);
-# 249 "mcc_generated_files/adc.h"
+# 250 "mcc_generated_files/adc.h"
 void ADC_EnableChannelScan(ADC_context_t context);
-# 273 "mcc_generated_files/adc.h"
+# 274 "mcc_generated_files/adc.h"
 void ADC_DisableChannelScan(ADC_context_t context);
-# 300 "mcc_generated_files/adc.h"
+# 301 "mcc_generated_files/adc.h"
 void ADC_StartConversion(ADC_channel_t channel);
-# 326 "mcc_generated_files/adc.h"
+# 327 "mcc_generated_files/adc.h"
 _Bool ADC_IsConversionDone(void);
-# 352 "mcc_generated_files/adc.h"
+# 353 "mcc_generated_files/adc.h"
 adc_result_t ADC_GetConversionResult(void);
-# 378 "mcc_generated_files/adc.h"
+# 379 "mcc_generated_files/adc.h"
 adc_result_t ADC_GetSingleConversion(ADC_channel_t channel);
-# 403 "mcc_generated_files/adc.h"
+# 404 "mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_StopConversion(void);
-# 427 "mcc_generated_files/adc.h"
+# 428 "mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_SetStopOnInterrupt(void);
-# 455 "mcc_generated_files/adc.h"
+# 456 "mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_DischargeSampleCapacitor(void);
-# 479 "mcc_generated_files/adc.h"
+# 480 "mcc_generated_files/adc.h"
 void ADC_LoadAcquisitionRegister(uint16_t acquisitionValue);
-# 503 "mcc_generated_files/adc.h"
+# 504 "mcc_generated_files/adc.h"
 void ADC_SetPrechargeTime(uint16_t prechargeTime);
-# 527 "mcc_generated_files/adc.h"
+# 528 "mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_SetRepeatCount(uint8_t repeatCount);
-# 551 "mcc_generated_files/adc.h"
+# 552 "mcc_generated_files/adc.h"
 uint8_t ADC_GetCurrentCountofConversions(void);
-# 574 "mcc_generated_files/adc.h"
+# 575 "mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_ClearAccumulator(void);
-# 598 "mcc_generated_files/adc.h"
+# 599 "mcc_generated_files/adc.h"
 uint24_t ADC_GetAccumulatorValue(void);
-# 625 "mcc_generated_files/adc.h"
+# 626 "mcc_generated_files/adc.h"
 _Bool ADC_HasAccumulatorOverflowed(void);
-# 649 "mcc_generated_files/adc.h"
+# 650 "mcc_generated_files/adc.h"
 uint16_t ADC_GetFilterValue(void);
-# 673 "mcc_generated_files/adc.h"
+# 674 "mcc_generated_files/adc.h"
 uint16_t ADC_GetPreviousResult(void);
-# 697 "mcc_generated_files/adc.h"
+# 698 "mcc_generated_files/adc.h"
 void ADC_DefineSetPoint(uint16_t setPoint);
-# 721 "mcc_generated_files/adc.h"
+# 722 "mcc_generated_files/adc.h"
 void ADC_SetUpperThreshold(uint16_t upperThreshold);
-# 745 "mcc_generated_files/adc.h"
+# 746 "mcc_generated_files/adc.h"
 void ADC_SetLowerThreshold(uint16_t lowerThreshold);
-# 770 "mcc_generated_files/adc.h"
+# 771 "mcc_generated_files/adc.h"
 uint16_t ADC_GetErrorCalculation(void);
-# 794 "mcc_generated_files/adc.h"
+# 795 "mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_EnableDoubleSampling(void);
-# 818 "mcc_generated_files/adc.h"
+# 819 "mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_EnableContinuousConversion(void);
-# 842 "mcc_generated_files/adc.h"
+# 843 "mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_DisableContinuousConversion(void);
-# 869 "mcc_generated_files/adc.h"
+# 870 "mcc_generated_files/adc.h"
 _Bool ADC_HasErrorCrossedUpperThreshold(void);
-# 896 "mcc_generated_files/adc.h"
+# 897 "mcc_generated_files/adc.h"
 _Bool ADC_HasErrorCrossedLowerThreshold(void);
-# 921 "mcc_generated_files/adc.h"
+# 922 "mcc_generated_files/adc.h"
 uint8_t ADC_GetConversionStageStatus(void);
-# 942 "mcc_generated_files/adc.h"
+# 943 "mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_EnableChargePump(void);
-# 963 "mcc_generated_files/adc.h"
+# 964 "mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_DisableChargePump(void);
-# 992 "mcc_generated_files/adc.h"
+# 993 "mcc_generated_files/adc.h"
 void ADC_SetADIInterruptHandler(void (* InterruptHandler)(void));
-# 1021 "mcc_generated_files/adc.h"
+# 1022 "mcc_generated_files/adc.h"
 void ADC_SetActiveClockTuningInterruptHandler(void (* InterruptHandler)(void));
-# 1050 "mcc_generated_files/adc.h"
+# 1051 "mcc_generated_files/adc.h"
 void ADC_SetContext1ThresholdInterruptHandler(void (* InterruptHandler)(void));
-# 1079 "mcc_generated_files/adc.h"
+# 1080 "mcc_generated_files/adc.h"
 void ADC_SetContext2ThresholdInterruptHandler(void (* InterruptHandler)(void));
-# 1108 "mcc_generated_files/adc.h"
+# 1109 "mcc_generated_files/adc.h"
 void ADC_SetContext3ThresholdInterruptHandler(void (* InterruptHandler)(void));
-# 1137 "mcc_generated_files/adc.h"
+# 1138 "mcc_generated_files/adc.h"
 void ADC_SetContext4ThresholdInterruptHandler(void (* InterruptHandler)(void));
 # 53 "mcc_generated_files/adc.c" 2
 
