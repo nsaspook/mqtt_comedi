@@ -39649,7 +39649,7 @@ unsigned char __t3rd16on(void);
 # 1 "./mcc_generated_files/device_config.h" 1
 # 51 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/pin_manager.h" 1
-# 602 "./mcc_generated_files/pin_manager.h"
+# 614 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
 # 52 "./mcc_generated_files/mcc.h" 2
 
@@ -40524,6 +40524,14 @@ extern void (*TMR0_InterruptHandler)(void);
 # 328 "./mcc_generated_files/tmr0.h"
 void TMR0_DefaultInterruptHandler(void);
 # 62 "./mcc_generated_files/mcc.h" 2
+# 1 "./mcc_generated_files/dac1.h" 1
+# 93 "./mcc_generated_files/dac1.h"
+void DAC1_Initialize(void);
+# 129 "./mcc_generated_files/dac1.h"
+void DAC1_SetOutput(uint8_t inputData);
+# 163 "./mcc_generated_files/dac1.h"
+uint8_t DAC1_GetOutput(void);
+# 63 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/memory.h" 1
 # 81 "./mcc_generated_files/memory.h"
 uint8_t FLASH_ReadByte(uint32_t flashAddr);
@@ -40543,7 +40551,7 @@ void FLASH_EraseBlock(uint32_t flashAddr);
 void DATAEE_WriteByte(uint16_t bAdd, uint8_t bData);
 # 225 "./mcc_generated_files/memory.h"
 uint8_t DATAEE_ReadByte(uint16_t bAdd);
-# 63 "./mcc_generated_files/mcc.h" 2
+# 64 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/uart2.h" 1
 # 74 "./mcc_generated_files/uart2.h"
 typedef union {
@@ -40597,7 +40605,7 @@ void (*UART2_TxInterruptHandler)(void);
 void UART2_SetRxInterruptHandler(void (* InterruptHandler)(void));
 # 575 "./mcc_generated_files/uart2.h"
 void UART2_SetTxInterruptHandler(void (* InterruptHandler)(void));
-# 64 "./mcc_generated_files/mcc.h" 2
+# 65 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/uart1.h" 1
 # 74 "./mcc_generated_files/uart1.h"
 typedef union {
@@ -40651,7 +40659,7 @@ void UART1_SetRxInterruptHandler(void (* InterruptHandler)(void));
 void UART1_SetTxInterruptHandler(void (* InterruptHandler)(void));
 
 void UART1_put_buffer(uint8_t);
-# 65 "./mcc_generated_files/mcc.h" 2
+# 66 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/spi1.h" 1
 # 59 "./mcc_generated_files/spi1.h"
 typedef enum {
@@ -40667,7 +40675,7 @@ void SPI1_WriteBlock(void *block, size_t blockSize);
 void SPI1_ReadBlock(void *block, size_t blockSize);
 void SPI1_WriteByte(uint8_t byte);
 uint8_t SPI1_ReadByte(void);
-# 66 "./mcc_generated_files/mcc.h" 2
+# 67 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/spi2.h" 1
 # 59 "./mcc_generated_files/spi2.h"
 typedef enum {
@@ -40692,14 +40700,14 @@ void (*SPI2_RxInterruptHandler)(void);
 void SPI2_SetRxInterruptHandler(spi2InterruptHandler_t handler);
 void (*SPI2_TxInterruptHandler)(void);
 void SPI2_SetTxInterruptHandler(spi2InterruptHandler_t handler);
-# 67 "./mcc_generated_files/mcc.h" 2
-# 81 "./mcc_generated_files/mcc.h"
+# 68 "./mcc_generated_files/mcc.h" 2
+# 82 "./mcc_generated_files/mcc.h"
 void SYSTEM_Initialize(void);
-# 94 "./mcc_generated_files/mcc.h"
+# 95 "./mcc_generated_files/mcc.h"
 void OSCILLATOR_Initialize(void);
-# 107 "./mcc_generated_files/mcc.h"
+# 108 "./mcc_generated_files/mcc.h"
 void PMD_Initialize(void);
-# 119 "./mcc_generated_files/mcc.h"
+# 120 "./mcc_generated_files/mcc.h"
 void SystemArbiter_Initialize(void);
 # 168 "main.c" 2
 
@@ -41195,6 +41203,7 @@ time_t time(time_t *);
         uint8_t REMOTE_LINK : 1;
         uint8_t REMOTE_DATA_DONE : 1;
         uint8_t LOW_BITS : 1;
+        uint8_t ADC_RUN : 1;
     };
 
     struct spi_stat_type_ss {
@@ -41225,7 +41234,7 @@ time_t time(time_t *);
 # 176 "main.c" 2
 # 185 "main.c"
 extern struct spi_link_type spi_link;
-const char *build_date = "Apr 27 2025", *build_time = "09:55:32";
+const char *build_date = "Apr 27 2025", *build_time = "12:41:29";
 
 const char * GEM_TEXT [] = {
     "DISABLE",
@@ -41551,25 +41560,32 @@ void main(void) {
                     set_display_info(DIS_STR);
                 }
                 snprintf(get_vterm_ptr(1, 0), 20 +1, "%lu %lu %lu %lu                     ", spi_stat_ss.adc_count, spi_stat_ss.comm_count, spi_stat_ss.slave_int_count, spi_stat_ss.idle_count);
-                snprintf(get_vterm_ptr(2, 0), 20 +1, "%d %d %d %d %d %d               ", spi_comm_ss.ADC_DATA, spi_comm_ss.CHAR_DATA, spi_comm_ss.LOW_BITS, spi_comm_ss.REMOTE_DATA_DONE, spi_comm_ss.REMOTE_LINK,
-                        spi_comm_ss.SPI_DATA);
+                snprintf(get_vterm_ptr(2, 0), 20 +1, "%d %d %d %d %d %d %d %d             ", spi_comm_ss.ADC_DATA, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.LOW_BITS,
+                        spi_comm_ss.REMOTE_DATA_DONE, spi_comm_ss.REMOTE_LINK, spi_comm_ss.SPI_DATA, spi_comm_ss.ADC_RUN);
                 snprintf(get_vterm_ptr(3, 0), 20 +1, "RS232 Volts %d                  ", V.vterm_switch);
-                ADC_DischargeSampleCapacitor();
-                ADC_StartConversion(channel_ANA1);
-                while (!ADC_IsConversionDone()) {
-                };
-                if (ADC_IsConversionDone()) {
-                    V.v_tx_line = ADC_GetConversionResult();
-                };
-                ADC_DischargeSampleCapacitor();
-                ADC_StartConversion(channel_ANA2);
-                while (!ADC_IsConversionDone()) {
-                };
-                if (ADC_IsConversionDone()) {
-                    V.v_rx_line = ADC_GetConversionResult();
-                };
 
-                update_rs232_line_status();
+                PIE1bits.ADIE = 0;
+                if (!spi_comm_ss.ADC_RUN) {
+                    ADC_DischargeSampleCapacitor();
+                    ADC_StartConversion(channel_ANA1);
+                    while (!ADC_IsConversionDone()) {
+                    };
+                    if (ADC_IsConversionDone()) {
+                        V.v_tx_line = ADC_GetConversionResult();
+                    };
+                    ADC_DischargeSampleCapacitor();
+                    ADC_StartConversion(channel_ANA2);
+                    while (!ADC_IsConversionDone()) {
+                    };
+                    if (ADC_IsConversionDone()) {
+                        V.v_rx_line = ADC_GetConversionResult();
+                    };
+                    PIR1bits.ADIF = 0;
+
+                    update_rs232_line_status();
+                }
+
+                PIE1bits.ADIE = 1;
 
                 StartTimer(TMR_DISPLAY, 100);
                 if (V.vterm_switch++ > (70)) {

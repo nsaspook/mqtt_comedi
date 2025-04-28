@@ -39289,7 +39289,7 @@ unsigned char __t3rd16on(void);
 # 1 "./mcc_generated_files/device_config.h" 1
 # 51 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/pin_manager.h" 1
-# 602 "./mcc_generated_files/pin_manager.h"
+# 614 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
 # 52 "./mcc_generated_files/mcc.h" 2
 
@@ -40323,6 +40323,14 @@ extern void (*TMR0_InterruptHandler)(void);
 # 328 "./mcc_generated_files/tmr0.h"
 void TMR0_DefaultInterruptHandler(void);
 # 62 "./mcc_generated_files/mcc.h" 2
+# 1 "./mcc_generated_files/dac1.h" 1
+# 93 "./mcc_generated_files/dac1.h"
+void DAC1_Initialize(void);
+# 129 "./mcc_generated_files/dac1.h"
+void DAC1_SetOutput(uint8_t inputData);
+# 163 "./mcc_generated_files/dac1.h"
+uint8_t DAC1_GetOutput(void);
+# 63 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/memory.h" 1
 # 81 "./mcc_generated_files/memory.h"
 uint8_t FLASH_ReadByte(uint32_t flashAddr);
@@ -40342,7 +40350,7 @@ void FLASH_EraseBlock(uint32_t flashAddr);
 void DATAEE_WriteByte(uint16_t bAdd, uint8_t bData);
 # 225 "./mcc_generated_files/memory.h"
 uint8_t DATAEE_ReadByte(uint16_t bAdd);
-# 63 "./mcc_generated_files/mcc.h" 2
+# 64 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/uart2.h" 1
 # 74 "./mcc_generated_files/uart2.h"
 typedef union {
@@ -40396,7 +40404,7 @@ void (*UART2_TxInterruptHandler)(void);
 void UART2_SetRxInterruptHandler(void (* InterruptHandler)(void));
 # 575 "./mcc_generated_files/uart2.h"
 void UART2_SetTxInterruptHandler(void (* InterruptHandler)(void));
-# 64 "./mcc_generated_files/mcc.h" 2
+# 65 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/uart1.h" 1
 # 74 "./mcc_generated_files/uart1.h"
 typedef union {
@@ -40450,7 +40458,7 @@ void UART1_SetRxInterruptHandler(void (* InterruptHandler)(void));
 void UART1_SetTxInterruptHandler(void (* InterruptHandler)(void));
 
 void UART1_put_buffer(uint8_t);
-# 65 "./mcc_generated_files/mcc.h" 2
+# 66 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/spi1.h" 1
 # 59 "./mcc_generated_files/spi1.h"
 typedef enum {
@@ -40466,7 +40474,7 @@ void SPI1_WriteBlock(void *block, size_t blockSize);
 void SPI1_ReadBlock(void *block, size_t blockSize);
 void SPI1_WriteByte(uint8_t byte);
 uint8_t SPI1_ReadByte(void);
-# 66 "./mcc_generated_files/mcc.h" 2
+# 67 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/spi2.h" 1
 # 59 "./mcc_generated_files/spi2.h"
 typedef enum {
@@ -40491,14 +40499,14 @@ void (*SPI2_RxInterruptHandler)(void);
 void SPI2_SetRxInterruptHandler(spi2InterruptHandler_t handler);
 void (*SPI2_TxInterruptHandler)(void);
 void SPI2_SetTxInterruptHandler(spi2InterruptHandler_t handler);
-# 67 "./mcc_generated_files/mcc.h" 2
-# 81 "./mcc_generated_files/mcc.h"
+# 68 "./mcc_generated_files/mcc.h" 2
+# 82 "./mcc_generated_files/mcc.h"
 void SYSTEM_Initialize(void);
-# 94 "./mcc_generated_files/mcc.h"
+# 95 "./mcc_generated_files/mcc.h"
 void OSCILLATOR_Initialize(void);
-# 107 "./mcc_generated_files/mcc.h"
+# 108 "./mcc_generated_files/mcc.h"
 void PMD_Initialize(void);
-# 119 "./mcc_generated_files/mcc.h"
+# 120 "./mcc_generated_files/mcc.h"
 void SystemArbiter_Initialize(void);
 # 40 "./mconfig.h" 2
 # 1 "./vconfig.h" 1

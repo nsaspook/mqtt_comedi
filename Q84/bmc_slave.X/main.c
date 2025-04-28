@@ -509,25 +509,32 @@ void main(void) {
                     set_display_info(DIS_STR);
                 }
                 snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%lu %lu %lu %lu                     ", spi_stat_ss.adc_count, spi_stat_ss.comm_count, spi_stat_ss.slave_int_count, spi_stat_ss.idle_count);
-                snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%d %d %d %d %d %d               ", spi_comm_ss.ADC_DATA, spi_comm_ss.CHAR_DATA, spi_comm_ss.LOW_BITS, spi_comm_ss.REMOTE_DATA_DONE, spi_comm_ss.REMOTE_LINK,
-                        spi_comm_ss.SPI_DATA);
+                snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%d %d %d %d %d %d %d %d             ", spi_comm_ss.ADC_DATA, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.LOW_BITS,
+                        spi_comm_ss.REMOTE_DATA_DONE, spi_comm_ss.REMOTE_LINK, spi_comm_ss.SPI_DATA, spi_comm_ss.ADC_RUN);
                 snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "RS232 Volts %d                  ", V.vterm_switch);
-                ADC_DischargeSampleCapacitor();
-                ADC_StartConversion(channel_ANA1);
-                while (!ADC_IsConversionDone()) {
-                };
-                if (ADC_IsConversionDone()) {
-                    V.v_tx_line = ADC_GetConversionResult();
-                };
-                ADC_DischargeSampleCapacitor();
-                ADC_StartConversion(channel_ANA2);
-                while (!ADC_IsConversionDone()) {
-                };
-                if (ADC_IsConversionDone()) {
-                    V.v_rx_line = ADC_GetConversionResult();
-                };
-                // convert ADC values to char for display
-                update_rs232_line_status();
+
+                PIE1bits.ADIE = 0; // lock ADC interrupts off
+                if (!spi_comm_ss.ADC_RUN) { // check if we have a ADC conversion in progress
+                    ADC_DischargeSampleCapacitor();
+                    ADC_StartConversion(channel_ANA1);
+                    while (!ADC_IsConversionDone()) {
+                    };
+                    if (ADC_IsConversionDone()) {
+                        V.v_tx_line = ADC_GetConversionResult();
+                    };
+                    ADC_DischargeSampleCapacitor();
+                    ADC_StartConversion(channel_ANA2);
+                    while (!ADC_IsConversionDone()) {
+                    };
+                    if (ADC_IsConversionDone()) {
+                        V.v_rx_line = ADC_GetConversionResult();
+                    };
+                    PIR1bits.ADIF = LOW;
+                    // convert ADC values to char for display
+                    update_rs232_line_status();
+                }
+
+                PIE1bits.ADIE = 1; // allow ADC interrupts
 
                 StartTimer(TMR_DISPLAY, DDELAY);
                 if (V.vterm_switch++ > (SWITCH_VTERM)) {

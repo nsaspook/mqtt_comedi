@@ -39285,7 +39285,7 @@ unsigned char __t1rd16on(void);
 unsigned char __t3rd16on(void);
 # 34 "/opt/microchip/xc8/v3.00/pic/include/xc.h" 2 3
 # 55 "mcc_generated_files/pin_manager.h" 2
-# 602 "mcc_generated_files/pin_manager.h"
+# 614 "mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
 # 50 "mcc_generated_files/pin_manager.c" 2
 
@@ -39326,7 +39326,7 @@ void PIN_MANAGER_Initialize(void)
 
 
     WPUD = 0x09;
-    WPUE = 0x00;
+    WPUE = 0x04;
     WPUB = 0x21;
     WPUA = 0x00;
     WPUC = 0x01;

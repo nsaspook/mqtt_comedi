@@ -59,6 +59,7 @@
 #include "dma1.h"
 #include "tmr2.h"
 #include "tmr0.h"
+#include "dac1.h"
 #include "memory.h"
 #include "uart2.h"
 #include "uart1.h"

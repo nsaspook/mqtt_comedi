@@ -98,7 +98,7 @@
 
 #include "slaveo.h"
 
-volatile struct spi_link_type_ss spi_comm_ss = {false, false, false, false, false, false, false};
+volatile struct spi_link_type_ss spi_comm_ss = {false, false, false, false, false, false, false, false};
 volatile struct spi_stat_type_ss spi_stat_ss = {0}, report_stat_ss = {0};
 
 static volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0;
@@ -117,6 +117,7 @@ void slaveo_adc_isr(void) {
         SPI2TXB = ADRESL; // stuff with lower 8 bits
     }
     spi_comm_ss.ADC_DATA = true; // so the transmit buffer will not be overwritten
+    spi_comm_ss.ADC_RUN = false;
 }
 
 void check_slaveo(void) /* SPI Master/Slave loopback */ {
@@ -134,6 +135,7 @@ void init_slaveo(void) {
     SPI2_SetTxInterruptHandler(slaveo_tx_isr);
     TMR0_StartTimer();
     TMR0_SetInterruptHandler(slaveo_time_isr);
+    ADC_SetADIInterruptHandler(slaveo_adc_isr);
 }
 
 void slaveo_rx_isr(void) {
@@ -170,6 +172,7 @@ void slaveo_rx_isr(void) {
         }
 
         if (command == CMD_ADC_GO) { // Found a GO for a conversion command
+            spi_comm_ss.ADC_RUN = true;
             spi_stat_ss.adc_count++;
             spi_comm_ss.ADC_DATA = false;
             if (data_in2 & ADC_SWAP_MASK) {

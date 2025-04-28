@@ -26,6 +26,7 @@ extern "C" {
         uint8_t REMOTE_LINK : 1;
         uint8_t REMOTE_DATA_DONE : 1;
         uint8_t LOW_BITS : 1;
+        uint8_t ADC_RUN : 1;
     };
 
     struct spi_stat_type_ss {

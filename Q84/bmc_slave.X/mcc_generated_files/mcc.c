@@ -58,6 +58,7 @@ void SYSTEM_Initialize(void)
     TMR2_Initialize();
     TMR0_Initialize();
     TMR6_Initialize();
+    DAC1_Initialize();
     TMR5_Initialize();
     UART1_Initialize();
     UART2_Initialize();
