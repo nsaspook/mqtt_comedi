@@ -14459,9 +14459,9 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <classes>
 <class number="0" name="default" width="0" drill="0">
 </class>
-<class number="1" name="icurrent" width="0.3048" drill="0">
+<class number="1" name="icurrent" width="0.254" drill="0">
 </class>
-<class number="2" name="ocurrent" width="0.254" drill="0">
+<class number="2" name="ocurrent" width="0.2032" drill="0">
 </class>
 </classes>
 <parts>
@@ -14662,6 +14662,11 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <part name="VSS69" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="C28" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-US" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="0.1uf"/>
 <part name="VSS70" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
+<part name="R28" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="400 ohm"/>
+<part name="R29" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="400 ohm"/>
+<part name="TIC_DIGITAL" library="con-lstb" library_urn="urn:adsk.eagle:library:162" deviceset="MA04-1" device="" package3d_urn="urn:adsk.eagle:package:8337/1" value="TIC_DIGITAL"/>
+<part name="VSS71" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
+<part name="VDD23" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VDD" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -15354,6 +15359,24 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <instance part="VSS70" gate="G$1" x="-40.64" y="-132.08" smashed="yes">
 <attribute name="VALUE" x="-38.1" y="-137.16" size="1.778" layer="96" rot="R180"/>
 </instance>
+<instance part="R28" gate="G$1" x="30.48" y="-91.44" smashed="yes" rot="R180">
+<attribute name="NAME" x="34.29" y="-92.9386" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="39.37" y="-93.218" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="R29" gate="G$1" x="30.48" y="-88.9" smashed="yes" rot="R180">
+<attribute name="NAME" x="29.21" y="-85.3186" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="34.29" y="-85.598" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="TIC_DIGITAL" gate="1" x="114.3" y="-121.92" smashed="yes">
+<attribute name="VALUE" x="113.03" y="-132.08" size="1.778" layer="96"/>
+<attribute name="NAME" x="113.03" y="-116.078" size="1.778" layer="95"/>
+</instance>
+<instance part="VSS71" gate="G$1" x="121.92" y="-129.54" smashed="yes">
+<attribute name="VALUE" x="124.46" y="-134.62" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="VDD23" gate="G$1" x="121.92" y="-116.84" smashed="yes">
+<attribute name="VALUE" x="124.46" y="-111.76" size="1.778" layer="96" rot="R180"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -15557,6 +15580,11 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <pinref part="R26" gate="G$1" pin="1"/>
 <pinref part="VDD22" gate="G$1" pin="VDD"/>
 <junction x="38.1" y="-111.76"/>
+</segment>
+<segment>
+<pinref part="TIC_DIGITAL" gate="1" pin="4"/>
+<pinref part="VDD23" gate="G$1" pin="VDD"/>
+<junction x="121.92" y="-119.38"/>
 </segment>
 </net>
 <net name="VSS" class="1">
@@ -16011,6 +16039,11 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <pinref part="C28" gate="G$1" pin="2"/>
 <pinref part="VSS70" gate="G$1" pin="VSS"/>
 <junction x="-40.64" y="-129.54"/>
+</segment>
+<segment>
+<pinref part="TIC_DIGITAL" gate="1" pin="1"/>
+<pinref part="VSS71" gate="G$1" pin="VSS"/>
+<junction x="121.92" y="-127"/>
 </segment>
 </net>
 <net name="CPU_CLK" class="0">
@@ -17946,6 +17979,58 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <junction x="96.52" y="-119.38"/>
 <junction x="76.2" y="-119.38"/>
 <label x="81.28" y="-119.38" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="N$41" class="0">
+<segment>
+<pinref part="IC7" gate="G$1" pin="IN8"/>
+<wire x1="5.08" y1="-91.44" x2="25.4" y2="-91.44" width="0.1524" layer="91"/>
+<junction x="5.08" y="-91.44"/>
+<junction x="25.4" y="-91.44"/>
+<pinref part="R28" gate="G$1" pin="2"/>
+<label x="10.16" y="-91.44" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="N$42" class="0">
+<segment>
+<pinref part="IC7" gate="G$1" pin="IN9"/>
+<wire x1="5.08" y1="-88.9" x2="25.4" y2="-88.9" width="0.1524" layer="91"/>
+<junction x="5.08" y="-88.9"/>
+<junction x="25.4" y="-88.9"/>
+<pinref part="R29" gate="G$1" pin="2"/>
+<label x="10.16" y="-88.9" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="IN8D" class="0">
+<segment>
+<pinref part="R28" gate="G$1" pin="1"/>
+<wire x1="35.56" y1="-91.44" x2="48.26" y2="-91.44" width="0.1524" layer="91"/>
+<junction x="35.56" y="-91.44"/>
+<junction x="48.26" y="-91.44"/>
+<label x="38.1" y="-91.44" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="121.92" y1="-124.46" x2="127" y2="-124.46" width="0.1524" layer="91"/>
+<pinref part="TIC_DIGITAL" gate="1" pin="2"/>
+<junction x="127" y="-124.46"/>
+<junction x="121.92" y="-124.46"/>
+<label x="132.08" y="-124.46" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="IN9D" class="0">
+<segment>
+<pinref part="R29" gate="G$1" pin="1"/>
+<wire x1="35.56" y1="-88.9" x2="48.26" y2="-88.9" width="0.1524" layer="91"/>
+<junction x="35.56" y="-88.9"/>
+<junction x="48.26" y="-88.9"/>
+<label x="40.64" y="-88.9" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="121.92" y1="-121.92" x2="127" y2="-121.92" width="0.1524" layer="91"/>
+<pinref part="TIC_DIGITAL" gate="1" pin="3"/>
+<junction x="127" y="-121.92"/>
+<junction x="121.92" y="-121.92"/>
+<label x="132.08" y="-121.92" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>

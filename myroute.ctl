@@ -8,16 +8,10 @@
 
   tpViaShape      = round
 
-  ; Extended parameters:
-
-  AutoGrid        = 1
-  Efforts         = 2
-  TopRouterVariant  = 1
-
   ; Preferred Directions:
 
   PrefDir.1       = *
-  PrefDir.2       = a
+  PrefDir.2       = *
   PrefDir.3       = 0
   PrefDir.4       = 0
   PrefDir.5       = 0
@@ -30,13 +24,13 @@
   PrefDir.12      = 0
   PrefDir.13      = 0
   PrefDir.14      = 0
-  PrefDir.15      = a
+  PrefDir.15      = *
   PrefDir.16      = *
 
   Active          =    1
   ; Cost Factors:
 
-  cfVia           =   20
+  cfVia           =   90
   cfNonPref       =    5
   cfChangeDir     =    2
   cfOrthStep      =    2
@@ -49,7 +43,7 @@
   cfBusImpact     =    0
   cfHugging       =    3
   cfAvoid         =    4
-  cfPolygon       =   10
+  cfPolygon       =   50
 
   cfBase.1        =    0
   cfBase.2        =    0
@@ -83,6 +77,7 @@
 
   Active          =    1
   cfVia           =    8
+  cfPolygon       =   10
   cfBase.2        =    1
   cfBase.15       =    1
 
@@ -95,6 +90,7 @@
   cfNonPref       =    4
   cfBusImpact     =    4
   cfHugging       =    0
+  cfPolygon       =   10
   mnVias          =    0
 
 [Route]
@@ -109,8 +105,6 @@
 
   Active          =    1
   cfVia           =   99
-  cfBase.2        =    1
-  cfBase.15       =    1
 
 [Optimize2]
 
@@ -135,11 +129,6 @@
   @Optimize4
 
   Active          =    1
-  cfBonusStep     =    0
-  cfMalusStep     =    0
-  cfPadImpact     =    0
-  cfSmdImpact     =    0
-  cfHugging       =    0
 
 [Optimize6]
 
@@ -152,10 +141,40 @@
   @Optimize6
 
   Active          =    1
+  cfBonusStep     =    0
+  cfMalusStep     =    0
+  cfPadImpact     =    0
+  cfSmdImpact     =    0
+  cfHugging       =    0
 
 [Optimize8]
 
   @Optimize7
+
+  Active          =    1
+
+[Optimize9]
+
+  @Optimize8
+
+  Active          =    1
+  cfPolygon       =   10
+
+[Optimize10]
+
+  @Optimize9
+
+  Active          =    1
+
+[Optimize11]
+
+  @Optimize10
+
+  Active          =    1
+
+[Optimize12]
+
+  @Optimize11
 
   Active          =    1
 
