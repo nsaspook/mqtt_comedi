@@ -201,7 +201,7 @@ void send_spi2_data_dma(const uint8_t strPtr)
 	spi_link.txbuf[2] = strPtr;
 	spi_link.txbuf[3] = strPtr;
 	DMAnCON0bits.EN = 0; /* disable DMA to change source count */
-	DMA1_SetSourceSize(4);
+	DMA1_SetSourceSize(1);
 	DMA1_SetDestinationSize(1);
 	DMAnCON0bits.EN = 1; /* enable DMA */
 	start_lcd(); // start DMA transfer

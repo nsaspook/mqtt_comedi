@@ -31,8 +31,8 @@ extern "C" {
 #define CMD_DUMMY_CFG	0b01000000	// stuff config data in SPI buffer
 #define CMD_DEAD        0b11111111      // This is usually a bad response
 
-#define CMD_DUMMY	0b01101110	/* 14 channels 2.048 but only 13 are ADC */
-#define NUM_AI_CHAN     14
+#define CMD_DUMMY	0b01100111	/* 7 channels 4.096 */
+#define NUM_AI_CHAN     7
 
 #define	HI_NIBBLE	0xf0
 #define	LO_NIBBLE	0x0f
@@ -60,7 +60,7 @@ extern "C" {
 	};
 
 	struct serial_buffer_type_ss {
-		volatile uint8_t data[4], tx_buffer;
+		volatile uint8_t data[4], tx_buffer, adcl, adch;
 		volatile uint32_t place;
 	};
 
@@ -68,6 +68,7 @@ extern "C" {
 	extern volatile struct serial_buffer_type_ss serial_buffer_ss;
 	extern volatile struct spi_stat_type_ss spi_stat_ss, report_stat_ss;
 	extern volatile uint8_t data_in2, adc_buffer_ptr, adc_channel, channel, upper;
+	extern volatile uint16_t adc_buffer[64], adc_data_in;
 
 	void check_slaveo(void);
 	void init_slaveo(void);

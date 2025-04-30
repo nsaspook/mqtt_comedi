@@ -250,6 +250,7 @@ volatile struct serial_buffer_type_ss serial_buffer_ss = {
 };
 
 volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0, channel = 0, upper;
+volatile uint16_t adc_buffer[64] = {0}, adc_data_in = 0;
 
 volatile uint16_t tickCount[TMR_COUNT] = {0};
 volatile uint8_t mode_sw = false, faker;
@@ -459,7 +460,7 @@ void main(void)
 			case SEQ_STATE_DONE:
 				V.s_state = SEQ_STATE_INIT;
 				if (++looper == 0) {
-					test_slave();
+					//test_slave();
 				}
 				break;
 			case SEQ_STATE_ERROR:
@@ -525,7 +526,7 @@ void main(void)
 				}
 				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%lu %lu %lu %lu  0x%.2X 0x%.2X                  ", spi_stat_ss.adc_count, spi_stat_ss.comm_count, spi_stat_ss.slave_int_count, spi_stat_ss.idle_count,
 					serial_buffer_ss.data[0], serial_buffer_ss.data[2]);
-				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%d %d %d %d %d %d %d %d             ", spi_comm_ss.ADC_DATA, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.LOW_BITS,
+				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%d %d %d %d %d %d %d %d %d             ", adc_buffer[channel], spi_comm_ss.ADC_DATA, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.LOW_BITS,
 					spi_comm_ss.REMOTE_DATA_DONE, spi_comm_ss.REMOTE_LINK, spi_comm_ss.SPI_DATA, spi_comm_ss.ADC_RUN);
 				snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "RS232 Volts %d                  ", V.vterm_switch);
 
@@ -582,6 +583,7 @@ void main(void)
 				 */
 				if (!V.set_sequ) {
 					refresh_lcd();
+					test_slave();
 				}
 			}
 		}
@@ -650,7 +652,37 @@ int8_t test_slave(void)
 	CS_SetHigh();
 	SPI2_ReadByte();
 	SPI2_ReadByte();
-	send_spi2_data_dma(CMD_DUMMY_CFG);
+	send_spi2_data_dma(CMD_ADC_GO | ADC_SWAP_MASK | 4);
+	//send_spi2_data_dma(CMD_ADC_GO | 4);
+	wait_lcd_done();
+	ret = SPI1_ReadByte();
+
+	wait_lcd_done();
+	SPI2CON0bits.EN = 1;
+	CS_SetHigh();
+	SPI2_ReadByte();
+	SPI2_ReadByte();
+	send_spi2_data_dma(CMD_ADC_DATA);
+	wait_lcd_done();
+	ret = SPI1_ReadByte();
+
+
+	wait_lcd_done();
+	SPI2CON0bits.EN = 1;
+	CS_SetHigh();
+	SPI2_ReadByte();
+	SPI2_ReadByte();
+	send_spi2_data_dma(CMD_ADC_DATA);
+	wait_lcd_done();
+	ret = SPI1_ReadByte();
+
+
+	wait_lcd_done();
+	SPI2CON0bits.EN = 1;
+	CS_SetHigh();
+	SPI2_ReadByte();
+	SPI2_ReadByte();
+	send_spi2_data_dma(CMD_ZERO);
 	wait_lcd_done();
 	ret = SPI1_ReadByte();
 	serial_buffer_ss.data[2] = ret;

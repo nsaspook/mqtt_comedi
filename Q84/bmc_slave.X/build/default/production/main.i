@@ -41226,7 +41226,7 @@ time_t time(time_t *);
  };
 
  struct serial_buffer_type_ss {
-  volatile uint8_t data[4], tx_buffer;
+  volatile uint8_t data[4], tx_buffer, adcl, adch;
   volatile uint32_t place;
  };
 
@@ -41234,6 +41234,7 @@ time_t time(time_t *);
  extern volatile struct serial_buffer_type_ss serial_buffer_ss;
  extern volatile struct spi_stat_type_ss spi_stat_ss, report_stat_ss;
  extern volatile uint8_t data_in2, adc_buffer_ptr, adc_channel, channel, upper;
+ extern volatile uint16_t adc_buffer[64], adc_data_in;
 
  void check_slaveo(void);
  void init_slaveo(void);
@@ -41246,7 +41247,7 @@ time_t time(time_t *);
 # 176 "main.c" 2
 # 185 "main.c"
 extern struct spi_link_type spi_link;
-const char *build_date = "Apr 29 2025", *build_time = "19:43:13";
+const char *build_date = "Apr 29 2025", *build_time = "22:04:33";
 
 const char * GEM_TEXT [] = {
  "DISABLE",
@@ -41313,6 +41314,7 @@ volatile struct serial_buffer_type_ss serial_buffer_ss = {
 };
 
 volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0, channel = 0, upper;
+volatile uint16_t adc_buffer[64] = {0}, adc_data_in = 0;
 
 volatile uint16_t tickCount[TMR_COUNT] = {0};
 volatile uint8_t mode_sw = 0, faker;
@@ -41522,7 +41524,7 @@ void main(void)
    case SEQ_STATE_DONE:
     V.s_state = SEQ_STATE_INIT;
     if (++looper == 0) {
-     test_slave();
+
     }
     break;
    case SEQ_STATE_ERROR:
@@ -41588,7 +41590,7 @@ void main(void)
     }
     snprintf(get_vterm_ptr(1, 0), 20 +1, "%lu %lu %lu %lu  0x%.2X 0x%.2X                  ", spi_stat_ss.adc_count, spi_stat_ss.comm_count, spi_stat_ss.slave_int_count, spi_stat_ss.idle_count,
      serial_buffer_ss.data[0], serial_buffer_ss.data[2]);
-    snprintf(get_vterm_ptr(2, 0), 20 +1, "%d %d %d %d %d %d %d %d             ", spi_comm_ss.ADC_DATA, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.LOW_BITS,
+    snprintf(get_vterm_ptr(2, 0), 20 +1, "%d %d %d %d %d %d %d %d %d             ", adc_buffer[channel], spi_comm_ss.ADC_DATA, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.LOW_BITS,
      spi_comm_ss.REMOTE_DATA_DONE, spi_comm_ss.REMOTE_LINK, spi_comm_ss.SPI_DATA, spi_comm_ss.ADC_RUN);
     snprintf(get_vterm_ptr(3, 0), 20 +1, "RS232 Volts %d                  ", V.vterm_switch);
 
@@ -41645,6 +41647,7 @@ void main(void)
 
     if (!V.set_sequ) {
      refresh_lcd();
+     test_slave();
     }
    }
   }
@@ -41713,7 +41716,37 @@ int8_t test_slave(void)
  do { LATDbits.LATD3 = 1; } while(0);
  SPI2_ReadByte();
  SPI2_ReadByte();
- send_spi2_data_dma(0b01000000);
+ send_spi2_data_dma(0b10000000 | 0b01000000 | 4);
+
+ wait_lcd_done();
+ ret = SPI1_ReadByte();
+
+ wait_lcd_done();
+ SPI2CON0bits.EN = 1;
+ do { LATDbits.LATD3 = 1; } while(0);
+ SPI2_ReadByte();
+ SPI2_ReadByte();
+ send_spi2_data_dma(0b11000000);
+ wait_lcd_done();
+ ret = SPI1_ReadByte();
+
+
+ wait_lcd_done();
+ SPI2CON0bits.EN = 1;
+ do { LATDbits.LATD3 = 1; } while(0);
+ SPI2_ReadByte();
+ SPI2_ReadByte();
+ send_spi2_data_dma(0b11000000);
+ wait_lcd_done();
+ ret = SPI1_ReadByte();
+
+
+ wait_lcd_done();
+ SPI2CON0bits.EN = 1;
+ do { LATDbits.LATD3 = 1; } while(0);
+ SPI2_ReadByte();
+ SPI2_ReadByte();
+ send_spi2_data_dma(0b00000000);
  wait_lcd_done();
  ret = SPI1_ReadByte();
  serial_buffer_ss.data[2] = ret;

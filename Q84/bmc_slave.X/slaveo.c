@@ -64,18 +64,15 @@
 
 #include "slaveo.h"
 
-static volatile uint16_t adc_buffer[64] = {0}, adc_data_in = 0;
+
 
 void slaveo_adc_isr(void)
 {
 	PIR1bits.ADIF = LOW;
 	spi_stat_ss.adc_count++; // just keep count
 	adc_buffer[channel] = (uint16_t) ADRES; // data is ready but must be written to the SPI buffer before a master command is received 
-	if (upper) { /* same as CMD_ZERO */
-		SPI2TXB = ADRESH;
-	} else {
-		SPI2TXB = ADRESL; // stuff with lower 8 bits
-	}
+	serial_buffer_ss.adch = ADRESH;
+	serial_buffer_ss.adcl = ADRESL;
 	spi_comm_ss.ADC_DATA = true; // so the transmit buffer will not be overwritten
 	spi_comm_ss.ADC_RUN = false;
 }
@@ -97,8 +94,6 @@ void init_slaveo(void)
 	TMR0_SetInterruptHandler(slaveo_time_isr);
 	SPI2_SetInterruptHandler(slaveo_spi_isr);
 	SPI2_SetTxInterruptHandler(slaveo_tx_isr);
-	SPI2INTE = 0;
-	PIE5bits.SPI2RXIE = 1;
 	SPI2CON0bits.EN = 0;
 	ADC_SetADIInterruptHandler(slaveo_adc_isr);
 }
@@ -106,9 +101,8 @@ void init_slaveo(void)
 void slaveo_rx_isr(void)
 {
 	uint8_t link, command, char_rxtmp, char_txtmp, cmd_dummy = CMD_DUMMY;
-	/* we only get this when the master  wants data, the slave never generates one */
+	/* we only get this when the master wants data, the slave never generates one */
 	// SPI port #2 SLAVE receiver
-	//	SPI2INTF = 0;
 	spi_stat_ss.slave_int_count++;
 	data_in2 = SPI2RXB;
 	serial_buffer_ss.data[0] = data_in2;
@@ -142,7 +136,7 @@ void slaveo_rx_isr(void)
 		TMR0_Reload();
 	}
 
-	if (command == CMD_ADC_GO) { // Found a GO for a conversion command
+	if ((command & ~ADC_SWAP_MASK) == CMD_ADC_GO) { // Found a GO for a conversion command
 		spi_comm_ss.ADC_RUN = true;
 		spi_stat_ss.adc_count++;
 		spi_comm_ss.ADC_DATA = false;
@@ -152,11 +146,10 @@ void slaveo_rx_isr(void)
 			upper = false;
 		}
 		channel = data_in2 & LO_NIBBLE;
-		if (channel >= 5) channel += 6; // skip missing channels
-		if (channel == 12 || channel > 19) channel = 0; // invalid so set to 0
+		if (channel > 7) channel = 0; // invalid so set to 0
 
 		if (!ADCON0bits.GO) {
-			ADCON0 = ((channel << 2) & 0b00111100) | (ADCON0 & 0b11000011);
+			ADPCH = channel;
 			adc_buffer[channel] = 0xffff; // fill with bits
 			ADCON0bits.GO = HIGH; // start a conversion
 		} else {
@@ -175,30 +168,21 @@ void slaveo_rx_isr(void)
 		MLED_Toggle();
 	}
 
-	if ((data_in2 == CMD_ZERO) && spi_comm_ss.ADC_DATA) { // don't sent unless we have valid data
+	if (data_in2 == CMD_ZERO) { // don't sent unless we have valid data
 		spi_stat_ss.last_slave_int_count = spi_stat_ss.slave_int_count;
 		if (upper) {
-			SPI2TXB = ADRESH;
-			serial_buffer_ss.tx_buffer = ADRESH;
+			serial_buffer_ss.tx_buffer = serial_buffer_ss.adch;
 		} else {
-			SPI2TXB = ADRESL; // stuff with lower 8 bits
-			serial_buffer_ss.tx_buffer = ADRESL;
+			serial_buffer_ss.tx_buffer = serial_buffer_ss.adcl;
 		}
 	}
 	if (data_in2 == CMD_ADC_DATA) {
-		if (spi_comm_ss.ADC_DATA) {
-			if (upper) {
-				SPI2TXB = ADRESL; // stuff with lower 8 bits
-				serial_buffer_ss.tx_buffer = ADRESL;
-			} else {
-				SPI2TXB = ADRESH;
-				serial_buffer_ss.tx_buffer = ADRESH;
-			}
-			spi_stat_ss.last_slave_int_count = spi_stat_ss.slave_int_count;
+		if (upper) {
+			serial_buffer_ss.tx_buffer = serial_buffer_ss.adcl;
 		} else {
-			SPI2TXB = CMD_DUMMY;
-			serial_buffer_ss.tx_buffer = CMD_DUMMY;
+			serial_buffer_ss.tx_buffer = serial_buffer_ss.adch;
 		}
+		spi_stat_ss.last_slave_int_count = spi_stat_ss.slave_int_count;
 	}
 	if (command == CMD_CHAR_RX) {
 		SPI2TXB = char_rxtmp; // Send current RX buffer contents
