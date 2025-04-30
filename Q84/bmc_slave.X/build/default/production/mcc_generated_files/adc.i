@@ -39427,7 +39427,7 @@ void ADC_Initialize(void)
     ADACT = 0x00;
 
 
-    ADCLK = 0x07;
+    ADCLK = 0x1F;
 
 
     ADCP = 0x00;
@@ -39481,13 +39481,13 @@ void ADC_Initialize(void)
     ADPCH = 0x01;
 
 
-    ADACQL = 0x80;
+    ADACQL = 0x01;
 
 
     ADACQH = 0x00;
 
 
-    ADCAP = 0x00;
+    ADCAP = 0x1F;
 
 
     ADPREL = 0x00;

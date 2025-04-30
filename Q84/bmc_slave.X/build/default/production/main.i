@@ -40533,6 +40533,14 @@ extern void (*TMR0_InterruptHandler)(void);
 # 328 "./mcc_generated_files/tmr0.h"
 void TMR0_DefaultInterruptHandler(void);
 # 62 "./mcc_generated_files/mcc.h" 2
+# 1 "./mcc_generated_files/dac1.h" 1
+# 93 "./mcc_generated_files/dac1.h"
+void DAC1_Initialize(void);
+# 129 "./mcc_generated_files/dac1.h"
+void DAC1_SetOutput(uint8_t inputData);
+# 163 "./mcc_generated_files/dac1.h"
+uint8_t DAC1_GetOutput(void);
+# 63 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/memory.h" 1
 # 81 "./mcc_generated_files/memory.h"
 uint8_t FLASH_ReadByte(uint32_t flashAddr);
@@ -40552,14 +40560,6 @@ void FLASH_EraseBlock(uint32_t flashAddr);
 void DATAEE_WriteByte(uint16_t bAdd, uint8_t bData);
 # 225 "./mcc_generated_files/memory.h"
 uint8_t DATAEE_ReadByte(uint16_t bAdd);
-# 63 "./mcc_generated_files/mcc.h" 2
-# 1 "./mcc_generated_files/dac1.h" 1
-# 93 "./mcc_generated_files/dac1.h"
-void DAC1_Initialize(void);
-# 129 "./mcc_generated_files/dac1.h"
-void DAC1_SetOutput(uint8_t inputData);
-# 163 "./mcc_generated_files/dac1.h"
-uint8_t DAC1_GetOutput(void);
 # 64 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/uart2.h" 1
 # 74 "./mcc_generated_files/uart2.h"
@@ -41043,7 +41043,7 @@ struct tm *getdate (const char *);
  _Bool init_display(void);
  void no_dma_set_lcd(void);
  void send_lcd_data_dma(const uint8_t);
- void send_spi2_data_dma(const uint8_t strPtr);
+ void send_spi2_data_dma(const uint8_t, const uint8_t, const uint8_t, const uint8_t);
  void send_lcd_cmd_dma(const uint8_t);
  void send_lcd_pos_dma(const uint8_t);
  void start_lcd(void);
@@ -41204,7 +41204,7 @@ time_t time(time_t *);
  void update_rs232_line_status(void);
 # 175 "main.c" 2
 # 1 "./slaveo.h" 1
-# 42 "./slaveo.h"
+# 44 "./slaveo.h"
  struct spi_link_type_ss {
   uint8_t SPI_DATA : 1;
   uint8_t ADC_DATA : 1;
@@ -41247,7 +41247,7 @@ time_t time(time_t *);
 # 176 "main.c" 2
 # 185 "main.c"
 extern struct spi_link_type spi_link;
-const char *build_date = "Apr 29 2025", *build_time = "22:04:33";
+const char *build_date = "Apr 30 2025", *build_time = "09:20:46";
 
 const char * GEM_TEXT [] = {
  "DISABLE",
@@ -41708,48 +41708,23 @@ char spinners(uint8_t shape, const uint8_t reset)
 
 int8_t test_slave(void)
 {
- uint8_t ret = 0;
+ static uint8_t ret = 0, i = 0;
 
  do { LATBbits.LATB3 = 1; } while(0);
  wait_lcd_done();
- SPI2CON0bits.EN = 1;
  do { LATDbits.LATD3 = 1; } while(0);
- SPI2_ReadByte();
- SPI2_ReadByte();
- send_spi2_data_dma(0b10000000 | 0b01000000 | 4);
+ SPI2CON0bits.EN = 1;
 
+ wait_lcd_done();
+ if (i++ == 4) {
+  send_spi2_data_dma(0b10000000 + 2, 0b11000000, 0b11000000, 2);
+  send_spi2_data_dma(0b00000000, 0b00000000, 0b00000000, 2);
+  send_spi2_data_dma(0b00000000, 0b00000000, 0b00000000, 2);
+  i = 0;
+ }
  wait_lcd_done();
  ret = SPI1_ReadByte();
-
- wait_lcd_done();
- SPI2CON0bits.EN = 1;
- do { LATDbits.LATD3 = 1; } while(0);
- SPI2_ReadByte();
- SPI2_ReadByte();
- send_spi2_data_dma(0b11000000);
- wait_lcd_done();
- ret = SPI1_ReadByte();
-
-
- wait_lcd_done();
- SPI2CON0bits.EN = 1;
- do { LATDbits.LATD3 = 1; } while(0);
- SPI2_ReadByte();
- SPI2_ReadByte();
- send_spi2_data_dma(0b11000000);
- wait_lcd_done();
- ret = SPI1_ReadByte();
-
-
- wait_lcd_done();
- SPI2CON0bits.EN = 1;
- do { LATDbits.LATD3 = 1; } while(0);
- SPI2_ReadByte();
- SPI2_ReadByte();
- send_spi2_data_dma(0b00000000);
- wait_lcd_done();
- ret = SPI1_ReadByte();
- serial_buffer_ss.data[2] = ret;
+ serial_buffer_ss.data[3] = ret;
  SPI2CON0bits.EN = 0;
 
  return(int8_t) ret;

@@ -103,7 +103,7 @@ extern "C" {
 	bool init_display(void);
 	void no_dma_set_lcd(void);
 	void send_lcd_data_dma(const uint8_t);
-	void send_spi2_data_dma(const uint8_t strPtr);
+	void send_spi2_data_dma(const uint8_t, const uint8_t, const uint8_t, const uint8_t);
 	void send_lcd_cmd_dma(const uint8_t);
 	void send_lcd_pos_dma(const uint8_t);
 	void start_lcd(void);

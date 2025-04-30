@@ -190,21 +190,23 @@ void send_lcd_data_dma(const uint8_t strPtr)
 	start_lcd(); // start DMA transfer
 }
 
-void send_spi2_data_dma(const uint8_t strPtr)
+void send_spi2_data_dma(const uint8_t strPtr0, const uint8_t strPtr1, const uint8_t strPtr2, const uint8_t len)
 {
 	E_TRACE;
-	wait_lcd_done();
-	wait_lcd_set();
-	SS_CS_SetLow(); /* SPI select display */
-	spi_link.txbuf[0] = strPtr;
-	spi_link.txbuf[1] = strPtr;
-	spi_link.txbuf[2] = strPtr;
-	spi_link.txbuf[3] = strPtr;
-	DMAnCON0bits.EN = 0; /* disable DMA to change source count */
-	DMA1_SetSourceSize(1);
-	DMA1_SetDestinationSize(1);
-	DMAnCON0bits.EN = 1; /* enable DMA */
-	start_lcd(); // start DMA transfer
+	for (int i = 0; i < len; i++) {
+		wait_lcd_done();
+		wait_lcd_set();
+		SS_CS_SetLow(); /* SPI select display */
+		if (i == 0) spi_link.txbuf[0] = strPtr0;
+		if (i == 1) spi_link.txbuf[0] = strPtr1;
+		if (i == 2) spi_link.txbuf[0] = strPtr2;
+		DMAnCON0bits.EN = 0; /* disable DMA to change source count */
+		DMA1_SetSourceSize(1);
+		DMA1_SetDestinationSize(1);
+		DMAnCON0bits.EN = 1; /* enable DMA */
+		start_lcd(); // start DMA transfer
+		wait_lcd_done();
+	}
 }
 
 /*

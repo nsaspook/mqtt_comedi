@@ -17,6 +17,8 @@ extern "C" {
 #include <stdbool.h>
 #include "mconfig.h"
 #include "mcc_generated_files/tmr0.h"
+#include "eadog.h"
+#include "timers.h"
 
 	/* PIC Slave commands */
 #define CMD_ZERO        0b00000000

@@ -61,10 +61,9 @@
 #define YES		HIGH
 
 #include <xc.h>
+#include <pic18f47q84.h>
 
 #include "slaveo.h"
-
-
 
 void slaveo_adc_isr(void)
 {
@@ -73,6 +72,11 @@ void slaveo_adc_isr(void)
 	adc_buffer[channel] = (uint16_t) ADRES; // data is ready but must be written to the SPI buffer before a master command is received 
 	serial_buffer_ss.adch = ADRESH;
 	serial_buffer_ss.adcl = ADRESL;
+	if (upper) {
+		serial_buffer_ss.tx_buffer = serial_buffer_ss.adch;
+	} else {
+		serial_buffer_ss.tx_buffer = serial_buffer_ss.adcl;
+	}
 	spi_comm_ss.ADC_DATA = true; // so the transmit buffer will not be overwritten
 	spi_comm_ss.ADC_RUN = false;
 }
@@ -89,6 +93,7 @@ void check_slaveo(void) /* SPI Master/Slave loopback */
  */
 void init_slaveo(void)
 {
+	uint8_t val = 0xff;
 	SPI2_SetRxInterruptHandler(slaveo_rx_isr);
 	TMR0_StartTimer();
 	TMR0_SetInterruptHandler(slaveo_time_isr);
@@ -96,6 +101,20 @@ void init_slaveo(void)
 	SPI2_SetTxInterruptHandler(slaveo_tx_isr);
 	SPI2CON0bits.EN = 0;
 	ADC_SetADIInterruptHandler(slaveo_adc_isr);
+
+	wait_lcd_done();
+	CS_SetHigh();
+	SPI2CON0bits.EN = 1;
+	WaitMs(900);
+	send_spi2_data_dma(CMD_DUMMY_CFG, CMD_DUMMY_CFG, CMD_DUMMY_CFG, 3);
+	wait_lcd_done();
+	WaitMs(100);
+	while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
+		val = SPI2RXB;
+	}
+	serial_buffer_ss.data[2] = val;
+	SPI2STATUSbits.RXRE = 0;
+	SPI2CON0bits.EN = 0;
 }
 
 void slaveo_rx_isr(void)
@@ -117,9 +136,9 @@ void slaveo_rx_isr(void)
 
 	if (command == CMD_CHAR_GO) {
 		char_txtmp = (data_in2 & LO_NIBBLE); // read lower 4 bits
-		SPI2TXB = char_rxtmp; // send current receive data to master
 		serial_buffer_ss.tx_buffer = char_rxtmp;
 		spi_stat_ss.char_count++;
+		MLED_Toggle();
 	}
 
 	if (command == CMD_CHAR_DATA) { // get upper 4 bits send bits and send the data
@@ -127,7 +146,6 @@ void slaveo_rx_isr(void)
 			UART1_Write(((data_in2 & LO_NIBBLE) << 4) | char_txtmp);
 		} else {
 		}
-		SPI2TXB = cmd_dummy; // send rx status first, the next SPI transfer will contain it.
 		serial_buffer_ss.tx_buffer = cmd_dummy;
 		cmd_dummy = CMD_DUMMY; // clear rx bit
 		spi_comm_ss.CHAR_DATA = false;
@@ -136,10 +154,9 @@ void slaveo_rx_isr(void)
 		TMR0_Reload();
 	}
 
-	if ((command & ~ADC_SWAP_MASK) == CMD_ADC_GO) { // Found a GO for a conversion command
+	if (command == CMD_ADC_GO) { // Found a GO for a conversion command
 		spi_comm_ss.ADC_RUN = true;
 		spi_stat_ss.adc_count++;
-		spi_comm_ss.ADC_DATA = false;
 		if (data_in2 & ADC_SWAP_MASK) {
 			upper = true;
 		} else {
@@ -154,47 +171,54 @@ void slaveo_rx_isr(void)
 			ADCON0bits.GO = HIGH; // start a conversion
 		} else {
 			ADCON0bits.GO = LOW; // stop a conversion
-			SPI2TXB = CMD_DUMMY; // Tell master  we are here
-			serial_buffer_ss.tx_buffer = CMD_DUMMY;
 			spi_stat_ss.adc_error_count++;
 		}
 		spi_comm_ss.REMOTE_LINK = true;
 		link = true;
+		while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
+			data_in2 = SPI2RXB;
+		}
+		SPI2STATUSbits.RXRE = 0;
 		TMR0_Reload();
 	}
 	if (data_in2 == CMD_DUMMY_CFG) {
-		SPI2TXB = CMD_DUMMY; // Tell master  we are here
 		serial_buffer_ss.tx_buffer = CMD_DUMMY;
-		MLED_Toggle();
+		spi_comm_ss.ADC_DATA = false;
 	}
 
 	if (data_in2 == CMD_ZERO) { // don't sent unless we have valid data
 		spi_stat_ss.last_slave_int_count = spi_stat_ss.slave_int_count;
-		if (upper) {
-			serial_buffer_ss.tx_buffer = serial_buffer_ss.adch;
-		} else {
-			serial_buffer_ss.tx_buffer = serial_buffer_ss.adcl;
+		if (spi_comm_ss.ADC_DATA == true) {
+			upper = true;
 		}
 	}
+
 	if (data_in2 == CMD_ADC_DATA) {
-		if (upper) {
-			serial_buffer_ss.tx_buffer = serial_buffer_ss.adcl;
-		} else {
-			serial_buffer_ss.tx_buffer = serial_buffer_ss.adch;
-		}
 		spi_stat_ss.last_slave_int_count = spi_stat_ss.slave_int_count;
+		if (spi_comm_ss.ADC_DATA == true) {
+			upper = false;
+		}
 	}
+
 	if (command == CMD_CHAR_RX) {
-		SPI2TXB = char_rxtmp; // Send current RX buffer contents
 		serial_buffer_ss.tx_buffer = char_rxtmp;
 		cmd_dummy = CMD_DUMMY; // clear rx bit
 	}
+
 }
 
 void slaveo_tx_isr(void)
 {
+	if (spi_comm_ss.ADC_DATA == false) {
+		SPI2TXB = serial_buffer_ss.tx_buffer;
+	} else {
+		if (upper) {
+			SPI2TXB = serial_buffer_ss.adcl;
+		} else {
+			SPI2TXB = serial_buffer_ss.adch;
+		}
+	}
 	MLED_Toggle();
-	SPI2TXB = serial_buffer_ss.tx_buffer;
 }
 
 void slaveo_spi_isr(void)

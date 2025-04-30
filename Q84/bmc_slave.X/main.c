@@ -644,48 +644,23 @@ char spinners(uint8_t shape, const uint8_t reset)
 
 int8_t test_slave(void)
 {
-	uint8_t ret = 0;
+	static uint8_t ret = 0, i = 0;
 
 	DLED_SetHigh();
 	wait_lcd_done();
-	SPI2CON0bits.EN = 1;
 	CS_SetHigh();
-	SPI2_ReadByte();
-	SPI2_ReadByte();
-	send_spi2_data_dma(CMD_ADC_GO | ADC_SWAP_MASK | 4);
-	//send_spi2_data_dma(CMD_ADC_GO | 4);
+	SPI2CON0bits.EN = 1;
+
+	wait_lcd_done();
+	if (i++ == 4) {
+		send_spi2_data_dma(CMD_ADC_GO + 2, CMD_ADC_DATA, CMD_ADC_DATA, 2);
+		send_spi2_data_dma(CMD_ZERO, CMD_ZERO, CMD_ZERO, 2);
+		send_spi2_data_dma(CMD_ZERO, CMD_ZERO, CMD_ZERO, 2);
+		i = 0;
+	}
 	wait_lcd_done();
 	ret = SPI1_ReadByte();
-
-	wait_lcd_done();
-	SPI2CON0bits.EN = 1;
-	CS_SetHigh();
-	SPI2_ReadByte();
-	SPI2_ReadByte();
-	send_spi2_data_dma(CMD_ADC_DATA);
-	wait_lcd_done();
-	ret = SPI1_ReadByte();
-
-
-	wait_lcd_done();
-	SPI2CON0bits.EN = 1;
-	CS_SetHigh();
-	SPI2_ReadByte();
-	SPI2_ReadByte();
-	send_spi2_data_dma(CMD_ADC_DATA);
-	wait_lcd_done();
-	ret = SPI1_ReadByte();
-
-
-	wait_lcd_done();
-	SPI2CON0bits.EN = 1;
-	CS_SetHigh();
-	SPI2_ReadByte();
-	SPI2_ReadByte();
-	send_spi2_data_dma(CMD_ZERO);
-	wait_lcd_done();
-	ret = SPI1_ReadByte();
-	serial_buffer_ss.data[2] = ret;
+	serial_buffer_ss.data[3] = ret;
 	SPI2CON0bits.EN = 0;
 
 	return(int8_t) ret;

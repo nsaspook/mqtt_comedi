@@ -39974,7 +39974,7 @@ void IOCBF6_DefaultInterruptHandler(void);
  _Bool init_display(void);
  void no_dma_set_lcd(void);
  void send_lcd_data_dma(const uint8_t);
- void send_spi2_data_dma(const uint8_t strPtr);
+ void send_spi2_data_dma(const uint8_t, const uint8_t, const uint8_t, const uint8_t);
  void send_lcd_cmd_dma(const uint8_t);
  void send_lcd_pos_dma(const uint8_t);
  void start_lcd(void);
@@ -40760,6 +40760,14 @@ extern void (*TMR0_InterruptHandler)(void);
 # 328 "./mcc_generated_files/tmr0.h"
 void TMR0_DefaultInterruptHandler(void);
 # 62 "./mcc_generated_files/mcc.h" 2
+# 1 "./mcc_generated_files/dac1.h" 1
+# 93 "./mcc_generated_files/dac1.h"
+void DAC1_Initialize(void);
+# 129 "./mcc_generated_files/dac1.h"
+void DAC1_SetOutput(uint8_t inputData);
+# 163 "./mcc_generated_files/dac1.h"
+uint8_t DAC1_GetOutput(void);
+# 63 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/memory.h" 1
 # 81 "./mcc_generated_files/memory.h"
 uint8_t FLASH_ReadByte(uint32_t flashAddr);
@@ -40779,14 +40787,6 @@ void FLASH_EraseBlock(uint32_t flashAddr);
 void DATAEE_WriteByte(uint16_t bAdd, uint8_t bData);
 # 225 "./mcc_generated_files/memory.h"
 uint8_t DATAEE_ReadByte(uint16_t bAdd);
-# 63 "./mcc_generated_files/mcc.h" 2
-# 1 "./mcc_generated_files/dac1.h" 1
-# 93 "./mcc_generated_files/dac1.h"
-void DAC1_Initialize(void);
-# 129 "./mcc_generated_files/dac1.h"
-void DAC1_SetOutput(uint8_t inputData);
-# 163 "./mcc_generated_files/dac1.h"
-uint8_t DAC1_GetOutput(void);
 # 64 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/uart2.h" 1
 # 74 "./mcc_generated_files/uart2.h"
@@ -41080,21 +41080,23 @@ void send_lcd_data_dma(const uint8_t strPtr)
  start_lcd();
 }
 
-void send_spi2_data_dma(const uint8_t strPtr)
+void send_spi2_data_dma(const uint8_t strPtr0, const uint8_t strPtr1, const uint8_t strPtr2, const uint8_t len)
 {
  do { LATDbits.LATD7 = ~LATDbits.LATD7; } while(0);
- wait_lcd_done();
- wait_lcd_set();
- do { LATEbits.LATE2 = 0; } while(0);
- spi_link.txbuf[0] = strPtr;
- spi_link.txbuf[1] = strPtr;
- spi_link.txbuf[2] = strPtr;
- spi_link.txbuf[3] = strPtr;
- DMAnCON0bits.EN = 0;
- DMA1_SetSourceSize(1);
- DMA1_SetDestinationSize(1);
- DMAnCON0bits.EN = 1;
- start_lcd();
+ for (int i = 0; i < len; i++) {
+  wait_lcd_done();
+  wait_lcd_set();
+  do { LATEbits.LATE2 = 0; } while(0);
+  if (i == 0) spi_link.txbuf[0] = strPtr0;
+  if (i == 1) spi_link.txbuf[0] = strPtr1;
+  if (i == 2) spi_link.txbuf[0] = strPtr2;
+  DMAnCON0bits.EN = 0;
+  DMA1_SetSourceSize(1);
+  DMA1_SetDestinationSize(1);
+  DMAnCON0bits.EN = 1;
+  start_lcd();
+  wait_lcd_done();
+ }
 }
 
 
@@ -41328,7 +41330,7 @@ void check_lcd_dim(const _Bool dim)
    send_lcd_cmd_dma(0x53);
    send_lcd_data_dma(8);
   }
-# 450 "eadog.c"
+# 452 "eadog.c"
  }
 }
 
@@ -41345,7 +41347,7 @@ void set_lcd_dim(const _Bool dim)
    send_lcd_cmd_dma(0x53);
    send_lcd_data_dma(8);
   }
-# 475 "eadog.c"
+# 477 "eadog.c"
  }
 
  if (B.dim_delay++ >= 6) {
