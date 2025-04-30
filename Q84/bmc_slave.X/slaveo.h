@@ -18,42 +18,65 @@ extern "C" {
 #include "mconfig.h"
 #include "mcc_generated_files/tmr0.h"
 
-    struct spi_link_type_ss { // internal state table
-        uint8_t SPI_DATA : 1;
-        uint8_t ADC_DATA : 1;
-        uint8_t PORT_DATA : 1;
-        uint8_t CHAR_DATA : 1;
-        uint8_t REMOTE_LINK : 1;
-        uint8_t REMOTE_DATA_DONE : 1;
-        uint8_t LOW_BITS : 1;
-        uint8_t ADC_RUN : 1;
-    };
+	/* PIC Slave commands */
+#define CMD_ZERO        0b00000000
+#define CMD_ADC_GO	0b10000000
+#define CMD_PORT_GO	0b10100000	// send data LO_NIBBLE to port buffer
+#define CMD_CHAR_GO	0b10110000	// send data LO_NIBBLE to TX buffer
+#define CMD_ADC_DATA	0b11000000
+#define CMD_PORT_DATA	0b11010000	// send data HI_NIBBLE to port buffer ->PORT and return input PORT data in received SPI data byte
+#define CMD_CHAR_DATA	0b11100000	// send data HI_NIBBLE to TX buffer and return RX buffer in received SPI data byte
+#define CMD_XXXX	0b11110000	//
+#define CMD_CHAR_RX	0b00010000	// Get RX buffer
+#define CMD_DUMMY_CFG	0b01000000	// stuff config data in SPI buffer
+#define CMD_DEAD        0b11111111      // This is usually a bad response
 
-    struct spi_stat_type_ss {
-        volatile uint32_t adc_count, adc_error_count,
-        port_count, port_error_count,
-        char_count, char_error_count,
-        slave_int_count, last_slave_int_count,
-        comm_count, idle_count;
-        volatile uint8_t comm_ok;
-    };
+#define CMD_DUMMY	0b01101110	/* 14 channels 2.048 but only 13 are ADC */
+#define NUM_AI_CHAN     14
 
-    struct serial_bounce_buffer_type_ss {
-        uint8_t data[2];
-        uint32_t place;
-    };
+#define	HI_NIBBLE	0xf0
+#define	LO_NIBBLE	0x0f
+#define	ADC_SWAP_MASK	0b01000000
+#define UART_DUMMY_MASK	0b01000000
 
-    extern volatile struct spi_link_type_ss spi_comm_ss;
-    extern volatile struct spi_stat_type_ss spi_stat_ss, report_stat_ss;
+	struct spi_link_type_ss { // internal state table
+		uint8_t SPI_DATA : 1;
+		uint8_t ADC_DATA : 1;
+		uint8_t PORT_DATA : 1;
+		uint8_t CHAR_DATA : 1;
+		uint8_t REMOTE_LINK : 1;
+		uint8_t REMOTE_DATA_DONE : 1;
+		uint8_t LOW_BITS : 1;
+		uint8_t ADC_RUN : 1;
+	};
 
-    void check_slaveo(void);
-    void init_slaveo(void);
+	struct spi_stat_type_ss {
+		volatile uint32_t adc_count, adc_error_count,
+		port_count, port_error_count,
+		char_count, char_error_count,
+		slave_int_count, last_slave_int_count,
+		comm_count, idle_count;
+		volatile uint8_t comm_ok;
+	};
 
-    void slaveo_rx_isr(void);
-    void slaveo_tx_isr(void);
-    void slaveo_spi_isr(void);
-    void slaveo_adc_isr(void);
-    void slaveo_time_isr(void);
+	struct serial_buffer_type_ss {
+		volatile uint8_t data[4], tx_buffer;
+		volatile uint32_t place;
+	};
+
+	extern volatile struct spi_link_type_ss spi_comm_ss;
+	extern volatile struct serial_buffer_type_ss serial_buffer_ss;
+	extern volatile struct spi_stat_type_ss spi_stat_ss, report_stat_ss;
+	extern volatile uint8_t data_in2, adc_buffer_ptr, adc_channel, channel, upper;
+
+	void check_slaveo(void);
+	void init_slaveo(void);
+
+	void slaveo_rx_isr(void);
+	void slaveo_tx_isr(void);
+	void slaveo_spi_isr(void);
+	void slaveo_adc_isr(void);
+	void slaveo_time_isr(void);
 
 #ifdef	__cplusplus
 }

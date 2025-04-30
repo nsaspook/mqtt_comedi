@@ -40533,14 +40533,6 @@ extern void (*TMR0_InterruptHandler)(void);
 # 328 "./mcc_generated_files/tmr0.h"
 void TMR0_DefaultInterruptHandler(void);
 # 62 "./mcc_generated_files/mcc.h" 2
-# 1 "./mcc_generated_files/dac1.h" 1
-# 93 "./mcc_generated_files/dac1.h"
-void DAC1_Initialize(void);
-# 129 "./mcc_generated_files/dac1.h"
-void DAC1_SetOutput(uint8_t inputData);
-# 163 "./mcc_generated_files/dac1.h"
-uint8_t DAC1_GetOutput(void);
-# 63 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/memory.h" 1
 # 81 "./mcc_generated_files/memory.h"
 uint8_t FLASH_ReadByte(uint32_t flashAddr);
@@ -40560,6 +40552,14 @@ void FLASH_EraseBlock(uint32_t flashAddr);
 void DATAEE_WriteByte(uint16_t bAdd, uint8_t bData);
 # 225 "./mcc_generated_files/memory.h"
 uint8_t DATAEE_ReadByte(uint16_t bAdd);
+# 63 "./mcc_generated_files/mcc.h" 2
+# 1 "./mcc_generated_files/dac1.h" 1
+# 93 "./mcc_generated_files/dac1.h"
+void DAC1_Initialize(void);
+# 129 "./mcc_generated_files/dac1.h"
+void DAC1_SetOutput(uint8_t inputData);
+# 163 "./mcc_generated_files/dac1.h"
+uint8_t DAC1_GetOutput(void);
 # 64 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/uart2.h" 1
 # 74 "./mcc_generated_files/uart2.h"
@@ -41043,6 +41043,7 @@ struct tm *getdate (const char *);
  _Bool init_display(void);
  void no_dma_set_lcd(void);
  void send_lcd_data_dma(const uint8_t);
+ void send_spi2_data_dma(const uint8_t strPtr);
  void send_lcd_cmd_dma(const uint8_t);
  void send_lcd_pos_dma(const uint8_t);
  void start_lcd(void);
@@ -41203,480 +41204,520 @@ time_t time(time_t *);
  void update_rs232_line_status(void);
 # 175 "main.c" 2
 # 1 "./slaveo.h" 1
-# 21 "./slaveo.h"
-    struct spi_link_type_ss {
-        uint8_t SPI_DATA : 1;
-        uint8_t ADC_DATA : 1;
-        uint8_t PORT_DATA : 1;
-        uint8_t CHAR_DATA : 1;
-        uint8_t REMOTE_LINK : 1;
-        uint8_t REMOTE_DATA_DONE : 1;
-        uint8_t LOW_BITS : 1;
-        uint8_t ADC_RUN : 1;
-    };
+# 42 "./slaveo.h"
+ struct spi_link_type_ss {
+  uint8_t SPI_DATA : 1;
+  uint8_t ADC_DATA : 1;
+  uint8_t PORT_DATA : 1;
+  uint8_t CHAR_DATA : 1;
+  uint8_t REMOTE_LINK : 1;
+  uint8_t REMOTE_DATA_DONE : 1;
+  uint8_t LOW_BITS : 1;
+  uint8_t ADC_RUN : 1;
+ };
 
-    struct spi_stat_type_ss {
-        volatile uint32_t adc_count, adc_error_count,
-        port_count, port_error_count,
-        char_count, char_error_count,
-        slave_int_count, last_slave_int_count,
-        comm_count, idle_count;
-        volatile uint8_t comm_ok;
-    };
+ struct spi_stat_type_ss {
+  volatile uint32_t adc_count, adc_error_count,
+  port_count, port_error_count,
+  char_count, char_error_count,
+  slave_int_count, last_slave_int_count,
+  comm_count, idle_count;
+  volatile uint8_t comm_ok;
+ };
 
-    struct serial_bounce_buffer_type_ss {
-        uint8_t data[2];
-        uint32_t place;
-    };
+ struct serial_buffer_type_ss {
+  volatile uint8_t data[4], tx_buffer;
+  volatile uint32_t place;
+ };
 
-    extern volatile struct spi_link_type_ss spi_comm_ss;
-    extern volatile struct spi_stat_type_ss spi_stat_ss, report_stat_ss;
+ extern volatile struct spi_link_type_ss spi_comm_ss;
+ extern volatile struct serial_buffer_type_ss serial_buffer_ss;
+ extern volatile struct spi_stat_type_ss spi_stat_ss, report_stat_ss;
+ extern volatile uint8_t data_in2, adc_buffer_ptr, adc_channel, channel, upper;
 
-    void check_slaveo(void);
-    void init_slaveo(void);
+ void check_slaveo(void);
+ void init_slaveo(void);
 
-    void slaveo_rx_isr(void);
-    void slaveo_tx_isr(void);
-    void slaveo_spi_isr(void);
-    void slaveo_adc_isr(void);
-    void slaveo_time_isr(void);
+ void slaveo_rx_isr(void);
+ void slaveo_tx_isr(void);
+ void slaveo_spi_isr(void);
+ void slaveo_adc_isr(void);
+ void slaveo_time_isr(void);
 # 176 "main.c" 2
 # 185 "main.c"
 extern struct spi_link_type spi_link;
-const char *build_date = "Apr 28 2025", *build_time = "15:48:57";
+const char *build_date = "Apr 29 2025", *build_time = "19:43:13";
 
 const char * GEM_TEXT [] = {
-    "DISABLE",
-    "COMM   ",
-    "OFFLINE",
-    "ONLINE ",
-    "REMOTE ",
-    "ERROR  "
+ "DISABLE",
+ "COMM   ",
+ "OFFLINE",
+ "ONLINE ",
+ "REMOTE ",
+ "ERROR  "
 };
 
 V_data V = {
-    .error = LINK_ERROR_NONE,
-    .abort = LINK_ERROR_NONE,
-    .msg_error = MSG_ERROR_RESET,
-    .uart = 1,
-    .g_state = GEM_STATE_DISABLE,
-    .e_types = GEM_GENERIC,
-    .ticker = TICKER_ZERO,
-    .checksum_error = 0,
-    .all_errors = 0,
-    .timer_error = 0,
-    .response.info = DIS_STR,
-    .response.log_num = 0,
-    .response.log_seq = 0,
-    .response.host_display_ack = 0,
-    .queue = 0,
-    .stack = 0,
-    .sid = 1,
-    .help_id = 0,
-    .ping_count = 0,
-    .sequences = 0,
-    .set_sequ = 0,
-    .euart = 2,
-    .tx_total = 0,
-    .rx_total = 0,
-    .failed_receive = RECV_ERROR_NONE,
-    .failed_send = SEND_ERROR_NONE,
-    .vterm = 0,
-    .tx_rs232 = 'O',
-    .rx_rs232 = 'O',
-    .debug = 1,
-    .rerror = 0,
-    .help = 0,
-    .secs_value = 0,
-    .cmd_value = 0,
-    .utc_cmd_value = 0,
-    .utc_ticks = 1721693000,
-    .log_s6f11 = 1,
-    .log_abort = 0,
-    .log_char = 0,
+ .error = LINK_ERROR_NONE,
+ .abort = LINK_ERROR_NONE,
+ .msg_error = MSG_ERROR_RESET,
+ .uart = 1,
+ .g_state = GEM_STATE_DISABLE,
+ .e_types = GEM_GENERIC,
+ .ticker = TICKER_ZERO,
+ .checksum_error = 0,
+ .all_errors = 0,
+ .timer_error = 0,
+ .response.info = DIS_STR,
+ .response.log_num = 0,
+ .response.log_seq = 0,
+ .response.host_display_ack = 0,
+ .queue = 0,
+ .stack = 0,
+ .sid = 1,
+ .help_id = 0,
+ .ping_count = 0,
+ .sequences = 0,
+ .set_sequ = 0,
+ .euart = 2,
+ .tx_total = 0,
+ .rx_total = 0,
+ .failed_receive = RECV_ERROR_NONE,
+ .failed_send = SEND_ERROR_NONE,
+ .vterm = 0,
+ .tx_rs232 = 'O',
+ .rx_rs232 = 'O',
+ .debug = 1,
+ .rerror = 0,
+ .help = 0,
+ .secs_value = 0,
+ .cmd_value = 0,
+ .utc_cmd_value = 0,
+ .utc_ticks = 1721693000,
+ .log_s6f11 = 1,
+ .log_abort = 0,
+ .log_char = 0,
 };
 
 B_type B = {
-    .one_sec_flag = 0,
-    .display_update = 0,
-    .dim_delay = 6,
+ .one_sec_flag = 0,
+ .display_update = 0,
+ .dim_delay = 6,
 };
+
+volatile struct spi_link_type_ss spi_comm_ss = {0, 0, 0, 0, 0, 0, 0, 0};
+volatile struct spi_stat_type_ss spi_stat_ss = {0}, report_stat_ss = {0};
+volatile struct serial_buffer_type_ss serial_buffer_ss = {
+ .tx_buffer = 0x81,
+ .data[0] = 0x57,
+};
+
+volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0, channel = 0, upper;
 
 volatile uint16_t tickCount[TMR_COUNT] = {0};
 volatile uint8_t mode_sw = 0, faker;
 void onesec_io(void);
+int8_t test_slave(void);
 
 
 
 
 
-void main(void) {
-    UI_STATES mode;
-    char * s, * speed_text;
-    uint8_t temp_lock = 0;
+void main(void)
+{
+ UI_STATES mode;
+ char * s, * speed_text;
+ uint8_t temp_lock = 0;
+ static uint8_t looper = 0;
+
+ SPI2STATUSbits.SPI2CLRBF;
 
 
-    SYSTEM_Initialize();
-
-
-    (INTCON0bits.GIEH = 1);
-
-
-    (INTCON0bits.GIEL = 1);
-
-    mconfig_init();
+ SYSTEM_Initialize();
 
 
 
-    V.ui_state = UI_STATE_INIT;
-    mode = UI_STATE_HOST;
-
-    TMR2_StartTimer();
-    TMR5_SetInterruptHandler(onesec_io);
-    TMR5_StartTimer();
-    TMR6_StartTimer();
-    ADC_SelectContext(CONTEXT_1);
+ (INTCON0bits.GIEH = 1);
 
 
+ (INTCON0bits.GIEL = 1);
+
+ mconfig_init();
+
+ V.ui_state = UI_STATE_INIT;
+ mode = UI_STATE_HOST;
+
+ TMR2_StartTimer();
+ TMR5_SetInterruptHandler(onesec_io);
+ TMR5_StartTimer();
+ TMR6_StartTimer();
+ ADC_SelectContext(CONTEXT_1);
 
 
 
 
-    V.speed_spin = DATAEE_ReadByte(0x03F1);
-    V.uart_speed_fast = DATAEE_ReadByte(0x03F0);
-    DATAEE_WriteByte(0x03F1, temp_lock);
-    DATAEE_WriteByte(0x03F0, V.uart_speed_fast + 1);
 
-    if (V.uart_speed_fast % 2 == 0) {
-        speed_text = "Locked 9600bps";
+
+ V.speed_spin = DATAEE_ReadByte(0x03F1);
+ V.uart_speed_fast = DATAEE_ReadByte(0x03F0);
+ DATAEE_WriteByte(0x03F1, temp_lock);
+ DATAEE_WriteByte(0x03F0, V.uart_speed_fast + 1);
+
+ if (V.uart_speed_fast % 2 == 0) {
+  speed_text = "Locked 9600bps";
+ } else {
+  speed_text = "Locked 19200bps";
+ }
+
+ do { LATBbits.LATB1 = 1; } while(0);
+ do { LATBbits.LATB2 = 1; } while(0);
+ do { LATBbits.LATB3 = 1; } while(0);
+ WaitMs(3000);
+ do { LATBbits.LATB2 = 0; } while(0);
+ do { LATBbits.LATB1 = 0; } while(0);
+ do { LATBbits.LATB3 = 0; } while(0);
+ temp_lock = 1;
+ if (V.speed_spin) {
+  DATAEE_WriteByte(0x03F1, temp_lock);
+ }
+ DATAEE_WriteByte(0x03F0, V.uart_speed_fast);
+
+ if (V.speed_spin) {
+
+
+
+  V.uart_speed_fast = DATAEE_ReadByte(0x03F0);
+  if (V.uart_speed_fast == 0xFF) {
+   V.uart_speed_fast = 0;
+   DATAEE_WriteByte(0x03F0, V.uart_speed_fast);
+  }
+  if (V.uart_speed_fast % 2 == 0) {
+   UART2_Initialize19200();
+   UART1_Initialize19200();
+   speed_text = "19200bps";
+  } else {
+   UART2_Initialize();
+   UART1_Initialize();
+   speed_text = "9600bps";
+  }
+
+
+
+  DATAEE_WriteByte(0x03F0, ++V.uart_speed_fast);
+  DATAEE_WriteByte(0x03F1, V.speed_spin);
+ } else {
+  V.uart_speed_fast = DATAEE_ReadByte(0x03F0);
+  if (V.uart_speed_fast % 2 == 0) {
+   UART2_Initialize();
+   UART1_Initialize();
+  } else {
+   UART2_Initialize19200();
+   UART1_Initialize19200();
+  }
+ }
+
+ init_slaveo();
+
+
+
+ while (1) {
+  do { LATDbits.LATD5 = ~LATDbits.LATD5; } while(0);
+  if (!faker++) {
+  }
+
+
+
+
+  logging_cmds();
+
+
+
+
+  switch (V.ui_state) {
+  case UI_STATE_INIT:
+   init_display();
+   eaDogM_WriteCommand(0b00001100);
+
+   set_vterm(V.vterm);
+   snprintf(get_vterm_ptr(0, 0), 20 +1, "Port %s             ", speed_text);
+   snprintf(get_vterm_ptr(1, 0), 20 +1, "Port %s             ", speed_text);
+   snprintf(get_vterm_ptr(2, 0), 20 +1, "Port %s             ", speed_text);
+   snprintf(get_vterm_ptr(3, 0), 20 +1, "Port %s             ", speed_text);
+   refresh_lcd();
+   WaitMs(1000);
+
+   V.ui_state = mode;
+   V.s_state = SEQ_STATE_INIT;
+   srand(1957);
+   set_vterm(V.vterm);
+   snprintf(V.info, 63, " Terminal Info               ");
+   snprintf(get_vterm_ptr(0, 0), 20 +1, " OPI DAQ         %u   ", V.uart_speed_fast & 0x01);
+   snprintf(get_vterm_ptr(1, 0), 20 +1, " Version %s           ", "V0.01");
+   snprintf(get_vterm_ptr(2, 0), 20 +1, " NSASPOOK             ");
+   snprintf(get_vterm_ptr(3, 0), 20 +1, " %s                   ", (char *) build_date);
+   snprintf(get_vterm_ptr(0, 1), 20 +1, " INFO                 ");
+   snprintf(get_vterm_ptr(1, 1), 20 +1, " Version %s           ", "V0.01");
+   snprintf(get_vterm_ptr(2, 1), 20 +1, " VTERM INFO           ");
+   snprintf(get_vterm_ptr(3, 1), 20 +1, " %s                   ", (char *) build_date);
+   snprintf(get_vterm_ptr(0, 3), 20 +1, " HELP Build %s        ", "V0.01");
+   snprintf(get_vterm_ptr(1, 3), 20 +1, " Version %s           ", "V0.01");
+   snprintf(get_vterm_ptr(2, 3), 20 +1, " VTERM HELP           ");
+   snprintf(get_vterm_ptr(3, 3), 20 +1, " %s                   ", (char *) build_date);
+   snprintf(get_vterm_ptr(0, 2), 20 +1, " DEBUG                ");
+   snprintf(get_vterm_ptr(1, 2), 20 +1, " Version %s           ", "V0.01");
+   snprintf(get_vterm_ptr(2, 2), 20 +1, " VTERM DEBUG          ");
+   snprintf(get_vterm_ptr(3, 2), 20 +1, " %s                   ", (char *) build_date);
+   refresh_lcd();
+   WaitMs(3000);
+   StartTimer(TMR_DISPLAY, 100);
+   StartTimer(TMR_SEQ, 10000);
+   StartTimer(TMR_INFO, 3000);
+   StartTimer(TMR_FLIPPER, 1500);
+   StartTimer(TMR_HELPDIS, 3000);
+   StartTimer(TMR_SEQ, 10000);
+   StartTimer(TMR_HELP, 3000);
+   break;
+  case UI_STATE_HOST:
+   switch (V.s_state) {
+   case SEQ_STATE_INIT:
+    V.r_l_state = LINK_STATE_IDLE;
+    V.t_l_state = LINK_STATE_IDLE;
+    V.s_state = SEQ_STATE_RX;
+    if ((V.error == LINK_ERROR_NONE) && (V.abort == LINK_ERROR_NONE)) {
+     if (V.debug) {
+     } else {
+     }
+    }
+    break;
+   case SEQ_STATE_RX:
+
+
+
+    V.s_state = SEQ_STATE_TRIGGER;
+    if (V.r_l_state == LINK_STATE_ERROR)
+     V.s_state = SEQ_STATE_ERROR;
+    break;
+   case SEQ_STATE_TX:
+
+
+
+    V.s_state = SEQ_STATE_RX;
+    if (V.t_l_state == LINK_STATE_ERROR)
+     V.s_state = SEQ_STATE_ERROR;
+    break;
+   case SEQ_STATE_TRIGGER:
+    set_display_info(DIS_STR);
+    s = get_vterm_ptr(0, 0);
+    if (V.queue) {
+     V.r_l_state = LINK_STATE_IDLE;
+     V.t_l_state = LINK_STATE_IDLE;
+     V.s_state = SEQ_STATE_TX;
     } else {
-        speed_text = "Locked 19200bps";
+     V.s_state = SEQ_STATE_DONE;
     }
 
-    do { LATBbits.LATB1 = 1; } while(0);
-    do { LATBbits.LATB2 = 1; } while(0);
-    do { LATBbits.LATB3 = 1; } while(0);
+    s[20 +1] = 0;
+    s[19] = spinners(3, 0);
+    break;
+   case SEQ_STATE_DONE:
+    V.s_state = SEQ_STATE_INIT;
+    if (++looper == 0) {
+     test_slave();
+    }
+    break;
+   case SEQ_STATE_ERROR:
+   default:
+    V.s_state = SEQ_STATE_INIT;
+    refresh_lcd();
     WaitMs(3000);
-    do { LATBbits.LATB2 = 0; } while(0);
-    do { LATBbits.LATB1 = 0; } while(0);
-    do { LATBbits.LATB3 = 0; } while(0);
-    temp_lock = 1;
-    if (V.speed_spin) {
-        DATAEE_WriteByte(0x03F1, temp_lock);
+    break;
+   }
+   if ((V.error == LINK_ERROR_NONE) && (V.abort == LINK_ERROR_NONE)) {
+    if (TimerDone(TMR_DISPLAY)) {
     }
-    DATAEE_WriteByte(0x03F0, V.uart_speed_fast);
-
-    if (V.speed_spin) {
-
-
-
-        V.uart_speed_fast = DATAEE_ReadByte(0x03F0);
-        if (V.uart_speed_fast == 0xFF) {
-            V.uart_speed_fast = 0;
-            DATAEE_WriteByte(0x03F0, V.uart_speed_fast);
-        }
-        if (V.uart_speed_fast % 2 == 0) {
-            UART2_Initialize19200();
-            UART1_Initialize19200();
-            speed_text = "19200bps";
-        } else {
-            UART2_Initialize();
-            UART1_Initialize();
-            speed_text = "9600bps";
-        }
+   }
+   break;
+  case UI_STATE_LOG:
+   switch (V.s_state) {
+   case SEQ_STATE_INIT:
+    V.m_l_state = LINK_STATE_IDLE;
+    V.s_state = SEQ_STATE_RX;
+    break;
+   case SEQ_STATE_RX:
 
 
 
-        DATAEE_WriteByte(0x03F0, ++V.uart_speed_fast);
-        DATAEE_WriteByte(0x03F1, V.speed_spin);
+    V.s_state = SEQ_STATE_TRIGGER;
+    if (V.m_l_state == LINK_STATE_ERROR)
+     V.s_state = SEQ_STATE_ERROR;
+    break;
+   case SEQ_STATE_TRIGGER:
+    V.s_state = SEQ_STATE_DONE;
+    break;
+   case SEQ_STATE_DONE:
+   case SEQ_STATE_ERROR:
+   default:
+    V.s_state = SEQ_STATE_INIT;
+    break;
+   }
+   snprintf(get_vterm_ptr(2, 0), 20 +1, "                      ");
+   break;
+  case UI_STATE_ERROR:
+  default:
+   V.ui_state = UI_STATE_INIT;
+   break;
+  }
+  if (V.ticks) {
+   if (V.failed_receive != RECV_ERROR_NONE) {
+    if (V.error == LINK_ERROR_CHECKSUM) {
+    }
+   } else {
+   }
+   if (V.failed_send != SEND_ERROR_NONE) {
+    if (V.error == LINK_ERROR_CHECKSUM) {
+    }
+   } else {
+   }
+  }
+
+  if (mode != UI_STATE_LOG) {
+   if (TimerDone(TMR_DISPLAY)) {
+    static uint8_t switcher = 1;
+    if (TimerDone(TMR_HELPDIS)) {
+     set_display_info(DIS_STR);
+    }
+    snprintf(get_vterm_ptr(1, 0), 20 +1, "%lu %lu %lu %lu  0x%.2X 0x%.2X                  ", spi_stat_ss.adc_count, spi_stat_ss.comm_count, spi_stat_ss.slave_int_count, spi_stat_ss.idle_count,
+     serial_buffer_ss.data[0], serial_buffer_ss.data[2]);
+    snprintf(get_vterm_ptr(2, 0), 20 +1, "%d %d %d %d %d %d %d %d             ", spi_comm_ss.ADC_DATA, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.LOW_BITS,
+     spi_comm_ss.REMOTE_DATA_DONE, spi_comm_ss.REMOTE_LINK, spi_comm_ss.SPI_DATA, spi_comm_ss.ADC_RUN);
+    snprintf(get_vterm_ptr(3, 0), 20 +1, "RS232 Volts %d                  ", V.vterm_switch);
+
+    PIE1bits.ADIE = 0;
+    if (!spi_comm_ss.ADC_RUN) {
+     ADC_DischargeSampleCapacitor();
+     ADC_StartConversion(channel_ANA1);
+     while (!ADC_IsConversionDone()) {
+     };
+     if (ADC_IsConversionDone()) {
+      V.v_tx_line = ADC_GetConversionResult();
+     };
+     ADC_DischargeSampleCapacitor();
+     ADC_StartConversion(channel_ANA2);
+     while (!ADC_IsConversionDone()) {
+     };
+     if (ADC_IsConversionDone()) {
+      V.v_rx_line = ADC_GetConversionResult();
+     };
+     PIR1bits.ADIF = 0;
+
+     update_rs232_line_status();
+    }
+
+    PIE1bits.ADIE = 1;
+
+    StartTimer(TMR_DISPLAY, 100);
+    if (V.vterm_switch++ > (70)) {
+     set_vterm(switcher);
+     if (V.vterm_switch > (70 + V.ticker + 32)) {
+      switcher++;
+      if ((switcher & 0x03) == 3) {
+       switcher = 1;
+      }
+      V.vterm_switch = 0;
+     }
     } else {
-        V.uart_speed_fast = DATAEE_ReadByte(0x03F0);
-        if (V.uart_speed_fast % 2 == 0) {
-            UART2_Initialize();
-            UART1_Initialize();
-        } else {
-            UART2_Initialize19200();
-            UART1_Initialize19200();
-        }
+     set_vterm(V.vterm);
     }
 
-    init_slaveo();
 
 
-
-    while (1) {
-        do { LATDbits.LATD5 = ~LATDbits.LATD5; } while(0);
-        if (!faker++) {
-        }
-
-
-
-
-        logging_cmds();
-
-
-
-
-        switch (V.ui_state) {
-            case UI_STATE_INIT:
-                init_display();
-                eaDogM_WriteCommand(0b00001100);
-
-                set_vterm(V.vterm);
-                snprintf(get_vterm_ptr(0, 0), 20 +1, "Port %s             ", speed_text);
-                snprintf(get_vterm_ptr(1, 0), 20 +1, "Port %s             ", speed_text);
-                snprintf(get_vterm_ptr(2, 0), 20 +1, "Port %s             ", speed_text);
-                snprintf(get_vterm_ptr(3, 0), 20 +1, "Port %s             ", speed_text);
-                refresh_lcd();
-                WaitMs(1000);
-
-                V.ui_state = mode;
-                V.s_state = SEQ_STATE_INIT;
-                srand(1957);
-                set_vterm(V.vterm);
-                snprintf(V.info, 63, " Terminal Info               ");
-                snprintf(get_vterm_ptr(0, 0), 20 +1, " OPI DAQ         %u   ", V.uart_speed_fast & 0x01);
-                snprintf(get_vterm_ptr(1, 0), 20 +1, " Version %s           ", "V0.01");
-                snprintf(get_vterm_ptr(2, 0), 20 +1, " NSASPOOK             ");
-                snprintf(get_vterm_ptr(3, 0), 20 +1, " %s                   ", (char *) build_date);
-                snprintf(get_vterm_ptr(0, 1), 20 +1, " INFO                 ");
-                snprintf(get_vterm_ptr(1, 1), 20 +1, " Version %s           ", "V0.01");
-                snprintf(get_vterm_ptr(2, 1), 20 +1, " VTERM INFO           ");
-                snprintf(get_vterm_ptr(3, 1), 20 +1, " %s                   ", (char *) build_date);
-                snprintf(get_vterm_ptr(0, 3), 20 +1, " HELP Build %s        ", "V0.01");
-                snprintf(get_vterm_ptr(1, 3), 20 +1, " Version %s           ", "V0.01");
-                snprintf(get_vterm_ptr(2, 3), 20 +1, " VTERM HELP           ");
-                snprintf(get_vterm_ptr(3, 3), 20 +1, " %s                   ", (char *) build_date);
-                snprintf(get_vterm_ptr(0, 2), 20 +1, " DEBUG                ");
-                snprintf(get_vterm_ptr(1, 2), 20 +1, " Version %s           ", "V0.01");
-                snprintf(get_vterm_ptr(2, 2), 20 +1, " VTERM DEBUG          ");
-                snprintf(get_vterm_ptr(3, 2), 20 +1, " %s                   ", (char *) build_date);
-                refresh_lcd();
-                WaitMs(3000);
-                StartTimer(TMR_DISPLAY, 100);
-                StartTimer(TMR_SEQ, 10000);
-                StartTimer(TMR_INFO, 3000);
-                StartTimer(TMR_FLIPPER, 1500);
-                StartTimer(TMR_HELPDIS, 3000);
-                StartTimer(TMR_SEQ, 10000);
-                StartTimer(TMR_HELP, 3000);
-                break;
-            case UI_STATE_HOST:
-                switch (V.s_state) {
-                    case SEQ_STATE_INIT:
-                        V.r_l_state = LINK_STATE_IDLE;
-                        V.t_l_state = LINK_STATE_IDLE;
-                        V.s_state = SEQ_STATE_RX;
-                        if ((V.error == LINK_ERROR_NONE) && (V.abort == LINK_ERROR_NONE)) {
-                            if (V.debug) {
-                            } else {
-                            }
-                        }
-                        break;
-                    case SEQ_STATE_RX:
-
-
-
-                        V.s_state = SEQ_STATE_TRIGGER;
-                        if (V.r_l_state == LINK_STATE_ERROR)
-                            V.s_state = SEQ_STATE_ERROR;
-                        break;
-                    case SEQ_STATE_TX:
-
-
-
-                        V.s_state = SEQ_STATE_RX;
-                        if (V.t_l_state == LINK_STATE_ERROR)
-                            V.s_state = SEQ_STATE_ERROR;
-                        break;
-                    case SEQ_STATE_TRIGGER:
-                        set_display_info(DIS_STR);
-                        s = get_vterm_ptr(0, 0);
-                        if (V.queue) {
-                            V.r_l_state = LINK_STATE_IDLE;
-                            V.t_l_state = LINK_STATE_IDLE;
-                            V.s_state = SEQ_STATE_TX;
-                        } else {
-                            V.s_state = SEQ_STATE_DONE;
-                        }
-
-                        s[20 +1] = 0;
-                        s[19] = spinners(3, 0);
-                        break;
-                    case SEQ_STATE_DONE:
-                        V.s_state = SEQ_STATE_INIT;
-                        break;
-                    case SEQ_STATE_ERROR:
-                    default:
-                        V.s_state = SEQ_STATE_INIT;
-                        refresh_lcd();
-                        WaitMs(3000);
-                        break;
-                }
-                if ((V.error == LINK_ERROR_NONE) && (V.abort == LINK_ERROR_NONE)) {
-                    if (TimerDone(TMR_DISPLAY)) {
-                    }
-                }
-                break;
-            case UI_STATE_LOG:
-                switch (V.s_state) {
-                    case SEQ_STATE_INIT:
-                        V.m_l_state = LINK_STATE_IDLE;
-                        V.s_state = SEQ_STATE_RX;
-                        break;
-                    case SEQ_STATE_RX:
-
-
-
-                        V.s_state = SEQ_STATE_TRIGGER;
-                        if (V.m_l_state == LINK_STATE_ERROR)
-                            V.s_state = SEQ_STATE_ERROR;
-                        break;
-                    case SEQ_STATE_TRIGGER:
-                        V.s_state = SEQ_STATE_DONE;
-                        break;
-                    case SEQ_STATE_DONE:
-                    case SEQ_STATE_ERROR:
-                    default:
-                        V.s_state = SEQ_STATE_INIT;
-                        break;
-                }
-                snprintf(get_vterm_ptr(2, 0), 20 +1, "                      ");
-                break;
-            case UI_STATE_ERROR:
-            default:
-                V.ui_state = UI_STATE_INIT;
-                break;
-        }
-        if (V.ticks) {
-            if (V.failed_receive != RECV_ERROR_NONE) {
-                if (V.error == LINK_ERROR_CHECKSUM) {
-                }
-            } else {
-            }
-            if (V.failed_send != SEND_ERROR_NONE) {
-                if (V.error == LINK_ERROR_CHECKSUM) {
-                }
-            } else {
-            }
-        }
-
-        if (mode != UI_STATE_LOG) {
-            if (TimerDone(TMR_DISPLAY)) {
-                static uint8_t switcher = 1;
-                if (TimerDone(TMR_HELPDIS)) {
-                    set_display_info(DIS_STR);
-                }
-                snprintf(get_vterm_ptr(1, 0), 20 +1, "%lu %lu %lu %lu                     ", spi_stat_ss.adc_count, spi_stat_ss.comm_count, spi_stat_ss.slave_int_count, spi_stat_ss.idle_count);
-                snprintf(get_vterm_ptr(2, 0), 20 +1, "%d %d %d %d %d %d %d %d             ", spi_comm_ss.ADC_DATA, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.LOW_BITS,
-                        spi_comm_ss.REMOTE_DATA_DONE, spi_comm_ss.REMOTE_LINK, spi_comm_ss.SPI_DATA, spi_comm_ss.ADC_RUN);
-                snprintf(get_vterm_ptr(3, 0), 20 +1, "RS232 Volts %d                  ", V.vterm_switch);
-
-                PIE1bits.ADIE = 0;
-                if (!spi_comm_ss.ADC_RUN) {
-                    ADC_DischargeSampleCapacitor();
-                    ADC_StartConversion(channel_ANA1);
-                    while (!ADC_IsConversionDone()) {
-                    };
-                    if (ADC_IsConversionDone()) {
-                        V.v_tx_line = ADC_GetConversionResult();
-                    };
-                    ADC_DischargeSampleCapacitor();
-                    ADC_StartConversion(channel_ANA2);
-                    while (!ADC_IsConversionDone()) {
-                    };
-                    if (ADC_IsConversionDone()) {
-                        V.v_rx_line = ADC_GetConversionResult();
-                    };
-                    PIR1bits.ADIF = 0;
-
-                    update_rs232_line_status();
-                }
-
-                PIE1bits.ADIE = 1;
-
-                StartTimer(TMR_DISPLAY, 100);
-                if (V.vterm_switch++ > (70)) {
-                    set_vterm(switcher);
-                    if (V.vterm_switch > (70 + V.ticker + 32)) {
-                        switcher++;
-                        if ((switcher & 0x03) == 3) {
-                            switcher = 1;
-                        }
-                        V.vterm_switch = 0;
-                    }
-                } else {
-                    set_vterm(V.vterm);
-                }
-
-
-
-                snprintf(get_vterm_ptr(0, 1), 20 +1, "RS232 RX %3dV:%c                       ", V.rx_volts, V.rx_rs232);
-                snprintf(get_vterm_ptr(1, 1), 20 +1, "RS232 TX %3dV:%c                       ", V.tx_volts, V.tx_rs232);
-                snprintf(get_vterm_ptr(2, 1), 20 +1, "                                       ");
-                snprintf(get_vterm_ptr(3, 1), 20 +1, "                                       ");
-                snprintf(get_vterm_ptr(0, 2), 20 +1, "                                       ");
-                snprintf(get_vterm_ptr(1, 2), 20 +1, "                                       ");
-                snprintf(get_vterm_ptr(2, 2), 20 +1, "                                       ");
-                snprintf(get_vterm_ptr(3, 2), 20 +1, "                                       ");
+    snprintf(get_vterm_ptr(0, 1), 20 +1, "RS232 RX %3dV:%c                       ", V.rx_volts, V.rx_rs232);
+    snprintf(get_vterm_ptr(1, 1), 20 +1, "RS232 TX %3dV:%c                       ", V.tx_volts, V.tx_rs232);
+    snprintf(get_vterm_ptr(2, 1), 20 +1, "                                       ");
+    snprintf(get_vterm_ptr(3, 1), 20 +1, "                                       ");
+    snprintf(get_vterm_ptr(0, 2), 20 +1, "                                       ");
+    snprintf(get_vterm_ptr(1, 2), 20 +1, "                                       ");
+    snprintf(get_vterm_ptr(2, 2), 20 +1, "                                       ");
+    snprintf(get_vterm_ptr(3, 2), 20 +1, "                                       ");
 
 
 
 
-                if (!V.set_sequ) {
-                    refresh_lcd();
-                }
-            }
-        }
-
-
-
-
-        if (V.set_sequ) {
-            if (TimerDone(TMR_HELP)) {
-                V.set_sequ = 0;
-                set_vterm(V.vterm);
-                refresh_lcd();
-            } else {
-                set_vterm(3);
-                refresh_lcd();
-            }
-        }
-
-        if (V.help && TimerDone(TMR_SEQ)) {
-            StartTimer(TMR_SEQ, 10000);
-            StartTimer(TMR_HELP, 3000);
-            V.set_sequ = 1;
-            check_help(0);
-        }
-        check_slaveo();
-        do { LATDbits.LATD5 = ~LATDbits.LATD5; } while(0);
+    if (!V.set_sequ) {
+     refresh_lcd();
     }
+   }
+  }
+
+
+
+
+  if (V.set_sequ) {
+   if (TimerDone(TMR_HELP)) {
+    V.set_sequ = 0;
+    set_vterm(V.vterm);
+    refresh_lcd();
+   } else {
+    set_vterm(3);
+    refresh_lcd();
+   }
+  }
+
+  if (V.help && TimerDone(TMR_SEQ)) {
+   StartTimer(TMR_SEQ, 10000);
+   StartTimer(TMR_HELP, 3000);
+   V.set_sequ = 1;
+   check_help(0);
+  }
+  check_slaveo();
+  do { LATDbits.LATD5 = ~LATDbits.LATD5; } while(0);
+ }
 }
 
 
 
 
-void onesec_io(void) {
-    do { LATBbits.LATB2 = ~LATBbits.LATB2; } while(0);
-    do { LATBbits.LATB1 = 0; } while(0);
-    do { LATBbits.LATB3 = 0; } while(0);
-    B.one_sec_flag = 1;
-    V.utc_ticks++;
+void onesec_io(void)
+{
+ do { LATBbits.LATB2 = ~LATBbits.LATB2; } while(0);
+ do { LATBbits.LATB1 = 0; } while(0);
+ do { LATBbits.LATB3 = 0; } while(0);
+ B.one_sec_flag = 1;
+ V.utc_ticks++;
 }
 
 
-char spinners(uint8_t shape, const uint8_t reset) {
-    static uint8_t s[6];
-    char c;
+char spinners(uint8_t shape, const uint8_t reset)
+{
+ static uint8_t s[6];
+ char c;
 
-    if (shape > (6 - 1))
-        shape = 0;
-    if (reset)
-        s[shape] = 0;
-    c = spin[shape][s[shape]];
-    if (++s[shape] >= strlen(spin[shape]))
-        s[shape] = 0;
+ if (shape > (6 - 1))
+  shape = 0;
+ if (reset)
+  s[shape] = 0;
+ c = spin[shape][s[shape]];
+ if (++s[shape] >= strlen(spin[shape]))
+  s[shape] = 0;
 
-    return c;
+ return c;
+}
+
+int8_t test_slave(void)
+{
+ uint8_t ret = 0;
+
+ do { LATBbits.LATB3 = 1; } while(0);
+ wait_lcd_done();
+ SPI2CON0bits.EN = 1;
+ do { LATDbits.LATD3 = 1; } while(0);
+ SPI2_ReadByte();
+ SPI2_ReadByte();
+ send_spi2_data_dma(0b01000000);
+ wait_lcd_done();
+ ret = SPI1_ReadByte();
+ serial_buffer_ss.data[2] = ret;
+ SPI2CON0bits.EN = 0;
+
+ return(int8_t) ret;
 }

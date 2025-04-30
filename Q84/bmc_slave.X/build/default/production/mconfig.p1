@@ -10,21 +10,21 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;./vconfig.h: 316:     typedef struct V_help {
 [s S3360 `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i ]
 [n S3360 V_help message display extrams ]
-[v F24812 `uc ~T0 @X0 -> 128 `i t ]
-[v F24811 `F24812 ~T0 @X0 -> 4 `i t ]
+[v F24814 `uc ~T0 @X0 -> 128 `i t ]
+[v F24813 `F24814 ~T0 @X0 -> 4 `i t ]
 "13 mconfig.c
 [; ;mconfig.c: 13: static D_data D = {0};
 [c E24317 0 1 2 3 4 5 6 7 8 9 10 11 .. ]
 [n E24317 . DIS_STR DIS_TERM DIS_LOG DIS_LOAD DIS_UNLOAD DIS_PUMP DIS_HELP DIS_SEQUENCE DIS_SEQUENCE_M DIS_ERR DIS_FREE DIS_CLEAR  ]
 "6
 [; ;mconfig.c: 6: typedef struct D_data {
-[s S3362 `F24811 -> 4 `i :2 `uc 1 `E24317 1 ]
+[s S3362 `F24813 -> 4 `i :2 `uc 1 `E24317 1 ]
 [n S3362 D_data lcd vterm last_info ]
 "29 /opt/microchip/xc8/v3.00/pic/include/c99/string.h
 [; ;/opt/microchip/xc8/v3.00/pic/include/c99/string.h: 29: void *memset (void *, int, size_t);
 [v _memset `(*v ~T0 @X0 0 ef3`*v`i`ui ]
-"120 ./eadog.h
-[; ;./eadog.h: 120:  void set_lcd_dim(const _Bool);
+"121 ./eadog.h
+[; ;./eadog.h: 121:  void set_lcd_dim(const _Bool);
 [v _set_lcd_dim `(v ~T0 @X0 0 ef1`Ca ]
 "53 mconfig.c
 [; ;mconfig.c: 53:  if (V.help) {
@@ -55,23 +55,23 @@ Version 4.0 HI-TECH Software Intermediate Code
 "46 ./mydisplay.h
 [; ;./mydisplay.h: 46: char * get_vterm_ptr(uint8_t, const uint8_t);
 [v _get_vterm_ptr `(*uc ~T0 @X0 0 ef2`uc`Cuc ]
-"111 ./eadog.h
-[; ;./eadog.h: 111:  void wait_lcd_done(void);
+"112 ./eadog.h
+[; ;./eadog.h: 112:  void wait_lcd_done(void);
 [v _wait_lcd_done `(v ~T0 @X0 0 ef ]
-"117
-[; ;./eadog.h: 117:  void eaDogM_WriteStringAtPos(const uint8_t, const uint8_t, char *);
+"118
+[; ;./eadog.h: 118:  void eaDogM_WriteStringAtPos(const uint8_t, const uint8_t, char *);
 [v _eaDogM_WriteStringAtPos `(v ~T0 @X0 0 ef3`Cuc`Cuc`*uc ]
 "33 ./timers.h
 [; ;./timers.h: 33: void WaitMs(uint16_t numMilliseconds);
 [v _WaitMs `(v ~T0 @X0 0 ef1`us ]
-[v F24766 `(a ~T0 @X0 1 tf1`uc ]
+[v F24768 `(a ~T0 @X0 1 tf1`uc ]
 "32
 [; ;./timers.h: 32: __attribute__((inline)) _Bool TimerDone(uint8_t timer);
-[v _TimerDone `TF24766 ~T0 @X0 0 e ]
+[v _TimerDone `TF24768 ~T0 @X0 0 e ]
 "208 mconfig.c
 [; ;mconfig.c: 208:   if ((V.response.info != DIS_STR) && TimerDone(TMR_INFO)) {
-[c E24746 0 1 2 3 4 5 6 7 8 9 10 11 12 13 .. ]
-[n E24746 APP_TIMERS TMR_INTERNAL TMR_T1 TMR_T2 TMR_T3 TMR_T4 TMR_MC_TX TMR_HBIO TMR_INFO TMR_HELP TMR_HELPDIS TMR_DISPLAY TMR_SEQ TMR_FLIPPER TMR_COUNT  ]
+[c E24748 0 1 2 3 4 5 6 7 8 9 10 11 12 13 .. ]
+[n E24748 APP_TIMERS TMR_INTERNAL TMR_T1 TMR_T2 TMR_T3 TMR_T4 TMR_MC_TX TMR_HBIO TMR_INFO TMR_HELP TMR_HELPDIS TMR_DISPLAY TMR_SEQ TMR_FLIPPER TMR_COUNT  ]
 "2037 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [s S3103 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S3103 . U2RXIE U2TXIE U2EIE U2IE TMR5IE TMR5GIE CCP2IE SCANIE ]
@@ -4938,7 +4938,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 3394 ]
 "208
 [; ;mconfig.c: 208:   if ((V.response.info != DIS_STR) && TimerDone(TMR_INFO)) {
-[e $ ! && != -> . . _V 44 8 `ui -> . `E24317 0 `ui != -> ( _TimerDone (1 -> . `E24746 7 `uc `i -> 0 `i 3397  ]
+[e $ ! && != -> . . _V 44 8 `ui -> . `E24317 0 `ui != -> ( _TimerDone (1 -> . `E24748 7 `uc `i -> 0 `i 3397  ]
 {
 "209
 [; ;mconfig.c: 209:    V.response.info = DIS_STR;
@@ -4966,10 +4966,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;mconfig.c: 221: }
 [e :UE 3390 ]
 }
-[v F24902 `(E24317 ~T0 @X0 1 tf ]
+[v F24904 `(E24317 ~T0 @X0 1 tf ]
 "223
 [; ;mconfig.c: 223: __attribute__((inline)) D_CODES display_info(void)
-[v _display_info `TF24902 ~T0 @X0 1 e ]
+[v _display_info `TF24904 ~T0 @X0 1 e ]
 "224
 [; ;mconfig.c: 224: {
 {
@@ -4983,10 +4983,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;mconfig.c: 226: }
 [e :UE 3399 ]
 }
-[v F24904 `(E24317 ~T0 @X0 1 tf ]
+[v F24906 `(E24317 ~T0 @X0 1 tf ]
 "228
 [; ;mconfig.c: 228: __attribute__((inline)) D_CODES display_help(void)
-[v _display_help `TF24904 ~T0 @X0 1 e ]
+[v _display_help `TF24906 ~T0 @X0 1 e ]
 "229
 [; ;mconfig.c: 229: {
 {
@@ -5015,17 +5015,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 [f ]
 "235
 [; ;mconfig.c: 235:  static D_CODES old_info = DIS_STR;
-[v F24907 `E24317 ~T0 @X0 1 s old_info ]
-[i F24907
+[v F24909 `E24317 ~T0 @X0 1 s old_info ]
+[i F24909
 . `E24317 0
 ]
 "237
 [; ;mconfig.c: 237:  if (TimerDone(TMR_INFO)) {
-[e $ ! != -> ( _TimerDone (1 -> . `E24746 7 `uc `i -> 0 `i 3402  ]
+[e $ ! != -> ( _TimerDone (1 -> . `E24748 7 `uc `i -> 0 `i 3402  ]
 {
 "238
 [; ;mconfig.c: 238:   old_info = V.response.info;
-[e = F24907 . . _V 44 8 ]
+[e = F24909 . . _V 44 8 ]
 "239
 [; ;mconfig.c: 239:   V.response.info = new_response_info;
 [e = . . _V 44 8 _new_response_info ]
@@ -5035,7 +5035,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 3402 ]
 "241
 [; ;mconfig.c: 241:  return old_info;
-[e ) F24907 ]
+[e ) F24909 ]
 [e $UE 3401  ]
 "242
 [; ;mconfig.c: 242: }
@@ -5056,16 +5056,16 @@ Version 4.0 HI-TECH Software Intermediate Code
 [f ]
 "246
 [; ;mconfig.c: 246:  static D_CODES old_info;
-[v F24910 `E24317 ~T0 @X0 1 s old_info ]
+[v F24912 `E24317 ~T0 @X0 1 s old_info ]
 "248
 [; ;mconfig.c: 248:  old_info = V.response.help_temp;
-[e = F24910 . . _V 44 9 ]
+[e = F24912 . . _V 44 9 ]
 "249
 [; ;mconfig.c: 249:  V.response.help_temp = new_response_info;
 [e = . . _V 44 9 _new_response_info ]
 "250
 [; ;mconfig.c: 250:  return old_info;
-[e ) F24910 ]
+[e ) F24912 ]
 [e $UE 3403  ]
 "251
 [; ;mconfig.c: 251: }
@@ -5142,13 +5142,13 @@ Version 4.0 HI-TECH Software Intermediate Code
 [f ]
 "411
 [; ;mconfig.c: 411:  static time_t current_time;
-[v F24919 `ul ~T0 @X0 1 s current_time ]
+[v F24921 `ul ~T0 @X0 1 s current_time ]
 "413
 [; ;mconfig.c: 413:  PIE8bits.TMR5IE = 0;
 [e = . . _PIE8bits 0 4 -> -> 0 `i `uc ]
 "414
 [; ;mconfig.c: 414:  current_time = V.utc_ticks;
-[e = F24919 . _V 18 ]
+[e = F24921 . _V 18 ]
 "415
 [; ;mconfig.c: 415:  PIE8bits.TMR5IE = 1;
 [e = . . _PIE8bits 0 4 -> -> 1 `i `uc ]
@@ -5158,14 +5158,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 "417
 [; ;mconfig.c: 417:   t = &current_time;
-[e = _t &U F24919 ]
+[e = _t &U F24921 ]
 "418
 [; ;mconfig.c: 418:  }
 }
 [e :U 3408 ]
 "419
 [; ;mconfig.c: 419:  return current_time;
-[e ) F24919 ]
+[e ) F24921 ]
 [e $UE 3407  ]
 "420
 [; ;mconfig.c: 420: }

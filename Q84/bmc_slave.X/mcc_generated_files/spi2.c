@@ -61,17 +61,17 @@ typedef struct {
 
 //con0 == SPIxCON0, con1 == SPIxCON1, con2 == SPIxCON2, baud == SPIxBAUD, operation == Master/Slave
 static const spi2_configuration_t spi2_configuration[] = {   
-    { 0x0, 0x20, 0x4, 0x0, 1 }
+    { 0x1, 0x24, 0x5, 0x0, 1 }
 };
 
 void SPI2_Initialize(void)
 {
-    //EN disabled; LSBF MSb first; MST bus slave; BMODE last byte; 
-    SPI2CON0 = 0x00;
-    //SMP Middle; CKE Idle to active; CKP Idle:High, Active:Low; FST disabled; SSP active high; SDIP active high; SDOP active high; 
-    SPI2CON1 = 0x20;
-    //SSET enabled; TXR not required for a transfer; RXR data is not stored in the FIFO; 
-    SPI2CON2 = 0x04;
+    //EN disabled; LSBF MSb first; MST bus slave; BMODE every byte; 
+    SPI2CON0 = 0x01;
+    //SMP Middle; CKE Idle to active; CKP Idle:High, Active:Low; FST disabled; SSP active low; SDIP active high; SDOP active high; 
+    SPI2CON1 = 0x24;
+    //SSET enabled; TXR not required for a transfer; RXR suspended if the RxFIFO is full; 
+    SPI2CON2 = 0x05;
     //CLKSEL FOSC; 
     SPI2CLK = 0x00;
     //BAUD 0; 

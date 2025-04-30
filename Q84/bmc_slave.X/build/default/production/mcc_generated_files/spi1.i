@@ -39469,7 +39469,7 @@ typedef struct {
 
 
 static const spi1_configuration_t spi1_configuration[] = {
-    { 0x83, 0x20, 0x3, 0x4, 0 }
+    { 0x83, 0x24, 0x3, 0x4, 0 }
 };
 
 void SPI1_Initialize(void)
@@ -39477,7 +39477,7 @@ void SPI1_Initialize(void)
 
     SPI1CON0 = 0x83;
 
-    SPI1CON1 = 0x20;
+    SPI1CON1 = 0x24;
 
     SPI1CON2 = 0x03;
 
