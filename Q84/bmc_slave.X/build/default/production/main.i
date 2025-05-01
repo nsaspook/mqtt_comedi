@@ -41026,6 +41026,89 @@ struct tm *getdate (const char *);
     extern void UART1_Initialize19200(void);
     extern void UART2_Initialize19200(void);
 # 44 "./eadog.h" 2
+# 1 "./slaveo.h" 1
+# 18 "./slaveo.h"
+# 1 "./mconfig.h" 1
+# 42 "./mconfig.h"
+void mconfig_init(void);
+
+void mode_lamp_dim(void);
+void mode_lamp_bright(void);
+void log_serial(uint8_t *, uint16_t);
+void logging_cmds(void);
+void set_time(const time_t);
+time_t time(time_t *);
+# 19 "./slaveo.h" 2
+
+# 1 "./eadog.h" 1
+# 21 "./slaveo.h" 2
+# 1 "./timers.h" 1
+# 11 "./timers.h"
+enum APP_TIMERS {
+ TMR_INTERNAL = 0,
+ TMR_T1,
+ TMR_T2,
+ TMR_T3,
+ TMR_T4,
+ TMR_MC_TX,
+ TMR_HBIO,
+ TMR_INFO,
+ TMR_HELP,
+ TMR_HELPDIS,
+ TMR_DISPLAY,
+ TMR_SEQ,
+ TMR_FLIPPER,
+
+
+
+ TMR_COUNT
+};
+
+__attribute__((inline)) void StartTimer(uint8_t timer, uint16_t count);
+__attribute__((inline)) _Bool TimerDone(uint8_t timer);
+void WaitMs(uint16_t numMilliseconds);
+# 22 "./slaveo.h" 2
+# 44 "./slaveo.h"
+ struct spi_link_type_ss {
+  uint8_t SPI_DATA : 1;
+  uint8_t ADC_DATA : 1;
+  uint8_t PORT_DATA : 1;
+  uint8_t CHAR_DATA : 1;
+  uint8_t REMOTE_LINK : 1;
+  uint8_t REMOTE_DATA_DONE : 1;
+  uint8_t LOW_BITS : 1;
+  uint8_t ADC_RUN : 1;
+ };
+
+ struct spi_stat_type_ss {
+  volatile uint32_t adc_count, adc_error_count,
+  port_count, port_error_count,
+  char_count, char_error_count,
+  slave_int_count, last_slave_int_count, slave_tx_count,
+  comm_count, idle_count;
+  volatile uint8_t comm_ok;
+ };
+
+ struct serial_buffer_type_ss {
+  volatile uint8_t data[4], tx_buffer, adcl, adch, command;
+  volatile uint32_t place;
+ };
+
+ extern volatile struct spi_link_type_ss spi_comm_ss;
+ extern volatile struct serial_buffer_type_ss serial_buffer_ss;
+ extern volatile struct spi_stat_type_ss spi_stat_ss, report_stat_ss;
+ extern volatile uint8_t data_in2, adc_buffer_ptr, adc_channel, channel, upper;
+ extern volatile uint16_t adc_buffer[64], adc_data_in;
+
+ void check_slaveo(void);
+ void init_slaveo(void);
+
+ void slaveo_rx_isr(void);
+ void slaveo_tx_isr(void);
+ void slaveo_spi_isr(void);
+ void slaveo_adc_isr(void);
+ void slaveo_time_isr(void);
+# 45 "./eadog.h" 2
 
 
 
@@ -41039,7 +41122,7 @@ struct tm *getdate (const char *);
   uint8_t baud;
   uint8_t operation;
  } spi1_configuration_t;
-# 103 "./eadog.h"
+# 104 "./eadog.h"
  _Bool init_display(void);
  void no_dma_set_lcd(void);
  void send_lcd_data_dma(const uint8_t);
@@ -41069,33 +41152,7 @@ struct tm *getdate (const char *);
  void spi_rec_done(void);
 # 170 "main.c" 2
 # 1 "./gemsecs.h" 1
-# 25 "./gemsecs.h"
-# 1 "./timers.h" 1
-# 11 "./timers.h"
-enum APP_TIMERS {
- TMR_INTERNAL = 0,
- TMR_T1,
- TMR_T2,
- TMR_T3,
- TMR_T4,
- TMR_MC_TX,
- TMR_HBIO,
- TMR_INFO,
- TMR_HELP,
- TMR_HELPDIS,
- TMR_DISPLAY,
- TMR_SEQ,
- TMR_FLIPPER,
-
-
-
- TMR_COUNT
-};
-
-__attribute__((inline)) void StartTimer(uint8_t timer, uint16_t count);
-__attribute__((inline)) _Bool TimerDone(uint8_t timer);
-void WaitMs(uint16_t numMilliseconds);
-# 26 "./gemsecs.h" 2
+# 26 "./gemsecs.h"
 # 1 "./mydisplay.h" 1
 # 42 "./mydisplay.h"
 void MyeaDogM_WriteStringAtPos(const uint8_t, const uint8_t, char *);
@@ -41113,20 +41170,7 @@ D_CODES set_display_info(const D_CODES);
 D_CODES set_temp_display_help(const D_CODES);
 # 27 "./gemsecs.h" 2
 # 1 "./msg_text.h" 1
-# 14 "./msg_text.h"
-# 1 "./mconfig.h" 1
-# 42 "./mconfig.h"
-void mconfig_init(void);
-
-void mode_lamp_dim(void);
-void mode_lamp_bright(void);
-void log_serial(uint8_t *, uint16_t);
-void logging_cmds(void);
-void set_time(const time_t);
-time_t time(time_t *);
-# 15 "./msg_text.h" 2
-
-
+# 17 "./msg_text.h"
  typedef enum {
   display_message = 0,
   display_online,
@@ -41203,51 +41247,9 @@ time_t time(time_t *);
   adc_scale_zero = -2048;
  void update_rs232_line_status(void);
 # 175 "main.c" 2
-# 1 "./slaveo.h" 1
-# 44 "./slaveo.h"
- struct spi_link_type_ss {
-  uint8_t SPI_DATA : 1;
-  uint8_t ADC_DATA : 1;
-  uint8_t PORT_DATA : 1;
-  uint8_t CHAR_DATA : 1;
-  uint8_t REMOTE_LINK : 1;
-  uint8_t REMOTE_DATA_DONE : 1;
-  uint8_t LOW_BITS : 1;
-  uint8_t ADC_RUN : 1;
- };
-
- struct spi_stat_type_ss {
-  volatile uint32_t adc_count, adc_error_count,
-  port_count, port_error_count,
-  char_count, char_error_count,
-  slave_int_count, last_slave_int_count,
-  comm_count, idle_count;
-  volatile uint8_t comm_ok;
- };
-
- struct serial_buffer_type_ss {
-  volatile uint8_t data[4], tx_buffer, adcl, adch;
-  volatile uint32_t place;
- };
-
- extern volatile struct spi_link_type_ss spi_comm_ss;
- extern volatile struct serial_buffer_type_ss serial_buffer_ss;
- extern volatile struct spi_stat_type_ss spi_stat_ss, report_stat_ss;
- extern volatile uint8_t data_in2, adc_buffer_ptr, adc_channel, channel, upper;
- extern volatile uint16_t adc_buffer[64], adc_data_in;
-
- void check_slaveo(void);
- void init_slaveo(void);
-
- void slaveo_rx_isr(void);
- void slaveo_tx_isr(void);
- void slaveo_spi_isr(void);
- void slaveo_adc_isr(void);
- void slaveo_time_isr(void);
-# 176 "main.c" 2
 # 185 "main.c"
 extern struct spi_link_type spi_link;
-const char *build_date = "Apr 30 2025", *build_time = "09:20:46";
+const char *build_date = "Apr 30 2025", *build_time = "20:19:40";
 
 const char * GEM_TEXT [] = {
  "DISABLE",
@@ -41307,7 +41309,7 @@ B_type B = {
 };
 
 volatile struct spi_link_type_ss spi_comm_ss = {0, 0, 0, 0, 0, 0, 0, 0};
-volatile struct spi_stat_type_ss spi_stat_ss = {0}, report_stat_ss = {0};
+volatile struct spi_stat_type_ss spi_stat_ss;
 volatile struct serial_buffer_type_ss serial_buffer_ss = {
  .tx_buffer = 0x81,
  .data[0] = 0x57,
@@ -41588,7 +41590,7 @@ void main(void)
     if (TimerDone(TMR_HELPDIS)) {
      set_display_info(DIS_STR);
     }
-    snprintf(get_vterm_ptr(1, 0), 20 +1, "%lu %lu %lu %lu  0x%.2X 0x%.2X                  ", spi_stat_ss.adc_count, spi_stat_ss.comm_count, spi_stat_ss.slave_int_count, spi_stat_ss.idle_count,
+    snprintf(get_vterm_ptr(1, 0), 20 +1, "%lu %lu %lu %lu  0x%.2X 0x%.2X                  ", spi_stat_ss.adc_count, spi_stat_ss.slave_tx_count, spi_stat_ss.slave_int_count, spi_stat_ss.idle_count,
      serial_buffer_ss.data[0], serial_buffer_ss.data[2]);
     snprintf(get_vterm_ptr(2, 0), 20 +1, "%d %d %d %d %d %d %d %d %d             ", adc_buffer[channel], spi_comm_ss.ADC_DATA, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.LOW_BITS,
      spi_comm_ss.REMOTE_DATA_DONE, spi_comm_ss.REMOTE_LINK, spi_comm_ss.SPI_DATA, spi_comm_ss.ADC_RUN);
@@ -41717,9 +41719,9 @@ int8_t test_slave(void)
 
  wait_lcd_done();
  if (i++ == 4) {
-  send_spi2_data_dma(0b10000000 + 2, 0b11000000, 0b11000000, 2);
-  send_spi2_data_dma(0b00000000, 0b00000000, 0b00000000, 2);
-  send_spi2_data_dma(0b00000000, 0b00000000, 0b00000000, 2);
+  send_spi2_data_dma(0b10000000 + 1, 0b11000000, 0b11000000, 3);
+
+
   i = 0;
  }
  wait_lcd_done();

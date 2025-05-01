@@ -193,7 +193,9 @@ void send_lcd_data_dma(const uint8_t strPtr)
 void send_spi2_data_dma(const uint8_t strPtr0, const uint8_t strPtr1, const uint8_t strPtr2, const uint8_t len)
 {
 	E_TRACE;
+	
 	for (int i = 0; i < len; i++) {
+		spi_comm_ss.ADC_DATA = false;
 		wait_lcd_done();
 		wait_lcd_set();
 		SS_CS_SetLow(); /* SPI select display */
@@ -206,6 +208,9 @@ void send_spi2_data_dma(const uint8_t strPtr0, const uint8_t strPtr1, const uint
 		DMAnCON0bits.EN = 1; /* enable DMA */
 		start_lcd(); // start DMA transfer
 		wait_lcd_done();
+		if ((i == 0) && (serial_buffer_ss.command == CMD_ADC_GO)) {
+			while (spi_comm_ss.ADC_DATA == false);
+		}
 	}
 }
 

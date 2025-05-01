@@ -4459,9 +4459,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;gemsecs.c: 12:     for (i = 0; i < byte_count; i++) {
 {
 [e = _i -> -> 0 `i `us ]
-[e $ < -> _i `ui -> _byte_count `ui 3363  ]
-[e $U 3364  ]
-[e :U 3363 ]
+[e $ < -> _i `ui -> _byte_count `ui 3366  ]
+[e $U 3367  ]
+[e :U 3366 ]
 {
 "13
 [; ;gemsecs.c: 13:         sum += byte_block[i];
@@ -4470,16 +4470,16 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;gemsecs.c: 14:     }
 }
 [e ++ _i -> -> 1 `i `us ]
-[e $ < -> _i `ui -> _byte_count `ui 3363  ]
-[e :U 3364 ]
+[e $ < -> _i `ui -> _byte_count `ui 3366  ]
+[e :U 3367 ]
 }
 "17
 [; ;gemsecs.c: 17:     return sum;
 [e ) _sum ]
-[e $UE 3362  ]
+[e $UE 3365  ]
 "18
 [; ;gemsecs.c: 18: }
-[e :UE 3362 ]
+[e :UE 3365 ]
 }
 "23
 [; ;gemsecs.c: 23: uint16_t run_checksum(const uint8_t byte_block, const _Bool clear) {
@@ -4491,27 +4491,27 @@ Version 4.0 HI-TECH Software Intermediate Code
 [f ]
 "24
 [; ;gemsecs.c: 24:     static uint16_t sum = 0;
-[v F24855 `us ~T0 @X0 1 s sum ]
-[i F24855
+[v F24902 `us ~T0 @X0 1 s sum ]
+[i F24902
 -> -> 0 `i `us
 ]
 "26
 [; ;gemsecs.c: 26:     if (clear)
-[e $ ! != -> _clear `i -> 0 `i 3367  ]
+[e $ ! != -> _clear `i -> 0 `i 3370  ]
 "27
 [; ;gemsecs.c: 27:         sum = 0;
-[e = F24855 -> -> 0 `i `us ]
-[e :U 3367 ]
+[e = F24902 -> -> 0 `i `us ]
+[e :U 3370 ]
 "29
 [; ;gemsecs.c: 29:     sum += byte_block;
-[e =+ F24855 -> _byte_block `us ]
+[e =+ F24902 -> _byte_block `us ]
 "30
 [; ;gemsecs.c: 30:     return sum;
-[e ) F24855 ]
-[e $UE 3366  ]
+[e ) F24902 ]
+[e $UE 3369  ]
 "31
 [; ;gemsecs.c: 31: }
-[e :UE 3366 ]
+[e :UE 3369 ]
 }
 "36
 [; ;gemsecs.c: 36: static void ee_logger(const uint8_t stream, const uint8_t function, const uint16_t dtime, uint8_t *msg_data) {
@@ -4529,7 +4529,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _i -> -> 0 `i `us ]
 "39
 [; ;gemsecs.c: 39:     do {
-[e :U 3371 ]
+[e :U 3374 ]
 {
 "40
 [; ;gemsecs.c: 40:         DATAEE_WriteByte(i, msg_data[254 + 2 - i]);
@@ -4537,12 +4537,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 "41
 [; ;gemsecs.c: 41:     } while (++i <= 255);
 }
-[e $ <= -> =+ _i -> -> 1 `i `us `ui -> -> 255 `i `ui 3371  ]
-[e :U 3370 ]
+[e $ <= -> =+ _i -> -> 1 `i `us `ui -> -> 255 `i `ui 3374  ]
+[e :U 3373 ]
 "43
 [; ;gemsecs.c: 43:     StartTimer(TMR_INFO, dtime);
 [e ( _StartTimer (2 , -> . `E24685 7 `uc _dtime ]
 "44
 [; ;gemsecs.c: 44: }
-[e :UE 3368 ]
+[e :UE 3371 ]
 }

@@ -39957,49 +39957,10 @@ void IOCBF6_DefaultInterruptHandler(void);
     extern void UART1_Initialize19200(void);
     extern void UART2_Initialize19200(void);
 # 44 "./eadog.h" 2
-
-
-
-
-
-
- typedef struct {
-  uint8_t con0;
-  uint8_t con1;
-  uint8_t con2;
-  uint8_t baud;
-  uint8_t operation;
- } spi1_configuration_t;
-# 103 "./eadog.h"
- _Bool init_display(void);
- void no_dma_set_lcd(void);
- void send_lcd_data_dma(const uint8_t);
- void send_spi2_data_dma(const uint8_t, const uint8_t, const uint8_t, const uint8_t);
- void send_lcd_cmd_dma(const uint8_t);
- void send_lcd_pos_dma(const uint8_t);
- void start_lcd(void);
- void wait_lcd_set(void);
- _Bool wait_lcd_check(void);
- void wait_lcd_done(void);
- void eaDogM_WriteChr(const int8_t);
- void eaDogM_WriteCommand(const uint8_t);
- void eaDogM_SetPos(const uint8_t, const uint8_t);
- void eaDogM_ClearRow(const uint8_t);
- void eaDogM_WriteString(char *);
- void eaDogM_WriteStringAtPos(const uint8_t, const uint8_t, char *);
- void eaDogM_WriteIntAtPos(const uint8_t, const uint8_t, const uint8_t);
- void eaDogM_WriteByteToCGRAM(const uint8_t, const uint8_t);
- void set_lcd_dim(const _Bool);
- void check_lcd_dim(const _Bool);
-
- char * eaDogM_Scroll_String(char *);
- void eaDogM_Scroll_Task(void);
-
-
- void clear_lcd_done(void);
- void spi_rec_done(void);
-# 3 "eadog.c" 2
-
+# 1 "./slaveo.h" 1
+# 18 "./slaveo.h"
+# 1 "./mconfig.h" 1
+# 39 "./mconfig.h"
 # 1 "./mcc_generated_files/mcc.h" 1
 # 50 "./mcc_generated_files/mcc.h"
 # 1 "./mcc_generated_files/device_config.h" 1
@@ -40930,7 +40891,130 @@ void OSCILLATOR_Initialize(void);
 void PMD_Initialize(void);
 # 120 "./mcc_generated_files/mcc.h"
 void SystemArbiter_Initialize(void);
-# 5 "eadog.c" 2
+# 40 "./mconfig.h" 2
+
+
+void mconfig_init(void);
+
+void mode_lamp_dim(void);
+void mode_lamp_bright(void);
+void log_serial(uint8_t *, uint16_t);
+void logging_cmds(void);
+void set_time(const time_t);
+time_t time(time_t *);
+# 19 "./slaveo.h" 2
+
+# 1 "./eadog.h" 1
+# 21 "./slaveo.h" 2
+# 1 "./timers.h" 1
+# 11 "./timers.h"
+enum APP_TIMERS {
+ TMR_INTERNAL = 0,
+ TMR_T1,
+ TMR_T2,
+ TMR_T3,
+ TMR_T4,
+ TMR_MC_TX,
+ TMR_HBIO,
+ TMR_INFO,
+ TMR_HELP,
+ TMR_HELPDIS,
+ TMR_DISPLAY,
+ TMR_SEQ,
+ TMR_FLIPPER,
+
+
+
+ TMR_COUNT
+};
+
+__attribute__((inline)) void StartTimer(uint8_t timer, uint16_t count);
+__attribute__((inline)) _Bool TimerDone(uint8_t timer);
+void WaitMs(uint16_t numMilliseconds);
+# 22 "./slaveo.h" 2
+# 44 "./slaveo.h"
+ struct spi_link_type_ss {
+  uint8_t SPI_DATA : 1;
+  uint8_t ADC_DATA : 1;
+  uint8_t PORT_DATA : 1;
+  uint8_t CHAR_DATA : 1;
+  uint8_t REMOTE_LINK : 1;
+  uint8_t REMOTE_DATA_DONE : 1;
+  uint8_t LOW_BITS : 1;
+  uint8_t ADC_RUN : 1;
+ };
+
+ struct spi_stat_type_ss {
+  volatile uint32_t adc_count, adc_error_count,
+  port_count, port_error_count,
+  char_count, char_error_count,
+  slave_int_count, last_slave_int_count, slave_tx_count,
+  comm_count, idle_count;
+  volatile uint8_t comm_ok;
+ };
+
+ struct serial_buffer_type_ss {
+  volatile uint8_t data[4], tx_buffer, adcl, adch, command;
+  volatile uint32_t place;
+ };
+
+ extern volatile struct spi_link_type_ss spi_comm_ss;
+ extern volatile struct serial_buffer_type_ss serial_buffer_ss;
+ extern volatile struct spi_stat_type_ss spi_stat_ss, report_stat_ss;
+ extern volatile uint8_t data_in2, adc_buffer_ptr, adc_channel, channel, upper;
+ extern volatile uint16_t adc_buffer[64], adc_data_in;
+
+ void check_slaveo(void);
+ void init_slaveo(void);
+
+ void slaveo_rx_isr(void);
+ void slaveo_tx_isr(void);
+ void slaveo_spi_isr(void);
+ void slaveo_adc_isr(void);
+ void slaveo_time_isr(void);
+# 45 "./eadog.h" 2
+
+
+
+
+
+
+ typedef struct {
+  uint8_t con0;
+  uint8_t con1;
+  uint8_t con2;
+  uint8_t baud;
+  uint8_t operation;
+ } spi1_configuration_t;
+# 104 "./eadog.h"
+ _Bool init_display(void);
+ void no_dma_set_lcd(void);
+ void send_lcd_data_dma(const uint8_t);
+ void send_spi2_data_dma(const uint8_t, const uint8_t, const uint8_t, const uint8_t);
+ void send_lcd_cmd_dma(const uint8_t);
+ void send_lcd_pos_dma(const uint8_t);
+ void start_lcd(void);
+ void wait_lcd_set(void);
+ _Bool wait_lcd_check(void);
+ void wait_lcd_done(void);
+ void eaDogM_WriteChr(const int8_t);
+ void eaDogM_WriteCommand(const uint8_t);
+ void eaDogM_SetPos(const uint8_t, const uint8_t);
+ void eaDogM_ClearRow(const uint8_t);
+ void eaDogM_WriteString(char *);
+ void eaDogM_WriteStringAtPos(const uint8_t, const uint8_t, char *);
+ void eaDogM_WriteIntAtPos(const uint8_t, const uint8_t, const uint8_t);
+ void eaDogM_WriteByteToCGRAM(const uint8_t, const uint8_t);
+ void set_lcd_dim(const _Bool);
+ void check_lcd_dim(const _Bool);
+
+ char * eaDogM_Scroll_String(char *);
+ void eaDogM_Scroll_Task(void);
+
+
+ void clear_lcd_done(void);
+ void spi_rec_done(void);
+# 3 "eadog.c" 2
 # 19 "eadog.c"
 volatile struct spi_link_type spi_link = {
  .LCD_DATA = 0,
@@ -41083,7 +41167,9 @@ void send_lcd_data_dma(const uint8_t strPtr)
 void send_spi2_data_dma(const uint8_t strPtr0, const uint8_t strPtr1, const uint8_t strPtr2, const uint8_t len)
 {
  do { LATDbits.LATD7 = ~LATDbits.LATD7; } while(0);
+
  for (int i = 0; i < len; i++) {
+  spi_comm_ss.ADC_DATA = 0;
   wait_lcd_done();
   wait_lcd_set();
   do { LATEbits.LATE2 = 0; } while(0);
@@ -41096,6 +41182,9 @@ void send_spi2_data_dma(const uint8_t strPtr0, const uint8_t strPtr1, const uint
   DMAnCON0bits.EN = 1;
   start_lcd();
   wait_lcd_done();
+  if ((i == 0) && (serial_buffer_ss.command == 0b10000000)) {
+   while (spi_comm_ss.ADC_DATA == 0);
+  }
  }
 }
 
@@ -41330,7 +41419,7 @@ void check_lcd_dim(const _Bool dim)
    send_lcd_cmd_dma(0x53);
    send_lcd_data_dma(8);
   }
-# 452 "eadog.c"
+# 457 "eadog.c"
  }
 }
 
@@ -41347,7 +41436,7 @@ void set_lcd_dim(const _Bool dim)
    send_lcd_cmd_dma(0x53);
    send_lcd_data_dma(8);
   }
-# 477 "eadog.c"
+# 482 "eadog.c"
  }
 
  if (B.dim_delay++ >= 6) {

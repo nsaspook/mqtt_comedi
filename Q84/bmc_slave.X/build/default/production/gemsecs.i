@@ -40917,7 +40917,70 @@ void WaitMs(uint16_t numMilliseconds);
 # 1 "./mydisplay.h" 1
 # 39 "./mydisplay.h"
 # 1 "./eadog.h" 1
-# 50 "./eadog.h"
+# 44 "./eadog.h"
+# 1 "./slaveo.h" 1
+# 18 "./slaveo.h"
+# 1 "./mconfig.h" 1
+# 42 "./mconfig.h"
+void mconfig_init(void);
+
+void mode_lamp_dim(void);
+void mode_lamp_bright(void);
+void log_serial(uint8_t *, uint16_t);
+void logging_cmds(void);
+void set_time(const time_t);
+time_t time(time_t *);
+# 19 "./slaveo.h" 2
+
+# 1 "./eadog.h" 1
+# 21 "./slaveo.h" 2
+# 44 "./slaveo.h"
+ struct spi_link_type_ss {
+  uint8_t SPI_DATA : 1;
+  uint8_t ADC_DATA : 1;
+  uint8_t PORT_DATA : 1;
+  uint8_t CHAR_DATA : 1;
+  uint8_t REMOTE_LINK : 1;
+  uint8_t REMOTE_DATA_DONE : 1;
+  uint8_t LOW_BITS : 1;
+  uint8_t ADC_RUN : 1;
+ };
+
+ struct spi_stat_type_ss {
+  volatile uint32_t adc_count, adc_error_count,
+  port_count, port_error_count,
+  char_count, char_error_count,
+  slave_int_count, last_slave_int_count, slave_tx_count,
+  comm_count, idle_count;
+  volatile uint8_t comm_ok;
+ };
+
+ struct serial_buffer_type_ss {
+  volatile uint8_t data[4], tx_buffer, adcl, adch, command;
+  volatile uint32_t place;
+ };
+
+ extern volatile struct spi_link_type_ss spi_comm_ss;
+ extern volatile struct serial_buffer_type_ss serial_buffer_ss;
+ extern volatile struct spi_stat_type_ss spi_stat_ss, report_stat_ss;
+ extern volatile uint8_t data_in2, adc_buffer_ptr, adc_channel, channel, upper;
+ extern volatile uint16_t adc_buffer[64], adc_data_in;
+
+ void check_slaveo(void);
+ void init_slaveo(void);
+
+ void slaveo_rx_isr(void);
+ void slaveo_tx_isr(void);
+ void slaveo_spi_isr(void);
+ void slaveo_adc_isr(void);
+ void slaveo_time_isr(void);
+# 45 "./eadog.h" 2
+
+
+
+
+
+
  typedef struct {
   uint8_t con0;
   uint8_t con1;
@@ -40925,7 +40988,7 @@ void WaitMs(uint16_t numMilliseconds);
   uint8_t baud;
   uint8_t operation;
  } spi1_configuration_t;
-# 103 "./eadog.h"
+# 104 "./eadog.h"
  _Bool init_display(void);
  void no_dma_set_lcd(void);
  void send_lcd_data_dma(const uint8_t);
@@ -40971,20 +41034,7 @@ D_CODES set_display_info(const D_CODES);
 D_CODES set_temp_display_help(const D_CODES);
 # 27 "./gemsecs.h" 2
 # 1 "./msg_text.h" 1
-# 14 "./msg_text.h"
-# 1 "./mconfig.h" 1
-# 42 "./mconfig.h"
-void mconfig_init(void);
-
-void mode_lamp_dim(void);
-void mode_lamp_bright(void);
-void log_serial(uint8_t *, uint16_t);
-void logging_cmds(void);
-void set_time(const time_t);
-time_t time(time_t *);
-# 15 "./msg_text.h" 2
-
-
+# 17 "./msg_text.h"
  typedef enum {
   display_message = 0,
   display_online,

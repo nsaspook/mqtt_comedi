@@ -50,16 +50,16 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S3357 B_type one_sec_flag dim_delay display_update ]
 "44 ./slaveo.h
 [; ;./slaveo.h: 44:  struct spi_link_type_ss {
-[s S3362 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S3362 spi_link_type_ss SPI_DATA ADC_DATA PORT_DATA CHAR_DATA REMOTE_LINK REMOTE_DATA_DONE LOW_BITS ADC_RUN ]
+[s S3361 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S3361 spi_link_type_ss SPI_DATA ADC_DATA PORT_DATA CHAR_DATA REMOTE_LINK REMOTE_DATA_DONE LOW_BITS ADC_RUN ]
 "55
 [; ;./slaveo.h: 55:  struct spi_stat_type_ss {
-[s S3363 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vuc 1 ]
-[n S3363 spi_stat_type_ss adc_count adc_error_count port_count port_error_count char_count char_error_count slave_int_count last_slave_int_count comm_count idle_count comm_ok ]
+[s S3362 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vuc 1 ]
+[n S3362 spi_stat_type_ss adc_count adc_error_count port_count port_error_count char_count char_error_count slave_int_count last_slave_int_count slave_tx_count comm_count idle_count comm_ok ]
 "64
 [; ;./slaveo.h: 64:  struct serial_buffer_type_ss {
-[s S3364 `Vuc -> 4 `i `Vuc 1 `Vuc 1 `Vuc 1 `Vul 1 ]
-[n S3364 serial_buffer_type_ss data tx_buffer adcl adch place ]
+[s S3363 `Vuc -> 4 `i `Vuc 1 `Vuc 1 `Vuc 1 `Vuc 1 `Vul 1 ]
+[n S3363 serial_buffer_type_ss data tx_buffer adcl adch command place ]
 [p mainexit ]
 "4774 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [; ;/root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h: 4774:     struct {
@@ -166,11 +166,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 "47 ./mconfig.h
 [; ;./mconfig.h: 47: void logging_cmds(void);
 [v _logging_cmds `(v ~T0 @X0 0 ef ]
-"103 ./eadog.h
-[; ;./eadog.h: 103:  _Bool init_display(void);
+"104 ./eadog.h
+[; ;./eadog.h: 104:  _Bool init_display(void);
 [v _init_display `(a ~T0 @X0 0 ef ]
-"114
-[; ;./eadog.h: 114:  void eaDogM_WriteCommand(const uint8_t);
+"115
+[; ;./eadog.h: 115:  void eaDogM_WriteCommand(const uint8_t);
 [v _eaDogM_WriteCommand `(v ~T0 @X0 0 ef1`Cuc ]
 "45 ./mydisplay.h
 [; ;./mydisplay.h: 45: uint8_t set_vterm(const uint8_t);
@@ -187,24 +187,24 @@ Version 4.0 HI-TECH Software Intermediate Code
 "56 /opt/microchip/xc8/v3.00/pic/include/c99/stdlib.h
 [; ;/opt/microchip/xc8/v3.00/pic/include/c99/stdlib.h: 56: void srand (unsigned);
 [v _srand `(v ~T0 @X0 0 ef1`ui ]
-[v F24756 `(v ~T0 @X0 1 tf2`uc`us ]
+[v F24712 `(v ~T0 @X0 1 tf2`uc`us ]
 "31 ./timers.h
 [; ;./timers.h: 31: __attribute__((inline)) void StartTimer(uint8_t timer, uint16_t count);
-[v _StartTimer `TF24756 ~T0 @X0 0 e ]
+[v _StartTimer `TF24712 ~T0 @X0 0 e ]
 "410 main.c
 [; ;main.c: 410:    StartTimer(TMR_DISPLAY, 100);
-[c E24740 0 1 2 3 4 5 6 7 8 9 10 11 12 13 .. ]
-[n E24740 APP_TIMERS TMR_INTERNAL TMR_T1 TMR_T2 TMR_T3 TMR_T4 TMR_MC_TX TMR_HBIO TMR_INFO TMR_HELP TMR_HELPDIS TMR_DISPLAY TMR_SEQ TMR_FLIPPER TMR_COUNT  ]
+[c E24696 0 1 2 3 4 5 6 7 8 9 10 11 12 13 .. ]
+[n E24696 APP_TIMERS TMR_INTERNAL TMR_T1 TMR_T2 TMR_T3 TMR_T4 TMR_MC_TX TMR_HBIO TMR_INFO TMR_HELP TMR_HELPDIS TMR_DISPLAY TMR_SEQ TMR_FLIPPER TMR_COUNT  ]
 "53 ./mydisplay.h
 [; ;./mydisplay.h: 53: D_CODES set_display_info(const D_CODES);
 [v _set_display_info `(E24482 ~T0 @X0 0 ef1`CE24482 ]
 "320 ./vconfig.h
 [; ;./vconfig.h: 320:     extern char spinners(uint8_t, const uint8_t);
 [v _spinners `(uc ~T0 @X0 0 ef2`uc`Cuc ]
-[v F24760 `(a ~T0 @X0 1 tf1`uc ]
+[v F24716 `(a ~T0 @X0 1 tf1`uc ]
 "32 ./timers.h
 [; ;./timers.h: 32: __attribute__((inline)) _Bool TimerDone(uint8_t timer);
-[v _TimerDone `TF24760 ~T0 @X0 0 e ]
+[v _TimerDone `TF24716 ~T0 @X0 0 e ]
 "1600 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [s S3091 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S3091 . INT0IE ZCDIE ADIE ACTIE C1IE SMT1IE SMT1PRAIE SMT1PWAIE ]
@@ -255,8 +255,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "54 /opt/microchip/xc8/v3.00/pic/include/c99/string.h
 [; ;/opt/microchip/xc8/v3.00/pic/include/c99/string.h: 54: size_t strlen (const char *);
 [v _strlen `(ui ~T0 @X0 0 ef1`*Cuc ]
-"112 ./eadog.h
-[; ;./eadog.h: 112:  void wait_lcd_done(void);
+"113 ./eadog.h
+[; ;./eadog.h: 113:  void wait_lcd_done(void);
 [v _wait_lcd_done `(v ~T0 @X0 0 ef ]
 "4528 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [; ;/root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h: 4528:     struct {
@@ -273,8 +273,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "4543
 [; ;/root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h: 4543: extern volatile SPI2CON0bits_t SPI2CON0bits __attribute__((address(0x091)));
 [v _SPI2CON0bits `VS209 ~T0 @X0 0 e@145 ]
-"106 ./eadog.h
-[; ;./eadog.h: 106:  void send_spi2_data_dma(const uint8_t, const uint8_t, const uint8_t, const uint8_t);
+"107 ./eadog.h
+[; ;./eadog.h: 107:  void send_spi2_data_dma(const uint8_t, const uint8_t, const uint8_t, const uint8_t);
 [v _send_spi2_data_dma `(v ~T0 @X0 0 ef4`Cuc`Cuc`Cuc`Cuc ]
 "71 ./mcc_generated_files/spi1.h
 [; ;./mcc_generated_files/spi1.h: 71: uint8_t SPI1_ReadByte(void);
@@ -4873,7 +4873,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -U -> 2048 `i `s
 ]
 "186 main.c
-[; ;main.c: 186: const char *build_date = "Apr 30 2025", *build_time = "09:20:46";
+[; ;main.c: 186: const char *build_date = "Apr 30 2025", *build_time = "20:19:40";
 [v _build_date `*Cuc ~T0 @X0 1 e ]
 [i _build_date
 :s 1C
@@ -5396,7 +5396,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ]
 "245
 [; ;main.c: 245: volatile struct spi_link_type_ss spi_comm_ss = {0, 0, 0, 0, 0, 0, 0, 0};
-[v _spi_comm_ss `VS3362 ~T0 @X0 1 e ]
+[v _spi_comm_ss `VS3361 ~T0 @X0 1 e ]
 [i _spi_comm_ss
 :U ..
 :U ..
@@ -5412,26 +5412,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ]
 "246
-[; ;main.c: 246: volatile struct spi_stat_type_ss spi_stat_ss = {0}, report_stat_ss = {0};
-[v _spi_stat_ss `VS3363 ~T0 @X0 1 e ]
-[i _spi_stat_ss
-:U ..
-:U ..
--> -> -> 0 `i `l `ul
-..
-..
-]
-[v _report_stat_ss `VS3363 ~T0 @X0 1 e ]
-[i _report_stat_ss
-:U ..
-:U ..
--> -> -> 0 `i `l `ul
-..
-..
-]
+[; ;main.c: 246: volatile struct spi_stat_type_ss spi_stat_ss;
+[v _spi_stat_ss `VS3362 ~T0 @X0 1 e ]
 "247
 [; ;main.c: 247: volatile struct serial_buffer_type_ss serial_buffer_ss = {
-[v _serial_buffer_ss `VS3364 ~T0 @X0 1 e ]
+[v _serial_buffer_ss `VS3363 ~T0 @X0 1 e ]
 [i _serial_buffer_ss
 :U ..
 :U ..
@@ -5507,8 +5492,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _temp_lock -> -> 0 `i `uc ]
 "269
 [; ;main.c: 269:  static uint8_t looper = 0;
-[v F24924 `uc ~T0 @X0 1 s looper ]
-[i F24924
+[v F24925 `uc ~T0 @X0 1 s looper ]
+[i F24925
 -> -> 0 `i `uc
 ]
 "271
@@ -5869,25 +5854,25 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e ( _WaitMs (1 -> -> 3000 `i `us ]
 "410
 [; ;main.c: 410:    StartTimer(TMR_DISPLAY, 100);
-[e ( _StartTimer (2 , -> . `E24740 10 `uc -> -> 100 `i `us ]
+[e ( _StartTimer (2 , -> . `E24696 10 `uc -> -> 100 `i `us ]
 "411
 [; ;main.c: 411:    StartTimer(TMR_SEQ, 10000);
-[e ( _StartTimer (2 , -> . `E24740 11 `uc -> -> 10000 `i `us ]
+[e ( _StartTimer (2 , -> . `E24696 11 `uc -> -> 10000 `i `us ]
 "412
 [; ;main.c: 412:    StartTimer(TMR_INFO, 3000);
-[e ( _StartTimer (2 , -> . `E24740 7 `uc -> -> 3000 `i `us ]
+[e ( _StartTimer (2 , -> . `E24696 7 `uc -> -> 3000 `i `us ]
 "413
 [; ;main.c: 413:    StartTimer(TMR_FLIPPER, 1500);
-[e ( _StartTimer (2 , -> . `E24740 12 `uc -> -> 1500 `i `us ]
+[e ( _StartTimer (2 , -> . `E24696 12 `uc -> -> 1500 `i `us ]
 "414
 [; ;main.c: 414:    StartTimer(TMR_HELPDIS, 3000);
-[e ( _StartTimer (2 , -> . `E24740 9 `uc -> -> 3000 `i `us ]
+[e ( _StartTimer (2 , -> . `E24696 9 `uc -> -> 3000 `i `us ]
 "415
 [; ;main.c: 415:    StartTimer(TMR_SEQ, 10000);
-[e ( _StartTimer (2 , -> . `E24740 11 `uc -> -> 10000 `i `us ]
+[e ( _StartTimer (2 , -> . `E24696 11 `uc -> -> 10000 `i `us ]
 "416
 [; ;main.c: 416:    StartTimer(TMR_HELP, 3000);
-[e ( _StartTimer (2 , -> . `E24740 8 `uc -> -> 3000 `i `us ]
+[e ( _StartTimer (2 , -> . `E24696 8 `uc -> -> 3000 `i `us ]
 "417
 [; ;main.c: 417:    break;
 [e $U 3401  ]
@@ -6019,7 +6004,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = . _V 0 . `E24510 0 ]
 "462
 [; ;main.c: 462:     if (++looper == 0) {
-[e $ ! == -> =+ F24924 -> -> 1 `i `uc `i -> 0 `i 3419  ]
+[e $ ! == -> =+ F24925 -> -> 1 `i `uc `i -> 0 `i 3419  ]
 {
 "464
 [; ;main.c: 464:     }
@@ -6065,7 +6050,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 "474
 [; ;main.c: 474:     if (TimerDone(TMR_DISPLAY)) {
-[e $ ! != -> ( _TimerDone (1 -> . `E24740 10 `uc `i -> 0 `i 3423  ]
+[e $ ! != -> ( _TimerDone (1 -> . `E24696 10 `uc `i -> 0 `i 3423  ]
 {
 "475
 [; ;main.c: 475:     }
@@ -6236,17 +6221,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 "522
 [; ;main.c: 522:    if (TimerDone(TMR_DISPLAY)) {
-[e $ ! != -> ( _TimerDone (1 -> . `E24740 10 `uc `i -> 0 `i 3444  ]
+[e $ ! != -> ( _TimerDone (1 -> . `E24696 10 `uc `i -> 0 `i 3444  ]
 {
 "523
 [; ;main.c: 523:     static uint8_t switcher = 1;
-[v F24926 `uc ~T0 @X0 1 s switcher ]
-[i F24926
+[v F24927 `uc ~T0 @X0 1 s switcher ]
+[i F24927
 -> -> 1 `i `uc
 ]
 "524
 [; ;main.c: 524:     if (TimerDone(TMR_HELPDIS)) {
-[e $ ! != -> ( _TimerDone (1 -> . `E24740 9 `uc `i -> 0 `i 3445  ]
+[e $ ! != -> ( _TimerDone (1 -> . `E24696 9 `uc `i -> 0 `i 3445  ]
 {
 "525
 [; ;main.c: 525:      set_display_info(DIS_STR);
@@ -6256,8 +6241,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 3445 ]
 "527
-[; ;main.c: 527:     snprintf(get_vterm_ptr(1, 0), 20 +1, "%lu %lu %lu %lu  0x%.2X 0x%.2X                  ", spi_stat_ss.adc_count, spi_stat_ss.comm_count, spi_stat_ss.slave_int_count, spi_stat_ss.idle_count,
-[e ( _snprintf (2 , , , , , , (. , , ( _get_vterm_ptr (2 , -> -> 1 `i `uc -> -> 0 `i `uc -> + -> 20 `i -> 1 `i `ui :s 40C . _spi_stat_ss 0 . _spi_stat_ss 8 . _spi_stat_ss 6 . _spi_stat_ss 9 -> *U + &U . _serial_buffer_ss 0 * -> -> -> 0 `i `ui `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> *U + &U . _serial_buffer_ss 0 * -> -> -> 2 `i `ui `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i ]
+[; ;main.c: 527:     snprintf(get_vterm_ptr(1, 0), 20 +1, "%lu %lu %lu %lu  0x%.2X 0x%.2X                  ", spi_stat_ss.adc_count, spi_stat_ss.slave_tx_count, spi_stat_ss.slave_int_count, spi_stat_ss.idle_count,
+[e ( _snprintf (2 , , , , , , (. , , ( _get_vterm_ptr (2 , -> -> 1 `i `uc -> -> 0 `i `uc -> + -> 20 `i -> 1 `i `ui :s 40C . _spi_stat_ss 0 . _spi_stat_ss 8 . _spi_stat_ss 6 . _spi_stat_ss 10 -> *U + &U . _serial_buffer_ss 0 * -> -> -> 0 `i `ui `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> *U + &U . _serial_buffer_ss 0 * -> -> -> 2 `i `ui `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i ]
 "529
 [; ;main.c: 529:     snprintf(get_vterm_ptr(2, 0), 20 +1, "%d %d %d %d %d %d %d %d %d             ", adc_buffer[channel], spi_comm_ss.ADC_DATA, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.LOW_BITS,
 [e ( _snprintf (2 , , , , , , , , , (. , , ( _get_vterm_ptr (2 , -> -> 2 `i `uc -> -> 0 `i `uc -> + -> 20 `i -> 1 `i `ui :s 41C -> *U + &U _adc_buffer * -> _channel `ux -> -> # *U &U _adc_buffer `ui `ux `ui -> . _spi_comm_ss 1 `i -> . _spi_comm_ss 3 `i -> . _spi_comm_ss 2 `i -> . _spi_comm_ss 6 `i -> . _spi_comm_ss 5 `i -> . _spi_comm_ss 4 `i -> . _spi_comm_ss 0 `i -> . _spi_comm_ss 7 `i ]
@@ -6346,28 +6331,28 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = . . _PIE1bits 0 2 -> -> 1 `i `uc ]
 "556
 [; ;main.c: 556:     StartTimer(TMR_DISPLAY, 100);
-[e ( _StartTimer (2 , -> . `E24740 10 `uc -> -> 100 `i `us ]
+[e ( _StartTimer (2 , -> . `E24696 10 `uc -> -> 100 `i `us ]
 "557
 [; ;main.c: 557:     if (V.vterm_switch++ > (70)) {
 [e $ ! > -> ++ . _V 51 -> -> 1 `i `uc `i -> 70 `i 3455  ]
 {
 "558
 [; ;main.c: 558:      set_vterm(switcher);
-[e ( _set_vterm (1 F24926 ]
+[e ( _set_vterm (1 F24927 ]
 "559
 [; ;main.c: 559:      if (V.vterm_switch > (70 + V.ticker + 32)) {
 [e $ ! > -> . _V 51 `i + + -> 70 `i -> . _V 53 `i -> 32 `i 3456  ]
 {
 "560
 [; ;main.c: 560:       switcher++;
-[e ++ F24926 -> -> 1 `i `uc ]
+[e ++ F24927 -> -> 1 `i `uc ]
 "561
 [; ;main.c: 561:       if ((switcher & 0x03) == 3) {
-[e $ ! == & -> F24926 `i -> 3 `i -> 3 `i 3457  ]
+[e $ ! == & -> F24927 `i -> 3 `i -> 3 `i 3457  ]
 {
 "562
 [; ;main.c: 562:        switcher = 1;
-[e = F24926 -> -> 1 `i `uc ]
+[e = F24927 -> -> 1 `i `uc ]
 "563
 [; ;main.c: 563:       }
 }
@@ -6444,7 +6429,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 "595
 [; ;main.c: 595:    if (TimerDone(TMR_HELP)) {
-[e $ ! != -> ( _TimerDone (1 -> . `E24740 8 `uc `i -> 0 `i 3461  ]
+[e $ ! != -> ( _TimerDone (1 -> . `E24696 8 `uc `i -> 0 `i 3461  ]
 {
 "596
 [; ;main.c: 596:     V.set_sequ = 0;
@@ -6477,14 +6462,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 3460 ]
 "605
 [; ;main.c: 605:   if (V.help && TimerDone(TMR_SEQ)) {
-[e $ ! && != -> . _V 57 `i -> 0 `i != -> ( _TimerDone (1 -> . `E24740 11 `uc `i -> 0 `i 3463  ]
+[e $ ! && != -> . _V 57 `i -> 0 `i != -> ( _TimerDone (1 -> . `E24696 11 `uc `i -> 0 `i 3463  ]
 {
 "606
 [; ;main.c: 606:    StartTimer(TMR_SEQ, 10000);
-[e ( _StartTimer (2 , -> . `E24740 11 `uc -> -> 10000 `i `us ]
+[e ( _StartTimer (2 , -> . `E24696 11 `uc -> -> 10000 `i `us ]
 "607
 [; ;main.c: 607:    StartTimer(TMR_HELP, 3000);
-[e ( _StartTimer (2 , -> . `E24740 8 `uc -> -> 3000 `i `us ]
+[e ( _StartTimer (2 , -> . `E24696 8 `uc -> -> 3000 `i `us ]
 "608
 [; ;main.c: 608:    V.set_sequ = 1;
 [e = . _V 62 -> -> 1 `i `a ]
@@ -6570,7 +6555,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [f ]
 "631
 [; ;main.c: 631:  static uint8_t s[6];
-[v F24931 `uc ~T0 @X0 -> 6 `i s s ]
+[v F24932 `uc ~T0 @X0 -> 6 `i s s ]
 "632
 [; ;main.c: 632:  char c;
 [v _c `uc ~T0 @X0 1 a ]
@@ -6586,17 +6571,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! != -> _reset `i -> 0 `i 3479  ]
 "637
 [; ;main.c: 637:   s[shape] = 0;
-[e = *U + &U F24931 * -> _shape `ux -> -> # *U &U F24931 `ui `ux -> -> 0 `i `uc ]
+[e = *U + &U F24932 * -> _shape `ux -> -> # *U &U F24932 `ui `ux -> -> 0 `i `uc ]
 [e :U 3479 ]
 "638
 [; ;main.c: 638:  c = spin[shape][s[shape]];
-[e = _c *U + &U *U + &U _spin * -> _shape `ux -> * -> # *U &U *U &U _spin `ui -> -> 20 `i `ui `ux * -> *U + &U F24931 * -> _shape `ux -> -> # *U &U F24931 `ui `ux `ux -> -> # *U &U *U + &U _spin * -> _shape `ux -> * -> # *U &U *U &U _spin `ui -> -> 20 `i `ui `ux `ui `ux ]
+[e = _c *U + &U *U + &U _spin * -> _shape `ux -> * -> # *U &U *U &U _spin `ui -> -> 20 `i `ui `ux * -> *U + &U F24932 * -> _shape `ux -> -> # *U &U F24932 `ui `ux `ux -> -> # *U &U *U + &U _spin * -> _shape `ux -> * -> # *U &U *U &U _spin `ui -> -> 20 `i `ui `ux `ui `ux ]
 "639
 [; ;main.c: 639:  if (++s[shape] >= strlen(spin[shape]))
-[e $ ! >= -> =+ *U + &U F24931 * -> _shape `ux -> -> # *U &U F24931 `ui `ux -> -> 1 `i `uc `ui ( _strlen (1 &U *U + &U _spin * -> _shape `ux -> * -> # *U &U *U &U _spin `ui -> -> 20 `i `ui `ux 3480  ]
+[e $ ! >= -> =+ *U + &U F24932 * -> _shape `ux -> -> # *U &U F24932 `ui `ux -> -> 1 `i `uc `ui ( _strlen (1 &U *U + &U _spin * -> _shape `ux -> * -> # *U &U *U &U _spin `ui -> -> 20 `i `ui `ux 3480  ]
 "640
 [; ;main.c: 640:   s[shape] = 0;
-[e = *U + &U F24931 * -> _shape `ux -> -> # *U &U F24931 `ui `ux -> -> 0 `i `uc ]
+[e = *U + &U F24932 * -> _shape `ux -> -> # *U &U F24932 `ui `ux -> -> 0 `i `uc ]
 [e :U 3480 ]
 "642
 [; ;main.c: 642:  return c;
@@ -6616,12 +6601,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 [f ]
 "647
 [; ;main.c: 647:  static uint8_t ret = 0, i = 0;
-[v F24936 `uc ~T0 @X0 1 s ret ]
-[i F24936
+[v F24937 `uc ~T0 @X0 1 s ret ]
+[i F24937
 -> -> 0 `i `uc
 ]
-[v F24937 `uc ~T0 @X0 1 s i ]
-[i F24937
+[v F24938 `uc ~T0 @X0 1 s i ]
+[i F24938
 -> -> 0 `i `uc
 ]
 "649
@@ -6649,20 +6634,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e ( _wait_lcd_done ..  ]
 "655
 [; ;main.c: 655:  if (i++ == 4) {
-[e $ ! == -> ++ F24937 -> -> 1 `i `uc `i -> 4 `i 3488  ]
+[e $ ! == -> ++ F24938 -> -> 1 `i `uc `i -> 4 `i 3488  ]
 {
 "656
-[; ;main.c: 656:   send_spi2_data_dma(0b10000000 + 2, 0b11000000, 0b11000000, 2);
-[e ( _send_spi2_data_dma (4 , , , -> + -> 128 `i -> 2 `i `uc -> -> 192 `i `uc -> -> 192 `i `uc -> -> 2 `i `uc ]
-"657
-[; ;main.c: 657:   send_spi2_data_dma(0b00000000, 0b00000000, 0b00000000, 2);
-[e ( _send_spi2_data_dma (4 , , , -> -> 0 `i `uc -> -> 0 `i `uc -> -> 0 `i `uc -> -> 2 `i `uc ]
-"658
-[; ;main.c: 658:   send_spi2_data_dma(0b00000000, 0b00000000, 0b00000000, 2);
-[e ( _send_spi2_data_dma (4 , , , -> -> 0 `i `uc -> -> 0 `i `uc -> -> 0 `i `uc -> -> 2 `i `uc ]
+[; ;main.c: 656:   send_spi2_data_dma(0b10000000 + 1, 0b11000000, 0b11000000, 3);
+[e ( _send_spi2_data_dma (4 , , , -> + -> 128 `i -> 1 `i `uc -> -> 192 `i `uc -> -> 192 `i `uc -> -> 3 `i `uc ]
 "659
 [; ;main.c: 659:   i = 0;
-[e = F24937 -> -> 0 `i `uc ]
+[e = F24938 -> -> 0 `i `uc ]
 "660
 [; ;main.c: 660:  }
 }
@@ -6672,16 +6651,16 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e ( _wait_lcd_done ..  ]
 "662
 [; ;main.c: 662:  ret = SPI1_ReadByte();
-[e = F24936 ( _SPI1_ReadByte ..  ]
+[e = F24937 ( _SPI1_ReadByte ..  ]
 "663
 [; ;main.c: 663:  serial_buffer_ss.data[3] = ret;
-[e = *U + &U . _serial_buffer_ss 0 * -> -> -> 3 `i `ui `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux F24936 ]
+[e = *U + &U . _serial_buffer_ss 0 * -> -> -> 3 `i `ui `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux F24937 ]
 "664
 [; ;main.c: 664:  SPI2CON0bits.EN = 0;
 [e = . . _SPI2CON0bits 0 4 -> -> 0 `i `uc ]
 "666
 [; ;main.c: 666:  return(int8_t) ret;
-[e ) -> F24936 `c ]
+[e ) -> F24937 `c ]
 [e $UE 3481  ]
 "667
 [; ;main.c: 667: }
@@ -6694,13 +6673,13 @@ Version 4.0 HI-TECH Software Intermediate Code
 [a 11C 49 57 50 48 48 98 112 115 0 ]
 [a 5C 79 70 70 76 73 78 69 0 ]
 [a 3C 68 73 83 65 66 76 69 0 ]
-[a 2C 48 57 58 50 48 58 52 55 0 ]
 [a 1C 65 112 114 32 51 48 32 50 48 50 53 0 ]
 [a 20C 86 48 46 48 49 0 ]
 [a 25C 86 48 46 48 49 0 ]
 [a 29C 86 48 46 48 49 0 ]
 [a 31C 86 48 46 48 49 0 ]
 [a 36C 86 48 46 48 49 0 ]
+[a 2C 50 48 58 49 57 58 52 48 0 ]
 [a 7C 82 69 77 79 84 69 32 0 ]
 [a 6C 79 78 76 73 78 69 32 0 ]
 [a 8C 69 82 82 79 82 32 32 0 ]

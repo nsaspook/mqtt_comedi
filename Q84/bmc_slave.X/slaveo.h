@@ -56,13 +56,13 @@ extern "C" {
 		volatile uint32_t adc_count, adc_error_count,
 		port_count, port_error_count,
 		char_count, char_error_count,
-		slave_int_count, last_slave_int_count,
+		slave_int_count, last_slave_int_count, slave_tx_count,
 		comm_count, idle_count;
 		volatile uint8_t comm_ok;
 	};
 
 	struct serial_buffer_type_ss {
-		volatile uint8_t data[4], tx_buffer, adcl, adch;
+		volatile uint8_t data[4], tx_buffer, adcl, adch, command;
 		volatile uint32_t place;
 	};
 

@@ -243,7 +243,7 @@ B_type B = {
 };
 
 volatile struct spi_link_type_ss spi_comm_ss = {false, false, false, false, false, false, false, false};
-volatile struct spi_stat_type_ss spi_stat_ss = {0}, report_stat_ss = {0};
+volatile struct spi_stat_type_ss spi_stat_ss;
 volatile struct serial_buffer_type_ss serial_buffer_ss = {
 	.tx_buffer = 0x81,
 	.data[0] = 0x57,
@@ -524,7 +524,7 @@ void main(void)
 				if (TimerDone(TMR_HELPDIS)) {
 					set_display_info(DIS_STR);
 				}
-				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%lu %lu %lu %lu  0x%.2X 0x%.2X                  ", spi_stat_ss.adc_count, spi_stat_ss.comm_count, spi_stat_ss.slave_int_count, spi_stat_ss.idle_count,
+				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%lu %lu %lu %lu  0x%.2X 0x%.2X                  ", spi_stat_ss.adc_count, spi_stat_ss.slave_tx_count, spi_stat_ss.slave_int_count, spi_stat_ss.idle_count,
 					serial_buffer_ss.data[0], serial_buffer_ss.data[2]);
 				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%d %d %d %d %d %d %d %d %d             ", adc_buffer[channel], spi_comm_ss.ADC_DATA, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.LOW_BITS,
 					spi_comm_ss.REMOTE_DATA_DONE, spi_comm_ss.REMOTE_LINK, spi_comm_ss.SPI_DATA, spi_comm_ss.ADC_RUN);
@@ -653,9 +653,9 @@ int8_t test_slave(void)
 
 	wait_lcd_done();
 	if (i++ == 4) {
-		send_spi2_data_dma(CMD_ADC_GO + 2, CMD_ADC_DATA, CMD_ADC_DATA, 2);
-		send_spi2_data_dma(CMD_ZERO, CMD_ZERO, CMD_ZERO, 2);
-		send_spi2_data_dma(CMD_ZERO, CMD_ZERO, CMD_ZERO, 2);
+		send_spi2_data_dma(CMD_ADC_GO + 1, CMD_ADC_DATA, CMD_ADC_DATA, 3);
+//		send_spi2_data_dma(CMD_ADC_GO + 3, CMD_ADC_DATA, CMD_ADC_DATA, 3);
+//		send_spi2_data_dma(CMD_ADC_GO + 2, CMD_ADC_DATA, CMD_ADC_DATA, 3);
 		i = 0;
 	}
 	wait_lcd_done();

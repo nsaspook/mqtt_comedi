@@ -18,10 +18,10 @@ mcc_generated_files/spi1.h  \
 mcc_generated_files/spi2.h  \
 eadog.h  \
 vconfig.h  \
-gemsecs.h  \
+slaveo.h  \
+mconfig.h  \
 timers.h  \
+gemsecs.h  \
 mydisplay.h  \
 msg_text.h  \
-mconfig.h  \
-rs232.h  \
-slaveo.h 
+rs232.h 

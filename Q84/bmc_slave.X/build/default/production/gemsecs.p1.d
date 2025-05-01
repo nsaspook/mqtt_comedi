@@ -21,5 +21,6 @@ mcc_generated_files/spi2.h  \
 timers.h  \
 mydisplay.h  \
 eadog.h  \
-msg_text.h  \
-mconfig.h 
+slaveo.h  \
+mconfig.h  \
+msg_text.h 

@@ -5,6 +5,8 @@ vconfig.h  \
 mcc_generated_files/adc.h  \
 mcc_generated_files/spi1.h  \
 mcc_generated_files/pin_manager.h  \
+slaveo.h  \
+mconfig.h  \
 mcc_generated_files/mcc.h  \
 mcc_generated_files/device_config.h  \
 mcc_generated_files/interrupt_manager.h  \
@@ -17,4 +19,5 @@ mcc_generated_files/dac1.h  \
 mcc_generated_files/memory.h  \
 mcc_generated_files/uart2.h  \
 mcc_generated_files/uart1.h  \
-mcc_generated_files/spi2.h 
+mcc_generated_files/spi2.h  \
+timers.h 

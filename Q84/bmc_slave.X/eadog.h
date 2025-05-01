@@ -41,6 +41,7 @@ Open Open RS-232 5V, TTL signal
 extern "C" {
 #endif
 #include "vconfig.h"
+#include "slaveo.h"
 
 #define USEMCC_SPI
 #ifndef CAN_REMOTE_NODMA
