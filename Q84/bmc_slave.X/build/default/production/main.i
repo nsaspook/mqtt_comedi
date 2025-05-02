@@ -41249,7 +41249,7 @@ D_CODES set_temp_display_help(const D_CODES);
 # 175 "main.c" 2
 # 185 "main.c"
 extern struct spi_link_type spi_link;
-const char *build_date = "Apr 30 2025", *build_time = "20:19:40";
+const char *build_date = "May  1 2025", *build_time = "11:04:44";
 
 const char * GEM_TEXT [] = {
  "DISABLE",
@@ -41473,7 +41473,7 @@ void main(void)
    snprintf(get_vterm_ptr(3, 2), 20 +1, " %s                   ", (char *) build_date);
    refresh_lcd();
    WaitMs(3000);
-   StartTimer(TMR_DISPLAY, 100);
+   StartTimer(TMR_DISPLAY, 50);
    StartTimer(TMR_SEQ, 10000);
    StartTimer(TMR_INFO, 3000);
    StartTimer(TMR_FLIPPER, 1500);
@@ -41619,7 +41619,7 @@ void main(void)
 
     PIE1bits.ADIE = 1;
 
-    StartTimer(TMR_DISPLAY, 100);
+    StartTimer(TMR_DISPLAY, 50);
     if (V.vterm_switch++ > (70)) {
      set_vterm(switcher);
      if (V.vterm_switch > (70 + V.ticker + 32)) {
@@ -41716,18 +41716,14 @@ int8_t test_slave(void)
  wait_lcd_done();
  do { LATDbits.LATD3 = 1; } while(0);
  SPI2CON0bits.EN = 1;
-
  wait_lcd_done();
- if (i++ == 4) {
+ if (i++ == 0) {
   send_spi2_data_dma(0b10000000 + 1, 0b11000000, 0b11000000, 3);
-
-
   i = 0;
  }
  wait_lcd_done();
  ret = SPI1_ReadByte();
  serial_buffer_ss.data[3] = ret;
  SPI2CON0bits.EN = 0;
-
  return(int8_t) ret;
 }

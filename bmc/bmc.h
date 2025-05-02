@@ -48,7 +48,7 @@ extern "C" {
 #define CLIENTID1       "Energy_Mqtt_BMC1"
 #define CLIENTID2       "Energy_Mqtt_BMC2"
 #define CLIENTID3       "Energy_Mqtt_BMC3"
-#define TOPIC_P         "comedi/bmc/data/bmc"
+#define TOPIC_P         
 #define TOPIC_SPAM      "comedi/bmc/data/spam"
 #define TOPIC_PACA      "home-assistant/comedi/bmc"
         //#define TOPIC_PACB      "mateq84/data/#"

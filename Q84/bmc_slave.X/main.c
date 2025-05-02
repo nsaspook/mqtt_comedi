@@ -650,19 +650,15 @@ int8_t test_slave(void)
 	wait_lcd_done();
 	CS_SetHigh();
 	SPI2CON0bits.EN = 1;
-
 	wait_lcd_done();
-	if (i++ == 4) {
+	if (i++ == 0) {
 		send_spi2_data_dma(CMD_ADC_GO + 1, CMD_ADC_DATA, CMD_ADC_DATA, 3);
-//		send_spi2_data_dma(CMD_ADC_GO + 3, CMD_ADC_DATA, CMD_ADC_DATA, 3);
-//		send_spi2_data_dma(CMD_ADC_GO + 2, CMD_ADC_DATA, CMD_ADC_DATA, 3);
 		i = 0;
 	}
 	wait_lcd_done();
 	ret = SPI1_ReadByte();
 	serial_buffer_ss.data[3] = ret;
 	SPI2CON0bits.EN = 0;
-
 	return(int8_t) ret;
 }
 

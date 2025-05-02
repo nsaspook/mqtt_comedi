@@ -120,6 +120,7 @@ void slaveo_rx_isr(void)
 	serial_buffer_ss.command = command;
 
 	if (UART1_is_rx_ready()) { // we need to read the buffer in sync with the *_CHAR_* commands so it's polled
+		MLED_SetHigh();
 		char_rxtmp = UART1_Read();
 		serial_buffer_ss.data[1] = char_rxtmp;
 		cmd_dummy |= UART_DUMMY_MASK; // We have real USART data waiting
@@ -127,10 +128,10 @@ void slaveo_rx_isr(void)
 	}
 
 	if (command == CMD_CHAR_GO) {
+		MLED_SetHigh();
 		char_txtmp = (data_in2 & LO_NIBBLE); // read lower 4 bits
 		//		serial_buffer_ss.tx_buffer = char_rxtmp;
 		spi_stat_ss.char_count++;
-		MLED_Toggle();
 	}
 
 	if (command == CMD_CHAR_DATA) { // get upper 4 bits send bits and send the data
@@ -147,6 +148,7 @@ void slaveo_rx_isr(void)
 	}
 
 	if (command == CMD_ADC_GO) { // Found a GO for a conversion command
+		MLED_SetHigh();
 		spi_comm_ss.ADC_RUN = true;
 		spi_stat_ss.adc_count++;
 
@@ -169,10 +171,12 @@ void slaveo_rx_isr(void)
 	}
 
 	if (data_in2 == CMD_ADC_DATA) {
+		MLED_SetHigh();
 		spi_stat_ss.last_slave_int_count = spi_stat_ss.slave_int_count;
 	}
 
 	if (command == CMD_CHAR_RX) {
+		MLED_SetHigh();
 		serial_buffer_ss.tx_buffer = char_rxtmp;
 		cmd_dummy = CMD_DUMMY; // clear rx bit
 	}
@@ -181,7 +185,6 @@ void slaveo_rx_isr(void)
 
 void slaveo_tx_isr(void)
 {
-	MLED_SetHigh();
 	spi_stat_ss.slave_tx_count++;
 	if (flipper) {
 		SPI2TXB = serial_buffer_ss.adch;

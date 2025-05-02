@@ -47,6 +47,7 @@ extern "C" {
         struct ha_daq_hosts_type {
                 const char hosts[4][NI_MAXHOST];
                 const char clients[4][NI_MAXHOST];
+                const char topics[4][NI_MAXHOST];
                 char hname[4][NI_MAXHOST];
                 double scaler[4];
                 uint8_t hindex;

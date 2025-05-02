@@ -35,6 +35,10 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.hosts[1] = "10.1.1.39",
 	.hosts[2] = "10.1.2.30",
 	.hosts[3] = "10.1.2.39",
+	.topics[0] = "comedi/bmc/data/bmc/1",
+	.topics[1] = "comedi/bmc/data/bmc/2",
+	.topics[2] = "comedi/bmc/data/bmc/3",
+	.topics[3] = "comedi/bmc/data/bmc/4",
 	.hname[0] = "RDAQ1",
 	.hname[1] = "RDAQ2",
 	.hname[2] = "RDAQ3",
@@ -274,7 +278,7 @@ void bmc_mqtt_init(void)
 	signal(SIGALRM, timer_callback);
 
 	if (strncmp(hname, TNAME, 6) == 0) {
-		MQTTClient_create(&E.client_p, LADDRESS, (const char *) &ha_daq_host.clients[ha_daq_host.hindex],
+		MQTTClient_create(&E.client_p, LADDRESS, (const char *) &ha_daq_host.topics[ha_daq_host.hindex],
 			MQTTCLIENT_PERSISTENCE_NONE, NULL);
 		conn_opts_p.keepAliveInterval = KAI;
 		conn_opts_p.cleansession = 1;
@@ -297,7 +301,7 @@ void bmc_mqtt_init(void)
 		exit(EXIT_FAILURE);
 	}
 
-	MQTTClient_subscribe(E.client_p, TOPIC_P, QOS); // sub for testing data from the HA_Energy system
+	MQTTClient_subscribe(E.client_p, ha_daq_host.topics[ha_daq_host.hindex], QOS); // remote DAQ data for the HA_Energy system
 
 	pubmsg.payload = "online";
 	pubmsg.payloadlen = strlen("online");
@@ -485,7 +489,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
  */
 void comedi_push_mqtt(void)
 {
-	mqtt_bmc_data(E.client_p, TOPIC_P);
+	mqtt_bmc_data(E.client_p, ha_daq_host.topics[ha_daq_host.hindex]);
 }
 
 double ac0_filter(const double raw)
