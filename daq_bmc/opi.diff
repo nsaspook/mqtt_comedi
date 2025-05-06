@@ -1,0 +1,92 @@
+diff --git a/arch/arm64/boot/dts/allwinner/overlay/Makefile b/arch/arm64/boot/dts/allwinner/overlay/Makefile
+index f7913a997031..d6631fb71d7d 100755
+--- a/arch/arm64/boot/dts/allwinner/overlay/Makefile
++++ b/arch/arm64/boot/dts/allwinner/overlay/Makefile
+@@ -15,6 +15,7 @@ dtbo-$(CONFIG_ARCH_SUNXI) += \
+ 	sun50i-h616-spi1-cs0-spidev.dtbo \
+ 	sun50i-h616-spi1-cs1-spidev.dtbo \
+ 	sun50i-h616-spi1-cs0-cs1-spidev.dtbo \
++        sun50i-h616-spi1-spibmc.dtbo \
+ 	sun50i-h616-disable-leds.dtbo \
+ 	sun50i-h616-disable-uart0.dtbo \
+ 	sun50i-h616-zero2w-disable-led.dtbo \
+diff --git a/drivers/comedi/Kconfig b/drivers/comedi/Kconfig
+index 3cb61fa2c5c3..01fa9168dc16 100644
+--- a/drivers/comedi/Kconfig
++++ b/drivers/comedi/Kconfig
+@@ -98,6 +98,15 @@ menuconfig COMEDI_ISA_DRIVERS
+ 
+ if COMEDI_ISA_DRIVERS
+ 
++config COMEDI_DAQ_BMC
++        tristate "Driver for OPi GPIO and SPI connected hardware"
++        select COMEDI_8254
++        help
++          Enable support for OPi GPIO and SPI connected hardware
++ 
++          To compile this driver as a module, choose M here: the module will be
++          called daq_bmc.
++
+ config COMEDI_PCL711
+ 	tristate "Advantech PCL-711/711b and ADlink ACL-8112 ISA card support"
+ 	select COMEDI_8254
+diff --git a/drivers/comedi/drivers/Makefile b/drivers/comedi/drivers/Makefile
+index b24ac00cab73..1540a6e3ecc9 100644
+--- a/drivers/comedi/drivers/Makefile
++++ b/drivers/comedi/drivers/Makefile
+@@ -13,6 +13,7 @@ obj-$(CONFIG_COMEDI_TEST)		+= comedi_test.o
+ obj-$(CONFIG_COMEDI_PARPORT)		+= comedi_parport.o
+ 
+ # Comedi ISA drivers
++obj-$(CONFIG_COMEDI_DAQ_BMC)            += daq_bmc.o
+ obj-$(CONFIG_COMEDI_AMPLC_DIO200_ISA)	+= amplc_dio200.o
+ obj-$(CONFIG_COMEDI_AMPLC_PC236_ISA)	+= amplc_pc236.o
+ obj-$(CONFIG_COMEDI_AMPLC_PC263_ISA)	+= amplc_pc263.o
+diff --git a/drivers/comedi/drivers/dt9812.c b/drivers/comedi/drivers/dt9812.c
+index c3e53bac44fb..1abfc18a00f9 100644
+--- a/drivers/comedi/drivers/dt9812.c
++++ b/drivers/comedi/drivers/dt9812.c
+@@ -751,7 +751,7 @@ static int dt9812_reset_device(struct comedi_device *dev)
+ 		 * Seems like a configuration reset is necessary if driver is
+ 		 * reloaded while device is attached
+ 		 */
+-		usb_reset_configuration(usb);
++//		usb_reset_configuration(usb);
+ 		for (i = 0; i < 10; i++) {
+ 			ret = dt9812_read_info(dev, 1, &tmp8, sizeof(tmp8));
+ 			if (ret == 0)
+@@ -821,12 +821,14 @@ static int dt9812_auto_attach(struct comedi_device *dev,
+ 		return -ENOMEM;
+ 
+ 	mutex_init(&devpriv->mut);
+-	usb_set_intfdata(intf, devpriv);
++//	usb_set_intfdata(intf, devpriv);
+ 
+ 	ret = dt9812_find_endpoints(dev);
+ 	if (ret)
+ 		return ret;
+ 
++	usb_set_intfdata(intf, devpriv);
++
+ 	ret = dt9812_reset_device(dev);
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index d4b969e68c31..e48326b30acf 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -1148,6 +1148,14 @@ config SPI_LOOPBACK_TEST
+ 	  primarily used for development of spi_master drivers
+ 	  and to detect regressions
+ 
++config SPI_COMEDI
++        tristate "Comedi mode SPI device driver support for spi_bmc"
++        help
++          This supports the spi_bmc Comedi mode SPI protocol driver.
++
++          Note that this application programming interface is EXPERIMENTAL
++          and hence SUBJECT TO CHANGE WITHOUT NOTICE while it stabilizes.
++
+ config SPI_TLE62X0
+ 	tristate "Infineon TLE62X0 (for power switching)"
+ 	depends on SYSFS
