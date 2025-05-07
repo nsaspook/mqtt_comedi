@@ -3369,12 +3369,11 @@ static struct spi_driver spibmc_spi_driver = {
 	{
 		.name = "spibmc",
 		.owner = THIS_MODULE,
-		//		.of_match_table = spibmc_dt_ids,
-		//		.acpi_match_table = spibmc_acpi_ids,
+		.of_match_table = spibmc_dt_ids,
 	},
 	.probe = spibmc_spi_probe,
 	.remove = (void *) spibmc_spi_remove,
-	//	.id_table = spibmc_spi_ids,
+	.id_table = spibmc_spi_ids,
 };
 
 /*
