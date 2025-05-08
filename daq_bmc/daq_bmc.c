@@ -411,11 +411,11 @@ static const uint32_t CONV_SPEED_FIX_FAST = 9; /* used for the MCP3002 ADC */
 static const uint32_t CONV_ADS8330 = 0; /* used for the ADS8330 ADC */
 static const uint32_t MAX_BOARD_RATE = 1000000000;
 static const struct spi_delay CS_CHANGE_DELAY_USECS0 = {
-	.value = 1,
+	.value = 0,
 	.unit = 0
 };
 static const struct spi_delay CS_CHANGE_DELAY_USECS10 = {
-	.value = 10,
+	.value = 25,
 	.unit = 0
 };
 
@@ -1349,7 +1349,7 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		pdata->one_t.word_delay = CS_CHANGE_DELAY_USECS0;
 #endif
 		/*
-		 * send ADC GO command requuest
+		 * send ADC GO command request
 		 */
 		spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
 		spi_bus_lock(spi->master);
@@ -3373,7 +3373,7 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 		list_add_tail(&pdata->device_entry, &device_list);
 		spi->mode = daqbmc_devices[defdev7].spi_mode;
 		spi->max_speed_hz = daqbmc_devices[defdev7].max_speed_hz;
-		spi->word_delay = CS_CHANGE_DELAY_USECS0;
+		spi->word_delay = CS_CHANGE_DELAY_USECS10;
 		spi->cs_setup = CS_CHANGE_DELAY_USECS0;
 		spi->cs_hold = CS_CHANGE_DELAY_USECS0;
 		spi->cs_inactive = CS_CHANGE_DELAY_USECS0;
