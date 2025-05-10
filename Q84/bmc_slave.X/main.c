@@ -583,7 +583,7 @@ void main(void)
 				 */
 				if (!V.set_sequ) {
 					refresh_lcd();
-					test_slave();
+//					test_slave();
 				}
 			}
 		}

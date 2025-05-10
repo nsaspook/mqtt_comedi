@@ -41249,7 +41249,7 @@ D_CODES set_temp_display_help(const D_CODES);
 # 175 "main.c" 2
 # 185 "main.c"
 extern struct spi_link_type spi_link;
-const char *build_date = "May  1 2025", *build_time = "11:04:44";
+const char *build_date = "May  9 2025", *build_time = "17:12:09";
 
 const char * GEM_TEXT [] = {
  "DISABLE",
@@ -41649,7 +41649,7 @@ void main(void)
 
     if (!V.set_sequ) {
      refresh_lcd();
-     test_slave();
+
     }
    }
   }

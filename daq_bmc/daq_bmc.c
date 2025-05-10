@@ -543,10 +543,10 @@ static const struct daqbmc_device daqbmc_devices[] = {
 	{
 		.name = "defdev0",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
-		.max_speed_hz = 500000,
+		.max_speed_hz = 50000,
 		.min_acq_ns = 22160,
 		.rate_min = 20000,
-		.spi_mode = 3,
+		.spi_mode = 0,
 		.spi_bpw = 8,
 		.n_transfers = 3,
 	},
@@ -619,10 +619,10 @@ static const struct daqbmc_device daqbmc_devices[] = {
 	{
 		.name = "pic18f47q84",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
-		.max_speed_hz = 4000000,
+		.max_speed_hz = 50000,
 		.min_acq_ns = 20000,
 		.rate_min = 20000,
-		.spi_mode = 3,
+		.spi_mode = 0,
 		.spi_bpw = 8,
 		.n_chan_bits = 12,
 		.n_chan = 7,
@@ -667,10 +667,10 @@ static const struct daqbmc_device daqbmc_devices[] = {
 	{
 		.name = "picslq84",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
-		.max_speed_hz = 4000000,
+		.max_speed_hz = 50000,
 		.min_acq_ns = 20000,
 		.rate_min = 20000,
-		.spi_mode = 3,
+		.spi_mode = 0,
 		.spi_bpw = 8,
 		.n_chan_bits = 12,
 		.n_chan = 7,
@@ -1322,8 +1322,8 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		}
 		break;
 	case picsl10:
-	case picsl12:
-#define Speed_Testing
+	case picslq84:
+//#define Speed_Testing
 		tmp = spi->mode;
 	{
 		struct spi_controller *ctlr = spi->controller;
@@ -1397,7 +1397,7 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		}
 	}
 		break;
-	case picslq84:
+	case picsl12:
 #ifdef Speed_Testing
 		pdata->one_t.len = daqbmc_device_offset(special);
 		for (i = 0; i < 32; i++) {

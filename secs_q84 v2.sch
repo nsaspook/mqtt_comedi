@@ -14673,6 +14673,7 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <sheets>
 <sheet>
 <plain>
+<text x="332.74" y="-20.32" size="1.778" layer="91">5/6 and 8/9 pins swapped as a fix</text>
 </plain>
 <instances>
 <instance part="VDD1" gate="G$1" x="99.06" y="0" smashed="yes">
@@ -15134,8 +15135,8 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <attribute name="VALUE" x="347.98" y="-63.5" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="IC3" gate="G$1" x="335.28" y="-25.4" smashed="yes">
-<attribute name="NAME" x="359.41" y="-17.78" size="1.778" layer="95" align="center-left"/>
-<attribute name="VALUE" x="359.41" y="-20.32" size="1.778" layer="96" align="center-left"/>
+<attribute name="NAME" x="346.71" y="-35.56" size="1.778" layer="95" align="center-left"/>
+<attribute name="VALUE" x="341.63" y="-38.1" size="1.778" layer="96" align="center-left"/>
 </instance>
 <instance part="IC6" gate="G$1" x="335.28" y="0" smashed="yes">
 <attribute name="NAME" x="346.71" y="7.62" size="1.778" layer="95" align="center-left"/>
@@ -15151,7 +15152,7 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <attribute name="VALUE" x="330.2" y="-5.08" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="VSS45" gate="G$1" x="332.74" y="-15.24" smashed="yes" rot="R270">
-<attribute name="VALUE" x="330.2" y="-12.7" size="1.778" layer="96" rot="R180"/>
+<attribute name="VALUE" x="330.2" y="-15.24" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="VSS46" gate="G$1" x="363.22" y="-10.16" smashed="yes" rot="R90">
 <attribute name="VALUE" x="365.76" y="-10.16" size="1.778" layer="96"/>
@@ -15166,7 +15167,7 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <attribute name="VALUE" x="330.2" y="-25.4" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="VDD13" gate="G$1" x="335.28" y="-22.86" smashed="yes">
-<attribute name="VALUE" x="332.74" y="-20.32" size="1.778" layer="96" rot="R180"/>
+<attribute name="VALUE" x="330.2" y="-22.86" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="VDD15" gate="G$1" x="335.28" y="-33.02" smashed="yes" rot="R180">
 <attribute name="VALUE" x="337.82" y="-35.56" size="1.778" layer="96"/>
@@ -16367,11 +16368,11 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <label x="213.36" y="15.24" size="1.778" layer="95" rot="R90"/>
 </segment>
 <segment>
-<wire x1="373.38" y1="-12.7" x2="360.68" y2="-12.7" width="0.1524" layer="91"/>
-<pinref part="IC6" gate="G$1" pin="3A"/>
-<junction x="360.68" y="-12.7"/>
-<junction x="373.38" y="-12.7"/>
-<label x="363.22" y="-12.7" size="1.778" layer="95"/>
+<wire x1="373.38" y1="-15.24" x2="360.68" y2="-15.24" width="0.1524" layer="91"/>
+<pinref part="IC6" gate="G$1" pin="3Y"/>
+<junction x="373.38" y="-15.24"/>
+<junction x="360.68" y="-15.24"/>
+<label x="363.22" y="-15.24" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="SCK2" class="0">
@@ -16396,11 +16397,11 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <label x="210.82" y="15.24" size="1.778" layer="95" rot="R90"/>
 </segment>
 <segment>
-<wire x1="322.58" y1="-10.16" x2="335.28" y2="-10.16" width="0.1524" layer="91"/>
-<pinref part="IC6" gate="G$1" pin="2A"/>
-<junction x="335.28" y="-10.16"/>
-<junction x="322.58" y="-10.16"/>
-<label x="325.12" y="-10.16" size="1.778" layer="95"/>
+<wire x1="322.58" y1="-12.7" x2="335.28" y2="-12.7" width="0.1524" layer="91"/>
+<pinref part="IC6" gate="G$1" pin="2Y"/>
+<junction x="335.28" y="-12.7"/>
+<junction x="322.58" y="-12.7"/>
+<label x="325.12" y="-12.7" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="CS" class="0">
@@ -17425,14 +17426,7 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <label x="147.32" y="22.86" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="SCK2_OUT" class="0">
-<segment>
-<wire x1="320.04" y1="-12.7" x2="335.28" y2="-12.7" width="0.1524" layer="91"/>
-<pinref part="IC6" gate="G$1" pin="2Y"/>
-<junction x="335.28" y="-12.7"/>
-<junction x="320.04" y="-12.7"/>
-<label x="322.58" y="-12.7" size="1.778" layer="95"/>
-</segment>
+<net name="SCK2_IN" class="0">
 <segment>
 <wire x1="144.78" y1="17.78" x2="160.02" y2="17.78" width="0.1524" layer="91"/>
 <pinref part="R23" gate="G$1" pin="2"/>
@@ -17440,15 +17434,15 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <junction x="160.02" y="17.78"/>
 <label x="147.32" y="17.78" size="1.778" layer="95"/>
 </segment>
-</net>
-<net name="SS2_OUT" class="0">
 <segment>
-<wire x1="360.68" y1="-15.24" x2="375.92" y2="-15.24" width="0.1524" layer="91"/>
-<pinref part="IC6" gate="G$1" pin="3Y"/>
-<junction x="360.68" y="-15.24"/>
-<junction x="375.92" y="-15.24"/>
-<label x="363.22" y="-15.24" size="1.778" layer="95"/>
+<wire x1="320.04" y1="-10.16" x2="335.28" y2="-10.16" width="0.1524" layer="91"/>
+<pinref part="IC6" gate="G$1" pin="2A"/>
+<junction x="335.28" y="-10.16"/>
+<junction x="320.04" y="-10.16"/>
+<label x="322.58" y="-10.16" size="1.778" layer="95"/>
 </segment>
+</net>
+<net name="SS2_IN" class="0">
 <segment>
 <wire x1="144.78" y1="15.24" x2="160.02" y2="15.24" width="0.1524" layer="91"/>
 <pinref part="R24" gate="G$1" pin="2"/>
@@ -17456,6 +17450,13 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <junction x="160.02" y="15.24"/>
 <label x="144.78" y="15.24" size="1.778" layer="95"/>
 <pinref part="R30" gate="G$1" pin="2"/>
+</segment>
+<segment>
+<wire x1="360.68" y1="-12.7" x2="375.92" y2="-12.7" width="0.1524" layer="91"/>
+<pinref part="IC6" gate="G$1" pin="3A"/>
+<junction x="375.92" y="-12.7"/>
+<junction x="360.68" y="-12.7"/>
+<label x="363.22" y="-12.7" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="SDI2_IN" class="0">
