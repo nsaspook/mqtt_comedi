@@ -1,25 +1,25 @@
 Version 4.0 HI-TECH Software Intermediate Code
 "11 rs232.c
 [; ;rs232.c: 11:  V.tx_rs232 = line_status(V.v_tx_line);
-[c E23944 0 1 2 3 4 5 6 .. ]
-[n E23944 . SEQ_STATE_INIT SEQ_STATE_RX SEQ_STATE_TX SEQ_STATE_TRIGGER SEQ_STATE_QUEUE SEQ_STATE_DONE SEQ_STATE_ERROR  ]
-[c E23953 0 1 2 3 4 .. ]
-[n E23953 . UI_STATE_INIT UI_STATE_HOST UI_STATE_DEBUG UI_STATE_LOG UI_STATE_ERROR  ]
-[c E23960 0 1 2 3 4 5 .. ]
-[n E23960 . GEM_STATE_DISABLE GEM_STATE_COMM GEM_STATE_OFFLINE GEM_STATE_ONLINE GEM_STATE_REMOTE GEM_STATE_ERROR  ]
-[c E23969 0 1 2 9 .. ]
-[n E23969 . GEM_GENERIC GEM_VII80 GEM_E220 GEM_ERROR  ]
-[c E23975 0 1 2 3 4 5 6 .. ]
-[n E23975 . LINK_STATE_IDLE LINK_STATE_ENQ LINK_STATE_EOT LINK_STATE_ACK LINK_STATE_DONE LINK_STATE_NAK LINK_STATE_ERROR  ]
-[c E23916 0 1 2 3 4 5 6 7 8 9 10 11 .. ]
-[n E23916 . DIS_STR DIS_TERM DIS_LOG DIS_LOAD DIS_UNLOAD DIS_PUMP DIS_HELP DIS_SEQUENCE DIS_SEQUENCE_M DIS_ERR DIS_FREE DIS_CLEAR  ]
+[c E23945 0 1 2 3 4 5 6 .. ]
+[n E23945 . SEQ_STATE_INIT SEQ_STATE_RX SEQ_STATE_TX SEQ_STATE_TRIGGER SEQ_STATE_QUEUE SEQ_STATE_DONE SEQ_STATE_ERROR  ]
+[c E23954 0 1 2 3 4 .. ]
+[n E23954 . UI_STATE_INIT UI_STATE_HOST UI_STATE_DEBUG UI_STATE_LOG UI_STATE_ERROR  ]
+[c E23961 0 1 2 3 4 5 .. ]
+[n E23961 . GEM_STATE_DISABLE GEM_STATE_COMM GEM_STATE_OFFLINE GEM_STATE_ONLINE GEM_STATE_REMOTE GEM_STATE_ERROR  ]
+[c E23970 0 1 2 9 .. ]
+[n E23970 . GEM_GENERIC GEM_VII80 GEM_E220 GEM_ERROR  ]
+[c E23976 0 1 2 3 4 5 6 .. ]
+[n E23976 . LINK_STATE_IDLE LINK_STATE_ENQ LINK_STATE_EOT LINK_STATE_ACK LINK_STATE_DONE LINK_STATE_NAK LINK_STATE_ERROR  ]
+[c E23917 0 1 2 3 4 5 6 7 8 9 10 11 .. ]
+[n E23917 . DIS_STR DIS_TERM DIS_LOG DIS_LOAD DIS_UNLOAD DIS_PUMP DIS_HELP DIS_SEQUENCE DIS_SEQUENCE_M DIS_ERR DIS_FREE DIS_CLEAR  ]
 "186 ./vconfig.h
-[; ;./vconfig.h: 186:     typedef struct terminal_type {
-[s S3354 `uc -> 32 `i `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 :1 `uc 1 `E23916 1 `E23916 1 `us 1 `us 1 ]
+[; ;./vconfig.h: 186:  typedef struct terminal_type {
+[s S3354 `uc -> 32 `i `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 :1 `uc 1 `E23917 1 `E23917 1 `us 1 `us 1 ]
 [n S3354 terminal_type ack mesgid TID mcode mparm cmdlen log_seq host_display_ack info help_temp ceid log_num ]
 "289
-[; ;./vconfig.h: 289:     typedef struct V_data {
-[s S3355 `E23944 1 `E23953 1 `E23960 1 `E23969 1 `E23975 1 `E23975 1 `E23975 1 `uc -> 128 `i `uc -> 160 `i `uc -> 64 `i `ul 1 `ul 1 `ul 1 `ul 1 `ul 1 `ul 1 `ul 1 `ul 1 `Vul 1 `l 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `E23953 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :4 `uc 1 :4 `uc 1 `S3354 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `Vuc 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `us 1 `us 1 `s 1 `s 1 `uc 1 `uc 1 `s 1 `s 1 `ul 1 ]
+[; ;./vconfig.h: 289:  typedef struct V_data {
+[s S3355 `E23945 1 `E23954 1 `E23961 1 `E23970 1 `E23976 1 `E23976 1 `E23976 1 `uc -> 128 `i `uc -> 160 `i `uc -> 64 `i `ul 1 `ul 1 `ul 1 `ul 1 `ul 1 `ul 1 `ul 1 `ul 1 `Vul 1 `l 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `E23954 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :4 `uc 1 :4 `uc 1 `S3354 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `Vuc 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `us 1 `us 1 `s 1 `s 1 `uc 1 `uc 1 `s 1 `s 1 `ul 1 ]
 [n S3355 V_data s_state ui_state g_state e_types m_l_state r_l_state t_l_state buf terminal info ticks systemb tx_total rx_total bt_total br_total brn_total btn_total utc_ticks testing stream function error abort msg_error msg_ret alarm event ui_sw r_checksum t_checksum checksum_error timer_error ping mode_pwm equip_timeout sequences all_errors ceid rbit wbit ebit failed_send failed_receive response uart llid sid ping_count euart vterm vterm_switch uart_speed_fast ticker flipper queue debug help stack help_id rerror speed_spin set_sequ log_s6f11 log_abort log_char v_tx_line v_rx_line tx_volts rx_volts tx_rs232 rx_rs232 secs_value cmd_value utc_cmd_value ]
 "4 rs232.c
 [; ;rs232.c: 4: extern struct V_data V;
@@ -3624,10 +3624,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 "71146
 [; ;/root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h: 71146: __asm("TOSU equ 04FFh");
 [; <" TOSU equ 04FFh ;# ">
-[v F24113 `Cuc ~T0 @X0 -> 20 `i t ]
+[v F24114 `Cuc ~T0 @X0 -> 20 `i t ]
 "323 ./vconfig.h
-[; ;./vconfig.h: 323:     const char spin[6][20] = {
-[v _spin `F24113 ~T0 @X0 -> 6 `i e ]
+[; ;./vconfig.h: 323:  const char spin[6][20] = {
+[v _spin `F24114 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
 :U ..
@@ -3706,20 +3706,20 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ]
 "336
-[; ;./vconfig.h: 336:     const char *build_date, *build_time;
+[; ;./vconfig.h: 336:  const char *build_date, *build_time;
 [v _build_date `*Cuc ~T0 @X0 1 e ]
 [v _build_time `*Cuc ~T0 @X0 1 e ]
 "16 ./rs232.h
-[; ;./rs232.h: 16:  const int16_t pos_scale = 40,
+[; ;./rs232.h: 16:  const int16_t pos_scale = 35,
 [v _pos_scale `Cs ~T0 @X0 1 e ]
 [i _pos_scale
--> -> 40 `i `s
+-> -> 35 `i `s
 ]
 "17
-[; ;./rs232.h: 17:   neg_scale = 70,
+[; ;./rs232.h: 17:   neg_scale = 60,
 [v _neg_scale `Cs ~T0 @X0 1 e ]
 [i _neg_scale
--> -> 70 `i `s
+-> -> 60 `i `s
 ]
 "18
 [; ;./rs232.h: 18:   line_zero_limit = -24,

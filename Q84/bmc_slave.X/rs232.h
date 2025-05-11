@@ -13,8 +13,8 @@ extern "C" {
 #endif
 
 #include "vconfig.h"
-	const int16_t pos_scale = 40,
-		neg_scale = 70,
+	const int16_t pos_scale = 35,
+		neg_scale = 60,
 		line_zero_limit = -24,
 		adc_scale_zero = -2048;
 	void update_rs232_line_status(void);

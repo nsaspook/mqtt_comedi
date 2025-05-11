@@ -333,7 +333,7 @@ by the module option variable daqbmc_conf in the /etc/modprobe.d directory
 /*
  * for optional SPI framework patch
  */
-#define CS_CHANGE_USECS
+//#define CS_CHANGE_USECS
 
 /* 
  * SPI transfer buffer size 
@@ -543,7 +543,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 	{
 		.name = "defdev0",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
-		.max_speed_hz = 50000,
+		.max_speed_hz = 4000000,
 		.min_acq_ns = 22160,
 		.rate_min = 20000,
 		.spi_mode = 0,
@@ -619,7 +619,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 	{
 		.name = "pic18f47q84",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
-		.max_speed_hz = 50000,
+		.max_speed_hz = 4000000,
 		.min_acq_ns = 20000,
 		.rate_min = 20000,
 		.spi_mode = 0,
@@ -667,7 +667,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 	{
 		.name = "picslq84",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
-		.max_speed_hz = 50000,
+		.max_speed_hz = 4000000,
 		.min_acq_ns = 20000,
 		.rate_min = 20000,
 		.spi_mode = 0,
@@ -1252,7 +1252,7 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 	struct comedi_spibmc *pdata = spi->dev.platform_data;
 	static struct spi_message m;
 	uint32_t chan, sync, i, spi_stream = 0;
-	int32_t val = 0;
+	int32_t val = 0, val_mode = 0;
 	uint32_t tmp;
 
 	mutex_lock(&devpriv->drvdata_lock);
@@ -1322,8 +1322,7 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		}
 		break;
 	case picsl10:
-	case picslq84:
-//#define Speed_Testing
+	case picsl12:
 		tmp = spi->mode;
 	{
 		struct spi_controller *ctlr = spi->controller;
@@ -1334,14 +1333,14 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		}
 		tmp |= spi->mode & ~SPI_MODE_MASK;
 		spi->mode = tmp & SPI_MODE_USER_MASK;
-		val = spi_setup(spi);
+		val_mode = spi_setup(spi);
 	}
 
 		/* use two spi transfers for the complete SPI transaction */
 
 
 		pdata->tx_buff[0] = CMD_ADC_GO + chan;
-		pdata->one_t.cs_change = true;
+		pdata->one_t.cs_change = false;
 		pdata->one_t.len = 1;
 #ifdef CS_CHANGE_USECS
 		pdata->one_t.cs_change_delay = CS_CHANGE_DELAY_USECS0;
@@ -1372,15 +1371,15 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		spi_bus_lock(spi->master);
 		spi_sync_locked(spi, &m);
 		spi_bus_unlock(spi->master);
-		val = pdata->rx_buff[0];
-		val += (pdata->rx_buff[1] << 8);
+		val = pdata->rx_buff[1];
+		val += (pdata->rx_buff[0] << 8);
 		devpriv->ai_count++;
 	{
 		struct spi_controller *ctlr = spi->controller;
 		u32 save = spi->mode;
 
 		if (tmp & ~SPI_MODE_MASK) {
-			val = -EINVAL;
+			val_mode = -EINVAL;
 			break;
 		}
 		if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
@@ -1389,33 +1388,15 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		}
 		tmp |= spi->mode & ~SPI_MODE_MASK;
 		spi->mode = tmp & SPI_MODE_USER_MASK;
-		val = spi_setup(spi);
-		if (val < 0) {
+		val_mode = spi_setup(spi);
+		if (val_mode < 0) {
 			spi->mode = save;
 		} else {
 			dev_dbg(&spi->dev, "spi mode %x\n", tmp);
 		}
 	}
 		break;
-	case picsl12:
-#ifdef Speed_Testing
-		pdata->one_t.len = daqbmc_device_offset(special);
-		for (i = 0; i < 32; i++) {
-			pdata->tx_buff[i] = 0x57;
-		}
-
-		pdata->one_t.cs_change = true;
-		pdata->one_t.cs_change_delay = CS_CHANGE_DELAY_USECS10;
-		pdata->one_t.delay = CS_CHANGE_DELAY_USECS10;
-		pdata->one_t.word_delay = CS_CHANGE_DELAY_USECS10;
-		spi_message_init_with_transfers(&m,
-			&pdata->one_t, 1);
-		spi_bus_lock(spi->master);
-		spi_sync_locked(spi, &m);
-		spi_bus_unlock(spi->master);
-		val = 99;
-		devpriv->ai_count++;
-#endif
+	case picslq84:
 		tmp = spi->mode;
 	{
 		struct spi_controller *ctlr = spi->controller;
@@ -1426,13 +1407,13 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		}
 		tmp |= spi->mode & ~SPI_MODE_MASK;
 		spi->mode = tmp & SPI_MODE_USER_MASK;
-		val = spi_setup(spi);
+		val_mode = spi_setup(spi);
 	}
 		pdata->tx_buff[0] = CMD_ADC_GO + chan;
 		pdata->tx_buff[1] = CMD_ADC_DATA;
 		pdata->tx_buff[2] = CMD_ADC_DATA;
 		/* use three spi transfers for the message */
-		pdata->t[0].cs_change = true;
+		pdata->t[0].cs_change = false;
 		pdata->t[0].len = 1;
 		pdata->t[0].tx_buf = &pdata->tx_buff[0];
 		pdata->t[0].rx_buf = &pdata->rx_buff[0];
@@ -1441,7 +1422,7 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		pdata->t[0].delay = CS_CHANGE_DELAY_USECS0;
 		pdata->t[0].word_delay = CS_CHANGE_DELAY_USECS0;
 #endif
-		pdata->t[1].cs_change = true;
+		pdata->t[1].cs_change = false;
 		pdata->t[1].len = 1;
 		pdata->t[1].tx_buf = &pdata->tx_buff[1];
 		pdata->t[1].rx_buf = &pdata->rx_buff[1];
@@ -1463,15 +1444,15 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		spi_bus_lock(spi->master);
 		spi_sync_locked(spi, &m);
 		spi_bus_unlock(spi->master);
-		val = pdata->rx_buff[1];
-		val += (pdata->rx_buff[2] << 8);
+		val = pdata->rx_buff[2];
+		val += (pdata->rx_buff[1] << 8);
 		devpriv->ai_count++;
 	{
 		struct spi_controller *ctlr = spi->controller;
 		u32 save = spi->mode;
 
 		if (tmp & ~SPI_MODE_MASK) {
-			val = -EINVAL;
+			val_mode = -EINVAL;
 			break;
 		}
 		if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
@@ -1480,8 +1461,8 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		}
 		tmp |= spi->mode & ~SPI_MODE_MASK;
 		spi->mode = tmp & SPI_MODE_USER_MASK;
-		val = spi_setup(spi);
-		if (val < 0) {
+		val_mode = spi_setup(spi);
+		if (val_mode < 0) {
 			spi->mode = save;
 		} else {
 			dev_dbg(&spi->dev, "spi mode %x\n", tmp);

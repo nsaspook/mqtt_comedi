@@ -57,7 +57,7 @@ extern "C" {
 		port_count, port_error_count,
 		char_count, char_error_count,
 		slave_int_count, last_slave_int_count, slave_tx_count,
-		comm_count, idle_count;
+		comm_count, idle_count, spi_error_count;
 		volatile uint8_t comm_ok;
 	};
 
@@ -65,20 +65,18 @@ extern "C" {
 		volatile uint8_t data[4], tx_buffer, adcl, adch, command;
 		volatile uint32_t place;
 	};
-
+	
 	extern volatile struct spi_link_type_ss spi_comm_ss;
 	extern volatile struct serial_buffer_type_ss serial_buffer_ss;
 	extern volatile struct spi_stat_type_ss spi_stat_ss, report_stat_ss;
 	extern volatile uint8_t data_in2, adc_buffer_ptr, adc_channel, channel, upper;
-	extern volatile uint16_t adc_buffer[64], adc_data_in;
+	extern volatile uint16_t adc_buffer[0x3f], adc_data_in;
 
 	void check_slaveo(void);
 	void init_slaveo(void);
 
 	void slaveo_rx_isr(void);
-	void slaveo_tx_isr(void);
 	void slaveo_spi_isr(void);
-	void slaveo_adc_isr(void);
 	void slaveo_time_isr(void);
 
 #ifdef	__cplusplus

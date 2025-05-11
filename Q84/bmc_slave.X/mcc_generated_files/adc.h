@@ -94,6 +94,7 @@ typedef enum
 typedef enum
 {
     CONTEXT_1,
+    CONTEXT_4,
 } ADC_context_t;
 
 /**

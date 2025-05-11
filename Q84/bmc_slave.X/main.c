@@ -250,7 +250,7 @@ volatile struct serial_buffer_type_ss serial_buffer_ss = {
 };
 
 volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0, channel = 0, upper;
-volatile uint16_t adc_buffer[64] = {0}, adc_data_in = 0;
+volatile uint16_t adc_buffer[0x3f] = {0}, adc_data_in = 0;
 
 volatile uint16_t tickCount[TMR_COUNT] = {0};
 volatile uint8_t mode_sw = false, faker;
@@ -273,7 +273,7 @@ void main(void)
 	// Initialize the device
 	SYSTEM_Initialize();
 
-
+	PIE1bits.ADIE = 0; // lock ADC interrupts off
 	// Enable high priority global interrupts
 	INTERRUPT_GlobalInterruptHighEnable();
 
@@ -289,7 +289,6 @@ void main(void)
 	TMR5_SetInterruptHandler(onesec_io);
 	TMR5_StartTimer();
 	TMR6_StartTimer();
-	ADC_SelectContext(CONTEXT_1);
 
 	/** Speed locking setup code.
 	 * Use a few EEPROM bytes to cycle or lock the serial port baud rate
@@ -384,12 +383,11 @@ void main(void)
 			refresh_lcd();
 			WaitMs(LDELAY);
 
-			V.ui_state = mode;
-			V.s_state = SEQ_STATE_INIT;
+			V.ui_state = UI_STATE_HOST;
 			srand(1957);
 			set_vterm(V.vterm); // set to buffer 0
 			snprintf(V.info, MAX_INFO, " Terminal Info               ");
-			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, " OPI DAQ         %u   ", V.uart_speed_fast & 0x01);
+			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, " OPI DAQ %u   %s      ", V.uart_speed_fast & 0x01, VER);
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " Version %s           ", VER);
 			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " NSASPOOK             ");
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, " %s                   ", (char *) build_date);
@@ -415,176 +413,99 @@ void main(void)
 			StartTimer(TMR_SEQ, SEQDELAY);
 			StartTimer(TMR_HELP, TDELAY);
 			break;
-		case UI_STATE_HOST: // equipment starts communications to host
-			switch (V.s_state) {
-			case SEQ_STATE_INIT:
-				V.r_l_state = LINK_STATE_IDLE;
-				V.t_l_state = LINK_STATE_IDLE;
-				V.s_state = SEQ_STATE_RX;
-				if ((V.error == LINK_ERROR_NONE) && (V.abort == LINK_ERROR_NONE)) {
-					if (V.debug) {
-					} else {
-					}
-				}
-				break;
-			case SEQ_STATE_RX:
-				/*
-				 * receive message from equipment
-				 */
-				V.s_state = SEQ_STATE_TRIGGER;
-				if (V.r_l_state == LINK_STATE_ERROR)
-					V.s_state = SEQ_STATE_ERROR;
-				break;
-			case SEQ_STATE_TX:
-				/*
-				 * send response message to equipment
-				 */
-				V.s_state = SEQ_STATE_RX;
-				if (V.t_l_state == LINK_STATE_ERROR)
-					V.s_state = SEQ_STATE_ERROR;
-				break;
-			case SEQ_STATE_TRIGGER:
-				set_display_info(DIS_STR);
-				s = get_vterm_ptr(0, MAIN_VTERM);
-				if (V.queue) {
-					V.r_l_state = LINK_STATE_IDLE;
-					V.t_l_state = LINK_STATE_IDLE;
-					V.s_state = SEQ_STATE_TX;
-				} else {
-					V.s_state = SEQ_STATE_DONE;
-				}
-
-				s[MAX_LINE] = 0;
-				s[SPIN_CHAR] = spinners(3, false);
-				break;
-			case SEQ_STATE_DONE:
-				V.s_state = SEQ_STATE_INIT;
-				if (++looper == 0) {
-					//test_slave();
-				}
-				break;
-			case SEQ_STATE_ERROR:
-			default:
-				V.s_state = SEQ_STATE_INIT;
-				refresh_lcd();
-				WaitMs(TDELAY);
-				break;
-			}
-			if ((V.error == LINK_ERROR_NONE) && (V.abort == LINK_ERROR_NONE)) {
-				if (TimerDone(TMR_DISPLAY)) { // limit update rate
-				}
-			}
+		case UI_STATE_HOST:
+			set_display_info(DIS_STR);
+			s = get_vterm_ptr(0, MAIN_VTERM);
+			s[MAX_LINE] = 0;
+			s[SPIN_CHAR] = spinners(3, false);
 			break;
-		case UI_STATE_LOG: // monitor
-			switch (V.s_state) {
-			case SEQ_STATE_INIT:
-				V.m_l_state = LINK_STATE_IDLE;
-				V.s_state = SEQ_STATE_RX;
-				break;
-			case SEQ_STATE_RX:
-				/*
-				 * receive rx and tx messages from comm link
-				 */
-				V.s_state = SEQ_STATE_TRIGGER;
-				if (V.m_l_state == LINK_STATE_ERROR)
-					V.s_state = SEQ_STATE_ERROR;
-				break;
-			case SEQ_STATE_TRIGGER:
-				V.s_state = SEQ_STATE_DONE;
-				break;
-			case SEQ_STATE_DONE:
-			case SEQ_STATE_ERROR:
-			default:
-				V.s_state = SEQ_STATE_INIT;
-				break;
-			}
-			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "                      ");
-			break;
-		case UI_STATE_ERROR:
 		default:
 			V.ui_state = UI_STATE_INIT;
+			refresh_lcd();
+			WaitMs(TDELAY);
 			break;
 		}
-		if (V.ticks) {
-			if (V.failed_receive != RECV_ERROR_NONE) {
-				if (V.error == LINK_ERROR_CHECKSUM) {
-				}
-			} else {
+
+
+		if (TimerDone(TMR_DISPLAY)) { // limit update rate
+			static uint8_t switcher = INFO_VTERM;
+			
+			if (TimerDone(TMR_HELPDIS)) {
+				set_display_info(DIS_STR);
 			}
-			if (V.failed_send != SEND_ERROR_NONE) {
-				if (V.error == LINK_ERROR_CHECKSUM) {
-				}
-			} else {
-			}
-		}
+			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%lu %lu %lu %lu                    ", spi_stat_ss.adc_count, spi_stat_ss.slave_tx_count, spi_stat_ss.slave_int_count,
+				spi_stat_ss.spi_error_count);
+			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "A1 0x%.2x, A2 0x%.2x               ", V.v_tx_line, V.v_rx_line);
+			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "0x%.4x 0x%.2x %d %d %d                      ", SPI2TCNT, SPI2INTF, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK);
 
-		if (mode != UI_STATE_LOG) {
-			if (TimerDone(TMR_DISPLAY)) { // limit update rate
-				static uint8_t switcher = INFO_VTERM;
-				if (TimerDone(TMR_HELPDIS)) {
-					set_display_info(DIS_STR);
-				}
-				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%lu %lu %lu %lu  0x%.2X 0x%.2X                  ", spi_stat_ss.adc_count, spi_stat_ss.slave_tx_count, spi_stat_ss.slave_int_count, spi_stat_ss.idle_count,
-					serial_buffer_ss.data[0], serial_buffer_ss.data[2]);
-				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%d %d %d %d %d %d %d %d %d             ", adc_buffer[channel], spi_comm_ss.ADC_DATA, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.LOW_BITS,
-					spi_comm_ss.REMOTE_DATA_DONE, spi_comm_ss.REMOTE_LINK, spi_comm_ss.SPI_DATA, spi_comm_ss.ADC_RUN);
-				snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "RS232 Volts %d                  ", V.vterm_switch);
+			spi_stat_ss.adc_count++; // just keep count
 
-				PIE1bits.ADIE = 0; // lock ADC interrupts off
-				if (!spi_comm_ss.ADC_RUN) { // check if we have a ADC conversion in progress
-					ADC_DischargeSampleCapacitor();
-					ADC_StartConversion(channel_ANA1);
-					while (!ADC_IsConversionDone()) {
-					};
-					if (ADC_IsConversionDone()) {
-						V.v_tx_line = ADC_GetConversionResult();
-					};
-					ADC_DischargeSampleCapacitor();
-					ADC_StartConversion(channel_ANA2);
-					while (!ADC_IsConversionDone()) {
-					};
-					if (ADC_IsConversionDone()) {
-						V.v_rx_line = ADC_GetConversionResult();
-					};
-					PIR1bits.ADIF = LOW;
-					// convert ADC values to char for display
-					update_rs232_line_status();
-				}
+			ADC_DischargeSampleCapacitor();
+			ADC_StartConversion(channel_ANA1);
+			while (!ADC_IsConversionDone()) {
+			};
+			if (ADC_IsConversionDone()) {
+				V.v_tx_line = ADC_GetConversionResult();
+				adc_buffer[channel_ANA1] = V.v_tx_line;
+			};
+			ADC_DischargeSampleCapacitor();
+			ADC_StartConversion(channel_ANA2);
+			while (!ADC_IsConversionDone()) {
+			};
+			if (ADC_IsConversionDone()) {
+				V.v_rx_line = ADC_GetConversionResult();
+				adc_buffer[channel_ANA2] = V.v_rx_line;
+			};
 
-				PIE1bits.ADIE = 1; // allow ADC interrupts
+			ADC_DischargeSampleCapacitor();
+			ADC_StartConversion(channel_ANA4);
+			while (!ADC_IsConversionDone()) {
+			};
+			if (ADC_IsConversionDone()) {
+				adc_buffer[channel_ANA4] = ADC_GetConversionResult();
+			};
+			ADC_DischargeSampleCapacitor();
+			ADC_StartConversion(channel_ANA5);
+			while (!ADC_IsConversionDone()) {
+			};
+			if (ADC_IsConversionDone()) {
+				adc_buffer[channel_ANA5] = ADC_GetConversionResult();
+			};
 
-				StartTimer(TMR_DISPLAY, DDELAY);
-				if (V.vterm_switch++ > (SWITCH_VTERM)) {
-					set_vterm(switcher);
-					if (V.vterm_switch > (SWITCH_VTERM + V.ticker + SWITCH_DURATION)) {
-						switcher++;
-						if ((switcher & 0x03) == HELP_VTERM) { // mask [0..3]]
-							switcher = INFO_VTERM; // skip short display of the main vterm
-						}
-						V.vterm_switch = 0;
+			// convert ADC values to char for display
+			update_rs232_line_status();
+
+			StartTimer(TMR_DISPLAY, DDELAY);
+			if (V.vterm_switch++ > (SWITCH_VTERM)) {
+				set_vterm(switcher);
+				if (V.vterm_switch > (SWITCH_VTERM + V.ticker + SWITCH_DURATION)) {
+					switcher++;
+					if ((switcher & 0x03) == HELP_VTERM) { // mask [0..3]]
+						switcher = INFO_VTERM; // skip short display of the main vterm
 					}
-				} else {
-					set_vterm(V.vterm);
+					V.vterm_switch = 0;
 				}
-				/*
-				 * update info screen data points
-				 */
-				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "RS232 RX %3dV:%c                       ", V.rx_volts, V.rx_rs232);
-				snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "RS232 TX %3dV:%c                       ", V.tx_volts, V.tx_rs232);
-				snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "                                       ");
-				snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "                                       ");
-				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "                                       ");
-				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "                                       ");
-				snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "                                       ");
-				snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "                                       ");
+			} else {
+				set_vterm(V.vterm);
+			}
+			/*
+			 * update info screen data points
+			 */
+			snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "RS232 TX %3dV:%c                       ", V.tx_volts, V.tx_rs232);
+			snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "RS232 RX %3dV:%c                       ", V.rx_volts, V.rx_rs232);
+			snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "A1 0x%.2x, A2 0x.2%x                   ", V.v_tx_line, V.v_rx_line);
+			snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "B0 0x%.2X, B1 0x%.2X                   ", serial_buffer_ss.data[0], serial_buffer_ss.data[1]);
+			snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "                                       ");
+			snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "                                       ");
+			snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "A1 0x%.2x, A2 0x%.2x                   ", V.v_tx_line, V.v_rx_line);
+			snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "0x%.4x 0x%.2x %d %d %d                 ", SPI2TCNT, SPI2INTF, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK);
 
-				/*
-				 * don't default update the LCD when displaying HELP text
-				 */
-				if (!V.set_sequ) {
-					refresh_lcd();
-//					test_slave();
-				}
+			/*
+			 * don't default update the LCD when displaying HELP text
+			 */
+			if (!V.set_sequ) {
+				refresh_lcd();
+				test_slave();
 			}
 		}
 
@@ -644,21 +565,12 @@ char spinners(uint8_t shape, const uint8_t reset)
 
 int8_t test_slave(void)
 {
-	static uint8_t ret = 0, i = 0;
+	static uint8_t ret = 0;
 
 	DLED_SetHigh();
-	wait_lcd_done();
-	CS_SetHigh();
-	SPI2CON0bits.EN = 1;
-	wait_lcd_done();
-	if (i++ == 0) {
-		send_spi2_data_dma(CMD_ADC_GO + 1, CMD_ADC_DATA, CMD_ADC_DATA, 3);
-		i = 0;
-	}
-	wait_lcd_done();
-	ret = SPI1_ReadByte();
-	serial_buffer_ss.data[3] = ret;
+	while (!ADC_IsConversionDone());
 	SPI2CON0bits.EN = 0;
+	SPI2CON0bits.EN = 1;
 	return(int8_t) ret;
 }
 

@@ -76,6 +76,4 @@ void (*SPI2_InterruptHandler)(void);
 void SPI2_SetInterruptHandler(spi2InterruptHandler_t handler);
 void (*SPI2_RxInterruptHandler)(void);
 void SPI2_SetRxInterruptHandler(spi2InterruptHandler_t handler);
-void (*SPI2_TxInterruptHandler)(void);
-void SPI2_SetTxInterruptHandler(spi2InterruptHandler_t handler);
 #endif //SPI2_H

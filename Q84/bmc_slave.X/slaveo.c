@@ -61,23 +61,7 @@
 #define YES		HIGH
 
 #include <xc.h>
-#include <pic18f47q84.h>
-
 #include "slaveo.h"
-
-static volatile bool flipper = true;
-
-void slaveo_adc_isr(void)
-{
-	PIR1bits.ADIF = LOW;
-	spi_stat_ss.adc_count++; // just keep count
-	adc_buffer[channel] = (uint16_t) ADRES; // data is ready but must be written to the SPI buffer before a master command is received 
-	serial_buffer_ss.adch = ADRESH;
-	serial_buffer_ss.adcl = ADRESL;
-	spi_comm_ss.ADC_DATA = true; // so the transmit buffer will not be overwritten
-	spi_comm_ss.ADC_RUN = false;
-	flipper = true;
-}
 
 void check_slaveo(void) /* SPI Master/Slave loopback */
 {
@@ -96,9 +80,8 @@ void init_slaveo(void)
 	TMR0_StartTimer();
 	TMR0_SetInterruptHandler(slaveo_time_isr);
 	SPI2_SetInterruptHandler(slaveo_spi_isr);
-	SPI2_SetTxInterruptHandler(slaveo_tx_isr);
+	//	SPI2_SetTxInterruptHandler(slaveo_tx_isr);
 	SPI2CON0bits.EN = 0;
-	ADC_SetADIInterruptHandler(slaveo_adc_isr);
 	while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
 		val = SPI2RXB;
 	}
@@ -106,6 +89,7 @@ void init_slaveo(void)
 	SPI2STATUSbits.RXRE = 0;
 	SPI2CON0bits.EN = 0;
 	SPI2CON2bits.TXR = 1; // FIFO required for transmit
+	ADC_SelectContext(CONTEXT_1);
 }
 
 void slaveo_rx_isr(void)
@@ -149,29 +133,27 @@ void slaveo_rx_isr(void)
 
 	if (command == CMD_ADC_GO) { // Found a GO for a conversion command
 		MLED_SetHigh();
-		spi_comm_ss.ADC_RUN = true;
+		spi_comm_ss.ADC_RUN = false;
 		spi_stat_ss.adc_count++;
-
 		channel = data_in2 & LO_NIBBLE;
-		if (channel > 7) channel = 0; // invalid so set to 0
-		if (!ADCON0bits.GO) {
-			ADPCH = channel;
-			adc_buffer[channel] = 0xffff; // fill with bits
-			ADCON0bits.GO = HIGH; // start a conversion
-		} else {
-			ADCON0bits.GO = LOW; // stop a conversion
-			spi_stat_ss.adc_error_count++;
+		if (channel > 0x3f) {
+			channel = 0; // invalid so set to 0
 		}
+
+		SPI2TXB = ((adc_buffer[channel] >> 8)&0x00ff);
+		SPI2TXB = (adc_buffer[channel] &0x00ff);
+
 		spi_comm_ss.REMOTE_LINK = true;
 		while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
 			data_in2 = SPI2RXB;
 		}
-		SPI2STATUSbits.RXRE = 0;
+		//		SPI2STATUSbits.RXRE = 0;
 		TMR0_Reload();
 	}
 
 	if (data_in2 == CMD_ADC_DATA) {
 		MLED_SetHigh();
+		spi_stat_ss.slave_tx_count++;
 		spi_stat_ss.last_slave_int_count = spi_stat_ss.slave_int_count;
 	}
 
@@ -183,25 +165,10 @@ void slaveo_rx_isr(void)
 
 }
 
-void slaveo_tx_isr(void)
-{
-	spi_stat_ss.slave_tx_count++;
-	if (flipper) {
-		SPI2TXB = serial_buffer_ss.adch;
-		SPI2TXB = serial_buffer_ss.adch;
-		SPI2TXB = serial_buffer_ss.adch;
-	} else {
-		SPI2TXB = serial_buffer_ss.adcl;
-		SPI2TXB = serial_buffer_ss.adcl;
-		SPI2TXB = serial_buffer_ss.adcl;
-	}
-	flipper = !flipper;
-	MLED_SetLow();
-}
-
 void slaveo_spi_isr(void)
 {
 	MLED_SetHigh();
+	spi_stat_ss.spi_error_count++;
 	SPI2INTF = 0;
 }
 

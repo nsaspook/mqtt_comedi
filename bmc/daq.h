@@ -34,7 +34,7 @@ extern "C" {
 #define HV_SCALE2        83.6f
 #define HV_SCALE3        83.6f
         
-#define OVER_SAMP       16
+#define OVER_SAMP       1
 
 #include <stdint.h>
 #include <comedilib.h>

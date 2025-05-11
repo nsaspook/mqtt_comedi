@@ -14667,6 +14667,8 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <part name="TIC_DIGITAL" library="con-lstb" library_urn="urn:adsk.eagle:library:162" deviceset="MA04-1" device="" package3d_urn="urn:adsk.eagle:package:8337/1" value="TIC_DIGITAL"/>
 <part name="VSS71" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="VDD23" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VDD" device=""/>
+<part name="R30" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
+<part name="+3V5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -15376,6 +15378,13 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 </instance>
 <instance part="VDD23" gate="G$1" x="121.92" y="-116.84" smashed="yes">
 <attribute name="VALUE" x="124.46" y="-111.76" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="R30" gate="G$1" x="144.78" y="10.16" smashed="yes" rot="R90">
+<attribute name="NAME" x="143.2814" y="6.35" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="148.082" y="6.35" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="+3V5" gate="G$1" x="152.4" y="7.62" smashed="yes">
+<attribute name="VALUE" x="152.4" y="10.16" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -17446,6 +17455,7 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <junction x="144.78" y="15.24"/>
 <junction x="160.02" y="15.24"/>
 <label x="144.78" y="15.24" size="1.778" layer="95"/>
+<pinref part="R30" gate="G$1" pin="2"/>
 </segment>
 </net>
 <net name="SDI2_IN" class="0">
@@ -17497,6 +17507,13 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <pinref part="R27" gate="G$1" pin="2"/>
 <pinref part="+3V4" gate="G$1" pin="+3V3"/>
 <junction x="170.18" y="-20.32"/>
+</segment>
+<segment>
+<pinref part="R30" gate="G$1" pin="1"/>
+<pinref part="+3V5" gate="G$1" pin="+3V3"/>
+<wire x1="144.78" y1="5.08" x2="152.4" y2="5.08" width="0.1524" layer="91"/>
+<junction x="144.78" y="5.08"/>
+<junction x="152.4" y="5.08"/>
 </segment>
 </net>
 <net name="N$8" class="0">

@@ -49,7 +49,6 @@
 
 void SPI2_DefaultHandler(void);
 void SPI2_DefaultRxHandler(void);
-void SPI2_DefaultTxHandler(void);
 
 typedef struct { 
     uint8_t con0; 
@@ -61,15 +60,15 @@ typedef struct {
 
 //con0 == SPIxCON0, con1 == SPIxCON1, con2 == SPIxCON2, baud == SPIxBAUD, operation == Master/Slave
 static const spi2_configuration_t spi2_configuration[] = {   
-    { 0x1, 0x24, 0x5, 0x0, 1 }
+    { 0x1, 0x44, 0x5, 0x0, 1 }
 };
 
 void SPI2_Initialize(void)
 {
     //EN disabled; LSBF MSb first; MST bus slave; BMODE every byte; 
     SPI2CON0 = 0x01;
-    //SMP Middle; CKE Idle to active; CKP Idle:High, Active:Low; FST disabled; SSP active low; SDIP active high; SDOP active high; 
-    SPI2CON1 = 0x24;
+    //SMP Middle; CKE Active to idle; CKP Idle:Low, Active:High; FST disabled; SSP active low; SDIP active high; SDOP active high; 
+    SPI2CON1 = 0x44;
     //SSET enabled; TXR not required for a transfer; RXR suspended if the RxFIFO is full; 
     SPI2CON2 = 0x05;
     //CLKSEL FOSC; 
@@ -79,10 +78,8 @@ void SPI2_Initialize(void)
     TRISDbits.TRISD2 = 1;
     PIE5bits.SPI2IE = 1;
     PIE5bits.SPI2RXIE = 1;
-    PIE5bits.SPI2TXIE = 1;
     SPI2_SetInterruptHandler(SPI2_DefaultHandler);
     SPI2_SetRxInterruptHandler(SPI2_DefaultRxHandler);
-    SPI2_SetTxInterruptHandler(SPI2_DefaultTxHandler);
 }
 
 bool SPI2_Open(spi2_modes_t spi2UniqueConfiguration)
@@ -190,20 +187,3 @@ void __interrupt(irq(SPI2RX),base(8)) SPI2_RxIsr(void)
     }
 }
 
-void SPI2_DefaultTxHandler(void)
-{
-    // add your SPI2TX interrupt custom code
-}
-
-void SPI2_SetTxInterruptHandler(spi2InterruptHandler_t handler)
-{
-    SPI2_TxInterruptHandler = handler;
-}
-
-void __interrupt(irq(SPI2TX),base(8)) SPI2_TxIsr(void)
-{
-    if(SPI2_TxInterruptHandler)
-    {
-        SPI2_TxInterruptHandler();
-    }
-}
