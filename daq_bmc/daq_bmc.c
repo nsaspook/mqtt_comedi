@@ -1,25 +1,24 @@
 /*
  *     comedi/drivers/daq_bmc.c
- *	USING s526.c as the module placeholder in the comedi driver folder
  * 
  *	Also for the TI ADS1220 SD ADC converter chip (and MCP3911 later) for low voltage sensing and
  *	solar panel panel light detection. +- 2.048, 1.024 and 0.512 voltage ranges @ 20 bits of usable resolution
  *	ADC is in single-shot conversion mode @20SPS, PGA disabled and gain from 1, 2 and 4 in differential
- *	signal detection mode, 50/60Hz rejection enabled. 500kHz SPI clock with direct RPi2 connection
+ *	signal detection mode, 50/60Hz rejection enabled. 500kHz SPI clock with direct OPi2 connection
  *	Analog +- 2.5VDC from Zener regulators for the bipolar input stage with external 2.5VDC Zener input
  *	signal protection.
  * 
  *	LEDs: + supply, - supply, DRDY__ LOW
  * 
  *	Board jumpers J1 Left to Right
- *	1 3.3VDC digital supply for direct connection to RPi2 board
+ *	1 3.3VDC digital supply for direct connection to board
  *	2 5.0VDC digital supply for optical interconnects for 5VDC or 3.3VDC SPI interfaces
  *	3 Enable 5VDC power
  * 
  * ADS8330 SD chip driver
  *
  * DIP8 Pins for MCP3002 header
- * 25K22	RPi DIP8 header		IDC 10 pin connector header	ADS1220
+ * 25K22	OPi DIP8 header		IDC 10 pin connector header	ADS1220
  * Pin 21   RB0	SPI Chip-Select	Pin 1		8	CS		2
  * Pin 22   RB1	SPI Clock	Pin 7		7	SCK		1
  * Pin 23   RB2	SPI Data In	Pin 5		6	SDI		16
@@ -29,12 +28,6 @@
  * Pin 2    RA0	ANA0		Pin 2		1	nc
  * Pin 3    RA1	ANA1		Pin 3		2	nc
  * 
- *	PIC 8722 SPI slave connect
- *	TRISDbits.TRISD6 = 1; // SCK SSP2 pins in SLAVE mode
- *	TRISDbits.TRISD5 = 1; // SDI
- *	TRISDbits.TRISD4 = 0; // SDO
- *	TRISDbits.TRISD7 = 1; // SS2
- *
  *     COMEDI - Linux Control and Measurement Device Interface
  *     Copyright (C) 1998 David A. Schleef <ds@schleef.org>
  *
@@ -58,7 +51,7 @@
  * TODO: Refactor sample put get code to reduce the amount of build up/down time
  * 
 Driver: "experimental" daq_bmc in progress ... 
- * for 4.20+ kernels with device-tree enabled
+ * for 6.1.33+ kernels with device-tree enabled for Orange PI Zero 3
  * see README.md for install instructions
  * 
 Description: BMCBOARD daq_bmc
@@ -82,30 +75,9 @@ and a analog output subdevice(2) with 2 channels with onboard dac
  * Caveats:
  * 
 
-Digital:  The comedi channel 0 corresponds to the GPIO WPi table order
-channel numbers [0..7] will be outputs, [8..16/20/29] will be inputs
- * 0/2
- * 1/3
- * 4
- * 7    SPI CE1
- * 8    SPI CE0
- * 9    SPI SO
- * 10   SPI SI
- * 11   SPI CLK
- * 14   UART
- * 15   UART
- * 17
- * 18   PWM
- * 21/27
- * 22
- * 23
- * 24
- * 25
- * 
-
 Analog: The type and resolution of the onboard ADC/DAC chips are set
 by the module option variable daqbmc_conf in the /etc/modprobe.d directory
- * options daq_bmc daqbmc_conf=1
+ * options daq_bmc daqbmc_conf=7
  * 
 0 = Factory BMCboard configuratin of MCP3002 ADC and MCP4802 ADC: 10bit in/8bit out
 1 = MCP3202 ADC and MCP4822 DAC: 12bit in/12bit out 
@@ -796,11 +768,11 @@ struct comedi_spibmc {
 };
 
 /* 
- * RPi board control state variables 
+ * OPi board control state variables 
  */
 struct daqbmc_private {
 	uint32_t checkmark;
-	uint32_t RPisys_rev;
+	uint32_t OPisys_rev;
 	int32_t board_rev;
 	int32_t num_subdev;
 	unsigned long state_bits;
@@ -3113,10 +3085,10 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	devpriv->timing_lockout = false;
 
 	/* Use the kernel system_rev EXPORT_SYMBOL */
-	devpriv->RPisys_rev = 3; /* what board are we running on? */
-	if (devpriv->RPisys_rev < 2) {
-		dev_err(dev->class_dev, "invalid RPi board revision! %u\n",
-			devpriv->RPisys_rev);
+	devpriv->OPisys_rev = 3; /* what board are we running on? */
+	if (devpriv->OPisys_rev < 2) {
+		dev_err(dev->class_dev, "invalid OPi board revision! %u\n",
+			devpriv->OPisys_rev);
 		return -EINVAL;
 	}
 
