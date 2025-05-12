@@ -7,9 +7,9 @@ static const char *const FW_Time = __TIME__;
 
 struct itimerval new_timer = {
 	.it_value.tv_sec = CMD_SEC,
-	.it_value.tv_usec = 0,
+	.it_value.tv_usec = CMD_USEC,
 	.it_interval.tv_sec = CMD_SEC,
-	.it_interval.tv_usec = 0,
+	.it_interval.tv_usec = CMD_USEC,
 };
 struct itimerval old_timer;
 time_t rawtime;
@@ -393,6 +393,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	time_t rawtime;
 	static uint32_t spam = 0;
 	double over_sample;
+	static uint32_t pacer = 0;
 
 	MQTTClient_message pubmsg = MQTTClient_message_initializer;
 	MQTTClient_deliveryToken token;
@@ -404,15 +405,29 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 #ifndef DIGITAL_ONLY
 	over_sample = 0.0f; // over-sample avg
 	for (int i = 0; i < OVER_SAMP; i++) {
-		over_sample += ac0_filter(get_adc_volts(channel_ANA1));
+		if (bmc.BOARD == bmcboard) {
+			over_sample += ac0_filter(get_adc_volts(channel_ANA1));
+		} else {
+			over_sample += ac0_filter(get_adc_volts(0));
+		}
 	}
 	E.adc[0] = over_sample / (double) OVER_SAMP;
 
 	over_sample = 0.0f; // over-sample avg
 	for (int i = 0; i < OVER_SAMP; i++) {
-		over_sample += ac1_filter(get_adc_volts(channel_ANA2));
+		if (bmc.BOARD == bmcboard) {
+			over_sample += ac1_filter(get_adc_volts(channel_ANA2));
+		} else {
+			over_sample += ac1_filter(get_adc_volts(1));
+		}
 	}
 	E.adc[1] = over_sample / (double) OVER_SAMP;
+	if (bmc.BOARD == bmcboard) {
+		E.adc[channel_ANA4] = get_adc_volts(channel_ANA4);
+		E.adc[channel_ANA5] = get_adc_volts(channel_ANA5);
+		E.adc[channel_ANC6] = get_adc_volts(channel_ANC6);
+		E.adc[channel_ANC7] = get_adc_volts(channel_ANC7);
+	}
 
 #ifdef DAC_TESTING
 	E.dac[0] = E.adc[0];
@@ -431,57 +446,60 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	E.do_16b = bmc.dataout.dio_buf;
 	E.di_16b = get_dio_bit(0)+ (get_dio_bit(1) << 1)+ (get_dio_bit(2) << 2)+ (get_dio_bit(3) << 3)+ (get_dio_bit(4) << 4);
 
-	E.mqtt_count++;
-	E.sequence++;
-	json = cJSON_CreateObject();
-	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "name", 64);
-	cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (const char *) &ha_daq_host.clients[ha_daq_host.hindex]);
-	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "sequence", 64);
-	cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.sequence);
-	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "mqtt_do_16b", 64);
-	cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (double) E.do_16b);
-	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "mqtt_di_16b", 64);
-	cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (double) E.di_16b);
-	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_adc0", 64);
-	cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[0]);
-	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_adc1", 64);
-	cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[1]);
-	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "build_date", 64);
-	cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], FW_Date);
-	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "build_time", 64);
-	cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], FW_Time);
-	time(&rawtime);
-	strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "sequence_time", 64);
-	cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (double) rawtime);
-	// convert the cJSON object to a JSON string
-	char *json_str = cJSON_Print(json);
+	if (pacer++ > 100) {
+		pacer = 0;
+		E.mqtt_count++;
+		E.sequence++;
+		json = cJSON_CreateObject();
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "name", 64);
+		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (const char *) &ha_daq_host.clients[ha_daq_host.hindex]);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "sequence", 64);
+		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.sequence);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "mqtt_do_16b", 64);
+		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (double) E.do_16b);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "mqtt_di_16b", 64);
+		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (double) E.di_16b);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_adc0", 64);
+		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[0]);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_adc1", 64);
+		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[1]);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "build_date", 64);
+		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], FW_Date);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "build_time", 64);
+		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], FW_Time);
+		time(&rawtime);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "sequence_time", 64);
+		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (double) rawtime);
+		// convert the cJSON object to a JSON string
+		char *json_str = cJSON_Print(json);
 
-	pubmsg.payload = json_str;
-	pubmsg.payloadlen = strlen(json_str);
-	pubmsg.qos = QOS;
-	pubmsg.retained = 0;
+		pubmsg.payload = json_str;
+		pubmsg.payloadlen = strlen(json_str);
+		pubmsg.qos = QOS;
+		pubmsg.retained = 0;
 
-	MQTTClient_publishMessage(client_p, topic_p, &pubmsg, &token);
-	// a busy, wait loop for the async delivery thread to complete
-	{
-		uint32_t waiting = 0;
-		while (ha_flag_vars_ss.deliveredtoken != token) {
-			usleep(TOKEN_DELAY);
-			if (waiting++ > MQTT_RETRY) {
-				if (spam++ > 1) {
-					fprintf(fout, "%s SW mqtt_bmc_data, Still Waiting, timeout\r\n", log_time(false));
-					fflush(fout);
+		MQTTClient_publishMessage(client_p, topic_p, &pubmsg, &token);
+		// a busy, wait loop for the async delivery thread to complete
+		{
+			uint32_t waiting = 0;
+			while (ha_flag_vars_ss.deliveredtoken != token) {
+				usleep(TOKEN_DELAY);
+				if (waiting++ > MQTT_RETRY) {
+					if (spam++ > 1) {
+						fprintf(fout, "%s SW mqtt_bmc_data, Still Waiting, timeout\r\n", log_time(false));
+						fflush(fout);
+						spam = 0;
+					}
+					break;
+				} else {
 					spam = 0;
 				}
-				break;
-			} else {
-				spam = 0;
-			}
-		};
-	}
+			};
+		}
 
-	cJSON_free(json_str);
-	cJSON_Delete(json);
+		cJSON_free(json_str);
+		cJSON_Delete(json);
+	}
 }
 
 /*

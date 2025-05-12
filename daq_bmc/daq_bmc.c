@@ -419,6 +419,8 @@ static const struct spi_delay CS_CHANGE_DELAY_USECS10 = {
 	.unit = 0
 };
 
+static const uint8_t BMC_MAX_CHAN = 0x40;
+
 /*
  * This selects the chip select, not the interface number like spi0, spi1
  */
@@ -625,7 +627,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.spi_mode = 0,
 		.spi_bpw = 8,
 		.n_chan_bits = 12,
-		.n_chan = 7,
+		.n_chan = 0x40,
 		.n_transfers = 3,
 	},
 	{
@@ -673,7 +675,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.spi_mode = 0,
 		.spi_bpw = 8,
 		.n_chan_bits = 12,
-		.n_chan = 7,
+		.n_chan = 0x40,
 		.n_transfers = 3,
 	},
 };
@@ -697,7 +699,7 @@ static const struct daqbmc_board daqbmc_boards[] = {
 	{
 		.name = "BMCboard",
 		.board_type = 0,
-		.n_aichan = 7,
+		.n_aichan = 0x40,
 		.n_aichan_bits = 12,
 		.n_aochan = 2,
 		.n_aochan_mask = 0x01,
@@ -760,7 +762,7 @@ struct spi_param_type {
 	uint32_t bits : 2;
 	uint32_t link : 1;
 	uint32_t pic18 : 2;
-	uint32_t chan : 4;
+	uint32_t chan : 8;
 	struct spi_device *spi;
 	int32_t device_type;
 	int32_t device_detect;
@@ -3612,7 +3614,7 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 		daqbmc_spi_setup(spi_adc);
 		spi_adc->pic18 = 2; /* PIC24/Q84 mode 12 bits */
 		spi_adc->device_type = picsl12;
-		spi_adc->chan = ret & 0x0f;
+		spi_adc->chan = spi_adc->device_spi->n_chan;
 		spi_adc->range = (ret & 0x20) >> 5;
 		spi_adc->bits = (ret & 0x10) >> 4;
 		dev_info(dev->class_dev,

@@ -78,6 +78,12 @@ int init_daq(double min_range, double max_range, int range_update)
 	}
 
 	fprintf(fout, "Comedi DAQ Board Name: %s, Driver: %s\r\n", comedi_get_board_name(it), comedi_get_driver_name(it));
+	if (strcmp(comedi_get_board_name(it), BMCBoard) == 0) {
+		bmc.BOARD = bmcboard;
+	}
+	if (strcmp(comedi_get_board_name(it), USBBoard) == 0) {
+		bmc.BOARD = usbboard;
+	}
 
 	fprintf(fout, "Subdev AI  %i ", subdev_ai);
 	channels_ai = comedi_get_n_channels(it, subdev_ai);
@@ -214,7 +220,20 @@ double get_adc_volts(int chan)
 	bmc.adc_sample[chan] = data[0];
 
 	ad_range->min = 0.0f;
-	ad_range->max = ha_daq_host.scaler[ha_daq_host.hindex];
+	if (bmc.BOARD == bmcboard) {
+		if (chan == channel_ANA4 || chan == channel_ANA5) {
+			if (chan == channel_ANA4) {
+				ad_range->max = HV_SCALE4;
+			} else {
+				ad_range->max = HV_SCALE5;
+			}
+		} else {
+			ad_range->max = HV_SCALE_RAW;
+			ad_range->min = 0.0f;
+		}
+	} else {
+		ad_range->max = ha_daq_host.scaler[ha_daq_host.hindex];
+	}
 
 	return comedi_to_phys(data[0], ad_range, maxdata_ai);
 }

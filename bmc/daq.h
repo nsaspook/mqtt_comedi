@@ -28,17 +28,30 @@ extern "C" {
 #define JUST_BITS false
         /*
          * scale adc result into calibrated units
+         * for USB boards, BMC boards use driver ranges
          */
-#define HV_SCALE0        20.0f
-#define HV_SCALE1        20.0f
+#define HV_SCALE0        83.6f
+#define HV_SCALE1        74.4f
 #define HV_SCALE2        83.6f
 #define HV_SCALE3        83.6f
+#define HV_SCALE4        83.6f
+#define HV_SCALE5        83.6f
+#define HV_SCALE_RAW    4.096f
+
 
 #define OVER_SAMP       1
 
 #include <stdint.h>
 #include <comedilib.h>
 #include "bmc.h"
+
+#define BMCBoard        "BMCBoard"
+#define USBBoard        "USBBoard"
+
+        typedef enum {
+                bmcboard = 0,
+                usbboard = 1,
+        } board_t;
 
         typedef enum {
                 channel_ANA0 = 0x0,
@@ -80,8 +93,8 @@ extern "C" {
                 int32_t adc_sample[32];
                 int32_t dac_sample[32];
                 int32_t utc;
-        }
-        bmctype;
+                board_t BOARD;
+        } bmctype;
 
         extern volatile struct bmcdata bmc;
         extern struct didata datain;

@@ -36,7 +36,7 @@ extern "C" {
 #include "MQTTClient.h"
 #include "bmc_mqtt.h"
 
-#define LOG_VERSION     "V0.06"
+#define LOG_VERSION     "V0.07"
 #define MQTT_VERSION    "V3.11"
 #define TNAME  "maint9"
 #define LADDRESS        "tcp://127.0.0.1:1883"
@@ -62,7 +62,8 @@ extern "C" {
 #define SPACING_USEC    500 * 1000
 #define USEC_SEC        1000000L
 
-#define CMD_SEC         1
+#define CMD_SEC         0
+#define CMD_USEC        10000
 #define TIME_SYNC_SEC   30
 
 #define SBUF_SIZ        16  // short buffer string size
@@ -74,6 +75,8 @@ extern "C" {
 
 #define MQTT_RECONN     3
 #define KAI             60
+
+#define ANA_BUFFERS     0x40
 
         /*
          * system testing defines
@@ -95,7 +98,7 @@ extern "C" {
                 volatile uint32_t thirty_sec_clock, log_spam, log_time_reset;
                 pthread_mutex_t ha_lock;
                 volatile int16_t di_16b, do_16b;
-                double adc[16], dac[16];
+                double adc[ANA_BUFFERS], dac[ANA_BUFFERS];
                 MQTTClient client_p, client_sd, client_ha;
         };
 

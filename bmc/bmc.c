@@ -17,7 +17,9 @@
 #include "bmc.h"
 #include "bmc_mqtt.h"
 
-volatile struct bmcdata bmc; /* DIO buffer */
+volatile struct bmcdata bmc = {
+	.BOARD = bmcboard,
+}; /* DAQ buffer */
 
 struct energy_type E = {
 	.once_gti = true,
