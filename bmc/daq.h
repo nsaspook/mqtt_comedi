@@ -26,19 +26,35 @@ extern "C" {
 #define LPCHANC        16
 
 #define JUST_BITS false
-/*
- * scale adc result into calibrated units
- */
-#define HV_SCALE0        83.6f
-#define HV_SCALE1        74.4f
+        /*
+         * scale adc result into calibrated units
+         */
+#define HV_SCALE0        20.0f
+#define HV_SCALE1        20.0f
 #define HV_SCALE2        83.6f
 #define HV_SCALE3        83.6f
-        
+
 #define OVER_SAMP       1
 
 #include <stdint.h>
 #include <comedilib.h>
 #include "bmc.h"
+
+        typedef enum {
+                channel_ANA0 = 0x0,
+                channel_ANA1 = 0x1,
+                channel_ANA2 = 0x2,
+                channel_ANA4 = 0x4,
+                channel_ANA5 = 0x5,
+                channel_ANC6 = 0x16,
+                channel_ANC7 = 0x17,
+                channel_AND5 = 0x1D,
+                channel_VSS = 0x3B,
+                channel_Temp = 0x3C,
+                channel_DAC1 = 0x3D,
+                channel_FVR_Buffer1 = 0x3E,
+                channel_FVR_Buffer2 = 0x3F
+        } ADC_channel_t;
 
         struct didata {
                 uint32_t D0 : 1; // 

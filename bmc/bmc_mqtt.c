@@ -404,13 +404,13 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 #ifndef DIGITAL_ONLY
 	over_sample = 0.0f; // over-sample avg
 	for (int i = 0; i < OVER_SAMP; i++) {
-		over_sample += ac0_filter(get_adc_volts(1));
+		over_sample += ac0_filter(get_adc_volts(channel_ANA1));
 	}
 	E.adc[0] = over_sample / (double) OVER_SAMP;
 
 	over_sample = 0.0f; // over-sample avg
 	for (int i = 0; i < OVER_SAMP; i++) {
-		over_sample += ac1_filter(get_adc_volts(2));
+		over_sample += ac1_filter(get_adc_volts(channel_ANA2));
 	}
 	E.adc[1] = over_sample / (double) OVER_SAMP;
 

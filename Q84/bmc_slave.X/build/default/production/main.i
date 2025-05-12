@@ -7,7 +7,7 @@
 # 1 "/opt/microchip/xc8/v3.00/pic/include/language_support.h" 1 3
 # 2 "<built-in>" 2
 # 1 "main.c" 2
-# 13 "main.c"
+# 17 "main.c"
 #pragma config FEXTOSC = ECH
 #pragma config RSTOSC = EXTOSC_4PLL
 
@@ -328,7 +328,7 @@ char *ctermid(char *);
 
 
 char *tempnam(const char *, const char *);
-# 166 "main.c" 2
+# 170 "main.c" 2
 # 1 "/opt/microchip/xc8/v3.00/pic/include/c99/string.h" 1 3
 # 25 "/opt/microchip/xc8/v3.00/pic/include/c99/string.h" 3
 # 1 "/opt/microchip/xc8/v3.00/pic/include/c99/bits/alltypes.h" 1 3
@@ -386,7 +386,7 @@ size_t strxfrm_l (char *restrict, const char *restrict, size_t, locale_t);
 
 
 void *memccpy (void *restrict, const void *restrict, int, size_t);
-# 167 "main.c" 2
+# 171 "main.c" 2
 # 1 "./mcc_generated_files/mcc.h" 1
 # 49 "./mcc_generated_files/mcc.h"
 # 1 "/opt/microchip/xc8/v3.00/pic/include/xc.h" 1 3
@@ -39703,89 +39703,88 @@ typedef enum
 typedef enum
 {
     CONTEXT_1,
-    CONTEXT_4,
 } ADC_context_t;
-# 121 "./mcc_generated_files/adc.h"
+# 120 "./mcc_generated_files/adc.h"
 void ADC_Initialize(void);
-# 152 "./mcc_generated_files/adc.h"
+# 151 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_EnableChannelSequencer(void);
-# 174 "./mcc_generated_files/adc.h"
+# 173 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_DisableChannelSequencer(void);
-# 206 "./mcc_generated_files/adc.h"
+# 205 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_StartChannelSequencer(void);
-# 229 "./mcc_generated_files/adc.h"
+# 228 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_SelectContext(ADC_context_t context);
-# 251 "./mcc_generated_files/adc.h"
+# 250 "./mcc_generated_files/adc.h"
 void ADC_EnableChannelScan(ADC_context_t context);
-# 275 "./mcc_generated_files/adc.h"
+# 274 "./mcc_generated_files/adc.h"
 void ADC_DisableChannelScan(ADC_context_t context);
-# 302 "./mcc_generated_files/adc.h"
+# 301 "./mcc_generated_files/adc.h"
 void ADC_StartConversion(ADC_channel_t channel);
-# 328 "./mcc_generated_files/adc.h"
+# 327 "./mcc_generated_files/adc.h"
 _Bool ADC_IsConversionDone(void);
-# 354 "./mcc_generated_files/adc.h"
+# 353 "./mcc_generated_files/adc.h"
 adc_result_t ADC_GetConversionResult(void);
-# 380 "./mcc_generated_files/adc.h"
+# 379 "./mcc_generated_files/adc.h"
 adc_result_t ADC_GetSingleConversion(ADC_channel_t channel);
-# 405 "./mcc_generated_files/adc.h"
+# 404 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_StopConversion(void);
-# 429 "./mcc_generated_files/adc.h"
+# 428 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_SetStopOnInterrupt(void);
-# 457 "./mcc_generated_files/adc.h"
+# 456 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_DischargeSampleCapacitor(void);
-# 481 "./mcc_generated_files/adc.h"
+# 480 "./mcc_generated_files/adc.h"
 void ADC_LoadAcquisitionRegister(uint16_t acquisitionValue);
-# 505 "./mcc_generated_files/adc.h"
+# 504 "./mcc_generated_files/adc.h"
 void ADC_SetPrechargeTime(uint16_t prechargeTime);
-# 529 "./mcc_generated_files/adc.h"
+# 528 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_SetRepeatCount(uint8_t repeatCount);
-# 553 "./mcc_generated_files/adc.h"
+# 552 "./mcc_generated_files/adc.h"
 uint8_t ADC_GetCurrentCountofConversions(void);
-# 576 "./mcc_generated_files/adc.h"
+# 575 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_ClearAccumulator(void);
-# 600 "./mcc_generated_files/adc.h"
+# 599 "./mcc_generated_files/adc.h"
 uint24_t ADC_GetAccumulatorValue(void);
-# 627 "./mcc_generated_files/adc.h"
+# 626 "./mcc_generated_files/adc.h"
 _Bool ADC_HasAccumulatorOverflowed(void);
-# 651 "./mcc_generated_files/adc.h"
+# 650 "./mcc_generated_files/adc.h"
 uint16_t ADC_GetFilterValue(void);
-# 675 "./mcc_generated_files/adc.h"
+# 674 "./mcc_generated_files/adc.h"
 uint16_t ADC_GetPreviousResult(void);
-# 699 "./mcc_generated_files/adc.h"
+# 698 "./mcc_generated_files/adc.h"
 void ADC_DefineSetPoint(uint16_t setPoint);
-# 723 "./mcc_generated_files/adc.h"
+# 722 "./mcc_generated_files/adc.h"
 void ADC_SetUpperThreshold(uint16_t upperThreshold);
-# 747 "./mcc_generated_files/adc.h"
+# 746 "./mcc_generated_files/adc.h"
 void ADC_SetLowerThreshold(uint16_t lowerThreshold);
-# 772 "./mcc_generated_files/adc.h"
+# 771 "./mcc_generated_files/adc.h"
 uint16_t ADC_GetErrorCalculation(void);
-# 796 "./mcc_generated_files/adc.h"
+# 795 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_EnableDoubleSampling(void);
-# 820 "./mcc_generated_files/adc.h"
+# 819 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_EnableContinuousConversion(void);
-# 844 "./mcc_generated_files/adc.h"
+# 843 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_DisableContinuousConversion(void);
-# 871 "./mcc_generated_files/adc.h"
+# 870 "./mcc_generated_files/adc.h"
 _Bool ADC_HasErrorCrossedUpperThreshold(void);
-# 898 "./mcc_generated_files/adc.h"
+# 897 "./mcc_generated_files/adc.h"
 _Bool ADC_HasErrorCrossedLowerThreshold(void);
-# 923 "./mcc_generated_files/adc.h"
+# 922 "./mcc_generated_files/adc.h"
 uint8_t ADC_GetConversionStageStatus(void);
-# 944 "./mcc_generated_files/adc.h"
+# 943 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_EnableChargePump(void);
-# 965 "./mcc_generated_files/adc.h"
+# 964 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_DisableChargePump(void);
-# 994 "./mcc_generated_files/adc.h"
+# 993 "./mcc_generated_files/adc.h"
 void ADC_SetADIInterruptHandler(void (* InterruptHandler)(void));
-# 1023 "./mcc_generated_files/adc.h"
+# 1022 "./mcc_generated_files/adc.h"
 void ADC_SetActiveClockTuningInterruptHandler(void (* InterruptHandler)(void));
-# 1052 "./mcc_generated_files/adc.h"
+# 1051 "./mcc_generated_files/adc.h"
 void ADC_SetContext1ThresholdInterruptHandler(void (* InterruptHandler)(void));
-# 1081 "./mcc_generated_files/adc.h"
+# 1080 "./mcc_generated_files/adc.h"
 void ADC_SetContext2ThresholdInterruptHandler(void (* InterruptHandler)(void));
-# 1110 "./mcc_generated_files/adc.h"
+# 1109 "./mcc_generated_files/adc.h"
 void ADC_SetContext3ThresholdInterruptHandler(void (* InterruptHandler)(void));
-# 1139 "./mcc_generated_files/adc.h"
+# 1138 "./mcc_generated_files/adc.h"
 void ADC_SetContext4ThresholdInterruptHandler(void (* InterruptHandler)(void));
 # 57 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/tmr5.h" 1
@@ -40534,6 +40533,14 @@ extern void (*TMR0_InterruptHandler)(void);
 # 328 "./mcc_generated_files/tmr0.h"
 void TMR0_DefaultInterruptHandler(void);
 # 62 "./mcc_generated_files/mcc.h" 2
+# 1 "./mcc_generated_files/dac1.h" 1
+# 93 "./mcc_generated_files/dac1.h"
+void DAC1_Initialize(void);
+# 129 "./mcc_generated_files/dac1.h"
+void DAC1_SetOutput(uint8_t inputData);
+# 163 "./mcc_generated_files/dac1.h"
+uint8_t DAC1_GetOutput(void);
+# 63 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/memory.h" 1
 # 81 "./mcc_generated_files/memory.h"
 uint8_t FLASH_ReadByte(uint32_t flashAddr);
@@ -40553,14 +40560,6 @@ void FLASH_EraseBlock(uint32_t flashAddr);
 void DATAEE_WriteByte(uint16_t bAdd, uint8_t bData);
 # 225 "./mcc_generated_files/memory.h"
 uint8_t DATAEE_ReadByte(uint16_t bAdd);
-# 63 "./mcc_generated_files/mcc.h" 2
-# 1 "./mcc_generated_files/dac1.h" 1
-# 93 "./mcc_generated_files/dac1.h"
-void DAC1_Initialize(void);
-# 129 "./mcc_generated_files/dac1.h"
-void DAC1_SetOutput(uint8_t inputData);
-# 163 "./mcc_generated_files/dac1.h"
-uint8_t DAC1_GetOutput(void);
 # 64 "./mcc_generated_files/mcc.h" 2
 # 1 "./mcc_generated_files/uart2.h" 1
 # 74 "./mcc_generated_files/uart2.h"
@@ -40717,7 +40716,7 @@ void OSCILLATOR_Initialize(void);
 void PMD_Initialize(void);
 # 120 "./mcc_generated_files/mcc.h"
 void SystemArbiter_Initialize(void);
-# 168 "main.c" 2
+# 172 "main.c" 2
 
 # 1 "./eadog.h" 1
 # 43 "./eadog.h"
@@ -40820,210 +40819,195 @@ extern long timezone;
 extern int getdate_err;
 struct tm *getdate (const char *);
 # 17 "./vconfig.h" 2
-# 136 "./vconfig.h"
- struct spi_link_type {
-  uint8_t SPI_LCD : 1;
-  uint8_t SPI_AUX : 1;
-  uint8_t LCD_TIMER : 1;
-  volatile uint8_t LCD_DATA : 1;
-  uint16_t delay;
-  uint8_t config;
-  uint8_t * txbuf;
-  volatile int32_t int_count;
- };
+# 97 "./vconfig.h"
+    const char msg_gemcmds[] = "Host CMDS: M C R P O L S D E H F";
+    const char msg_freecmds[] = "Port baud rate unlocked        ";
+    const char msg_gemremote[] = "Host CMDS: ENABLED REMOTE";
 
- typedef struct B_type {
-  volatile _Bool one_sec_flag;
-  volatile uint16_t dim_delay;
-  volatile _Bool display_update;
- } B_type;
+    struct spi_link_type {
+        uint8_t SPI_LCD : 1;
+        uint8_t SPI_AUX : 1;
+        uint8_t LCD_TIMER : 1;
+        volatile uint8_t LCD_DATA : 1;
+        uint16_t delay;
+        uint8_t config;
+        uint8_t * txbuf;
+        volatile int32_t int_count;
+    };
 
- typedef enum {
-  CODE_TS = 0,
-  CODE_TM = 1,
-  CODE_ONLOCAL = 2,
-  CODE_ONREMOTE = 3,
-  CODE_OFFLINE = 4,
-  CODE_DEBUG,
-  CODE_LOG,
-  CODE_LOAD,
-  CODE_UNLOAD,
-  CODE_PUMP,
-  CODE_HELP,
-  CODE_SEQUENCE,
-  CODE_RERROR,
-  CODE_FREE,
-  CODE_ERR,
- } P_CODES;
+    typedef struct B_type {
+        volatile _Bool one_sec_flag;
+        volatile uint16_t dim_delay;
+        volatile _Bool display_update;
+    } B_type;
 
- typedef enum {
-  DIS_STR = 0,
-  DIS_TERM,
-  DIS_LOG,
-  DIS_LOAD,
-  DIS_UNLOAD,
-  DIS_PUMP,
-  DIS_HELP,
-  DIS_SEQUENCE,
-  DIS_SEQUENCE_M,
-  DIS_ERR,
-  DIS_FREE,
-  DIS_CLEAR,
- } D_CODES;
+    typedef enum {
+        DIS_STR = 0,
+        DIS_TERM,
+        DIS_LOG,
+        DIS_LOAD,
+        DIS_UNLOAD,
+        DIS_PUMP,
+        DIS_HELP,
+        DIS_SEQUENCE,
+        DIS_SEQUENCE_M,
+        DIS_ERR,
+        DIS_FREE,
+        DIS_CLEAR,
+    } D_CODES;
 
- typedef struct terminal_type {
-  uint8_t ack[32], mesgid;
-  uint8_t TID, mcode, mparm, cmdlen, log_seq;
-  uint8_t host_display_ack : 1;
-  D_CODES info, help_temp;
-  uint16_t ceid;
-  uint16_t log_num;
- } terminal_type;
+    typedef struct terminal_type {
+        uint8_t ack[32], mesgid;
+        uint8_t TID, mcode, mparm, cmdlen, log_seq;
+        uint8_t host_display_ack : 1;
+        D_CODES info, help_temp;
+        uint16_t ceid;
+        uint16_t log_num;
+    } terminal_type;
 
- typedef enum {
-  SEQ_STATE_INIT = 0,
-  SEQ_STATE_RX,
-  SEQ_STATE_TX,
-  SEQ_STATE_TRIGGER,
-  SEQ_STATE_QUEUE,
-  SEQ_STATE_DONE,
-  SEQ_STATE_ERROR
- } SEQ_STATES;
+    typedef enum {
+        SEQ_STATE_INIT = 0,
+        SEQ_STATE_RX,
+        SEQ_STATE_TX,
+        SEQ_STATE_TRIGGER,
+        SEQ_STATE_QUEUE,
+        SEQ_STATE_DONE,
+        SEQ_STATE_ERROR
+    } SEQ_STATES;
 
- typedef enum {
-  UI_STATE_INIT = 0,
-  UI_STATE_HOST,
-  UI_STATE_DEBUG,
-  UI_STATE_LOG,
-  UI_STATE_ERROR
- } UI_STATES;
+    typedef enum {
+        UI_STATE_INIT = 0,
+        UI_STATE_HOST,
+        UI_STATE_DEBUG,
+        UI_STATE_LOG,
+        UI_STATE_ERROR
+    } UI_STATES;
 
- typedef enum {
-  GEM_STATE_DISABLE = 0,
-  GEM_STATE_COMM,
-  GEM_STATE_OFFLINE,
-  GEM_STATE_ONLINE,
-  GEM_STATE_REMOTE,
-  GEM_STATE_ERROR
- } GEM_STATES;
+    typedef enum {
+        BMC_STATE_DISABLE = 0,
+        BMC_STATE_COMM,
+        BMC_STATE_OFFLINE,
+        BMC_STATE_ONLINE,
+        BMC_STATE_REMOTE,
+        BMC_STATE_ERROR
+    } BMC_STATES;
 
- extern const char * GEM_TEXT [];
+    extern const char * BMC_TEXT [];
 
- typedef enum {
-  GEM_GENERIC = 0,
-  GEM_VII80,
-  GEM_E220,
-  GEM_ERROR = 9
- } GEM_EQUIP;
+    typedef enum {
+        BMC_GENERIC = 0,
+        BMC_VII80,
+        BMC_E220,
+        BMC_ERROR = 9
+    } BMC_EQUIP;
 
- typedef enum {
-  LINK_STATE_IDLE = 0,
-  LINK_STATE_ENQ,
-  LINK_STATE_EOT,
-  LINK_STATE_ACK,
-  LINK_STATE_DONE,
-  LINK_STATE_NAK,
-  LINK_STATE_ERROR
- } LINK_STATES;
+    typedef enum {
+        LINK_STATE_IDLE = 0,
+        LINK_STATE_ENQ,
+        LINK_STATE_EOT,
+        LINK_STATE_ACK,
+        LINK_STATE_DONE,
+        LINK_STATE_NAK,
+        LINK_STATE_ERROR
+    } LINK_STATES;
 
- typedef enum {
-  LINK_ERROR_NONE = 10,
-  LINK_ERROR_T1,
-  LINK_ERROR_T2,
-  LINK_ERROR_T3,
-  LINK_ERROR_T4,
-  LINK_ERROR_CHECKSUM,
-  LINK_ERROR_NAK,
-  LINK_ERROR_ABORT,
-  LINK_ERROR_SEND
- } LINK_ERRORS;
+    typedef enum {
+        LINK_ERROR_NONE = 10,
+        LINK_ERROR_T1,
+        LINK_ERROR_T2,
+        LINK_ERROR_T3,
+        LINK_ERROR_T4,
+        LINK_ERROR_CHECKSUM,
+        LINK_ERROR_NAK,
+        LINK_ERROR_ABORT,
+        LINK_ERROR_SEND
+    } LINK_ERRORS;
 
- typedef enum {
-  MSG_ERROR_NONE = 0,
-  MSG_ERROR_ID = 1,
-  MSG_ERROR_STREAM = 3,
-  MSG_ERROR_FUNCTION = 5,
-  MSG_ERROR_DATA = 7,
-  MSG_ERROR_TIMEOUT = 9,
-  MSG_ERROR_DATASIZE = 11,
-  MSG_ERROR_RESET = 20
- } MSG_ERRORS;
+    typedef enum {
+        MSG_ERROR_NONE = 0,
+        MSG_ERROR_ID = 1,
+        MSG_ERROR_STREAM = 3,
+        MSG_ERROR_FUNCTION = 5,
+        MSG_ERROR_DATA = 7,
+        MSG_ERROR_TIMEOUT = 9,
+        MSG_ERROR_DATASIZE = 11,
+        MSG_ERROR_RESET = 20
+    } MSG_ERRORS;
 
- typedef enum {
-  SEND_ERROR_NONE = 0,
-  SEND_ERROR_ABORT,
-  SEND_ERROR_EOT,
-  SEND_ERROR_T2,
-  SEND_ERROR_T3,
-  SEND_ERROR_DATA,
- } SEND_ERRORS;
+    typedef enum {
+        SEND_ERROR_NONE = 0,
+        SEND_ERROR_ABORT,
+        SEND_ERROR_EOT,
+        SEND_ERROR_T2,
+        SEND_ERROR_T3,
+        SEND_ERROR_DATA,
+    } SEND_ERRORS;
 
- typedef enum {
-  RECV_ERROR_NONE = 0,
-  RECV_ERROR_NAK,
-  RECV_ERROR_EOT,
-  RECV_ERROR_T2,
-  RECV_ERROR_T3,
-  RECV_ERROR_CKSUM,
-  RECV_ERROR_DATA,
- } RECV_ERRORS;
+    typedef enum {
+        RECV_ERROR_NONE = 0,
+        RECV_ERROR_NAK,
+        RECV_ERROR_EOT,
+        RECV_ERROR_T2,
+        RECV_ERROR_T3,
+        RECV_ERROR_CKSUM,
+        RECV_ERROR_DATA,
+    } RECV_ERRORS;
 
- typedef enum {
-  TICKER_ZERO = 0,
-  TICKER_LOW = 20,
-  TICKER_HIGH = 40,
- } TICKER_VAL;
+    typedef enum {
+        TICKER_ZERO = 0,
+        TICKER_LOW = 20,
+        TICKER_HIGH = 40,
+    } TICKER_VAL;
 
- typedef struct V_data {
-  SEQ_STATES s_state;
-  UI_STATES ui_state;
-  GEM_STATES g_state;
-  GEM_EQUIP e_types;
-  LINK_STATES m_l_state;
-  LINK_STATES r_l_state;
-  LINK_STATES t_l_state;
-  char buf[127 + 1], terminal[159 + 1], info[63 + 1];
-  uint32_t ticks, systemb, tx_total, rx_total, bt_total, br_total, brn_total, btn_total;
-  volatile uint32_t utc_ticks;
-  int32_t testing;
-  uint8_t stream, function, error, abort, msg_error, msg_ret, alarm, event;
-  UI_STATES ui_sw;
-  uint16_t r_checksum, t_checksum, checksum_error, timer_error, ping, mode_pwm, equip_timeout, sequences, all_errors, ceid;
-  uint8_t rbit : 1, wbit : 1, ebit : 1, failed_send : 4, failed_receive : 4;
-  terminal_type response;
-  uint8_t uart, llid, sid, ping_count, euart, vterm, vterm_switch, uart_speed_fast;
-  volatile uint8_t ticker;
-  _Bool flipper, queue, debug, help, stack, help_id, rerror, speed_spin, set_sequ, log_s6f11, log_abort, log_char;
-  adc_result_t v_tx_line, v_rx_line;
-  int16_t tx_volts, rx_volts;
-  char tx_rs232, rx_rs232;
-  int16_t secs_value, cmd_value;
-  time_t utc_cmd_value;
- } V_data;
+    typedef struct V_data {
+        SEQ_STATES s_state;
+        UI_STATES ui_state;
+        BMC_STATES g_state;
+        BMC_EQUIP e_types;
+        LINK_STATES m_l_state;
+        LINK_STATES r_l_state;
+        LINK_STATES t_l_state;
+        char buf[127 + 1], terminal[159 + 1], info[63 + 1];
+        uint32_t ticks, systemb, tx_total, rx_total, bt_total, br_total, brn_total, btn_total;
+        volatile uint32_t utc_ticks;
+        int32_t testing;
+        uint8_t stream, function, error, abort, msg_error, msg_ret, alarm, event;
+        UI_STATES ui_sw;
+        uint16_t r_checksum, t_checksum, checksum_error, timer_error, ping, mode_pwm, equip_timeout, sequences, all_errors, ceid;
+        uint8_t rbit : 1, wbit : 1, ebit : 1, failed_send : 4, failed_receive : 4;
+        terminal_type response;
+        uint8_t uart, llid, sid, ping_count, euart, vterm, vterm_switch, uart_speed_fast;
+        volatile uint8_t ticker;
+        _Bool flipper, queue, debug, help, stack, help_id, rerror, speed_spin, set_sequ, log_s6f11, log_abort, log_char;
+        adc_result_t v_tx_line, v_rx_line;
+        int16_t tx_volts, rx_volts;
+        char tx_rs232, rx_rs232;
+        int16_t secs_value, cmd_value;
+        time_t utc_cmd_value;
+    } V_data;
 
- typedef struct V_help {
-  const char message[32], display[32], extrams[32];
- } V_help;
+    typedef struct V_help {
+        const char message[32], display[32], extrams[32];
+    } V_help;
 
- extern char spinners(uint8_t, const uint8_t);
+    extern char spinners(uint8_t, const uint8_t);
 
 
- const char spin[6][20] = {
-  "||//--",
-  "||//--\\\\",
-  "OOOOOO--__-",
-  "vv<<^^>>",
-  "..**x#x#XX||--",
-  "..ooOOoo"
- };
+    const char spin[6][20] = {
+        "||//--",
+        "||//--\\\\",
+        "OOOOOO--__-",
+        "vv<<^^>>",
+        "..**x#x#XX||--",
+        "..ooOOoo"
+    };
 
 
+    extern B_type B;
 
- extern B_type B;
-
- const char *build_date, *build_time;
- extern void UART1_Initialize19200(void);
- extern void UART2_Initialize19200(void);
+    const char *build_date, *build_time;
+    extern void UART1_Initialize19200(void);
+    extern void UART2_Initialize19200(void);
 # 44 "./eadog.h" 2
 # 1 "./slaveo.h" 1
 # 18 "./slaveo.h"
@@ -41067,44 +41051,44 @@ __attribute__((inline)) void StartTimer(uint8_t timer, uint16_t count);
 __attribute__((inline)) _Bool TimerDone(uint8_t timer);
 void WaitMs(uint16_t numMilliseconds);
 # 22 "./slaveo.h" 2
-# 44 "./slaveo.h"
- struct spi_link_type_ss {
-  uint8_t SPI_DATA : 1;
-  uint8_t ADC_DATA : 1;
-  uint8_t PORT_DATA : 1;
-  uint8_t CHAR_DATA : 1;
-  uint8_t REMOTE_LINK : 1;
-  uint8_t REMOTE_DATA_DONE : 1;
-  uint8_t LOW_BITS : 1;
-  uint8_t ADC_RUN : 1;
- };
+# 45 "./slaveo.h"
+    struct spi_link_type_ss {
+        uint8_t SPI_DATA : 1;
+        uint8_t ADC_DATA : 1;
+        uint8_t PORT_DATA : 1;
+        uint8_t CHAR_DATA : 1;
+        uint8_t REMOTE_LINK : 1;
+        uint8_t REMOTE_DATA_DONE : 1;
+        uint8_t LOW_BITS : 1;
+        uint8_t ADC_RUN : 1;
+    };
 
- struct spi_stat_type_ss {
-  volatile uint32_t adc_count, adc_error_count,
-  port_count, port_error_count,
-  char_count, char_error_count,
-  slave_int_count, last_slave_int_count, slave_tx_count,
-  comm_count, idle_count, spi_error_count;
-  volatile uint8_t comm_ok;
- };
+    struct spi_stat_type_ss {
+        volatile uint32_t adc_count,
+        port_count, port_error_count,
+        char_count, char_error_count,
+        slave_int_count, last_slave_int_count, slave_tx_count,
+        comm_count, idle_count, spi_error_count;
+        volatile uint8_t comm_ok;
+    };
 
- struct serial_buffer_type_ss {
-  volatile uint8_t data[4], tx_buffer, adcl, adch, command;
-  volatile uint32_t place;
- };
+    struct serial_buffer_type_ss {
+        volatile uint8_t data[4], tx_buffer, adcl, adc2, adch, command;
+        volatile uint32_t place;
+    };
 
- extern volatile struct spi_link_type_ss spi_comm_ss;
- extern volatile struct serial_buffer_type_ss serial_buffer_ss;
- extern volatile struct spi_stat_type_ss spi_stat_ss, report_stat_ss;
- extern volatile uint8_t data_in2, adc_buffer_ptr, adc_channel, channel, upper;
- extern volatile uint16_t adc_buffer[0x3f], adc_data_in;
+    extern volatile struct spi_link_type_ss spi_comm_ss;
+    extern volatile struct serial_buffer_type_ss serial_buffer_ss;
+    extern volatile struct spi_stat_type_ss spi_stat_ss, report_stat_ss;
+    extern volatile uint8_t data_in2, adc_buffer_ptr, adc_channel, channel, upper;
+    extern volatile uint16_t adc_buffer[0x40], adc_data_in;
 
- void check_slaveo(void);
- void init_slaveo(void);
+    void check_slaveo(void);
+    void init_slaveo(void);
 
- void slaveo_rx_isr(void);
- void slaveo_spi_isr(void);
- void slaveo_time_isr(void);
+    void slaveo_rx_isr(void);
+    void slaveo_spi_isr(void);
+    void slaveo_time_isr(void);
 # 45 "./eadog.h" 2
 
 
@@ -41147,9 +41131,9 @@ void WaitMs(uint16_t numMilliseconds);
 
  void clear_lcd_done(void);
  void spi_rec_done(void);
-# 170 "main.c" 2
-# 1 "./gemsecs.h" 1
-# 26 "./gemsecs.h"
+# 174 "main.c" 2
+
+
 # 1 "./mydisplay.h" 1
 # 42 "./mydisplay.h"
 void MyeaDogM_WriteStringAtPos(const uint8_t, const uint8_t, char *);
@@ -41165,77 +41149,7 @@ _Bool help_button(void);
 void check_help(const _Bool);
 D_CODES set_display_info(const D_CODES);
 D_CODES set_temp_display_help(const D_CODES);
-# 27 "./gemsecs.h" 2
-# 1 "./msg_text.h" 1
-# 17 "./msg_text.h"
- typedef enum {
-  display_message = 0,
-  display_online,
-  display_remote,
-  display_gemhelp,
-  display_free,
- } DISPLAY_TYPES;
-
-
-
-
- const char msg0[] = "Host A%d, R%d RF%d, T%d TF%d, C%d %d %s       ";
- const char msg1[] = "ONLINE A%d, R%d RF%d, T%d TF%d, C%d %d %s     ";
- const char msg2[] = "%s %d %s                                      ";
- const char msg_gemhelp[] = "%s %s                                  ";
- const char msg_free[] = "%s %s                                     ";
- const char msg99[] = "UNK FORMAT A%d, R%d RF%d, T%d TF%d, C%d %s   ";
-
- V_help T[] = {
-  {
-   .message = "CMD: M, C           ",
-   .display = "Message, Close      ",
-   .extrams = "Text Message to Host",
-  },
-  {
-   .message = "CMD: R, P, O        ",
-   .display = "Ready, Pump, Open   ",
-   .extrams = "Load Lock commands  ",
-  },
-  {
-   .message = "CMD: L, S, D        ",
-   .display = "Log, Sequence, Debug",
-   .extrams = "                    ",
-  },
-  {
-   .message = "CMD: E, H, F        ",
-   .display = "Errors, Help, Free  ",
-   .extrams = "E: Test  F: Speed   ",
-  },
- };
-# 28 "./gemsecs.h" 2
-
-
-
-
- const char msg_gemcmds[] = "Host CMDS: M C R P O L S D E H F";
- const char msg_freecmds[] = "Port baud rate unlocked        ";
- const char msg_gemremote[] = "Host CMDS: ENABLED REMOTE";
-
-
- uint16_t block_checksum(uint8_t *, const uint16_t);
- uint16_t run_checksum(const uint8_t, const _Bool);
- LINK_STATES m_protocol(LINK_STATES *);
- LINK_STATES r_protocol(LINK_STATES *);
- LINK_STATES t_protocol(LINK_STATES *);
- void hb_message(void);
- void terminal_format(DISPLAY_TYPES);
- uint16_t format_display_text(const char *);
- P_CODES s10f1_opcmd(void);
- uint16_t s6f11_opcmd(void);
- _Bool sequence_messages(const uint8_t);
- void secs_II_monitor_message(const uint8_t, const uint8_t, const uint16_t);
- GEM_STATES secs_gem_state(const uint8_t, const uint8_t);
- void equip_tx(const uint8_t);
-# 171 "main.c" 2
-
-
-
+# 177 "main.c" 2
 # 1 "./rs232.h" 1
 # 16 "./rs232.h"
  const int16_t pos_scale = 35,
@@ -41243,77 +41157,77 @@ D_CODES set_temp_display_help(const D_CODES);
   line_zero_limit = -24,
   adc_scale_zero = -2048;
  void update_rs232_line_status(void);
-# 175 "main.c" 2
-# 185 "main.c"
+# 178 "main.c" 2
+# 188 "main.c"
 extern struct spi_link_type spi_link;
-const char *build_date = "May 10 2025", *build_time = "22:32:59";
+const char *build_date = "May 11 2025", *build_time = "16:28:12";
 
-const char * GEM_TEXT [] = {
- "DISABLE",
- "COMM   ",
- "OFFLINE",
- "ONLINE ",
- "REMOTE ",
- "ERROR  "
+const char * BMC_TEXT [] = {
+    "DISABLE",
+    "COMM   ",
+    "OFFLINE",
+    "ONLINE ",
+    "REMOTE ",
+    "ERROR  "
 };
 
 V_data V = {
- .error = LINK_ERROR_NONE,
- .abort = LINK_ERROR_NONE,
- .msg_error = MSG_ERROR_RESET,
- .uart = 1,
- .g_state = GEM_STATE_DISABLE,
- .e_types = GEM_GENERIC,
- .ticker = TICKER_ZERO,
- .checksum_error = 0,
- .all_errors = 0,
- .timer_error = 0,
- .response.info = DIS_STR,
- .response.log_num = 0,
- .response.log_seq = 0,
- .response.host_display_ack = 0,
- .queue = 0,
- .stack = 0,
- .sid = 1,
- .help_id = 0,
- .ping_count = 0,
- .sequences = 0,
- .set_sequ = 0,
- .euart = 2,
- .tx_total = 0,
- .rx_total = 0,
- .failed_receive = RECV_ERROR_NONE,
- .failed_send = SEND_ERROR_NONE,
- .vterm = 0,
- .tx_rs232 = 'O',
- .rx_rs232 = 'O',
- .debug = 1,
- .rerror = 0,
- .help = 0,
- .secs_value = 0,
- .cmd_value = 0,
- .utc_cmd_value = 0,
- .utc_ticks = 1721693000,
- .log_s6f11 = 1,
- .log_abort = 0,
- .log_char = 0,
+    .error = LINK_ERROR_NONE,
+    .abort = LINK_ERROR_NONE,
+    .msg_error = MSG_ERROR_RESET,
+    .uart = 1,
+    .g_state = BMC_STATE_DISABLE,
+    .e_types = BMC_GENERIC,
+    .ticker = TICKER_ZERO,
+    .checksum_error = 0,
+    .all_errors = 0,
+    .timer_error = 0,
+    .response.info = DIS_STR,
+    .response.log_num = 0,
+    .response.log_seq = 0,
+    .response.host_display_ack = 0,
+    .queue = 0,
+    .stack = 0,
+    .sid = 1,
+    .help_id = 0,
+    .ping_count = 0,
+    .sequences = 0,
+    .set_sequ = 0,
+    .euart = 2,
+    .tx_total = 0,
+    .rx_total = 0,
+    .failed_receive = RECV_ERROR_NONE,
+    .failed_send = SEND_ERROR_NONE,
+    .vterm = 0,
+    .tx_rs232 = 'O',
+    .rx_rs232 = 'O',
+    .debug = 1,
+    .rerror = 0,
+    .help = 0,
+    .secs_value = 0,
+    .cmd_value = 0,
+    .utc_cmd_value = 0,
+    .utc_ticks = 0,
+    .log_s6f11 = 1,
+    .log_abort = 0,
+    .log_char = 0,
 };
 
 B_type B = {
- .one_sec_flag = 0,
- .display_update = 0,
- .dim_delay = 6,
+    .one_sec_flag = 0,
+    .display_update = 0,
+    .dim_delay = 6,
 };
 
 volatile struct spi_link_type_ss spi_comm_ss = {0, 0, 0, 0, 0, 0, 0, 0};
 volatile struct spi_stat_type_ss spi_stat_ss;
 volatile struct serial_buffer_type_ss serial_buffer_ss = {
- .tx_buffer = 0x81,
- .data[0] = 0x57,
+    .tx_buffer = 0x81,
+    .data[0] = 0x57,
 };
 
 volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0, channel = 0, upper;
-volatile uint16_t adc_buffer[0x3f] = {0}, adc_data_in = 0;
+volatile uint16_t adc_buffer[0x40] = {0}, adc_data_in = 0;
 
 volatile uint16_t tickCount[TMR_COUNT] = {0};
 volatile uint8_t mode_sw = 0, faker;
@@ -41324,315 +41238,381 @@ int8_t test_slave(void);
 
 
 
-void main(void)
-{
- UI_STATES mode;
- char * s, * speed_text;
- uint8_t temp_lock = 0;
- static uint8_t looper = 0;
+void main(void) {
+    UI_STATES mode;
+    char * s, * speed_text;
+    uint8_t temp_lock = 0;
+    static uint8_t looper = 0;
 
- SPI2STATUSbits.SPI2CLRBF;
-
-
- SYSTEM_Initialize();
-
- PIE1bits.ADIE = 0;
-
- (INTCON0bits.GIEH = 1);
+    SPI2STATUSbits.SPI2CLRBF;
 
 
- (INTCON0bits.GIEL = 1);
+    SYSTEM_Initialize();
 
- mconfig_init();
+    PIE1bits.ADIE = 0;
 
- V.ui_state = UI_STATE_INIT;
- mode = UI_STATE_HOST;
+    (INTCON0bits.GIEH = 1);
 
- TMR2_StartTimer();
- TMR5_SetInterruptHandler(onesec_io);
- TMR5_StartTimer();
- TMR6_StartTimer();
 
+    (INTCON0bits.GIEL = 1);
+
+    mconfig_init();
+
+    V.ui_state = UI_STATE_INIT;
+    mode = UI_STATE_HOST;
+
+    TMR2_StartTimer();
+    TMR5_SetInterruptHandler(onesec_io);
+    TMR5_StartTimer();
+    TMR6_StartTimer();
 
 
 
 
 
- V.speed_spin = DATAEE_ReadByte(0x03F1);
- V.uart_speed_fast = DATAEE_ReadByte(0x03F0);
- DATAEE_WriteByte(0x03F1, temp_lock);
- DATAEE_WriteByte(0x03F0, V.uart_speed_fast + 1);
 
- if (V.uart_speed_fast % 2 == 0) {
-  speed_text = "Locked 9600bps";
- } else {
-  speed_text = "Locked 19200bps";
- }
+    V.speed_spin = DATAEE_ReadByte(0x03F1);
+    V.uart_speed_fast = DATAEE_ReadByte(0x03F0);
+    DATAEE_WriteByte(0x03F1, temp_lock);
+    DATAEE_WriteByte(0x03F0, V.uart_speed_fast + 1);
 
- do { LATBbits.LATB1 = 1; } while(0);
- do { LATBbits.LATB2 = 1; } while(0);
- do { LATBbits.LATB3 = 1; } while(0);
- WaitMs(3000);
- do { LATBbits.LATB2 = 0; } while(0);
- do { LATBbits.LATB1 = 0; } while(0);
- do { LATBbits.LATB3 = 0; } while(0);
- temp_lock = 1;
- if (V.speed_spin) {
-  DATAEE_WriteByte(0x03F1, temp_lock);
- }
- DATAEE_WriteByte(0x03F0, V.uart_speed_fast);
-
- if (V.speed_spin) {
-
-
-
-  V.uart_speed_fast = DATAEE_ReadByte(0x03F0);
-  if (V.uart_speed_fast == 0xFF) {
-   V.uart_speed_fast = 0;
-   DATAEE_WriteByte(0x03F0, V.uart_speed_fast);
-  }
-  if (V.uart_speed_fast % 2 == 0) {
-   UART2_Initialize19200();
-   UART1_Initialize19200();
-   speed_text = "19200bps";
-  } else {
-   UART2_Initialize();
-   UART1_Initialize();
-   speed_text = "9600bps";
-  }
-
-
-
-  DATAEE_WriteByte(0x03F0, ++V.uart_speed_fast);
-  DATAEE_WriteByte(0x03F1, V.speed_spin);
- } else {
-  V.uart_speed_fast = DATAEE_ReadByte(0x03F0);
-  if (V.uart_speed_fast % 2 == 0) {
-   UART2_Initialize();
-   UART1_Initialize();
-  } else {
-   UART2_Initialize19200();
-   UART1_Initialize19200();
-  }
- }
-
- init_slaveo();
-
-
-
- while (1) {
-  do { LATDbits.LATD5 = ~LATDbits.LATD5; } while(0);
-  if (!faker++) {
-  }
-
-
-
-
-  logging_cmds();
-
-
-
-
-  switch (V.ui_state) {
-  case UI_STATE_INIT:
-   init_display();
-   eaDogM_WriteCommand(0b00001100);
-
-   set_vterm(V.vterm);
-   snprintf(get_vterm_ptr(0, 0), 20 +1, "Port %s             ", speed_text);
-   snprintf(get_vterm_ptr(1, 0), 20 +1, "Port %s             ", speed_text);
-   snprintf(get_vterm_ptr(2, 0), 20 +1, "Port %s             ", speed_text);
-   snprintf(get_vterm_ptr(3, 0), 20 +1, "Port %s             ", speed_text);
-   refresh_lcd();
-   WaitMs(1000);
-
-   V.ui_state = UI_STATE_HOST;
-   srand(1957);
-   set_vterm(V.vterm);
-   snprintf(V.info, 63, " Terminal Info               ");
-   snprintf(get_vterm_ptr(0, 0), 20 +1, " OPI DAQ %u   %s      ", V.uart_speed_fast & 0x01, "V0.02");
-   snprintf(get_vterm_ptr(1, 0), 20 +1, " Version %s           ", "V0.02");
-   snprintf(get_vterm_ptr(2, 0), 20 +1, " NSASPOOK             ");
-   snprintf(get_vterm_ptr(3, 0), 20 +1, " %s                   ", (char *) build_date);
-   snprintf(get_vterm_ptr(0, 1), 20 +1, " INFO                 ");
-   snprintf(get_vterm_ptr(1, 1), 20 +1, " Version %s           ", "V0.02");
-   snprintf(get_vterm_ptr(2, 1), 20 +1, " VTERM INFO           ");
-   snprintf(get_vterm_ptr(3, 1), 20 +1, " %s                   ", (char *) build_date);
-   snprintf(get_vterm_ptr(0, 3), 20 +1, " HELP Build %s        ", "V0.02");
-   snprintf(get_vterm_ptr(1, 3), 20 +1, " Version %s           ", "V0.02");
-   snprintf(get_vterm_ptr(2, 3), 20 +1, " VTERM HELP           ");
-   snprintf(get_vterm_ptr(3, 3), 20 +1, " %s                   ", (char *) build_date);
-   snprintf(get_vterm_ptr(0, 2), 20 +1, " DEBUG                ");
-   snprintf(get_vterm_ptr(1, 2), 20 +1, " Version %s           ", "V0.02");
-   snprintf(get_vterm_ptr(2, 2), 20 +1, " VTERM DEBUG          ");
-   snprintf(get_vterm_ptr(3, 2), 20 +1, " %s                   ", (char *) build_date);
-   refresh_lcd();
-   WaitMs(3000);
-   StartTimer(TMR_DISPLAY, 100);
-   StartTimer(TMR_SEQ, 10000);
-   StartTimer(TMR_INFO, 3000);
-   StartTimer(TMR_FLIPPER, 1500);
-   StartTimer(TMR_HELPDIS, 3000);
-   StartTimer(TMR_SEQ, 10000);
-   StartTimer(TMR_HELP, 3000);
-   break;
-  case UI_STATE_HOST:
-   set_display_info(DIS_STR);
-   s = get_vterm_ptr(0, 0);
-   s[20 +1] = 0;
-   s[19] = spinners(3, 0);
-   break;
-  default:
-   V.ui_state = UI_STATE_INIT;
-   refresh_lcd();
-   WaitMs(3000);
-   break;
-  }
-
-
-  if (TimerDone(TMR_DISPLAY)) {
-   static uint8_t switcher = 1;
-
-   if (TimerDone(TMR_HELPDIS)) {
-    set_display_info(DIS_STR);
-   }
-   snprintf(get_vterm_ptr(1, 0), 20 +1, "%lu %lu %lu %lu                    ", spi_stat_ss.adc_count, spi_stat_ss.slave_tx_count, spi_stat_ss.slave_int_count,
-    spi_stat_ss.spi_error_count);
-   snprintf(get_vterm_ptr(2, 0), 20 +1, "A1 0x%.2x, A2 0x%.2x               ", V.v_tx_line, V.v_rx_line);
-   snprintf(get_vterm_ptr(3, 0), 20 +1, "0x%.4x 0x%.2x %d %d %d                      ", SPI2TCNT, SPI2INTF, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK);
-
-   spi_stat_ss.adc_count++;
-
-   ADC_DischargeSampleCapacitor();
-   ADC_StartConversion(channel_ANA1);
-   while (!ADC_IsConversionDone()) {
-   };
-   if (ADC_IsConversionDone()) {
-    V.v_tx_line = ADC_GetConversionResult();
-    adc_buffer[channel_ANA1] = V.v_tx_line;
-   };
-   ADC_DischargeSampleCapacitor();
-   ADC_StartConversion(channel_ANA2);
-   while (!ADC_IsConversionDone()) {
-   };
-   if (ADC_IsConversionDone()) {
-    V.v_rx_line = ADC_GetConversionResult();
-    adc_buffer[channel_ANA2] = V.v_rx_line;
-   };
-
-   ADC_DischargeSampleCapacitor();
-   ADC_StartConversion(channel_ANA4);
-   while (!ADC_IsConversionDone()) {
-   };
-   if (ADC_IsConversionDone()) {
-    adc_buffer[channel_ANA4] = ADC_GetConversionResult();
-   };
-   ADC_DischargeSampleCapacitor();
-   ADC_StartConversion(channel_ANA5);
-   while (!ADC_IsConversionDone()) {
-   };
-   if (ADC_IsConversionDone()) {
-    adc_buffer[channel_ANA5] = ADC_GetConversionResult();
-   };
-
-
-   update_rs232_line_status();
-
-   StartTimer(TMR_DISPLAY, 100);
-   if (V.vterm_switch++ > (70)) {
-    set_vterm(switcher);
-    if (V.vterm_switch > (70 + V.ticker + 32)) {
-     switcher++;
-     if ((switcher & 0x03) == 3) {
-      switcher = 1;
-     }
-     V.vterm_switch = 0;
+    if (V.uart_speed_fast % 2 == 0) {
+        speed_text = "Locked 9600bps";
+    } else {
+        speed_text = "Locked 19200bps";
     }
-   } else {
-    set_vterm(V.vterm);
-   }
+
+    do { LATBbits.LATB1 = 1; } while(0);
+    do { LATBbits.LATB2 = 1; } while(0);
+    do { LATBbits.LATB3 = 1; } while(0);
+    WaitMs(3000);
+    do { LATBbits.LATB2 = 0; } while(0);
+    do { LATBbits.LATB1 = 0; } while(0);
+    do { LATBbits.LATB3 = 0; } while(0);
+    temp_lock = 1;
+    if (V.speed_spin) {
+        DATAEE_WriteByte(0x03F1, temp_lock);
+    }
+    DATAEE_WriteByte(0x03F0, V.uart_speed_fast);
+
+    if (V.speed_spin) {
 
 
 
-   snprintf(get_vterm_ptr(0, 1), 20 +1, "RS232 TX %3dV:%c                       ", V.tx_volts, V.tx_rs232);
-   snprintf(get_vterm_ptr(1, 1), 20 +1, "RS232 RX %3dV:%c                       ", V.rx_volts, V.rx_rs232);
-   snprintf(get_vterm_ptr(2, 1), 20 +1, "A1 0x%.2x, A2 0x.2%x                   ", V.v_tx_line, V.v_rx_line);
-   snprintf(get_vterm_ptr(3, 1), 20 +1, "B0 0x%.2X, B1 0x%.2X                   ", serial_buffer_ss.data[0], serial_buffer_ss.data[1]);
-   snprintf(get_vterm_ptr(0, 2), 20 +1, "                                       ");
-   snprintf(get_vterm_ptr(1, 2), 20 +1, "                                       ");
-   snprintf(get_vterm_ptr(2, 2), 20 +1, "A1 0x%.2x, A2 0x%.2x                   ", V.v_tx_line, V.v_rx_line);
-   snprintf(get_vterm_ptr(3, 2), 20 +1, "0x%.4x 0x%.2x %d %d %d                 ", SPI2TCNT, SPI2INTF, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK);
+        V.uart_speed_fast = DATAEE_ReadByte(0x03F0);
+        if (V.uart_speed_fast == 0xFF) {
+            V.uart_speed_fast = 0;
+            DATAEE_WriteByte(0x03F0, V.uart_speed_fast);
+        }
+        if (V.uart_speed_fast % 2 == 0) {
+            UART2_Initialize19200();
+            UART1_Initialize19200();
+            speed_text = "19200bps";
+        } else {
+            UART2_Initialize();
+            UART1_Initialize();
+            speed_text = "9600bps";
+        }
+
+
+
+        DATAEE_WriteByte(0x03F0, ++V.uart_speed_fast);
+        DATAEE_WriteByte(0x03F1, V.speed_spin);
+    } else {
+        V.uart_speed_fast = DATAEE_ReadByte(0x03F0);
+        if (V.uart_speed_fast % 2 == 0) {
+            UART2_Initialize();
+            UART1_Initialize();
+        } else {
+            UART2_Initialize19200();
+            UART1_Initialize19200();
+        }
+    }
+
+    init_slaveo();
+
+
+
+    while (1) {
+        do { LATDbits.LATD5 = ~LATDbits.LATD5; } while(0);
 
 
 
 
-   if (!V.set_sequ) {
-    refresh_lcd();
-    test_slave();
-   }
-  }
+        logging_cmds();
 
 
 
 
-  if (V.set_sequ) {
-   if (TimerDone(TMR_HELP)) {
-    V.set_sequ = 0;
-    set_vterm(V.vterm);
-    refresh_lcd();
-   } else {
-    set_vterm(3);
-    refresh_lcd();
-   }
-  }
+        switch (V.ui_state) {
+            case UI_STATE_INIT:
+                init_display();
+                eaDogM_WriteCommand(0b00001100);
 
-  if (V.help && TimerDone(TMR_SEQ)) {
-   StartTimer(TMR_SEQ, 10000);
-   StartTimer(TMR_HELP, 3000);
-   V.set_sequ = 1;
-   check_help(0);
-  }
-  check_slaveo();
-  do { LATDbits.LATD5 = ~LATDbits.LATD5; } while(0);
- }
+                set_vterm(V.vterm);
+                snprintf(get_vterm_ptr(0, 0), 20 +1, "Port %s             ", speed_text);
+                snprintf(get_vterm_ptr(1, 0), 20 +1, "Port %s             ", speed_text);
+                snprintf(get_vterm_ptr(2, 0), 20 +1, "Port %s             ", speed_text);
+                snprintf(get_vterm_ptr(3, 0), 20 +1, "Port %s             ", speed_text);
+                refresh_lcd();
+                WaitMs(1000);
+
+                V.ui_state = UI_STATE_HOST;
+                srand(1957);
+                set_vterm(V.vterm);
+                snprintf(V.info, 63, " Terminal Info               ");
+                snprintf(get_vterm_ptr(0, 0), 20 +1, " OPI DAQ %u   %s      ", V.uart_speed_fast & 0x01, "V0.03");
+                snprintf(get_vterm_ptr(1, 0), 20 +1, " Version %s           ", "V0.03");
+                snprintf(get_vterm_ptr(2, 0), 20 +1, " NSASPOOK             ");
+                snprintf(get_vterm_ptr(3, 0), 20 +1, " %s                   ", (char *) build_date);
+                snprintf(get_vterm_ptr(0, 1), 20 +1, " INFO                 ");
+                snprintf(get_vterm_ptr(1, 1), 20 +1, " Version %s           ", "V0.03");
+                snprintf(get_vterm_ptr(2, 1), 20 +1, " VTERM INFO           ");
+                snprintf(get_vterm_ptr(3, 1), 20 +1, " %s                   ", (char *) build_date);
+                snprintf(get_vterm_ptr(0, 3), 20 +1, " HELP Build %s        ", "V0.03");
+                snprintf(get_vterm_ptr(1, 3), 20 +1, " Version %s           ", "V0.03");
+                snprintf(get_vterm_ptr(2, 3), 20 +1, " VTERM HELP           ");
+                snprintf(get_vterm_ptr(3, 3), 20 +1, " %s                   ", (char *) build_date);
+                snprintf(get_vterm_ptr(0, 2), 20 +1, " DEBUG                ");
+                snprintf(get_vterm_ptr(1, 2), 20 +1, " Version %s           ", "V0.03");
+                snprintf(get_vterm_ptr(2, 2), 20 +1, " VTERM DEBUG          ");
+                snprintf(get_vterm_ptr(3, 2), 20 +1, " %s                   ", (char *) build_date);
+                refresh_lcd();
+                WaitMs(3000);
+                StartTimer(TMR_DISPLAY, 100);
+                StartTimer(TMR_SEQ, 10000);
+                StartTimer(TMR_INFO, 3000);
+                StartTimer(TMR_FLIPPER, 1500);
+                StartTimer(TMR_HELPDIS, 3000);
+                StartTimer(TMR_SEQ, 10000);
+                StartTimer(TMR_HELP, 3000);
+                break;
+            case UI_STATE_HOST:
+                set_display_info(DIS_STR);
+                s = get_vterm_ptr(0, 0);
+                s[20 +1] = 0;
+                s[19] = spinners(3, 0);
+                break;
+            default:
+                V.ui_state = UI_STATE_INIT;
+                refresh_lcd();
+                WaitMs(3000);
+                break;
+        }
+
+
+        if (TimerDone(TMR_DISPLAY)) {
+            static uint8_t switcher = 1;
+
+            if (TimerDone(TMR_HELPDIS)) {
+                set_display_info(DIS_STR);
+            }
+            snprintf(get_vterm_ptr(1, 0), 20 +1, "%lu %lu %lu %lu                    ", spi_stat_ss.spi_error_count, spi_stat_ss.adc_count, spi_stat_ss.slave_tx_count, spi_stat_ss.slave_int_count);
+            snprintf(get_vterm_ptr(2, 0), 20 +1, "A1 0x%.2x, A2 0x%.2x               ", V.v_tx_line, V.v_rx_line);
+            snprintf(get_vterm_ptr(3, 0), 20 +1, "0x%.4x 0x%.2x %d %d %d                      ", SPI2TCNT, SPI2INTF, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK);
+
+            spi_stat_ss.adc_count++;
+
+            ADC_DischargeSampleCapacitor();
+            ADC_StartConversion(channel_ANA0);
+            while (!ADC_IsConversionDone()) {
+            };
+            if (ADC_IsConversionDone()) {
+                adc_buffer[channel_ANA0] = ADC_GetConversionResult();
+            };
+
+            ADC_DischargeSampleCapacitor();
+            ADC_StartConversion(channel_ANA1);
+            while (!ADC_IsConversionDone()) {
+            };
+            if (ADC_IsConversionDone()) {
+                V.v_tx_line = ADC_GetConversionResult();
+                adc_buffer[channel_ANA1] = V.v_tx_line;
+            };
+
+            ADC_DischargeSampleCapacitor();
+            ADC_StartConversion(channel_ANA2);
+            while (!ADC_IsConversionDone()) {
+            };
+            if (ADC_IsConversionDone()) {
+                V.v_rx_line = ADC_GetConversionResult();
+                adc_buffer[channel_ANA2] = V.v_rx_line;
+            };
+
+            ADC_DischargeSampleCapacitor();
+            ADC_StartConversion(channel_ANA4);
+            while (!ADC_IsConversionDone()) {
+            };
+            if (ADC_IsConversionDone()) {
+                adc_buffer[channel_ANA4] = ADC_GetConversionResult();
+            };
+
+            ADC_DischargeSampleCapacitor();
+            ADC_StartConversion(channel_ANA5);
+            while (!ADC_IsConversionDone()) {
+            };
+            if (ADC_IsConversionDone()) {
+                adc_buffer[channel_ANA5] = ADC_GetConversionResult();
+            };
+
+            ADC_DischargeSampleCapacitor();
+            ADC_StartConversion(channel_ANC6);
+            while (!ADC_IsConversionDone()) {
+            };
+            if (ADC_IsConversionDone()) {
+                adc_buffer[channel_ANC6] = ADC_GetConversionResult();
+            };
+
+            ADC_DischargeSampleCapacitor();
+            ADC_StartConversion(channel_ANC7);
+            while (!ADC_IsConversionDone()) {
+            };
+            if (ADC_IsConversionDone()) {
+                adc_buffer[channel_ANC7] = ADC_GetConversionResult();
+            };
+
+            ADC_DischargeSampleCapacitor();
+            ADC_StartConversion(channel_AND5);
+            while (!ADC_IsConversionDone()) {
+            };
+            if (ADC_IsConversionDone()) {
+                adc_buffer[channel_AND5] = ADC_GetConversionResult();
+            };
+
+            ADC_DischargeSampleCapacitor();
+            ADC_StartConversion(channel_VSS);
+            while (!ADC_IsConversionDone()) {
+            };
+            if (ADC_IsConversionDone()) {
+                adc_buffer[channel_VSS] = ADC_GetConversionResult();
+            };
+
+            ADC_DischargeSampleCapacitor();
+            ADC_StartConversion(channel_Temp);
+            while (!ADC_IsConversionDone()) {
+            };
+            if (ADC_IsConversionDone()) {
+                adc_buffer[channel_Temp] = ADC_GetConversionResult();
+            };
+
+            ADC_DischargeSampleCapacitor();
+            ADC_StartConversion(channel_DAC1);
+            while (!ADC_IsConversionDone()) {
+            };
+            if (ADC_IsConversionDone()) {
+                adc_buffer[channel_DAC1] = ADC_GetConversionResult();
+            };
+
+            ADC_DischargeSampleCapacitor();
+            ADC_StartConversion(channel_FVR_Buffer1);
+            while (!ADC_IsConversionDone()) {
+            };
+            if (ADC_IsConversionDone()) {
+                adc_buffer[channel_FVR_Buffer1] = ADC_GetConversionResult();
+            };
+
+            ADC_DischargeSampleCapacitor();
+            ADC_StartConversion(channel_FVR_Buffer2);
+            while (!ADC_IsConversionDone()) {
+            };
+            if (ADC_IsConversionDone()) {
+                adc_buffer[channel_FVR_Buffer2] = ADC_GetConversionResult();
+            };
+
+
+            update_rs232_line_status();
+
+            StartTimer(TMR_DISPLAY, 100);
+            if (V.vterm_switch++ > (70)) {
+                set_vterm(switcher);
+                if (V.vterm_switch > (70 + V.ticker + 32)) {
+                    switcher++;
+                    if ((switcher & 0x03) == 3) {
+                        switcher = 1;
+                    }
+                    V.vterm_switch = 0;
+                }
+            } else {
+                set_vterm(V.vterm);
+            }
+
+
+
+            snprintf(get_vterm_ptr(0, 1), 20 +1, "RS232 TX %3dV:%c                       ", V.tx_volts, V.tx_rs232);
+            snprintf(get_vterm_ptr(1, 1), 20 +1, "RS232 RX %3dV:%c                       ", V.rx_volts, V.rx_rs232);
+            snprintf(get_vterm_ptr(2, 1), 20 +1, "A1 0x%.2x, A2 0x%.2x                   ", V.v_tx_line, V.v_rx_line);
+            snprintf(get_vterm_ptr(3, 1), 20 +1, "B0 0x%.2X, B1 0x%.2X                   ", serial_buffer_ss.data[0], serial_buffer_ss.data[1]);
+            snprintf(get_vterm_ptr(0, 2), 20 +1, "                                       ");
+            snprintf(get_vterm_ptr(1, 2), 20 +1, "                                       ");
+            snprintf(get_vterm_ptr(2, 2), 20 +1, "A1 0x%.2x, A2 0x%.2x                   ", V.v_tx_line, V.v_rx_line);
+            snprintf(get_vterm_ptr(3, 2), 20 +1, "0x%.4x 0x%.2x %d %d %d                 ", SPI2TCNT, SPI2INTF, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK);
+
+
+
+
+            if (!V.set_sequ) {
+                refresh_lcd();
+                test_slave();
+            }
+        }
+
+
+
+
+        if (V.set_sequ) {
+            if (TimerDone(TMR_HELP)) {
+                V.set_sequ = 0;
+                set_vterm(V.vterm);
+                refresh_lcd();
+            } else {
+                set_vterm(3);
+                refresh_lcd();
+            }
+        }
+
+        if (V.help && TimerDone(TMR_SEQ)) {
+            StartTimer(TMR_SEQ, 10000);
+            StartTimer(TMR_HELP, 3000);
+            V.set_sequ = 1;
+            check_help(0);
+        }
+        do { LATDbits.LATD5 = ~LATDbits.LATD5; } while(0);
+    }
 }
 
 
 
 
-void onesec_io(void)
-{
- do { LATBbits.LATB2 = ~LATBbits.LATB2; } while(0);
- do { LATBbits.LATB1 = 0; } while(0);
- do { LATBbits.LATB3 = 0; } while(0);
- B.one_sec_flag = 1;
- V.utc_ticks++;
+void onesec_io(void) {
+    do { LATBbits.LATB2 = ~LATBbits.LATB2; } while(0);
+    do { LATBbits.LATB1 = 0; } while(0);
+    do { LATBbits.LATB3 = 0; } while(0);
+    B.one_sec_flag = 1;
+    V.utc_ticks++;
 }
 
 
-char spinners(uint8_t shape, const uint8_t reset)
-{
- static uint8_t s[6];
- char c;
+char spinners(uint8_t shape, const uint8_t reset) {
+    static uint8_t s[6];
+    char c;
 
- if (shape > (6 - 1))
-  shape = 0;
- if (reset)
-  s[shape] = 0;
- c = spin[shape][s[shape]];
- if (++s[shape] >= strlen(spin[shape]))
-  s[shape] = 0;
+    if (shape > (6 - 1))
+        shape = 0;
+    if (reset)
+        s[shape] = 0;
+    c = spin[shape][s[shape]];
+    if (++s[shape] >= strlen(spin[shape]))
+        s[shape] = 0;
 
- return c;
+    return c;
 }
 
-int8_t test_slave(void)
-{
- static uint8_t ret = 0;
+int8_t test_slave(void) {
+    static uint8_t ret = 0;
 
- do { LATBbits.LATB3 = 1; } while(0);
- while (!ADC_IsConversionDone());
- SPI2CON0bits.EN = 0;
- SPI2CON0bits.EN = 1;
- return(int8_t) ret;
+    do { LATBbits.LATB3 = 1; } while(0);
+    while (!ADC_IsConversionDone());
+    SPI2CON0bits.EN = 0;
+    SPI2CON0bits.EN = 1;
+    return (int8_t) ret;
 }

@@ -39427,89 +39427,88 @@ typedef enum
 typedef enum
 {
     CONTEXT_1,
-    CONTEXT_4,
 } ADC_context_t;
-# 121 "./mcc_generated_files/adc.h"
+# 120 "./mcc_generated_files/adc.h"
 void ADC_Initialize(void);
-# 152 "./mcc_generated_files/adc.h"
+# 151 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_EnableChannelSequencer(void);
-# 174 "./mcc_generated_files/adc.h"
+# 173 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_DisableChannelSequencer(void);
-# 206 "./mcc_generated_files/adc.h"
+# 205 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_StartChannelSequencer(void);
-# 229 "./mcc_generated_files/adc.h"
+# 228 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_SelectContext(ADC_context_t context);
-# 251 "./mcc_generated_files/adc.h"
+# 250 "./mcc_generated_files/adc.h"
 void ADC_EnableChannelScan(ADC_context_t context);
-# 275 "./mcc_generated_files/adc.h"
+# 274 "./mcc_generated_files/adc.h"
 void ADC_DisableChannelScan(ADC_context_t context);
-# 302 "./mcc_generated_files/adc.h"
+# 301 "./mcc_generated_files/adc.h"
 void ADC_StartConversion(ADC_channel_t channel);
-# 328 "./mcc_generated_files/adc.h"
+# 327 "./mcc_generated_files/adc.h"
 _Bool ADC_IsConversionDone(void);
-# 354 "./mcc_generated_files/adc.h"
+# 353 "./mcc_generated_files/adc.h"
 adc_result_t ADC_GetConversionResult(void);
-# 380 "./mcc_generated_files/adc.h"
+# 379 "./mcc_generated_files/adc.h"
 adc_result_t ADC_GetSingleConversion(ADC_channel_t channel);
-# 405 "./mcc_generated_files/adc.h"
+# 404 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_StopConversion(void);
-# 429 "./mcc_generated_files/adc.h"
+# 428 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_SetStopOnInterrupt(void);
-# 457 "./mcc_generated_files/adc.h"
+# 456 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_DischargeSampleCapacitor(void);
-# 481 "./mcc_generated_files/adc.h"
+# 480 "./mcc_generated_files/adc.h"
 void ADC_LoadAcquisitionRegister(uint16_t acquisitionValue);
-# 505 "./mcc_generated_files/adc.h"
+# 504 "./mcc_generated_files/adc.h"
 void ADC_SetPrechargeTime(uint16_t prechargeTime);
-# 529 "./mcc_generated_files/adc.h"
+# 528 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_SetRepeatCount(uint8_t repeatCount);
-# 553 "./mcc_generated_files/adc.h"
+# 552 "./mcc_generated_files/adc.h"
 uint8_t ADC_GetCurrentCountofConversions(void);
-# 576 "./mcc_generated_files/adc.h"
+# 575 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_ClearAccumulator(void);
-# 600 "./mcc_generated_files/adc.h"
+# 599 "./mcc_generated_files/adc.h"
 uint24_t ADC_GetAccumulatorValue(void);
-# 627 "./mcc_generated_files/adc.h"
+# 626 "./mcc_generated_files/adc.h"
 _Bool ADC_HasAccumulatorOverflowed(void);
-# 651 "./mcc_generated_files/adc.h"
+# 650 "./mcc_generated_files/adc.h"
 uint16_t ADC_GetFilterValue(void);
-# 675 "./mcc_generated_files/adc.h"
+# 674 "./mcc_generated_files/adc.h"
 uint16_t ADC_GetPreviousResult(void);
-# 699 "./mcc_generated_files/adc.h"
+# 698 "./mcc_generated_files/adc.h"
 void ADC_DefineSetPoint(uint16_t setPoint);
-# 723 "./mcc_generated_files/adc.h"
+# 722 "./mcc_generated_files/adc.h"
 void ADC_SetUpperThreshold(uint16_t upperThreshold);
-# 747 "./mcc_generated_files/adc.h"
+# 746 "./mcc_generated_files/adc.h"
 void ADC_SetLowerThreshold(uint16_t lowerThreshold);
-# 772 "./mcc_generated_files/adc.h"
+# 771 "./mcc_generated_files/adc.h"
 uint16_t ADC_GetErrorCalculation(void);
-# 796 "./mcc_generated_files/adc.h"
+# 795 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_EnableDoubleSampling(void);
-# 820 "./mcc_generated_files/adc.h"
+# 819 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_EnableContinuousConversion(void);
-# 844 "./mcc_generated_files/adc.h"
+# 843 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_DisableContinuousConversion(void);
-# 871 "./mcc_generated_files/adc.h"
+# 870 "./mcc_generated_files/adc.h"
 _Bool ADC_HasErrorCrossedUpperThreshold(void);
-# 898 "./mcc_generated_files/adc.h"
+# 897 "./mcc_generated_files/adc.h"
 _Bool ADC_HasErrorCrossedLowerThreshold(void);
-# 923 "./mcc_generated_files/adc.h"
+# 922 "./mcc_generated_files/adc.h"
 uint8_t ADC_GetConversionStageStatus(void);
-# 944 "./mcc_generated_files/adc.h"
+# 943 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_EnableChargePump(void);
-# 965 "./mcc_generated_files/adc.h"
+# 964 "./mcc_generated_files/adc.h"
 __attribute__((inline)) void ADC_DisableChargePump(void);
-# 994 "./mcc_generated_files/adc.h"
+# 993 "./mcc_generated_files/adc.h"
 void ADC_SetADIInterruptHandler(void (* InterruptHandler)(void));
-# 1023 "./mcc_generated_files/adc.h"
+# 1022 "./mcc_generated_files/adc.h"
 void ADC_SetActiveClockTuningInterruptHandler(void (* InterruptHandler)(void));
-# 1052 "./mcc_generated_files/adc.h"
+# 1051 "./mcc_generated_files/adc.h"
 void ADC_SetContext1ThresholdInterruptHandler(void (* InterruptHandler)(void));
-# 1081 "./mcc_generated_files/adc.h"
+# 1080 "./mcc_generated_files/adc.h"
 void ADC_SetContext2ThresholdInterruptHandler(void (* InterruptHandler)(void));
-# 1110 "./mcc_generated_files/adc.h"
+# 1109 "./mcc_generated_files/adc.h"
 void ADC_SetContext3ThresholdInterruptHandler(void (* InterruptHandler)(void));
-# 1139 "./mcc_generated_files/adc.h"
+# 1138 "./mcc_generated_files/adc.h"
 void ADC_SetContext4ThresholdInterruptHandler(void (* InterruptHandler)(void));
 # 18 "./vconfig.h" 2
 # 1 "./mcc_generated_files/spi1.h" 1
@@ -39697,210 +39696,195 @@ extern void (*IOCBF6_InterruptHandler)(void);
 # 719 "./mcc_generated_files/pin_manager.h"
 void IOCBF6_DefaultInterruptHandler(void);
 # 20 "./vconfig.h" 2
-# 136 "./vconfig.h"
- struct spi_link_type {
-  uint8_t SPI_LCD : 1;
-  uint8_t SPI_AUX : 1;
-  uint8_t LCD_TIMER : 1;
-  volatile uint8_t LCD_DATA : 1;
-  uint16_t delay;
-  uint8_t config;
-  uint8_t * txbuf;
-  volatile int32_t int_count;
- };
+# 97 "./vconfig.h"
+    const char msg_gemcmds[] = "Host CMDS: M C R P O L S D E H F";
+    const char msg_freecmds[] = "Port baud rate unlocked        ";
+    const char msg_gemremote[] = "Host CMDS: ENABLED REMOTE";
 
- typedef struct B_type {
-  volatile _Bool one_sec_flag;
-  volatile uint16_t dim_delay;
-  volatile _Bool display_update;
- } B_type;
+    struct spi_link_type {
+        uint8_t SPI_LCD : 1;
+        uint8_t SPI_AUX : 1;
+        uint8_t LCD_TIMER : 1;
+        volatile uint8_t LCD_DATA : 1;
+        uint16_t delay;
+        uint8_t config;
+        uint8_t * txbuf;
+        volatile int32_t int_count;
+    };
 
- typedef enum {
-  CODE_TS = 0,
-  CODE_TM = 1,
-  CODE_ONLOCAL = 2,
-  CODE_ONREMOTE = 3,
-  CODE_OFFLINE = 4,
-  CODE_DEBUG,
-  CODE_LOG,
-  CODE_LOAD,
-  CODE_UNLOAD,
-  CODE_PUMP,
-  CODE_HELP,
-  CODE_SEQUENCE,
-  CODE_RERROR,
-  CODE_FREE,
-  CODE_ERR,
- } P_CODES;
+    typedef struct B_type {
+        volatile _Bool one_sec_flag;
+        volatile uint16_t dim_delay;
+        volatile _Bool display_update;
+    } B_type;
 
- typedef enum {
-  DIS_STR = 0,
-  DIS_TERM,
-  DIS_LOG,
-  DIS_LOAD,
-  DIS_UNLOAD,
-  DIS_PUMP,
-  DIS_HELP,
-  DIS_SEQUENCE,
-  DIS_SEQUENCE_M,
-  DIS_ERR,
-  DIS_FREE,
-  DIS_CLEAR,
- } D_CODES;
+    typedef enum {
+        DIS_STR = 0,
+        DIS_TERM,
+        DIS_LOG,
+        DIS_LOAD,
+        DIS_UNLOAD,
+        DIS_PUMP,
+        DIS_HELP,
+        DIS_SEQUENCE,
+        DIS_SEQUENCE_M,
+        DIS_ERR,
+        DIS_FREE,
+        DIS_CLEAR,
+    } D_CODES;
 
- typedef struct terminal_type {
-  uint8_t ack[32], mesgid;
-  uint8_t TID, mcode, mparm, cmdlen, log_seq;
-  uint8_t host_display_ack : 1;
-  D_CODES info, help_temp;
-  uint16_t ceid;
-  uint16_t log_num;
- } terminal_type;
+    typedef struct terminal_type {
+        uint8_t ack[32], mesgid;
+        uint8_t TID, mcode, mparm, cmdlen, log_seq;
+        uint8_t host_display_ack : 1;
+        D_CODES info, help_temp;
+        uint16_t ceid;
+        uint16_t log_num;
+    } terminal_type;
 
- typedef enum {
-  SEQ_STATE_INIT = 0,
-  SEQ_STATE_RX,
-  SEQ_STATE_TX,
-  SEQ_STATE_TRIGGER,
-  SEQ_STATE_QUEUE,
-  SEQ_STATE_DONE,
-  SEQ_STATE_ERROR
- } SEQ_STATES;
+    typedef enum {
+        SEQ_STATE_INIT = 0,
+        SEQ_STATE_RX,
+        SEQ_STATE_TX,
+        SEQ_STATE_TRIGGER,
+        SEQ_STATE_QUEUE,
+        SEQ_STATE_DONE,
+        SEQ_STATE_ERROR
+    } SEQ_STATES;
 
- typedef enum {
-  UI_STATE_INIT = 0,
-  UI_STATE_HOST,
-  UI_STATE_DEBUG,
-  UI_STATE_LOG,
-  UI_STATE_ERROR
- } UI_STATES;
+    typedef enum {
+        UI_STATE_INIT = 0,
+        UI_STATE_HOST,
+        UI_STATE_DEBUG,
+        UI_STATE_LOG,
+        UI_STATE_ERROR
+    } UI_STATES;
 
- typedef enum {
-  GEM_STATE_DISABLE = 0,
-  GEM_STATE_COMM,
-  GEM_STATE_OFFLINE,
-  GEM_STATE_ONLINE,
-  GEM_STATE_REMOTE,
-  GEM_STATE_ERROR
- } GEM_STATES;
+    typedef enum {
+        BMC_STATE_DISABLE = 0,
+        BMC_STATE_COMM,
+        BMC_STATE_OFFLINE,
+        BMC_STATE_ONLINE,
+        BMC_STATE_REMOTE,
+        BMC_STATE_ERROR
+    } BMC_STATES;
 
- extern const char * GEM_TEXT [];
+    extern const char * BMC_TEXT [];
 
- typedef enum {
-  GEM_GENERIC = 0,
-  GEM_VII80,
-  GEM_E220,
-  GEM_ERROR = 9
- } GEM_EQUIP;
+    typedef enum {
+        BMC_GENERIC = 0,
+        BMC_VII80,
+        BMC_E220,
+        BMC_ERROR = 9
+    } BMC_EQUIP;
 
- typedef enum {
-  LINK_STATE_IDLE = 0,
-  LINK_STATE_ENQ,
-  LINK_STATE_EOT,
-  LINK_STATE_ACK,
-  LINK_STATE_DONE,
-  LINK_STATE_NAK,
-  LINK_STATE_ERROR
- } LINK_STATES;
+    typedef enum {
+        LINK_STATE_IDLE = 0,
+        LINK_STATE_ENQ,
+        LINK_STATE_EOT,
+        LINK_STATE_ACK,
+        LINK_STATE_DONE,
+        LINK_STATE_NAK,
+        LINK_STATE_ERROR
+    } LINK_STATES;
 
- typedef enum {
-  LINK_ERROR_NONE = 10,
-  LINK_ERROR_T1,
-  LINK_ERROR_T2,
-  LINK_ERROR_T3,
-  LINK_ERROR_T4,
-  LINK_ERROR_CHECKSUM,
-  LINK_ERROR_NAK,
-  LINK_ERROR_ABORT,
-  LINK_ERROR_SEND
- } LINK_ERRORS;
+    typedef enum {
+        LINK_ERROR_NONE = 10,
+        LINK_ERROR_T1,
+        LINK_ERROR_T2,
+        LINK_ERROR_T3,
+        LINK_ERROR_T4,
+        LINK_ERROR_CHECKSUM,
+        LINK_ERROR_NAK,
+        LINK_ERROR_ABORT,
+        LINK_ERROR_SEND
+    } LINK_ERRORS;
 
- typedef enum {
-  MSG_ERROR_NONE = 0,
-  MSG_ERROR_ID = 1,
-  MSG_ERROR_STREAM = 3,
-  MSG_ERROR_FUNCTION = 5,
-  MSG_ERROR_DATA = 7,
-  MSG_ERROR_TIMEOUT = 9,
-  MSG_ERROR_DATASIZE = 11,
-  MSG_ERROR_RESET = 20
- } MSG_ERRORS;
+    typedef enum {
+        MSG_ERROR_NONE = 0,
+        MSG_ERROR_ID = 1,
+        MSG_ERROR_STREAM = 3,
+        MSG_ERROR_FUNCTION = 5,
+        MSG_ERROR_DATA = 7,
+        MSG_ERROR_TIMEOUT = 9,
+        MSG_ERROR_DATASIZE = 11,
+        MSG_ERROR_RESET = 20
+    } MSG_ERRORS;
 
- typedef enum {
-  SEND_ERROR_NONE = 0,
-  SEND_ERROR_ABORT,
-  SEND_ERROR_EOT,
-  SEND_ERROR_T2,
-  SEND_ERROR_T3,
-  SEND_ERROR_DATA,
- } SEND_ERRORS;
+    typedef enum {
+        SEND_ERROR_NONE = 0,
+        SEND_ERROR_ABORT,
+        SEND_ERROR_EOT,
+        SEND_ERROR_T2,
+        SEND_ERROR_T3,
+        SEND_ERROR_DATA,
+    } SEND_ERRORS;
 
- typedef enum {
-  RECV_ERROR_NONE = 0,
-  RECV_ERROR_NAK,
-  RECV_ERROR_EOT,
-  RECV_ERROR_T2,
-  RECV_ERROR_T3,
-  RECV_ERROR_CKSUM,
-  RECV_ERROR_DATA,
- } RECV_ERRORS;
+    typedef enum {
+        RECV_ERROR_NONE = 0,
+        RECV_ERROR_NAK,
+        RECV_ERROR_EOT,
+        RECV_ERROR_T2,
+        RECV_ERROR_T3,
+        RECV_ERROR_CKSUM,
+        RECV_ERROR_DATA,
+    } RECV_ERRORS;
 
- typedef enum {
-  TICKER_ZERO = 0,
-  TICKER_LOW = 20,
-  TICKER_HIGH = 40,
- } TICKER_VAL;
+    typedef enum {
+        TICKER_ZERO = 0,
+        TICKER_LOW = 20,
+        TICKER_HIGH = 40,
+    } TICKER_VAL;
 
- typedef struct V_data {
-  SEQ_STATES s_state;
-  UI_STATES ui_state;
-  GEM_STATES g_state;
-  GEM_EQUIP e_types;
-  LINK_STATES m_l_state;
-  LINK_STATES r_l_state;
-  LINK_STATES t_l_state;
-  char buf[127 + 1], terminal[159 + 1], info[63 + 1];
-  uint32_t ticks, systemb, tx_total, rx_total, bt_total, br_total, brn_total, btn_total;
-  volatile uint32_t utc_ticks;
-  int32_t testing;
-  uint8_t stream, function, error, abort, msg_error, msg_ret, alarm, event;
-  UI_STATES ui_sw;
-  uint16_t r_checksum, t_checksum, checksum_error, timer_error, ping, mode_pwm, equip_timeout, sequences, all_errors, ceid;
-  uint8_t rbit : 1, wbit : 1, ebit : 1, failed_send : 4, failed_receive : 4;
-  terminal_type response;
-  uint8_t uart, llid, sid, ping_count, euart, vterm, vterm_switch, uart_speed_fast;
-  volatile uint8_t ticker;
-  _Bool flipper, queue, debug, help, stack, help_id, rerror, speed_spin, set_sequ, log_s6f11, log_abort, log_char;
-  adc_result_t v_tx_line, v_rx_line;
-  int16_t tx_volts, rx_volts;
-  char tx_rs232, rx_rs232;
-  int16_t secs_value, cmd_value;
-  time_t utc_cmd_value;
- } V_data;
+    typedef struct V_data {
+        SEQ_STATES s_state;
+        UI_STATES ui_state;
+        BMC_STATES g_state;
+        BMC_EQUIP e_types;
+        LINK_STATES m_l_state;
+        LINK_STATES r_l_state;
+        LINK_STATES t_l_state;
+        char buf[127 + 1], terminal[159 + 1], info[63 + 1];
+        uint32_t ticks, systemb, tx_total, rx_total, bt_total, br_total, brn_total, btn_total;
+        volatile uint32_t utc_ticks;
+        int32_t testing;
+        uint8_t stream, function, error, abort, msg_error, msg_ret, alarm, event;
+        UI_STATES ui_sw;
+        uint16_t r_checksum, t_checksum, checksum_error, timer_error, ping, mode_pwm, equip_timeout, sequences, all_errors, ceid;
+        uint8_t rbit : 1, wbit : 1, ebit : 1, failed_send : 4, failed_receive : 4;
+        terminal_type response;
+        uint8_t uart, llid, sid, ping_count, euart, vterm, vterm_switch, uart_speed_fast;
+        volatile uint8_t ticker;
+        _Bool flipper, queue, debug, help, stack, help_id, rerror, speed_spin, set_sequ, log_s6f11, log_abort, log_char;
+        adc_result_t v_tx_line, v_rx_line;
+        int16_t tx_volts, rx_volts;
+        char tx_rs232, rx_rs232;
+        int16_t secs_value, cmd_value;
+        time_t utc_cmd_value;
+    } V_data;
 
- typedef struct V_help {
-  const char message[32], display[32], extrams[32];
- } V_help;
+    typedef struct V_help {
+        const char message[32], display[32], extrams[32];
+    } V_help;
 
- extern char spinners(uint8_t, const uint8_t);
+    extern char spinners(uint8_t, const uint8_t);
 
 
- const char spin[6][20] = {
-  "||//--",
-  "||//--\\\\",
-  "OOOOOO--__-",
-  "vv<<^^>>",
-  "..**x#x#XX||--",
-  "..ooOOoo"
- };
+    const char spin[6][20] = {
+        "||//--",
+        "||//--\\\\",
+        "OOOOOO--__-",
+        "vv<<^^>>",
+        "..**x#x#XX||--",
+        "..ooOOoo"
+    };
 
 
+    extern B_type B;
 
- extern B_type B;
-
- const char *build_date, *build_time;
- extern void UART1_Initialize19200(void);
- extern void UART2_Initialize19200(void);
+    const char *build_date, *build_time;
+    extern void UART1_Initialize19200(void);
+    extern void UART2_Initialize19200(void);
 # 16 "./rs232.h" 2
  const int16_t pos_scale = 35,
   neg_scale = 60,

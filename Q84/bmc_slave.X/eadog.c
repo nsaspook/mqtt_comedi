@@ -342,14 +342,12 @@ void wait_lcd_done(void)
 	uint32_t delay = 0;
 	while (spi_link.LCD_DATA) {
 		if (delay++ > DONE_DELAY) {
-			MLED_SetHigh();
 			return;
 		}
 	};
 	delay = 0;
 	while (!SPI1STATUSbits.TXBE) {
 		if (delay++ > DONE_DELAY) {
-			MLED_SetHigh();
 			return;
 		}
 	};

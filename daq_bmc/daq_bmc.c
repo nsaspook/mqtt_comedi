@@ -728,6 +728,10 @@ static const struct comedi_lrange daqbmc_ai_range3_300 = {1,
 	{
 		UNI_RANGE(3.300),
 	}};
+static const struct comedi_lrange daqbmc_ai_rangeq84 = {1,
+	{
+		UNI_RANGE(4.096),
+	}};
 static const struct comedi_lrange daqbmc_ai_range2_048 = {1,
 	{
 		UNI_RANGE(2.048),
@@ -1378,10 +1382,6 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		struct spi_controller *ctlr = spi->controller;
 		u32 save = spi->mode;
 
-		if (tmp & ~SPI_MODE_MASK) {
-			val_mode = -EINVAL;
-			break;
-		}
 		if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
 			ctlr->cs_gpiods[spi->chip_select]) {
 			tmp |= SPI_CS_HIGH;
@@ -1451,10 +1451,6 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		struct spi_controller *ctlr = spi->controller;
 		u32 save = spi->mode;
 
-		if (tmp & ~SPI_MODE_MASK) {
-			val_mode = -EINVAL;
-			break;
-		}
 		if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
 			ctlr->cs_gpiods[spi->chip_select]) {
 			tmp |= SPI_CS_HIGH;
@@ -3197,6 +3193,27 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			s->cancel = daqbmc_ai_cancel;
 		} else {
 			s->subdev_flags = devpriv->ai_spi->device_spi->ai_subdev_flags - SDF_CMD_READ;
+		}
+
+		if (devpriv->ai_spi->device_type == picsl12) {
+			s->n_chan = devpriv->ai_spi->chan;
+			s->len_chanlist = devpriv->ai_spi->chan;
+			s->maxdata = 4095;
+			if (devpriv->ai_spi->range) {
+				s->range_table = &daqbmc_ai_rangeq84;
+			} else {
+				s->range_table = &daqbmc_ai_rangeq84;
+			}
+			s->insn_read = daqbmc_ai_rinsn;
+			if (devpriv->smp) {
+				s->subdev_flags = devpriv->ai_spi->device_spi->ai_subdev_flags;
+				s->do_cmdtest = daqbmc_ai_cmdtest;
+				s->do_cmd = daqbmc_ai_cmd;
+				s->poll = daqbmc_ai_poll;
+				s->cancel = daqbmc_ai_cancel;
+			} else {
+				s->subdev_flags = devpriv->ai_spi->device_spi->ai_subdev_flags - SDF_CMD_READ;
+			}
 		}
 		if (devpriv->ai_spi->device_type == ads1220) {
 			/* we support single-ended (ground) & diff bipolar  24-bit samples */
