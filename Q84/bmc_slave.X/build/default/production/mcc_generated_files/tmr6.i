@@ -39588,12 +39588,7 @@ void INTERRUPT_Initialize (void);
 # 11 "mcc_generated_files/../timers.h"
 enum APP_TIMERS {
  TMR_INTERNAL = 0,
- TMR_T1,
- TMR_T2,
- TMR_T3,
- TMR_T4,
- TMR_MC_TX,
- TMR_HBIO,
+ TMR_ADC,
  TMR_INFO,
  TMR_HELP,
  TMR_HELPDIS,

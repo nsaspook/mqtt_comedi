@@ -39752,7 +39752,7 @@ extern void (*IOCBF6_InterruptHandler)(void);
 # 719 "./mcc_generated_files/pin_manager.h"
 void IOCBF6_DefaultInterruptHandler(void);
 # 20 "./vconfig.h" 2
-# 97 "./vconfig.h"
+# 90 "./vconfig.h"
     const char msg_gemcmds[] = "Host CMDS: M C R P O L S D E H F";
     const char msg_freecmds[] = "Port baud rate unlocked        ";
     const char msg_gemremote[] = "Host CMDS: ENABLED REMOTE";
@@ -40893,12 +40893,7 @@ time_t time(time_t *);
 # 11 "./timers.h"
 enum APP_TIMERS {
  TMR_INTERNAL = 0,
- TMR_T1,
- TMR_T2,
- TMR_T3,
- TMR_T4,
- TMR_MC_TX,
- TMR_HBIO,
+ TMR_ADC,
  TMR_INFO,
  TMR_HELP,
  TMR_HELPDIS,

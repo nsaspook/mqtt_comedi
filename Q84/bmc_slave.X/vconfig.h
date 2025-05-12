@@ -29,18 +29,12 @@ extern "C" {
      * V0.03 add all ADC channels and clean up for SECS defines and variables
      */
 
-    /** enable two serial port internal Host Equipment RS-232 testing.
-     * comment out FAKER for normal host mode
-     */
 
 #define SLED	MLED_LAT
 #define DLED	DLED_LAT
 
 #define TRACE
-    // EXT_IO PIN 5, RB6 PGC
-    // EXT_IO pin 6, RB7 PGD, I_TRACE
-    // EXT_IO pin 2, MISC_IO pin 5, RD5 M_TRACE
-    // EXT_IO pin 3, MISC_IO pin 7, RD7 DEBUG1/E_TRACE
+//  RC2 MTRACE TP1
 
 #define DEFAULT_TID	1
 #define TDELAY		3000
@@ -48,10 +42,9 @@ extern "C" {
 #define LDELAY		1000
 #define SDELAY		500
 #define BDELAY		300
-#define DDELAY		100 // display update spacing
+#define DDELAY		500 // display update spacing
 #define DFLIP		1500 // display info flipping spacing
-
-#define PINGER	8
+#define ADCDELAY	5 // adc update rate
 
     /*
      * characters per line on the display

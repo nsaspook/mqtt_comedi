@@ -39696,7 +39696,7 @@ extern void (*IOCBF6_InterruptHandler)(void);
 # 719 "./mcc_generated_files/pin_manager.h"
 void IOCBF6_DefaultInterruptHandler(void);
 # 20 "./vconfig.h" 2
-# 97 "./vconfig.h"
+# 90 "./vconfig.h"
     const char msg_gemcmds[] = "Host CMDS: M C R P O L S D E H F";
     const char msg_freecmds[] = "Port baud rate unlocked        ";
     const char msg_gemremote[] = "Host CMDS: ENABLED REMOTE";

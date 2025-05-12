@@ -6,26 +6,13 @@
  * Fully interrupt driven SPI slave ADC for OPI
  *
  * Version
- *              1.0 stable version for daq_gert P25K22 4_TAD
- *		0.91 update exchange protocol
- *		0.9 add 45K80 commands and ports
- *		0.8 Add zero command for cleaner transfers and allow for no LCD code	
- *		0.7 minor software cleanups.
- *		0.06 P25K22 Set PIC speed to 64mhz and use have ADC use FOSC_64,12_TAD
- *		P8722 have ADC use FOSC_32,12_TAD
- *		0.05 Fixed the P25K22 version to work correctly.
- *		0.04 The testing hardware is mainly a pic18f8722 with a
- *		LCD display and PORTE bit leds.
- *		define the CPU type below.
- *
- *		The WatchDog and timer0 are used to check link status
- *		and to reset the chip if hung or confused.
+ *              0.03 beta version
  *
  * nsaspook@sma2.rain..com    Sept 2016
  */
-
-
-#define P25K22
+/** \file slaveo.c
+ * BMCboard SPI DAQ slave for the Orange PI
+ */
 
 /*
  * bit 7 high for commands sent from the MASTER
@@ -42,9 +29,6 @@
 
 #define	TIMEROFFSET	26474           // timer0 16bit counter value for 1 second to overflow
 #define SLAVE_ACTIVE	10		// Activity counter level
-
-
-
 
 /* DIO defines */
 #define LOW		0			// digital output state levels, sink
@@ -98,6 +82,7 @@ void slaveo_rx_isr(void)
 	// SPI port #2 SLAVE receiver
 	MLED_SetHigh();
 	spi_stat_ss.slave_int_count++;
+	MLED_SetLow();
 	data_in2 = SPI2RXB;
 	serial_buffer_ss.data[0] = data_in2;
 	command = data_in2 & HI_NIBBLE;
@@ -112,7 +97,6 @@ void slaveo_rx_isr(void)
 	}
 
 	if (command == CMD_CHAR_GO) {
-		MLED_SetLow();
 		char_txtmp = (data_in2 & LO_NIBBLE); // read lower 4 bits
 		//		serial_buffer_ss.tx_buffer = char_rxtmp;
 		spi_stat_ss.char_count++;
@@ -147,17 +131,14 @@ void slaveo_rx_isr(void)
 			data_in2 = SPI2RXB;
 		}
 		TMR0_Reload();
-		MLED_SetLow();
 	}
 
 	if (data_in2 == CMD_ADC_DATA) {
-		MLED_SetLow();
 		spi_stat_ss.slave_tx_count++;
 		spi_stat_ss.last_slave_int_count = spi_stat_ss.slave_int_count;
 	}
 
 	if (command == CMD_CHAR_RX) {
-		MLED_SetLow();
 		serial_buffer_ss.tx_buffer = char_rxtmp;
 		cmd_dummy = CMD_DUMMY; // clear rx bit
 	}
