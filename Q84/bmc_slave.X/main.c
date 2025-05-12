@@ -188,7 +188,7 @@ typedef signed long long int24_t;
 #endif
 
 extern struct spi_link_type spi_link;
-const char *build_date = __DATE__, *build_time = __TIME__;
+static const char *build_date = __DATE__, *build_time = __TIME__;
 
 const char * BMC_TEXT [] = {
 	"DISABLE",

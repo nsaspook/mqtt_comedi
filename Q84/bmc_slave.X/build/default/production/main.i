@@ -41005,7 +41005,6 @@ struct tm *getdate (const char *);
 
     extern B_type B;
 
-    const char *build_date, *build_time;
     extern void UART1_Initialize19200(void);
     extern void UART2_Initialize19200(void);
 # 44 "./eadog.h" 2
@@ -41155,7 +41154,7 @@ D_CODES set_temp_display_help(const D_CODES);
 # 178 "main.c" 2
 # 190 "main.c"
 extern struct spi_link_type spi_link;
-const char *build_date = "May 12 2025", *build_time = "07:17:59";
+static const char *build_date = "May 12 2025", *build_time = "13:34:57";
 
 const char * BMC_TEXT [] = {
  "DISABLE",

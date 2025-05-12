@@ -2,9 +2,6 @@
  * \file daq.c
  */
 
-
-
-
 #include <stdio.h> /* for printf() */
 #include <unistd.h>
 #include <stdbool.h>
@@ -80,9 +77,11 @@ int init_daq(double min_range, double max_range, int range_update)
 	fprintf(fout, "Comedi DAQ Board Name: %s, Driver: %s\r\n", comedi_get_board_name(it), comedi_get_driver_name(it));
 	if (strcmp(comedi_get_board_name(it), BMCBoard) == 0) {
 		bmc.BOARD = bmcboard;
+		bmc.BNAME = BMCBoard;
 	}
 	if (strcmp(comedi_get_board_name(it), USBBoard) == 0) {
 		bmc.BOARD = usbboard;
+		bmc.BNAME = USBBoard;
 	}
 
 	fprintf(fout, "Subdev AI  %i ", subdev_ai);

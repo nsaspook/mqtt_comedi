@@ -40803,7 +40803,6 @@ struct tm *getdate (const char *);
 
     extern B_type B;
 
-    const char *build_date, *build_time;
     extern void UART1_Initialize19200(void);
     extern void UART2_Initialize19200(void);
 # 41 "./mconfig.h" 2
@@ -41054,6 +41053,7 @@ typedef struct D_data {
 
 extern V_data V;
 static D_data D = {0};
+static const char *build_date, *build_time;
 
 
 
@@ -41298,12 +41298,12 @@ D_CODES set_temp_display_help(const D_CODES new_response_info)
 
 void log_serial(uint8_t * data, uint16_t len)
 {
-# 280 "mconfig.c"
+# 281 "mconfig.c"
 }
-# 289 "mconfig.c"
+# 290 "mconfig.c"
 void logging_cmds(void)
 {
-# 397 "mconfig.c"
+# 398 "mconfig.c"
 }
 
 void set_time(const time_t t)

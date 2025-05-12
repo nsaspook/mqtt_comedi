@@ -19,6 +19,7 @@
 
 volatile struct bmcdata bmc = {
 	.BOARD = bmcboard,
+	.BNAME = "BMCBoard",
 }; /* DAQ buffer */
 
 struct energy_type E = {

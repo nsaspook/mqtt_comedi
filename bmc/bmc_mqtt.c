@@ -453,6 +453,8 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		json = cJSON_CreateObject();
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "name", 64);
 		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (const char *) &ha_daq_host.clients[ha_daq_host.hindex]);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "board", 64);
+		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (const char *) bmc.BNAME);
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "sequence", 64);
 		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.sequence);
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "mqtt_do_16b", 64);

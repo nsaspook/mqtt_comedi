@@ -46,7 +46,7 @@ extern "C" {
 #include "bmc.h"
 
 #define BMCBoard        "BMCBoard"
-#define USBBoard        "USBBoard"
+#define USBBoard        "K8055 (VM110)"
 
         typedef enum {
                 bmcboard = 0,
@@ -94,6 +94,7 @@ extern "C" {
                 int32_t dac_sample[32];
                 int32_t utc;
                 board_t BOARD;
+                char * BNAME;
         } bmctype;
 
         extern volatile struct bmcdata bmc;

@@ -11,6 +11,7 @@ typedef struct D_data { // control data structure
 
 extern V_data V;
 static D_data D = {0};
+static const char *build_date, *build_time;
 
 /** \file mconfig.c
  * This MUST run first to clear the vterm buffers before using any other functions

@@ -132,11 +132,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 "28 ./timers.h
 [; ;./timers.h: 28: void WaitMs(uint16_t numMilliseconds);
 [v _WaitMs `(v ~T0 @X0 0 ef1`us ]
-"277 ./vconfig.h
-[; ;./vconfig.h: 277:     extern void UART2_Initialize19200(void);
+"276 ./vconfig.h
+[; ;./vconfig.h: 276:     extern void UART2_Initialize19200(void);
 [v _UART2_Initialize19200 `(v ~T0 @X0 0 ef ]
-"276
-[; ;./vconfig.h: 276:     extern void UART1_Initialize19200(void);
+"275
+[; ;./vconfig.h: 275:     extern void UART1_Initialize19200(void);
 [v _UART1_Initialize19200 `(v ~T0 @X0 0 ef ]
 "115 ./mcc_generated_files/uart2.h
 [; ;./mcc_generated_files/uart2.h: 115: void UART2_Initialize(void);
@@ -171,24 +171,24 @@ Version 4.0 HI-TECH Software Intermediate Code
 "56 /opt/microchip/xc8/v3.00/pic/include/c99/stdlib.h
 [; ;/opt/microchip/xc8/v3.00/pic/include/c99/stdlib.h: 56: void srand (unsigned);
 [v _srand `(v ~T0 @X0 0 ef1`ui ]
-[v F24687 `(v ~T0 @X0 1 tf2`uc`us ]
+[v F24685 `(v ~T0 @X0 1 tf2`uc`us ]
 "26 ./timers.h
 [; ;./timers.h: 26: __attribute__((inline)) void StartTimer(uint8_t timer, uint16_t count);
-[v _StartTimer `TF24687 ~T0 @X0 0 e ]
+[v _StartTimer `TF24685 ~T0 @X0 0 e ]
 "411 main.c
 [; ;main.c: 411:    StartTimer(TMR_DISPLAY, 500);
-[c E24676 0 1 2 3 4 5 6 7 8 .. ]
-[n E24676 APP_TIMERS TMR_INTERNAL TMR_ADC TMR_INFO TMR_HELP TMR_HELPDIS TMR_DISPLAY TMR_SEQ TMR_FLIPPER TMR_COUNT  ]
+[c E24674 0 1 2 3 4 5 6 7 8 .. ]
+[n E24674 APP_TIMERS TMR_INTERNAL TMR_ADC TMR_INFO TMR_HELP TMR_HELPDIS TMR_DISPLAY TMR_SEQ TMR_FLIPPER TMR_COUNT  ]
 "53 ./mydisplay.h
 [; ;./mydisplay.h: 53: D_CODES set_display_info(const D_CODES);
 [v _set_display_info `(E24462 ~T0 @X0 0 ef1`CE24462 ]
 "260 ./vconfig.h
 [; ;./vconfig.h: 260:     extern char spinners(uint8_t, const uint8_t);
 [v _spinners `(uc ~T0 @X0 0 ef2`uc`Cuc ]
-[v F24691 `(a ~T0 @X0 1 tf1`uc ]
+[v F24689 `(a ~T0 @X0 1 tf1`uc ]
 "27 ./timers.h
 [; ;./timers.h: 27: __attribute__((inline)) _Bool TimerDone(uint8_t timer);
-[v _TimerDone `TF24691 ~T0 @X0 0 e ]
+[v _TimerDone `TF24689 ~T0 @X0 0 e ]
 "3632 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [; ;/root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h: 3632:         unsigned EN :1;
 [s S3159 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
@@ -4208,10 +4208,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-"275
-[; ;./vconfig.h: 275:     const char *build_date, *build_time;
-[v _build_date `*Cuc ~T0 @X0 1 e ]
-[v _build_time `*Cuc ~T0 @X0 1 e ]
 "16 ./rs232.h
 [; ;./rs232.h: 16:  const int16_t pos_scale = 35,
 [v _pos_scale `Cs ~T0 @X0 1 e ]
@@ -4237,12 +4233,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -U -> 2048 `i `s
 ]
 "191 main.c
-[; ;main.c: 191: const char *build_date = "May 12 2025", *build_time = "07:17:59";
-[v _build_date `*Cuc ~T0 @X0 1 e ]
+[; ;main.c: 191: static const char *build_date = "May 12 2025", *build_time = "13:34:57";
+[v _build_date `*Cuc ~T0 @X0 1 s ]
 [i _build_date
 :s 1C
 ]
-[v _build_time `*Cuc ~T0 @X0 1 e ]
+[v _build_time `*Cuc ~T0 @X0 1 s ]
 [i _build_time
 :s 2C
 ]
@@ -4856,8 +4852,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _temp_lock -> -> 0 `i `uc ]
 "274
 [; ;main.c: 274:  static uint8_t looper = 0;
-[v F24852 `uc ~T0 @X0 1 s looper ]
-[i F24852
+[v F24850 `uc ~T0 @X0 1 s looper ]
+[i F24850
 -> -> 0 `i `uc
 ]
 "276
@@ -5200,25 +5196,25 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e ( _WaitMs (1 -> -> 3000 `i `us ]
 "411
 [; ;main.c: 411:    StartTimer(TMR_DISPLAY, 500);
-[e ( _StartTimer (2 , -> . `E24676 5 `uc -> -> 500 `i `us ]
+[e ( _StartTimer (2 , -> . `E24674 5 `uc -> -> 500 `i `us ]
 "412
 [; ;main.c: 412:    StartTimer(TMR_INFO, 3000);
-[e ( _StartTimer (2 , -> . `E24676 2 `uc -> -> 3000 `i `us ]
+[e ( _StartTimer (2 , -> . `E24674 2 `uc -> -> 3000 `i `us ]
 "413
 [; ;main.c: 413:    StartTimer(TMR_FLIPPER, 1500);
-[e ( _StartTimer (2 , -> . `E24676 7 `uc -> -> 1500 `i `us ]
+[e ( _StartTimer (2 , -> . `E24674 7 `uc -> -> 1500 `i `us ]
 "414
 [; ;main.c: 414:    StartTimer(TMR_HELPDIS, 3000);
-[e ( _StartTimer (2 , -> . `E24676 4 `uc -> -> 3000 `i `us ]
+[e ( _StartTimer (2 , -> . `E24674 4 `uc -> -> 3000 `i `us ]
 "415
 [; ;main.c: 415:    StartTimer(TMR_SEQ, 10000);
-[e ( _StartTimer (2 , -> . `E24676 6 `uc -> -> 10000 `i `us ]
+[e ( _StartTimer (2 , -> . `E24674 6 `uc -> -> 10000 `i `us ]
 "416
 [; ;main.c: 416:    StartTimer(TMR_HELP, 3000);
-[e ( _StartTimer (2 , -> . `E24676 3 `uc -> -> 3000 `i `us ]
+[e ( _StartTimer (2 , -> . `E24674 3 `uc -> -> 3000 `i `us ]
 "417
 [; ;main.c: 417:    StartTimer(TMR_ADC, 5);
-[e ( _StartTimer (2 , -> . `E24676 1 `uc -> -> 5 `i `us ]
+[e ( _StartTimer (2 , -> . `E24674 1 `uc -> -> 5 `i `us ]
 "418
 [; ;main.c: 418:    break;
 [e $U 3397  ]
@@ -5266,7 +5262,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 3397 ]
 "432
 [; ;main.c: 432:   if (TimerDone(TMR_ADC)) {
-[e $ ! != -> ( _TimerDone (1 -> . `E24676 1 `uc `i -> 0 `i 3402  ]
+[e $ ! != -> ( _TimerDone (1 -> . `E24674 1 `uc `i -> 0 `i 3402  ]
 {
 "433
 [; ;main.c: 433:    do { LATCbits.LATC2 = 1; } while(0);
@@ -5277,7 +5273,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 3404 ]
 "434
 [; ;main.c: 434:    StartTimer(TMR_ADC, 5);
-[e ( _StartTimer (2 , -> . `E24676 1 `uc -> -> 5 `i `us ]
+[e ( _StartTimer (2 , -> . `E24674 1 `uc -> -> 5 `i `us ]
 "435
 [; ;main.c: 435:    spi_stat_ss.adc_count++;
 [e ++ . _spi_stat_ss 0 -> -> 1 `i `Vul ]
@@ -5690,20 +5686,20 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 3402 ]
 "545
 [; ;main.c: 545:   if (TimerDone(TMR_DISPLAY)) {
-[e $ ! != -> ( _TimerDone (1 -> . `E24676 5 `uc `i -> 0 `i 3461  ]
+[e $ ! != -> ( _TimerDone (1 -> . `E24674 5 `uc `i -> 0 `i 3461  ]
 {
 "546
 [; ;main.c: 546:    static uint8_t switcher = 1;
-[v F24854 `uc ~T0 @X0 1 s switcher ]
-[i F24854
+[v F24852 `uc ~T0 @X0 1 s switcher ]
+[i F24852
 -> -> 1 `i `uc
 ]
 "548
 [; ;main.c: 548:    StartTimer(TMR_DISPLAY, 500);
-[e ( _StartTimer (2 , -> . `E24676 5 `uc -> -> 500 `i `us ]
+[e ( _StartTimer (2 , -> . `E24674 5 `uc -> -> 500 `i `us ]
 "550
 [; ;main.c: 550:    if (TimerDone(TMR_HELPDIS)) {
-[e $ ! != -> ( _TimerDone (1 -> . `E24676 4 `uc `i -> 0 `i 3462  ]
+[e $ ! != -> ( _TimerDone (1 -> . `E24674 4 `uc `i -> 0 `i 3462  ]
 {
 "551
 [; ;main.c: 551:     set_display_info(DIS_STR);
@@ -5730,21 +5726,21 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 "561
 [; ;main.c: 561:     set_vterm(switcher);
-[e ( _set_vterm (1 F24854 ]
+[e ( _set_vterm (1 F24852 ]
 "562
 [; ;main.c: 562:     if (V.vterm_switch > (70 + V.ticker + 32)) {
 [e $ ! > -> . _V 51 `i + + -> 70 `i -> . _V 53 `i -> 32 `i 3464  ]
 {
 "563
 [; ;main.c: 563:      switcher++;
-[e ++ F24854 -> -> 1 `i `uc ]
+[e ++ F24852 -> -> 1 `i `uc ]
 "564
 [; ;main.c: 564:      if ((switcher & 0x03) == 3) {
-[e $ ! == & -> F24854 `i -> 3 `i -> 3 `i 3465  ]
+[e $ ! == & -> F24852 `i -> 3 `i -> 3 `i 3465  ]
 {
 "565
 [; ;main.c: 565:       switcher = 1;
-[e = F24854 -> -> 1 `i `uc ]
+[e = F24852 -> -> 1 `i `uc ]
 "566
 [; ;main.c: 566:      }
 }
@@ -5817,7 +5813,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 "597
 [; ;main.c: 597:    if (TimerDone(TMR_HELP)) {
-[e $ ! != -> ( _TimerDone (1 -> . `E24676 3 `uc `i -> 0 `i 3469  ]
+[e $ ! != -> ( _TimerDone (1 -> . `E24674 3 `uc `i -> 0 `i 3469  ]
 {
 "598
 [; ;main.c: 598:     V.set_sequ = 0;
@@ -5850,14 +5846,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 3468 ]
 "607
 [; ;main.c: 607:   if (V.help && TimerDone(TMR_SEQ)) {
-[e $ ! && != -> . _V 57 `i -> 0 `i != -> ( _TimerDone (1 -> . `E24676 6 `uc `i -> 0 `i 3471  ]
+[e $ ! && != -> . _V 57 `i -> 0 `i != -> ( _TimerDone (1 -> . `E24674 6 `uc `i -> 0 `i 3471  ]
 {
 "608
 [; ;main.c: 608:    StartTimer(TMR_SEQ, 10000);
-[e ( _StartTimer (2 , -> . `E24676 6 `uc -> -> 10000 `i `us ]
+[e ( _StartTimer (2 , -> . `E24674 6 `uc -> -> 10000 `i `us ]
 "609
 [; ;main.c: 609:    StartTimer(TMR_HELP, 3000);
-[e ( _StartTimer (2 , -> . `E24676 3 `uc -> -> 3000 `i `us ]
+[e ( _StartTimer (2 , -> . `E24674 3 `uc -> -> 3000 `i `us ]
 "610
 [; ;main.c: 610:    V.set_sequ = 1;
 [e = . _V 62 -> -> 1 `i `a ]
@@ -5933,7 +5929,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [f ]
 "632
 [; ;main.c: 632:  static uint8_t s[6];
-[v F24859 `uc ~T0 @X0 -> 6 `i s s ]
+[v F24857 `uc ~T0 @X0 -> 6 `i s s ]
 "633
 [; ;main.c: 633:  char c;
 [v _c `uc ~T0 @X0 1 a ]
@@ -5949,17 +5945,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! != -> _reset `i -> 0 `i 3484  ]
 "638
 [; ;main.c: 638:   s[shape] = 0;
-[e = *U + &U F24859 * -> _shape `ux -> -> # *U &U F24859 `ui `ux -> -> 0 `i `uc ]
+[e = *U + &U F24857 * -> _shape `ux -> -> # *U &U F24857 `ui `ux -> -> 0 `i `uc ]
 [e :U 3484 ]
 "639
 [; ;main.c: 639:  c = spin[shape][s[shape]];
-[e = _c *U + &U *U + &U _spin * -> _shape `ux -> * -> # *U &U *U &U _spin `ui -> -> 20 `i `ui `ux * -> *U + &U F24859 * -> _shape `ux -> -> # *U &U F24859 `ui `ux `ux -> -> # *U &U *U + &U _spin * -> _shape `ux -> * -> # *U &U *U &U _spin `ui -> -> 20 `i `ui `ux `ui `ux ]
+[e = _c *U + &U *U + &U _spin * -> _shape `ux -> * -> # *U &U *U &U _spin `ui -> -> 20 `i `ui `ux * -> *U + &U F24857 * -> _shape `ux -> -> # *U &U F24857 `ui `ux `ux -> -> # *U &U *U + &U _spin * -> _shape `ux -> * -> # *U &U *U &U _spin `ui -> -> 20 `i `ui `ux `ui `ux ]
 "640
 [; ;main.c: 640:  if (++s[shape] >= strlen(spin[shape]))
-[e $ ! >= -> =+ *U + &U F24859 * -> _shape `ux -> -> # *U &U F24859 `ui `ux -> -> 1 `i `uc `ui ( _strlen (1 &U *U + &U _spin * -> _shape `ux -> * -> # *U &U *U &U _spin `ui -> -> 20 `i `ui `ux 3485  ]
+[e $ ! >= -> =+ *U + &U F24857 * -> _shape `ux -> -> # *U &U F24857 `ui `ux -> -> 1 `i `uc `ui ( _strlen (1 &U *U + &U _spin * -> _shape `ux -> * -> # *U &U *U &U _spin `ui -> -> 20 `i `ui `ux 3485  ]
 "641
 [; ;main.c: 641:   s[shape] = 0;
-[e = *U + &U F24859 * -> _shape `ux -> -> # *U &U F24859 `ui `ux -> -> 0 `i `uc ]
+[e = *U + &U F24857 * -> _shape `ux -> -> # *U &U F24857 `ui `ux -> -> 0 `i `uc ]
 [e :U 3485 ]
 "643
 [; ;main.c: 643:  return c;
@@ -5979,8 +5975,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [f ]
 "648
 [; ;main.c: 648:  static uint8_t ret = 0;
-[v F24864 `uc ~T0 @X0 1 s ret ]
-[i F24864
+[v F24862 `uc ~T0 @X0 1 s ret ]
+[i F24862
 -> -> 0 `i `uc
 ]
 "650
@@ -6005,7 +6001,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = . . _SPI2CON0bits 0 4 -> -> 1 `i `uc ]
 "654
 [; ;main.c: 654:  return(int8_t) ret;
-[e ) -> F24864 `c ]
+[e ) -> F24862 `c ]
 [e $UE 3486  ]
 "655
 [; ;main.c: 655: }
@@ -6018,7 +6014,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [a 11C 49 57 50 48 48 98 112 115 0 ]
 [a 5C 79 70 70 76 73 78 69 0 ]
 [a 3C 68 73 83 65 66 76 69 0 ]
-[a 2C 48 55 58 49 55 58 53 57 0 ]
+[a 2C 49 51 58 51 52 58 53 56 0 ]
 [a 1C 77 97 121 32 49 50 32 50 48 50 53 0 ]
 [a 19C 86 48 46 48 51 0 ]
 [a 21C 86 48 46 48 51 0 ]
