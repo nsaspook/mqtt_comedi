@@ -30,7 +30,7 @@
 #pragma config MCLRE = EXTMCLR  // MCLR Enable bit (If LVP = 0, MCLR pin is MCLR; If LVP = 1, RE3 pin function is MCLR )
 #pragma config PWRTS = PWRT_OFF // Power-up timer selection bits (PWRT is disabled)
 #pragma config MVECEN = ON      // Multi-vector enable bit (Multi-vector enabled, Vector table used for interrupts)
-#pragma config IVT1WAY = ON     // IVTLOCK bit One-way set enable bit (IVTLOCKED bit can be cleared and set only once)
+#pragma config IVT1WAY = OFF     // IVTLOCK bit One-way set enable bit (IVTLOCKED bit can be cleared and set only once)
 #pragma config LPBOREN = OFF    // Low Power BOR Enable bit (Low-Power BOR disabled)
 #pragma config BOREN = SBORDIS  // Brown-out Reset Enable bits (Brown-out Reset enabled , SBOREN bit is ignored)
 
@@ -176,6 +176,7 @@ typedef signed long long int24_t;
 #include "mydisplay.h"
 #include "rs232.h"
 #include "slaveo.h"
+#include "bmcdio.h"
 
 #ifdef TRACE
 #define M_TRACE		TP1_Toggle()
@@ -363,8 +364,6 @@ void main(void)
 	 * master processing I/O loop
 	 */
 	while (true) {
-		//		M_TRACE;
-
 		/*
 		 * check and parse logging configuration commands on UART3
 		 */
@@ -430,7 +429,11 @@ void main(void)
 		}
 
 		if (TimerDone(TMR_ADC)) {
-			M_TRACEH;
+			SPI_MC33996();
+			send_spi1_mc33996_dma("1234", 4);
+			SPI_TIC12400();
+			send_spi1_tic12400_dma("5678", 4);
+			SPI_EADOG();
 			StartTimer(TMR_ADC, ADCDELAY);
 			spi_stat_ss.adc_count++; // just keep count
 
@@ -539,7 +542,6 @@ void main(void)
 			if (ADC_IsConversionDone()) {
 				adc_buffer[channel_FVR_Buffer2] = ADC_GetConversionResult();
 			};
-			M_TRACEL;
 		}
 
 		if (TimerDone(TMR_DISPLAY)) { // limit update rate
@@ -610,7 +612,6 @@ void main(void)
 			V.set_sequ = true;
 			check_help(false);
 		}
-		//		M_TRACE;
 	}
 }
 

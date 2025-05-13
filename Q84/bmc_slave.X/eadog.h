@@ -101,10 +101,12 @@ extern "C" {
 
 #define LCD_PWR_DELAY	600000
 
+	extern volatile uint8_t c0,c1,c2;
 	bool init_display(void);
 	void no_dma_set_lcd(void);
 	void send_lcd_data_dma(const uint8_t);
-	void send_spi2_data_dma(const uint8_t, const uint8_t, const uint8_t, const uint8_t);
+	void send_spi1_tic12400_dma(uint8_t *, const uint8_t);
+	void send_spi1_mc33996_dma(uint8_t *, const uint8_t);
 	void send_lcd_cmd_dma(const uint8_t);
 	void send_lcd_pos_dma(const uint8_t);
 	void start_lcd(void);

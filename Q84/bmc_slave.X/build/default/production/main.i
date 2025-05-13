@@ -24,7 +24,7 @@
 #pragma config MCLRE = EXTMCLR
 #pragma config PWRTS = PWRT_OFF
 #pragma config MVECEN = ON
-#pragma config IVT1WAY = ON
+#pragma config IVT1WAY = OFF
 #pragma config LPBOREN = OFF
 #pragma config BOREN = SBORDIS
 
@@ -40819,7 +40819,7 @@ extern long timezone;
 extern int getdate_err;
 struct tm *getdate (const char *);
 # 17 "./vconfig.h" 2
-# 90 "./vconfig.h"
+# 91 "./vconfig.h"
     const char msg_gemcmds[] = "Host CMDS: M C R P O L S D E H F";
     const char msg_freecmds[] = "Port baud rate unlocked        ";
     const char msg_gemremote[] = "Host CMDS: ENABLED REMOTE";
@@ -41011,19 +41011,15 @@ struct tm *getdate (const char *);
 # 1 "./slaveo.h" 1
 # 18 "./slaveo.h"
 # 1 "./mconfig.h" 1
-# 42 "./mconfig.h"
-void mconfig_init(void);
-
-void mode_lamp_dim(void);
-void mode_lamp_bright(void);
-void log_serial(uint8_t *, uint16_t);
-void logging_cmds(void);
-void set_time(const time_t);
-time_t time(time_t *);
-# 19 "./slaveo.h" 2
-
-# 1 "./eadog.h" 1
-# 21 "./slaveo.h" 2
+# 41 "./mconfig.h"
+# 1 "./bmcdio.h" 1
+# 22 "./bmcdio.h"
+# 1 "./mconfig.h" 1
+# 23 "./bmcdio.h" 2
+# 1 "./tic12400.h" 1
+# 19 "./tic12400.h"
+# 1 "./mconfig.h" 1
+# 20 "./tic12400.h" 2
 # 1 "./timers.h" 1
 # 11 "./timers.h"
 enum APP_TIMERS {
@@ -41044,7 +41040,124 @@ enum APP_TIMERS {
 __attribute__((inline)) void StartTimer(uint8_t timer, uint16_t count);
 __attribute__((inline)) _Bool TimerDone(uint8_t timer);
 void WaitMs(uint16_t numMilliseconds);
-# 22 "./slaveo.h" 2
+# 21 "./tic12400.h" 2
+# 46 "./tic12400.h"
+ typedef struct __attribute__((packed))
+ {
+  uint8_t data0;
+  uint8_t data1;
+  uint8_t data2;
+  uint8_t data3;
+ }
+ tic32to8_type;
+
+ typedef struct __attribute__((packed))
+ {
+  uint8_t par : 1;
+  uint8_t data;
+  uint8_t data1;
+  uint8_t data2;
+  uint8_t addr : 6;
+  uint8_t wr : 1;
+ }
+ ticbuf_type;
+# 86 "./tic12400.h"
+ typedef struct __attribute__((packed))
+ {
+  uint8_t par : 1;
+  uint8_t data;
+  uint8_t data1;
+  uint8_t data2;
+  uint8_t oi : 1;
+  uint8_t temp : 1;
+  uint8_t vs_th : 1;
+  uint8_t ssc : 1;
+  uint8_t parity_fail : 1;
+  uint8_t spi_fail : 1;
+  uint8_t por : 1;
+ }
+ ticread_type;
+
+ void tic12400_version(void);
+ void tic12400_reset(void);
+ _Bool tic12400_init(void);
+ uint32_t tic12400_wr(const ticbuf_type *, uint16_t);
+ uint32_t tic12400_get_sw(void);
+ void tic12400_read_sw(uint32_t, uintptr_t);
+ _Bool tic12400_parity(uint32_t);
+
+ extern volatile uint32_t tic12400_status, tic12400_counts, tic12400_value_counts;
+ extern volatile uint32_t tic12400_value;
+ extern volatile _Bool tic12400_init_fail, tic12400_event;
+ extern volatile _Bool tic12400_parity_status;
+ extern volatile int32_t tic12400_fail_value;
+# 24 "./bmcdio.h" 2
+# 1 "./mc33996.h" 1
+# 19 "./mc33996.h"
+# 1 "./mconfig.h" 1
+# 20 "./mc33996.h" 2
+# 29 "./mc33996.h"
+ typedef struct __attribute__((packed))
+ {
+  uint16_t out;
+  uint8_t cmd;
+ }
+ mc33996buf_type;
+
+
+
+
+ typedef struct __attribute__((packed))
+ {
+  uint16_t out_faults;
+  uint8_t faults;
+ }
+ mc33996read_type;
+# 55 "./mc33996.h"
+ void mc33996_version(void);
+# 25 "./bmcdio.h" 2
+# 49 "./bmcdio.h"
+        typedef struct {
+                struct hid_device_info *devs, *cur_dev;
+                uint8_t buf[64];
+                uint8_t rbuf[64];
+                int32_t res;
+        } mcp2210_spi_type;
+
+        void cbufs();
+        int32_t get_usb_res(void);
+        void sleep_us(const uint32_t);
+        _Bool get_MCP2210_ext_interrupt(void);
+        int32_t cancel_spi_transfer(void);
+        _Bool SPI_WriteRead(uint8_t *, uint8_t *);
+        _Bool SPI_MCP2210_WriteRead(uint8_t* pTransmitData, const size_t txSize, uint8_t* pReceiveData, const size_t rxSize);
+        void setup_tic12400_transfer(void);
+        void get_tic12400_transfer(void);
+        void mc33996_init(void);
+        _Bool mc33996_check(void);
+        void mc33996_set(uint8_t, uint8_t, uint8_t);
+        void setup_mc33996_transfer(uint8_t);
+        void get_mc33996_transfer(void);
+        void mc33996_update(void);
+        mcp2210_spi_type* hidrawapi_mcp2210_init(const wchar_t *serial_number);
+
+ void SPI_EADOG(void);
+ void SPI_TIC12400(void);
+ void SPI_MC33996(void);
+# 42 "./mconfig.h" 2
+
+void mconfig_init(void);
+
+void mode_lamp_dim(void);
+void mode_lamp_bright(void);
+void log_serial(uint8_t *, uint16_t);
+void logging_cmds(void);
+void set_time(const time_t);
+time_t time(time_t *);
+# 19 "./slaveo.h" 2
+
+# 1 "./eadog.h" 1
+# 21 "./slaveo.h" 2
 # 45 "./slaveo.h"
     struct spi_link_type_ss {
         uint8_t SPI_DATA : 1;
@@ -41098,10 +41211,12 @@ void WaitMs(uint16_t numMilliseconds);
   uint8_t operation;
  } spi1_configuration_t;
 # 104 "./eadog.h"
+ extern volatile uint8_t c0,c1,c2;
  _Bool init_display(void);
  void no_dma_set_lcd(void);
  void send_lcd_data_dma(const uint8_t);
- void send_spi2_data_dma(const uint8_t, const uint8_t, const uint8_t, const uint8_t);
+ void send_spi1_tic12400_dma(uint8_t *, const uint8_t);
+ void send_spi1_mc33996_dma(uint8_t *, const uint8_t);
  void send_lcd_cmd_dma(const uint8_t);
  void send_lcd_pos_dma(const uint8_t);
  void start_lcd(void);
@@ -41152,9 +41267,9 @@ D_CODES set_temp_display_help(const D_CODES);
   adc_scale_zero = -2048;
  void update_rs232_line_status(void);
 # 178 "main.c" 2
-# 190 "main.c"
+# 191 "main.c"
 extern struct spi_link_type spi_link;
-static const char *build_date = "May 12 2025", *build_time = "13:34:57";
+static const char *build_date = "May 12 2025", *build_time = "22:14:55";
 
 const char * BMC_TEXT [] = {
  "DISABLE",
@@ -41332,8 +41447,6 @@ void main(void)
 
 
 
-
-
   logging_cmds();
 
 
@@ -41356,20 +41469,20 @@ void main(void)
    srand(1957);
    set_vterm(V.vterm);
    snprintf(V.info, 63, " Terminal Info               ");
-   snprintf(get_vterm_ptr(0, 0), 20 +1, " OPI DAQ %u   %s      ", V.uart_speed_fast & 0x01, "V0.03");
-   snprintf(get_vterm_ptr(1, 0), 20 +1, " Version %s           ", "V0.03");
+   snprintf(get_vterm_ptr(0, 0), 20 +1, " OPI DAQ %u   %s      ", V.uart_speed_fast & 0x01, "V0.04");
+   snprintf(get_vterm_ptr(1, 0), 20 +1, " Version %s           ", "V0.04");
    snprintf(get_vterm_ptr(2, 0), 20 +1, " NSASPOOK             ");
    snprintf(get_vterm_ptr(3, 0), 20 +1, " %s                   ", (char *) build_date);
    snprintf(get_vterm_ptr(0, 1), 20 +1, " INFO                 ");
-   snprintf(get_vterm_ptr(1, 1), 20 +1, " Version %s           ", "V0.03");
+   snprintf(get_vterm_ptr(1, 1), 20 +1, " Version %s           ", "V0.04");
    snprintf(get_vterm_ptr(2, 1), 20 +1, " VTERM INFO           ");
    snprintf(get_vterm_ptr(3, 1), 20 +1, " %s                   ", (char *) build_date);
-   snprintf(get_vterm_ptr(0, 3), 20 +1, " HELP Build %s        ", "V0.03");
-   snprintf(get_vterm_ptr(1, 3), 20 +1, " Version %s           ", "V0.03");
+   snprintf(get_vterm_ptr(0, 3), 20 +1, " HELP Build %s        ", "V0.04");
+   snprintf(get_vterm_ptr(1, 3), 20 +1, " Version %s           ", "V0.04");
    snprintf(get_vterm_ptr(2, 3), 20 +1, " VTERM HELP           ");
    snprintf(get_vterm_ptr(3, 3), 20 +1, " %s                   ", (char *) build_date);
    snprintf(get_vterm_ptr(0, 2), 20 +1, " DEBUG                ");
-   snprintf(get_vterm_ptr(1, 2), 20 +1, " Version %s           ", "V0.03");
+   snprintf(get_vterm_ptr(1, 2), 20 +1, " Version %s           ", "V0.04");
    snprintf(get_vterm_ptr(2, 2), 20 +1, " VTERM DEBUG          ");
    snprintf(get_vterm_ptr(3, 2), 20 +1, " %s                   ", (char *) build_date);
    refresh_lcd();
@@ -41396,7 +41509,11 @@ void main(void)
   }
 
   if (TimerDone(TMR_ADC)) {
-   do { LATCbits.LATC2 = 1; } while(0);
+   SPI_MC33996();
+   send_spi1_mc33996_dma("1234", 4);
+   SPI_TIC12400();
+   send_spi1_tic12400_dma("5678", 4);
+   SPI_EADOG();
    StartTimer(TMR_ADC, 5);
    spi_stat_ss.adc_count++;
 
@@ -41505,7 +41622,6 @@ void main(void)
    if (ADC_IsConversionDone()) {
     adc_buffer[channel_FVR_Buffer2] = ADC_GetConversionResult();
    };
-   do { LATCbits.LATC2 = 0; } while(0);
   }
 
   if (TimerDone(TMR_DISPLAY)) {
@@ -41576,7 +41692,6 @@ void main(void)
    V.set_sequ = 1;
    check_help(0);
   }
-
  }
 }
 

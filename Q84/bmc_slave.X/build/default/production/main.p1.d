@@ -20,6 +20,9 @@ eadog.h  \
 vconfig.h  \
 slaveo.h  \
 mconfig.h  \
+bmcdio.h  \
+tic12400.h  \
 timers.h  \
+mc33996.h  \
 mydisplay.h  \
 rs232.h 

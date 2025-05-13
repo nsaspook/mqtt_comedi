@@ -70,7 +70,9 @@ extern "C" {
         void mc33996_update(void);
         mcp2210_spi_type* hidrawapi_mcp2210_init(const wchar_t *serial_number);
 
-
+	void SPI_EADOG(void);
+	void SPI_TIC12400(void);
+	void SPI_MC33996(void);
 
 
 #ifdef	__cplusplus

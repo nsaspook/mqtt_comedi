@@ -19,6 +19,9 @@ extern "C" {
 #include "mconfig.h"
 #include "timers.h"
 
+	/*
+	 * 32-bits SPI mode 1, 1MHz SCK
+	 */
 #define TIC12400_DRIVER "V0.5"
 
 #define por_bit 0x01
@@ -39,6 +42,15 @@ extern "C" {
 	//	uint32_t wr : 1;
 	//}
 	//ticbuf_type;
+
+	typedef struct __attribute__((packed))
+	{
+		uint8_t data0;
+		uint8_t data1;
+		uint8_t data2;
+		uint8_t data3;
+	}
+	tic32to8_type;
 
 	typedef struct __attribute__((packed))
 	{

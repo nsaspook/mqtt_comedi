@@ -24,7 +24,7 @@
 #pragma config MCLRE = EXTMCLR
 #pragma config PWRTS = PWRT_OFF
 #pragma config MVECEN = ON
-#pragma config IVT1WAY = ON
+#pragma config IVT1WAY = OFF
 #pragma config LPBOREN = OFF
 #pragma config BOREN = SBORDIS
 

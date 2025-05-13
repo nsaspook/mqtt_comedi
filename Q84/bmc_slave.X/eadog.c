@@ -27,6 +27,7 @@ static const spi1_configuration_t spi1_configuration[] = {
 static char Sstr[NSB][LSB];
 static volatile bool scroll_lock = false, powerup = true;
 static volatile uint8_t scroll_line_pos = 4;
+volatile uint8_t c0,c1,c2;
 
 static void send_lcd_cmd_long(const uint8_t); // for display init only
 static void send_lcd_data(const uint8_t);
@@ -145,7 +146,6 @@ void eaDogM_WriteString(char *strPtr)
 {
 	uint8_t len = (uint8_t) strlen(strPtr);
 
-	E_TRACE;
 	wait_lcd_done();
 	wait_lcd_set();
 	CS_SetLow(); /* SPI select display */
@@ -178,7 +178,6 @@ void send_lcd_cmd_dma(const uint8_t strPtr)
  */
 void send_lcd_data_dma(const uint8_t strPtr)
 {
-	E_TRACE;
 	wait_lcd_done();
 	wait_lcd_set();
 	CS_SetLow(); /* SPI select display */
@@ -190,28 +189,32 @@ void send_lcd_data_dma(const uint8_t strPtr)
 	start_lcd(); // start DMA transfer
 }
 
-void send_spi2_data_dma(const uint8_t strPtr0, const uint8_t strPtr1, const uint8_t strPtr2, const uint8_t len)
+void send_spi1_tic12400_dma(uint8_t *strPtr, const uint8_t len)
 {
-	E_TRACE;
-	
-	for (int i = 0; i < len; i++) {
-		spi_comm_ss.ADC_DATA = false;
-		wait_lcd_done();
-		wait_lcd_set();
-		SS_CS_SetLow(); /* SPI select display */
-		if (i == 0) spi_link.txbuf[0] = strPtr0;
-		if (i == 1) spi_link.txbuf[0] = strPtr1;
-		if (i == 2) spi_link.txbuf[0] = strPtr2;
-		DMAnCON0bits.EN = 0; /* disable DMA to change source count */
-		DMA1_SetSourceSize(1);
-		DMA1_SetDestinationSize(1);
-		DMAnCON0bits.EN = 1; /* enable DMA */
-		start_lcd(); // start DMA transfer
-		wait_lcd_done();
-		if ((i == 0) && (serial_buffer_ss.command == CMD_ADC_GO)) {
-			while (spi_comm_ss.ADC_DATA == false);
-		}
-	}
+	wait_lcd_done();
+	wait_lcd_set();
+	TIC_CS_SetLow(); /* SPI select display */
+	memcpy(spi_link.txbuf, strPtr, len);
+	DMAnCON0bits.EN = 0; /* disable DMA to change source count */
+	DMA1_SetSourceSize(len);
+	DMA1_SetDestinationSize(1);
+	DMAnCON0bits.EN = 1; /* enable DMA */
+	start_lcd(); // start DMA transfer
+	wait_lcd_set();
+}
+
+void send_spi1_mc33996_dma(uint8_t *strPtr, const uint8_t len)
+{
+	wait_lcd_done();
+	wait_lcd_set();
+	MCZ_CS_SetLow(); /* SPI select display */
+	memcpy(spi_link.txbuf, strPtr, len);
+	DMAnCON0bits.EN = 0; /* disable DMA to change source count */
+	DMA1_SetSourceSize(len);
+	DMA1_SetDestinationSize(1);
+	DMAnCON0bits.EN = 1; /* enable DMA */
+	start_lcd(); // start DMA transfer
+	wait_lcd_set();
 }
 
 /*
@@ -219,7 +222,6 @@ void send_spi2_data_dma(const uint8_t strPtr0, const uint8_t strPtr1, const uint
  */
 void send_lcd_pos_dma(const uint8_t strPtr)
 {
-	E_TRACE;
 	wait_lcd_done();
 	wait_lcd_set();
 	CS_SetLow(); /* SPI select display */
@@ -231,6 +233,7 @@ void send_lcd_pos_dma(const uint8_t strPtr)
 	DMA1_SetDestinationSize(1);
 	DMAnCON0bits.EN = 1; /* enable DMA */
 	start_lcd(); // start DMA transfer
+	
 }
 
 void eaDogM_WriteStringAtPos(const uint8_t r, const uint8_t c, char *strPtr)
@@ -264,7 +267,6 @@ void eaDogM_WriteStringAtPos(const uint8_t r, const uint8_t c, char *strPtr)
 #ifdef USE_LCD_DMA
 	send_lcd_pos_dma(row + c);
 	wdtdelay(NHD_S_DELAY); // display command processing delay
-	E_TRACE;
 #else
 	send_lcd_cmd(0x45);
 	send_lcd_data(row + c);
@@ -352,7 +354,6 @@ void wait_lcd_done(void)
 		}
 	};
 	DLED_SetLow();
-	SS_CS_SetHigh();
 #endif
 }
 
@@ -362,10 +363,6 @@ void wait_lcd_done(void)
 void clear_lcd_done(void)
 {
 	spi_link.LCD_DATA = false;
-	E_TRACE;
-	E_TRACE;
-	E_TRACE;
-	E_TRACE;
 }
 
 void spi_rec_done(void)

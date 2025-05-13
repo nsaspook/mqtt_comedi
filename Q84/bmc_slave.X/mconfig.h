@@ -38,6 +38,7 @@
 
 #include "mcc_generated_files/mcc.h"
 #include "vconfig.h"
+#include "bmcdio.h"
 
 void mconfig_init(void);
 

@@ -1,5 +1,6 @@
 
 #include "bmcdio.h"
+#include "eadog.h"
 
 static wchar_t wstr[MAX_STR]; // buffer for id settings strings from MPC2210
 
@@ -46,7 +47,7 @@ bool get_MCP2210_ext_interrupt(void)
 	cbufs();
 	S->buf[0] = 0x12; // Get (VM) the Current Number of Events From the Interrupt Pin, GPIO 6 FUNC2
 	S->buf[1] = 0x00; // reads, then resets the event counter
-//	S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
+	//	S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
 	if (S->rbuf[4] || S->rbuf[5]) {
 #ifdef EXT_INT_DPRINT
 		printf("\r\nrbuf4 %x: rbuf5 %x: counts %i\n", S->rbuf[4], S->rbuf[5], ++counts);
@@ -60,15 +61,15 @@ int32_t cancel_spi_transfer(void)
 {
 	cbufs();
 	S->buf[0] = 0x11; // 0x11 cancel SPI transfer
-//	S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
+	//	S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
 	return S->res;
 }
 
 bool SPI_WriteRead(uint8_t *buf, uint8_t *rbuf)
 {
-//	S->res = SendUSBCmd(handle, buf, rbuf);
+	//	S->res = SendUSBCmd(handle, buf, rbuf);
 	while (rbuf[3] == SPI_STATUS_STARTED_NO_DATA_TO_RECEIVE || rbuf[3] == SPI_STATUS_SUCCESSFUL) {
-//		S->res = SendUSBCmd(handle, buf, rbuf);
+		//		S->res = SendUSBCmd(handle, buf, rbuf);
 	}
 	return true;
 }
@@ -86,7 +87,7 @@ bool SPI_MCP2210_WriteRead(uint8_t* pTransmitData, const size_t txSize, uint8_t*
 	S->buf[5] = pTransmitData[2];
 	S->buf[6] = pTransmitData[1];
 	S->buf[7] = pTransmitData[0];
-//	S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
+	//	S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
 #ifdef DPRINT
 	printf("TX SPI res %x - tx count %i\n", S->res, ++tx_count);
 #endif
@@ -98,7 +99,7 @@ bool SPI_MCP2210_WriteRead(uint8_t* pTransmitData, const size_t txSize, uint8_t*
 #ifdef DPRINT
 		printf("SPI RX wait %i: code %x\n", ++rcount, S->rbuf[3]);
 #endif
-//		S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
+		//		S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
 	}
 	pReceiveData[3] = S->rbuf[4];
 	pReceiveData[2] = S->rbuf[5];
@@ -132,7 +133,7 @@ void setup_tic12400_transfer(void)
 	S->buf[11] = 0b11111111;
 	S->buf[18] = 0x4; // set no of bytes to transfer = 4 // 32-bit transfers
 	S->buf[20] = 0x01; // spi mode 1
-//	S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
+	//	S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
 }
 
 void get_tic12400_transfer(void)
@@ -140,7 +141,7 @@ void get_tic12400_transfer(void)
 	// ---------- Get SPI transfer settings (0x41)-------------
 	cbufs();
 	S->buf[0] = 0x41; // 0x41 Get SPI transfer settings
-//	S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
+	//	S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
 	printf("SPI TIC12400 transfer settings\n   "); // Print out the 0x41 returned buffer.
 	for (int i = 0; i < S->rbuf[2]; i++) {
 		printf("%02hhx ", S->rbuf[i]);
@@ -160,7 +161,7 @@ void mc33996_init(void)
 	S->buf[4] = 0x00; // on/off control
 	S->buf[5] = 0x0f; // set all outputs to low
 	S->buf[6] = 0xf0; // ""
-//	S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
+	//	S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
 };
 
 /*
@@ -175,7 +176,7 @@ void mc33996_set(uint8_t cmd, uint8_t data_h, uint8_t data_l)
 	S->buf[4] = cmd; // device command control
 	S->buf[5] = data_h; // set all outputs
 	S->buf[6] = data_l; // ""
-//	S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
+	//	S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
 };
 
 /*
@@ -207,7 +208,7 @@ void setup_mc33996_transfer(uint8_t len)
 	S->buf[11] = 0b11111111; // ""
 	S->buf[18] = len; // set no of bytes to transfer = 3
 	S->buf[20] = 0x01; // spi mode 1
-//	S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
+	//	S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
 };
 
 /*
@@ -217,7 +218,7 @@ void get_mc33996_transfer(void)
 {
 	cbufs();
 	S->buf[0] = 0x41; // 0x41 Get SPI transfer settings
-//	S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
+	//	S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
 	printf("SPI MC33996 transfer settings\n   "); // Print out the 0x41 returned buffer.
 	for (int i = 0; i < S->rbuf[2]; i++) {
 		printf("%02hhx ", S->rbuf[i]);
@@ -232,3 +233,56 @@ void mc33996_update(void)
 {
 	S->buf[4] = mc33996_control; // set MC33996 outputs command
 };
+
+void SPI_EADOG(void)
+{
+	wait_lcd_done();
+	MCZ_CS_SetHigh();
+	TIC_CS_SetHigh();
+	SPI1CON0bits.EN = 0;
+	//SMP Middle; CKE Idle to active; CKP Idle:High, Active:Low; FST disabled; SSP active low; SDIP active high; SDOP active high; 
+	SPI1CON1 = 0x24;
+	SPI1CON2 = 0x02; //  Received data is not stored in the FIFO
+	//CLKSEL MFINTOSC; 
+	SPI1CLK = 0x02;
+	//BAUD 4;  50KHz
+	SPI1BAUD = 0x04;
+	SPI1CON0 = 0x83;
+	SPI1CON0bits.EN = 1;
+}
+
+void SPI_TIC12400(void)
+{
+	wait_lcd_done();
+	MCZ_CS_SetHigh();
+	TIC_CS_SetHigh();
+	CS_SetHigh();
+	SPI1CON0bits.EN = 0;
+	//EN enabled; LSBF MSb first; MST bus master; BMODE every byte; 
+	SPI1CON0 = 0x03;
+	//SMP Middle; CKE Idle to active; CKP Idle:Low, Active:High; FST disabled; SSP active high; SDIP active high; SDOP active high; 
+	SPI1CON2 = 0x02; //  Received data is not stored in the FIFO for DMA mode
+	//CLKSEL FOSC; 
+	SPI1CLK = 0x00;
+	//BAUD 7;  4MHz
+	SPI1BAUD = 0x07;
+	SPI1CON0bits.EN = 1;
+}
+
+void SPI_MC33996(void)
+{
+	wait_lcd_done();
+	MCZ_CS_SetHigh();
+	TIC_CS_SetHigh();
+	CS_SetHigh();
+	SPI1CON0bits.EN = 0;
+	//EN enabled; LSBF MSb first; MST bus master; BMODE every byte; 
+	SPI1CON0 = 0x03;
+	//SMP Middle; CKE Idle to active; CKP Idle:Low, Active:High; FST disabled; SSP active high; SDIP active high; SDOP active high; 
+	SPI1CON2 = 0x02; //  Received data is not stored in the FIFO for DMA mode
+	//CLKSEL FOSC; 
+	SPI1CLK = 0x00;
+	//BAUD 7;  4MHz
+	SPI1BAUD = 0x07;
+	SPI1CON0bits.EN = 1;
+}

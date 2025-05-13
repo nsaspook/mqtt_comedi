@@ -39752,7 +39752,7 @@ extern void (*IOCBF6_InterruptHandler)(void);
 # 719 "./mcc_generated_files/pin_manager.h"
 void IOCBF6_DefaultInterruptHandler(void);
 # 20 "./vconfig.h" 2
-# 90 "./vconfig.h"
+# 91 "./vconfig.h"
     const char msg_gemcmds[] = "Host CMDS: M C R P O L S D E H F";
     const char msg_freecmds[] = "Port baud rate unlocked        ";
     const char msg_gemremote[] = "Host CMDS: ENABLED REMOTE";
@@ -40875,19 +40875,14 @@ void PMD_Initialize(void);
 void SystemArbiter_Initialize(void);
 # 40 "./mconfig.h" 2
 
-
-void mconfig_init(void);
-
-void mode_lamp_dim(void);
-void mode_lamp_bright(void);
-void log_serial(uint8_t *, uint16_t);
-void logging_cmds(void);
-void set_time(const time_t);
-time_t time(time_t *);
-# 19 "./slaveo.h" 2
-
-# 1 "./eadog.h" 1
-# 21 "./slaveo.h" 2
+# 1 "./bmcdio.h" 1
+# 22 "./bmcdio.h"
+# 1 "./mconfig.h" 1
+# 23 "./bmcdio.h" 2
+# 1 "./tic12400.h" 1
+# 19 "./tic12400.h"
+# 1 "./mconfig.h" 1
+# 20 "./tic12400.h" 2
 # 1 "./timers.h" 1
 # 11 "./timers.h"
 enum APP_TIMERS {
@@ -40908,7 +40903,124 @@ enum APP_TIMERS {
 __attribute__((inline)) void StartTimer(uint8_t timer, uint16_t count);
 __attribute__((inline)) _Bool TimerDone(uint8_t timer);
 void WaitMs(uint16_t numMilliseconds);
-# 22 "./slaveo.h" 2
+# 21 "./tic12400.h" 2
+# 46 "./tic12400.h"
+ typedef struct __attribute__((packed))
+ {
+  uint8_t data0;
+  uint8_t data1;
+  uint8_t data2;
+  uint8_t data3;
+ }
+ tic32to8_type;
+
+ typedef struct __attribute__((packed))
+ {
+  uint8_t par : 1;
+  uint8_t data;
+  uint8_t data1;
+  uint8_t data2;
+  uint8_t addr : 6;
+  uint8_t wr : 1;
+ }
+ ticbuf_type;
+# 86 "./tic12400.h"
+ typedef struct __attribute__((packed))
+ {
+  uint8_t par : 1;
+  uint8_t data;
+  uint8_t data1;
+  uint8_t data2;
+  uint8_t oi : 1;
+  uint8_t temp : 1;
+  uint8_t vs_th : 1;
+  uint8_t ssc : 1;
+  uint8_t parity_fail : 1;
+  uint8_t spi_fail : 1;
+  uint8_t por : 1;
+ }
+ ticread_type;
+
+ void tic12400_version(void);
+ void tic12400_reset(void);
+ _Bool tic12400_init(void);
+ uint32_t tic12400_wr(const ticbuf_type *, uint16_t);
+ uint32_t tic12400_get_sw(void);
+ void tic12400_read_sw(uint32_t, uintptr_t);
+ _Bool tic12400_parity(uint32_t);
+
+ extern volatile uint32_t tic12400_status, tic12400_counts, tic12400_value_counts;
+ extern volatile uint32_t tic12400_value;
+ extern volatile _Bool tic12400_init_fail, tic12400_event;
+ extern volatile _Bool tic12400_parity_status;
+ extern volatile int32_t tic12400_fail_value;
+# 24 "./bmcdio.h" 2
+# 1 "./mc33996.h" 1
+# 19 "./mc33996.h"
+# 1 "./mconfig.h" 1
+# 20 "./mc33996.h" 2
+# 29 "./mc33996.h"
+ typedef struct __attribute__((packed))
+ {
+  uint16_t out;
+  uint8_t cmd;
+ }
+ mc33996buf_type;
+
+
+
+
+ typedef struct __attribute__((packed))
+ {
+  uint16_t out_faults;
+  uint8_t faults;
+ }
+ mc33996read_type;
+# 55 "./mc33996.h"
+ void mc33996_version(void);
+# 25 "./bmcdio.h" 2
+# 49 "./bmcdio.h"
+        typedef struct {
+                struct hid_device_info *devs, *cur_dev;
+                uint8_t buf[64];
+                uint8_t rbuf[64];
+                int32_t res;
+        } mcp2210_spi_type;
+
+        void cbufs();
+        int32_t get_usb_res(void);
+        void sleep_us(const uint32_t);
+        _Bool get_MCP2210_ext_interrupt(void);
+        int32_t cancel_spi_transfer(void);
+        _Bool SPI_WriteRead(uint8_t *, uint8_t *);
+        _Bool SPI_MCP2210_WriteRead(uint8_t* pTransmitData, const size_t txSize, uint8_t* pReceiveData, const size_t rxSize);
+        void setup_tic12400_transfer(void);
+        void get_tic12400_transfer(void);
+        void mc33996_init(void);
+        _Bool mc33996_check(void);
+        void mc33996_set(uint8_t, uint8_t, uint8_t);
+        void setup_mc33996_transfer(uint8_t);
+        void get_mc33996_transfer(void);
+        void mc33996_update(void);
+        mcp2210_spi_type* hidrawapi_mcp2210_init(const wchar_t *serial_number);
+
+ void SPI_EADOG(void);
+ void SPI_TIC12400(void);
+ void SPI_MC33996(void);
+# 42 "./mconfig.h" 2
+
+void mconfig_init(void);
+
+void mode_lamp_dim(void);
+void mode_lamp_bright(void);
+void log_serial(uint8_t *, uint16_t);
+void logging_cmds(void);
+void set_time(const time_t);
+time_t time(time_t *);
+# 19 "./slaveo.h" 2
+
+# 1 "./eadog.h" 1
+# 21 "./slaveo.h" 2
 # 45 "./slaveo.h"
     struct spi_link_type_ss {
         uint8_t SPI_DATA : 1;
@@ -40962,10 +41074,12 @@ void WaitMs(uint16_t numMilliseconds);
   uint8_t operation;
  } spi1_configuration_t;
 # 104 "./eadog.h"
+ extern volatile uint8_t c0,c1,c2;
  _Bool init_display(void);
  void no_dma_set_lcd(void);
  void send_lcd_data_dma(const uint8_t);
- void send_spi2_data_dma(const uint8_t, const uint8_t, const uint8_t, const uint8_t);
+ void send_spi1_tic12400_dma(uint8_t *, const uint8_t);
+ void send_spi1_mc33996_dma(uint8_t *, const uint8_t);
  void send_lcd_cmd_dma(const uint8_t);
  void send_lcd_pos_dma(const uint8_t);
  void start_lcd(void);
@@ -41002,6 +41116,7 @@ static const spi1_configuration_t spi1_configuration[] = {
 static char Sstr[5][21];
 static volatile _Bool scroll_lock = 0, powerup = 1;
 static volatile uint8_t scroll_line_pos = 4;
+volatile uint8_t c0,c1,c2;
 
 static void send_lcd_cmd_long(const uint8_t);
 static void send_lcd_data(const uint8_t);
@@ -41022,7 +41137,7 @@ _Bool init_display(void)
  DMA1_SetSCNTIInterruptHandler(clear_lcd_done);
  DMA1_SetORIInterruptHandler(spi_byte);
  DMA1_SetDMAPriority(2);
-# 67 "eadog.c"
+# 68 "eadog.c"
  if (powerup) {
   wdtdelay(600000);
  }
@@ -41051,7 +41166,7 @@ _Bool init_display(void)
  send_lcd_cmd_dma(0x51);
  wdtdelay(1500);
  DMA1_StopTransfer();
-# 106 "eadog.c"
+# 107 "eadog.c"
  powerup = 0;
  return 1;
 }
@@ -41094,7 +41209,6 @@ void eaDogM_WriteString(char *strPtr)
 {
  uint8_t len = (uint8_t) strlen(strPtr);
 
- do { LATDbits.LATD7 = ~LATDbits.LATD7; } while(0);
  wait_lcd_done();
  wait_lcd_set();
  do { LATDbits.LATD3 = 0; } while(0);
@@ -41127,7 +41241,6 @@ void send_lcd_cmd_dma(const uint8_t strPtr)
 
 void send_lcd_data_dma(const uint8_t strPtr)
 {
- do { LATDbits.LATD7 = ~LATDbits.LATD7; } while(0);
  wait_lcd_done();
  wait_lcd_set();
  do { LATDbits.LATD3 = 0; } while(0);
@@ -41139,28 +41252,32 @@ void send_lcd_data_dma(const uint8_t strPtr)
  start_lcd();
 }
 
-void send_spi2_data_dma(const uint8_t strPtr0, const uint8_t strPtr1, const uint8_t strPtr2, const uint8_t len)
+void send_spi1_tic12400_dma(uint8_t *strPtr, const uint8_t len)
 {
- do { LATDbits.LATD7 = ~LATDbits.LATD7; } while(0);
+ wait_lcd_done();
+ wait_lcd_set();
+ do { LATEbits.LATE1 = 0; } while(0);
+ memcpy(spi_link.txbuf, strPtr, len);
+ DMAnCON0bits.EN = 0;
+ DMA1_SetSourceSize(len);
+ DMA1_SetDestinationSize(1);
+ DMAnCON0bits.EN = 1;
+ start_lcd();
+ wait_lcd_set();
+}
 
- for (int i = 0; i < len; i++) {
-  spi_comm_ss.ADC_DATA = 0;
-  wait_lcd_done();
-  wait_lcd_set();
-  do { LATEbits.LATE2 = 0; } while(0);
-  if (i == 0) spi_link.txbuf[0] = strPtr0;
-  if (i == 1) spi_link.txbuf[0] = strPtr1;
-  if (i == 2) spi_link.txbuf[0] = strPtr2;
-  DMAnCON0bits.EN = 0;
-  DMA1_SetSourceSize(1);
-  DMA1_SetDestinationSize(1);
-  DMAnCON0bits.EN = 1;
-  start_lcd();
-  wait_lcd_done();
-  if ((i == 0) && (serial_buffer_ss.command == 0b10000000)) {
-   while (spi_comm_ss.ADC_DATA == 0);
-  }
- }
+void send_spi1_mc33996_dma(uint8_t *strPtr, const uint8_t len)
+{
+ wait_lcd_done();
+ wait_lcd_set();
+ do { LATEbits.LATE0 = 0; } while(0);
+ memcpy(spi_link.txbuf, strPtr, len);
+ DMAnCON0bits.EN = 0;
+ DMA1_SetSourceSize(len);
+ DMA1_SetDestinationSize(1);
+ DMAnCON0bits.EN = 1;
+ start_lcd();
+ wait_lcd_set();
 }
 
 
@@ -41168,7 +41285,6 @@ void send_spi2_data_dma(const uint8_t strPtr0, const uint8_t strPtr1, const uint
 
 void send_lcd_pos_dma(const uint8_t strPtr)
 {
- do { LATDbits.LATD7 = ~LATDbits.LATD7; } while(0);
  wait_lcd_done();
  wait_lcd_set();
  do { LATDbits.LATD3 = 0; } while(0);
@@ -41180,6 +41296,7 @@ void send_lcd_pos_dma(const uint8_t strPtr)
  DMA1_SetDestinationSize(1);
  DMAnCON0bits.EN = 1;
  start_lcd();
+
 }
 
 void eaDogM_WriteStringAtPos(const uint8_t r, const uint8_t c, char *strPtr)
@@ -41213,7 +41330,6 @@ void eaDogM_WriteStringAtPos(const uint8_t r, const uint8_t c, char *strPtr)
 
  send_lcd_pos_dma(row + c);
  wdtdelay(400);
- do { LATDbits.LATD7 = ~LATDbits.LATD7; } while(0);
 
 
 
@@ -41301,7 +41417,6 @@ void wait_lcd_done(void)
   }
  };
  do { LATBbits.LATB3 = 0; } while(0);
- do { LATEbits.LATE2 = 1; } while(0);
 
 }
 
@@ -41311,10 +41426,6 @@ void wait_lcd_done(void)
 void clear_lcd_done(void)
 {
  spi_link.LCD_DATA = 0;
- do { LATDbits.LATD7 = ~LATDbits.LATD7; } while(0);
- do { LATDbits.LATD7 = ~LATDbits.LATD7; } while(0);
- do { LATDbits.LATD7 = ~LATDbits.LATD7; } while(0);
- do { LATDbits.LATD7 = ~LATDbits.LATD7; } while(0);
 }
 
 void spi_rec_done(void)
@@ -41392,7 +41503,7 @@ void check_lcd_dim(const _Bool dim)
    send_lcd_cmd_dma(0x53);
    send_lcd_data_dma(8);
   }
-# 455 "eadog.c"
+# 452 "eadog.c"
  }
 }
 
@@ -41409,7 +41520,7 @@ void set_lcd_dim(const _Bool dim)
    send_lcd_cmd_dma(0x53);
    send_lcd_data_dma(8);
   }
-# 480 "eadog.c"
+# 477 "eadog.c"
  }
 
  if (B.dim_delay++ >= 6) {

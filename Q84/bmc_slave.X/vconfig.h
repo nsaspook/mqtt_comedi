@@ -20,13 +20,14 @@ extern "C" {
 
 #define NHD		// SPI 20X4 display, nhd-0420d3z-nsw-bbw
 
-#define VER	"V0.03"
+#define VER	"V0.04"
     /** \file vconfig.h
      * Software version and a brief doc for each version changes.
         Version for 47Q84.
 
      * V0.01 OPI daq slave via SPI2
      * V0.03 add all ADC channels and clean up for SECS defines and variables
+     * V0.04 start adding the DIO devices code with speed and mode changes 4MHz and mode 1, 50KHz mode 3 for the display
      */
 
 

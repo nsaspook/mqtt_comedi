@@ -20,4 +20,7 @@ mcc_generated_files/memory.h  \
 mcc_generated_files/uart2.h  \
 mcc_generated_files/uart1.h  \
 mcc_generated_files/spi2.h  \
-timers.h 
+bmcdio.h  \
+tic12400.h  \
+timers.h  \
+mc33996.h 

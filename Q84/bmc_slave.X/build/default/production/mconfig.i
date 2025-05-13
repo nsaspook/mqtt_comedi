@@ -40617,7 +40617,7 @@ extern long timezone;
 extern int getdate_err;
 struct tm *getdate (const char *);
 # 17 "./vconfig.h" 2
-# 90 "./vconfig.h"
+# 91 "./vconfig.h"
     const char msg_gemcmds[] = "Host CMDS: M C R P O L S D E H F";
     const char msg_freecmds[] = "Port baud rate unlocked        ";
     const char msg_gemremote[] = "Host CMDS: ENABLED REMOTE";
@@ -40806,18 +40806,8 @@ struct tm *getdate (const char *);
     extern void UART1_Initialize19200(void);
     extern void UART2_Initialize19200(void);
 # 41 "./mconfig.h" 2
-
-void mconfig_init(void);
-
-void mode_lamp_dim(void);
-void mode_lamp_bright(void);
-void log_serial(uint8_t *, uint16_t);
-void logging_cmds(void);
-void set_time(const time_t);
-time_t time(time_t *);
-# 2 "mconfig.c" 2
-# 1 "./mydisplay.h" 1
-# 36 "./mydisplay.h"
+# 1 "./bmcdio.h" 1
+# 20 "./bmcdio.h"
 # 1 "/opt/microchip/xc8/v3.00/pic/include/c99/string.h" 1 3
 # 25 "/opt/microchip/xc8/v3.00/pic/include/c99/string.h" 3
 # 1 "/opt/microchip/xc8/v3.00/pic/include/c99/bits/alltypes.h" 1 3
@@ -40873,15 +40863,14 @@ size_t strxfrm_l (char *restrict, const char *restrict, size_t, locale_t);
 
 
 void *memccpy (void *restrict, const void *restrict, int, size_t);
-# 37 "./mydisplay.h" 2
+# 21 "./bmcdio.h" 2
 
-
-# 1 "./eadog.h" 1
-# 44 "./eadog.h"
-# 1 "./slaveo.h" 1
-# 20 "./slaveo.h"
-# 1 "./eadog.h" 1
-# 21 "./slaveo.h" 2
+# 1 "./mconfig.h" 1
+# 23 "./bmcdio.h" 2
+# 1 "./tic12400.h" 1
+# 19 "./tic12400.h"
+# 1 "./mconfig.h" 1
+# 20 "./tic12400.h" 2
 # 1 "./timers.h" 1
 # 11 "./timers.h"
 enum APP_TIMERS {
@@ -40902,7 +40891,129 @@ enum APP_TIMERS {
 __attribute__((inline)) void StartTimer(uint8_t timer, uint16_t count);
 __attribute__((inline)) _Bool TimerDone(uint8_t timer);
 void WaitMs(uint16_t numMilliseconds);
-# 22 "./slaveo.h" 2
+# 21 "./tic12400.h" 2
+# 46 "./tic12400.h"
+ typedef struct __attribute__((packed))
+ {
+  uint8_t data0;
+  uint8_t data1;
+  uint8_t data2;
+  uint8_t data3;
+ }
+ tic32to8_type;
+
+ typedef struct __attribute__((packed))
+ {
+  uint8_t par : 1;
+  uint8_t data;
+  uint8_t data1;
+  uint8_t data2;
+  uint8_t addr : 6;
+  uint8_t wr : 1;
+ }
+ ticbuf_type;
+# 86 "./tic12400.h"
+ typedef struct __attribute__((packed))
+ {
+  uint8_t par : 1;
+  uint8_t data;
+  uint8_t data1;
+  uint8_t data2;
+  uint8_t oi : 1;
+  uint8_t temp : 1;
+  uint8_t vs_th : 1;
+  uint8_t ssc : 1;
+  uint8_t parity_fail : 1;
+  uint8_t spi_fail : 1;
+  uint8_t por : 1;
+ }
+ ticread_type;
+
+ void tic12400_version(void);
+ void tic12400_reset(void);
+ _Bool tic12400_init(void);
+ uint32_t tic12400_wr(const ticbuf_type *, uint16_t);
+ uint32_t tic12400_get_sw(void);
+ void tic12400_read_sw(uint32_t, uintptr_t);
+ _Bool tic12400_parity(uint32_t);
+
+ extern volatile uint32_t tic12400_status, tic12400_counts, tic12400_value_counts;
+ extern volatile uint32_t tic12400_value;
+ extern volatile _Bool tic12400_init_fail, tic12400_event;
+ extern volatile _Bool tic12400_parity_status;
+ extern volatile int32_t tic12400_fail_value;
+# 24 "./bmcdio.h" 2
+# 1 "./mc33996.h" 1
+# 19 "./mc33996.h"
+# 1 "./mconfig.h" 1
+# 20 "./mc33996.h" 2
+# 29 "./mc33996.h"
+ typedef struct __attribute__((packed))
+ {
+  uint16_t out;
+  uint8_t cmd;
+ }
+ mc33996buf_type;
+
+
+
+
+ typedef struct __attribute__((packed))
+ {
+  uint16_t out_faults;
+  uint8_t faults;
+ }
+ mc33996read_type;
+# 55 "./mc33996.h"
+ void mc33996_version(void);
+# 25 "./bmcdio.h" 2
+# 49 "./bmcdio.h"
+        typedef struct {
+                struct hid_device_info *devs, *cur_dev;
+                uint8_t buf[64];
+                uint8_t rbuf[64];
+                int32_t res;
+        } mcp2210_spi_type;
+
+        void cbufs();
+        int32_t get_usb_res(void);
+        void sleep_us(const uint32_t);
+        _Bool get_MCP2210_ext_interrupt(void);
+        int32_t cancel_spi_transfer(void);
+        _Bool SPI_WriteRead(uint8_t *, uint8_t *);
+        _Bool SPI_MCP2210_WriteRead(uint8_t* pTransmitData, const size_t txSize, uint8_t* pReceiveData, const size_t rxSize);
+        void setup_tic12400_transfer(void);
+        void get_tic12400_transfer(void);
+        void mc33996_init(void);
+        _Bool mc33996_check(void);
+        void mc33996_set(uint8_t, uint8_t, uint8_t);
+        void setup_mc33996_transfer(uint8_t);
+        void get_mc33996_transfer(void);
+        void mc33996_update(void);
+        mcp2210_spi_type* hidrawapi_mcp2210_init(const wchar_t *serial_number);
+
+ void SPI_EADOG(void);
+ void SPI_TIC12400(void);
+ void SPI_MC33996(void);
+# 42 "./mconfig.h" 2
+
+void mconfig_init(void);
+
+void mode_lamp_dim(void);
+void mode_lamp_bright(void);
+void log_serial(uint8_t *, uint16_t);
+void logging_cmds(void);
+void set_time(const time_t);
+time_t time(time_t *);
+# 2 "mconfig.c" 2
+# 1 "./mydisplay.h" 1
+# 39 "./mydisplay.h"
+# 1 "./eadog.h" 1
+# 44 "./eadog.h"
+# 1 "./slaveo.h" 1
+# 20 "./slaveo.h"
+# 1 "./eadog.h" 1
+# 21 "./slaveo.h" 2
 # 45 "./slaveo.h"
     struct spi_link_type_ss {
         uint8_t SPI_DATA : 1;
@@ -40956,10 +41067,12 @@ void WaitMs(uint16_t numMilliseconds);
   uint8_t operation;
  } spi1_configuration_t;
 # 104 "./eadog.h"
+ extern volatile uint8_t c0,c1,c2;
  _Bool init_display(void);
  void no_dma_set_lcd(void);
  void send_lcd_data_dma(const uint8_t);
- void send_spi2_data_dma(const uint8_t, const uint8_t, const uint8_t, const uint8_t);
+ void send_spi1_tic12400_dma(uint8_t *, const uint8_t);
+ void send_spi1_mc33996_dma(uint8_t *, const uint8_t);
  void send_lcd_cmd_dma(const uint8_t);
  void send_lcd_pos_dma(const uint8_t);
  void start_lcd(void);
