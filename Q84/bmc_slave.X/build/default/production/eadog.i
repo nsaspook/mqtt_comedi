@@ -40912,34 +40912,16 @@ void WaitMs(uint16_t numMilliseconds);
   uint8_t data2;
   uint8_t data3;
  }
- tic32to8_type;
-
+ ticbuf8_type;
+# 76 "./tic12400.h"
  typedef struct __attribute__((packed))
  {
-  uint8_t par : 1;
-  uint8_t data;
+  uint8_t data0;
   uint8_t data1;
   uint8_t data2;
-  uint8_t addr : 6;
-  uint8_t wr : 1;
+  uint8_t data3;
  }
- ticbuf_type;
-# 86 "./tic12400.h"
- typedef struct __attribute__((packed))
- {
-  uint8_t par : 1;
-  uint8_t data;
-  uint8_t data1;
-  uint8_t data2;
-  uint8_t oi : 1;
-  uint8_t temp : 1;
-  uint8_t vs_th : 1;
-  uint8_t ssc : 1;
-  uint8_t parity_fail : 1;
-  uint8_t spi_fail : 1;
-  uint8_t por : 1;
- }
- ticread_type;
+ ticread8_type;
 
  void tic12400_version(void);
  void tic12400_reset(void);
