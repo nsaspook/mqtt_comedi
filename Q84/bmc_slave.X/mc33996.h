@@ -19,7 +19,7 @@ extern "C" {
 #include "mconfig.h"
 
 	/*
-	 * 24-bits SPI mode 1, 1MHz SCL
+	 * 24-bits SPI mode 1, 4MHz SCL
 	 */
 #define MC33996_DRIVER "V0.3"   
 

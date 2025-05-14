@@ -41041,24 +41041,24 @@ __attribute__((inline)) void StartTimer(uint8_t timer, uint16_t count);
 __attribute__((inline)) _Bool TimerDone(uint8_t timer);
 void WaitMs(uint16_t numMilliseconds);
 # 21 "./tic12400.h" 2
-# 46 "./tic12400.h"
+# 50 "./tic12400.h"
  typedef struct __attribute__((packed))
  {
-  uint8_t data0;
-  uint8_t data1;
-  uint8_t data2;
   uint8_t data3;
+  uint8_t data2;
+  uint8_t data1;
+  uint8_t data0;
  }
- ticbuf8_type;
-# 76 "./tic12400.h"
+ ticbuf_type;
+# 80 "./tic12400.h"
  typedef struct __attribute__((packed))
  {
-  uint8_t data0;
-  uint8_t data1;
-  uint8_t data2;
   uint8_t data3;
+  uint8_t data2;
+  uint8_t data1;
+  uint8_t data0;
  }
- ticread8_type;
+ ticread_type;
 
  void tic12400_version(void);
  void tic12400_reset(void);
@@ -41251,7 +41251,7 @@ D_CODES set_temp_display_help(const D_CODES);
 # 178 "main.c" 2
 # 191 "main.c"
 extern struct spi_link_type spi_link;
-static const char *build_date = "May 13 2025", *build_time = "13:06:36";
+static const char *build_date = "May 13 2025", *build_time = "18:22:12";
 
 const char * BMC_TEXT [] = {
  "DISABLE",

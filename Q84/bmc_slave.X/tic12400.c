@@ -11,110 +11,88 @@
  * the parity bit must be set correctly for the command to execute on the chip
  */
 const ticbuf_type setup32 = {
-	.wr = 1,
-	.addr = 0x32,
-	.data = 0,
-	.par = 1,
+	.data3 = 0xe4,
+	.data2 = 0x00,
+	.data1 = 0x00,
+	.data0 = 0x01,
 };
 const ticbuf_type setup21 = {
-	.wr = 1,
-	.addr = 0x21,
-	.data = 0,
-	.par = 0,
+	.data3 = 0xc2,
+	.data2 = 0x00,
+	.data1 = 0x00,
+	.data0 = 0x00,
 };
 const ticbuf_type setup1c = {
-	.wr = 1,
-	.addr = 0x1c,
-	.data = 0,
-	.par = 1,
+	.data3 = 0xb8,
+	.data2 = 0x00,
+	.data1 = 0x00,
+	.data0 = 0x01,
 };
 const ticbuf_type setup1b = {
-	.wr = 1,
-	.addr = 0x1b,
-	.data = 0xff,
-	.data1 = 0xff,
+	.data3 = 0xb7,
 	.data2 = 0xff,
-	.par = 0,
+	.data1 = 0xff,
+	.data0 = 0xfe,
 };
 const ticbuf_type setup1a = {
-	.wr = 1,
-	.addr = 0x1a,
-	.data = 0x00,
-	.data1 = 0xc0,
-	.data2 = 0x00,
-	.par = 1,
+	.data3 = 0xb4,
+	.data2 = 0x01,
+	.data1 = 0x80,
+	.data0 = 0x01,
 };
 const ticbuf_type setup1a_trigger = {
-	.wr = 1,
-	.addr = 0x1a,
-	.data = 0x00, // trigger and do config register CRC
-	.data1 = 0x0a,
+	.data3 = 0xb4,
 	.data2 = 0x00,
-	.par = 1,
+	.data1 = 0x14,
+	.data0 = 0x01,
 };
 const ticbuf_type setup22 = {
-	.wr = 1,
-	.addr = 0x22,
-	.data = 0xff,
-	.data1 = 0xff,
+	.data3 = 0xc5,
 	.data2 = 0xff,
-	.par = 0,
+	.data1 = 0xff,
+	.data0 = 0xfe,
 };
 const ticbuf_type setup23 = {
-	.wr = 1,
-	.addr = 0x23,
-	.data = 0xff,
-	.data1 = 0xff,
+	.data3 = 0xc7,
 	.data2 = 0xff,
-	.par = 1,
+	.data1 = 0xff,
+	.data0 = 0xff,
 };
 const ticbuf_type setup24 = {
-	.wr = 1,
-	.addr = 0x24,
-	.data = 0x00,
-	.data1 = 0x0f,
-	.data2 = 0xff,
-	.par = 0,
+	.data3 = 0xc8,
+	.data2 = 0x00,
+	.data1 = 0x1f,
+	.data0 = 0xfe,
 };
 const ticbuf_type setup1d = {
-	.wr = 1,
-	.addr = 0x1d,
-	.data = 011, // octal constant, all inputs 1mA wetting current
-	.data1 = 0111,
-	.data2 = 0111,
-	.par = 0,
+	.data3 = 0xba,
+	.data2 = 0x49,
+	.data1 = 0x24,
+	.data0 = 0x92,
 };
 const ticbuf_type ticread05 = {
-	.wr = 0,
-	.addr = 0x05,
-	.data = 0,
-	.data1 = 0,
-	.data2 = 0,
-	.par = 1,
+	.data3 = 0x0a,
+	.data2 = 0x00,
+	.data1 = 0x00,
+	.data0 = 0x01,
 };
 const ticbuf_type ticdevid01 = {
-	.wr = 0,
-	.addr = 0x01,
-	.data = 0,
-	.data1 = 0,
-	.data2 = 0,
-	.par = 0,
+	.data3 = 0x02,
+	.data2 = 0x00,
+	.data1 = 0x00,
+	.data0 = 0x00,
 };
 const ticbuf_type ticstat02 = {
-	.wr = 0,
-	.addr = 0x02,
-	.data = 0,
-	.data1 = 0,
-	.data2 = 0,
-	.par = 0,
+	.data3 = 0x04,
+	.data2 = 0x00,
+	.data1 = 0x00,
+	.data0 = 0x02,
 };
 const ticbuf_type ticreset1a = {
-	.wr = 1,
-	.addr = 0x1a,
-	.data = 0,
-	.data1 = 0,
-	.data2 = 0x1,
-	.par = 0,
+	.data3 = 0xb4,
+	.data2 = 0x00,
+	.data1 = 0x00,
+	.data0 = 0x02,
 };
 
 /*
@@ -163,7 +141,7 @@ bool tic12400_init(void)
 {
 	tic12400_status = tic12400_wr(&ticstat02, 0); // get status to check for proper operation
 
-	if ((ticstatus->data > por_bit) || !ticstatus->por) { // check for any high bits beyond POR bits set
+	if ((ticstatus->data0 & por_data_bit) || (ticstatus->data1) || (!(ticstatus->data0 & por_bit))) { // check for any high bits beyond POR bits set
 		tic12400_init_fail = true;
 		tic12400_fail_value = -1;
 		goto fail;
@@ -180,7 +158,7 @@ bool tic12400_init(void)
 	tic12400_wr(&setup1a, 0); // set switch debounce to max 4 counts, 0x1a
 	tic12400_status = tic12400_wr(&setup1a_trigger, 2); // trigger switch detections & CRC, 0x1a
 
-	if (ticstatus->spi_fail) {
+	if (ticstatus->data3 & spi_fail_bit) {
 		tic12400_init_fail = true;
 		tic12400_fail_value = -2;
 		goto fail;
@@ -200,9 +178,9 @@ uint32_t tic12400_wr(const ticbuf_type * buffer, uint16_t del)
 {
 	static uint32_t rbuffer = 0;
 
-//	SPI_MCP2210_WriteRead((void*) buffer, 4, (void*) &rbuffer, 4);
+	//	SPI_MCP2210_WriteRead((void*) buffer, 4, (void*) &rbuffer, 4);
 
-	if (ticvalue->parity_fail) { // check for command parity errors
+	if (ticvalue->data3 & parity_fail) { // check for command parity errors
 		tic12400_parity_status = true;
 	};
 
@@ -261,7 +239,7 @@ void tic12400_read_sw(uint32_t a, uintptr_t b)
 	tic12400_value = tic12400_wr(&ticread05, 0); // read switch
 	tic12400_status = tic12400_wr(&ticstat02, 0); // read status
 
-	if (ticvalue->ssc && tic12400_parity(tic12400_value)) { // only trigger on switch state change
+	if ((ticvalue->data3 & ssc_bit) && tic12400_parity(tic12400_value)) { // only trigger on switch state change
 		tic12400_event = true;
 		tic12400_value_counts++;
 	}

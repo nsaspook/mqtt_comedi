@@ -82,7 +82,7 @@ bool SPI_MCP2210_WriteRead(uint8_t* pTransmitData, const size_t txSize, uint8_t*
 
 	cbufs();
 	S->buf[0] = 0x42; // transfer SPI data command
-	S->buf[1] = rxSize; // no. of SPI bytes to transfer
+	S->buf[1] = (uint8_t) rxSize; // no. of SPI bytes to transfer
 	S->buf[4] = pTransmitData[3];
 	S->buf[5] = pTransmitData[2];
 	S->buf[6] = pTransmitData[1];

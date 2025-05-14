@@ -20,11 +20,15 @@ extern "C" {
 #include "timers.h"
 
 	/*
-	 * 32-bits SPI mode 1, 1MHz SCK
+	 * 32-bits SPI mode 1, 4MHz SCK
 	 */
 #define TIC12400_DRIVER "V0.5"
 
-#define por_bit 0x01
+#define por_bit		0b0000001
+#define por_data_bit	0b1111110
+#define spi_fail_bit	0b0100000
+#define parity_fail	0b0010000
+#define ssc_bit		0b0001000
 	/*
 	 * switch bit masks in the raw 32-bit register from the TIC12400
 	 */
@@ -80,7 +84,7 @@ extern "C" {
 		uint8_t data1;
 		uint8_t data0;
 	}
-	ticbuf_type;
+	ticread_type;
 
 	void tic12400_version(void);
 	void tic12400_reset(void);
