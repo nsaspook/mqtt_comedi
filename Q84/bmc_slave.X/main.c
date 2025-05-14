@@ -430,9 +430,9 @@ void main(void)
 
 		if (TimerDone(TMR_ADC)) {
 			SPI_MC33996();
-			send_spi1_mc33996_dma("1234", 4);
+			send_spi1_mc33996_dma((uint8_t *)"123", 3);
 			SPI_TIC12400();
-			send_spi1_tic12400_dma("5678", 4);
+			send_spi1_tic12400_dma((uint8_t *)"4567", 4);
 			SPI_EADOG();
 			StartTimer(TMR_ADC, ADCDELAY);
 			spi_stat_ss.adc_count++; // just keep count

@@ -27,7 +27,7 @@ static const spi1_configuration_t spi1_configuration[] = {
 static char Sstr[NSB][LSB];
 static volatile bool scroll_lock = false, powerup = true;
 static volatile uint8_t scroll_line_pos = 4;
-volatile uint8_t c0,c1,c2;
+volatile uint8_t c0, c1, c2;
 
 static void send_lcd_cmd_long(const uint8_t); // for display init only
 static void send_lcd_data(const uint8_t);
@@ -42,12 +42,17 @@ static void wdtdelay(const uint32_t);
 bool init_display(void)
 {
 	spi_link.txbuf = lcd_dma_buf; // use MCC DMA buffer variable
+	spi_link.rxbuf = spi1_rec_buf; // setup receive buffer for other devices on the buss
 	memset(Sstr, ' ', NSB * LSB); // clear scroll buffer of junk
 
 #ifdef USE_LCD_DMA
 	DMA1_SetSCNTIInterruptHandler(clear_lcd_done);
 	DMA1_SetORIInterruptHandler(spi_byte);
 	DMA1_SetDMAPriority(2);
+
+	DMA2_SetSCNTIInterruptHandler(clear_read_done);
+	DMA2_SetORIInterruptHandler(spi_byte);
+	DMA2_SetDMAPriority(2);
 #endif
 #ifdef NHD  // uses MODE 3 on the Q84, https://newhavendisplay.com/content/specs/NHD-0420D3Z-NSW-BBW-V3.pdf
 #ifdef USEMCC_SPI
@@ -71,7 +76,19 @@ bool init_display(void)
 
 #ifdef USE_LCD_DMA
 	SPI1INTFbits.SPI1TXUIF = 0;
-	DMASELECT = 0; // use DMA1
+
+	DMASELECT = 1; // use DMA2 RX
+	DMAnCON0bits.EN = 0;
+	DMAnCON1bits.DMODE = 0;
+	DMAnCON1bits.DSTP = 0;
+	DMAnCON1bits.SMODE = 1;
+	DMAnCON1bits.SMR = 0;
+	DMAnCON1bits.SSTP = 1;
+	DMAnSSA = (uint24_t) spi_link.rxbuf;
+	DMAnCON0bits.DGO = 0;
+	DMAnCON0bits.EN = 1; /* enable DMA */
+
+	DMASELECT = 0; // use DMA1 TX
 	DMAnCON0bits.EN = 0;
 	SPI1CON0bits.EN = 0;
 	SPI1CON2 = 0x02; //  Received data is not stored in the FIFO
@@ -93,6 +110,7 @@ bool init_display(void)
 	send_lcd_cmd_dma(LCD_CMD_CLR); // clear screen
 	wdtdelay(NHD_L_DELAY);
 	DMA1_StopTransfer();
+	DMA2_StopTransfer();
 #else
 	send_lcd_cmd(LCD_CMD_BRI); // set back-light level
 	send_lcd_data(NHD_BL_LOW);
@@ -102,6 +120,7 @@ bool init_display(void)
 	send_lcd_cmd(LCD_CMD_CLR); // clear screen
 	wdtdelay(NHD_L_DELAY);
 	DMA1_StopTransfer();
+	DMA2_StopTransfer();
 #endif
 #endif
 	powerup = false; // only of the first display init call
@@ -154,7 +173,8 @@ void eaDogM_WriteString(char *strPtr)
 	}
 	memcpy(spi_link.txbuf, strPtr, len);
 #ifdef USE_LCD_DMA
-	DMAnCON0bits.EN = 0; /* disable DMA to change source count */
+	DMASELECT = 0x00;
+	DMAnCON0bits.EN = 0; /* disable TX DMA to change source count */
 	DMA1_SetSourceSize(len);
 	DMA1_SetDestinationSize(1);
 	DMAnCON0bits.EN = 1; /* enable DMA */
@@ -182,7 +202,8 @@ void send_lcd_data_dma(const uint8_t strPtr)
 	wait_lcd_set();
 	CS_SetLow(); /* SPI select display */
 	spi_link.txbuf[0] = strPtr;
-	DMAnCON0bits.EN = 0; /* disable DMA to change source count */
+	DMASELECT = 0x00;
+	DMAnCON0bits.EN = 0; /* disable TX DMA to change source count */
 	DMA1_SetSourceSize(1);
 	DMA1_SetDestinationSize(1);
 	DMAnCON0bits.EN = 1; /* enable DMA */
@@ -193,12 +214,21 @@ void send_spi1_tic12400_dma(uint8_t *strPtr, const uint8_t len)
 {
 	wait_lcd_done();
 	wait_lcd_set();
+	spi_link.READ_DATA = true;
 	TIC_CS_SetLow(); /* SPI select display */
 	memcpy(spi_link.txbuf, strPtr, len);
-	DMAnCON0bits.EN = 0; /* disable DMA to change source count */
+	DMASELECT = 0x01;
+	DMAnCON0bits.EN = 0; /* disable RX DMA to change source count */
 	DMA1_SetSourceSize(len);
 	DMA1_SetDestinationSize(1);
 	DMAnCON0bits.EN = 1; /* enable DMA */
+
+	DMASELECT = 0x00;
+	DMAnCON0bits.EN = 0; /* disable TX DMA to change source count */
+	DMA1_SetSourceSize(len);
+	DMA1_SetDestinationSize(1);
+	DMAnCON0bits.EN = 1; /* enable DMA */
+	DMA2_StartTransferWithTrigger();
 	start_lcd(); // start DMA transfer
 	wait_lcd_set();
 }
@@ -207,12 +237,21 @@ void send_spi1_mc33996_dma(uint8_t *strPtr, const uint8_t len)
 {
 	wait_lcd_done();
 	wait_lcd_set();
+	spi_link.READ_DATA = true;
 	MCZ_CS_SetLow(); /* SPI select display */
 	memcpy(spi_link.txbuf, strPtr, len);
-	DMAnCON0bits.EN = 0; /* disable DMA to change source count */
+	DMASELECT = 0x01;
+	DMAnCON0bits.EN = 0; /* disable RX DMA to change source count */
 	DMA1_SetSourceSize(len);
 	DMA1_SetDestinationSize(1);
 	DMAnCON0bits.EN = 1; /* enable DMA */
+
+	DMASELECT = 0x00;
+	DMAnCON0bits.EN = 0; /* disable TX DMA to change source count */
+	DMA1_SetSourceSize(len);
+	DMA1_SetDestinationSize(1);
+	DMAnCON0bits.EN = 1; /* enable DMA */
+	DMA2_StartTransferWithTrigger();
 	start_lcd(); // start DMA transfer
 	wait_lcd_set();
 }
@@ -228,12 +267,12 @@ void send_lcd_pos_dma(const uint8_t strPtr)
 	spi_link.txbuf[0] = NHD_CMD;
 	spi_link.txbuf[1] = NHD_POS;
 	spi_link.txbuf[2] = strPtr;
-	DMAnCON0bits.EN = 0; /* disable DMA to change source count */
+	DMASELECT = 0x00;
+	DMAnCON0bits.EN = 0; /* disable TX DMA to change source count */
 	DMA1_SetSourceSize(3);
 	DMA1_SetDestinationSize(1);
 	DMAnCON0bits.EN = 1; /* enable DMA */
 	start_lcd(); // start DMA transfer
-	
 }
 
 void eaDogM_WriteStringAtPos(const uint8_t r, const uint8_t c, char *strPtr)
@@ -357,12 +396,39 @@ void wait_lcd_done(void)
 #endif
 }
 
+void wait_read_done(void)
+{
+#ifdef USE_LCD_DMA
+	uint32_t delay = 0;
+	while (spi_link.READ_DATA) {
+		if (delay++ > DONE_DELAY) {
+			return;
+		}
+	};
+	delay = 0;
+	while (!SPI1STATUSbits.TXBE) {
+		if (delay++ > DONE_DELAY) {
+			return;
+		}
+	};
+	DLED_SetLow();
+#endif
+}
+
 /*
- * in DMA mode this is a ISR that runs when the source count is complete
+ * in DMA mode this is a ISR that runs when the TX source count is complete
  */
 void clear_lcd_done(void)
 {
 	spi_link.LCD_DATA = false;
+}
+
+/*
+ * in DMA mode this is a ISR that runs when the RX source count is complete
+ */
+void clear_read_done(void)
+{
+	spi_link.READ_DATA = false;
 }
 
 void spi_rec_done(void)

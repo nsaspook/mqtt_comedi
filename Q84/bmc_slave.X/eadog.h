@@ -101,7 +101,7 @@ extern "C" {
 
 #define LCD_PWR_DELAY	600000
 
-	extern volatile uint8_t c0,c1,c2;
+	extern volatile uint8_t c0, c1, c2;
 	bool init_display(void);
 	void no_dma_set_lcd(void);
 	void send_lcd_data_dma(const uint8_t);
@@ -113,6 +113,7 @@ extern "C" {
 	void wait_lcd_set(void);
 	bool wait_lcd_check(void);
 	void wait_lcd_done(void);
+	void wait_read_done(void);
 	void eaDogM_WriteChr(const int8_t);
 	void eaDogM_WriteCommand(const uint8_t);
 	void eaDogM_SetPos(const uint8_t, const uint8_t);
@@ -129,6 +130,7 @@ extern "C" {
 
 	// DMA complete flag
 	void clear_lcd_done(void);
+	void clear_read_done(void);
 	void spi_rec_done(void);
 #ifdef USE_CAN
 	extern void can_fd_lcd_mirror(const uint8_t, char *);

@@ -97,9 +97,11 @@ extern "C" {
         uint8_t SPI_AUX : 1;
         uint8_t LCD_TIMER : 1;
         volatile uint8_t LCD_DATA : 1;
+	volatile uint8_t READ_DATA : 1;
         uint16_t delay;
         uint8_t config;
         uint8_t * txbuf;
+	uint8_t * rxbuf;
         volatile int32_t int_count;
     };
 
