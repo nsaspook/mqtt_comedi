@@ -8,6 +8,7 @@ mcc_generated_files/pin_manager.h  \
 mcc_generated_files/interrupt_manager.h  \
 mcc_generated_files/adc.h  \
 mcc_generated_files/dma1.h  \
+mcc_generated_files/dma3.h  \
 mcc_generated_files/dma2.h  \
 mcc_generated_files/dac1.h  \
 mcc_generated_files/tmr5.h  \
@@ -23,5 +24,5 @@ vconfig.h  \
 bmcdio.h  \
 tic12400.h  \
 timers.h  \
-mc33996.h  \
-eadog.h 
+eadog.h  \
+mc33996.h 

@@ -52,6 +52,7 @@
 #include "dma2.h"
 
 void (*DMA2_SCNTI_InterruptHandler)(void);
+void (*DMA2_DCNTI_InterruptHandler)(void);
 void (*DMA2_ORI_InterruptHandler)(void);
 
 /**
@@ -62,18 +63,18 @@ void DMA2_Initialize(void)
 {
     //DMA Instance Selection : 0x01
     DMASELECT = 0x01;
-    //Source Address : spi1_rec_buf
-    DMAnSSA = (volatile uint24_t)&spi1_rec_buf;
-    //Destination Address : &DstVarName1
-    DMAnDSA= (volatile unsigned short)&DstVarName1;
-    //DMODE unchanged; DSTP not cleared; SMR GPR; SMODE incremented; SSTP not cleared; 
-    DMAnCON1 = 0x02;
+    //Source Address : &SPI1RXB
+    DMAnSSA = (volatile unsigned short)&SPI1RXB;
+    //Destination Address : &spi1_rec_buf
+    DMAnDSA= (volatile unsigned short)&spi1_rec_buf;
+    //DMODE incremented; DSTP not cleared; SMR SFR; SMODE unchanged; SSTP not cleared; 
+    DMAnCON1 = 0x40;
     //Source Message Size : 1
     DMAnSSZ = 1;
-    //Destination Message Size : 1
-    DMAnDSZ = 1;
-    //Start Trigger : SIRQ SPI1RX; 
-    DMAnSIRQ = 0x18;
+    //Destination Message Size : 4
+    DMAnDSZ = 8;
+    //Start Trigger : SIRQ None; 
+    DMAnSIRQ = 0x00;
     //Abort Trigger : AIRQ None; 
     DMAnAIRQ = 0x00;
 	
@@ -86,15 +87,16 @@ void DMA2_Initialize(void)
     // Clear Overrun Interrupt Flag bit
     PIR6bits.DMA2ORIF =0; 
     
-    PIE6bits.DMA2DCNTIE = 0;
+    PIE6bits.DMA2DCNTIE = 1;
+	DMA2_SetDCNTIInterruptHandler(DMA2_DefaultInterruptHandler);
     PIE6bits.DMA2SCNTIE = 1; 
 	DMA2_SetSCNTIInterruptHandler(DMA2_DefaultInterruptHandler);
     PIE6bits.DMA2AIE = 0;
     PIE6bits.DMA2ORIE =1; 
 	DMA2_SetORIInterruptHandler(DMA2_DefaultInterruptHandler);
 	
-    //EN enabled; SIRQEN enabled; DGO not in progress; AIRQEN disabled; 
-    DMAnCON0 = 0xC0;
+    //EN enabled; SIRQEN disabled; DGO not in progress; AIRQEN disabled; 
+    DMAnCON0 = 0x80;
 	
 }
 
@@ -195,6 +197,20 @@ void __interrupt(irq(IRQ_DMA2SCNT),base(8)) DMA2_DMASCNTI_ISR()
 void DMA2_SetSCNTIInterruptHandler(void (* InterruptHandler)(void))
 {
 	 DMA2_SCNTI_InterruptHandler = InterruptHandler;
+}
+
+void __interrupt(irq(IRQ_DMA2DCNT),base(8)) DMA2_DMADCNTI_ISR()
+{
+    // Clear the source count interrupt flag
+    PIR6bits.DMA2DCNTIF = 0;
+
+    if (DMA2_DCNTI_InterruptHandler)
+            DMA2_DCNTI_InterruptHandler();
+}
+
+void DMA2_SetDCNTIInterruptHandler(void (* InterruptHandler)(void))
+{
+	 DMA2_DCNTI_InterruptHandler = InterruptHandler;
 }
 
 void __interrupt(irq(IRQ_DMA2OR),base(8)) DMA2_DMAORI_ISR()

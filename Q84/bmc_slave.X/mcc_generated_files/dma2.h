@@ -52,8 +52,7 @@
 */
 #include <stdint.h>
 
-uint8_t spi1_rec_buf[32];
-uint8_t DstVarName1[10];
+volatile uint8_t spi1_rec_buf[32];
 
 /**
  * @brief Initializes the DMA2 module
@@ -161,6 +160,12 @@ void DMA2_SetDMAPriority(uint8_t priority);
  */
 void DMA2_SetSCNTIInterruptHandler(void (* InterruptHandler)(void));
 
+/**
+ * @brief This routine is used to set the callback for the DCNTI Interrupt.
+ * @return None
+ * @param Callback Function to be called
+ */
+void DMA2_SetDCNTIInterruptHandler(void (* InterruptHandler)(void));
 
 
 /**

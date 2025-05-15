@@ -141,7 +141,7 @@ bool tic12400_init(void)
 {
 	tic12400_status = tic12400_wr(&ticstat02, 0); // get status to check for proper operation
 
-	if ((ticstatus->data0 & por_data_bit) || (ticstatus->data1) || (!(ticstatus->data0 & por_bit))) { // check for any high bits beyond POR bits set
+	if ((tic12400_status & por_data_bit) || (!(tic12400_status & por_bit))) { // check for any high bits beyond POR bits set
 		tic12400_init_fail = true;
 		tic12400_fail_value = -1;
 		goto fail;
@@ -158,7 +158,7 @@ bool tic12400_init(void)
 	tic12400_wr(&setup1a, 0); // set switch debounce to max 4 counts, 0x1a
 	tic12400_status = tic12400_wr(&setup1a_trigger, 2); // trigger switch detections & CRC, 0x1a
 
-	if (ticstatus->data3 & spi_fail_bit) {
+	if (tic12400_status & spi_fail_bit) {
 		tic12400_init_fail = true;
 		tic12400_fail_value = -2;
 		goto fail;
@@ -176,11 +176,13 @@ fail:
  */
 uint32_t tic12400_wr(const ticbuf_type * buffer, uint16_t del)
 {
-	static uint32_t rbuffer = 0;
+	send_spi1_tic12400_dma((void*) buffer, 4);
+	tic12400_value = spi_link.rxbuf[0];
+	tic12400_value += spi_link.rxbuf[1] << 8;
+	tic12400_value += spi_link.rxbuf[2] << 16;
+	tic12400_value += spi_link.rxbuf[3] << 24;
 
-	//	SPI_MCP2210_WriteRead((void*) buffer, 4, (void*) &rbuffer, 4);
-
-	if (ticvalue->data3 & parity_fail) { // check for command parity errors
+	if (tic12400_value & parity_fail) { // check for command parity errors
 		tic12400_parity_status = true;
 	};
 
@@ -188,7 +190,7 @@ uint32_t tic12400_wr(const ticbuf_type * buffer, uint16_t del)
 		WaitMs(1);
 	}
 
-	return rbuffer;
+	return(uint32_t) ticvalue;
 }
 
 /*

@@ -110,10 +110,13 @@ extern "C" {
 	void send_lcd_cmd_dma(const uint8_t);
 	void send_lcd_pos_dma(const uint8_t);
 	void start_lcd(void);
+	void start_spi1_read(void);
+	void start_spi1_read1(void);
 	void wait_lcd_set(void);
 	bool wait_lcd_check(void);
 	void wait_lcd_done(void);
 	void wait_read_done(void);
+	void wait_read_set(void);
 	void eaDogM_WriteChr(const int8_t);
 	void eaDogM_WriteCommand(const uint8_t);
 	void eaDogM_SetPos(const uint8_t, const uint8_t);

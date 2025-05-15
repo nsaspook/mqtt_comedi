@@ -24,6 +24,7 @@ static const spi1_configuration_t spi1_configuration[] = {
 	{0x83, 0x20, 0x3, 0x4, 0}
 };
 
+static volatile uint8_t inx = 0;
 static char Sstr[NSB][LSB];
 static volatile bool scroll_lock = false, powerup = true;
 static volatile uint8_t scroll_line_pos = 4;
@@ -32,7 +33,11 @@ volatile uint8_t c0, c1, c2;
 static void send_lcd_cmd_long(const uint8_t); // for display init only
 static void send_lcd_data(const uint8_t);
 static void send_lcd_cmd(const uint8_t);
-static void spi_byte(void);
+static void spi_lcd_byte(void);
+
+static void spi_src_byte(void);
+static void spi_des_byte(void);
+static void spi_or_byte(void);
 static void wdtdelay(const uint32_t);
 
 /*
@@ -42,17 +47,23 @@ static void wdtdelay(const uint32_t);
 bool init_display(void)
 {
 	spi_link.txbuf = lcd_dma_buf; // use MCC DMA buffer variable
-	spi_link.rxbuf = spi1_rec_buf; // setup receive buffer for other devices on the buss
+	spi_link.rxbuf = (void *) spi1_rec_buf; // setup receive buffer for other devices on the buss
 	memset(Sstr, ' ', NSB * LSB); // clear scroll buffer of junk
 
 #ifdef USE_LCD_DMA
 	DMA1_SetSCNTIInterruptHandler(clear_lcd_done);
-	DMA1_SetORIInterruptHandler(spi_byte);
+	DMA1_SetORIInterruptHandler(spi_lcd_byte);
 	DMA1_SetDMAPriority(2);
 
-	DMA2_SetSCNTIInterruptHandler(clear_read_done);
-	DMA2_SetORIInterruptHandler(spi_byte);
-	DMA2_SetDMAPriority(2);
+	DMA2_SetSCNTIInterruptHandler(spi_src_byte);
+	DMA2_SetORIInterruptHandler(spi_or_byte);
+	DMA2_SetDCNTIInterruptHandler(spi_des_byte);
+	DMA2_SetDMAPriority(3);
+
+	DMA3_SetSCNTIInterruptHandler(spi_src_byte);
+	DMA3_SetORIInterruptHandler(spi_or_byte);
+	DMA3_SetDCNTIInterruptHandler(spi_des_byte);
+	DMA3_SetDMAPriority(3);
 #endif
 #ifdef NHD  // uses MODE 3 on the Q84, https://newhavendisplay.com/content/specs/NHD-0420D3Z-NSW-BBW-V3.pdf
 #ifdef USEMCC_SPI
@@ -76,17 +87,6 @@ bool init_display(void)
 
 #ifdef USE_LCD_DMA
 	SPI1INTFbits.SPI1TXUIF = 0;
-
-	DMASELECT = 1; // use DMA2 RX
-	DMAnCON0bits.EN = 0;
-	DMAnCON1bits.DMODE = 0;
-	DMAnCON1bits.DSTP = 0;
-	DMAnCON1bits.SMODE = 1;
-	DMAnCON1bits.SMR = 0;
-	DMAnCON1bits.SSTP = 1;
-	DMAnSSA = (uint24_t) spi_link.rxbuf;
-	DMAnCON0bits.DGO = 0;
-	DMAnCON0bits.EN = 1; /* enable DMA */
 
 	DMASELECT = 0; // use DMA1 TX
 	DMAnCON0bits.EN = 0;
@@ -213,47 +213,29 @@ void send_lcd_data_dma(const uint8_t strPtr)
 void send_spi1_tic12400_dma(uint8_t *strPtr, const uint8_t len)
 {
 	wait_lcd_done();
-	wait_lcd_set();
-	spi_link.READ_DATA = true;
 	TIC_CS_SetLow(); /* SPI select display */
+	spi_link.des_bytes++;
+	spi_link.READ_DATA = true;
 	memcpy(spi_link.txbuf, strPtr, len);
-	DMASELECT = 0x01;
-	DMAnCON0bits.EN = 0; /* disable RX DMA to change source count */
-	DMA1_SetSourceSize(len);
-	DMA1_SetDestinationSize(1);
-	DMAnCON0bits.EN = 1; /* enable DMA */
-
-	DMASELECT = 0x00;
-	DMAnCON0bits.EN = 0; /* disable TX DMA to change source count */
-	DMA1_SetSourceSize(len);
-	DMA1_SetDestinationSize(1);
-	DMAnCON0bits.EN = 1; /* enable DMA */
-	DMA2_StartTransferWithTrigger();
-	start_lcd(); // start DMA transfer
-	wait_lcd_set();
+	spi_link.rxbuf[0] = SPI1_ExchangeByte(spi_link.txbuf[0]);
+	spi_link.rxbuf[1] = SPI1_ExchangeByte(spi_link.txbuf[1]);
+	spi_link.rxbuf[2] = SPI1_ExchangeByte(spi_link.txbuf[2]);
+	spi_link.rxbuf[3] = SPI1_ExchangeByte(spi_link.txbuf[3]);
+	spi_link.READ_DATA = false;
 }
 
 void send_spi1_mc33996_dma(uint8_t *strPtr, const uint8_t len)
 {
 	wait_lcd_done();
-	wait_lcd_set();
 	spi_link.READ_DATA = true;
 	MCZ_CS_SetLow(); /* SPI select display */
+	spi_link.des_bytes++;
+	spi_link.READ_DATA = true;
 	memcpy(spi_link.txbuf, strPtr, len);
-	DMASELECT = 0x01;
-	DMAnCON0bits.EN = 0; /* disable RX DMA to change source count */
-	DMA1_SetSourceSize(len);
-	DMA1_SetDestinationSize(1);
-	DMAnCON0bits.EN = 1; /* enable DMA */
-
-	DMASELECT = 0x00;
-	DMAnCON0bits.EN = 0; /* disable TX DMA to change source count */
-	DMA1_SetSourceSize(len);
-	DMA1_SetDestinationSize(1);
-	DMAnCON0bits.EN = 1; /* enable DMA */
-	DMA2_StartTransferWithTrigger();
-	start_lcd(); // start DMA transfer
-	wait_lcd_set();
+	spi_link.rxbuf[0] = SPI1_ExchangeByte(spi_link.txbuf[0]);
+	spi_link.rxbuf[1] = SPI1_ExchangeByte(spi_link.txbuf[1]);
+	spi_link.rxbuf[2] = SPI1_ExchangeByte(spi_link.txbuf[2]);
+	spi_link.READ_DATA = false;
 }
 
 /*
@@ -367,9 +349,36 @@ void start_lcd(void)
 #endif
 }
 
+/*
+ * Trigger the SPI DMA transfer from SPI devices
+ */
+void start_spi1_read(void)
+{
+#ifdef USE_LCD_DMA
+	DMA2_StartTransfer();
+	DMA2_StartTransferWithTrigger();
+#endif
+}
+
+/*
+ * Trigger the SPI DMA transfer from SPI devices
+ */
+void start_spi1_read1(void)
+{
+#ifdef USE_LCD_DMA
+	DMA3_StartTransfer();
+	DMA3_StartTransferWithTrigger();
+#endif
+}
+
 void wait_lcd_set(void)
 {
 	spi_link.LCD_DATA = true;
+}
+
+void wait_read_set(void)
+{
+	spi_link.READ_DATA = true;
 }
 
 bool wait_lcd_check(void)
@@ -424,10 +433,39 @@ void clear_lcd_done(void)
 }
 
 /*
+ * SPI buffer LCD ISR
+ */
+static void spi_lcd_byte(void)
+{
+	MLED_Toggle();
+}
+
+/*
  * in DMA mode this is a ISR that runs when the RX source count is complete
  */
-void clear_read_done(void)
+void spi_src_byte(void)
 {
+	spi_link.rxbuf[inx++] = SPI1RXB;
+	if (inx > 3) inx = 0;
+	spi_link.src_bytes++;
+}
+
+/*
+ * SPI buffer LCD ISR
+ */
+static void spi_or_byte(void)
+{
+	MLED_Toggle();
+	spi_link.or_bytes++;
+}
+
+/*
+ * SPI buffer destination complete ISR
+ */
+static void spi_des_byte(void)
+{
+	MLED_Toggle();
+	spi_link.des_bytes++;
 	spi_link.READ_DATA = false;
 }
 
@@ -435,14 +473,6 @@ void spi_rec_done(void)
 {
 #ifdef USE_LCD_DMA
 #endif
-}
-
-/*
- * SPI buffer overrun ISR
- */
-static void spi_byte(void)
-{
-	MLED_Toggle();
 }
 
 /*

@@ -18,16 +18,18 @@ extern "C" {
 #include <stdint.h>
 #include "mconfig.h"
 #include "timers.h"
+#include "vconfig.h"
+#include "eadog.h"
 
 	/*
 	 * 32-bits SPI mode 1, 4MHz SCK
 	 */
 #define TIC12400_DRIVER "V0.5"
 
-#define por_bit		0b0000001
-#define por_data_bit	0b1111110
-#define spi_fail_bit	0b0100000
-#define parity_fail	0b0010000
+#define por_bit		0b1111110
+#define por_data_bit	0b0000000
+#define spi_fail_bit	0b0000010
+#define parity_fail	0b0000100
 #define ssc_bit		0b0001000
 	/*
 	 * switch bit masks in the raw 32-bit register from the TIC12400
@@ -35,6 +37,7 @@ extern "C" {
 #define raw_mask_0 0b010
 #define raw_mask_11 0b100000000000000
 
+	extern volatile struct spi_link_type spi_link;
 	/*
 	 * TIC12400 command structure
 	 */

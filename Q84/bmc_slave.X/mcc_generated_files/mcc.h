@@ -55,6 +55,7 @@
 #include "interrupt_manager.h"
 #include "adc.h"
 #include "dma1.h"
+#include "dma3.h"
 #include "dma2.h"
 #include "dac1.h"
 #include "tmr5.h"

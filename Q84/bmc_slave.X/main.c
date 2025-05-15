@@ -183,12 +183,12 @@ typedef signed long long int24_t;
 #define M_TRACEL	TP1_SetLow()
 #define M_TRACEH	TP1_SetHigh()
 #else
-#define M_TRACE	""
+#define M_TRACE		There have been""
 #define M_TRACEL	""
 #define M_TRACEH	""
 #endif
 
-extern struct spi_link_type spi_link;
+extern volatile struct spi_link_type spi_link;
 static const char *build_date = __DATE__, *build_time = __TIME__;
 
 const char * BMC_TEXT [] = {
@@ -429,10 +429,17 @@ void main(void)
 		}
 
 		if (TimerDone(TMR_ADC)) {
-			SPI_MC33996();
-			send_spi1_mc33996_dma((uint8_t *)"123", 3);
+			spi1_rec_buf[0] = 0x57;
+			spi1_rec_buf[1] = 0x57;
+			spi1_rec_buf[2] = 0x57;
+			spi1_rec_buf[3] = 0x57;
+//			SPI_MC33996();
+//			send_spi1_mc33996_dma((uint8_t *) "123", 3);
 			SPI_TIC12400();
-			send_spi1_tic12400_dma((uint8_t *)"4567", 4);
+			if (tic12400_init()) {
+				tic12400_read_sw(0,(uintptr_t) NULL);
+			};
+
 			SPI_EADOG();
 			StartTimer(TMR_ADC, ADCDELAY);
 			spi_stat_ss.adc_count++; // just keep count
@@ -552,7 +559,12 @@ void main(void)
 			if (TimerDone(TMR_HELPDIS)) {
 				set_display_info(DIS_STR);
 			}
+#ifdef DIO_TEST
+			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%.2x %.2x %.2x %.2x               ", spi_link.rxbuf[3], spi_link.rxbuf[2], spi_link.rxbuf[1], spi_link.rxbuf[0]);
+			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%lu %lu %lu               ", spi_link.src_bytes, spi_link.des_bytes, spi_link.or_bytes);
+#else
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%lu %lu %lu %lu                    ", spi_stat_ss.spi_error_count, spi_stat_ss.adc_count, spi_stat_ss.slave_tx_count, spi_stat_ss.slave_int_count);
+#endif
 			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "A1 0x%.2x, A2 0x%.2x               ", V.v_tx_line, V.v_rx_line);
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "0x%.4x 0x%.2x %d %d %d                      ", SPI2TCNT, SPI2INTF, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK);
 
