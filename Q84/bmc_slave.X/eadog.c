@@ -221,7 +221,23 @@ void send_spi1_tic12400_dma(uint8_t *strPtr, const uint8_t len)
 	spi_link.rxbuf[1] = SPI1_ExchangeByte(spi_link.txbuf[1]);
 	spi_link.rxbuf[2] = SPI1_ExchangeByte(spi_link.txbuf[2]);
 	spi_link.rxbuf[3] = SPI1_ExchangeByte(spi_link.txbuf[3]);
+	spi_link.READ_DATA = false; // extra time before CS goes high
 	spi_link.READ_DATA = false;
+	spi_link.READ_DATA = false;
+	spi_link.READ_DATA = false;
+	spi_link.READ_DATA = false;
+	spi_link.READ_DATA = false;
+	spi_link.READ_DATA = false;
+	spi_link.READ_DATA = false;
+	spi_link.READ_DATA = false;
+	spi_link.READ_DATA = false;
+	spi_link.READ_DATA = false;
+	spi_link.READ_DATA = false;
+	spi_link.READ_DATA = false;
+	spi_link.READ_DATA = false;
+	spi_link.READ_DATA = false;
+	spi_link.READ_DATA = false;
+	TIC_CS_SetHigh();
 }
 
 void send_spi1_mc33996_dma(uint8_t *strPtr, const uint8_t len)
@@ -236,6 +252,9 @@ void send_spi1_mc33996_dma(uint8_t *strPtr, const uint8_t len)
 	spi_link.rxbuf[1] = SPI1_ExchangeByte(spi_link.txbuf[1]);
 	spi_link.rxbuf[2] = SPI1_ExchangeByte(spi_link.txbuf[2]);
 	spi_link.READ_DATA = false;
+	spi_link.READ_DATA = false;
+	MCZ_CS_SetHigh();
+
 }
 
 /*

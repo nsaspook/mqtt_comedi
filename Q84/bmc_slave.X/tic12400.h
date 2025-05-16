@@ -24,13 +24,15 @@ extern "C" {
 	/*
 	 * 32-bits SPI mode 1, 4MHz SCK
 	 */
-#define TIC12400_DRIVER "V0.5"
+#define TIC12400_DRIVER "V0.6"
 
-#define por_bit		0b1111110
-#define por_data_bit	0b0000000
-#define spi_fail_bit	0b0000010
-#define parity_fail	0b0000100
-#define ssc_bit		0b0001000
+#define por_bit_s		0b00111110000000000000000000000000
+#define spi_fail_bit_s		0b01000000000000000000000000000000
+#define ssc_bit_s		0b00010000000000000000000000000000
+#define spi_fail_bit_v		0b01000000000000000000000000000000
+#define parity_fail_v		0b00100000000000000000000000000000
+#define id_mask_d		0b00000000000000000000011111111111
+#define switch_mask_d		0b011111111111111111111111
 	/*
 	 * switch bit masks in the raw 32-bit register from the TIC12400
 	 */
@@ -97,10 +99,10 @@ extern "C" {
 	void tic12400_read_sw(uint32_t, uintptr_t);
 	bool tic12400_parity(uint32_t);
 
-	extern volatile uint32_t tic12400_status, tic12400_counts, tic12400_value_counts;
-	extern volatile uint32_t tic12400_value;
+	extern volatile uint32_t tic12400_status, tic12400_counts, tic12400_value_counts, tic12400_id;
+	extern volatile uint32_t tic12400_value, tic12400_switch, tic12400_fail_count, tic12400_parity_count;
 	extern volatile bool tic12400_init_fail, tic12400_event;
-	extern volatile bool tic12400_parity_status;
+	extern volatile bool tic12400_parity_status, tic12400_read_error;
 	extern volatile int32_t tic12400_fail_value;
 
 #ifdef	__cplusplus

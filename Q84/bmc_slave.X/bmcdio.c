@@ -1,5 +1,5 @@
 
-#include <pic18f47q84.h>
+//#include <pic18f47q84.h>
 
 #include "bmcdio.h"
 #include "eadog.h"

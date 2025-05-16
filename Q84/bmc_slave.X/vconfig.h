@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-#include <pic18f47q84.h>
+//#include <pic18f47q84.h>
 	
 #include <xc.h>
 #include <time.h>

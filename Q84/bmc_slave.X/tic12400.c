@@ -64,6 +64,12 @@ const ticbuf_type setup24 = {
 	.data1 = 0x1f,
 	.data0 = 0xfe,
 };
+const ticbuf_type setup25 = {
+	.data3 = 0xc9,
+	.data2 = 0xff,
+	.data1 = 0xff,
+	.data0 = 0xff,
+};
 const ticbuf_type setup1d = {
 	.data3 = 0xba,
 	.data2 = 0x49,
@@ -98,16 +104,15 @@ const ticbuf_type ticreset1a = {
 /*
  * global status and value registers
  */
-volatile uint32_t tic12400_status = 0, tic12400_counts = 0, tic12400_value_counts = 0;
-volatile uint32_t tic12400_value = 0;
-volatile bool tic12400_init_fail = false, tic12400_event = false; // chip error detection flag
-volatile bool tic12400_parity_status = false;
+volatile uint32_t tic12400_status = 0, tic12400_counts = 0, tic12400_value_counts = 0, tic12400_id = 0;
+volatile uint32_t tic12400_value = 0, tic12400_switch, ticvalue = 0, tic12400_fail_count, tic12400_parity_count;
+volatile bool tic12400_init_fail = true, tic12400_event = false; // chip error detection flag
+volatile bool tic12400_parity_status = false, tic12400_read_error = false;
 volatile int32_t tic12400_fail_value = 0;
 
-static ticread_type *ticstatus = (ticread_type*) & tic12400_status;
-static ticread_type *ticvalue = (ticread_type*) & tic12400_value;
-
 static const char *build_date = __DATE__, *build_time = __TIME__;
+
+static void tic_int_handler(void);
 
 void tic12400_version(void)
 {
@@ -139,32 +144,94 @@ void tic12400_reset(void)
  */
 bool tic12400_init(void)
 {
-	tic12400_status = tic12400_wr(&ticstat02, 0); // get status to check for proper operation
+	if (tic12400_init_fail) {
+		tic12400_status = tic12400_wr(&ticstat02, 0); // get status to check for proper operation
 
-	if ((tic12400_status & por_data_bit) || (!(tic12400_status & por_bit))) { // check for any high bits beyond POR bits set
-		tic12400_init_fail = true;
-		tic12400_fail_value = -1;
-		goto fail;
+		if (((tic12400_status & por_bit_s))) { // check for any high bits beyond POR bits set
+			tic12400_reset();
+			tic12400_fail_value = -1;
+			tic12400_fail_count++;
+			goto fail;
+		}
+
+		tic12400_status = tic12400_wr(&setup32, 0); //all set to compare mode, 0x32
+		if (((tic12400_status & por_bit_s))) { // check for any high bits beyond POR bits set
+			tic12400_fail_count++;
+			tic12400_fail_value = -2;
+			goto fail;
+		}
+		tic12400_status = tic12400_wr(&setup21, 0); //Compare threshold all bits 2V, 0x21
+		if (((tic12400_status & por_bit_s))) { // check for any high bits beyond POR bits set
+			tic12400_fail_count++;
+			tic12400_fail_value = -3;
+			goto fail;
+		}
+		tic12400_status = tic12400_wr(&setup1c, 0); //all set to GND switch type, 0x1c
+		if (((tic12400_status & por_bit_s))) { // check for any high bits beyond POR bits set
+			tic12400_fail_count++;
+			tic12400_fail_value = -4;
+			goto fail;
+		}
+		tic12400_status = tic12400_wr(&setup1b, 0); //all channels are enabled, 0x1b
+		if (((tic12400_status & por_bit_s))) { // check for any high bits beyond POR bits set
+			tic12400_fail_count++;
+			tic12400_fail_value = -5;
+			goto fail;
+		}
+		tic12400_status = tic12400_wr(&setup22, 0); //set switch interrupts, 0x22
+		if (((tic12400_status & por_bit_s))) { // check for any high bits beyond POR bits set
+			tic12400_fail_count++;
+			tic12400_fail_value = -6;
+			goto fail;
+		}
+		tic12400_status = tic12400_wr(&setup23, 0); //set switch interrupts, 0x23
+		if (((tic12400_status & por_bit_s))) { // check for any high bits beyond POR bits set
+			tic12400_fail_count++;
+			tic12400_fail_value = -7;
+			goto fail;
+		}
+		tic12400_status = tic12400_wr(&setup24, 0); // enable interrupts, 0x24
+		if (((tic12400_status & por_bit_s))) { // check for any high bits beyond POR bits set
+			tic12400_fail_count++;
+			tic12400_fail_value = -8;
+			goto fail;
+		}
+		tic12400_status = tic12400_wr(&setup25, 0); // enable interrupts, 0x25
+		if (((tic12400_status & por_bit_s))) { // check for any high bits beyond POR bits set
+			tic12400_fail_count++;
+			tic12400_fail_value = -9;
+			goto fail;
+		}
+		tic12400_status = tic12400_wr(&setup1d, 0); // set wetting currents, 0x1d
+		if (((tic12400_status & por_bit_s))) { // check for any high bits beyond POR bits set
+			tic12400_fail_count++;
+			tic12400_fail_value = -10;
+			goto fail;
+		}
+		tic12400_status = tic12400_wr(&setup1a, 0); // set switch debounce to max 4 counts, 0x1a
+		if (((tic12400_status & por_bit_s))) { // check for any high bits beyond POR bits set
+			tic12400_fail_count++;
+			tic12400_fail_value = -11;
+			goto fail;
+		}
+		tic12400_status = tic12400_wr(&setup1a_trigger, 2); // trigger switch detections & CRC, 0x1a
+
+		if (tic12400_status & spi_fail_bit_v) {
+			tic12400_fail_value = -12;
+			tic12400_fail_count++;
+			goto fail;
+		}
+
+		tic12400_id = tic12400_wr(&ticdevid01, 0);
+		if (tic12400_id & spi_fail_bit_v) {
+			tic12400_fail_value = -13;
+			tic12400_fail_count++;
+			goto fail;
+		}
+		IOCBF6_SetInterruptHandler(tic_int_handler);
+		tic12400_init_fail = false;
+		tic12400_fail_value = 0;
 	}
-
-	tic12400_wr(&setup32, 0); //all set to compare mode, 0x32
-	tic12400_wr(&setup21, 0); //Compare threshold all bits 2V, 0x21
-	tic12400_wr(&setup1c, 0); //all set to GND switch type, 0x1c
-	tic12400_wr(&setup1b, 0); //all channels are enabled, 0x1b
-	tic12400_wr(&setup22, 0); //set switch interrupts, 0x22
-	tic12400_wr(&setup23, 0); //set switch interrupts, 0x23
-	tic12400_wr(&setup24, 0); // enable interrupts, 0x24
-	tic12400_wr(&setup1d, 0); // set wetting currents, 0x1d
-	tic12400_wr(&setup1a, 0); // set switch debounce to max 4 counts, 0x1a
-	tic12400_status = tic12400_wr(&setup1a_trigger, 2); // trigger switch detections & CRC, 0x1a
-
-	if (tic12400_status & spi_fail_bit) {
-		tic12400_init_fail = true;
-		tic12400_fail_value = -2;
-		goto fail;
-	}
-
-	tic12400_status = tic12400_wr(&ticdevid01, 0); // get device id, 0x01
 
 fail:
 	return !tic12400_init_fail; // flip to return true if NO configuration failures
@@ -177,14 +244,23 @@ fail:
 uint32_t tic12400_wr(const ticbuf_type * buffer, uint16_t del)
 {
 	send_spi1_tic12400_dma((void*) buffer, 4);
-	tic12400_value = spi_link.rxbuf[0];
-	tic12400_value += spi_link.rxbuf[1] << 8;
-	tic12400_value += spi_link.rxbuf[2] << 16;
-	tic12400_value += spi_link.rxbuf[3] << 24;
+	ticvalue = (uint32_t) spi_link.rxbuf[0];
+	ticvalue += (uint32_t) (spi_link.rxbuf[1] << 8);
+	ticvalue += (uint32_t) ((uint32_t) spi_link.rxbuf[2] << (uint32_t) 16);
+	ticvalue += (uint32_t) ((uint32_t) spi_link.rxbuf[3] << (uint32_t) 24);
+	tic12400_read_error = false;
 
-	if (tic12400_value & parity_fail) { // check for command parity errors
+	if (ticvalue & parity_fail_v) { // check for command parity errors
 		tic12400_parity_status = true;
+		tic12400_read_error = true;
+		tic12400_parity_count++;
+		send_spi1_tic12400_dma((void*) &ticstat02, 4);
 	};
+	if (ticvalue & spi_fail_bit_v) {
+		tic12400_read_error = true;
+		tic12400_fail_count++;
+		send_spi1_tic12400_dma((void*) &ticstat02, 4);
+	}
 
 	if (del) {
 		WaitMs(1);
@@ -203,20 +279,20 @@ uint32_t tic12400_get_sw(void)
 		return 0;
 	}
 
-	if (tic12400_value & (raw_mask_0)) {
+	if (tic12400_switch & (raw_mask_0)) {
 		//		BSP_LED1_Clear();
 	} else {
 		//		BSP_LED1_Set();
 	}
 
-	if (tic12400_value & (raw_mask_11)) {
+	if (tic12400_switch & (raw_mask_11)) {
 		//		BSP_LED2_Clear();
 	} else {
 		//		BSP_LED2_Set();
 	}
 
 	tic12400_event = false;
-	return tic12400_value;
+	return tic12400_switch;
 }
 
 /*
@@ -238,12 +314,18 @@ bool tic12400_parity(uint32_t v)
  */
 void tic12400_read_sw(uint32_t a, uintptr_t b)
 {
+	//	tic12400_status = tic12400_wr(&ticstat02, 0); // read status
 	tic12400_value = tic12400_wr(&ticread05, 0); // read switch
-	tic12400_status = tic12400_wr(&ticstat02, 0); // read status
 
-	if ((ticvalue->data3 & ssc_bit) && tic12400_parity(tic12400_value)) { // only trigger on switch state change
+	if ((tic12400_value & ssc_bit_s) && tic12400_parity(tic12400_value)) { // only trigger on switch state change
 		tic12400_event = true;
 		tic12400_value_counts++;
 	}
+	tic12400_switch = (tic12400_value >> 1) & switch_mask_d;
 	tic12400_counts++;
+}
+
+void tic_int_handler(void)
+{
+	tic12400_read_sw(0, (uintptr_t) NULL);
 }
