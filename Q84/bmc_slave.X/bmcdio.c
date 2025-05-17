@@ -1,6 +1,5 @@
-
-//#include <pic18f47q84.h>
-
+/** \file bcmdio.c
+ */
 #include "bmcdio.h"
 #include "eadog.h"
 
@@ -151,20 +150,7 @@ void get_tic12400_transfer(void)
 	printf("\n");
 }
 
-/*
- * config the SPI device outputs to a default condition
- */
-void mc33996_init(void)
-{
-	cbufs(); // clear the RX/TX buffer
-	// MCP33996 config
-	S->buf[0] = 0x42; // transfer SPI data command
-	S->buf[1] = 3; // no. of SPI bytes to transfer
-	S->buf[4] = 0x00; // on/off control
-	S->buf[5] = 0x0f; // set all outputs to low
-	S->buf[6] = 0xf0; // ""
-	//	S->res = SendUSBCmd(S->handle, S->buf, S->rbuf);
-};
+
 
 /*
  * update the SPI device outputs
@@ -228,13 +214,7 @@ void get_mc33996_transfer(void)
 	printf("\n");
 };
 
-/*
- * setup SPI command sequence
- */
-void mc33996_update(void)
-{
-	S->buf[4] = mc33996_control; // set MC33996 outputs command
-};
+
 
 void SPI_EADOG(void)
 {

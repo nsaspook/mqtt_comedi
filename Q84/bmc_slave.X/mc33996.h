@@ -1,4 +1,4 @@
-/* 
+/** \file mc33996.h
  * File:   mc33996.h
  * Author: root
  *
@@ -21,15 +21,15 @@ extern "C" {
 	/*
 	 * 24-bits SPI mode 1, 4MHz SCL
 	 */
-#define MC33996_DRIVER "V0.3"   
+#define MC33996_DRIVER "V0.4"   
 
 	/*
 	 * MC33996 command structure
 	 */
 	typedef struct __attribute__((packed))
 	{
-		uint16_t out;
 		uint8_t cmd;
+		uint16_t out;
 	}
 	mc33996buf_type;
 
@@ -38,14 +38,18 @@ extern "C" {
 	 */
 	typedef struct __attribute__((packed))
 	{
-		uint16_t out_faults;
 		uint8_t faults;
+		uint16_t out_faults;
 	}
 	mc33996read_type;
 
-#define mc33996_control         0x00
-#define mc33996_load            0x04
-#define mc33996_reset           0x18
+#define mc33996_onoff		0b00000000
+#define mc33996_olce		0b00000100
+#define mc33996_gsrc		0b00001011
+#define mc33996_sfpd		0b00001100
+#define mc33996_pwm		0b00010000
+#define mc33996_andor		0b00010100	
+#define mc33996_reset           0b00011000
 #define mc33996_magic_h         0x19
 #define mc33996_magic_l         0x57       
 
@@ -54,7 +58,8 @@ extern "C" {
 
 	void mc33996_version(void);
 
-
+	bool mc33996_init(void);
+	void mc33996_update(uint16_t);
 
 
 #ifdef	__cplusplus

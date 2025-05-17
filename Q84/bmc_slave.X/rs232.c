@@ -3,7 +3,7 @@
 static char line_status(const adc_result_t);
 extern struct V_data V;
 
-/*
+/** \file rs232.c
  * convert the raw ADC result into something close to the RS-232 wire voltages
  */
 void update_rs232_line_status(void)

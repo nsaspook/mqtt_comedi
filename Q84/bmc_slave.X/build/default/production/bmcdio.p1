@@ -16,7 +16,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "323 /opt/microchip/xc8/v3.00/pic/include/c99/bits/alltypes.h
 [s S3348 `ul 1 `l 1 ]
 [n S3348 timespec tv_sec tv_nsec ]
-"27 bmcdio.c
+"26 bmcdio.c
 [v _nanosleep `(i ~T0 @X0 0 ef2`*CS3348`*S3348 ]
 "117 /opt/microchip/xc8/v3.00/pic/include/c99/stdio.h
 [v _printf `(i ~T0 @X0 0 ev`*Cuc ]
@@ -2497,7 +2497,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _SPI2_InterruptHandler `*F24508 ~T0 @X0 1 e ]
 "77
 [v _SPI2_RxInterruptHandler `*F24514 ~T0 @X0 1 e ]
-"95 ./vconfig.h
+"89 ./vconfig.h
 [v _msg_gemcmds `Cuc ~T0 @X0 -> 33 `i e ]
 [i _msg_gemcmds
 :U ..
@@ -2536,7 +2536,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"96
+"90
 [v _msg_freecmds `Cuc ~T0 @X0 -> 32 `i e ]
 [i _msg_freecmds
 :U ..
@@ -2574,7 +2574,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"97
+"91
 [v _msg_gemremote `Cuc ~T0 @X0 -> 26 `i e ]
 [i _msg_gemremote
 :U ..
@@ -2607,7 +2607,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ]
 [v F24743 `Cuc ~T0 @X0 -> 20 `i t ]
-"270
+"264
 [v _spin `F24743 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
@@ -2686,16 +2686,16 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-"7 bmcdio.c
+"6 bmcdio.c
 [v _wstr `l ~T0 @X0 -> 255 `i s ]
-"9
+"8
 [v _SPI_buffer `S3369 ~T0 @X0 1 s ]
-"10
+"9
 [v _S `*S3369 ~T0 @X0 1 e ]
 [i _S
 &U _SPI_buffer
 ]
-"11
+"10
 [v _build_date `*Cuc ~T0 @X0 1 s ]
 [i _build_date
 :s 1C
@@ -2704,573 +2704,541 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _build_time
 :s 2C
 ]
-"16
+"15
 [v _cbufs `(v ~T0 @X0 1 ef ]
-"17
+"16
 {
 [e :U _cbufs ]
 [f ]
-"18
+"17
 [e ( _memset (3 , , -> &U . *U _S 2 `*v -> 0 `i * -> # *U &U . *U _S 2 `ui -> -> 64 `i `ui ]
-"19
+"18
 [e ( _memset (3 , , -> &U . *U _S 3 `*v -> 0 `i * -> # *U &U . *U _S 3 `ui -> -> 64 `i `ui ]
-"20
+"19
 [e :UE 3371 ]
 }
-"22
+"21
 [v _get_usb_res `(l ~T0 @X0 1 ef ]
-"23
+"22
 {
 [e :U _get_usb_res ]
 [f ]
-"24
+"23
 [e ) . *U _S 4 ]
 [e $UE 3372  ]
-"25
+"24
 [e :UE 3372 ]
 }
-"29
+"28
 [v _sleep_us `(v ~T0 @X0 1 ef1`Cul ]
-"30
+"29
 {
 [e :U _sleep_us ]
-"29
+"28
 [v _microseconds `Cul ~T0 @X0 1 r1 ]
-"30
+"29
 [f ]
-"31
+"30
 [v _ts `S3348 ~T0 @X0 1 a ]
-"32
+"31
 [e $ ! ! != _microseconds -> -> -> 0 `i `l `ul 3374  ]
 {
-"33
+"32
 [e $UE 3373  ]
-"34
+"33
 }
 [e :U 3374 ]
-"35
+"34
 [e = . _ts 0 / _microseconds -> -> 1000000 `l `ul ]
-"36
+"35
 [e = . _ts 1 -> * % _microseconds -> -> 1000000 `l `ul -> -> -> 1000 `i `l `ul `l ]
-"37
+"36
 [e ( _nanosleep (2 , -> &U _ts `*CS3348 -> -> -> 0 `i `*v `*S3348 ]
-"38
+"37
 [e :UE 3373 ]
 }
-"43
+"42
 [v _get_MCP2210_ext_interrupt `(a ~T0 @X0 1 ef ]
-"44
+"43
 {
 [e :U _get_MCP2210_ext_interrupt ]
 [f ]
-"49
+"48
 [e ( _cbufs ..  ]
-"50
+"49
 [e = *U + &U . *U _S 2 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 18 `i `uc ]
-"51
+"50
 [e = *U + &U . *U _S 2 * -> -> -> 1 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 0 `i `uc ]
-"53
+"52
 [e $ ! || != -> *U + &U . *U _S 3 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _S 3 `ui `ux `i -> 0 `i != -> *U + &U . *U _S 3 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _S 3 `ui `ux `i -> 0 `i 3376  ]
 {
-"57
+"56
 [e ) -> -> 1 `i `a ]
 [e $UE 3375  ]
-"58
+"57
 }
 [e :U 3376 ]
-"59
+"58
 [e ) -> -> 0 `i `a ]
 [e $UE 3375  ]
-"60
+"59
 [e :UE 3375 ]
 }
-"62
+"61
 [v _cancel_spi_transfer `(l ~T0 @X0 1 ef ]
-"63
+"62
 {
 [e :U _cancel_spi_transfer ]
 [f ]
-"64
+"63
 [e ( _cbufs ..  ]
-"65
+"64
 [e = *U + &U . *U _S 2 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 17 `i `uc ]
-"67
+"66
 [e ) . *U _S 4 ]
 [e $UE 3377  ]
-"68
+"67
 [e :UE 3377 ]
 }
-"70
+"69
 [v _SPI_WriteRead `(a ~T0 @X0 1 ef2`*uc`*uc ]
-"71
+"70
 {
 [e :U _SPI_WriteRead ]
-"70
+"69
 [v _buf `*uc ~T0 @X0 1 r1 ]
 [v _rbuf `*uc ~T0 @X0 1 r2 ]
-"71
+"70
 [f ]
-"73
+"72
 [e $U 3379  ]
 [e :U 3380 ]
 {
-"75
+"74
 }
 [e :U 3379 ]
-"73
+"72
 [e $ || == -> *U + _rbuf * -> -> 3 `i `x -> -> # *U _rbuf `i `x `i -> 32 `i == -> *U + _rbuf * -> -> 3 `i `x -> -> # *U _rbuf `i `x `i -> 48 `i 3380  ]
 [e :U 3381 ]
-"76
+"75
 [e ) -> -> 1 `i `a ]
 [e $UE 3378  ]
-"77
+"76
 [e :UE 3378 ]
 }
-"79
+"78
 [v _SPI_MCP2210_WriteRead `(a ~T0 @X0 1 ef4`*uc`Cui`*uc`Cui ]
-"80
+"79
 {
 [e :U _SPI_MCP2210_WriteRead ]
-"79
+"78
 [v _pTransmitData `*uc ~T0 @X0 1 r1 ]
 [v _txSize `Cui ~T0 @X0 1 r2 ]
 [v _pReceiveData `*uc ~T0 @X0 1 r3 ]
 [v _rxSize `Cui ~T0 @X0 1 r4 ]
-"80
+"79
 [f ]
-"85
+"84
 [e ( _cbufs ..  ]
-"86
+"85
 [e = *U + &U . *U _S 2 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 66 `i `uc ]
-"87
+"86
 [e = *U + &U . *U _S 2 * -> -> -> 1 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> _rxSize `uc ]
-"88
+"87
 [e = *U + &U . *U _S 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux *U + _pTransmitData * -> -> 3 `i `x -> -> # *U _pTransmitData `i `x ]
-"89
+"88
 [e = *U + &U . *U _S 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux *U + _pTransmitData * -> -> 2 `i `x -> -> # *U _pTransmitData `i `x ]
-"90
+"89
 [e = *U + &U . *U _S 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux *U + _pTransmitData * -> -> 1 `i `x -> -> # *U _pTransmitData `i `x ]
-"91
+"90
 [e = *U + &U . *U _S 2 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux *U + _pTransmitData * -> -> 0 `i `x -> -> # *U _pTransmitData `i `x ]
-"100
+"99
 [e $U 3383  ]
 [e :U 3384 ]
 {
-"105
+"104
 }
 [e :U 3383 ]
-"100
+"99
 [e $ || == -> *U + &U . *U _S 3 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _S 3 `ui `ux `i -> 32 `i == -> *U + &U . *U _S 3 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _S 3 `ui `ux `i -> 48 `i 3384  ]
 [e :U 3385 ]
-"106
+"105
 [e = *U + _pReceiveData * -> -> 3 `i `x -> -> # *U _pReceiveData `i `x *U + &U . *U _S 3 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _S 3 `ui `ux ]
-"107
+"106
 [e = *U + _pReceiveData * -> -> 2 `i `x -> -> # *U _pReceiveData `i `x *U + &U . *U _S 3 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _S 3 `ui `ux ]
-"108
+"107
 [e = *U + _pReceiveData * -> -> 1 `i `x -> -> # *U _pReceiveData `i `x *U + &U . *U _S 3 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _S 3 `ui `ux ]
-"109
+"108
 [e = *U + _pReceiveData * -> -> 0 `i `x -> -> # *U _pReceiveData `i `x *U + &U . *U _S 3 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _S 3 `ui `ux ]
-"110
+"109
 [e ) -> -> 1 `i `a ]
 [e $UE 3382  ]
-"111
+"110
 [e :UE 3382 ]
 }
-"116
+"115
 [v _hidrawapi_mcp2210_init `(*S3369 ~T0 @X0 1 ef1`*Cl ]
-"117
+"116
 {
 [e :U _hidrawapi_mcp2210_init ]
-"116
+"115
 [v _serial_number `*Cl ~T0 @X0 1 r1 ]
-"117
+"116
 [f ]
-"118
+"117
 [e ( _printf , , , (. :s 3C :s 4C _build_date _build_time ]
-"119
+"118
 [e ( _cbufs ..  ]
-"120
+"119
 [e ( _printf :s 5C ]
-"121
+"120
 [e ) _S ]
 [e $UE 3386  ]
-"122
+"121
 [e :UE 3386 ]
 }
-"124
+"123
 [v _setup_tic12400_transfer `(v ~T0 @X0 1 ef ]
-"125
+"124
 {
 [e :U _setup_tic12400_transfer ]
 [f ]
-"126
+"125
 [e ( _cbufs ..  ]
-"127
+"126
 [e = *U + &U . *U _S 2 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 64 `i `uc ]
-"128
+"127
 [e = *U + &U . *U _S 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 0 `i `uc ]
-"129
+"128
 [e = *U + &U . *U _S 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 9 `i `uc ]
-"130
+"129
 [e = *U + &U . *U _S 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 61 `i `uc ]
-"131
+"130
 [e = *U + &U . *U _S 2 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 0 `i `uc ]
-"132
+"131
 [e = *U + &U . *U _S 2 * -> -> -> 8 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 255 `i `uc ]
-"133
+"132
 [e = *U + &U . *U _S 2 * -> -> -> 9 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 1 `i `uc ]
-"134
+"133
 [e = *U + &U . *U _S 2 * -> -> -> 10 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 223 `i `uc ]
-"135
+"134
 [e = *U + &U . *U _S 2 * -> -> -> 11 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 255 `i `uc ]
-"136
+"135
 [e = *U + &U . *U _S 2 * -> -> -> 18 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 4 `i `uc ]
-"137
+"136
 [e = *U + &U . *U _S 2 * -> -> -> 20 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 1 `i `uc ]
-"139
+"138
 [e :UE 3387 ]
 }
-"141
+"140
 [v _get_tic12400_transfer `(v ~T0 @X0 1 ef ]
-"142
+"141
 {
 [e :U _get_tic12400_transfer ]
 [f ]
-"144
+"143
 [e ( _cbufs ..  ]
-"145
+"144
 [e = *U + &U . *U _S 2 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 65 `i `uc ]
-"147
+"146
 [e ( _printf :s 6C ]
-"148
+"147
 {
 [v _i `i ~T0 @X0 1 a ]
 [e = _i -> 0 `i ]
 [e $U 3392  ]
 [e :U 3389 ]
 {
-"149
+"148
 [e ( _printf , (. :s 7C -> *U + &U . *U _S 3 * -> -> _i `ui `ux -> -> # *U &U . *U _S 3 `ui `ux `i ]
-"150
+"149
 }
 [e ++ _i -> 1 `i ]
 [e :U 3392 ]
 [e $ < _i -> *U + &U . *U _S 3 * -> -> -> 2 `i `ui `ux -> -> # *U &U . *U _S 3 `ui `ux `i 3389  ]
 [e :U 3390 ]
 }
-"151
+"150
 [e ( _printf :s 8C ]
-"152
+"151
 [e :UE 3388 ]
 }
-"157
-[v _mc33996_init `(v ~T0 @X0 1 ef ]
 "158
-{
-[e :U _mc33996_init ]
-[f ]
-"159
-[e ( _cbufs ..  ]
-"161
-[e = *U + &U . *U _S 2 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 66 `i `uc ]
-"162
-[e = *U + &U . *U _S 2 * -> -> -> 1 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 3 `i `uc ]
-"163
-[e = *U + &U . *U _S 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 0 `i `uc ]
-"164
-[e = *U + &U . *U _S 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 15 `i `uc ]
-"165
-[e = *U + &U . *U _S 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 240 `i `uc ]
-"167
-[e :UE 3393 ]
-}
-"172
 [v _mc33996_set `(v ~T0 @X0 1 ef3`uc`uc`uc ]
-"173
+"159
 {
 [e :U _mc33996_set ]
-"172
+"158
 [v _cmd `uc ~T0 @X0 1 r1 ]
 [v _data_h `uc ~T0 @X0 1 r2 ]
 [v _data_l `uc ~T0 @X0 1 r3 ]
-"173
+"159
 [f ]
-"174
+"160
 [e ( _cbufs ..  ]
-"176
+"162
 [e = *U + &U . *U _S 2 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 66 `i `uc ]
-"177
+"163
 [e = *U + &U . *U _S 2 * -> -> -> 1 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 6 `i `uc ]
-"178
+"164
 [e = *U + &U . *U _S 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux _cmd ]
-"179
+"165
 [e = *U + &U . *U _S 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux _data_h ]
-"180
+"166
 [e = *U + &U . *U _S 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux _data_l ]
-"182
-[e :UE 3394 ]
+"168
+[e :UE 3393 ]
 }
-"187
+"173
 [v _mc33996_check `(a ~T0 @X0 1 ef ]
-"188
+"174
 {
 [e :U _mc33996_check ]
 [f ]
-"189
-[e $ ! && && == -> *U + &U . *U _S 3 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _S 3 `ui `ux `i -> 24 `i == -> *U + &U . *U _S 3 * -> -> -> 8 `i `ui `ux -> -> # *U &U . *U _S 3 `ui `ux `i -> 25 `i == -> *U + &U . *U _S 3 * -> -> -> 9 `i `ui `ux -> -> # *U &U . *U _S 3 `ui `ux `i -> 87 `i 3396  ]
+"175
+[e $ ! && && == -> *U + &U . *U _S 3 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _S 3 `ui `ux `i -> 24 `i == -> *U + &U . *U _S 3 * -> -> -> 8 `i `ui `ux -> -> # *U &U . *U _S 3 `ui `ux `i -> 25 `i == -> *U + &U . *U _S 3 * -> -> -> 9 `i `ui `ux -> -> # *U &U . *U _S 3 `ui `ux `i -> 87 `i 3395  ]
 {
-"190
+"176
 [e ) -> -> 1 `i `a ]
-[e $UE 3395  ]
-"191
+[e $UE 3394  ]
+"177
 }
-[e $U 3397  ]
-[e :U 3396 ]
+[e $U 3396  ]
+[e :U 3395 ]
 {
-"192
+"178
 [e ) -> -> 0 `i `a ]
-[e $UE 3395  ]
-"193
+[e $UE 3394  ]
+"179
 }
-[e :U 3397 ]
-"194
-[e :UE 3395 ]
+[e :U 3396 ]
+"180
+[e :UE 3394 ]
 }
-"199
+"185
 [v _setup_mc33996_transfer `(v ~T0 @X0 1 ef1`uc ]
-"200
+"186
 {
 [e :U _setup_mc33996_transfer ]
-"199
+"185
 [v _len `uc ~T0 @X0 1 r1 ]
-"200
+"186
 [f ]
-"201
+"187
 [e ( _cbufs ..  ]
-"202
+"188
 [e = *U + &U . *U _S 2 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 64 `i `uc ]
-"203
+"189
 [e = *U + &U . *U _S 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 0 `i `uc ]
-"204
+"190
 [e = *U + &U . *U _S 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 9 `i `uc ]
-"205
+"191
 [e = *U + &U . *U _S 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 61 `i `uc ]
-"206
+"192
 [e = *U + &U . *U _S 2 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 0 `i `uc ]
-"207
+"193
 [e = *U + &U . *U _S 2 * -> -> -> 8 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 255 `i `uc ]
-"208
+"194
 [e = *U + &U . *U _S 2 * -> -> -> 9 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 1 `i `uc ]
-"209
+"195
 [e = *U + &U . *U _S 2 * -> -> -> 10 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 127 `i `uc ]
-"210
+"196
 [e = *U + &U . *U _S 2 * -> -> -> 11 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 255 `i `uc ]
-"211
+"197
 [e = *U + &U . *U _S 2 * -> -> -> 18 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux _len ]
-"212
+"198
 [e = *U + &U . *U _S 2 * -> -> -> 20 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 1 `i `uc ]
-"214
-[e :UE 3398 ]
+"200
+[e :UE 3397 ]
 }
-"219
+"205
 [v _get_mc33996_transfer `(v ~T0 @X0 1 ef ]
-"220
+"206
 {
 [e :U _get_mc33996_transfer ]
 [f ]
-"221
+"207
 [e ( _cbufs ..  ]
-"222
+"208
 [e = *U + &U . *U _S 2 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 65 `i `uc ]
-"224
+"210
 [e ( _printf :s 9C ]
-"225
+"211
 {
 [v _i `i ~T0 @X0 1 a ]
 [e = _i -> 0 `i ]
-[e $U 3403  ]
-[e :U 3400 ]
+[e $U 3402  ]
+[e :U 3399 ]
 {
-"226
+"212
 [e ( _printf , (. :s 10C -> *U + &U . *U _S 3 * -> -> _i `ui `ux -> -> # *U &U . *U _S 3 `ui `ux `i ]
-"227
+"213
 }
 [e ++ _i -> 1 `i ]
-[e :U 3403 ]
-[e $ < _i -> *U + &U . *U _S 3 * -> -> -> 2 `i `ui `ux -> -> # *U &U . *U _S 3 `ui `ux `i 3400  ]
-[e :U 3401 ]
+[e :U 3402 ]
+[e $ < _i -> *U + &U . *U _S 3 * -> -> -> 2 `i `ui `ux -> -> # *U &U . *U _S 3 `ui `ux `i 3399  ]
+[e :U 3400 ]
 }
-"228
+"214
 [e ( _printf :s 11C ]
-"229
-[e :UE 3399 ]
+"215
+[e :UE 3398 ]
 }
-"234
-[v _mc33996_update `(v ~T0 @X0 1 ef ]
-"235
-{
-[e :U _mc33996_update ]
-[f ]
-"236
-[e = *U + &U . *U _S 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _S 2 `ui `ux -> -> 0 `i `uc ]
-"237
-[e :UE 3404 ]
-}
-"239
+"219
 [v _SPI_EADOG `(v ~T0 @X0 1 ef ]
-"240
+"220
 {
 [e :U _SPI_EADOG ]
 [f ]
-"241
+"221
 [e ( _wait_lcd_done ..  ]
-"242
-[e :U 3408 ]
+"222
+[e :U 3406 ]
 {
 [e = . . _LATEbits 0 0 -> -> 1 `i `uc ]
 }
-[e :U 3407 ]
-"243
-[e :U 3411 ]
+[e :U 3405 ]
+"223
+[e :U 3409 ]
 {
 [e = . . _LATEbits 0 1 -> -> 1 `i `uc ]
 }
-[e :U 3410 ]
-"244
+[e :U 3408 ]
+"224
 [e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
-"246
+"226
 [e = _SPI1CON1 -> -> 36 `i `uc ]
-"247
+"227
 [e = _SPI1CON2 -> -> 2 `i `uc ]
-"249
+"229
 [e = _SPI1CLK -> -> 2 `i `uc ]
-"251
+"231
 [e = _SPI1BAUD -> -> 4 `i `uc ]
-"252
+"232
 [e = _SPI1CON0 -> -> 131 `i `uc ]
-"253
+"233
 [e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
-"254
-[e :UE 3405 ]
+"234
+[e :UE 3403 ]
 }
-"256
+"236
 [v _SPI_TIC12400 `(v ~T0 @X0 1 ef ]
-"257
+"237
 {
 [e :U _SPI_TIC12400 ]
 [f ]
-"258
+"238
 [e ( _wait_lcd_done ..  ]
-"259
-[e :U 3415 ]
+"239
+[e :U 3413 ]
 {
 [e = . . _LATEbits 0 0 -> -> 1 `i `uc ]
 }
-[e :U 3414 ]
-"260
-[e :U 3418 ]
+[e :U 3412 ]
+"240
+[e :U 3416 ]
 {
 [e = . . _LATEbits 0 1 -> -> 1 `i `uc ]
 }
-[e :U 3417 ]
-"261
-[e :U 3421 ]
+[e :U 3415 ]
+"241
+[e :U 3419 ]
 {
 [e = . . _LATDbits 0 3 -> -> 1 `i `uc ]
 }
-[e :U 3420 ]
-"262
+[e :U 3418 ]
+"242
 [e = . . _SPI1STATUSbits 0 2 -> -> 1 `i `uc ]
-"263
+"243
 [e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
-"265
+"245
 [e = _SPI1CON0 -> -> 3 `i `uc ]
-"267
+"247
 [e = . . _SPI1CON1bits 0 5 -> -> 0 `i `uc ]
-"268
+"248
 [e = . . _SPI1CON1bits 0 6 -> -> 1 `i `uc ]
-"269
+"249
 [e = . . _SPI1CON1bits 0 7 -> -> 1 `i `uc ]
-"270
+"250
 [e = . . _SPI1CON1bits 0 4 -> -> 0 `i `uc ]
-"271
+"251
 [e = . . _SPI1CON1bits 0 1 -> -> 0 `i `uc ]
-"272
+"252
 [e = . . _SPI1CON1bits 0 0 -> -> 0 `i `uc ]
-"273
+"253
 [e = _SPI1CON2 -> -> 3 `i `uc ]
-"275
+"255
 [e = _SPI1CLK -> -> 0 `i `uc ]
-"277
+"257
 [e = _SPI1BAUD -> -> 7 `i `uc ]
-"278
+"258
 [e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
-"279
+"259
 [e = . . _SPI1STATUSbits 0 2 -> -> 0 `i `uc ]
-"280
-[e :UE 3412 ]
+"260
+[e :UE 3410 ]
 }
-"282
+"262
 [v _SPI_MC33996 `(v ~T0 @X0 1 ef ]
-"283
+"263
 {
 [e :U _SPI_MC33996 ]
 [f ]
-"284
+"264
 [e ( _wait_lcd_done ..  ]
-"285
-[e :U 3425 ]
+"265
+[e :U 3423 ]
 {
 [e = . . _LATEbits 0 0 -> -> 1 `i `uc ]
 }
-[e :U 3424 ]
-"286
-[e :U 3428 ]
+[e :U 3422 ]
+"266
+[e :U 3426 ]
 {
 [e = . . _LATEbits 0 1 -> -> 1 `i `uc ]
 }
-[e :U 3427 ]
-"287
-[e :U 3431 ]
+[e :U 3425 ]
+"267
+[e :U 3429 ]
 {
 [e = . . _LATDbits 0 3 -> -> 1 `i `uc ]
 }
-[e :U 3430 ]
-"288
+[e :U 3428 ]
+"268
 [e = . . _SPI1STATUSbits 0 2 -> -> 1 `i `uc ]
-"289
+"269
 [e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
-"291
+"271
 [e = _SPI1CON0 -> -> 3 `i `uc ]
-"293
+"273
 [e = . . _SPI1CON1bits 0 5 -> -> 0 `i `uc ]
-"294
+"274
 [e = . . _SPI1CON1bits 0 6 -> -> 1 `i `uc ]
-"295
+"275
 [e = . . _SPI1CON1bits 0 7 -> -> 1 `i `uc ]
-"296
+"276
 [e = . . _SPI1CON1bits 0 4 -> -> 0 `i `uc ]
-"297
+"277
 [e = . . _SPI1CON1bits 0 1 -> -> 0 `i `uc ]
-"298
+"278
 [e = . . _SPI1CON1bits 0 0 -> -> 0 `i `uc ]
-"299
+"279
 [e = _SPI1CON2 -> -> 3 `i `uc ]
-"301
+"281
 [e = _SPI1CLK -> -> 0 `i `uc ]
-"303
+"283
 [e = _SPI1BAUD -> -> 7 `i `uc ]
-"304
+"284
 [e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
-"305
+"285
 [e = . . _SPI1STATUSbits 0 2 -> -> 0 `i `uc ]
-"306
-[e :UE 3422 ]
+"286
+[e :UE 3420 ]
 }
 [p f _printf 46432260 ]
+[a 2C 49 53 58 49 57 58 52 57 0 ]
 [a 4C 86 48 46 56 0 ]
-[a 2C 50 49 58 51 52 58 49 55 0 ]
-[a 1C 77 97 121 32 49 53 32 50 48 50 53 0 ]
+[a 1C 77 97 121 32 49 54 32 50 48 50 53 0 ]
 [a 7C 37 48 50 104 104 120 32 0 ]
 [a 10C 37 48 50 104 104 120 32 0 ]
 [a 9C 83 80 73 32 77 67 51 51 57 57 54 32 116 114 97 110 115 102 101 114 32 115 101 116 116 105 110 103 115 10 32 32 32 0 ]

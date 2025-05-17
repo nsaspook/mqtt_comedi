@@ -1,3 +1,5 @@
+/** \file eadog.c
+ */
 #include <string.h>
 #include "eadog.h"
 #include "vconfig.h"

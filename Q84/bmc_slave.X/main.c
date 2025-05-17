@@ -271,7 +271,7 @@ void main(void)
 {
 	UI_STATES mode; /* link configuration host/equipment/etc ... */
 	char * s, * speed_text;
-	uint8_t temp_lock = false;
+	uint8_t temp_lock = false, slowly=0;
 	static uint8_t looper = 0;
 
 	SPI2STATUSbits.SPI2CLRBF;
@@ -358,8 +358,14 @@ void main(void)
 			UART1_Initialize19200();
 		}
 	}
-	int few = 0;
+	uint16_t few = 0;
 	while (!tic12400_init()) {
+		if (few++ > 10) {
+			break;
+		}
+	}
+	few = 0;
+	while (!mc33996_init()) {
 		if (few++ > 10) {
 			break;
 		}
@@ -438,8 +444,12 @@ void main(void)
 			spi1_rec_buf[1] = 0x57;
 			spi1_rec_buf[2] = 0x57;
 			spi1_rec_buf[3] = 0x57;
-			//			SPI_MC33996();
-			//			send_spi1_mc33996_dma((uint8_t *) "123", 3);
+			SPI_MC33996();
+			if (slowly++ > 32) {
+				slowly=0;
+				few++;
+			}
+			mc33996_update(few);
 			SPI_TIC12400();
 			tic12400_read_sw(0, (uintptr_t) NULL);
 			SPI_EADOG();
@@ -563,7 +573,7 @@ void main(void)
 			}
 #ifdef DIO_TEST
 			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%.2x %.2x %.2x %.2x %lu %lu %lx             ", spi_link.rxbuf[3], spi_link.rxbuf[2], spi_link.rxbuf[1], spi_link.rxbuf[0], tic12400_parity_count, tic12400_fail_value,
-															tic12400_id);
+				tic12400_id);
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%lx %lx %lx %lx %lx                   ", tic12400_fail_count, spi_link.des_bytes, tic12400_value_counts, tic12400_switch, tic12400_status);
 #else
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%lu %lu %lu %lu                    ", spi_stat_ss.spi_error_count, spi_stat_ss.adc_count, spi_stat_ss.slave_tx_count, spi_stat_ss.slave_int_count);

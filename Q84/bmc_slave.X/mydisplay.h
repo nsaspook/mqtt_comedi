@@ -19,7 +19,7 @@
  * TERMS. 
  */
 
-/* 
+/** \file mydisplay.h
  * File:   
  * Author: 
  * Comments:

@@ -1,4 +1,4 @@
-/* 
+/** \file tic12400.h
  * File:   tic12400.h
  * Author: root
  *

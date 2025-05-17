@@ -1,4 +1,4 @@
-/*
+/** \file eadog.h
  * File:   eadog.h
  * Author: root
  *

@@ -1,4 +1,4 @@
-/*
+/** \file msg_text.h
  * File:   msg_text.h
  * Author: root
  *

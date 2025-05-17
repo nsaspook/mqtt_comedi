@@ -1,4 +1,4 @@
-/* 
+/** \file slaveo.h
  * File:   slaveo.h
  * Author: root
  *

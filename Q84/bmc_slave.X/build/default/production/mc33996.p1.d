@@ -1,6 +1,6 @@
 build/default/production/mc33996.p1:  \
 mc33996.c  \
-bmcdio.h  \
+mc33996.h  \
 mconfig.h  \
 mcc_generated_files/mcc.h  \
 mcc_generated_files/device_config.h  \
@@ -21,8 +21,8 @@ mcc_generated_files/uart1.h  \
 mcc_generated_files/spi1.h  \
 mcc_generated_files/spi2.h  \
 vconfig.h  \
+bmcdio.h  \
 tic12400.h  \
 timers.h  \
 eadog.h  \
-slaveo.h  \
-mc33996.h 
+slaveo.h 
