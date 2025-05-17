@@ -8,14 +8,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 "257 ./vconfig.h
 [s S3360 `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i ]
 [n S3360 V_help message display extrams ]
-[v F25011 `uc ~T0 @X0 -> 128 `i t ]
-[v F25010 `F25011 ~T0 @X0 -> 4 `i t ]
+[v F24982 `uc ~T0 @X0 -> 128 `i t ]
+[v F24981 `F24982 ~T0 @X0 -> 4 `i t ]
 "13 mconfig.c
 [c E24381 0 1 2 3 4 5 6 7 8 9 10 11 .. ]
 [n E24381 . DIS_STR DIS_TERM DIS_LOG DIS_LOAD DIS_UNLOAD DIS_PUMP DIS_HELP DIS_SEQUENCE DIS_SEQUENCE_M DIS_ERR DIS_FREE DIS_CLEAR  ]
 "6
-[s S3371 `F25010 -> 4 `i :2 `uc 1 `E24381 1 ]
-[n S3371 D_data lcd vterm last_info ]
+[s S3369 `F24981 -> 4 `i :2 `uc 1 `E24381 1 ]
+[n S3369 D_data lcd vterm last_info ]
 "29 /opt/microchip/xc8/v3.00/pic/include/c99/string.h
 [v _memset `(*v ~T0 @X0 0 ef3`*v`i`ui ]
 "128 ./eadog.h
@@ -3265,7 +3265,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ]
 "13 mconfig.c
-[v _D `S3371 ~T0 @X0 1 s ]
+[v _D `S3369 ~T0 @X0 1 s ]
 [i _D
 :U ..
 :U ..
@@ -3291,7 +3291,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "21
 [e ( _memset (3 , , -> &U _D `*v -> 0 `i -> # _D `ui ]
 "22
-[e :UE 3372 ]
+[e :UE 3370 ]
 }
 "27
 [v _mode_lamp_dim `(v ~T0 @X0 1 ef ]
@@ -3302,7 +3302,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "29
 [e ( _set_lcd_dim (1 -> -> 1 `i `a ]
 "30
-[e :UE 3373 ]
+[e :UE 3371 ]
 }
 "32
 [v _mode_lamp_bright `(v ~T0 @X0 1 ef ]
@@ -3313,7 +3313,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "34
 [e ( _set_lcd_dim (1 -> -> 0 `i `a ]
 "35
-[e :UE 3374 ]
+[e :UE 3372 ]
 }
 "41
 [v _help_button `(a ~T0 @X0 1 ef ]
@@ -3323,9 +3323,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [f ]
 "43
 [e ) -> -> 0 `i `a ]
-[e $UE 3375  ]
+[e $UE 3373  ]
 "44
-[e :UE 3375 ]
+[e :UE 3373 ]
 }
 "49
 [v _check_help `(v ~T0 @X0 1 ef1`Ca ]
@@ -3337,25 +3337,25 @@ Version 4.0 HI-TECH Software Intermediate Code
 "50
 [f ]
 "54
-[e $ ! != -> . _V 57 `i -> 0 `i 3377  ]
+[e $ ! != -> . _V 57 `i -> 0 `i 3375  ]
 {
 "55
 [e ( _snprintf (2 , (. , , ( _get_vterm_ptr (2 , -> -> 0 `i `uc -> -> 3 `i `uc -> + -> 20 `i -> 1 `i `ui :s 1C + -> . _V 59 `i -> 1 `i ]
 "56
-[e $ ! != -> _flipper `i -> 0 `i 3378  ]
+[e $ ! != -> _flipper `i -> 0 `i 3376  ]
 {
 "57
 [e ( _snprintf (2 , (. , , ( _get_vterm_ptr (2 , -> -> 3 `i `uc -> -> 3 `i `uc -> + -> 20 `i -> 1 `i `ui :s 2C _build_date ]
 "58
 }
-[e $U 3379  ]
-[e :U 3378 ]
+[e $U 3377  ]
+[e :U 3376 ]
 {
 "59
 [e ( _snprintf (2 , (. , , ( _get_vterm_ptr (2 , -> -> 3 `i `uc -> -> 3 `i `uc -> + -> 20 `i -> 1 `i `ui :s 3C &U . *U + &U _T * -> . _V 59 `ux -> -> # *U &U _T `ui `ux 2 ]
 "60
 }
-[e :U 3379 ]
+[e :U 3377 ]
 "61
 [e ( _snprintf (2 , (. , , ( _get_vterm_ptr (2 , -> -> 2 `i `uc -> -> 3 `i `uc -> + -> 20 `i -> 1 `i `ui :s 4C &U . *U + &U _T * -> . _V 59 `ux -> -> # *U &U _T `ui `ux 1 ]
 "62
@@ -3364,9 +3364,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e ++ . _V 59 -> 1 `i ]
 "64
 }
-[e :U 3377 ]
+[e :U 3375 ]
 "65
-[e :UE 3376 ]
+[e :UE 3374 ]
 }
 "71
 [v _update_lcd `(uc ~T0 @X0 1 ef1`uc ]
@@ -3405,9 +3405,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e ( _eaDogM_WriteStringAtPos (3 , , -> -> 3 `i `uc -> -> 0 `i `uc &U *U + &U *U + &U . _D 0 * -> _vterm `ux -> * * -> # *U &U *U &U . _D 0 `ui -> -> 4 `i `ui -> -> 128 `i `ui `ux * -> -> -> 3 `i `ui `ux -> * -> # *U &U *U &U *U + &U . _D 0 * -> _vterm `ux -> * * -> # *U &U *U &U . _D 0 `ui -> -> 4 `i `ui -> -> 128 `i `ui `ux `ui -> -> 128 `i `ui `ux ]
 "87
 [e ) . _D 1 ]
-[e $UE 3380  ]
+[e $UE 3378  ]
 "88
-[e :UE 3380 ]
+[e :UE 3378 ]
 }
 "93
 [v _refresh_lcd `(uc ~T0 @X0 1 ef ]
@@ -3417,9 +3417,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [f ]
 "95
 [e ) ( _update_lcd (1 . _D 1 ]
-[e $UE 3381  ]
+[e $UE 3379  ]
 "96
-[e :UE 3381 ]
+[e :UE 3379 ]
 }
 "101
 [v _set_vterm `(uc ~T0 @X0 1 ef1`Cuc ]
@@ -3434,9 +3434,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = . _D 1 -> & -> _vterm `i -> 3 `i `uc ]
 "104
 [e ) . _D 1 ]
-[e $UE 3382  ]
+[e $UE 3380  ]
 "105
-[e :UE 3382 ]
+[e :UE 3380 ]
 }
 "111
 [v _get_vterm_ptr `(*uc ~T0 @X0 1 ef2`uc`Cuc ]
@@ -3450,9 +3450,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [f ]
 "113
 [e ) &U *U + &U *U + &U . _D 0 * -> -> & -> _vterm `i -> 3 `i `ui `ux -> * * -> # *U &U *U &U . _D 0 `ui -> -> 4 `i `ui -> -> 128 `i `ui `ux * -> -> & -> _line `i -> 3 `i `ui `ux -> * -> # *U &U *U &U *U + &U . _D 0 * -> -> & -> _vterm `i -> 3 `i `ui `ux -> * * -> # *U &U *U &U . _D 0 `ui -> -> 4 `i `ui -> -> 128 `i `ui `ux `ui -> -> 128 `i `ui `ux ]
-[e $UE 3383  ]
+[e $UE 3381  ]
 "114
-[e :UE 3383 ]
+[e :UE 3381 ]
 }
 "120
 [v _vterm_dump `(v ~T0 @X0 1 ef ]
@@ -3487,7 +3487,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "134
 [e ( _WaitMs (1 -> -> 3000 `i `us ]
 "135
-[e :UE 3384 ]
+[e :UE 3382 ]
 }
 "137
 [v _vterm_sequence `(v ~T0 @X0 1 ef ]
@@ -3498,84 +3498,84 @@ Version 4.0 HI-TECH Software Intermediate Code
 "139
 [e ( _snprintf (2 , , (. , , ( _get_vterm_ptr (2 , -> -> 2 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 10C -> . _V 24 `i -> . _V 58 `i ]
 "140
-[e $U 3387  ]
+[e $U 3385  ]
 {
 "141
-[e :U 3388 ]
+[e :U 3386 ]
 "142
 [e ( _snprintf (2 , , , (. , , ( _get_vterm_ptr (2 , -> -> 0 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 11C -> . _V 20 `i -> . _V 21 `i & -> . . _V 44 6 `i -> 3 `i ]
 "143
 [e ( _snprintf (2 , (. , , ( _get_vterm_ptr (2 , -> -> 1 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 12C -> . . _V 44 11 `ui ]
 "144
-[e $U 3386  ]
+[e $U 3384  ]
 "145
-[e :U 3389 ]
+[e :U 3387 ]
 "146
 [e ( _snprintf (2 , , , (. , , ( _get_vterm_ptr (2 , -> -> 0 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 13C -> . _V 20 `i -> . _V 21 `i & -> . . _V 44 6 `i -> 3 `i ]
 "147
 [e ( _snprintf (2 , (. , , ( _get_vterm_ptr (2 , -> -> 1 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 14C -> . _V 61 `i ]
 "148
-[e $U 3386  ]
+[e $U 3384  ]
 "149
-[e :U 3390 ]
+[e :U 3388 ]
 "150
 [e ( _snprintf (2 , , ( _get_vterm_ptr (2 , -> -> 0 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 15C ]
 "151
 [e ( _snprintf (2 , (. , , ( _get_vterm_ptr (2 , -> -> 1 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 16C -> . . _V 44 3 `i ]
 "152
-[e $U 3386  ]
+[e $U 3384  ]
 "153
-[e :U 3391 ]
+[e :U 3389 ]
 "154
 [e ( _snprintf (2 , , ( _get_vterm_ptr (2 , -> -> 0 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 17C ]
 "155
 [e ( _snprintf (2 , (. , , ( _get_vterm_ptr (2 , -> -> 1 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 18C -> . . _V 44 3 `i ]
 "156
-[e $U 3386  ]
+[e $U 3384  ]
 "157
-[e :U 3392 ]
+[e :U 3390 ]
 "158
 [e ( _snprintf (2 , , ( _get_vterm_ptr (2 , -> -> 0 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 19C ]
 "159
 [e ( _snprintf (2 , (. , , ( _get_vterm_ptr (2 , -> -> 1 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 20C -> . . _V 44 3 `i ]
 "160
-[e $U 3386  ]
+[e $U 3384  ]
 "161
-[e :U 3393 ]
+[e :U 3391 ]
 "162
 [e ( _snprintf (2 , (. , , ( _get_vterm_ptr (2 , -> -> 0 `i `uc -> -> 3 `i `uc -> + -> 20 `i -> 1 `i `ui :s 21C _build_date ]
 "163
 [e ( _snprintf (2 , (. , , ( _get_vterm_ptr (2 , -> -> 1 `i `uc -> -> 3 `i `uc -> + -> 20 `i -> 1 `i `ui :s 22C _build_time ]
 "164
-[e $U 3386  ]
+[e $U 3384  ]
 "165
-[e :U 3394 ]
+[e :U 3392 ]
 "166
 [e ( _snprintf (2 , (. , , ( _get_vterm_ptr (2 , -> -> 0 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 23C -> . _V 46 `i ]
 "167
 [e ( _snprintf (2 , (. , , ( _get_vterm_ptr (2 , -> -> 1 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 24C -> . _V 36 `ui ]
 "168
-[e $U 3386  ]
+[e $U 3384  ]
 "169
-[e :U 3395 ]
+[e :U 3393 ]
 "170
 [e ( _snprintf (2 , (. , , ( _get_vterm_ptr (2 , -> -> 0 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 25C -> . . _V 44 1 `i ]
 "171
 [e ( _snprintf (2 , (. , , ( _get_vterm_ptr (2 , -> -> 1 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 26C -> . _V 36 `ui ]
 "172
-[e $U 3386  ]
+[e $U 3384  ]
 "173
-[e :U 3396 ]
+[e :U 3394 ]
 "174
 [e ( _snprintf (2 , (. , , ( _get_vterm_ptr (2 , -> -> 0 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 27C -> . . _V 44 2 `i ]
 "175
 [e ( _snprintf (2 , , , (. , , ( _get_vterm_ptr (2 , -> -> 1 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 28C -> . . _V 44 3 `i -> . . _V 44 4 `i -> . . _V 44 5 `i ]
 "176
-[e $U 3386  ]
+[e $U 3384  ]
 "177
-[e :U 3397 ]
+[e :U 3395 ]
 "178
-[e :U 3398 ]
+[e :U 3396 ]
 "179
 [e ( _snprintf (2 , , ( _get_vterm_ptr (2 , -> -> 0 `i `uc -> -> 0 `i `uc -> + -> 20 `i -> 1 `i `ui :s 29C ]
 "180
@@ -3585,25 +3585,25 @@ Version 4.0 HI-TECH Software Intermediate Code
 "182
 [e ( _snprintf (2 , , ( _get_vterm_ptr (2 , -> -> 1 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 32C ]
 "183
-[e $U 3386  ]
+[e $U 3384  ]
 "184
 }
-[e $U 3386  ]
-[e :U 3387 ]
-[e [\ -> . . _V 44 8 `ui , $ -> . `E24381 2 `ui 3388
- , $ -> . `E24381 10 `ui 3389
- , $ -> . `E24381 3 `ui 3390
- , $ -> . `E24381 5 `ui 3391
- , $ -> . `E24381 4 `ui 3392
- , $ -> . `E24381 6 `ui 3393
- , $ -> . `E24381 7 `ui 3394
- , $ -> . `E24381 8 `ui 3395
- , $ -> . `E24381 1 `ui 3396
- , $ -> . `E24381 11 `ui 3397
- 3398 ]
-[e :U 3386 ]
+[e $U 3384  ]
+[e :U 3385 ]
+[e [\ -> . . _V 44 8 `ui , $ -> . `E24381 2 `ui 3386
+ , $ -> . `E24381 10 `ui 3387
+ , $ -> . `E24381 3 `ui 3388
+ , $ -> . `E24381 5 `ui 3389
+ , $ -> . `E24381 4 `ui 3390
+ , $ -> . `E24381 6 `ui 3391
+ , $ -> . `E24381 7 `ui 3392
+ , $ -> . `E24381 8 `ui 3393
+ , $ -> . `E24381 1 `ui 3394
+ , $ -> . `E24381 11 `ui 3395
+ 3396 ]
+[e :U 3384 ]
 "185
-[e :UE 3385 ]
+[e :UE 3383 ]
 }
 "191
 [v _MyeaDogM_WriteStringAtPos `(v ~T0 @X0 1 ef3`Cuc`Cuc`*uc ]
@@ -3619,17 +3619,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 "193
 [e ( _wait_lcd_done ..  ]
 "194
-[e $ ! == -> . . _V 44 8 `ui -> . `E24381 0 `ui 3400  ]
+[e $ ! == -> . . _V 44 8 `ui -> . `E24381 0 `ui 3398  ]
 {
 "195
 [e ( _eaDogM_WriteStringAtPos (3 , , _r _c _strPtr ]
 "196
 }
-[e $U 3401  ]
-[e :U 3400 ]
+[e $U 3399  ]
+[e :U 3398 ]
 {
 "197
-[e $ ! == -> . . _V 44 8 `ui -> . `E24381 6 `ui 3402  ]
+[e $ ! == -> . . _V 44 8 `ui -> . `E24381 6 `ui 3400  ]
 {
 "198
 [e ( _snprintf (2 , (. , , ( _get_vterm_ptr (2 , -> -> 2 `i `uc -> -> 3 `i `uc -> + -> 20 `i -> 1 `i `ui :s 33C &U . _V 9 ]
@@ -3637,18 +3637,18 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e ( _update_lcd (1 -> -> 3 `i `uc ]
 "200
 }
-[e $U 3403  ]
-[e :U 3402 ]
+[e $U 3401  ]
+[e :U 3400 ]
 {
 "201
-[e $ ! != -> . . _V 44 8 `ui -> . `E24381 0 `ui 3404  ]
+[e $ ! != -> . . _V 44 8 `ui -> . `E24381 0 `ui 3402  ]
 {
 "202
 [e ( _update_lcd (1 -> -> 1 `i `uc ]
 "203
 }
-[e $U 3405  ]
-[e :U 3404 ]
+[e $U 3403  ]
+[e :U 3402 ]
 {
 "204
 [e ( _snprintf (2 , (. , , ( _get_vterm_ptr (2 , -> -> 2 `i `uc -> -> 0 `i `uc -> + -> 20 `i -> 1 `i `ui :s 34C &U . _V 9 ]
@@ -3656,57 +3656,57 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e ( _update_lcd (1 -> -> 0 `i `uc ]
 "206
 }
-[e :U 3405 ]
+[e :U 3403 ]
 "207
 }
-[e :U 3403 ]
+[e :U 3401 ]
 "209
-[e $ ! && != -> . . _V 44 8 `ui -> . `E24381 0 `ui != -> ( _TimerDone (1 -> . `E24747 2 `uc `i -> 0 `i 3406  ]
+[e $ ! && != -> . . _V 44 8 `ui -> . `E24381 0 `ui != -> ( _TimerDone (1 -> . `E24747 2 `uc `i -> 0 `i 3404  ]
 {
 "210
 [e = . . _V 44 8 . `E24381 0 ]
 "211
 }
-[e :U 3406 ]
+[e :U 3404 ]
 "212
 }
-[e :U 3401 ]
+[e :U 3399 ]
 "217
-[e $ ! && == -> . _D 2 `ui -> . `E24381 6 `ui != -> . . _V 44 8 `ui -> . `E24381 6 `ui 3407  ]
+[e $ ! && == -> . _D 2 `ui -> . `E24381 6 `ui != -> . . _V 44 8 `ui -> . `E24381 6 `ui 3405  ]
 {
 "219
 }
-[e :U 3407 ]
+[e :U 3405 ]
 "221
 [e = . _D 2 . . _V 44 8 ]
 "222
-[e :UE 3399 ]
+[e :UE 3397 ]
 }
-[v F25103 `(E24381 ~T0 @X0 1 tf ]
+[v F25074 `(E24381 ~T0 @X0 1 tf ]
 "224
-[v _display_info `TF25103 ~T0 @X0 1 e ]
+[v _display_info `TF25074 ~T0 @X0 1 e ]
 "225
 {
 [e :U _display_info ]
 [f ]
 "226
 [e ) . . _V 44 8 ]
-[e $UE 3408  ]
+[e $UE 3406  ]
 "227
-[e :UE 3408 ]
+[e :UE 3406 ]
 }
-[v F25105 `(E24381 ~T0 @X0 1 tf ]
+[v F25076 `(E24381 ~T0 @X0 1 tf ]
 "229
-[v _display_help `TF25105 ~T0 @X0 1 e ]
+[v _display_help `TF25076 ~T0 @X0 1 e ]
 "230
 {
 [e :U _display_help ]
 [f ]
 "231
 [e ) . . _V 44 9 ]
-[e $UE 3409  ]
+[e $UE 3407  ]
 "232
-[e :UE 3409 ]
+[e :UE 3407 ]
 }
 "234
 [v _set_display_info `(E24381 ~T0 @X0 1 ef1`CE24381 ]
@@ -3718,25 +3718,25 @@ Version 4.0 HI-TECH Software Intermediate Code
 "235
 [f ]
 "236
-[v F25108 `E24381 ~T0 @X0 1 s old_info ]
-[i F25108
+[v F25079 `E24381 ~T0 @X0 1 s old_info ]
+[i F25079
 . `E24381 0
 ]
 "238
-[e $ ! != -> ( _TimerDone (1 -> . `E24747 2 `uc `i -> 0 `i 3411  ]
+[e $ ! != -> ( _TimerDone (1 -> . `E24747 2 `uc `i -> 0 `i 3409  ]
 {
 "239
-[e = F25108 . . _V 44 8 ]
+[e = F25079 . . _V 44 8 ]
 "240
 [e = . . _V 44 8 _new_response_info ]
 "241
 }
-[e :U 3411 ]
+[e :U 3409 ]
 "242
-[e ) F25108 ]
-[e $UE 3410  ]
+[e ) F25079 ]
+[e $UE 3408  ]
 "243
-[e :UE 3410 ]
+[e :UE 3408 ]
 }
 "245
 [v _set_temp_display_help `(E24381 ~T0 @X0 1 ef1`CE24381 ]
@@ -3748,16 +3748,16 @@ Version 4.0 HI-TECH Software Intermediate Code
 "246
 [f ]
 "247
-[v F25111 `E24381 ~T0 @X0 1 s old_info ]
+[v F25082 `E24381 ~T0 @X0 1 s old_info ]
 "249
-[e = F25111 . . _V 44 9 ]
+[e = F25082 . . _V 44 9 ]
 "250
 [e = . . _V 44 9 _new_response_info ]
 "251
-[e ) F25111 ]
-[e $UE 3412  ]
+[e ) F25082 ]
+[e $UE 3410  ]
 "252
-[e :UE 3412 ]
+[e :UE 3410 ]
 }
 "257
 [v _log_serial `(v ~T0 @X0 1 ef2`*uc`us ]
@@ -3770,7 +3770,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "258
 [f ]
 "281
-[e :UE 3413 ]
+[e :UE 3411 ]
 }
 "290
 [v _logging_cmds `(v ~T0 @X0 1 ef ]
@@ -3779,7 +3779,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _logging_cmds ]
 [f ]
 "398
-[e :UE 3414 ]
+[e :UE 3412 ]
 }
 "400
 [v _set_time `(v ~T0 @X0 1 ef1`Cul ]
@@ -3797,7 +3797,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "404
 [e = . . _PIE8bits 0 4 -> -> 1 `i `uc ]
 "405
-[e :UE 3415 ]
+[e :UE 3413 ]
 }
 "410
 [v _time `(ul ~T0 @X0 1 ef1`*ul ]
@@ -3809,26 +3809,26 @@ Version 4.0 HI-TECH Software Intermediate Code
 "411
 [f ]
 "412
-[v F25120 `ul ~T0 @X0 1 s current_time ]
+[v F25091 `ul ~T0 @X0 1 s current_time ]
 "414
 [e = . . _PIE8bits 0 4 -> -> 0 `i `uc ]
 "415
-[e = F25120 . _V 18 ]
+[e = F25091 . _V 18 ]
 "416
 [e = . . _PIE8bits 0 4 -> -> 1 `i `uc ]
 "417
-[e $ ! != _t -> -> 0 `i `*ul 3417  ]
+[e $ ! != _t -> -> 0 `i `*ul 3415  ]
 {
 "418
-[e = _t &U F25120 ]
+[e = _t &U F25091 ]
 "419
 }
-[e :U 3417 ]
+[e :U 3415 ]
 "420
-[e ) F25120 ]
-[e $UE 3416  ]
+[e ) F25091 ]
+[e $UE 3414  ]
 "421
-[e :UE 3416 ]
+[e :UE 3414 ]
 }
 [p f _snprintf 13370496 ]
 [a 33C 37 115 0 ]

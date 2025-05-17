@@ -17,10 +17,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 "4795
 [v _SPI2STATUSbits `VS215 ~T0 @X0 0 e@148 ]
 "56 ./slaveo.h
-[s S3369 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vuc 1 ]
-[n S3369 spi_stat_type_ss adc_count port_count port_error_count char_count char_error_count slave_int_count last_slave_int_count slave_tx_count comm_count idle_count spi_error_count comm_ok ]
+[s S3367 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vuc 1 ]
+[n S3367 spi_stat_type_ss adc_count port_count port_error_count char_count char_error_count slave_int_count last_slave_int_count slave_tx_count comm_count idle_count spi_error_count comm_ok ]
 "72
-[v _spi_stat_ss `VS3369 ~T0 @X0 0 e ]
+[v _spi_stat_ss `VS3367 ~T0 @X0 0 e ]
 [v F24198 `(v ~T0 @X0 0 tf ]
 "78 ./mcc_generated_files/spi2.h
 [v _SPI2_SetRxInterruptHandler `(v ~T0 @X0 0 ef1`*F24198 ]
@@ -52,10 +52,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 "4335
 [v _SPI2RXB `Vuc ~T0 @X0 0 e@141 ]
 "65 ./slaveo.h
-[s S3370 `Vuc -> 4 `i `Vuc 1 `Vuc 1 `Vuc 1 `Vuc 1 `Vuc 1 `Vul 1 ]
-[n S3370 serial_buffer_type_ss data tx_buffer adcl adc2 adch command place ]
+[s S3368 `Vuc -> 4 `i `Vuc 1 `Vuc 1 `Vuc 1 `Vuc 1 `Vuc 1 `Vul 1 ]
+[n S3368 serial_buffer_type_ss data tx_buffer adcl adc2 adch command place ]
 "71
-[v _serial_buffer_ss `VS3370 ~T0 @X0 0 e ]
+[v _serial_buffer_ss `VS3368 ~T0 @X0 0 e ]
 "4696 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [s S213 :1 `uc 1 :1 `uc 1 :1 `uc 1 :3 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S213 . RXR TXR SSET . SSFLT BUSY ]
@@ -88,10 +88,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 "355
 [v _UART1_Read `(uc ~T0 @X0 0 ef ]
 "45 ./slaveo.h
-[s S3368 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S3368 spi_link_type_ss SPI_DATA ADC_DATA PORT_DATA CHAR_DATA REMOTE_LINK REMOTE_DATA_DONE LOW_BITS ADC_RUN ]
+[s S3366 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S3366 spi_link_type_ss SPI_DATA ADC_DATA PORT_DATA CHAR_DATA REMOTE_LINK REMOTE_DATA_DONE LOW_BITS ADC_RUN ]
 "70
-[v _spi_comm_ss `VS3368 ~T0 @X0 0 e ]
+[v _spi_comm_ss `VS3366 ~T0 @X0 0 e ]
 "211 ./mcc_generated_files/uart1.h
 [v _UART1_is_tx_ready `(a ~T0 @X0 0 ef ]
 "380
@@ -2721,15 +2721,15 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _check_slaveo ]
 [f ]
 "52
-[e $ ! != -> . . _SPI2STATUSbits 0 7 `i -> 0 `i 3372  ]
+[e $ ! != -> . . _SPI2STATUSbits 0 7 `i -> 0 `i 3370  ]
 {
 "53
 [e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
 "54
 }
-[e :U 3372 ]
+[e :U 3370 ]
 "55
-[e :UE 3371 ]
+[e :UE 3369 ]
 }
 "60
 [v _init_slaveo `(v ~T0 @X0 1 ef ]
@@ -2751,17 +2751,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 "67
 [e = . . _SPI2CON0bits 0 4 -> -> 0 `i `uc ]
 "68
-[e $U 3374  ]
-[e :U 3375 ]
+[e $U 3372  ]
+[e :U 3373 ]
 {
 "69
 [e = _val _SPI2RXB ]
 "70
 }
-[e :U 3374 ]
+[e :U 3372 ]
 "68
-[e $ ! != -> . . _SPI2STATUSbits 0 3 `i -> 0 `i 3375  ]
-[e :U 3376 ]
+[e $ ! != -> . . _SPI2STATUSbits 0 3 `i -> 0 `i 3373  ]
+[e :U 3374 ]
 "71
 [e = *U + &U . _serial_buffer_ss 0 * -> -> -> 2 `i `ui `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux _val ]
 "72
@@ -2773,7 +2773,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "75
 [e ( _ADC_SelectContext (1 . `E23631 0 ]
 "76
-[e :UE 3373 ]
+[e :UE 3371 ]
 }
 "78
 [v _slaveo_rx_isr `(v ~T0 @X0 1 ef ]
@@ -2788,19 +2788,19 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _cmd_dummy `uc ~T0 @X0 1 a ]
 [e = _cmd_dummy -> -> 103 `i `uc ]
 "83
-[e :U 3380 ]
+[e :U 3378 ]
 {
 [e = . . _LATBbits 0 1 -> -> 1 `i `uc ]
 }
-[e :U 3379 ]
+[e :U 3377 ]
 "84
 [e ++ . _spi_stat_ss 5 -> -> 1 `i `Vul ]
 "85
-[e :U 3383 ]
+[e :U 3381 ]
 {
 [e = . . _LATBbits 0 1 -> -> 0 `i `uc ]
 }
-[e :U 3382 ]
+[e :U 3380 ]
 "86
 [e = _data_in2 _SPI2RXB ]
 "87
@@ -2810,14 +2810,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 "89
 [e = . _serial_buffer_ss 5 _command ]
 "91
-[e $ ! != -> ( _UART1_is_rx_ready ..  `i -> 0 `i 3384  ]
+[e $ ! != -> ( _UART1_is_rx_ready ..  `i -> 0 `i 3382  ]
 {
 "92
-[e :U 3387 ]
+[e :U 3385 ]
 {
 [e = . . _LATBbits 0 1 -> -> 0 `i `uc ]
 }
-[e :U 3386 ]
+[e :U 3384 ]
 "93
 [e = _char_rxtmp ( _UART1_Read ..  ]
 "94
@@ -2828,9 +2828,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = . _spi_comm_ss 3 -> -> 1 `i `uc ]
 "97
 }
-[e :U 3384 ]
+[e :U 3382 ]
 "99
-[e $ ! == -> _command `i -> 176 `i 3388  ]
+[e $ ! == -> _command `i -> 176 `i 3386  ]
 {
 "100
 [e = _char_txtmp -> & -> _data_in2 `i -> 15 `i `uc ]
@@ -2838,23 +2838,23 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e ++ . _spi_stat_ss 3 -> -> 1 `i `Vul ]
 "103
 }
-[e :U 3388 ]
+[e :U 3386 ]
 "105
-[e $ ! == -> _command `i -> 224 `i 3389  ]
+[e $ ! == -> _command `i -> 224 `i 3387  ]
 {
 "106
-[e $ ! != -> ( _UART1_is_tx_ready ..  `i -> 0 `i 3390  ]
+[e $ ! != -> ( _UART1_is_tx_ready ..  `i -> 0 `i 3388  ]
 {
 "107
 [e ( _UART1_Write (1 -> | -> -> << -> -> & -> _data_in2 `i -> -> -> 15 `i `uc `i `uc `i -> -> -> 4 `i `uc `i `uc `i -> _char_txtmp `i `uc ]
 "108
 }
-[e $U 3391  ]
-[e :U 3390 ]
+[e $U 3389  ]
+[e :U 3388 ]
 {
 "109
 }
-[e :U 3391 ]
+[e :U 3389 ]
 "110
 [e = . _serial_buffer_ss 1 _cmd_dummy ]
 "111
@@ -2867,9 +2867,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e ( _TMR0_Reload ..  ]
 "116
 }
-[e :U 3389 ]
+[e :U 3387 ]
 "118
-[e $ ! == -> _command `i -> 128 `i 3392  ]
+[e $ ! == -> _command `i -> 128 `i 3390  ]
 {
 "119
 [e = . _spi_comm_ss 7 -> -> 0 `i `uc ]
@@ -2878,13 +2878,13 @@ Version 4.0 HI-TECH Software Intermediate Code
 "121
 [e = _channel -> & -> _data_in2 `i -> 15 `i `uc ]
 "122
-[e $ ! > -> _channel `i -> 64 `i 3393  ]
+[e $ ! > -> _channel `i -> 64 `i 3391  ]
 {
 "123
 [e = _channel -> . `E23616 0 `uc ]
 "124
 }
-[e :U 3393 ]
+[e :U 3391 ]
 "126
 [e = _SPI2TXB -> & >> -> *U + &U _adc_buffer * -> _channel `ux -> -> # *U &U _adc_buffer `ui `ux `ui -> 8 `i -> -> 255 `i `ui `uc ]
 "127
@@ -2892,24 +2892,24 @@ Version 4.0 HI-TECH Software Intermediate Code
 "129
 [e = . _spi_comm_ss 4 -> -> 1 `i `uc ]
 "130
-[e $U 3394  ]
-[e :U 3395 ]
+[e $U 3392  ]
+[e :U 3393 ]
 {
 "131
 [e = _data_in2 _SPI2RXB ]
 "132
 }
-[e :U 3394 ]
+[e :U 3392 ]
 "130
-[e $ ! != -> . . _SPI2STATUSbits 0 3 `i -> 0 `i 3395  ]
-[e :U 3396 ]
+[e $ ! != -> . . _SPI2STATUSbits 0 3 `i -> 0 `i 3393  ]
+[e :U 3394 ]
 "133
 [e ( _TMR0_Reload ..  ]
 "134
 }
-[e :U 3392 ]
+[e :U 3390 ]
 "136
-[e $ ! == -> _data_in2 `i -> 192 `i 3397  ]
+[e $ ! == -> _data_in2 `i -> 192 `i 3395  ]
 {
 "137
 [e ++ . _spi_stat_ss 7 -> -> 1 `i `Vul ]
@@ -2917,9 +2917,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = . _spi_stat_ss 6 . _spi_stat_ss 5 ]
 "139
 }
-[e :U 3397 ]
+[e :U 3395 ]
 "141
-[e $ ! == -> _command `i -> 16 `i 3398  ]
+[e $ ! == -> _command `i -> 16 `i 3396  ]
 {
 "142
 [e = . _serial_buffer_ss 1 _char_rxtmp ]
@@ -2927,9 +2927,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _cmd_dummy -> -> 103 `i `uc ]
 "144
 }
-[e :U 3398 ]
+[e :U 3396 ]
 "146
-[e :UE 3377 ]
+[e :UE 3375 ]
 }
 "148
 [v _slaveo_spi_isr `(v ~T0 @X0 1 ef ]
@@ -2938,17 +2938,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _slaveo_spi_isr ]
 [f ]
 "150
-[e :U 3402 ]
+[e :U 3400 ]
 {
 [e = . . _LATBbits 0 1 -> -> 0 `i `uc ]
 }
-[e :U 3401 ]
+[e :U 3399 ]
 "151
 [e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
 "152
 [e = _SPI2INTF -> -> 0 `i `uc ]
 "153
-[e :UE 3399 ]
+[e :UE 3397 ]
 }
 "155
 [v _slaveo_time_isr `(v ~T0 @X0 1 ef ]
@@ -2957,25 +2957,25 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _slaveo_time_isr ]
 [f ]
 "157
-[e $ ! || != -> . . _SPI2STATUSbits 0 7 `i -> 0 `i != -> . . _SPI2STATUSbits 0 3 `i -> 0 `i 3404  ]
+[e $ ! || != -> . . _SPI2STATUSbits 0 7 `i -> 0 `i != -> . . _SPI2STATUSbits 0 3 `i -> 0 `i 3402  ]
 {
 "158
 [e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
 "159
 }
-[e :U 3404 ]
+[e :U 3402 ]
 "160
-[e :U 3407 ]
+[e :U 3405 ]
 {
 [e = . . _LATBbits 0 1 -> -> 0 `i `uc ]
 }
-[e :U 3406 ]
+[e :U 3404 ]
 "161
-[e :U 3410 ]
+[e :U 3408 ]
 {
 [e = . . _LATBbits 0 3 -> -> 0 `i `uc ]
 }
-[e :U 3409 ]
+[e :U 3407 ]
 "162
-[e :UE 3403 ]
+[e :UE 3401 ]
 }

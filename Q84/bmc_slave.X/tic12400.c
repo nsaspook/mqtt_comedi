@@ -328,4 +328,5 @@ void tic12400_read_sw(uint32_t a, uintptr_t b)
 void tic_int_handler(void)
 {
 	tic12400_read_sw(0, (uintptr_t) NULL);
+	//	tic12400_status = tic12400_wr(&ticstat02, 0); // read status
 }
