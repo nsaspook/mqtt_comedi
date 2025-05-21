@@ -1,5 +1,5 @@
-/*
- * \file daq.c
+/** \file daq.c
+ *
  */
 
 #include <stdio.h> /* for printf() */

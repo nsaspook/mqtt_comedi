@@ -20,6 +20,7 @@ var NAVTREEINDEX0 =
 "c__standard__headers__indexer_8c_source.html":[1,0,1,0,0],
 "classes.html":[0,1],
 "cpp__standard__headers__indexer_8cpp_source.html":[1,0,1,0,1],
+"daq_8c.html":[1,0,9],
 "daq_8c_source.html":[1,0,9],
 "daq_8h_source.html":[1,0,10],
 "dir_002f38134be86bc3598275ffd2c5d0b0.html":[1,0,0,1,0],

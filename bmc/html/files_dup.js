@@ -9,7 +9,7 @@ var files_dup =
     [ "bmc_mqtt.h", "bmc__mqtt_8h_source.html", null ],
     [ "bmcdio.c", "bmcdio_8c_source.html", null ],
     [ "bmcdio.h", "bmcdio_8h_source.html", null ],
-    [ "daq.c", "daq_8c_source.html", null ],
+    [ "daq.c", "daq_8c.html", null ],
     [ "daq.h", "daq_8h_source.html", null ],
     [ "mc33996.c", "mc33996_8c_source.html", null ],
     [ "mc33996.h", "mc33996_8h_source.html", null ],
