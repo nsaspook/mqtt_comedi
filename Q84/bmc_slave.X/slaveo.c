@@ -93,40 +93,40 @@ void slaveo_rx_isr(void)
 	}
 	if (SPI2INTFbits.TXUIF) {
 		SPI2INTFbits.TXUIF = 0;
-		spi_stat_ss.txuf_bit++;
 	}
 	MLED_SetHigh();
 	spi_stat_ss.slave_int_count++;
 	MLED_SetLow();
-	//	while (!SPI2STATUSbits.SPI2RXRE) { // RX FIFO has data
-	data_in2 = SPI2RXB;
+
 	if (SPI2STATUSbits.SPI2RXRE) {
-		spi_stat_ss.spi_error_count++;
 	} else {
 		if (spi_comm_ss.PORT_DATA) {
 			spi_stat_ss.spi_noerror_count++;
 		}
 	}
+
+	data_in2 = SPI2RXB;
+
 	serial_buffer_ss.data[serial_buffer_ss.raw_index] = data_in2;
 	if (serial_buffer_ss.make_value) {
 		if (serial_buffer_ss.raw_index == 3) {
-			//			V.bmc_do = serial_buffer_ss.data[1];
+			V.bmc_do = serial_buffer_ss.data[1];
 			data_in2 = 0;
 			serial_buffer_ss.make_value = false;
 			serial_buffer_ss.raw_index = 0;
 			SPI2STATUSbits.CLRBF = 1;
+			spi_stat_ss.txdone_bit++; // number of DO completed packets
+			spi_stat_ss.slave_tx_count++;
 		} else {
 			spi_stat_ss.slave_tx_count++;
 			if (!SPI2STATUSbits.SPI2TXWE) { // TX FIFO not full
-				//				SPI2TXB = serial_buffer_ss.raw_index;
-				spi2_pace_write(serial_buffer_ss.raw_index);
 			}
 		}
 	}
 	if (++serial_buffer_ss.raw_index > 8) {
 		serial_buffer_ss.raw_index = 0;
 	}
-	//	}
+
 	command = data_in2 & HI_NIBBLE;
 	serial_buffer_ss.command = command;
 
@@ -142,11 +142,10 @@ void slaveo_rx_isr(void)
 		char_txtmp = (data_in2 & LO_NIBBLE); // read lower 4 bits
 		spi_comm_ss.PORT_DATA = false;
 		zombie = false;
-		//		serial_buffer_ss.tx_buffer = char_rxtmp;
 		spi_stat_ss.char_count++;
 	}
 
-	if (command == CMD_CHAR_DATA) { // get upper 4 bits send bits and send the data
+	if (command == CMD_CHAR_DATA) {
 		zombie = false;
 		if (UART1_is_tx_ready()) { // The USART send buffer is ready
 			UART1_Write((uint8_t) ((uint8_t) ((uint8_t) data_in2 & (uint8_t) LO_NIBBLE) << (uint8_t) 4) | (uint8_t) char_txtmp);
@@ -171,11 +170,9 @@ void slaveo_rx_isr(void)
 		}
 
 		spi_stat_ss.slave_tx_count++;
-		//		SPI2TXB = ((adc_buffer[channel] >> 8)&0x00ff);
-		spi2_pace_write((adc_buffer[channel] >> 8)&0x00ff);
+		SPI2TXB = ((adc_buffer[channel] >> 8)&0x00ff);
 		spi_stat_ss.slave_tx_count++;
-		//		SPI2TXB = (adc_buffer[channel] &0x00ff);
-		spi2_pace_write(adc_buffer[channel] &0x00ff);
+		SPI2TXB = (adc_buffer[channel] &0x00ff);
 
 		spi_comm_ss.REMOTE_LINK = true;
 		while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
@@ -193,7 +190,6 @@ void slaveo_rx_isr(void)
 		serial_buffer_ss.raw_index = 0;
 		serial_buffer_ss.make_value = true;
 		spi_stat_ss.slave_tx_count++;
-		spi2_pace_write(serial_buffer_ss.raw_index);
 		serial_buffer_ss.raw_index++;
 
 		spi_comm_ss.REMOTE_LINK = true;
@@ -215,14 +211,13 @@ void slaveo_rx_isr(void)
 void slaveo_spi_isr(void)
 {
 	MLED_SetLow();
-	//	spi_stat_ss.spi_error_count++;
+	spi_stat_ss.spi_error_count++;
 	SPI2INTF = 0;
 }
 
 void slaveo_time_isr(void)
 {
 	if (SPI2STATUSbits.TXWE || SPI2STATUSbits.RXRE) { // check for overruns/collisions
-		//		spi_stat_ss.spi_error_count++;
 	}
 	MLED_SetLow();
 	DLED_SetLow();
@@ -252,7 +247,7 @@ static void spi2_tx_busy(void)
 
 static void spi2_pace_write(const uint8_t data)
 {
-//	spi2_tx_wait();
+	//	spi2_tx_wait();
 	SPI2_ExchangeByte(data);
 	spi2_tx_busy();
 }

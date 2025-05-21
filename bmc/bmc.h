@@ -36,7 +36,7 @@ extern "C" {
 #include "MQTTClient.h"
 #include "bmc_mqtt.h"
 
-#define LOG_VERSION     "V0.07"
+#define LOG_VERSION     "V0.10"
 #define MQTT_VERSION    "V3.11"
 #define TNAME  "maint9"
 #define LADDRESS        "tcp://127.0.0.1:1883"
@@ -51,7 +51,6 @@ extern "C" {
 #define TOPIC_P         
 #define TOPIC_SPAM      "comedi/bmc/data/spam"
 #define TOPIC_PACA      "home-assistant/comedi/bmc"
-        //#define TOPIC_PACB      "mateq84/data/#"
 #define TOPIC_AI        "comedi/bmc/data/ai"
 #define TOPIC_AO        "comedi/bmc/data/ao"
 #define TOPIC_DI        "comedi/bmc/data/di"

@@ -81,7 +81,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _SPI2INTFbits `VS224 ~T0 @X0 0 e@151 ]
 "57 ./slaveo.h
 [s S3367 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vuc 1 `Vuc -> 16 `i `Vuc 1 ]
-[n S3367 spi_stat_type_ss adc_count port_count port_error_count port_data_count zombie_count char_count char_error_count rxof_bit txuf_bit slave_int_count last_slave_int_count slave_tx_count comm_count idle_count spi_error_count spi_noerror_count comm_ok rx_raw_buffer raw_index ]
+[n S3367 spi_stat_type_ss adc_count port_count port_error_count port_data_count zombie_count char_count char_error_count rxof_bit txdone_bit slave_int_count last_slave_int_count slave_tx_count comm_count idle_count spi_error_count spi_noerror_count comm_ok rx_raw_buffer raw_index ]
 "74
 [v _spi_stat_ss `VS3367 ~T0 @X0 0 e ]
 "3570 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
@@ -92,15 +92,34 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S3153 . . ]
 "3581
 [v _LATBbits `VS3153 ~T0 @X0 0 e@1215 ]
-"75 ./slaveo.h
-[v _data_in2 `Vuc ~T0 @X0 0 e ]
-"46
+"46 ./slaveo.h
 [s S3366 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S3366 spi_link_type_ss SPI_DATA ADC_DATA PORT_DATA CHAR_DATA REMOTE_LINK REMOTE_DATA_DONE LOW_BITS ADC_RUN ]
 "72
 [v _spi_comm_ss `VS3366 ~T0 @X0 0 e ]
-"53 slaveo.c
-[v _spi2_pace_write `(v ~T0 @X0 0 sf1`Cuc ]
+"75
+[v _data_in2 `Vuc ~T0 @X0 0 e ]
+"113 slaveo.c
+[c E24409 0 1 2 3 4 5 6 .. ]
+[n E24409 . SEQ_STATE_INIT SEQ_STATE_RX SEQ_STATE_TX SEQ_STATE_TRIGGER SEQ_STATE_QUEUE SEQ_STATE_DONE SEQ_STATE_ERROR  ]
+[c E24418 0 1 2 3 4 .. ]
+[n E24418 . UI_STATE_INIT UI_STATE_HOST UI_STATE_DEBUG UI_STATE_LOG UI_STATE_ERROR  ]
+[c E24425 0 1 2 3 4 5 .. ]
+[n E24425 . BMC_STATE_DISABLE BMC_STATE_COMM BMC_STATE_OFFLINE BMC_STATE_ONLINE BMC_STATE_REMOTE BMC_STATE_ERROR  ]
+[c E24434 0 1 2 9 .. ]
+[n E24434 . BMC_GENERIC BMC_VII80 BMC_E220 BMC_ERROR  ]
+[c E24440 0 1 2 3 4 5 6 .. ]
+[n E24440 . LINK_STATE_IDLE LINK_STATE_ENQ LINK_STATE_EOT LINK_STATE_ACK LINK_STATE_DONE LINK_STATE_NAK LINK_STATE_ERROR  ]
+[c E24381 0 1 2 3 4 5 6 7 8 9 10 11 .. ]
+[n E24381 . DIS_STR DIS_TERM DIS_LOG DIS_LOAD DIS_UNLOAD DIS_PUMP DIS_HELP DIS_SEQUENCE DIS_SEQUENCE_M DIS_ERR DIS_FREE DIS_CLEAR  ]
+"129 ./vconfig.h
+[s S3358 `uc -> 32 `i `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 :1 `uc 1 `E24381 1 `E24381 1 `us 1 `us 1 ]
+[n S3358 terminal_type ack mesgid TID mcode mparm cmdlen log_seq host_display_ack info help_temp ceid log_num ]
+"232
+[s S3359 `E24409 1 `E24418 1 `E24425 1 `E24434 1 `E24440 1 `E24440 1 `E24440 1 `uc -> 128 `i `uc -> 160 `i `uc -> 64 `i `ul 1 `ul 1 `ul 1 `ul 1 `ul 1 `ul 1 `ul 1 `ul 1 `ul 1 `ul 1 `Vul 1 `l 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `E24418 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :4 `uc 1 :4 `uc 1 `S3358 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `Vuc 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `us 1 `us 1 `s 1 `s 1 `uc 1 `uc 1 `s 1 `s 1 `ul 1 ]
+[n S3359 V_data s_state ui_state g_state e_types m_l_state r_l_state t_l_state buf terminal info ticks systemb tx_total rx_total bt_total br_total brn_total btn_total bmc_do bmc_di utc_ticks testing stream function error abort msg_error msg_ret alarm event ui_sw r_checksum t_checksum checksum_error timer_error ping mode_pwm equip_timeout sequences all_errors ceid rbit wbit ebit failed_send failed_receive response uart llid sid ping_count euart vterm vterm_switch uart_speed_fast ticker flipper queue debug help stack help_id rerror speed_spin set_sequ log_s6f11 log_abort log_char v_tx_line v_rx_line tx_volts rx_volts tx_rs232 rx_rs232 secs_value cmd_value utc_cmd_value ]
+"77 ./slaveo.h
+[v _V `S3359 ~T0 @X0 0 e ]
 "163 ./mcc_generated_files/uart1.h
 [v _UART1_is_rx_ready `(a ~T0 @X0 0 ef ]
 "355
@@ -113,9 +132,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _TMR0_Reload `(v ~T0 @X0 0 ef ]
 "75 ./slaveo.h
 [v _channel `Vuc ~T0 @X0 0 e ]
-"170 slaveo.c
+"169 slaveo.c
 [c E23616 0 1 2 4 5 22 23 29 59 60 61 62 63 .. ]
 [n E23616 . channel_ANA0 channel_ANA1 channel_ANA2 channel_ANA4 channel_ANA5 channel_ANC6 channel_ANC7 channel_AND5 channel_VSS channel_Temp channel_DAC1 channel_FVR_Buffer1 channel_FVR_Buffer2  ]
+"4405 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
+[v _SPI2TXB `Vuc ~T0 @X0 0 e@142 ]
 "76 ./slaveo.h
 [v _adc_buffer `Vus ~T0 @X0 -> 0 `x e ]
 "4960 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
@@ -2538,7 +2559,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _SPI2_InterruptHandler `*F24190 ~T0 @X0 1 e ]
 "77
 [v _SPI2_RxInterruptHandler `*F24196 ~T0 @X0 1 e ]
-"90 ./vconfig.h
+"91 ./vconfig.h
 [v _msg_gemcmds `Cuc ~T0 @X0 -> 33 `i e ]
 [i _msg_gemcmds
 :U ..
@@ -2577,7 +2598,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"91
+"92
 [v _msg_freecmds `Cuc ~T0 @X0 -> 32 `i e ]
 [i _msg_freecmds
 :U ..
@@ -2615,7 +2636,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"92
+"93
 [v _msg_gemremote `Cuc ~T0 @X0 -> 26 `i e ]
 [i _msg_gemremote
 :U ..
@@ -2648,7 +2669,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ]
 [v F24580 `Cuc ~T0 @X0 -> 20 `i t ]
-"265
+"266
 [v _spin `F24580 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
@@ -2817,47 +2838,43 @@ Version 4.0 HI-TECH Software Intermediate Code
 "95
 [e = . . _SPI2INTFbits 0 1 -> -> 0 `i `uc ]
 "96
-[e ++ . _spi_stat_ss 8 -> -> 1 `i `Vul ]
-"97
 }
 [e :U 3377 ]
-"98
+"97
 [e :U 3380 ]
 {
 [e = . . _LATBbits 0 1 -> -> 1 `i `uc ]
 }
 [e :U 3379 ]
-"99
+"98
 [e ++ . _spi_stat_ss 9 -> -> 1 `i `Vul ]
-"100
+"99
 [e :U 3383 ]
 {
 [e = . . _LATBbits 0 1 -> -> 0 `i `uc ]
 }
 [e :U 3382 ]
-"102
-[e = _data_in2 _SPI2RXB ]
-"103
+"101
 [e $ ! != -> . . _SPI2STATUSbits 1 3 `i -> 0 `i 3384  ]
 {
-"104
-[e ++ . _spi_stat_ss 14 -> -> 1 `i `Vul ]
-"105
+"102
 }
 [e $U 3385  ]
 [e :U 3384 ]
 {
-"106
+"103
 [e $ ! != -> . _spi_comm_ss 2 `i -> 0 `i 3386  ]
 {
-"107
+"104
 [e ++ . _spi_stat_ss 15 -> -> 1 `i `Vul ]
-"108
+"105
 }
 [e :U 3386 ]
-"109
+"106
 }
 [e :U 3385 ]
+"108
+[e = _data_in2 _SPI2RXB ]
 "110
 [e = *U + &U . _serial_buffer_ss 0 * -> . _serial_buffer_ss 6 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux _data_in2 ]
 "111
@@ -2866,6 +2883,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "112
 [e $ ! == -> . _serial_buffer_ss 6 `i -> 3 `i 3388  ]
 {
+"113
+[e = . _V 18 -> *U + &U . _serial_buffer_ss 0 * -> -> -> 1 `i `ui `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `ul ]
 "114
 [e = _data_in2 -> -> 0 `i `uc ]
 "115
@@ -2875,17 +2894,19 @@ Version 4.0 HI-TECH Software Intermediate Code
 "117
 [e = . . _SPI2STATUSbits 0 2 -> -> 1 `i `uc ]
 "118
+[e ++ . _spi_stat_ss 8 -> -> 1 `i `Vul ]
+"119
+[e ++ . _spi_stat_ss 11 -> -> 1 `i `Vul ]
+"120
 }
 [e $U 3389  ]
 [e :U 3388 ]
 {
-"119
+"121
 [e ++ . _spi_stat_ss 11 -> -> 1 `i `Vul ]
-"120
+"122
 [e $ ! ! != -> . . _SPI2STATUSbits 1 7 `i -> 0 `i 3390  ]
 {
-"122
-[e ( _spi2_pace_write (1 . _serial_buffer_ss 6 ]
 "123
 }
 [e :U 3390 ]
@@ -2936,260 +2957,260 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = . _spi_comm_ss 2 -> -> 0 `i `uc ]
 "144
 [e = _zombie -> -> 0 `i `a ]
-"146
+"145
 [e ++ . _spi_stat_ss 5 -> -> 1 `i `Vul ]
-"147
+"146
 }
 [e :U 3396 ]
-"149
+"148
 [e $ ! == -> _command `i -> 224 `i 3397  ]
 {
-"150
+"149
 [e = _zombie -> -> 0 `i `a ]
-"151
+"150
 [e $ ! != -> ( _UART1_is_tx_ready ..  `i -> 0 `i 3398  ]
 {
-"152
+"151
 [e ( _UART1_Write (1 -> | -> -> << -> -> & -> _data_in2 `i -> -> -> 15 `i `uc `i `uc `i -> -> -> 4 `i `uc `i `uc `i -> _char_txtmp `i `uc ]
-"153
+"152
 }
 [e $U 3399  ]
 [e :U 3398 ]
 {
-"154
+"153
 }
 [e :U 3399 ]
-"155
+"154
 [e = . _serial_buffer_ss 1 _cmd_dummy ]
-"156
+"155
 [e = _cmd_dummy -> -> 103 `i `uc ]
-"157
+"156
 [e = . _spi_comm_ss 3 -> -> 0 `i `uc ]
-"158
+"157
 [e = . _spi_comm_ss 4 -> -> 1 `i `uc ]
-"160
+"159
 [e ( _TMR0_Reload ..  ]
-"161
+"160
 }
 [e :U 3397 ]
-"163
+"162
 [e $ ! == -> _command `i -> 128 `i 3400  ]
 {
-"164
+"163
 [e = _zombie -> -> 0 `i `a ]
-"165
+"164
 [e = . _spi_comm_ss 7 -> -> 0 `i `uc ]
-"166
+"165
 [e = . _spi_comm_ss 2 -> -> 0 `i `uc ]
-"167
+"166
 [e ++ . _spi_stat_ss 0 -> -> 1 `i `Vul ]
-"168
+"167
 [e = _channel -> & -> _data_in2 `i -> 15 `i `uc ]
-"169
+"168
 [e $ ! > -> _channel `i -> 64 `i 3401  ]
 {
-"170
+"169
 [e = _channel -> . `E23616 0 `uc ]
-"171
+"170
 }
 [e :U 3401 ]
+"172
+[e ++ . _spi_stat_ss 11 -> -> 1 `i `Vul ]
 "173
+[e = _SPI2TXB -> & >> -> *U + &U _adc_buffer * -> _channel `ux -> -> # *U &U _adc_buffer `ui `ux `ui -> 8 `i -> -> 255 `i `ui `uc ]
+"174
 [e ++ . _spi_stat_ss 11 -> -> 1 `i `Vul ]
 "175
-[e ( _spi2_pace_write (1 -> & >> -> *U + &U _adc_buffer * -> _channel `ux -> -> # *U &U _adc_buffer `ui `ux `ui -> 8 `i -> -> 255 `i `ui `uc ]
-"176
-[e ++ . _spi_stat_ss 11 -> -> 1 `i `Vul ]
-"178
-[e ( _spi2_pace_write (1 -> & -> *U + &U _adc_buffer * -> _channel `ux -> -> # *U &U _adc_buffer `ui `ux `ui -> -> 255 `i `ui `uc ]
-"180
+[e = _SPI2TXB -> & -> *U + &U _adc_buffer * -> _channel `ux -> -> # *U &U _adc_buffer `ui `ux `ui -> -> 255 `i `ui `uc ]
+"177
 [e = . _spi_comm_ss 4 -> -> 1 `i `uc ]
-"181
+"178
 [e $U 3402  ]
 [e :U 3403 ]
 {
-"182
+"179
 [e = _data_in2 _SPI2RXB ]
-"183
+"180
 }
 [e :U 3402 ]
-"181
+"178
 [e $ ! != -> . . _SPI2STATUSbits 0 3 `i -> 0 `i 3403  ]
 [e :U 3404 ]
-"184
+"181
 [e ( _TMR0_Reload ..  ]
-"185
+"182
 }
 [e :U 3400 ]
-"187
+"184
 [e $ ! == -> _command `i -> 160 `i 3405  ]
 {
-"188
+"185
 [e = _zombie -> -> 0 `i `a ]
-"189
+"186
 [e = . _spi_comm_ss 7 -> -> 0 `i `uc ]
-"190
+"187
 [e = . _spi_comm_ss 2 -> -> 1 `i `uc ]
-"191
+"188
 [e ++ . _spi_stat_ss 1 -> -> 1 `i `Vul ]
-"192
+"189
 [e = _channel _data_in2 ]
-"193
+"190
 [e = . _serial_buffer_ss 6 -> -> 0 `i `uc ]
-"194
+"191
 [e = . _serial_buffer_ss 8 -> -> 1 `i `a ]
-"195
+"192
 [e ++ . _spi_stat_ss 11 -> -> 1 `i `Vul ]
-"196
-[e ( _spi2_pace_write (1 . _serial_buffer_ss 6 ]
-"197
+"193
 [e ++ . _serial_buffer_ss 6 -> -> 1 `i `Vuc ]
-"199
+"195
 [e = . _spi_comm_ss 4 -> -> 1 `i `uc ]
-"200
+"196
 [e ( _TMR0_Reload ..  ]
-"201
+"197
 }
 [e :U 3405 ]
-"203
+"199
 [e $ ! == -> _command `i -> 16 `i 3406  ]
 {
-"204
+"200
 [e = . _spi_comm_ss 2 -> -> 0 `i `uc ]
-"205
+"201
 [e = . _serial_buffer_ss 1 _char_rxtmp ]
-"206
+"202
 [e = _cmd_dummy -> -> 103 `i `uc ]
-"207
+"203
 }
 [e :U 3406 ]
-"209
+"205
 [e $ ! != -> _zombie `i -> 0 `i 3407  ]
 {
-"210
+"206
 [e ++ . _spi_stat_ss 4 -> -> 1 `i `Vul ]
-"211
+"207
 }
 [e :U 3407 ]
-"213
+"209
 [e :UE 3375 ]
 }
-"215
+"211
 [v _slaveo_spi_isr `(v ~T0 @X0 1 ef ]
-"216
+"212
 {
 [e :U _slaveo_spi_isr ]
 [f ]
-"217
+"213
 [e :U 3411 ]
 {
 [e = . . _LATBbits 0 1 -> -> 0 `i `uc ]
 }
 [e :U 3410 ]
-"219
+"214
+[e ++ . _spi_stat_ss 14 -> -> 1 `i `Vul ]
+"215
 [e = _SPI2INTF -> -> 0 `i `uc ]
-"220
+"216
 [e :UE 3408 ]
 }
-"222
+"218
 [v _slaveo_time_isr `(v ~T0 @X0 1 ef ]
-"223
+"219
 {
 [e :U _slaveo_time_isr ]
 [f ]
-"224
+"220
 [e $ ! || != -> . . _SPI2STATUSbits 0 7 `i -> 0 `i != -> . . _SPI2STATUSbits 0 3 `i -> 0 `i 3413  ]
 {
-"226
+"221
 }
 [e :U 3413 ]
-"227
+"222
 [e :U 3416 ]
 {
 [e = . . _LATBbits 0 1 -> -> 0 `i `uc ]
 }
 [e :U 3415 ]
-"228
+"223
 [e :U 3419 ]
 {
 [e = . . _LATBbits 0 3 -> -> 0 `i `uc ]
 }
 [e :U 3418 ]
-"229
+"224
 [e :UE 3412 ]
 }
-"231
+"226
 [v _spi2_tx_wait `(v ~T0 @X0 1 sf ]
-"232
+"227
 {
 [e :U _spi2_tx_wait ]
 [f ]
-"233
+"228
 [v _timeout `ul ~T0 @X0 1 a ]
 [e = _timeout -> -> -> 0 `i `l `ul ]
-"235
+"230
 [e $U 3421  ]
 [e :U 3422 ]
 {
-"236
+"231
 [e $ ! > ++ _timeout -> -> -> 1 `i `l `ul -> -> -> 10000 `i `l `ul 3424  ]
 {
-"237
+"232
 [e $U 3423  ]
-"238
+"233
 }
 [e :U 3424 ]
-"239
+"234
 }
 [e :U 3421 ]
-"235
+"230
 [e $ != -> . . _SPI2STATUSbits 1 5 `i -> 0 `i 3422  ]
 [e :U 3423 ]
-"240
+"235
 [e :UE 3420 ]
 }
-"242
+"237
 [v _spi2_tx_busy `(v ~T0 @X0 1 sf ]
-"243
+"238
 {
 [e :U _spi2_tx_busy ]
 [f ]
-"244
+"239
 [v _timeout `ul ~T0 @X0 1 a ]
 [e = _timeout -> -> -> 0 `i `l `ul ]
-"246
+"241
 [e $U 3426  ]
 [e :U 3427 ]
 {
-"247
+"242
 [e $ ! > ++ _timeout -> -> -> 1 `i `l `ul -> -> -> 10000 `i `l `ul 3429  ]
 {
-"248
+"243
 [e $U 3428  ]
-"249
+"244
 }
 [e :U 3429 ]
-"250
+"245
 }
 [e :U 3426 ]
-"246
+"241
 [e $ != -> . . _SPI2CON2bits 0 5 `i -> 0 `i 3427  ]
 [e :U 3428 ]
-"251
+"246
 [e :UE 3425 ]
 }
-"253
+"248
 [v _spi2_pace_write `(v ~T0 @X0 1 sf1`Cuc ]
-"254
+"249
 {
 [e :U _spi2_pace_write ]
-"253
+"248
 [v _data `Cuc ~T0 @X0 1 r1 ]
-"254
+"249
 [f ]
-"257
+"251
 [e ( _SPI2_ExchangeByte (1 _data ]
-"258
+"252
 [e ( _spi2_tx_busy ..  ]
-"259
+"253
 [e :UE 3430 ]
 }

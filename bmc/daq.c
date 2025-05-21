@@ -49,6 +49,7 @@ bool ADC_OPEN = true, DIO_OPEN = true, ADC_ERROR = false, DEV_OPEN = true,
 	PWM_ERROR = false;
 
 bool DO_OPEN = true, DI_OPEN = true, DO_ERROR = false;
+uint32_t obits;
 
 int init_daq(double min_range, double max_range, int range_update)
 {
@@ -290,7 +291,10 @@ int init_dio(void)
 		if (it == NULL) {
 			comedi_perror("comedi_open");
 			DIO_OPEN = false;
+			DO_OPEN = false;
+			DI_OPEN = false;
 			DEV_OPEN = false;
+			PWM_OPEN = false;
 			return -1;
 		}
 		DEV_OPEN = true;
@@ -361,8 +365,6 @@ int init_dio(void)
 
 int get_data_sample(void)
 {
-	unsigned int obits;
-
 	bmc.datain.D0 = get_dio_bit(0);
 
 	if (JUST_BITS) { // send I/O bit by bit
@@ -375,8 +377,8 @@ int get_data_sample(void)
 		put_dio_bit(6, bmc.dataout.d.D6);
 		put_dio_bit(7, bmc.dataout.d.D7);
 	} else { // send I/O as a byte mask
-		obits = bmc.dataout.dio_buf;
-		comedi_dio_bitfield2(it, subdev_dio, 0xffffffff, &obits, 0);
+		obits = bmc.dataout.dio_buf; // buffer output
+		comedi_dio_bitfield2(it, subdev_dio, obits, &obits, 0);
 	}
 
 	return 0;

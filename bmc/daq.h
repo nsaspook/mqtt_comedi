@@ -25,7 +25,7 @@ extern "C" {
 
 #define LPCHANC        16
 
-#define JUST_BITS true
+#define JUST_BITS false
         /*
          * scale adc result into calibrated units
          * for USB boards, BMC boards use driver ranges

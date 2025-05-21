@@ -433,7 +433,61 @@ DIS_CLEAR 11
 [e E23631 . `uc
 CONTEXT_1 0
 ]
-"170
+"113
+[e E24409 . `uc
+SEQ_STATE_INIT 0
+SEQ_STATE_RX 1
+SEQ_STATE_TX 2
+SEQ_STATE_TRIGGER 3
+SEQ_STATE_QUEUE 4
+SEQ_STATE_DONE 5
+SEQ_STATE_ERROR 6
+]
+[e E24418 . `uc
+UI_STATE_INIT 0
+UI_STATE_HOST 1
+UI_STATE_DEBUG 2
+UI_STATE_LOG 3
+UI_STATE_ERROR 4
+]
+[e E24425 . `uc
+BMC_STATE_DISABLE 0
+BMC_STATE_COMM 1
+BMC_STATE_OFFLINE 2
+BMC_STATE_ONLINE 3
+BMC_STATE_REMOTE 4
+BMC_STATE_ERROR 5
+]
+[e E24434 . `uc
+BMC_GENERIC 0
+BMC_VII80 1
+BMC_E220 2
+BMC_ERROR 9
+]
+[e E24440 . `uc
+LINK_STATE_IDLE 0
+LINK_STATE_ENQ 1
+LINK_STATE_EOT 2
+LINK_STATE_ACK 3
+LINK_STATE_DONE 4
+LINK_STATE_NAK 5
+LINK_STATE_ERROR 6
+]
+[e E24381 . `uc
+DIS_STR 0
+DIS_TERM 1
+DIS_LOG 2
+DIS_LOAD 3
+DIS_UNLOAD 4
+DIS_PUMP 5
+DIS_HELP 6
+DIS_SEQUENCE 7
+DIS_SEQUENCE_M 8
+DIS_ERR 9
+DIS_FREE 10
+DIS_CLEAR 11
+]
+"169
 [e E23616 . `uc
 channel_ANA0 0
 channel_ANA1 1
@@ -889,14 +943,12 @@ channel_FVR_Buffer2 63
 [v _init_slaveo init_slaveo `(v  1 e 1 0 ]
 "84
 [v _slaveo_rx_isr slaveo_rx_isr `(v  1 e 1 0 ]
-"215
+"211
 [v _slaveo_spi_isr slaveo_spi_isr `(v  1 e 1 0 ]
-"222
+"218
 [v _slaveo_time_isr slaveo_time_isr `(v  1 e 1 0 ]
-"242
+"237
 [v _spi2_tx_busy spi2_tx_busy `(v  1 s 1 spi2_tx_busy ]
-"253
-[v _spi2_pace_write spi2_pace_write `(v  1 s 1 spi2_pace_write ]
 "129 /public/bmc/Q84/bmc_slave.X/tic12400.c
 [v _tic12400_reset tic12400_reset `(v  1 e 1 0 ]
 "145
@@ -933,12 +985,12 @@ channel_FVR_Buffer2 63
 [v _UART2_RxInterruptHandler UART2_RxInterruptHandler `*.38(v  1 e 3 0 ]
 "537
 [v _UART2_TxInterruptHandler UART2_TxInterruptHandler `*.38(v  1 e 3 0 ]
-[s S5113 V_help 96 `C[32]uc 1 message 32 0 `C[32]uc 1 display 32 32 `C[32]uc 1 extrams 32 64 ]
+[s S5111 V_help 96 `C[32]uc 1 message 32 0 `C[32]uc 1 display 32 32 `C[32]uc 1 extrams 32 64 ]
 "35 /public/bmc/Q84/bmc_slave.X/msg_text.h
-[v _T T `[4]S5113  1 e 384 0 ]
+[v _T T `[4]S5111  1 e 384 0 ]
 "32 /public/bmc/Q84/bmc_slave.X/rs232.h
 [v _adc_scale_zero adc_scale_zero `Cs  1 e 2 0 ]
-"265 /public/bmc/Q84/bmc_slave.X/vconfig.h
+"266 /public/bmc/Q84/bmc_slave.X/vconfig.h
 [v _spin spin `C[6][20]uc  1 e 120 0 ]
 "153 /opt/microchip/xc8/v3.00/pic/sources/c99/common/doprnt.c
 [v _prec prec `i  1 s 2 prec ]
@@ -1158,18 +1210,6 @@ channel_FVR_Buffer2 63
 "2728
 [u S1604 . 1 `S1595 1 . 1 0 ]
 [v _PIR3bits PIR3bits `VES1604  1 e 1 @1201 ]
-[s S3174 . 1 `uc 1 SPI2RXIF 1 0 :1:0 
-`uc 1 SPI2TXIF 1 0 :1:1 
-`uc 1 SPI2IF 1 0 :1:2 
-`uc 1 TU16BIF 1 0 :1:3 
-`uc 1 TMR3IF 1 0 :1:4 
-`uc 1 TMR3GIF 1 0 :1:5 
-`uc 1 PWM2PIF 1 0 :1:6 
-`uc 1 PWM2IF 1 0 :1:7 
-]
-"2852
-[u S3183 . 1 `S3174 1 . 1 0 ]
-[v _PIR5bits PIR5bits `VES3183  1 e 1 @1203 ]
 [s S3434 . 1 `uc 1 INT1IF 1 0 :1:0 
 `uc 1 CLC2IF 1 0 :1:1 
 `uc 1 CWG1IF 1 0 :1:2 
@@ -1266,7 +1306,7 @@ channel_FVR_Buffer2 63
 [v _SPI1CON1 SPI1CON1 `VEuc  1 e 1 @133 ]
 "3688
 [v _LATD LATD `VEuc  1 e 1 @1217 ]
-[s S4799 . 1 `uc 1 LATD0 1 0 :1:0 
+[s S4797 . 1 `uc 1 LATD0 1 0 :1:0 
 `uc 1 LATD1 1 0 :1:1 
 `uc 1 LATD2 1 0 :1:2 
 `uc 1 LATD3 1 0 :1:3 
@@ -1276,9 +1316,9 @@ channel_FVR_Buffer2 63
 `uc 1 LATD7 1 0 :1:7 
 ]
 "3705
-[u S4808 . 1 `S4799 1 . 1 0 ]
-[v _LATDbits LATDbits `VES4808  1 e 1 @1217 ]
-[s S6119 . 1 `uc 1 SDOP 1 0 :1:0 
+[u S4806 . 1 `S4797 1 . 1 0 ]
+[v _LATDbits LATDbits `VES4806  1 e 1 @1217 ]
+[s S6252 . 1 `uc 1 SDOP 1 0 :1:0 
 `uc 1 SDIP 1 0 :1:1 
 `uc 1 SSP 1 0 :1:2 
 `uc 1 . 1 0 :1:3 
@@ -1288,7 +1328,7 @@ channel_FVR_Buffer2 63
 `uc 1 SMP 1 0 :1:7 
 ]
 "3714
-[s S6128 . 1 `uc 1 SPI1SDOP 1 0 :1:0 
+[s S6261 . 1 `uc 1 SPI1SDOP 1 0 :1:0 
 `uc 1 SPI1SDIP 1 0 :1:1 
 `uc 1 SPI1SSP 1 0 :1:2 
 `uc 1 . 1 0 :1:3 
@@ -1297,17 +1337,17 @@ channel_FVR_Buffer2 63
 `uc 1 SPI1CKE 1 0 :1:6 
 `uc 1 SPI1SMP 1 0 :1:7 
 ]
-[u S6137 . 1 `S6119 1 . 1 0 `S6128 1 . 1 0 ]
-[v _SPI1CON1bits SPI1CON1bits `VES6137  1 e 1 @133 ]
+[u S6270 . 1 `S6252 1 . 1 0 `S6261 1 . 1 0 ]
+[v _SPI1CON1bits SPI1CON1bits `VES6270  1 e 1 @133 ]
 "3750
 [v _LATE LATE `VEuc  1 e 1 @1218 ]
-[s S4843 . 1 `uc 1 LATE0 1 0 :1:0 
+[s S4841 . 1 `uc 1 LATE0 1 0 :1:0 
 `uc 1 LATE1 1 0 :1:1 
 `uc 1 LATE2 1 0 :1:2 
 ]
 "3762
-[u S4847 . 1 `S4843 1 . 1 0 ]
-[v _LATEbits LATEbits `VES4847  1 e 1 @1218 ]
+[u S4845 . 1 `S4841 1 . 1 0 ]
+[v _LATEbits LATEbits `VES4845  1 e 1 @1218 ]
 "3782
 [v _TRISA TRISA `VEuc  1 e 1 @1222 ]
 "3789
@@ -1324,7 +1364,7 @@ channel_FVR_Buffer2 63
 `uc 1 TXWE 1 0 :1:7 
 ]
 "3894
-[s S4868 . 1 `uc 1 SPI1RXBF 1 0 :1:0 
+[s S4866 . 1 `uc 1 SPI1RXBF 1 0 :1:0 
 `uc 1 . 1 0 :1:1 
 `uc 1 SPI1CLRBF 1 0 :1:2 
 `uc 1 SPI1RXRE 1 0 :1:3 
@@ -1333,8 +1373,8 @@ channel_FVR_Buffer2 63
 `uc 1 . 1 0 :1:6 
 `uc 1 SPI1TXWE 1 0 :1:7 
 ]
-[u S4877 . 1 `S4011 1 . 1 0 `S4868 1 . 1 0 ]
-[v _SPI1STATUSbits SPI1STATUSbits `VES4877  1 e 1 @135 ]
+[u S4875 . 1 `S4011 1 . 1 0 `S4866 1 . 1 0 ]
+[v _SPI1STATUSbits SPI1STATUSbits `VES4875  1 e 1 @135 ]
 "3906
 [v _TRISC TRISC `VEuc  1 e 1 @1224 ]
 [s S1542 . 1 `uc 1 TRISC0 1 0 :1:0 
@@ -1377,7 +1417,7 @@ channel_FVR_Buffer2 63
 `uc 1 SRMTIF 1 0 :1:7 
 ]
 "4086
-[s S4717 . 1 `uc 1 . 1 0 :1:0 
+[s S4715 . 1 `uc 1 . 1 0 :1:0 
 `uc 1 SPI1TXUIF 1 0 :1:1 
 `uc 1 SPI1RXOIF 1 0 :1:2 
 `uc 1 . 1 0 :1:3 
@@ -1386,8 +1426,8 @@ channel_FVR_Buffer2 63
 `uc 1 SPI1TCZIF 1 0 :1:6 
 `uc 1 SPI1SRMTIF 1 0 :1:7 
 ]
-[u S4726 . 1 `S4262 1 . 1 0 `S4717 1 . 1 0 ]
-[v _SPI1INTFbits SPI1INTFbits `VES4726  1 e 1 @138 ]
+[u S4724 . 1 `S4262 1 . 1 0 `S4715 1 . 1 0 ]
+[v _SPI1INTFbits SPI1INTFbits `VES4724  1 e 1 @138 ]
 "4243
 [v _SPI1CLK SPI1CLK `VEuc  1 e 1 @140 ]
 "4335
@@ -1408,10 +1448,6 @@ channel_FVR_Buffer2 63
 [v _INTCON0bits INTCON0bits `VES41  1 e 1 @1238 ]
 "4405
 [v _SPI2TXB SPI2TXB `VEuc  1 e 1 @142 ]
-"4475
-[v _SPI2TCNT SPI2TCNT `VEus  1 e 2 @143 ]
-"4482
-[v _SPI2TCNTL SPI2TCNTL `VEuc  1 e 1 @143 ]
 "4522
 [v _SPI2CON0 SPI2CON0 `VEuc  1 e 1 @145 ]
 "4543
@@ -1427,7 +1463,7 @@ channel_FVR_Buffer2 63
 [v _SPI2CON1 SPI2CON1 `VEuc  1 e 1 @146 ]
 "4690
 [v _SPI2CON2 SPI2CON2 `VEuc  1 e 1 @147 ]
-[s S5630 . 1 `uc 1 RXR 1 0 :1:0 
+[s S5628 . 1 `uc 1 RXR 1 0 :1:0 
 `uc 1 TXR 1 0 :1:1 
 `uc 1 SSET 1 0 :1:2 
 `uc 1 . 1 0 :3:3 
@@ -1435,15 +1471,15 @@ channel_FVR_Buffer2 63
 `uc 1 BUSY 1 0 :1:7 
 ]
 "4713
-[s S5637 . 1 `uc 1 SPI2RXR 1 0 :1:0 
+[s S5635 . 1 `uc 1 SPI2RXR 1 0 :1:0 
 `uc 1 SPI2TXR 1 0 :1:1 
 `uc 1 SPI2SSET 1 0 :1:2 
 `uc 1 . 1 0 :3:3 
 `uc 1 SPI2SSFLT 1 0 :1:6 
 `uc 1 SPI2BUSY 1 0 :1:7 
 ]
-[u S5644 . 1 `S5630 1 . 1 0 `S5637 1 . 1 0 ]
-[v _SPI2CON2bits SPI2CON2bits `VES5644  1 e 1 @147 ]
+[u S5642 . 1 `S5628 1 . 1 0 `S5635 1 . 1 0 ]
+[v _SPI2CON2bits SPI2CON2bits `VES5642  1 e 1 @147 ]
 "4795
 [s S4020 . 1 `uc 1 SPI2RXBF 1 0 :1:0 
 `uc 1 . 1 0 :1:1 
@@ -2169,14 +2205,14 @@ channel_FVR_Buffer2 63
 [v _IVTBASEH IVTBASEH `VEuc  1 e 1 @1118 ]
 "64784
 [v _IVTBASEU IVTBASEU `VEuc  1 e 1 @1119 ]
-[s S4636 spi_link_type 28 `uc 1 SPI_LCD 1 0 :1:0 
+[s S4634 spi_link_type 28 `uc 1 SPI_LCD 1 0 :1:0 
 `uc 1 SPI_AUX 1 0 :1:1 
 `uc 1 LCD_TIMER 1 0 :1:2 
 `uc 1 LCD_DATA 1 0 :1:3 
 `uc 1 READ_DATA 1 0 :1:4 
 `us 1 delay 2 1 `uc 1 config 1 3 `*.39uc 1 txbuf 2 4 `*.39uc 1 rxbuf 2 6 `VEl 1 int_count 4 8 `VEl 1 int_read 4 12 `VEl 1 des_bytes 4 16 `VEl 1 src_bytes 4 20 `VEl 1 or_bytes 4 24 ]
 "21 /public/bmc/Q84/bmc_slave.X/eadog.c
-[v _spi_link spi_link `VES4636  1 e 28 0 ]
+[v _spi_link spi_link `VES4634  1 e 28 0 ]
 "29
 [v _inx inx `VEuc  1 s 1 inx ]
 "30
@@ -2214,7 +2250,7 @@ channel_FVR_Buffer2 63
 ]
 "254
 [v _spi_comm_ss spi_comm_ss `VES3972  1 e 1 0 ]
-[s S3981 spi_stat_type_ss 82 `VEul 1 adc_count 4 0 `VEul 1 port_count 4 4 `VEul 1 port_error_count 4 8 `VEul 1 port_data_count 4 12 `VEul 1 zombie_count 4 16 `VEul 1 char_count 4 20 `VEul 1 char_error_count 4 24 `VEul 1 rxof_bit 4 28 `VEul 1 txuf_bit 4 32 `VEul 1 slave_int_count 4 36 `VEul 1 last_slave_int_count 4 40 `VEul 1 slave_tx_count 4 44 `VEul 1 comm_count 4 48 `VEul 1 idle_count 4 52 `VEul 1 spi_error_count 4 56 `VEul 1 spi_noerror_count 4 60 `VEuc 1 comm_ok 1 64 `VE[16]uc 1 rx_raw_buffer 16 65 `VEuc 1 raw_index 1 81 ]
+[s S3981 spi_stat_type_ss 82 `VEul 1 adc_count 4 0 `VEul 1 port_count 4 4 `VEul 1 port_error_count 4 8 `VEul 1 port_data_count 4 12 `VEul 1 zombie_count 4 16 `VEul 1 char_count 4 20 `VEul 1 char_error_count 4 24 `VEul 1 rxof_bit 4 28 `VEul 1 txdone_bit 4 32 `VEul 1 slave_int_count 4 36 `VEul 1 last_slave_int_count 4 40 `VEul 1 slave_tx_count 4 44 `VEul 1 comm_count 4 48 `VEul 1 idle_count 4 52 `VEul 1 spi_error_count 4 56 `VEul 1 spi_noerror_count 4 60 `VEuc 1 comm_ok 1 64 `VE[16]uc 1 rx_raw_buffer 16 65 `VEuc 1 raw_index 1 81 ]
 "255
 [v _spi_stat_ss spi_stat_ss `VES3981  1 e 82 0 ]
 [s S4001 serial_buffer_type_ss 27 `VE[16]uc 1 data 16 0 `VEuc 1 tx_buffer 1 16 `VEuc 1 adcl 1 17 `VEuc 1 adc2 1 18 `VEuc 1 adch 1 19 `VEuc 1 command 1 20 `VEuc 1 raw_index 1 21 `VEul 1 place 4 22 `VEa 1 make_value 1 26 ]
@@ -2234,17 +2270,17 @@ channel_FVR_Buffer2 63
 "269
 [v _mode_sw mode_sw `VEuc  1 e 1 0 ]
 [v _faker faker `VEuc  1 e 1 0 ]
-[s S5990 . 3 `uc 1 cmd 1 0 `us 1 out 2 1 ]
+[s S6123 . 3 `uc 1 cmd 1 0 `us 1 out 2 1 ]
 "7 /public/bmc/Q84/bmc_slave.X/mc33996.c
-[v _mc_onoff mc_onoff `S5990  1 e 3 0 ]
+[v _mc_onoff mc_onoff `S6123  1 e 3 0 ]
 "12
-[v _mc_pwm mc_pwm `CS5990  1 e 3 0 ]
+[v _mc_pwm mc_pwm `CS6123  1 e 3 0 ]
 "22
-[v _mc_gsrc mc_gsrc `CS5990  1 e 3 0 ]
+[v _mc_gsrc mc_gsrc `CS6123  1 e 3 0 ]
 "27
-[v _mc_sfpd mc_sfpd `CS5990  1 e 3 0 ]
+[v _mc_sfpd mc_sfpd `CS6123  1 e 3 0 ]
 "32
-[v _mc_olce mc_olce `CS5990  1 e 3 0 ]
+[v _mc_olce mc_olce `CS6123  1 e 3 0 ]
 "56 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/adc.c
 [v _ADC_ConversionComplete_ISR ADC_ConversionComplete_ISR `*.38(v  1 s 3 ADC_ConversionComplete_ISR ]
 "57
@@ -2337,41 +2373,41 @@ channel_FVR_Buffer2 63
 [v _UART2_OverrunErrorHandler UART2_OverrunErrorHandler `*.38(v  1 e 3 0 ]
 "81
 [v _UART2_ErrorHandler UART2_ErrorHandler `*.38(v  1 e 3 0 ]
-[s S5132 D_data 2050 `[4][4][128]uc 1 lcd 2048 0 `uc 1 vterm 1 2048 :2:0 
+[s S5130 D_data 2050 `[4][4][128]uc 1 lcd 2048 0 `uc 1 vterm 1 2048 :2:0 
 `E24381 1 last_info 1 2049 ]
 "13 /public/bmc/Q84/bmc_slave.X/mconfig.c
-[v _D D `S5132  1 s 2050 D ]
-[s S5819 . 4 `uc 1 data3 1 0 `uc 1 data2 1 1 `uc 1 data1 1 2 `uc 1 data0 1 3 ]
+[v _D D `S5130  1 s 2050 D ]
+[s S5952 . 4 `uc 1 data3 1 0 `uc 1 data2 1 1 `uc 1 data1 1 2 `uc 1 data0 1 3 ]
 "13 /public/bmc/Q84/bmc_slave.X/tic12400.c
-[v _setup32 setup32 `CS5819  1 e 4 0 ]
+[v _setup32 setup32 `CS5952  1 e 4 0 ]
 "19
-[v _setup21 setup21 `CS5819  1 e 4 0 ]
+[v _setup21 setup21 `CS5952  1 e 4 0 ]
 "25
-[v _setup1c setup1c `CS5819  1 e 4 0 ]
+[v _setup1c setup1c `CS5952  1 e 4 0 ]
 "31
-[v _setup1b setup1b `CS5819  1 e 4 0 ]
+[v _setup1b setup1b `CS5952  1 e 4 0 ]
 "37
-[v _setup1a setup1a `CS5819  1 e 4 0 ]
+[v _setup1a setup1a `CS5952  1 e 4 0 ]
 "43
-[v _setup1a_trigger setup1a_trigger `CS5819  1 e 4 0 ]
+[v _setup1a_trigger setup1a_trigger `CS5952  1 e 4 0 ]
 "49
-[v _setup22 setup22 `CS5819  1 e 4 0 ]
+[v _setup22 setup22 `CS5952  1 e 4 0 ]
 "55
-[v _setup23 setup23 `CS5819  1 e 4 0 ]
+[v _setup23 setup23 `CS5952  1 e 4 0 ]
 "61
-[v _setup24 setup24 `CS5819  1 e 4 0 ]
+[v _setup24 setup24 `CS5952  1 e 4 0 ]
 "67
-[v _setup25 setup25 `CS5819  1 e 4 0 ]
+[v _setup25 setup25 `CS5952  1 e 4 0 ]
 "73
-[v _setup1d setup1d `CS5819  1 e 4 0 ]
+[v _setup1d setup1d `CS5952  1 e 4 0 ]
 "79
-[v _ticread05 ticread05 `CS5819  1 e 4 0 ]
+[v _ticread05 ticread05 `CS5952  1 e 4 0 ]
 "85
-[v _ticdevid01 ticdevid01 `CS5819  1 e 4 0 ]
+[v _ticdevid01 ticdevid01 `CS5952  1 e 4 0 ]
 "91
-[v _ticstat02 ticstat02 `CS5819  1 e 4 0 ]
+[v _ticstat02 ticstat02 `CS5952  1 e 4 0 ]
 "97
-[v _ticreset1a ticreset1a `CS5819  1 e 4 0 ]
+[v _ticreset1a ticreset1a `CS5952  1 e 4 0 ]
 "107
 [v _tic12400_status tic12400_status `VEul  1 e 4 0 ]
 [v _tic12400_counts tic12400_counts `VEul  1 e 4 0 ]
@@ -2395,13 +2431,13 @@ channel_FVR_Buffer2 63
 [v _main main `(v  1 e 1 0 ]
 {
 "280
-[v main@speed_text speed_text `*.32uc  1 a 2 77 ]
+[v main@speed_text speed_text `*.32uc  1 a 2 55 ]
 "368
-[v main@few few `us  1 a 2 75 ]
+[v main@few few `us  1 a 2 53 ]
 "280
-[v main@s s `*.39uc  1 a 2 73 ]
+[v main@s s `*.39uc  1 a 2 51 ]
 "281
-[v main@slowly slowly `uc  1 a 1 72 ]
+[v main@slowly slowly `uc  1 a 1 50 ]
 "567
 [v main@switcher switcher `uc  1 s 1 switcher ]
 "656
@@ -2415,22 +2451,22 @@ channel_FVR_Buffer2 63
 [v _line_status line_status `(uc  1 s 1 line_status ]
 {
 "44
-[v line_status@status_c status_c `uc  1 a 1 13 ]
+[v line_status@status_c status_c `uc  1 a 1 7 ]
 "42
-[v line_status@value value `Cus  1 p 2 11 ]
+[v line_status@value value `Cus  1 p 2 5 ]
 "59
 } 0
 "7 /opt/microchip/xc8/v3.00/pic/sources/c99/common/awdiv.c
 [v ___awdiv __awdiv `(i  1 e 2 0 ]
 {
 "10
-[v ___awdiv@quotient quotient `i  1 a 2 17 ]
+[v ___awdiv@quotient quotient `i  1 a 2 11 ]
 "11
-[v ___awdiv@sign sign `uc  1 a 1 16 ]
-[v ___awdiv@counter counter `uc  1 a 1 15 ]
+[v ___awdiv@sign sign `uc  1 a 1 10 ]
+[v ___awdiv@counter counter `uc  1 a 1 9 ]
 "7
-[v ___awdiv@dividend dividend `i  1 p 2 11 ]
-[v ___awdiv@divisor divisor `i  1 p 2 13 ]
+[v ___awdiv@dividend dividend `i  1 p 2 5 ]
+[v ___awdiv@divisor divisor `i  1 p 2 7 ]
 "41
 } 0
 "315 /public/bmc/Q84/bmc_slave.X/tic12400.c
@@ -2457,8 +2493,8 @@ channel_FVR_Buffer2 63
 "244
 [v _tic12400_wr tic12400_wr `R(ul  1 e 4 0 ]
 {
-[s S5819 . 4 `uc 1 data3 1 0 `uc 1 data2 1 1 `uc 1 data1 1 2 `uc 1 data0 1 3 ]
-[v tic12400_wr@buffer buffer `*.32CS5819  1 p 2 -2 ]
+[s S5952 . 4 `uc 1 data3 1 0 `uc 1 data2 1 1 `uc 1 data1 1 2 `uc 1 data0 1 3 ]
+[v tic12400_wr@buffer buffer `*.32CS5952  1 p 2 -2 ]
 [v tic12400_wr@del del `us  1 p 2 -4 ]
 "270
 } 0
@@ -2495,7 +2531,7 @@ channel_FVR_Buffer2 63
 "6 /opt/microchip/xc8/v3.00/pic/sources/c99/common/rand.c
 [v _srand srand `(v  1 e 1 0 ]
 {
-[v srand@s s `ui  1 p 2 11 ]
+[v srand@s s `ui  1 p 2 5 ]
 "9
 } 0
 "671 /public/bmc/Q84/bmc_slave.X/main.c
@@ -2503,14 +2539,14 @@ channel_FVR_Buffer2 63
 {
 [v spinners@shape shape `uc  1 p 1 wreg ]
 "674
-[v spinners@c c `uc  1 a 1 19 ]
+[v spinners@c c `uc  1 a 1 13 ]
 "671
 [v spinners@shape shape `uc  1 p 1 wreg ]
-[v spinners@reset reset `Cuc  1 p 1 15 ]
+[v spinners@reset reset `Cuc  1 p 1 9 ]
 "673
 [v spinners@s s `[6]uc  1 s 6 s ]
 "676
-[v spinners@shape shape `uc  1 p 1 20 ]
+[v spinners@shape shape `uc  1 p 1 14 ]
 "685
 } 0
 "101 /public/bmc/Q84/bmc_slave.X/mconfig.c
@@ -2519,7 +2555,7 @@ channel_FVR_Buffer2 63
 [v set_vterm@vterm vterm `Cuc  1 p 1 wreg ]
 [v set_vterm@vterm vterm `Cuc  1 p 1 wreg ]
 "103
-[v set_vterm@vterm vterm `Cuc  1 p 1 12 ]
+[v set_vterm@vterm vterm `Cuc  1 p 1 6 ]
 "105
 } 0
 "234
@@ -2530,7 +2566,7 @@ channel_FVR_Buffer2 63
 "236
 [v set_display_info@old_info old_info `E24381  1 s 1 old_info ]
 "238
-[v set_display_info@new_response_info new_response_info `CE24381  1 p 1 11 ]
+[v set_display_info@new_response_info new_response_info `CE24381  1 p 1 5 ]
 "243
 } 0
 "23 /public/bmc/Q84/bmc_slave.X/timers.c
@@ -2550,7 +2586,7 @@ channel_FVR_Buffer2 63
 [v update_lcd@vterm vterm `uc  1 p 1 wreg ]
 [v update_lcd@vterm vterm `uc  1 p 1 wreg ]
 "73
-[v update_lcd@vterm vterm `uc  1 p 1 28 ]
+[v update_lcd@vterm vterm `uc  1 p 1 22 ]
 "88
 } 0
 "281 /public/bmc/Q84/bmc_slave.X/eadog.c
@@ -2558,13 +2594,13 @@ channel_FVR_Buffer2 63
 {
 [v eaDogM_WriteStringAtPos@r r `Cuc  1 p 1 wreg ]
 "283
-[v eaDogM_WriteStringAtPos@row row `uc  1 a 1 23 ]
+[v eaDogM_WriteStringAtPos@row row `uc  1 a 1 17 ]
 "281
 [v eaDogM_WriteStringAtPos@r r `Cuc  1 p 1 wreg ]
-[v eaDogM_WriteStringAtPos@c c `Cuc  1 p 1 19 ]
-[v eaDogM_WriteStringAtPos@strPtr strPtr `*.39uc  1 p 2 20 ]
+[v eaDogM_WriteStringAtPos@c c `Cuc  1 p 1 13 ]
+[v eaDogM_WriteStringAtPos@strPtr strPtr `*.39uc  1 p 2 14 ]
 "286
-[v eaDogM_WriteStringAtPos@r r `Cuc  1 p 1 22 ]
+[v eaDogM_WriteStringAtPos@r r `Cuc  1 p 1 16 ]
 "320
 } 0
 "265
@@ -2573,16 +2609,16 @@ channel_FVR_Buffer2 63
 [v send_lcd_pos_dma@strPtr strPtr `Cuc  1 p 1 wreg ]
 [v send_lcd_pos_dma@strPtr strPtr `Cuc  1 p 1 wreg ]
 "267
-[v send_lcd_pos_dma@strPtr strPtr `Cuc  1 p 1 13 ]
+[v send_lcd_pos_dma@strPtr strPtr `Cuc  1 p 1 7 ]
 "279
 } 0
 "166
 [v _eaDogM_WriteString eaDogM_WriteString `(v  1 e 1 0 ]
 {
 "168
-[v eaDogM_WriteString@len len `uc  1 a 1 17 ]
+[v eaDogM_WriteString@len len `uc  1 a 1 11 ]
 "166
-[v eaDogM_WriteString@strPtr strPtr `*.39uc  1 p 2 15 ]
+[v eaDogM_WriteString@strPtr strPtr `*.39uc  1 p 2 9 ]
 "187
 } 0
 "19 /public/bmc/Q84/bmc_slave.X/mconfig.c
@@ -2593,7 +2629,7 @@ channel_FVR_Buffer2 63
 "54 /public/bmc/Q84/bmc_slave.X/mc33996.c
 [v _mc33996_update mc33996_update `(v  1 e 1 0 ]
 {
-[v mc33996_update@data data `us  1 p 2 14 ]
+[v mc33996_update@data data `us  1 p 2 8 ]
 "59
 } 0
 "42
@@ -2604,8 +2640,8 @@ channel_FVR_Buffer2 63
 "245 /public/bmc/Q84/bmc_slave.X/eadog.c
 [v _send_spi1_mc33996_dma send_spi1_mc33996_dma `(v  1 e 1 0 ]
 {
-[v send_spi1_mc33996_dma@strPtr strPtr `*.34uc  1 p 2 11 ]
-[v send_spi1_mc33996_dma@len len `Cuc  1 p 1 13 ]
+[v send_spi1_mc33996_dma@strPtr strPtr `*.34uc  1 p 2 5 ]
+[v send_spi1_mc33996_dma@len len `Cuc  1 p 1 7 ]
 "260
 } 0
 "4 /opt/microchip/xc8/v3.00/pic/sources/c99/common/memcpy.c
@@ -2638,7 +2674,7 @@ channel_FVR_Buffer2 63
 [v _init_slaveo init_slaveo `(v  1 e 1 0 ]
 {
 "68
-[v init_slaveo@val val `uc  1 a 1 14 ]
+[v init_slaveo@val val `uc  1 a 1 8 ]
 "82
 } 0
 "96 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/tmr0.c
@@ -2652,7 +2688,7 @@ channel_FVR_Buffer2 63
 [v ADC_SelectContext@context context `E23300  1 p 1 wreg ]
 [v ADC_SelectContext@context context `E23300  1 p 1 wreg ]
 "196
-[v ADC_SelectContext@context context `E23300  1 p 1 11 ]
+[v ADC_SelectContext@context context `E23300  1 p 1 5 ]
 "197
 } 0
 "49 /public/bmc/Q84/bmc_slave.X/eadog.c
@@ -2664,20 +2700,20 @@ channel_FVR_Buffer2 63
 [v _wdtdelay wdtdelay `(v  1 s 1 wdtdelay ]
 {
 "613
-[v wdtdelay@dcount dcount `ul  1 a 4 15 ]
+[v wdtdelay@dcount dcount `ul  1 a 4 9 ]
 "611
-[v wdtdelay@delay delay `Cul  1 p 4 11 ]
+[v wdtdelay@delay delay `Cul  1 p 4 5 ]
 "618
 } 0
 "3 /opt/microchip/xc8/v3.00/pic/sources/c99/common/memset.c
 [v _memset memset `(*.39v  1 e 3 0 ]
 {
 "5
-[v memset@p p `*.39uc  1 a 2 17 ]
+[v memset@p p `*.39uc  1 a 2 11 ]
 "3
-[v memset@dest dest `*.39v  1 p 2 11 ]
-[v memset@c c `i  1 p 2 13 ]
-[v memset@n n `ui  1 p 2 15 ]
+[v memset@dest dest `*.39v  1 p 2 5 ]
+[v memset@c c `i  1 p 2 7 ]
+[v memset@n n `ui  1 p 2 9 ]
 "10
 } 0
 "176 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/dma3.c
@@ -2686,7 +2722,7 @@ channel_FVR_Buffer2 63
 [v DMA3_SetDMAPriority@priority priority `uc  1 p 1 wreg ]
 [v DMA3_SetDMAPriority@priority priority `uc  1 p 1 wreg ]
 "179
-[v DMA3_SetDMAPriority@priority priority `uc  1 p 1 11 ]
+[v DMA3_SetDMAPriority@priority priority `uc  1 p 1 5 ]
 "186
 } 0
 "169 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/dma2.c
@@ -2700,7 +2736,7 @@ channel_FVR_Buffer2 63
 [v DMA2_SetDMAPriority@priority priority `uc  1 p 1 wreg ]
 [v DMA2_SetDMAPriority@priority priority `uc  1 p 1 wreg ]
 "179
-[v DMA2_SetDMAPriority@priority priority `uc  1 p 1 11 ]
+[v DMA2_SetDMAPriority@priority priority `uc  1 p 1 5 ]
 "186
 } 0
 "167 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/dma1.c
@@ -2714,7 +2750,7 @@ channel_FVR_Buffer2 63
 [v DMA1_SetDMAPriority@priority priority `uc  1 p 1 wreg ]
 [v DMA1_SetDMAPriority@priority priority `uc  1 p 1 wreg ]
 "177
-[v DMA1_SetDMAPriority@priority priority `uc  1 p 1 11 ]
+[v DMA1_SetDMAPriority@priority priority `uc  1 p 1 5 ]
 "184
 } 0
 "345 /public/bmc/Q84/bmc_slave.X/eadog.c
@@ -2723,7 +2759,7 @@ channel_FVR_Buffer2 63
 [v eaDogM_WriteCommand@cmd cmd `Cuc  1 p 1 wreg ]
 [v eaDogM_WriteCommand@cmd cmd `Cuc  1 p 1 wreg ]
 "348
-[v eaDogM_WriteCommand@cmd cmd `Cuc  1 p 1 15 ]
+[v eaDogM_WriteCommand@cmd cmd `Cuc  1 p 1 9 ]
 "352
 } 0
 "192
@@ -2732,7 +2768,7 @@ channel_FVR_Buffer2 63
 [v send_lcd_cmd_dma@strPtr strPtr `Cuc  1 p 1 wreg ]
 [v send_lcd_cmd_dma@strPtr strPtr `Cuc  1 p 1 wreg ]
 "194
-[v send_lcd_cmd_dma@strPtr strPtr `Cuc  1 p 1 14 ]
+[v send_lcd_cmd_dma@strPtr strPtr `Cuc  1 p 1 8 ]
 "196
 } 0
 "201
@@ -2741,7 +2777,7 @@ channel_FVR_Buffer2 63
 [v send_lcd_data_dma@strPtr strPtr `Cuc  1 p 1 wreg ]
 [v send_lcd_data_dma@strPtr strPtr `Cuc  1 p 1 wreg ]
 "203
-[v send_lcd_data_dma@strPtr strPtr `Cuc  1 p 1 13 ]
+[v send_lcd_data_dma@strPtr strPtr `Cuc  1 p 1 7 ]
 "213
 } 0
 "395
@@ -2762,13 +2798,13 @@ channel_FVR_Buffer2 63
 "119
 [v _DMA1_SetSourceSize DMA1_SetSourceSize `(v  1 e 1 0 ]
 {
-[v DMA1_SetSourceSize@size size `us  1 p 2 11 ]
+[v DMA1_SetSourceSize@size size `us  1 p 2 5 ]
 "123
 } 0
 "125
 [v _DMA1_SetDestinationSize DMA1_SetDestinationSize `(v  1 e 1 0 ]
 {
-[v DMA1_SetDestinationSize@size size `us  1 p 2 11 ]
+[v DMA1_SetDestinationSize@size size `us  1 p 2 5 ]
 "129
 } 0
 "49 /public/bmc/Q84/bmc_slave.X/mconfig.c
@@ -2777,243 +2813,243 @@ channel_FVR_Buffer2 63
 [v check_help@flipper flipper `Ca  1 p 1 wreg ]
 [v check_help@flipper flipper `Ca  1 p 1 wreg ]
 "54
-[v check_help@flipper flipper `Ca  1 p 1 66 ]
+[v check_help@flipper flipper `Ca  1 p 1 44 ]
 "65
 } 0
 "13 /opt/microchip/xc8/v3.00/pic/sources/c99/common/nf_snprintf.c
 [v _snprintf snprintf `(i  1 e 2 0 ]
 {
-[u S6637 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
+[u S6770 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
 "17
-[s S6640 _IO_FILE 11 `S6637 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
-[v snprintf@f f `S6640  1 a 11 55 ]
+[s S6773 _IO_FILE 11 `S6770 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
+[v snprintf@f f `S6773  1 a 11 33 ]
 "16
-[v snprintf@ap ap `[1]*.39v  1 a 2 53 ]
+[v snprintf@ap ap `[1]*.39v  1 a 2 31 ]
 "15
-[v snprintf@cnt cnt `i  1 a 2 51 ]
+[v snprintf@cnt cnt `i  1 a 2 29 ]
 "13
-[v snprintf@s s `*.39uc  1 p 2 24 ]
-[v snprintf@n n `ui  1 p 2 26 ]
-[v snprintf@fmt fmt `*.32Cuc  1 p 2 28 ]
+[v snprintf@s s `*.39uc  1 p 2 2 ]
+[v snprintf@n n `ui  1 p 2 4 ]
+[v snprintf@fmt fmt `*.32Cuc  1 p 2 6 ]
 "39
 } 0
 "1817 /opt/microchip/xc8/v3.00/pic/sources/c99/common/doprnt.c
 [v _vfprintf vfprintf `(i  1 e 2 0 ]
 {
 "1820
-[v vfprintf@cfmt cfmt `*.32uc  1 a 2 51 ]
-[s S6675 _IO_FILE 0 ]
+[v vfprintf@cfmt cfmt `*.32uc  1 a 2 0 ]
+[s S6808 _IO_FILE 0 ]
 "1817
-[v vfprintf@fp fp `*.39S6675  1 p 2 18 ]
-[v vfprintf@fmt fmt `*.32Cuc  1 p 2 20 ]
-[v vfprintf@ap ap `*.39*.39v  1 p 2 22 ]
+[v vfprintf@fp fp `*.39S6808  1 p 2 8 ]
+[v vfprintf@fmt fmt `*.32Cuc  1 p 2 10 ]
+[v vfprintf@ap ap `*.39*.39v  1 p 2 12 ]
 "1840
 } 0
 "1177
 [v _vfpfcnvrt vfpfcnvrt `(i  1 s 2 vfpfcnvrt ]
 {
-[u S6700 . 4 `l 1 sint 4 0 `ul 1 uint 4 0 `d 1 f 4 0 ]
+[u S6833 . 4 `l 1 sint 4 0 `ul 1 uint 4 0 `d 1 f 4 0 ]
 "1188
-[v vfpfcnvrt@convarg convarg `S6700  1 a 4 11 ]
+[v vfpfcnvrt@convarg convarg `S6833  1 a 4 1 ]
 "1179
-[v vfpfcnvrt@cp cp `*.32uc  1 a 2 16 ]
-[v vfpfcnvrt@c c `uc  1 a 1 15 ]
+[v vfpfcnvrt@cp cp `*.32uc  1 a 2 6 ]
+[v vfpfcnvrt@c c `uc  1 a 1 5 ]
 "1180
-[v vfpfcnvrt@done done `a  1 a 1 10 ]
-[s S6675 _IO_FILE 0 ]
+[v vfpfcnvrt@done done `a  1 a 1 0 ]
+[s S6808 _IO_FILE 0 ]
 "1177
-[v vfpfcnvrt@fp fp `*.39S6675  1 p 2 0 ]
-[v vfpfcnvrt@fmt fmt `*.39*.32uc  1 p 2 2 ]
-[v vfpfcnvrt@ap ap `*.39*.39v  1 p 2 4 ]
+[v vfpfcnvrt@fp fp `*.39S6808  1 p 2 51 ]
+[v vfpfcnvrt@fmt fmt `*.39*.32uc  1 p 2 53 ]
+[v vfpfcnvrt@ap ap `*.39*.39v  1 p 2 55 ]
 "1814
 } 0
 "1052
 [v _xtoa xtoa `(i  1 s 2 xtoa ]
 {
 "1063
-[v xtoa@i i `i  1 a 2 8 ]
+[v xtoa@i i `i  1 a 2 49 ]
 "1065
-[v xtoa@p p `i  1 a 2 5 ]
+[v xtoa@p p `i  1 a 2 46 ]
 "1063
-[v xtoa@w w `i  1 a 2 1 ]
+[v xtoa@w w `i  1 a 2 42 ]
 "1059
-[v xtoa@c c `uc  1 a 1 7 ]
+[v xtoa@c c `uc  1 a 1 48 ]
 "1061
-[v xtoa@a a `uc  1 a 1 0 ]
-[s S6675 _IO_FILE 0 ]
+[v xtoa@a a `uc  1 a 1 41 ]
+[s S6808 _IO_FILE 0 ]
 "1052
-[v xtoa@fp fp `*.39S6675  1 p 2 36 ]
-[v xtoa@d d `ul  1 p 4 38 ]
-[v xtoa@x x `uc  1 p 1 42 ]
+[v xtoa@fp fp `*.39S6808  1 p 2 30 ]
+[v xtoa@d d `ul  1 p 4 32 ]
+[v xtoa@x x `uc  1 p 1 36 ]
 "1153
 } 0
 "1001
 [v _utoa utoa `(i  1 s 2 utoa ]
 {
 "1003
-[v utoa@i i `i  1 a 2 46 ]
+[v utoa@i i `i  1 a 2 40 ]
 "1005
-[v utoa@p p `i  1 a 2 44 ]
+[v utoa@p p `i  1 a 2 38 ]
 "1003
-[v utoa@w w `i  1 a 2 42 ]
-[s S6675 _IO_FILE 0 ]
+[v utoa@w w `i  1 a 2 36 ]
+[s S6808 _IO_FILE 0 ]
 "1001
-[v utoa@fp fp `*.39S6675  1 p 2 36 ]
-[v utoa@d d `ul  1 p 4 38 ]
+[v utoa@fp fp `*.39S6808  1 p 2 30 ]
+[v utoa@d d `ul  1 p 4 32 ]
 "1047
 } 0
 "7 /opt/microchip/xc8/v3.00/pic/sources/c99/common/llmod.c
 [v ___llmod __llmod `(ul  1 e 4 0 ]
 {
 "10
-[v ___llmod@counter counter `uc  1 a 1 19 ]
+[v ___llmod@counter counter `uc  1 a 1 13 ]
 "7
-[v ___llmod@dividend dividend `ul  1 p 4 11 ]
-[v ___llmod@divisor divisor `ul  1 p 4 15 ]
+[v ___llmod@dividend dividend `ul  1 p 4 5 ]
+[v ___llmod@divisor divisor `ul  1 p 4 9 ]
 "25
 } 0
 "7 /opt/microchip/xc8/v3.00/pic/sources/c99/common/__lldiv.c
 [v ___lldiv __lldiv `(ul  1 e 4 0 ]
 {
 "10
-[v ___lldiv@quotient quotient `ul  1 a 4 19 ]
+[v ___lldiv@quotient quotient `ul  1 a 4 13 ]
 "11
-[v ___lldiv@counter counter `uc  1 a 1 23 ]
+[v ___lldiv@counter counter `uc  1 a 1 17 ]
 "7
-[v ___lldiv@dividend dividend `ul  1 p 4 11 ]
-[v ___lldiv@divisor divisor `ul  1 p 4 15 ]
+[v ___lldiv@dividend dividend `ul  1 p 4 5 ]
+[v ___lldiv@divisor divisor `ul  1 p 4 9 ]
 "30
 } 0
 "942 /opt/microchip/xc8/v3.00/pic/sources/c99/common/doprnt.c
 [v _stoa stoa `(i  1 s 2 stoa ]
 {
 "945
-[v stoa@l l `i  1 a 2 32 ]
+[v stoa@l l `i  1 a 2 26 ]
 "944
-[v stoa@cp cp `*.34uc  1 a 2 30 ]
+[v stoa@cp cp `*.34uc  1 a 2 24 ]
 "947
-[v stoa@w w `i  1 a 2 28 ]
+[v stoa@w w `i  1 a 2 22 ]
 "945
-[v stoa@p p `i  1 a 2 26 ]
-[s S6675 _IO_FILE 0 ]
+[v stoa@p p `i  1 a 2 20 ]
+[s S6808 _IO_FILE 0 ]
 "942
-[v stoa@fp fp `*.39S6675  1 p 2 20 ]
-[v stoa@s s `*.34uc  1 p 2 22 ]
+[v stoa@fp fp `*.39S6808  1 p 2 14 ]
+[v stoa@s s `*.34uc  1 p 2 16 ]
 "997
 } 0
 "1158
 [v _read_prec_or_width read_prec_or_width `(i  1 s 2 read_prec_or_width ]
 {
 "1164
-[v read_prec_or_width@c c `uc  1 a 1 17 ]
+[v read_prec_or_width@c c `uc  1 a 1 11 ]
 "1159
-[v read_prec_or_width@n n `i  1 a 2 18 ]
+[v read_prec_or_width@n n `i  1 a 2 12 ]
 "1158
-[v read_prec_or_width@fmt fmt `*.39*.32Cuc  1 p 2 11 ]
-[v read_prec_or_width@ap ap `*.39[1]*.39v  1 p 2 13 ]
+[v read_prec_or_width@fmt fmt `*.39*.32Cuc  1 p 2 5 ]
+[v read_prec_or_width@ap ap `*.39[1]*.39v  1 p 2 7 ]
 "1171
 } 0
 "513
 [v _dtoa dtoa `(i  1 s 2 dtoa ]
 {
 "516
-[v dtoa@i i `i  1 a 2 49 ]
+[v dtoa@i i `i  1 a 2 43 ]
 "518
-[v dtoa@p p `i  1 a 2 46 ]
+[v dtoa@p p `i  1 a 2 40 ]
 "516
-[v dtoa@w w `i  1 a 2 44 ]
+[v dtoa@w w `i  1 a 2 38 ]
 "515
-[v dtoa@s s `uc  1 a 1 48 ]
-[s S6675 _IO_FILE 0 ]
+[v dtoa@s s `uc  1 a 1 42 ]
+[s S6808 _IO_FILE 0 ]
 "513
-[v dtoa@fp fp `*.39S6675  1 p 2 36 ]
-[v dtoa@d d `l  1 p 4 38 ]
+[v dtoa@fp fp `*.39S6808  1 p 2 30 ]
+[v dtoa@d d `l  1 p 4 32 ]
 "583
 } 0
 "193
 [v _pad pad `(i  1 s 2 pad ]
 {
 "195
-[v pad@i i `i  1 a 2 34 ]
-[s S6675 _IO_FILE 0 ]
+[v pad@i i `i  1 a 2 28 ]
+[s S6808 _IO_FILE 0 ]
 "193
-[v pad@fp fp `*.39S6675  1 p 2 27 ]
-[v pad@buf buf `*.39uc  1 p 2 29 ]
-[v pad@p p `i  1 p 2 31 ]
+[v pad@fp fp `*.39S6808  1 p 2 21 ]
+[v pad@buf buf `*.39uc  1 p 2 23 ]
+[v pad@p p `i  1 p 2 25 ]
 "226
 } 0
 "5 /opt/microchip/xc8/v3.00/pic/sources/c99/common/strlen.c
 [v _strlen strlen `(ui  1 e 2 0 ]
 {
 "7
-[v strlen@a a `*.34Cuc  1 a 2 13 ]
+[v strlen@a a `*.34Cuc  1 a 2 7 ]
 "5
-[v strlen@s s `*.34Cuc  1 p 2 11 ]
+[v strlen@s s `*.34Cuc  1 p 2 5 ]
 "12
 } 0
 "8 /opt/microchip/xc8/v3.00/pic/sources/c99/common/nf_fputs.c
 [v _fputs fputs `(i  1 e 2 0 ]
 {
 "11
-[v fputs@i i `i  1 a 2 25 ]
+[v fputs@i i `i  1 a 2 19 ]
 "10
-[v fputs@c c `uc  1 a 1 24 ]
+[v fputs@c c `uc  1 a 1 18 ]
 "8
-[v fputs@s s `*.39Cuc  1 p 2 20 ]
-[u S6637 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
-[s S6640 _IO_FILE 11 `S6637 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
-[v fputs@fp fp `*.39S6640  1 p 2 22 ]
+[v fputs@s s `*.39Cuc  1 p 2 14 ]
+[u S6770 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
+[s S6773 _IO_FILE 11 `S6770 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
+[v fputs@fp fp `*.39S6773  1 p 2 16 ]
 "19
 } 0
 "1 /opt/microchip/xc8/v3.00/pic/sources/c99/common/abs.c
 [v _abs abs `(i  1 e 2 0 ]
 {
-[v abs@a a `i  1 p 2 21 ]
+[v abs@a a `i  1 p 2 15 ]
 "4
 } 0
 "7 /opt/microchip/xc8/v3.00/pic/sources/c99/common/almod.c
 [v ___almod __almod `(l  1 e 4 0 ]
 {
 "10
-[v ___almod@sign sign `uc  1 a 1 20 ]
-[v ___almod@counter counter `uc  1 a 1 19 ]
+[v ___almod@sign sign `uc  1 a 1 14 ]
+[v ___almod@counter counter `uc  1 a 1 13 ]
 "7
-[v ___almod@dividend dividend `l  1 p 4 11 ]
-[v ___almod@divisor divisor `l  1 p 4 15 ]
+[v ___almod@dividend dividend `l  1 p 4 5 ]
+[v ___almod@divisor divisor `l  1 p 4 9 ]
 "34
 } 0
 "7 /opt/microchip/xc8/v3.00/pic/sources/c99/common/aldiv.c
 [v ___aldiv __aldiv `(l  1 e 4 0 ]
 {
 "10
-[v ___aldiv@quotient quotient `l  1 a 4 21 ]
+[v ___aldiv@quotient quotient `l  1 a 4 15 ]
 "11
-[v ___aldiv@sign sign `uc  1 a 1 20 ]
-[v ___aldiv@counter counter `uc  1 a 1 19 ]
+[v ___aldiv@sign sign `uc  1 a 1 14 ]
+[v ___aldiv@counter counter `uc  1 a 1 13 ]
 "7
-[v ___aldiv@dividend dividend `l  1 p 4 11 ]
-[v ___aldiv@divisor divisor `l  1 p 4 15 ]
+[v ___aldiv@dividend dividend `l  1 p 4 5 ]
+[v ___aldiv@divisor divisor `l  1 p 4 9 ]
 "41
 } 0
 "476 /opt/microchip/xc8/v3.00/pic/sources/c99/common/doprnt.c
 [v _ctoa ctoa `(i  1 s 2 ctoa ]
 {
 "478
-[v ctoa@w w `i  1 a 2 26 ]
-[v ctoa@l l `i  1 a 2 24 ]
-[s S6675 _IO_FILE 0 ]
+[v ctoa@w w `i  1 a 2 20 ]
+[v ctoa@l l `i  1 a 2 18 ]
+[s S6808 _IO_FILE 0 ]
 "476
-[v ctoa@fp fp `*.39S6675  1 p 2 20 ]
-[v ctoa@c c `uc  1 p 1 22 ]
+[v ctoa@fp fp `*.39S6808  1 p 2 14 ]
+[v ctoa@c c `uc  1 p 1 16 ]
 "509
 } 0
 "8 /opt/microchip/xc8/v3.00/pic/sources/c99/common/nf_fputc.c
 [v _fputc fputc `(i  1 e 2 0 ]
 {
-[v fputc@c c `i  1 p 2 11 ]
-[u S6637 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
-[s S6640 _IO_FILE 11 `S6637 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
-[v fputc@fp fp `*.39S6640  1 p 2 13 ]
+[v fputc@c c `i  1 p 2 5 ]
+[u S6770 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
+[s S6773 _IO_FILE 11 `S6770 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
+[v fputc@fp fp `*.39S6773  1 p 2 7 ]
 "24
 } 0
 "7 /opt/microchip/xc8/v3.00/pic/sources/c99/common/putch.c
@@ -3026,9 +3062,9 @@ channel_FVR_Buffer2 63
 {
 [v get_vterm_ptr@line line `uc  1 p 1 wreg ]
 [v get_vterm_ptr@line line `uc  1 p 1 wreg ]
-[v get_vterm_ptr@vterm vterm `Cuc  1 p 1 11 ]
+[v get_vterm_ptr@vterm vterm `Cuc  1 p 1 5 ]
 "113
-[v get_vterm_ptr@line line `uc  1 p 1 23 ]
+[v get_vterm_ptr@line line `uc  1 p 1 17 ]
 "114
 } 0
 "342 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/uart2.c
@@ -3079,31 +3115,31 @@ channel_FVR_Buffer2 63
 "317
 [v _UART2_SetTxInterruptHandler UART2_SetTxInterruptHandler `(v  1 e 1 0 ]
 {
-[v UART2_SetTxInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 11 ]
+[v UART2_SetTxInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 5 ]
 "320
 } 0
 "312
 [v _UART2_SetRxInterruptHandler UART2_SetRxInterruptHandler `(v  1 e 1 0 ]
 {
-[v UART2_SetRxInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 11 ]
+[v UART2_SetRxInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 5 ]
 "315
 } 0
 "302
 [v _UART2_SetOverrunErrorHandler UART2_SetOverrunErrorHandler `(v  1 e 1 0 ]
 {
-[v UART2_SetOverrunErrorHandler@interruptHandler interruptHandler `*.38(v  1 p 3 11 ]
+[v UART2_SetOverrunErrorHandler@interruptHandler interruptHandler `*.38(v  1 p 3 5 ]
 "305
 } 0
 "297
 [v _UART2_SetFramingErrorHandler UART2_SetFramingErrorHandler `(v  1 e 1 0 ]
 {
-[v UART2_SetFramingErrorHandler@interruptHandler interruptHandler `*.38(v  1 p 3 11 ]
+[v UART2_SetFramingErrorHandler@interruptHandler interruptHandler `*.38(v  1 p 3 5 ]
 "300
 } 0
 "307
 [v _UART2_SetErrorHandler UART2_SetErrorHandler `(v  1 e 1 0 ]
 {
-[v UART2_SetErrorHandler@interruptHandler interruptHandler `*.38(v  1 p 3 11 ]
+[v UART2_SetErrorHandler@interruptHandler interruptHandler `*.38(v  1 p 3 5 ]
 "310
 } 0
 "87 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/uart1.c
@@ -3114,31 +3150,31 @@ channel_FVR_Buffer2 63
 "316
 [v _UART1_SetTxInterruptHandler UART1_SetTxInterruptHandler `(v  1 e 1 0 ]
 {
-[v UART1_SetTxInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 11 ]
+[v UART1_SetTxInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 5 ]
 "319
 } 0
 "311
 [v _UART1_SetRxInterruptHandler UART1_SetRxInterruptHandler `(v  1 e 1 0 ]
 {
-[v UART1_SetRxInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 11 ]
+[v UART1_SetRxInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 5 ]
 "314
 } 0
 "301
 [v _UART1_SetOverrunErrorHandler UART1_SetOverrunErrorHandler `(v  1 e 1 0 ]
 {
-[v UART1_SetOverrunErrorHandler@interruptHandler interruptHandler `*.38(v  1 p 3 11 ]
+[v UART1_SetOverrunErrorHandler@interruptHandler interruptHandler `*.38(v  1 p 3 5 ]
 "304
 } 0
 "296
 [v _UART1_SetFramingErrorHandler UART1_SetFramingErrorHandler `(v  1 e 1 0 ]
 {
-[v UART1_SetFramingErrorHandler@interruptHandler interruptHandler `*.38(v  1 p 3 11 ]
+[v UART1_SetFramingErrorHandler@interruptHandler interruptHandler `*.38(v  1 p 3 5 ]
 "299
 } 0
 "306
 [v _UART1_SetErrorHandler UART1_SetErrorHandler `(v  1 e 1 0 ]
 {
-[v UART1_SetErrorHandler@interruptHandler interruptHandler `*.38(v  1 p 3 11 ]
+[v UART1_SetErrorHandler@interruptHandler interruptHandler `*.38(v  1 p 3 5 ]
 "309
 } 0
 "67 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/tmr6.c
@@ -3149,7 +3185,7 @@ channel_FVR_Buffer2 63
 "189
 [v _TMR6_SetInterruptHandler TMR6_SetInterruptHandler `(v  1 e 1 0 ]
 {
-[v TMR6_SetInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 11 ]
+[v TMR6_SetInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 5 ]
 "191
 } 0
 "65 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/tmr5.c
@@ -3160,7 +3196,7 @@ channel_FVR_Buffer2 63
 "193
 [v _TMR5_SetInterruptHandler TMR5_SetInterruptHandler `(v  1 e 1 0 ]
 {
-[v TMR5_SetInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 11 ]
+[v TMR5_SetInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 5 ]
 "195
 } 0
 "62 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/tmr2.c
@@ -3176,7 +3212,7 @@ channel_FVR_Buffer2 63
 "152
 [v _TMR0_SetInterruptHandler TMR0_SetInterruptHandler `(v  1 e 1 0 ]
 {
-[v TMR0_SetInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 11 ]
+[v TMR0_SetInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 5 ]
 "154
 } 0
 "113 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/mcc.c
@@ -3192,13 +3228,13 @@ channel_FVR_Buffer2 63
 "177
 [v _SPI2_SetRxInterruptHandler SPI2_SetRxInterruptHandler `(v  1 e 1 0 ]
 {
-[v SPI2_SetRxInterruptHandler@handler handler `*.38(v  1 p 3 11 ]
+[v SPI2_SetRxInterruptHandler@handler handler `*.38(v  1 p 3 5 ]
 "180
 } 0
 "159
 [v _SPI2_SetInterruptHandler SPI2_SetInterruptHandler `(v  1 e 1 0 ]
 {
-[v SPI2_SetInterruptHandler@handler handler `*.38(v  1 p 3 11 ]
+[v SPI2_SetInterruptHandler@handler handler `*.38(v  1 p 3 5 ]
 "162
 } 0
 "64 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/spi1.c
@@ -3219,7 +3255,7 @@ channel_FVR_Buffer2 63
 "184
 [v _IOCBF6_SetInterruptHandler IOCBF6_SetInterruptHandler `(v  1 e 1 0 ]
 {
-[v IOCBF6_SetInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 11 ]
+[v IOCBF6_SetInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 5 ]
 "186
 } 0
 "72 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/mcc.c
@@ -3231,7 +3267,7 @@ channel_FVR_Buffer2 63
 [v _INTERRUPT_Initialize INTERRUPT_Initialize `(v  1 e 1 0 ]
 {
 "56
-[v INTERRUPT_Initialize@state state `a  1 a 1 11 ]
+[v INTERRUPT_Initialize@state state `a  1 a 1 5 ]
 "91
 } 0
 "62 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/dma3.c
@@ -3242,19 +3278,19 @@ channel_FVR_Buffer2 63
 "197
 [v _DMA3_SetSCNTIInterruptHandler DMA3_SetSCNTIInterruptHandler `(v  1 e 1 0 ]
 {
-[v DMA3_SetSCNTIInterruptHandler@InterruptHandler InterruptHandler `*.38R(v  1 p 3 11 ]
+[v DMA3_SetSCNTIInterruptHandler@InterruptHandler InterruptHandler `*.38R(v  1 p 3 5 ]
 "200
 } 0
 "225
 [v _DMA3_SetORIInterruptHandler DMA3_SetORIInterruptHandler `(v  1 e 1 0 ]
 {
-[v DMA3_SetORIInterruptHandler@InterruptHandler InterruptHandler `*.38R(v  1 p 3 11 ]
+[v DMA3_SetORIInterruptHandler@InterruptHandler InterruptHandler `*.38R(v  1 p 3 5 ]
 "228
 } 0
 "211
 [v _DMA3_SetDCNTIInterruptHandler DMA3_SetDCNTIInterruptHandler `(v  1 e 1 0 ]
 {
-[v DMA3_SetDCNTIInterruptHandler@InterruptHandler InterruptHandler `*.38R(v  1 p 3 11 ]
+[v DMA3_SetDCNTIInterruptHandler@InterruptHandler InterruptHandler `*.38R(v  1 p 3 5 ]
 "214
 } 0
 "62 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/dma2.c
@@ -3265,19 +3301,19 @@ channel_FVR_Buffer2 63
 "197
 [v _DMA2_SetSCNTIInterruptHandler DMA2_SetSCNTIInterruptHandler `(v  1 e 1 0 ]
 {
-[v DMA2_SetSCNTIInterruptHandler@InterruptHandler InterruptHandler `*.38R(v  1 p 3 11 ]
+[v DMA2_SetSCNTIInterruptHandler@InterruptHandler InterruptHandler `*.38R(v  1 p 3 5 ]
 "200
 } 0
 "225
 [v _DMA2_SetORIInterruptHandler DMA2_SetORIInterruptHandler `(v  1 e 1 0 ]
 {
-[v DMA2_SetORIInterruptHandler@InterruptHandler InterruptHandler `*.38R(v  1 p 3 11 ]
+[v DMA2_SetORIInterruptHandler@InterruptHandler InterruptHandler `*.38R(v  1 p 3 5 ]
 "228
 } 0
 "211
 [v _DMA2_SetDCNTIInterruptHandler DMA2_SetDCNTIInterruptHandler `(v  1 e 1 0 ]
 {
-[v DMA2_SetDCNTIInterruptHandler@InterruptHandler InterruptHandler `*.38R(v  1 p 3 11 ]
+[v DMA2_SetDCNTIInterruptHandler@InterruptHandler InterruptHandler `*.38R(v  1 p 3 5 ]
 "214
 } 0
 "61 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/dma1.c
@@ -3288,13 +3324,13 @@ channel_FVR_Buffer2 63
 "195
 [v _DMA1_SetSCNTIInterruptHandler DMA1_SetSCNTIInterruptHandler `(v  1 e 1 0 ]
 {
-[v DMA1_SetSCNTIInterruptHandler@InterruptHandler InterruptHandler `*.38R(v  1 p 3 11 ]
+[v DMA1_SetSCNTIInterruptHandler@InterruptHandler InterruptHandler `*.38R(v  1 p 3 5 ]
 "198
 } 0
 "209
 [v _DMA1_SetORIInterruptHandler DMA1_SetORIInterruptHandler `(v  1 e 1 0 ]
 {
-[v DMA1_SetORIInterruptHandler@InterruptHandler InterruptHandler `*.38R(v  1 p 3 11 ]
+[v DMA1_SetORIInterruptHandler@InterruptHandler InterruptHandler `*.38R(v  1 p 3 5 ]
 "212
 } 0
 "58 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/dac1.c
@@ -3310,19 +3346,19 @@ channel_FVR_Buffer2 63
 "423
 [v _ADC_SetContext1ThresholdInterruptHandler ADC_SetContext1ThresholdInterruptHandler `(v  1 e 1 0 ]
 {
-[v ADC_SetContext1ThresholdInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 11 ]
+[v ADC_SetContext1ThresholdInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 5 ]
 "426
 } 0
 "428
 [v _ADC_SetActiveClockTuningInterruptHandler ADC_SetActiveClockTuningInterruptHandler `(v  1 e 1 0 ]
 {
-[v ADC_SetActiveClockTuningInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 11 ]
+[v ADC_SetActiveClockTuningInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 5 ]
 "431
 } 0
 "418
 [v _ADC_SetADIInterruptHandler ADC_SetADIInterruptHandler `(v  1 e 1 0 ]
 {
-[v ADC_SetADIInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 11 ]
+[v ADC_SetADIInterruptHandler@InterruptHandler InterruptHandler `*.38(v  1 p 3 5 ]
 "421
 } 0
 "31 /public/bmc/Q84/bmc_slave.X/bmcdio.c
@@ -3351,16 +3387,16 @@ channel_FVR_Buffer2 63
 [v _DATAEE_WriteByte DATAEE_WriteByte `(v  1 e 1 0 ]
 {
 "233
-[v DATAEE_WriteByte@GIEBitValue GIEBitValue `uc  1 a 1 14 ]
+[v DATAEE_WriteByte@GIEBitValue GIEBitValue `uc  1 a 1 8 ]
 "231
-[v DATAEE_WriteByte@bAdd bAdd `us  1 p 2 11 ]
-[v DATAEE_WriteByte@bData bData `uc  1 p 1 13 ]
+[v DATAEE_WriteByte@bAdd bAdd `us  1 p 2 5 ]
+[v DATAEE_WriteByte@bData bData `uc  1 p 1 7 ]
 "262
 } 0
 "264
 [v _DATAEE_ReadByte DATAEE_ReadByte `(uc  1 e 1 0 ]
 {
-[v DATAEE_ReadByte@bAdd bAdd `us  1 p 2 11 ]
+[v DATAEE_ReadByte@bAdd bAdd `us  1 p 2 5 ]
 "276
 } 0
 "223 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/adc.c
@@ -3369,7 +3405,7 @@ channel_FVR_Buffer2 63
 [v ADC_StartConversion@channel channel `E23285  1 p 1 wreg ]
 [v ADC_StartConversion@channel channel `E23285  1 p 1 wreg ]
 "226
-[v ADC_StartConversion@channel channel `E23285  1 p 1 11 ]
+[v ADC_StartConversion@channel channel `E23285  1 p 1 5 ]
 "233
 } 0
 "240
@@ -3416,7 +3452,7 @@ channel_FVR_Buffer2 63
 [v _TMR6_DefaultInterruptHandler TMR6_DefaultInterruptHandler `(v  1 e 1 0 ]
 {
 "195
-[v TMR6_DefaultInterruptHandler@i i `uc  1 a 1 2 ]
+[v TMR6_DefaultInterruptHandler@i i `uc  1 a 1 55 ]
 "205
 } 0
 "165 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/tmr5.c
@@ -3429,7 +3465,7 @@ channel_FVR_Buffer2 63
 "128
 [v _TMR5_WriteTimer TMR5_WriteTimer `(v  1 e 1 0 ]
 {
-[v TMR5_WriteTimer@timerVal timerVal `us  1 p 2 6 ]
+[v TMR5_WriteTimer@timerVal timerVal `us  1 p 2 0 ]
 "148
 } 0
 "184
@@ -3602,10 +3638,10 @@ channel_FVR_Buffer2 63
 {
 "157
 } 0
-"215 /public/bmc/Q84/bmc_slave.X/slaveo.c
+"211 /public/bmc/Q84/bmc_slave.X/slaveo.c
 [v _slaveo_spi_isr slaveo_spi_isr `(v  1 e 1 0 ]
 {
-"220
+"216
 } 0
 "182 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/spi2.c
 [v _SPI2_RxIsr SPI2_RxIsr `IIH(v  1 e 1 0 ]
@@ -3621,39 +3657,14 @@ channel_FVR_Buffer2 63
 [v _slaveo_rx_isr slaveo_rx_isr `(v  1 e 1 0 ]
 {
 "86
-[v slaveo_rx_isr@command command `uc  1 a 1 17 ]
+[v slaveo_rx_isr@command command `uc  1 a 1 13 ]
 "87
-[v slaveo_rx_isr@zombie zombie `a  1 a 1 16 ]
+[v slaveo_rx_isr@zombie zombie `a  1 a 1 12 ]
 "86
-[v slaveo_rx_isr@char_rxtmp char_rxtmp `uc  1 a 1 15 ]
-[v slaveo_rx_isr@cmd_dummy cmd_dummy `uc  1 a 1 14 ]
-[v slaveo_rx_isr@char_txtmp char_txtmp `uc  1 a 1 13 ]
-"213
-} 0
-"253
-[v _spi2_pace_write spi2_pace_write `(v  1 s 1 spi2_pace_write ]
-{
-[v spi2_pace_write@data data `Cuc  1 p 1 wreg ]
-[v spi2_pace_write@data data `Cuc  1 p 1 wreg ]
-"257
-[v spi2_pace_write@data data `Cuc  1 p 1 10 ]
-"259
-} 0
-"242
-[v _spi2_tx_busy spi2_tx_busy `(v  1 s 1 spi2_tx_busy ]
-{
-"244
-[v spi2_tx_busy@timeout timeout `ul  1 a 4 6 ]
-"251
-} 0
-"105 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/spi2.c
-[v _SPI2_ExchangeByte SPI2_ExchangeByte `(uc  1 e 1 0 ]
-{
-[v SPI2_ExchangeByte@data data `uc  1 p 1 wreg ]
-[v SPI2_ExchangeByte@data data `uc  1 p 1 wreg ]
-"107
-[v SPI2_ExchangeByte@data data `uc  1 p 1 19 ]
-"111
+[v slaveo_rx_isr@char_rxtmp char_rxtmp `uc  1 a 1 11 ]
+[v slaveo_rx_isr@cmd_dummy cmd_dummy `uc  1 a 1 10 ]
+[v slaveo_rx_isr@char_txtmp char_txtmp `uc  1 a 1 9 ]
+"209
 } 0
 "166 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/uart1.c
 [v _UART1_is_tx_ready UART1_is_tx_ready `(a  1 e 1 0 ]
@@ -3670,14 +3681,14 @@ channel_FVR_Buffer2 63
 {
 [v UART1_Write@txData txData `uc  1 p 1 wreg ]
 [v UART1_Write@txData txData `uc  1 p 1 wreg ]
-[v UART1_Write@txData txData `uc  1 p 1 19 ]
+[v UART1_Write@txData txData `uc  1 p 1 4 ]
 "217
 } 0
 "181
 [v _UART1_Read UART1_Read `(uc  1 e 1 0 ]
 {
 "183
-[v UART1_Read@readValue readValue `uc  1 a 1 19 ]
+[v UART1_Read@readValue readValue `uc  1 a 1 4 ]
 "199
 } 0
 "128 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/tmr0.c
@@ -3695,10 +3706,10 @@ channel_FVR_Buffer2 63
 {
 "159
 } 0
-"222 /public/bmc/Q84/bmc_slave.X/slaveo.c
+"218 /public/bmc/Q84/bmc_slave.X/slaveo.c
 [v _slaveo_time_isr slaveo_time_isr `(v  1 e 1 0 ]
 {
-"229
+"224
 } 0
 "188 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/dma2.c
 [v _DMA2_DMASCNTI_ISR DMA2_DMASCNTI_ISR `IIH(v  1 e 1 0 ]

@@ -24,11 +24,11 @@ extern "C" {
 #define CMD_ZERO        0b00000000
 #define CMD_ADC_GO      0b10000000	// Read ADC data
 #define CMD_DAC_GO      0b10010000	// Set DAC data
-#define CMD_PORT_GO     0b10100000	// Set DO data
-#define CMD_CHAR_GO     0b10110000	// send data LO_NIBBLE to TX buffer
+#define CMD_PORT_GO     0xa0		// Set DO data
+#define CMD_CHAR_GO     0b10110000
 #define CMD_ADC_DATA	0b11000000
-#define CMD_PORT_DATA	0b11010000	// 
-#define CMD_CHAR_DATA	0b11100000	// send data HI_NIBBLE to TX buffer and return RX buffer in received SPI data byte
+#define CMD_PORT_DATA	0b11010000
+#define CMD_CHAR_DATA	0b11100000
 #define CMD_PORT_GET    0b11110000	// Read DI data
 #define CMD_CHAR_RX     0b00010000	// Get RX buffer
 #define CMD_DUMMY_CFG	0b01000000	// stuff config data in SPI buffer
@@ -57,7 +57,7 @@ extern "C" {
 	struct spi_stat_type_ss {
 		volatile uint32_t adc_count,
 		port_count, port_error_count, port_data_count, zombie_count,
-		char_count, char_error_count, rxof_bit, txuf_bit,
+		char_count, char_error_count, rxof_bit, txdone_bit,
 		slave_int_count, last_slave_int_count, slave_tx_count,
 		comm_count, idle_count, spi_error_count, spi_noerror_count;
 		volatile uint8_t comm_ok, rx_raw_buffer[16], raw_index;

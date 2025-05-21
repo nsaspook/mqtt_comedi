@@ -578,10 +578,9 @@ void main(void)
 
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "0x%.2x 0x%.2x 0x%.2x 0x%.2x                  ",
 				serial_buffer_ss.data[3], serial_buffer_ss.data[2], serial_buffer_ss.data[1], serial_buffer_ss.data[0]);
-			V.bmc_do = serial_buffer_ss.data[1];
 
 			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "TX %lx, RX %lx, %d %d %d         ",
-				spi_stat_ss.txuf_bit, spi_stat_ss.rxof_bit, SPI2INTFbits.TCZIF, SPI2STATUSbits.SPI2RXRE, SPI2STATUSbits.SPI2TXWE);
+				spi_stat_ss.txdone_bit, spi_stat_ss.rxof_bit, SPI2INTFbits.TCZIF, SPI2STATUSbits.SPI2RXRE, SPI2STATUSbits.SPI2TXWE);
 
 #else
 			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%.2x %.2x %.2x %.2x %lu %lu %lx             ", spi_link.rxbuf[3], spi_link.rxbuf[2], spi_link.rxbuf[1], spi_link.rxbuf[0], tic12400_parity_count, tic12400_fail_value,
@@ -594,7 +593,8 @@ void main(void)
 			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "A1 0x%.2x, A2 0x%.2x               ", V.v_tx_line, V.v_rx_line);
 
 #endif
-			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "0x%.2lx 0x%.2lx %d %d %d                      ", spi_stat_ss.spi_error_count, spi_stat_ss.spi_noerror_count, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK);
+			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "0x%.2lx 0x%.2lx %d %d %d                      ",
+				spi_stat_ss.spi_error_count, spi_stat_ss.spi_noerror_count, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK);
 
 			// convert ADC values to char for display
 			update_rs232_line_status();
@@ -621,7 +621,7 @@ void main(void)
 			snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "                                       ");
 			snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "                                       ");
 			snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "A1 0x%.2x, A2 0x%.2x                   ", V.v_tx_line, V.v_rx_line);
-			snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "0x%.4x 0x%.2x %d %d %d                 ", SPI2TCNT, SPI2INTF, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK);
+			snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "0x%.2lx 0x%.2lx %d %d %d                 ", spi_stat_ss.spi_error_count, spi_stat_ss.spi_noerror_count, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK);
 
 			/*
 			 * don't default update the LCD when displaying HELP text
