@@ -14722,8 +14722,10 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <part name="VSS56" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="VDD25" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VDD" device=""/>
 <part name="F2" library="0805L075WR" deviceset="0805L075WR" device=""/>
-<part name="TIC_INPUT_0_1" library="M20-8891045" deviceset="M20-8891045" device=""/>
-<part name="TIC_INPUT_0_2" library="M20-8891045" deviceset="M20-8891045" device=""/>
+<part name="TIC_INPUT_8_15" library="M20-8891045" deviceset="M20-8891045" device=""/>
+<part name="TIC_INPUT_16_23" library="M20-8891045" deviceset="M20-8891045" device=""/>
+<part name="VSS57" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
+<part name="VSS58" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -15450,13 +15452,19 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <attribute name="NAME" x="31.75" y="-69.85" size="1.778" layer="95" align="center-left"/>
 <attribute name="VALUE" x="36.83" y="-69.85" size="1.778" layer="96" align="center-left"/>
 </instance>
-<instance part="TIC_INPUT_0_1" gate="G$1" x="165.1" y="-149.86" smashed="yes" rot="R180">
+<instance part="TIC_INPUT_8_15" gate="G$1" x="165.1" y="-149.86" smashed="yes" rot="R180">
 <attribute name="NAME" x="148.59" y="-157.48" size="1.778" layer="95" rot="R180" align="center-left"/>
 <attribute name="VALUE" x="148.59" y="-154.94" size="1.778" layer="96" rot="R180" align="center-left"/>
 </instance>
-<instance part="TIC_INPUT_0_2" gate="G$1" x="208.28" y="-149.86" smashed="yes" rot="R180">
+<instance part="TIC_INPUT_16_23" gate="G$1" x="208.28" y="-149.86" smashed="yes" rot="R180">
 <attribute name="NAME" x="191.77" y="-157.48" size="1.778" layer="95" rot="R180" align="center-left"/>
 <attribute name="VALUE" x="191.77" y="-154.94" size="1.778" layer="96" rot="R180" align="center-left"/>
+</instance>
+<instance part="VSS57" gate="G$1" x="165.1" y="-152.4" smashed="yes">
+<attribute name="VALUE" x="172.72" y="-152.4" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="VSS58" gate="G$1" x="208.28" y="-152.4" smashed="yes">
+<attribute name="VALUE" x="215.9" y="-152.4" size="1.778" layer="96" rot="R180"/>
 </instance>
 </instances>
 <busses>
@@ -16125,6 +16133,16 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <pinref part="DO2" gate="G$1" pin="10"/>
 <pinref part="VSS56" gate="G$1" pin="VSS"/>
 <junction x="162.56" y="-111.76"/>
+</segment>
+<segment>
+<pinref part="TIC_INPUT_8_15" gate="G$1" pin="1"/>
+<pinref part="VSS57" gate="G$1" pin="VSS"/>
+<junction x="165.1" y="-149.86"/>
+</segment>
+<segment>
+<pinref part="TIC_INPUT_16_23" gate="G$1" pin="1"/>
+<pinref part="VSS58" gate="G$1" pin="VSS"/>
+<junction x="208.28" y="-149.86"/>
 </segment>
 </net>
 <net name="CPU_CLK" class="0">
@@ -17939,12 +17957,11 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <junction x="17.78" y="-76.2"/>
 </segment>
 <segment>
-<wire x1="76.2" y1="-116.84" x2="99.06" y2="-116.84" width="0.1524" layer="91"/>
 <pinref part="TIC_INPUT_0_7" gate="G$1" pin="10"/>
 <junction x="76.2" y="-116.84"/>
-<junction x="99.06" y="-116.84"/>
+<junction x="96.52" y="-116.84"/>
 <label x="78.74" y="-116.84" size="1.778" layer="95"/>
-<wire x1="76.2" y1="-116.84" x2="99.06" y2="-116.84" width="0.1524" layer="91"/>
+<wire x1="76.2" y1="-116.84" x2="96.52" y2="-116.84" width="0.1524" layer="91"/>
 <junction x="76.2" y="-116.84"/>
 </segment>
 <segment>
@@ -17953,6 +17970,20 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <junction x="53.34" y="-76.2"/>
 <junction x="60.96" y="-76.2"/>
 <label x="50.8" y="-73.66" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="165.1" y1="-127" x2="187.96" y2="-127" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_8_15" gate="G$1" pin="10"/>
+<junction x="165.1" y="-127"/>
+<junction x="187.96" y="-127"/>
+<label x="170.18" y="-127" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="208.28" y1="-127" x2="231.14" y2="-127" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_16_23" gate="G$1" pin="10"/>
+<junction x="231.14" y="-127"/>
+<junction x="208.28" y="-127"/>
+<label x="213.36" y="-127" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="TIC2" class="0">
@@ -18060,6 +18091,13 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <pinref part="R28" gate="G$1" pin="2"/>
 <label x="10.16" y="-91.44" size="1.778" layer="95"/>
 </segment>
+<segment>
+<wire x1="165.1" y1="-147.32" x2="177.8" y2="-147.32" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_8_15" gate="G$1" pin="2"/>
+<label x="167.64" y="-147.32" size="1.778" layer="95"/>
+<junction x="165.1" y="-147.32"/>
+<junction x="177.8" y="-147.32"/>
+</segment>
 </net>
 <net name="TIC9" class="0">
 <segment>
@@ -18069,6 +18107,13 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <junction x="25.4" y="-88.9"/>
 <pinref part="R29" gate="G$1" pin="2"/>
 <label x="10.16" y="-88.9" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="165.1" y1="-144.78" x2="177.8" y2="-144.78" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_8_15" gate="G$1" pin="3"/>
+<label x="167.64" y="-144.78" size="1.778" layer="95"/>
+<junction x="165.1" y="-144.78"/>
+<junction x="177.8" y="-144.78"/>
 </segment>
 </net>
 <net name="IN8D" class="0">
@@ -18112,11 +18157,11 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <label x="10.16" y="-86.36" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="76.2" y1="-137.16" x2="91.44" y2="-137.16" width="0.1524" layer="91"/>
-<pinref part="TIC_INPUT_0_7" gate="G$1" pin="2"/>
-<junction x="76.2" y="-137.16"/>
-<junction x="91.44" y="-137.16"/>
-<label x="81.28" y="-137.16" size="1.778" layer="95"/>
+<wire x1="165.1" y1="-142.24" x2="177.8" y2="-142.24" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_8_15" gate="G$1" pin="4"/>
+<label x="167.64" y="-142.24" size="1.778" layer="95"/>
+<junction x="165.1" y="-142.24"/>
+<junction x="177.8" y="-142.24"/>
 </segment>
 </net>
 <net name="TIC11" class="0">
@@ -18128,11 +18173,11 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <label x="10.16" y="-83.82" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="76.2" y1="-134.62" x2="91.44" y2="-134.62" width="0.1524" layer="91"/>
-<pinref part="TIC_INPUT_0_7" gate="G$1" pin="3"/>
-<junction x="76.2" y="-134.62"/>
-<junction x="91.44" y="-134.62"/>
-<label x="81.28" y="-134.62" size="1.778" layer="95"/>
+<wire x1="165.1" y1="-139.7" x2="177.8" y2="-139.7" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_8_15" gate="G$1" pin="5"/>
+<label x="167.64" y="-139.7" size="1.778" layer="95"/>
+<junction x="165.1" y="-139.7"/>
+<junction x="177.8" y="-139.7"/>
 </segment>
 </net>
 <net name="24V_IN" class="1">
@@ -18143,6 +18188,230 @@ Source: &lt;a href="https://cdn.harwin.com/pdfs/M20-889.pdf"&gt; Datasheet &lt;/
 <junction x="27.94" y="-76.2"/>
 <junction x="35.56" y="-76.2"/>
 <label x="33.02" y="-73.66" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="TIC0" class="0">
+<segment>
+<pinref part="IC7" gate="G$1" pin="IN0"/>
+<wire x1="-30.48" y1="-106.68" x2="-43.18" y2="-106.68" width="0.1524" layer="91"/>
+<label x="-40.64" y="-106.68" size="1.778" layer="95"/>
+<junction x="-30.48" y="-106.68"/>
+<junction x="-43.18" y="-106.68"/>
+</segment>
+<segment>
+<wire x1="96.52" y1="-137.16" x2="76.2" y2="-137.16" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_0_7" gate="G$1" pin="2"/>
+<junction x="76.2" y="-137.16"/>
+<junction x="96.52" y="-137.16"/>
+<label x="81.28" y="-137.16" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="TIC1" class="0">
+<segment>
+<pinref part="IC7" gate="G$1" pin="IN1"/>
+<wire x1="-30.48" y1="-109.22" x2="-43.18" y2="-109.22" width="0.1524" layer="91"/>
+<label x="-40.64" y="-109.22" size="1.778" layer="95"/>
+<junction x="-30.48" y="-109.22"/>
+<junction x="-43.18" y="-109.22"/>
+</segment>
+<segment>
+<wire x1="96.52" y1="-134.62" x2="76.2" y2="-134.62" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_0_7" gate="G$1" pin="3"/>
+<junction x="76.2" y="-134.62"/>
+<junction x="96.52" y="-134.62"/>
+<label x="81.28" y="-134.62" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="TIC23" class="0">
+<segment>
+<pinref part="IC7" gate="G$1" pin="IN23"/>
+<wire x1="-30.48" y1="-104.14" x2="-43.18" y2="-104.14" width="0.1524" layer="91"/>
+<junction x="-30.48" y="-104.14"/>
+<junction x="-43.18" y="-104.14"/>
+<label x="-40.64" y="-104.14" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="220.98" y1="-129.54" x2="208.28" y2="-129.54" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_16_23" gate="G$1" pin="9"/>
+<label x="210.82" y="-129.54" size="1.778" layer="95"/>
+<junction x="208.28" y="-129.54"/>
+<junction x="220.98" y="-129.54"/>
+</segment>
+</net>
+<net name="TIC22" class="0">
+<segment>
+<pinref part="IC7" gate="G$1" pin="IN22"/>
+<wire x1="-30.48" y1="-101.6" x2="-43.18" y2="-101.6" width="0.1524" layer="91"/>
+<junction x="-30.48" y="-101.6"/>
+<junction x="-43.18" y="-101.6"/>
+<label x="-40.64" y="-101.6" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="220.98" y1="-132.08" x2="208.28" y2="-132.08" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_16_23" gate="G$1" pin="8"/>
+<label x="210.82" y="-132.08" size="1.778" layer="95"/>
+<junction x="208.28" y="-132.08"/>
+<junction x="220.98" y="-132.08"/>
+</segment>
+</net>
+<net name="TIC21" class="0">
+<segment>
+<pinref part="IC7" gate="G$1" pin="IN21"/>
+<wire x1="-30.48" y1="-99.06" x2="-43.18" y2="-99.06" width="0.1524" layer="91"/>
+<junction x="-30.48" y="-99.06"/>
+<junction x="-43.18" y="-99.06"/>
+<label x="-38.1" y="-99.06" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="220.98" y1="-134.62" x2="208.28" y2="-134.62" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_16_23" gate="G$1" pin="7"/>
+<label x="210.82" y="-134.62" size="1.778" layer="95"/>
+<junction x="208.28" y="-134.62"/>
+<junction x="220.98" y="-134.62"/>
+</segment>
+</net>
+<net name="TIC20" class="0">
+<segment>
+<pinref part="IC7" gate="G$1" pin="IN20"/>
+<wire x1="-30.48" y1="-93.98" x2="-43.18" y2="-93.98" width="0.1524" layer="91"/>
+<junction x="-30.48" y="-93.98"/>
+<junction x="-43.18" y="-93.98"/>
+<label x="-40.64" y="-93.98" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="220.98" y1="-137.16" x2="208.28" y2="-137.16" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_16_23" gate="G$1" pin="6"/>
+<label x="210.82" y="-137.16" size="1.778" layer="95"/>
+<junction x="208.28" y="-137.16"/>
+<junction x="220.98" y="-137.16"/>
+</segment>
+</net>
+<net name="TIC19" class="0">
+<segment>
+<pinref part="IC7" gate="G$1" pin="IN19"/>
+<wire x1="-30.48" y1="-91.44" x2="-43.18" y2="-91.44" width="0.1524" layer="91"/>
+<junction x="-30.48" y="-91.44"/>
+<junction x="-43.18" y="-91.44"/>
+<label x="-40.64" y="-91.44" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="220.98" y1="-139.7" x2="208.28" y2="-139.7" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_16_23" gate="G$1" pin="5"/>
+<label x="210.82" y="-139.7" size="1.778" layer="95"/>
+<junction x="208.28" y="-139.7"/>
+<junction x="220.98" y="-139.7"/>
+</segment>
+</net>
+<net name="TIC18" class="0">
+<segment>
+<pinref part="IC7" gate="G$1" pin="IN18"/>
+<wire x1="-30.48" y1="-88.9" x2="-43.18" y2="-88.9" width="0.1524" layer="91"/>
+<junction x="-30.48" y="-88.9"/>
+<junction x="-43.18" y="-88.9"/>
+<label x="-40.64" y="-88.9" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="220.98" y1="-142.24" x2="208.28" y2="-142.24" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_16_23" gate="G$1" pin="4"/>
+<label x="210.82" y="-142.24" size="1.778" layer="95"/>
+<junction x="208.28" y="-142.24"/>
+<junction x="220.98" y="-142.24"/>
+</segment>
+</net>
+<net name="TIC17" class="0">
+<segment>
+<pinref part="IC7" gate="G$1" pin="IN17"/>
+<wire x1="-30.48" y1="-86.36" x2="-43.18" y2="-86.36" width="0.1524" layer="91"/>
+<junction x="-30.48" y="-86.36"/>
+<junction x="-43.18" y="-86.36"/>
+<label x="-40.64" y="-86.36" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="220.98" y1="-144.78" x2="208.28" y2="-144.78" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_16_23" gate="G$1" pin="3"/>
+<label x="210.82" y="-144.78" size="1.778" layer="95"/>
+<junction x="208.28" y="-144.78"/>
+<junction x="220.98" y="-144.78"/>
+</segment>
+</net>
+<net name="TIC16" class="0">
+<segment>
+<pinref part="IC7" gate="G$1" pin="IN16"/>
+<wire x1="-30.48" y1="-83.82" x2="-43.18" y2="-83.82" width="0.1524" layer="91"/>
+<junction x="-30.48" y="-83.82"/>
+<junction x="-43.18" y="-83.82"/>
+<label x="-40.64" y="-83.82" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="220.98" y1="-147.32" x2="208.28" y2="-147.32" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_16_23" gate="G$1" pin="2"/>
+<label x="210.82" y="-147.32" size="1.778" layer="95"/>
+<junction x="208.28" y="-147.32"/>
+<junction x="220.98" y="-147.32"/>
+</segment>
+</net>
+<net name="TIC15" class="0">
+<segment>
+<pinref part="IC7" gate="G$1" pin="IN15"/>
+<wire x1="-30.48" y1="-81.28" x2="-43.18" y2="-81.28" width="0.1524" layer="91"/>
+<junction x="-30.48" y="-81.28"/>
+<junction x="-43.18" y="-81.28"/>
+<label x="-40.64" y="-81.28" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="177.8" y1="-129.54" x2="165.1" y2="-129.54" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_8_15" gate="G$1" pin="9"/>
+<label x="167.64" y="-129.54" size="1.778" layer="95"/>
+<junction x="165.1" y="-129.54"/>
+<junction x="177.8" y="-129.54"/>
+</segment>
+</net>
+<net name="TIC14" class="0">
+<segment>
+<pinref part="IC7" gate="G$1" pin="IN14"/>
+<wire x1="-30.48" y1="-78.74" x2="-43.18" y2="-78.74" width="0.1524" layer="91"/>
+<junction x="-30.48" y="-78.74"/>
+<junction x="-43.18" y="-78.74"/>
+<label x="-40.64" y="-78.74" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="177.8" y1="-132.08" x2="165.1" y2="-132.08" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_8_15" gate="G$1" pin="8"/>
+<label x="167.64" y="-132.08" size="1.778" layer="95"/>
+<junction x="165.1" y="-132.08"/>
+<junction x="177.8" y="-132.08"/>
+</segment>
+</net>
+<net name="TIC13" class="0">
+<segment>
+<pinref part="IC7" gate="G$1" pin="IN13"/>
+<wire x1="-30.48" y1="-76.2" x2="-43.18" y2="-76.2" width="0.1524" layer="91"/>
+<junction x="-30.48" y="-76.2"/>
+<junction x="-43.18" y="-76.2"/>
+<label x="-40.64" y="-76.2" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="177.8" y1="-134.62" x2="165.1" y2="-134.62" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_8_15" gate="G$1" pin="7"/>
+<label x="167.64" y="-134.62" size="1.778" layer="95"/>
+<junction x="165.1" y="-134.62"/>
+<junction x="177.8" y="-134.62"/>
+</segment>
+</net>
+<net name="TIC12" class="0">
+<segment>
+<pinref part="IC7" gate="G$1" pin="IN12"/>
+<wire x1="5.08" y1="-81.28" x2="20.32" y2="-81.28" width="0.1524" layer="91"/>
+<junction x="5.08" y="-81.28"/>
+<junction x="20.32" y="-81.28"/>
+<label x="10.16" y="-81.28" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="165.1" y1="-137.16" x2="177.8" y2="-137.16" width="0.1524" layer="91"/>
+<pinref part="TIC_INPUT_8_15" gate="G$1" pin="6"/>
+<label x="167.64" y="-137.16" size="1.778" layer="95"/>
+<junction x="165.1" y="-137.16"/>
+<junction x="177.8" y="-137.16"/>
 </segment>
 </net>
 </nets>

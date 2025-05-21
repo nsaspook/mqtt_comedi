@@ -35,7 +35,8 @@ extern "C" {
 /*
  * TIC12400 testing mode
  */
-//#define DIO_TEST
+#define DIO_TEST
+#define DIO_SHOW_BUF
 
 
 #define SLED	MLED_LAT
@@ -236,7 +237,7 @@ extern "C" {
 		LINK_STATES r_l_state;
 		LINK_STATES t_l_state;
 		char buf[MAX_BUF + 1], terminal[MAX_TERM + 1], info[MAX_INFO + 1];
-		uint32_t ticks, systemb, tx_total, rx_total, bt_total, br_total, brn_total, btn_total;
+		uint32_t ticks, systemb, tx_total, rx_total, bt_total, br_total, brn_total, btn_total,bmc_do, bmc_di;
 		volatile uint32_t utc_ticks;
 		int32_t testing;
 		uint8_t stream, function, error, abort, msg_error, msg_ret, alarm, event;

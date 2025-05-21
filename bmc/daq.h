@@ -25,7 +25,7 @@ extern "C" {
 
 #define LPCHANC        16
 
-#define JUST_BITS false
+#define JUST_BITS true
         /*
          * scale adc result into calibrated units
          * for USB boards, BMC boards use driver ranges
@@ -39,7 +39,7 @@ extern "C" {
 #define HV_SCALE_RAW    4.096f
 
 
-#define OVER_SAMP       1
+#define OVER_SAMP       8
 
 #include <stdint.h>
 #include <comedilib.h>

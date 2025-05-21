@@ -315,16 +315,6 @@ int init_dio(void)
 		PWM_OPEN = false;
 	}
 
-	if (DI_OPEN) {
-		fprintf(fout, "Subdev DI  %i ", subdev_di);
-		channels_di = comedi_get_n_channels(it, subdev_di);
-		fprintf(fout, "Digital Channels %i ", channels_di);
-		maxdata_di = comedi_get_maxdata(it, subdev_di, i);
-		fprintf(fout, "Maxdata %i ", maxdata_di);
-		ranges_di = comedi_get_n_ranges(it, subdev_di, i);
-		fprintf(fout, "Ranges %i \r\n", ranges_di);
-	}
-
 	if (DO_OPEN) {
 		fprintf(fout, "Subdev DO  %i ", subdev_do);
 		channels_do = comedi_get_n_channels(it, subdev_do);
@@ -335,6 +325,17 @@ int init_dio(void)
 		fprintf(fout, "Ranges %i \r\n", ranges_do);
 	}
 
+	if (DI_OPEN) {
+		fprintf(fout, "Subdev DI  %i ", subdev_di);
+		channels_di = comedi_get_n_channels(it, subdev_di);
+		fprintf(fout, "Digital Channels %i ", channels_di);
+		maxdata_di = comedi_get_maxdata(it, subdev_di, i);
+		fprintf(fout, "Maxdata %i ", maxdata_di);
+		ranges_di = comedi_get_n_ranges(it, subdev_di, i);
+		fprintf(fout, "Ranges %i \r\n", ranges_di);
+	}
+
+
 	if (DIO_OPEN) {
 		fprintf(fout, "Subdev DIO  %i ", subdev_dio);
 		channels_dio = comedi_get_n_channels(it, subdev_dio);
@@ -343,6 +344,7 @@ int init_dio(void)
 		fprintf(fout, "Maxdata %i ", maxdata_dio);
 		ranges_dio = comedi_get_n_ranges(it, subdev_dio, i);
 		fprintf(fout, "Ranges %i \r\n", ranges_dio);
+		comedi_dio_config(it, subdev_dio, 0xffffff, COMEDI_OUTPUT);
 	}
 
 	if (PWM_OPEN) {
@@ -374,7 +376,7 @@ int get_data_sample(void)
 		put_dio_bit(7, bmc.dataout.d.D7);
 	} else { // send I/O as a byte mask
 		obits = bmc.dataout.dio_buf;
-		comedi_dio_bitfield2(it, subdev_do, 0xff, &obits, 0);
+		comedi_dio_bitfield2(it, subdev_dio, 0xffffffff, &obits, 0);
 	}
 
 	return 0;

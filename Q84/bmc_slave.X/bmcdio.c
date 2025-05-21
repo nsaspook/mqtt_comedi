@@ -5,7 +5,9 @@
 
 static const char *build_date = __DATE__, *build_time = __TIME__;
 
-
+/*
+ * SPI1
+ */
 void SPI_EADOG(void)
 {
 	wait_lcd_done();
@@ -23,6 +25,9 @@ void SPI_EADOG(void)
 	SPI1CON0bits.EN = 1;
 }
 
+/*
+ * SPI1
+ */
 void SPI_TIC12400(void)
 {
 	wait_lcd_done();
@@ -48,7 +53,9 @@ void SPI_TIC12400(void)
 	SPI1CON0bits.EN = 1;
 	SPI1STATUSbits.CLRBF = 0;
 }
-
+/*
+ * SPI1
+ */
 void SPI_MC33996(void)
 {
 	wait_lcd_done();

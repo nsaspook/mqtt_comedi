@@ -393,14 +393,13 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	time_t rawtime;
 	static uint32_t spam = 0;
 	double over_sample;
-	static uint32_t pacer = 0;
+	static uint32_t pacer = 1001;
 
 	MQTTClient_message pubmsg = MQTTClient_message_initializer;
 	MQTTClient_deliveryToken token;
 	ha_flag_vars_ss.deliveredtoken = 0;
 
-	fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s\n", log_time(false), topic_p);
-	fflush(fout);
+
 
 #ifndef DIGITAL_ONLY
 	over_sample = 0.0f; // over-sample avg
@@ -446,8 +445,10 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	E.do_16b = bmc.dataout.dio_buf;
 	E.di_16b = get_dio_bit(0)+ (get_dio_bit(1) << 1)+ (get_dio_bit(2) << 2)+ (get_dio_bit(3) << 3)+ (get_dio_bit(4) << 4);
 
-	if (pacer++ > 100) {
+	if (pacer++ > 500) {
 		pacer = 0;
+		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s\n", log_time(false), topic_p);
+		fflush(fout);
 		E.mqtt_count++;
 		E.sequence++;
 		json = cJSON_CreateObject();

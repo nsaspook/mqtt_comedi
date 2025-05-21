@@ -2482,7 +2482,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _SPI2_InterruptHandler `*F24508 ~T0 @X0 1 e ]
 "77
 [v _SPI2_RxInterruptHandler `*F24514 ~T0 @X0 1 e ]
-"89 ./vconfig.h
+"90 ./vconfig.h
 [v _msg_gemcmds `Cuc ~T0 @X0 -> 33 `i e ]
 [i _msg_gemcmds
 :U ..
@@ -2521,7 +2521,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"90
+"91
 [v _msg_freecmds `Cuc ~T0 @X0 -> 32 `i e ]
 [i _msg_freecmds
 :U ..
@@ -2559,7 +2559,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"91
+"92
 [v _msg_gemremote `Cuc ~T0 @X0 -> 26 `i e ]
 [i _msg_gemremote
 :U ..
@@ -2591,9 +2591,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-[v F24743 `Cuc ~T0 @X0 -> 20 `i t ]
-"264
-[v _spin `F24743 ~T0 @X0 -> 6 `i e ]
+[v F24745 `Cuc ~T0 @X0 -> 20 `i t ]
+"265
+[v _spin `F24745 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
 :U ..
@@ -2680,156 +2680,156 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _build_time
 :s 2C
 ]
-"9
+"11
 [v _SPI_EADOG `(v ~T0 @X0 1 ef ]
-"10
+"12
 {
 [e :U _SPI_EADOG ]
 [f ]
-"11
+"13
 [e ( _wait_lcd_done ..  ]
-"12
+"14
 [e :U 3372 ]
 {
 [e = . . _LATEbits 0 0 -> -> 1 `i `uc ]
 }
 [e :U 3371 ]
-"13
+"15
 [e :U 3375 ]
 {
 [e = . . _LATEbits 0 1 -> -> 1 `i `uc ]
 }
 [e :U 3374 ]
-"14
-[e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
 "16
+[e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
+"18
 [e = _SPI1CON1 -> -> 36 `i `uc ]
-"17
-[e = _SPI1CON2 -> -> 2 `i `uc ]
 "19
-[e = _SPI1CLK -> -> 2 `i `uc ]
+[e = _SPI1CON2 -> -> 2 `i `uc ]
 "21
-[e = _SPI1BAUD -> -> 4 `i `uc ]
-"22
-[e = _SPI1CON0 -> -> 131 `i `uc ]
+[e = _SPI1CLK -> -> 2 `i `uc ]
 "23
-[e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
+[e = _SPI1BAUD -> -> 4 `i `uc ]
 "24
+[e = _SPI1CON0 -> -> 131 `i `uc ]
+"25
+[e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
+"26
 [e :UE 3369 ]
 }
-"26
+"31
 [v _SPI_TIC12400 `(v ~T0 @X0 1 ef ]
-"27
+"32
 {
 [e :U _SPI_TIC12400 ]
 [f ]
-"28
+"33
 [e ( _wait_lcd_done ..  ]
-"29
+"34
 [e :U 3379 ]
 {
 [e = . . _LATEbits 0 0 -> -> 1 `i `uc ]
 }
 [e :U 3378 ]
-"30
+"35
 [e :U 3382 ]
 {
 [e = . . _LATEbits 0 1 -> -> 1 `i `uc ]
 }
 [e :U 3381 ]
-"31
+"36
 [e :U 3385 ]
 {
 [e = . . _LATDbits 0 3 -> -> 1 `i `uc ]
 }
 [e :U 3384 ]
-"32
-[e = . . _SPI1STATUSbits 0 2 -> -> 1 `i `uc ]
-"33
-[e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
-"35
-[e = _SPI1CON0 -> -> 3 `i `uc ]
 "37
-[e = . . _SPI1CON1bits 0 5 -> -> 0 `i `uc ]
+[e = . . _SPI1STATUSbits 0 2 -> -> 1 `i `uc ]
 "38
-[e = . . _SPI1CON1bits 0 6 -> -> 1 `i `uc ]
-"39
-[e = . . _SPI1CON1bits 0 7 -> -> 1 `i `uc ]
+[e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
 "40
-[e = . . _SPI1CON1bits 0 4 -> -> 0 `i `uc ]
-"41
-[e = . . _SPI1CON1bits 0 1 -> -> 0 `i `uc ]
+[e = _SPI1CON0 -> -> 3 `i `uc ]
 "42
-[e = . . _SPI1CON1bits 0 0 -> -> 0 `i `uc ]
+[e = . . _SPI1CON1bits 0 5 -> -> 0 `i `uc ]
 "43
-[e = _SPI1CON2 -> -> 3 `i `uc ]
+[e = . . _SPI1CON1bits 0 6 -> -> 1 `i `uc ]
+"44
+[e = . . _SPI1CON1bits 0 7 -> -> 1 `i `uc ]
 "45
-[e = _SPI1CLK -> -> 0 `i `uc ]
+[e = . . _SPI1CON1bits 0 4 -> -> 0 `i `uc ]
+"46
+[e = . . _SPI1CON1bits 0 1 -> -> 0 `i `uc ]
 "47
-[e = _SPI1BAUD -> -> 7 `i `uc ]
+[e = . . _SPI1CON1bits 0 0 -> -> 0 `i `uc ]
 "48
-[e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
-"49
-[e = . . _SPI1STATUSbits 0 2 -> -> 0 `i `uc ]
+[e = _SPI1CON2 -> -> 3 `i `uc ]
 "50
+[e = _SPI1CLK -> -> 0 `i `uc ]
+"52
+[e = _SPI1BAUD -> -> 7 `i `uc ]
+"53
+[e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
+"54
+[e = . . _SPI1STATUSbits 0 2 -> -> 0 `i `uc ]
+"55
 [e :UE 3376 ]
 }
-"52
+"59
 [v _SPI_MC33996 `(v ~T0 @X0 1 ef ]
-"53
+"60
 {
 [e :U _SPI_MC33996 ]
 [f ]
-"54
+"61
 [e ( _wait_lcd_done ..  ]
-"55
+"62
 [e :U 3389 ]
 {
 [e = . . _LATEbits 0 0 -> -> 1 `i `uc ]
 }
 [e :U 3388 ]
-"56
+"63
 [e :U 3392 ]
 {
 [e = . . _LATEbits 0 1 -> -> 1 `i `uc ]
 }
 [e :U 3391 ]
-"57
+"64
 [e :U 3395 ]
 {
 [e = . . _LATDbits 0 3 -> -> 1 `i `uc ]
 }
 [e :U 3394 ]
-"58
-[e = . . _SPI1STATUSbits 0 2 -> -> 1 `i `uc ]
-"59
-[e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
-"61
-[e = _SPI1CON0 -> -> 3 `i `uc ]
-"63
-[e = . . _SPI1CON1bits 0 5 -> -> 0 `i `uc ]
-"64
-[e = . . _SPI1CON1bits 0 6 -> -> 1 `i `uc ]
 "65
-[e = . . _SPI1CON1bits 0 7 -> -> 1 `i `uc ]
+[e = . . _SPI1STATUSbits 0 2 -> -> 1 `i `uc ]
 "66
-[e = . . _SPI1CON1bits 0 4 -> -> 0 `i `uc ]
-"67
-[e = . . _SPI1CON1bits 0 1 -> -> 0 `i `uc ]
+[e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
 "68
-[e = . . _SPI1CON1bits 0 0 -> -> 0 `i `uc ]
-"69
-[e = _SPI1CON2 -> -> 3 `i `uc ]
+[e = _SPI1CON0 -> -> 3 `i `uc ]
+"70
+[e = . . _SPI1CON1bits 0 5 -> -> 0 `i `uc ]
 "71
-[e = _SPI1CLK -> -> 0 `i `uc ]
+[e = . . _SPI1CON1bits 0 6 -> -> 1 `i `uc ]
+"72
+[e = . . _SPI1CON1bits 0 7 -> -> 1 `i `uc ]
 "73
-[e = _SPI1BAUD -> -> 7 `i `uc ]
+[e = . . _SPI1CON1bits 0 4 -> -> 0 `i `uc ]
 "74
-[e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
+[e = . . _SPI1CON1bits 0 1 -> -> 0 `i `uc ]
 "75
-[e = . . _SPI1STATUSbits 0 2 -> -> 0 `i `uc ]
+[e = . . _SPI1CON1bits 0 0 -> -> 0 `i `uc ]
 "76
+[e = _SPI1CON2 -> -> 3 `i `uc ]
+"78
+[e = _SPI1CLK -> -> 0 `i `uc ]
+"80
+[e = _SPI1BAUD -> -> 7 `i `uc ]
+"81
+[e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
+"82
+[e = . . _SPI1STATUSbits 0 2 -> -> 0 `i `uc ]
+"83
 [e :UE 3386 ]
 }
-[a 2C 49 50 58 52 50 58 50 57 0 ]
-[a 1C 77 97 121 32 49 55 32 50 48 50 53 0 ]
+[a 2C 49 55 58 51 54 58 50 57 0 ]
+[a 1C 77 97 121 32 50 48 32 50 48 50 53 0 ]

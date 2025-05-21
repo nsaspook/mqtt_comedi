@@ -4,11 +4,14 @@
  * LED2 GREEN	1 second CPU running blinker
  * LED3 GREEN	I/O indicator
  * LED4 GREEN	5VDC Power
+ * 
+ * SPI1 MODE 3 MASTER to DISPLAY and MODE 1 to DIO SLAVE devices
+ * SPI2 MODE 0 SLAVE to OPi controller MASTER SPI port
  */
 
 /*
- * UART1 HOST RS-232 comms, ANALOG header, TX-PIN 7 MB_TX, RX-PIN 6 MB_RX
- * UART2 Equipment Testing RS-232 comms, TTL serial HEADER, TX-PIN 2 PC_TX, RX-PIN 3 PC_RX
+ * UART1 RS-232 comms, ANALOG header, TX-PIN 7 , RX-PIN 6 , SV1 serial bus, TX-PIN 8, RX-PIN 7
+ * UART2 RS-232 comms, TTL serial HEADER, TX-PIN 2 , RX-PIN 3 , SV1 serial bus, TX-PIN 10, RX-PIN 9
  */
 
 // PIC18F47Q84 Configuration Bit Settings
@@ -249,10 +252,14 @@ B_type B = {
 };
 
 volatile struct spi_link_type_ss spi_comm_ss = {false, false, false, false, false, false, false, false};
-volatile struct spi_stat_type_ss spi_stat_ss;
+volatile struct spi_stat_type_ss spi_stat_ss = {
+	.raw_index = 0,
+};
 volatile struct serial_buffer_type_ss serial_buffer_ss = {
 	.tx_buffer = 0x81,
 	.data[0] = 0x57,
+	.raw_index = 0,
+	.make_value = false,
 };
 
 volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0, channel = 0, upper;
@@ -271,7 +278,7 @@ void main(void)
 {
 	UI_STATES mode; /* link configuration host/equipment/etc ... */
 	char * s, * speed_text;
-	uint8_t temp_lock = false, slowly=0;
+	uint8_t temp_lock = false, slowly = 0;
 	static uint8_t looper = 0;
 
 	SPI2STATUSbits.SPI2CLRBF;
@@ -440,18 +447,11 @@ void main(void)
 		}
 
 		if (TimerDone(TMR_ADC)) {
-			spi1_rec_buf[0] = 0x57;
-			spi1_rec_buf[1] = 0x57;
-			spi1_rec_buf[2] = 0x57;
-			spi1_rec_buf[3] = 0x57;
 			SPI_MC33996();
-			if (slowly++ > 32) {
-				slowly=0;
-				few++;
-			}
-			mc33996_update(few);
+			mc33996_update((uint16_t) V.bmc_do);
 			SPI_TIC12400();
 			tic12400_read_sw(0, (uintptr_t) NULL);
+			V.bmc_di = tic12400_switch;
 			SPI_EADOG();
 			StartTimer(TMR_ADC, ADCDELAY);
 			spi_stat_ss.adc_count++; // just keep count
@@ -572,14 +572,29 @@ void main(void)
 				set_display_info(DIS_STR);
 			}
 #ifdef DIO_TEST
+#ifdef DIO_SHOW_BUF
+			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%lx %lx %lu %lu            ",
+				V.bmc_do, V.bmc_di, spi_stat_ss.port_count, spi_stat_ss.slave_tx_count);
+
+			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "0x%.2x 0x%.2x 0x%.2x 0x%.2x                  ",
+				serial_buffer_ss.data[3], serial_buffer_ss.data[2], serial_buffer_ss.data[1], serial_buffer_ss.data[0]);
+			V.bmc_do = serial_buffer_ss.data[1];
+
+			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "TX %lx, RX %lx, %d %d %d         ",
+				spi_stat_ss.txuf_bit, spi_stat_ss.rxof_bit, SPI2INTFbits.TCZIF, SPI2STATUSbits.SPI2RXRE, SPI2STATUSbits.SPI2TXWE);
+
+#else
 			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%.2x %.2x %.2x %.2x %lu %lu %lx             ", spi_link.rxbuf[3], spi_link.rxbuf[2], spi_link.rxbuf[1], spi_link.rxbuf[0], tic12400_parity_count, tic12400_fail_value,
 				tic12400_id);
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%lx %lx %lx %lx %lx                   ", tic12400_fail_count, spi_link.des_bytes, tic12400_value_counts, tic12400_switch, tic12400_status);
+
+#endif
 #else
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%lu %lu %lu %lu                    ", spi_stat_ss.spi_error_count, spi_stat_ss.adc_count, spi_stat_ss.slave_tx_count, spi_stat_ss.slave_int_count);
-#endif
 			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "A1 0x%.2x, A2 0x%.2x               ", V.v_tx_line, V.v_rx_line);
-			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "0x%.4x 0x%.2x %d %d %d                      ", SPI2TCNT, SPI2INTF, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK);
+
+#endif
+			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "0x%.2lx 0x%.2lx %d %d %d                      ", spi_stat_ss.spi_error_count, spi_stat_ss.spi_noerror_count, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK);
 
 			// convert ADC values to char for display
 			update_rs232_line_status();
