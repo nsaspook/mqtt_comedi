@@ -2,7 +2,6 @@ var annotated_dup =
 [
     [ "B_type", "structB__type.html", null ],
     [ "D_data", "structD__data.html", null ],
-    [ "mcp2210_spi_type", "structmcp2210__spi__type.html", null ],
     [ "ringBufS_t", "structringBufS__t.html", null ],
     [ "serial_buffer_type_ss", "structserial__buffer__type__ss.html", null ],
     [ "spi1_configuration_t", "structspi1__configuration__t.html", null ],

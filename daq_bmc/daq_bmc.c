@@ -542,7 +542,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 	{
 		.name = "mcp3002",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
-		.max_speed_hz = 1000000,
+		.max_speed_hz = 4000000,
 		.min_acq_ns = 20000,
 		.rate_min = 30000,
 		.spi_mode = 3,
@@ -553,7 +553,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 	{
 		.name = "mcp3202",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
-		.max_speed_hz = 1000000,
+		.max_speed_hz = 4000000,
 		.min_acq_ns = 28800,
 		.rate_min = 30000,
 		.spi_mode = 3,
