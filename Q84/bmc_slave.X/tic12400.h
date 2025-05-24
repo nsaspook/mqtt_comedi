@@ -32,12 +32,12 @@ extern "C" {
 #define spi_fail_bit_v		0b01000000000000000000000000000000
 #define parity_fail_v		0b00100000000000000000000000000000
 #define id_mask_d		0b00000000000000000000011111111111
-#define switch_mask_d		0b011111111111111111111111
+#define switch_mask_d		0x00ffffff
 	/*
 	 * switch bit masks in the raw 32-bit register from the TIC12400
 	 */
-#define raw_mask_0 0b010
-#define raw_mask_11 0b100000000000000
+#define raw_mask_0          0b010
+#define raw_mask_11         0b100000000000000
 
 	extern volatile struct spi_link_type spi_link;
 	/*

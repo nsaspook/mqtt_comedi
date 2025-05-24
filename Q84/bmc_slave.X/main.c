@@ -306,7 +306,7 @@ void main(void)
 	/** Speed locking setup code.
 	 * Use a few EEPROM bytes to cycle or lock the serial port baud rate
 	 * during a power-up.
-	 * 9600 and 19200 are the normal speeds for SECS-I serial communications
+	 * 9600 and 115200 are the normal speeds for serial communications
 	 */
 	V.speed_spin = DATAEE_ReadByte(UART_SPEED_LOCK_EADR);
 	V.uart_speed_fast = DATAEE_ReadByte(UART_SPEED_EADR);
@@ -316,7 +316,7 @@ void main(void)
 	if (V.uart_speed_fast % 2 == 0) { // Even/Odd selection for just two speeds
 		speed_text = "Locked 9600bps";
 	} else {
-		speed_text = "Locked 19200bps";
+		speed_text = "Locked 115200bps";
 	}
 	// as soon as you see all LEDS ON, power down, quickly POWER CYCLE to LOCK baud rate
 	MLED_SetHigh();
@@ -342,9 +342,9 @@ void main(void)
 			DATAEE_WriteByte(UART_SPEED_EADR, V.uart_speed_fast); // start at zero
 		}
 		if (V.uart_speed_fast % 2 == 0) {
-			UART2_Initialize19200();
-			UART1_Initialize19200();
-			speed_text = "19200bps";
+			UART2_Initialize115200();
+			UART1_Initialize115200();
+			speed_text = "115200bps";
 		} else {
 			UART2_Initialize();
 			UART1_Initialize();
@@ -361,8 +361,8 @@ void main(void)
 			UART2_Initialize();
 			UART1_Initialize();
 		} else {
-			UART2_Initialize19200();
-			UART1_Initialize19200();
+			UART2_Initialize115200();
+			UART1_Initialize115200();
 		}
 	}
 	uint16_t few = 0;
@@ -573,7 +573,10 @@ void main(void)
 			}
 #ifdef DIO_TEST
 #ifdef DIO_SHOW_BUF
-			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%lx %lx %lu %lu            ",
+			if (spi_stat_ss.slave_tx_count < 0x1fff) { // clear startup counts of empty fifo
+				spi_stat_ss.spi_noerror_count = 0;
+			}
+			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%.4lx %.6lx %lx %lx            ",
 				V.bmc_do, V.bmc_di, spi_stat_ss.port_count, spi_stat_ss.slave_tx_count);
 
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "0x%.2x 0x%.2x 0x%.2x 0x%.2x                  ",

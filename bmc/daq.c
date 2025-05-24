@@ -348,7 +348,9 @@ int init_dio(void)
 		fprintf(fout, "Maxdata %i ", maxdata_dio);
 		ranges_dio = comedi_get_n_ranges(it, subdev_dio, i);
 		fprintf(fout, "Ranges %i \r\n", ranges_dio);
-		comedi_dio_config(it, subdev_dio, 0xffffff, COMEDI_OUTPUT);
+		if (bmc.BOARD == bmcboard) {
+			comedi_dio_config(it, subdev_dio, 0xffffff, COMEDI_OUTPUT);
+		}
 	}
 
 	if (PWM_OPEN) {
@@ -378,7 +380,12 @@ int get_data_sample(void)
 		put_dio_bit(7, bmc.dataout.d.D7);
 	} else { // send I/O as a byte mask
 		obits = bmc.dataout.dio_buf; // buffer output
-		comedi_dio_bitfield2(it, subdev_dio, obits, &obits, 0);
+		if (bmc.BOARD == bmcboard) {
+			obits |= ((~(bmc.dataout.dio_buf<<8))&0x00000f00);
+			comedi_dio_bitfield2(it, subdev_dio, obits, &obits, 0);
+		} else {
+			comedi_dio_bitfield2(it, subdev_do, 0xff, &obits, 0);
+		}
 	}
 
 	return 0;

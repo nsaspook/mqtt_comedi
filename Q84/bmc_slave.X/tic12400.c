@@ -146,14 +146,12 @@ bool tic12400_init(void)
 {
 	if (tic12400_init_fail) {
 		tic12400_status = tic12400_wr(&ticstat02, 0); // get status to check for proper operation
-
 		if (((tic12400_status & por_bit_s))) { // check for any high bits beyond POR bits set
 			tic12400_reset();
 			tic12400_fail_value = -1;
 			tic12400_fail_count++;
 			goto fail;
 		}
-
 		tic12400_status = tic12400_wr(&setup32, 0); //all set to compare mode, 0x32
 		if (((tic12400_status & por_bit_s))) { // check for any high bits beyond POR bits set
 			tic12400_fail_count++;
@@ -215,13 +213,11 @@ bool tic12400_init(void)
 			goto fail;
 		}
 		tic12400_status = tic12400_wr(&setup1a_trigger, 2); // trigger switch detections & CRC, 0x1a
-
 		if (tic12400_status & spi_fail_bit_v) {
 			tic12400_fail_value = -12;
 			tic12400_fail_count++;
 			goto fail;
 		}
-
 		tic12400_id = tic12400_wr(&ticdevid01, 0);
 		if (tic12400_id & spi_fail_bit_v) {
 			tic12400_fail_value = -13;
@@ -232,22 +228,21 @@ bool tic12400_init(void)
 		tic12400_init_fail = false;
 		tic12400_fail_value = 0;
 	}
-
 fail:
 	return !tic12400_init_fail; // flip to return true if NO configuration failures
 }
 
 /*
- * send tic12400 commands to SPI port 5 with possible delay after transfer
+ * send tic12400 commands to SPI port 1 with possible delay after transfer
  * returns 32-bit spi response from the tic12400
  */
 uint32_t tic12400_wr(const ticbuf_type * buffer, uint16_t del)
 {
 	send_spi1_tic12400_dma((void*) buffer, 4);
-	ticvalue = (uint32_t) spi_link.rxbuf[0];
-	ticvalue += (uint32_t) (spi_link.rxbuf[1] << 8);
-	ticvalue += (uint32_t) ((uint32_t) spi_link.rxbuf[2] << (uint32_t) 16);
-	ticvalue += (uint32_t) ((uint32_t) spi_link.rxbuf[3] << (uint32_t) 24);
+	ticvalue = (uint32_t) spi_link.rxbuf[0]&0x000000ff;
+	ticvalue += (uint32_t) (spi_link.rxbuf[1] << 8) & 0x0000ff00;
+	ticvalue += (uint32_t) ((uint32_t) spi_link.rxbuf[2] << (uint32_t) 16)&0x00ff0000;
+	ticvalue += (uint32_t) ((uint32_t) spi_link.rxbuf[3] << (uint32_t) 24)&0xff000000;
 	tic12400_read_error = false;
 
 	if (ticvalue & parity_fail_v) { // check for command parity errors
@@ -261,12 +256,10 @@ uint32_t tic12400_wr(const ticbuf_type * buffer, uint16_t del)
 		tic12400_fail_count++;
 		send_spi1_tic12400_dma((void*) &ticstat02, 4);
 	}
-
 	if (del) {
 		WaitMs(1);
 	}
-
-	return(uint32_t) ticvalue;
+	return(uint32_t) ticvalue; // raw 32-bit switch register value from the device SO pins
 }
 
 /*
@@ -278,19 +271,16 @@ uint32_t tic12400_get_sw(void)
 	if (tic12400_init_fail) { // Trouble in River City
 		return 0;
 	}
-
 	if (tic12400_switch & (raw_mask_0)) {
 		//		BSP_LED1_Clear();
 	} else {
 		//		BSP_LED1_Set();
 	}
-
 	if (tic12400_switch & (raw_mask_11)) {
 		//		BSP_LED2_Clear();
 	} else {
 		//		BSP_LED2_Set();
 	}
-
 	tic12400_event = false;
 	return tic12400_switch;
 }
@@ -314,7 +304,6 @@ bool tic12400_parity(uint32_t v)
  */
 void tic12400_read_sw(uint32_t a, uintptr_t b)
 {
-	//	tic12400_status = tic12400_wr(&ticstat02, 0); // read status
 	tic12400_value = tic12400_wr(&ticread05, 0); // read switch
 
 	if ((tic12400_value & ssc_bit_s) && tic12400_parity(tic12400_value)) { // only trigger on switch state change
@@ -328,5 +317,4 @@ void tic12400_read_sw(uint32_t a, uintptr_t b)
 void tic_int_handler(void)
 {
 	tic12400_read_sw(0, (uintptr_t) NULL);
-	//	tic12400_status = tic12400_wr(&ticstat02, 0); // read status
 }

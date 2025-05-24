@@ -66,7 +66,7 @@ extern "C" {
 	struct serial_buffer_type_ss {
 		volatile uint8_t data[16], tx_buffer, adcl, adc2, adch, command, raw_index;
 		volatile uint32_t place;
-		volatile bool make_value;
+		volatile bool make_value, get_value;
 	};
 
 	extern volatile struct spi_link_type_ss spi_comm_ss;

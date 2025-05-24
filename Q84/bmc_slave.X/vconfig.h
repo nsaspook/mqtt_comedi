@@ -22,7 +22,7 @@ extern "C" {
 
 #define NHD		// SPI 20X4 display, nhd-0420d3z-nsw-bbw
 
-#define VER	"V0.10"
+#define VER	"V0.11"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 47Q84.
@@ -32,6 +32,7 @@ extern "C" {
 	 * V0.04 start adding the DIO devices code with speed and mode changes 4MHz and mode 1, 50KHz mode 3 for the display
 	 * V0.05 have the SPI I/O routines working for the DIO devices
 	 * V0.10 mainly working DO version
+	 * V0.11 mainly working DI version
 	 */
 /*
  * TIC12400 testing mode
@@ -59,34 +60,34 @@ extern "C" {
 	/*
 	 * characters per line on the display
 	 */
-#define MAX_STRLEN	20
-#define MAX_LINE	MAX_STRLEN+1
-#define MAX_TEXT	MAX_STRLEN+1
+#define MAX_STRLEN      20
+#define MAX_LINE        MAX_STRLEN+1
+#define MAX_TEXT        MAX_STRLEN+1
 #define MAX_HELP_STRLEN	32
 
-#define MAX_INFO	63
-#define MAX_BUF		127
-#define MAX_TERM	159
-#define MAX_VTERM	4
+#define MAX_INFO        63
+#define MAX_BUF         127
+#define MAX_TERM        159
+#define MAX_VTERM       4
 #define MAX_LCD_LINES	4
 
-#define HELP_VTERM	3
-#define DBUG_VTERM	2
-#define INFO_VTERM	1
-#define MAIN_VTERM	0
+#define HELP_VTERM      3
+#define DBUG_VTERM      2
+#define INFO_VTERM      1
+#define MAIN_VTERM      0
 
 #define SWITCH_VTERM	70 // time between main to info screen switches
 #define SWITCH_DURATION	32 // time in the info screen
 
-#define SPIN_CHAR	19
+#define SPIN_CHAR       19
 
 #define UART_SPEED_EADR         0x03F0 // offset from 0x380000
 #define UART_SPEED_LOCK_EADR	0x03F1 // offset from 0x380000
 
-#define HOST_UART	1
-#define EQUIP_UART	2
+#define HOST_UART       1
+#define EQUIP_UART      2
 
-#define DEF_TIME    0
+#define DEF_TIME        0
 
 	const char msg_gemcmds[] = "Host CMDS: M C R P O L S D E H F";
 	const char msg_freecmds[] = "Port baud rate unlocked        ";
@@ -277,6 +278,9 @@ extern "C" {
 
 	extern void UART1_Initialize19200(void);
 	extern void UART2_Initialize19200(void);
+    
+    extern void UART1_Initialize115200(void);
+	extern void UART2_Initialize115200(void);
 
 #ifdef	__cplusplus
 }

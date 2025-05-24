@@ -414,8 +414,8 @@ static const uint8_t CMD_DAC_GO = 0x90;
 static const uint8_t CMD_PORT_GO = 0xa0; /* send data to port output DO buffer */
 static const uint8_t CMD_CHAR_GO = 0xb0;
 static const uint8_t CMD_ADC_DATA = 0xc0;
-static const uint8_t CMD_PORT_DATA = 0xd0; 
-static const uint8_t CMD_CHAR_DATA = 0xe0; 
+static const uint8_t CMD_PORT_DATA = 0xd0;
+static const uint8_t CMD_CHAR_DATA = 0xe0;
 static const uint8_t CMD_PORT_GET = 0xf0; /* read data from input DI buffer */
 static const uint8_t CMD_CHAR_RX = 0x10; /* Get RX buffer */
 static const uint8_t CMD_DUMMY_CFG = 0x40; /* stuff config data in SPI buffer */
@@ -1257,6 +1257,9 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 	mutex_lock(&devpriv->drvdata_lock);
 	chan = devpriv->ai_chan;
 
+	pdata->one_t.tx_buf = pdata->tx_buff;
+	pdata->one_t.rx_buf = pdata->rx_buff;
+
 	pdata->sub = s;
 	/* Make SPI messages for the type of ADC are we talking to */
 	switch (devpriv->ai_spi->device_type) {
@@ -1271,8 +1274,7 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		pdata->tx_buff[1] = 0;
 		pdata->tx_buff[2] = 0;
 		pdata->tx_buff[3] = 0;
-		spi_message_init_with_transfers(&m,
-			&pdata->one_t, 1);
+		spi_message_init_with_transfers(&m, &pdata->one_t, 1);
 		spi_bus_lock(spi->master);
 		spi_sync_locked(spi, &m);
 		spi_bus_unlock(spi->master);
@@ -1306,8 +1308,7 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 #endif
 			pdata->t[0].tx_buf = &pdata->tx_buff[0];
 			pdata->t[0].rx_buf = &pdata->rx_buff[0];
-			spi_message_init_with_transfers(&m,
-				&pdata->t[0], 1);
+			spi_message_init_with_transfers(&m, &pdata->t[0], 1);
 		}
 		spi_bus_lock(spi->master);
 		spi_sync_locked(spi, &m);
@@ -2751,7 +2752,7 @@ static void digitalWriteOPi(struct comedi_device *dev,
 
 	/* use single transfers for each byte of the complete SPI transaction */
 
-
+	devpriv->do_count++;
 	pdata->one_t.tx_buf = pdata->tx_buff;
 	pdata->one_t.rx_buf = pdata->rx_buff;
 
@@ -2759,7 +2760,6 @@ static void digitalWriteOPi(struct comedi_device *dev,
 	pdata->one_t.cs_change = false;
 	pdata->one_t.len = 1;
 	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
-
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, &m);
 	spi_bus_unlock(spi->master);
@@ -2768,7 +2768,6 @@ static void digitalWriteOPi(struct comedi_device *dev,
 	pdata->one_t.cs_change = false;
 	pdata->one_t.len = 1;
 	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
-
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, &m);
 	spi_bus_unlock(spi->master);
@@ -2777,7 +2776,6 @@ static void digitalWriteOPi(struct comedi_device *dev,
 	pdata->one_t.cs_change = false;
 	pdata->one_t.len = 1;
 	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
-
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, &m);
 	spi_bus_unlock(spi->master);
@@ -2786,12 +2784,11 @@ static void digitalWriteOPi(struct comedi_device *dev,
 	pdata->one_t.cs_change = false;
 	pdata->one_t.len = 1;
 	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
-
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, &m);
 	spi_bus_unlock(spi->master);
 
-	devpriv->do_count++;
+
 	{
 		struct spi_controller *ctlr = spi->controller;
 		u32 save = spi->mode;
@@ -2825,14 +2822,87 @@ static int digitalReadOPi(struct comedi_device *dev,
 	uint32_t tmp, val_value;
 	static struct spi_message m;
 
-	val_value = *data;
+	val_value = data[0];
+	pdata->one_t.tx_buf = pdata->tx_buff;
+	pdata->one_t.rx_buf = pdata->rx_buff;
 	devpriv->di_count++;
 
-	if (true) {
-		return 1;
-	} else {
-		return 0;
+	tmp = spi->mode;
+	{
+		struct spi_controller *ctlr = spi->controller;
+
+		if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
+			ctlr->cs_gpiods[spi->chip_select]) {
+			tmp &= ~SPI_CS_HIGH;
+		}
+		tmp |= spi->mode & ~SPI_MODE_MASK;
+		spi->mode = tmp & SPI_MODE_USER_MASK;
+		val_mode = spi_setup(spi);
 	}
+
+	/* use two spi transfers for the complete SPI transaction */
+
+	pdata->tx_buff[0] = CMD_PORT_GET;
+	pdata->one_t.cs_change = false;
+	pdata->one_t.len = 1;
+
+	/*
+	 * send PORT GET command request
+	 */
+	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
+	spi_bus_lock(spi->master);
+	spi_sync_locked(spi, &m);
+	spi_bus_unlock(spi->master);
+
+	pdata->tx_buff[0] = CMD_ADC_DATA;
+	pdata->one_t.rx_buf = &pdata->rx_buff[1];
+	pdata->one_t.cs_change = false;
+	pdata->one_t.len = 1;
+	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
+	spi_bus_lock(spi->master);
+	spi_sync_locked(spi, &m);
+	spi_bus_unlock(spi->master);
+
+	pdata->tx_buff[0] = CMD_ADC_DATA;
+	pdata->one_t.rx_buf = &pdata->rx_buff[2];
+	pdata->one_t.cs_change = false;
+	pdata->one_t.len = 1;
+	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
+	spi_bus_lock(spi->master);
+	spi_sync_locked(spi, &m);
+	spi_bus_unlock(spi->master);
+
+	pdata->tx_buff[0] = CMD_ADC_DATA;
+	pdata->one_t.rx_buf = &pdata->rx_buff[3];
+	pdata->one_t.cs_change = false;
+	pdata->one_t.len = 1;
+	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
+	spi_bus_lock(spi->master);
+	spi_sync_locked(spi, &m);
+	spi_bus_unlock(spi->master);
+
+	val_value = pdata->rx_buff[3];
+	val_value += (pdata->rx_buff[2] << 8);
+	val_value += (pdata->rx_buff[1] << 16);
+
+	{
+		struct spi_controller *ctlr = spi->controller;
+		u32 save = spi->mode;
+
+		if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
+			ctlr->cs_gpiods[spi->chip_select]) {
+			tmp |= SPI_CS_HIGH;
+		}
+		tmp |= spi->mode & ~SPI_MODE_MASK;
+		spi->mode = tmp & SPI_MODE_USER_MASK;
+		val_mode = spi_setup(spi);
+		if (val_mode < 0) {
+			spi->mode = save;
+		} else {
+			dev_dbg(&spi->dev, "spi mode %x\n", tmp);
+		}
+	}
+	return val_value;
 }
 
 static int daqbmc_dio_insn_bits(struct comedi_device *dev,
@@ -2853,7 +2923,7 @@ static int daqbmc_dio_insn_bits(struct comedi_device *dev,
 		return -EFAULT;
 	}
 
-	devpriv->digitalWrite(dev,  pinOPi, data);
+	devpriv->digitalWrite(dev, pinOPi, data);
 	val = devpriv->digitalRead(dev, data);
 
 	return insn->n;

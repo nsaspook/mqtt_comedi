@@ -217,7 +217,7 @@ void send_spi1_tic12400_dma(uint8_t *strPtr, const uint8_t len)
 	wait_lcd_done();
 	TIC_CS_SetLow(); /* SPI select display */
 	spi_link.des_bytes++;
-	spi_link.READ_DATA = true;
+//	spi_link.READ_DATA = true;
 	memcpy(spi_link.txbuf, strPtr, len);
 	spi_link.rxbuf[0] = SPI1_ExchangeByte(spi_link.txbuf[0]);
 	spi_link.rxbuf[1] = SPI1_ExchangeByte(spi_link.txbuf[1]);
@@ -256,7 +256,6 @@ void send_spi1_mc33996_dma(uint8_t *strPtr, const uint8_t len)
 	spi_link.READ_DATA = false;
 	spi_link.READ_DATA = false;
 	MCZ_CS_SetHigh();
-
 }
 
 /*
@@ -287,7 +286,6 @@ void eaDogM_WriteStringAtPos(const uint8_t r, const uint8_t c, char *strPtr)
 		return;
 	}
 #endif
-
 	switch (r) {
 	case LCD1:
 		row = 0x40;
@@ -305,7 +303,6 @@ void eaDogM_WriteStringAtPos(const uint8_t r, const uint8_t c, char *strPtr)
 		row = 0x00;
 		break;
 	}
-
 #ifdef USE_LCD_DMA
 	send_lcd_pos_dma(row + c);
 	wdtdelay(NHD_S_DELAY); // display command processing delay

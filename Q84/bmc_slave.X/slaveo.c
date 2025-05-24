@@ -16,14 +16,6 @@
 
 /*
  * bit 7 high for commands sent from the MASTER
- * bit 6 0 send lower or 1 send upper byte ADC result first
- * bits 3..0 port address
- *
- * bit 7 low  for config data sent in CMD_DUMMY per uC type
- * bits 6 config bit code always 1
- * bit	5 0=ADC ref VDD, 1=ADC rec FVR=2.048
- * bit  4 0=10bit adc, 1=12bit adc
- * bits 3..0 number of ADC channels
  * 
  */
 
@@ -106,15 +98,38 @@ void slaveo_rx_isr(void)
 	}
 
 	data_in2 = SPI2RXB;
-
 	serial_buffer_ss.data[serial_buffer_ss.raw_index] = data_in2;
+
 	if (serial_buffer_ss.make_value) {
 		if (serial_buffer_ss.raw_index == 3) {
 			V.bmc_do = serial_buffer_ss.data[1];
+			V.bmc_do += (uint32_t) (serial_buffer_ss.data[2] << 8u)&0x0000ff00;
 			data_in2 = 0;
 			serial_buffer_ss.make_value = false;
 			serial_buffer_ss.raw_index = 0;
-			SPI2STATUSbits.CLRBF = 1;
+			//			SPI2STATUSbits.CLRBF = 1;
+			while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
+				data_in2 = SPI2RXB;
+			}
+			spi_stat_ss.txdone_bit++; // number of DO completed packets
+			spi_stat_ss.slave_tx_count++;
+		} else {
+			spi_stat_ss.slave_tx_count++;
+			if (!SPI2STATUSbits.SPI2TXWE) { // TX FIFO not full
+			}
+		}
+	}
+	if (serial_buffer_ss.get_value) {
+		if (serial_buffer_ss.raw_index == 3) {
+			V.bmc_di = serial_buffer_ss.data[1];
+			V.bmc_di += (uint32_t) (serial_buffer_ss.data[2] << 8u)&0x0000ff00;
+			data_in2 = 0;
+			serial_buffer_ss.get_value = false;
+			serial_buffer_ss.raw_index = 0;
+			//			SPI2STATUSbits.CLRBF = 1;
+			while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
+				data_in2 = SPI2RXB;
+			}
 			spi_stat_ss.txdone_bit++; // number of DO completed packets
 			spi_stat_ss.slave_tx_count++;
 		} else {
@@ -178,6 +193,21 @@ void slaveo_rx_isr(void)
 		while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
 			data_in2 = SPI2RXB;
 		}
+	}
+
+	if (command == CMD_PORT_GET) { // send the V.bmc_di buffer
+		zombie = false;
+		spi_comm_ss.ADC_RUN = false;
+		spi_comm_ss.PORT_DATA = true;
+		spi_stat_ss.port_count++;
+		serial_buffer_ss.raw_index = 0;
+		serial_buffer_ss.get_value = true;
+		spi_stat_ss.slave_tx_count++;
+
+		spi_comm_ss.REMOTE_LINK = true;
+		while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
+			data_in2 = SPI2RXB;
+		}
 		TMR0_Reload();
 	}
 
@@ -193,6 +223,9 @@ void slaveo_rx_isr(void)
 		serial_buffer_ss.raw_index++;
 
 		spi_comm_ss.REMOTE_LINK = true;
+		while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
+			data_in2 = SPI2RXB;
+		}
 		TMR0_Reload();
 	}
 

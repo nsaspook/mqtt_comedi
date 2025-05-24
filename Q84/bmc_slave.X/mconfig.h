@@ -31,11 +31,6 @@
 #ifndef MCONFIG_H
 #define	MCONFIG_H
 
-//#define DEF_TIME	1721693000
-//#define DEF_TIME_SIZE	11
-
-//#define SECS_MAX		4096
-
 #include "mcc_generated_files/mcc.h"
 #include "vconfig.h"
 #include "bmcdio.h"

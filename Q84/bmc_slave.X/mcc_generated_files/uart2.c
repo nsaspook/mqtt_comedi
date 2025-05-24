@@ -121,11 +121,11 @@ void UART2_Initialize(void)
 	// TXPOL not inverted; FLO off; C0EN Checksum Mode 0; RXPOL not inverted; RUNOVF RX input shifter stops all activity; STP Transmit 1Stop bit, receiver verifies first Stop bit; 
 	U2CON2 = 0x00;
 
-	// BRGL 130; 
-	U2BRGL = 0x82;
+    // BRGL 130; 
+    U2BRGL = 0x82;
 
-	// BRGH 6; 
-	U2BRGH = 0x06;
+    // BRGH 6; 
+    U2BRGH = 0x06;
 
 	// STPMD in middle of first Stop bit; TXWRE No error; 
 	U2FIFO = 0x00;
@@ -160,12 +160,12 @@ void UART2_Initialize(void)
 
 bool UART2_is_rx_ready(void)
 {
-	return(uart2RxCount ? true : false);
+    return (uart2RxCount ? true : false);
 }
 
 bool UART2_is_tx_ready(void)
 {
-	return(uart2TxBufferRemaining ? true : false);
+    return (uart2TxBufferRemaining ? true : false);
 }
 
 bool UART2_is_tx_done(void)
@@ -173,22 +173,23 @@ bool UART2_is_tx_done(void)
 	return U2ERRIRbits.TXMTIF;
 }
 
-uart2_status_t UART2_get_last_status(void)
-{
+uart2_status_t UART2_get_last_status(void){
 	return uart2RxLastError;
 }
 
 uint8_t UART2_Read(void)
 {
-	uint8_t readValue = 0;
+    uint8_t readValue  = 0;
 
-	while (0 == uart2RxCount) {
+    while(0 == uart2RxCount)
+    {
 	}
 
 	uart2RxLastError = uart2RxStatusBuffer[uart2RxTail];
 
 	readValue = uart2RxBuffer[uart2RxTail++];
-	if (sizeof(uart2RxBuffer) <= uart2RxTail) {
+   	if(sizeof(uart2RxBuffer) <= uart2RxTail)
+    {
 		uart2RxTail = 0;
 	}
 	PIE8bits.U2RXIE = 0;
@@ -200,15 +201,20 @@ uint8_t UART2_Read(void)
 
 void UART2_Write(uint8_t txData)
 {
-	while (0 == uart2TxBufferRemaining) {
+    while(0 == uart2TxBufferRemaining)
+    {
 	}
 
-	if (0 == PIE8bits.U2TXIE) {
+    if(0 == PIE8bits.U2TXIE)
+    {
 		U2TXB = txData;
-	} else {
+    }
+    else
+    {
 		PIE8bits.U2TXIE = 0;
 		uart2TxBuffer[uart2TxHead++] = txData;
-		if (sizeof(uart2TxBuffer) <= uart2TxHead) {
+        if(sizeof(uart2TxBuffer) <= uart2TxHead)
+        {
 			uart2TxHead = 0;
 		}
 		uart2TxBufferRemaining--;
@@ -216,30 +222,38 @@ void UART2_Write(uint8_t txData)
 	PIE8bits.U2TXIE = 1;
 }
 
-void __interrupt(irq(U2TX), base(8)) UART2_tx_vect_isr()
+void __interrupt(irq(U2TX),base(8)) UART2_tx_vect_isr()
 {
-	if (UART2_TxInterruptHandler) {
+    if(UART2_TxInterruptHandler)
+    {
 		UART2_TxInterruptHandler();
 	}
 }
 
-void __interrupt(irq(U2RX), base(8)) UART2_rx_vect_isr()
+void __interrupt(irq(U2RX),base(8)) UART2_rx_vect_isr()
 {
-	if (UART2_RxInterruptHandler) {
+    if(UART2_RxInterruptHandler)
+    {
 		UART2_RxInterruptHandler();
 	}
 }
 
+
+
 void UART2_Transmit_ISR(void)
 {
 	// use this default transmit interrupt handler code
-	if (sizeof(uart2TxBuffer) > uart2TxBufferRemaining) {
+    if(sizeof(uart2TxBuffer) > uart2TxBufferRemaining)
+    {
 		U2TXB = uart2TxBuffer[uart2TxTail++];
-		if (sizeof(uart2TxBuffer) <= uart2TxTail) {
+       if(sizeof(uart2TxBuffer) <= uart2TxTail)
+        {
 			uart2TxTail = 0;
 		}
 		uart2TxBufferRemaining++;
-	} else {
+    }
+    else
+    {
 		PIE8bits.U2TXIE = 0;
 	}
 
@@ -251,17 +265,17 @@ void UART2_Receive_ISR(void)
 	// use this default receive interrupt handler code
 	uart2RxStatusBuffer[uart2RxHead].status = 0;
 
-	if (U2ERRIRbits.FERIF) {
+    if(U2ERRIRbits.FERIF){
 		uart2RxStatusBuffer[uart2RxHead].ferr = 1;
 		UART2_FramingErrorHandler();
 	}
 
-	if (U2ERRIRbits.RXFOIF) {
+    if(U2ERRIRbits.RXFOIF){
 		uart2RxStatusBuffer[uart2RxHead].oerr = 1;
 		UART2_OverrunErrorHandler();
 	}
 
-	if (uart2RxStatusBuffer[uart2RxHead].status) {
+    if(uart2RxStatusBuffer[uart2RxHead].status){
 		UART2_ErrorHandler();
 	} else {
 		UART2_RxDataHandler();
@@ -270,52 +284,43 @@ void UART2_Receive_ISR(void)
 	// or set custom function using UART2_SetRxInterruptHandler()
 }
 
-void UART2_RxDataHandler(void)
-{
+void UART2_RxDataHandler(void){
 	// use this default receive interrupt handler code
 	uart2RxBuffer[uart2RxHead++] = U2RXB;
-	if (sizeof(uart2RxBuffer) <= uart2RxHead) {
+    if(sizeof(uart2RxBuffer) <= uart2RxHead)
+    {
 		uart2RxHead = 0;
 	}
 	uart2RxCount++;
 }
 
-void UART2_DefaultFramingErrorHandler(void)
-{
-}
+void UART2_DefaultFramingErrorHandler(void){}
 
-void UART2_DefaultOverrunErrorHandler(void)
-{
-	U2ERRIRbits.RXFOIF = 0;
-}
+void UART2_DefaultOverrunErrorHandler(void){}
 
-void UART2_DefaultErrorHandler(void)
-{
+void UART2_DefaultErrorHandler(void){
 	UART2_RxDataHandler();
 }
 
-void UART2_SetFramingErrorHandler(void (* interruptHandler)(void))
-{
+void UART2_SetFramingErrorHandler(void (* interruptHandler)(void)){
 	UART2_FramingErrorHandler = interruptHandler;
 }
 
-void UART2_SetOverrunErrorHandler(void (* interruptHandler)(void))
-{
+void UART2_SetOverrunErrorHandler(void (* interruptHandler)(void)){
 	UART2_OverrunErrorHandler = interruptHandler;
 }
 
-void UART2_SetErrorHandler(void (* interruptHandler)(void))
-{
+void UART2_SetErrorHandler(void (* interruptHandler)(void)){
 	UART2_ErrorHandler = interruptHandler;
 }
 
-void UART2_SetRxInterruptHandler(void (* InterruptHandler)(void))
-{
+
+
+void UART2_SetRxInterruptHandler(void (* InterruptHandler)(void)){
 	UART2_RxInterruptHandler = InterruptHandler;
 }
 
-void UART2_SetTxInterruptHandler(void (* InterruptHandler)(void))
-{
+void UART2_SetTxInterruptHandler(void (* InterruptHandler)(void)){
 	UART2_TxInterruptHandler = InterruptHandler;
 }
 
@@ -381,6 +386,80 @@ void UART2_Initialize19200(void)
 
 	// BRGH 3; 
 	U2BRGH = 0x03;
+
+	// STPMD in middle of first Stop bit; TXWRE No error; 
+	U2FIFO = 0x00;
+
+	// ABDIF Auto-baud not enabled or not complete; WUIF WUE not enabled by software; ABDIE disabled; 
+	U2UIR = 0x00;
+
+	// ABDOVF Not overflowed; TXCIF 0; RXBKIF No Break detected; RXFOIF not overflowed; CERIF No Checksum error; 
+	U2ERRIR = 0x00;
+
+	// TXCIE disabled; FERIE disabled; TXMTIE disabled; ABDOVE disabled; CERIE disabled; RXFOIE disabled; PERIE disabled; RXBKIE disabled; 
+	U2ERRIE = 0x00;
+
+
+	UART2_SetFramingErrorHandler(UART2_DefaultFramingErrorHandler);
+	UART2_SetOverrunErrorHandler(UART2_DefaultOverrunErrorHandler);
+	UART2_SetErrorHandler(UART2_DefaultErrorHandler);
+
+	uart2RxLastError.status = 0;
+
+	// initializing the driver state
+	uart2TxHead = 0;
+	uart2TxTail = 0;
+	uart2TxBufferRemaining = sizeof(uart2TxBuffer);
+	uart2RxHead = 0;
+	uart2RxTail = 0;
+	uart2RxCount = 0;
+
+	// enable receive interrupt
+	PIE8bits.U2RXIE = 1;
+}
+
+void UART2_Initialize115200(void)
+{
+	// Disable interrupts before changing states
+	PIE8bits.U2RXIE = 0;
+	UART2_SetRxInterruptHandler(UART2_Receive_ISR);
+	PIE8bits.U2TXIE = 0;
+	UART2_SetTxInterruptHandler(UART2_Transmit_ISR);
+
+	// Set the UART2 module to the options selected in the user interface.
+
+	// P1L 0; 
+	U2P1L = 0x00;
+
+	// P1H 0; 
+	U2P1H = 0x00;
+
+	// P2L 0; 
+	U2P2L = 0x00;
+
+	// P2H 0; 
+	U2P2H = 0x00;
+
+	// P3L 0; 
+	U2P3L = 0x00;
+
+	// P3H 0; 
+	U2P3H = 0x00;
+
+	// BRGS high speed; MODE Asynchronous 8-bit mode; RXEN enabled; TXEN enabled; ABDEN disabled; 
+	U2CON0 = 0xB0;
+
+	// RXBIMD Set RXBKIF on rising RX input; BRKOVR disabled; WUE disabled; SENDB disabled; ON enabled; 
+	U2CON1 = 0x80;
+
+	// TXPOL not inverted; FLO off; C0EN Checksum Mode 0; RXPOL not inverted; RUNOVF RX input shifter stops all activity; STP Transmit 1Stop bit, receiver verifies first Stop bit; 
+	U2CON2 = 0x00;
+
+    // BRGL 138; 
+    U2BRGL = 0x8A;
+
+    // BRGH 0; 
+    U2BRGH = 0x00;
 
 	// STPMD in middle of first Stop bit; TXWRE No error; 
 	U2FIFO = 0x00;
