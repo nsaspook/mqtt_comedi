@@ -573,7 +573,7 @@ void main(void)
 			}
 #ifdef DIO_TEST
 #ifdef DIO_SHOW_BUF
-			if (spi_stat_ss.slave_tx_count < 0x1fff) { // clear startup counts of empty fifo
+			if (spi_stat_ss.slave_tx_count < 0x2fff) { // clear startup counts of empty fifo
 				spi_stat_ss.spi_noerror_count = 0;
 			}
 			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%.4lx %.6lx %lx %lx            ",

@@ -22,7 +22,7 @@ extern "C" {
 
 #define NHD		// SPI 20X4 display, nhd-0420d3z-nsw-bbw
 
-#define VER	"V0.11"
+#define VER	"V0.12"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 47Q84.
@@ -33,6 +33,7 @@ extern "C" {
 	 * V0.05 have the SPI I/O routines working for the DIO devices
 	 * V0.10 mainly working DO version
 	 * V0.11 mainly working DI version
+	 * V0.12 5 transfers for 24 bit DI SPI
 	 */
 /*
  * TIC12400 testing mode

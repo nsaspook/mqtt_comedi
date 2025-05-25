@@ -408,7 +408,7 @@ static const uint32_t CSnA = 1; /*  BMCboard Q84 ADC */
 /* 
  * PIC Slave commands 
  */
-static const uint8_t CMD_ZERO = 0x0;
+static const uint8_t CMD_ZERO = 0x00;
 static const uint8_t CMD_ADC_GO = 0x80;
 static const uint8_t CMD_DAC_GO = 0x90;
 static const uint8_t CMD_PORT_GO = 0xa0; /* send data to port output DO buffer */
@@ -813,6 +813,7 @@ struct daqbmc_private {
 	int32_t ai_scans_left; /*  number left to finish */
 	uint32_t ao_scans; /*  length of scanlist */
 	struct spi_param_type *ai_spi;
+	struct spi_param_type *ao_spi;
 	int32_t ai_node;
 	int32_t ao_node;
 	uint32_t cpu_nodes;
@@ -1349,7 +1350,7 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		pdata->one_t.word_delay = CS_CHANGE_DELAY_USECS0;
 #endif
 		/*
-		 * send ADC GO command request
+		 * send ADC GO command request to the bmcboard
 		 */
 		spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
 		spi_bus_lock(spi->master);
@@ -1366,7 +1367,7 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		pdata->one_t.word_delay = CS_CHANGE_DELAY_USECS0;
 #endif
 		/*
-		 * send the 16-bit ADC result bytes
+		 * get the 16-bit ADC result bytes from the bmcboard
 		 */
 		spi_message_init_with_transfers(&m, &pdata->one_t, 1); // two transfers per message
 		spi_bus_lock(spi->master);
@@ -2854,7 +2855,7 @@ static int digitalReadOPi(struct comedi_device *dev,
 	spi_sync_locked(spi, &m);
 	spi_bus_unlock(spi->master);
 
-	pdata->tx_buff[0] = CMD_ADC_DATA;
+	pdata->tx_buff[0] = CMD_ZERO + 1;
 	pdata->one_t.rx_buf = &pdata->rx_buff[1];
 	pdata->one_t.cs_change = false;
 	pdata->one_t.len = 1;
@@ -2863,7 +2864,7 @@ static int digitalReadOPi(struct comedi_device *dev,
 	spi_sync_locked(spi, &m);
 	spi_bus_unlock(spi->master);
 
-	pdata->tx_buff[0] = CMD_ADC_DATA;
+	pdata->tx_buff[0] = CMD_ZERO + 2;
 	pdata->one_t.rx_buf = &pdata->rx_buff[2];
 	pdata->one_t.cs_change = false;
 	pdata->one_t.len = 1;
@@ -2872,7 +2873,7 @@ static int digitalReadOPi(struct comedi_device *dev,
 	spi_sync_locked(spi, &m);
 	spi_bus_unlock(spi->master);
 
-	pdata->tx_buff[0] = CMD_ADC_DATA;
+	pdata->tx_buff[0] = CMD_ZERO + 3;
 	pdata->one_t.rx_buf = &pdata->rx_buff[3];
 	pdata->one_t.cs_change = false;
 	pdata->one_t.len = 1;
@@ -2881,9 +2882,18 @@ static int digitalReadOPi(struct comedi_device *dev,
 	spi_sync_locked(spi, &m);
 	spi_bus_unlock(spi->master);
 
-	val_value = pdata->rx_buff[3];
-	val_value += (pdata->rx_buff[2] << 8);
-	val_value += (pdata->rx_buff[1] << 16);
+	pdata->tx_buff[0] = CMD_ZERO + 4;
+	pdata->one_t.rx_buf = &pdata->rx_buff[4];
+	pdata->one_t.cs_change = false;
+	pdata->one_t.len = 1;
+	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
+	spi_bus_lock(spi->master);
+	spi_sync_locked(spi, &m);
+	spi_bus_unlock(spi->master);
+
+	val_value = pdata->rx_buff[4];
+	val_value += (pdata->rx_buff[3] << 8);
+	val_value += (pdata->rx_buff[2] << 16);
 
 	{
 		struct spi_controller *ctlr = spi->controller;
@@ -2913,7 +2923,6 @@ static int daqbmc_dio_insn_bits(struct comedi_device *dev,
 	struct daqbmc_private *devpriv = dev->private;
 	struct spi_param_type *spi_data = s->private;
 	uint32_t pinOPi;
-	uint32_t val = 0;
 
 	devpriv->pinMode = pinModeOPi;
 	devpriv->digitalWrite = digitalWriteOPi;
@@ -2923,8 +2932,61 @@ static int daqbmc_dio_insn_bits(struct comedi_device *dev,
 		return -EFAULT;
 	}
 
+	/* s->state contains the GPIO bits */
+	/* s->io_bits contains the GPIO direction */
+
+	comedi_dio_update_state(s, data);
+	/* Do nothing on marked pins */
 	devpriv->digitalWrite(dev, pinOPi, data);
-	val = devpriv->digitalRead(dev, data);
+	data[1] = devpriv->digitalRead(dev, data);
+
+	return insn->n;
+}
+
+// write only
+
+static int daqbmc_dio_insn_bits0(struct comedi_device *dev,
+	struct comedi_subdevice *s,
+	struct comedi_insn *insn,
+	uint32_t * data)
+{
+	struct daqbmc_private *devpriv = dev->private;
+	struct spi_param_type *spi_data = s->private;
+	uint32_t pinOPi;
+
+	devpriv->pinMode = pinModeOPi;
+	devpriv->digitalWrite = digitalWriteOPi;
+	devpriv->digitalRead = digitalReadOPi;
+
+	if (unlikely(!devpriv)) {
+		return -EFAULT;
+	}
+
+	comedi_dio_update_state(s, data);
+	/* Do nothing on marked pins */
+	devpriv->digitalWrite(dev, pinOPi, data);
+
+	return insn->n;
+}
+
+// read only
+
+static int daqbmc_dio_insn_bits4(struct comedi_device *dev,
+	struct comedi_subdevice *s,
+	struct comedi_insn *insn,
+	uint32_t * data)
+{
+	struct daqbmc_private *devpriv = dev->private;
+	struct spi_param_type *spi_data = s->private;
+	devpriv->pinMode = pinModeOPi;
+	devpriv->digitalWrite = digitalWriteOPi;
+	devpriv->digitalRead = digitalReadOPi;
+
+	if (unlikely(!devpriv)) {
+		return -EFAULT;
+	}
+
+	data[1] = devpriv->digitalRead(dev, data);
 
 	return insn->n;
 }
@@ -2950,7 +3012,7 @@ static int daqbmc_dio_insn_config(struct comedi_device *dev,
 		s->io_bits = 0x0000ffff;
 		break;
 	case INSN_CONFIG_DIO_INPUT:
-		s->io_bits = 0xffff0000;
+		s->io_bits = 0x00ffffff;
 		break;
 	case INSN_CONFIG_DIO_QUERY:
 		data[1] = (s->io_bits & chan) ? COMEDI_OUTPUT : COMEDI_INPUT;
@@ -3363,7 +3425,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	}
 
 	if (do_conf || di_conf) {
-		devpriv->num_subdev += 2; // subdevices array 4 do, 5 di
+		devpriv->num_subdev += 2; // subdevices array 3 dio read-only, 4 di
 	}
 
 	/* 
@@ -3377,43 +3439,46 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	}
 
 	/* daq_bmc dio */
-	if (dio_conf) {
-		s = &dev->subdevices[0];
-		s->type = COMEDI_SUBD_DIO;
-		s->subdev_flags = SDF_READABLE | SDF_WRITABLE;
-		s->n_chan = num_dio_chan;
-		s->len_chanlist = num_dio_chan;
-		s->range_table = &range_digital;
-		s->maxdata = 1;
-		s->insn_bits = daqbmc_dio_insn_bits;
-		s->insn_config = daqbmc_dio_insn_config;
-		s->state = 0;
-	}
 
 	if (do_conf) {
-		s = &dev->subdevices[4];
+		s = &dev->subdevices[3];
 		s->type = COMEDI_SUBD_DO;
 		s->subdev_flags = SDF_WRITABLE | SDF_GROUND | SDF_COMMON;
 		s->n_chan = num_do_chan;
 		s->len_chanlist = num_do_chan;
 		s->range_table = &range_digital;
 		s->maxdata = 1;
-		s->insn_bits = daqbmc_dio_insn_bits;
+		s->insn_bits = daqbmc_dio_insn_bits0;
 		s->insn_config = daqbmc_dio_insn_config;
 		s->state = 0;
+		s->io_bits = 0x00ffffff;
 	}
 
 	if (di_conf) {
-		s = &dev->subdevices[5];
+		s = &dev->subdevices[4];
 		s->type = COMEDI_SUBD_DI;
 		s->subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON;
 		s->n_chan = num_di_chan;
 		s->len_chanlist = num_di_chan;
 		s->range_table = &range_digital;
 		s->maxdata = 1;
-		s->insn_bits = daqbmc_dio_insn_bits;
+		s->insn_bits = daqbmc_dio_insn_bits4;
 		s->insn_config = daqbmc_dio_insn_config;
 		s->state = 0;
+	}
+
+	if (dio_conf) {
+		s = &dev->subdevices[0];
+		s->type = COMEDI_SUBD_DIO;
+		s->subdev_flags = SDF_READABLE | SDF_WRITABLE | SDF_GROUND | SDF_COMMON;
+		s->n_chan = num_do_chan;
+		s->len_chanlist = num_do_chan;
+		s->range_table = &range_digital;
+		s->maxdata = 1;
+		s->insn_bits = daqbmc_dio_insn_bits0;
+		s->insn_config = daqbmc_dio_insn_config;
+		s->state = 0;
+		s->io_bits = 0x0000ffff;
 	}
 
 	dev_info(dev->class_dev,
@@ -3512,6 +3577,26 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			dev_info(dev->class_dev, "16 bit and less device buffers set to 16 bits\n");
 		}
 		dev->read_subdev = s;
+	}
+
+	/* daq-bmc ao */
+	s = &dev->subdevices[2];
+	s->private = devpriv->ai_spi;
+	s->type = COMEDI_SUBD_AO;
+	/* we support single-ended (ground)  */
+	s->n_chan = thisboard->n_aochan;
+	s->len_chanlist = thisboard->n_aochan;
+	/* analog resolution depends on the DAC chip 8,10,12 bits */
+	s->maxdata = (1 << thisboard->n_aochan_bits) - 1;
+	s->range_table = &daqbmc_ao_range;
+	s->insn_write = daqbmc_ao_winsn;
+	s->insn_read = comedi_readback_insn_read;
+	s->subdev_flags = devpriv->ai_spi->device_spi->ao_subdev_flags - SDF_CMD_WRITE;
+	ret = comedi_alloc_subdev_readback(s);
+	if (ret) {
+		dev_err(dev->class_dev,
+			"alloc subdevice readback failed!\n");
+		return ret;
 	}
 
 	/* 

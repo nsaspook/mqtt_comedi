@@ -49,7 +49,7 @@ bool ADC_OPEN = true, DIO_OPEN = true, ADC_ERROR = false, DEV_OPEN = true,
 	PWM_ERROR = false;
 
 bool DO_OPEN = true, DI_OPEN = true, DO_ERROR = false;
-uint32_t obits;
+union dio_buf_type obits;
 
 int init_daq(double min_range, double max_range, int range_update)
 {
@@ -304,7 +304,11 @@ int init_dio(void)
 	if (subdev_di < 0) {
 		DI_OPEN = false;
 	}
-	subdev_do = comedi_find_subdevice_by_type(it, COMEDI_SUBD_DO, subdev_do);
+	if (bmc.BOARD == bmcboard) {
+		subdev_do = comedi_find_subdevice_by_type(it, COMEDI_SUBD_DIO, subdev_do);
+	} else {
+		subdev_do = comedi_find_subdevice_by_type(it, COMEDI_SUBD_DO, subdev_do);
+	}
 	if (subdev_do < 0) {
 		DO_OPEN = false;
 	}
@@ -349,7 +353,7 @@ int init_dio(void)
 		ranges_dio = comedi_get_n_ranges(it, subdev_dio, i);
 		fprintf(fout, "Ranges %i \r\n", ranges_dio);
 		if (bmc.BOARD == bmcboard) {
-			comedi_dio_config(it, subdev_dio, 0xffffff, COMEDI_OUTPUT);
+			comedi_dio_config(it, subdev_do, 0x00ffff, COMEDI_OUTPUT);
 		}
 	}
 
@@ -379,12 +383,12 @@ int get_data_sample(void)
 		put_dio_bit(6, bmc.dataout.d.D6);
 		put_dio_bit(7, bmc.dataout.d.D7);
 	} else { // send I/O as a byte mask
-		obits = bmc.dataout.dio_buf; // buffer output
+		obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
 		if (bmc.BOARD == bmcboard) {
-			obits |= ((~(bmc.dataout.dio_buf<<8))&0x00000f00);
-			comedi_dio_bitfield2(it, subdev_dio, obits, &obits, 0);
+			obits.bytes[1] = bmc.dataout.bytes[0];
+			comedi_dio_bitfield2(it, subdev_do, obits.dio_buf, &obits.dio_buf, 0);
 		} else {
-			comedi_dio_bitfield2(it, subdev_do, 0xff, &obits, 0);
+			comedi_dio_bitfield2(it, subdev_do, 0xff, &obits.dio_buf, 0);
 		}
 	}
 

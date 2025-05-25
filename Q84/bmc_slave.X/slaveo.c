@@ -120,22 +120,19 @@ void slaveo_rx_isr(void)
 		}
 	}
 	if (serial_buffer_ss.get_value) {
-		if (serial_buffer_ss.raw_index == 3) {
-			V.bmc_di = serial_buffer_ss.data[1];
-			V.bmc_di += (uint32_t) (serial_buffer_ss.data[2] << 8u)&0x0000ff00;
+		if (serial_buffer_ss.raw_index == 4) {
+			SPI2TXB = V.bmc_di >> (8 * serial_buffer_ss.raw_index);
 			data_in2 = 0;
 			serial_buffer_ss.get_value = false;
 			serial_buffer_ss.raw_index = 0;
-			//			SPI2STATUSbits.CLRBF = 1;
 			while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
 				data_in2 = SPI2RXB;
 			}
 			spi_stat_ss.txdone_bit++; // number of DO completed packets
-			spi_stat_ss.slave_tx_count++;
 		} else {
 			spi_stat_ss.slave_tx_count++;
-			if (!SPI2STATUSbits.SPI2TXWE) { // TX FIFO not full
-			}
+			SPI2TXB = V.bmc_di >> (8 * serial_buffer_ss.raw_index);
+			data_in2 = 0;
 		}
 	}
 	if (++serial_buffer_ss.raw_index > 8) {
@@ -202,7 +199,6 @@ void slaveo_rx_isr(void)
 		spi_stat_ss.port_count++;
 		serial_buffer_ss.raw_index = 0;
 		serial_buffer_ss.get_value = true;
-		spi_stat_ss.slave_tx_count++;
 
 		spi_comm_ss.REMOTE_LINK = true;
 		while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data

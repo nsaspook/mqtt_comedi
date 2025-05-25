@@ -82,6 +82,7 @@ extern "C" {
 
         union dio_buf_type {
                 uint32_t dio_buf;
+                uint8_t bytes[4];
                 struct didata d;
         };
 
