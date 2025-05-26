@@ -42,6 +42,9 @@ extern "C" {
 #define	LO_NIBBLE       0x0f
 #define	ADC_SWAP_MASK	0b01000000
 #define UART_DUMMY_MASK	0b01000000
+	
+#define PORT_GET_BYTES	4
+#define PORT_GO_BYTES	3
 
 	struct spi_link_type_ss { // internal state table
 		uint8_t SPI_DATA : 1;

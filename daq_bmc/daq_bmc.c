@@ -2855,6 +2855,9 @@ static int digitalReadOPi(struct comedi_device *dev,
 	spi_sync_locked(spi, &m);
 	spi_bus_unlock(spi->master);
 
+	/*
+	 * send dummies to get the data
+	 */
 	pdata->tx_buff[0] = CMD_ZERO + 1;
 	pdata->one_t.rx_buf = &pdata->rx_buff[1];
 	pdata->one_t.cs_change = false;
@@ -2891,9 +2894,9 @@ static int digitalReadOPi(struct comedi_device *dev,
 	spi_sync_locked(spi, &m);
 	spi_bus_unlock(spi->master);
 
-	val_value = pdata->rx_buff[4];
+	val_value = pdata->rx_buff[2];
 	val_value += (pdata->rx_buff[3] << 8);
-	val_value += (pdata->rx_buff[2] << 16);
+	val_value += (pdata->rx_buff[4] << 16);
 
 	{
 		struct spi_controller *ctlr = spi->controller;

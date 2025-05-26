@@ -372,6 +372,9 @@ int init_dio(void)
 int get_data_sample(void)
 {
 	bmc.datain.D0 = get_dio_bit(0);
+	if (bmc.BOARD == bmcboard) {
+		bmc.datain.D0 = 0;
+	}
 
 	if (JUST_BITS) { // send I/O bit by bit
 		put_dio_bit(0, bmc.dataout.d.D0);
@@ -387,6 +390,7 @@ int get_data_sample(void)
 		if (bmc.BOARD == bmcboard) {
 			obits.bytes[1] = bmc.dataout.bytes[0];
 			comedi_dio_bitfield2(it, subdev_do, obits.dio_buf, &obits.dio_buf, 0);
+			comedi_dio_bitfield2(it, subdev_di, 0x00, (void *) &bmc.data_in, 0);
 		} else {
 			comedi_dio_bitfield2(it, subdev_do, 0xff, &obits.dio_buf, 0);
 		}

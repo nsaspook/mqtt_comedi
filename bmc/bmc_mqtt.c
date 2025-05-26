@@ -434,8 +434,8 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 #endif
 
 #ifndef DAC_TESTING
-	set_dac_raw(0, 0);
-	set_dac_raw(1, 0);
+//	set_dac_raw(0, 0);
+//	set_dac_raw(1, 0);
 #else
 	set_dac_volts(0, E.dac[0]);
 	set_dac_volts(1, E.dac[1]);
@@ -443,11 +443,11 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 #endif
 
 	E.do_16b = bmc.dataout.dio_buf;
-	E.di_16b = get_dio_bit(0)+ (get_dio_bit(1) << 1)+ (get_dio_bit(2) << 2)+ (get_dio_bit(3) << 3)+ (get_dio_bit(4) << 4);
+	E.di_16b = bmc.data_in;
 
 	if (pacer++ > 500) {
 		pacer = 0;
-		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s\n", log_time(false), topic_p);
+		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x \n", log_time(false), topic_p, obits.dio_buf, bmc.data_in);
 		fflush(fout);
 		E.mqtt_count++;
 		E.sequence++;

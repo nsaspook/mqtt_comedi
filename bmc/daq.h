@@ -93,6 +93,7 @@ extern "C" {
                 union dio_buf_type dataout;
                 int32_t adc_sample[32];
                 int32_t dac_sample[32];
+                uint32_t data_in;
                 int32_t utc;
                 board_t BOARD;
                 char * BNAME;
@@ -101,6 +102,7 @@ extern "C" {
         extern volatile struct bmcdata bmc;
         extern struct didata datain;
         extern struct dodata dataout;
+        extern union dio_buf_type obits;
 
         extern int maxdata_ai, ranges_ai, channels_ai;
         extern int maxdata_ao, ranges_ao, channels_ao;

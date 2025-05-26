@@ -186,7 +186,7 @@ typedef signed long long int24_t;
 #define M_TRACEL	TP1_SetLow()
 #define M_TRACEH	TP1_SetHigh()
 #else
-#define M_TRACE		There have been""
+#define M_TRACE		""
 #define M_TRACEL	""
 #define M_TRACEH	""
 #endif
@@ -269,6 +269,7 @@ volatile uint16_t tickCount[TMR_COUNT] = {0};
 volatile uint8_t mode_sw = false, faker;
 void onesec_io(void);
 int8_t test_slave(void);
+void SetBMCPriority(void);
 
 /** \file main.c
  * Lets get going with the code.
@@ -292,6 +293,8 @@ void main(void)
 
 	// Enable low priority global interrupts.
 	INTERRUPT_GlobalInterruptLowEnable();
+
+	SetBMCPriority(); // ISR Priority > Peripheral Priority > Main Priority
 
 	mconfig_init(); // zero the entire text buffer
 
@@ -696,6 +699,27 @@ int8_t test_slave(void)
 	SPI2CON0bits.EN = 0;
 	SPI2CON0bits.EN = 1;
 	return(int8_t) ret;
+}
+
+/*
+ * ISR Priority > Peripheral Priority > Main Priority
+ * '0' being the highest priority selection and the maximum value being the lowest priority
+ */
+void SetBMCPriority(void)
+{
+	INTCON0bits.GIE = 0; // Disable Interrupts;
+	PRLOCK = 0x55;
+	PRLOCK = 0xAA;
+	PRLOCKbits.PRLOCKED = 0; // Allow changing priority settings;
+	INTCON0bits.GIE = 1; // Enable Interrupts;
+	ISRPR = 1;
+	DMA1PR = 2;
+	MAINPR = 7;
+	INTCON0bits.GIE = 0; // Disable Interrupts;
+	PRLOCK = 0x55;
+	PRLOCK = 0xAA;
+	PRLOCKbits.PRLOCKED = 1; // Grant memory access to peripherals;
+	INTCON0bits.GIE = 1; // Enable Interrupts;
 }
 
 

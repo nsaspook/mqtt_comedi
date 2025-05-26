@@ -101,13 +101,12 @@ void slaveo_rx_isr(void)
 	serial_buffer_ss.data[serial_buffer_ss.raw_index] = data_in2;
 
 	if (serial_buffer_ss.make_value) {
-		if (serial_buffer_ss.raw_index == 3) {
+		if (serial_buffer_ss.raw_index == PORT_GO_BYTES) {
 			V.bmc_do = serial_buffer_ss.data[1];
 			V.bmc_do += (uint32_t) (serial_buffer_ss.data[2] << 8u)&0x0000ff00;
 			data_in2 = 0;
 			serial_buffer_ss.make_value = false;
 			serial_buffer_ss.raw_index = 0;
-			//			SPI2STATUSbits.CLRBF = 1;
 			while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
 				data_in2 = SPI2RXB;
 			}
@@ -115,13 +114,12 @@ void slaveo_rx_isr(void)
 			spi_stat_ss.slave_tx_count++;
 		} else {
 			spi_stat_ss.slave_tx_count++;
-			if (!SPI2STATUSbits.SPI2TXWE) { // TX FIFO not full
-			}
+			data_in2 = 0;
 		}
 	}
 	if (serial_buffer_ss.get_value) {
-		if (serial_buffer_ss.raw_index == 4) {
-			SPI2TXB = V.bmc_di >> (8 * serial_buffer_ss.raw_index);
+		if (serial_buffer_ss.raw_index == PORT_GET_BYTES) {
+			SPI2TXB = (uint8_t) V.bmc_di >> ((uint8_t) 8 * (uint8_t) (serial_buffer_ss.raw_index));
 			data_in2 = 0;
 			serial_buffer_ss.get_value = false;
 			serial_buffer_ss.raw_index = 0;
@@ -131,7 +129,7 @@ void slaveo_rx_isr(void)
 			spi_stat_ss.txdone_bit++; // number of DO completed packets
 		} else {
 			spi_stat_ss.slave_tx_count++;
-			SPI2TXB = V.bmc_di >> (8 * serial_buffer_ss.raw_index);
+			SPI2TXB = (uint8_t) V.bmc_di >> ((uint8_t) 8 * (uint8_t) (serial_buffer_ss.raw_index));
 			data_in2 = 0;
 		}
 	}
