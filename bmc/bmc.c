@@ -59,7 +59,7 @@ FILE* fout; // logging stream
 
 /* ripped from http://aquaticus.info/pwm-sine-wave */
 
-uint8_t sine_wave[256] = {
+const uint8_t sine_wave[256] = {
 	0x80, 0x83, 0x86, 0x89, 0x8C, 0x90, 0x93, 0x96,
 	0x99, 0x9C, 0x9F, 0xA2, 0xA5, 0xA8, 0xAB, 0xAE,
 	0xB1, 0xB3, 0xB6, 0xB9, 0xBC, 0xBF, 0xC1, 0xC4,
@@ -171,6 +171,7 @@ int main(int argc, char *argv[])
 		fflush(fout);
 		while (true) {
 			usleep(MAIN_DELAY); // sample rate ~1 msec
+			set_dac_raw(0, sine_wave[i+=4]);
 			get_data_sample();
 			if (!bmc.datain.D0) {
 				if (bmc.BOARD == bmcboard) {

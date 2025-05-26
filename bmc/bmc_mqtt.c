@@ -427,19 +427,6 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		E.adc[channel_ANC6] = get_adc_volts(channel_ANC6);
 		E.adc[channel_ANC7] = get_adc_volts(channel_ANC7);
 	}
-
-#ifdef DAC_TESTING
-	E.dac[0] = E.adc[0];
-	E.dac[1] = E.adc[1];
-#endif
-
-#ifndef DAC_TESTING
-//	set_dac_raw(0, 0);
-//	set_dac_raw(1, 0);
-#else
-	set_dac_volts(0, E.dac[0]);
-	set_dac_volts(1, E.dac[1]);
-#endif
 #endif
 
 	E.do_16b = bmc.dataout.dio_buf;

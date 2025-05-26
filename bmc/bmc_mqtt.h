@@ -26,6 +26,7 @@ extern "C" {
 
 #define MBMQTT  1024
 
+
         enum mqtt_id {
                 P8055_ID,
                 FM80_ID,

@@ -12,8 +12,8 @@
 extern "C" {
 #endif
 
-//#include <pic18f47q84.h>
-	
+	//#include <pic18f47q84.h>
+
 #include <xc.h>
 #include <time.h>
 #include "mcc_generated_files/adc.h"
@@ -22,7 +22,7 @@ extern "C" {
 
 #define NHD		// SPI 20X4 display, nhd-0420d3z-nsw-bbw
 
-#define VER	"V0.12"
+#define VER	"V0.13"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 47Q84.
@@ -34,10 +34,11 @@ extern "C" {
 	 * V0.10 mainly working DO version
 	 * V0.11 mainly working DI version
 	 * V0.12 5 transfers for 24 bit DI SPI
+	 * V0.13 fix ADC higher channels and cleanup SPI link protocols
 	 */
-/*
- * TIC12400 testing mode
- */
+	/*
+	 * TIC12400 testing mode
+	 */
 #define DIO_TEST
 #define DIO_SHOW_BUF
 
@@ -240,12 +241,13 @@ extern "C" {
 		LINK_STATES r_l_state;
 		LINK_STATES t_l_state;
 		char buf[MAX_BUF + 1], terminal[MAX_TERM + 1], info[MAX_INFO + 1];
-		uint32_t ticks, systemb, tx_total, rx_total, bt_total, br_total, brn_total, btn_total,bmc_do, bmc_di;
+		volatile uint32_t ticks, systemb, tx_total, rx_total, bt_total, br_total, brn_total, btn_total, bmc_do, bmc_di;
 		volatile uint32_t utc_ticks;
 		int32_t testing;
 		uint8_t stream, function, error, abort, msg_error, msg_ret, alarm, event;
 		UI_STATES ui_sw;
 		uint16_t r_checksum, t_checksum, checksum_error, timer_error, ping, mode_pwm, equip_timeout, sequences, all_errors, ceid;
+		volatile uint16_t bmc_ao;
 		uint8_t rbit : 1, wbit : 1, ebit : 1, failed_send : 4, failed_receive : 4;
 		terminal_type response;
 		uint8_t uart, llid, sid, ping_count, euart, vterm, vterm_switch, uart_speed_fast;
@@ -279,8 +281,8 @@ extern "C" {
 
 	extern void UART1_Initialize19200(void);
 	extern void UART2_Initialize19200(void);
-    
-    extern void UART1_Initialize115200(void);
+
+	extern void UART1_Initialize115200(void);
 	extern void UART2_Initialize115200(void);
 
 #ifdef	__cplusplus

@@ -39,7 +39,7 @@ extern "C" {
 #define HV_SCALE_RAW    4.096f
 
 
-#define OVER_SAMP       8
+#define OVER_SAMP       1
 
 #include <stdint.h>
 #include <comedilib.h>
@@ -59,9 +59,9 @@ extern "C" {
                 channel_ANA2 = 0x2,
                 channel_ANA4 = 0x4,
                 channel_ANA5 = 0x5,
-                channel_ANC6 = 0x16,
-                channel_ANC7 = 0x17,
-                channel_AND5 = 0x1D,
+                channel_ANC6 = 0x6,
+                channel_ANC7 = 0x7,
+                channel_AND5 = 0x8,
                 channel_VSS = 0x3B,
                 channel_Temp = 0x3C,
                 channel_DAC1 = 0x3D,

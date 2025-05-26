@@ -21,11 +21,11 @@ extern "C" {
 #include "timers.h"
 
 #define SLAVE_DEBUG
-	
+
 	/* PIC Slave commands */
 #define CMD_ZERO        0b00000000
 #define CMD_ADC_GO      0b10000000	// Read ADC data
-#define CMD_DAC_GO      0b10010000	// Set DAC data
+#define CMD_DAC_GO      0x90		// Set DAC data
 #define CMD_PORT_GO     0xa0		// Set DO data
 #define CMD_CHAR_GO     0b10110000
 #define CMD_ADC_DATA	0b11000000
@@ -39,14 +39,20 @@ extern "C" {
 #define CMD_DUMMY       0b01100111	/* 7 channels 4.096 */
 #define NUM_AI_CHAN     13
 #define AI_BUFFER_NUM	0x40
+#define AI_CHAN_FIX	5
+
+#define NUM_AO_CHAN     1
+#define AO_BUFFER_NUM	0x40
 
 #define	HI_NIBBLE       0xf0
 #define	LO_NIBBLE       0x0f
 #define	ADC_SWAP_MASK	0b01000000
 #define UART_DUMMY_MASK	0b01000000
-	
+
 #define PORT_GET_BYTES	4
+#define ADC_GET_BYTES	3
 #define PORT_GO_BYTES	3
+#define DAC_GO_BYTES	3
 
 	struct spi_link_type_ss { // internal state table
 		uint8_t SPI_DATA : 1;
@@ -60,7 +66,7 @@ extern "C" {
 	};
 
 	struct spi_stat_type_ss {
-		volatile uint32_t adc_count,
+		volatile uint32_t adc_count, dac_count,
 		port_count, port_error_count, port_data_count, zombie_count,
 		char_count, char_error_count, rxof_bit, txdone_bit,
 		slave_int_count, last_slave_int_count, slave_tx_count,
@@ -71,14 +77,14 @@ extern "C" {
 	struct serial_buffer_type_ss {
 		volatile uint8_t data[16], tx_buffer, adcl, adc2, adch, command, raw_index;
 		volatile uint32_t place;
-		volatile bool make_value, get_value;
+		volatile bool make_value, get_value, dac_value, adc_value;
 	};
 
 	extern volatile struct spi_link_type_ss spi_comm_ss;
 	extern volatile struct serial_buffer_type_ss serial_buffer_ss;
 	extern volatile struct spi_stat_type_ss spi_stat_ss, report_stat_ss;
 	extern volatile uint8_t data_in2, adc_buffer_ptr, adc_channel, channel, upper;
-	extern volatile uint16_t adc_buffer[AI_BUFFER_NUM], adc_data_in;
+	extern volatile uint16_t adc_buffer[AI_BUFFER_NUM], adc_data_in, dac_buffer[AO_BUFFER_NUM], dac_data_in;
 	extern V_data V;
 
 	void check_slaveo(void);

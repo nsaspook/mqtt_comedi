@@ -74,7 +74,7 @@ void slaveo_rx_isr(void)
 
 	/* we only get this when the master wants data, the slave never generates one */
 	// SPI port #2 SLAVE receiver
-	
+
 #ifdef SLAVE_DEBUG
 	if (SPI2INTFbits.RXOIF) {
 		SPI2INTFbits.RXOIF = 0;
@@ -99,6 +99,7 @@ void slaveo_rx_isr(void)
 	data_in2 = SPI2RXB;
 	serial_buffer_ss.data[serial_buffer_ss.raw_index] = data_in2;
 
+	// PORT_GO_BYTES
 	if (serial_buffer_ss.make_value) {
 		if (serial_buffer_ss.raw_index == PORT_GO_BYTES) {
 			V.bmc_do = serial_buffer_ss.data[1];
@@ -106,33 +107,88 @@ void slaveo_rx_isr(void)
 			data_in2 = 0;
 			serial_buffer_ss.make_value = false;
 			serial_buffer_ss.raw_index = 0;
+			data_in2 = SPI2RXB;
 			while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
 				data_in2 = SPI2RXB;
 			}
-			spi_stat_ss.txdone_bit++; // number of DO completed packets
+			SPI2STATUSbits.SPI2CLRBF = 1;
+
+			spi_stat_ss.txdone_bit++; // number of completed packets
 			spi_stat_ss.slave_tx_count++;
+			data_in2 = 0;
 		} else {
 			spi_stat_ss.slave_tx_count++;
 			data_in2 = 0;
 		}
 	}
 
-	if (serial_buffer_ss.get_value) {
-		if (serial_buffer_ss.raw_index == PORT_GET_BYTES) {
-			SPI2TXB = (uint8_t) V.bmc_di >> ((uint8_t) 8 * (uint8_t) (serial_buffer_ss.raw_index));
-			data_in2 = 0;
-			serial_buffer_ss.get_value = false;
+	// DAC_GO_BYTES
+	if (serial_buffer_ss.dac_value) {
+		if (serial_buffer_ss.raw_index == DAC_GO_BYTES) {
+			V.bmc_ao = serial_buffer_ss.data[1];
+			serial_buffer_ss.dac_value = false;
 			serial_buffer_ss.raw_index = 0;
+			data_in2 = SPI2RXB;
 			while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
 				data_in2 = SPI2RXB;
 			}
-			spi_stat_ss.txdone_bit++; // number of DO completed packets
+			SPI2STATUSbits.SPI2CLRBF = 1;
+
+			spi_stat_ss.txdone_bit++; // number of completed packets
+			spi_stat_ss.slave_tx_count++;
+			data_in2 = 0;
+		} else {
+			spi_stat_ss.slave_tx_count++;
+			data_in2 = 0;
+		}
+	}
+
+	// PORT_GET_BYTES
+	if (serial_buffer_ss.get_value) {
+		if (serial_buffer_ss.raw_index == PORT_GET_BYTES) {
+			SPI2TXB = (uint8_t) V.bmc_di >> ((uint8_t) 8 * (uint8_t) (serial_buffer_ss.raw_index));
+			serial_buffer_ss.get_value = false;
+			serial_buffer_ss.raw_index = 0;
+			data_in2 = SPI2RXB;
+			while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
+				data_in2 = SPI2RXB;
+			}
+			SPI2STATUSbits.SPI2CLRBF = 1;
+
+			spi_stat_ss.txdone_bit++; // number of completed packets
+			data_in2 = 0;
 		} else {
 			spi_stat_ss.slave_tx_count++;
 			SPI2TXB = (uint8_t) V.bmc_di >> ((uint8_t) 8 * (uint8_t) (serial_buffer_ss.raw_index));
 			data_in2 = 0;
 		}
 	}
+
+	// ADC_GET_BYTES
+	if (serial_buffer_ss.adc_value) {
+		if (serial_buffer_ss.raw_index == ADC_GET_BYTES) {
+			SPI2TXB = ((adc_buffer[channel] >> 8)&0x00ff);
+			serial_buffer_ss.adc_value = false;
+			serial_buffer_ss.raw_index = 0;
+			data_in2 = SPI2RXB;
+			while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
+				data_in2 = SPI2RXB;
+			}
+			SPI2STATUSbits.SPI2CLRBF = 1;
+
+			spi_stat_ss.txdone_bit++; // number of completed packets
+			data_in2 = 0;
+		} else {
+			spi_stat_ss.slave_tx_count++;
+			if (serial_buffer_ss.raw_index == 1) {
+				SPI2TXB = (adc_buffer[channel] &0x00ff);
+			} else {
+				SPI2TXB = ((adc_buffer[channel] >> 8)&0x00ff);
+			}
+			data_in2 = 0;
+		}
+	}
+
 	if (++serial_buffer_ss.raw_index > 8) {
 		serial_buffer_ss.raw_index = 0;
 		MLED_SetHigh();
@@ -140,28 +196,57 @@ void slaveo_rx_isr(void)
 
 	command = data_in2 & HI_NIBBLE;
 
-	if (serial_buffer_ss.get_value || serial_buffer_ss.make_value) {
+	if (serial_buffer_ss.dac_value || serial_buffer_ss.get_value || serial_buffer_ss.make_value || serial_buffer_ss.dac_value) {
 		goto isr_end;
+	}
+
+	if (command == CMD_DAC_GO) { // Found a GO for a DAC conversion command
+		spi_comm_ss.ADC_RUN = false;
+		spi_comm_ss.PORT_DATA = false;
+		spi_stat_ss.dac_count++;
+		serial_buffer_ss.raw_index = 1;
+		serial_buffer_ss.dac_value = true;
+		spi_stat_ss.slave_tx_count++;
+
+		spi_comm_ss.REMOTE_LINK = true;
+		while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
+			data_in2 = SPI2RXB;
+		}
+		TMR0_Reload();
 	}
 
 	if (command == CMD_ADC_GO) { // Found a GO for a conversion command
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = false;
 		spi_stat_ss.adc_count++;
-		channel = data_in2 & LO_NIBBLE;
+		channel = data_in2 & LO_NIBBLE; // only 16 possible channels so higher numbers needs to be munged
 		if (channel > AI_BUFFER_NUM) {
 			channel = channel_ANA0; // invalid channel so set to analog 0
 		}
-
-		spi_stat_ss.slave_tx_count++;
-		SPI2TXB = ((adc_buffer[channel] >> 8)&0x00ff);
-		spi_stat_ss.slave_tx_count++;
-		SPI2TXB = (adc_buffer[channel] &0x00ff);
+		if (channel > AI_CHAN_FIX) {
+			switch (channel) {
+			case 0x6:
+				channel = channel_ANC6;
+				break;
+			case 0x7:
+				channel = channel_ANC7;
+				break;
+			case 0x8:
+				channel = channel_AND5;
+				break;
+			default:
+				channel = channel_FVR_Buffer1;
+				break;
+			}
+		}
+		serial_buffer_ss.raw_index = 1;
+		serial_buffer_ss.adc_value = true;
 
 		spi_comm_ss.REMOTE_LINK = true;
 		while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
 			data_in2 = SPI2RXB;
 		}
+		TMR0_Reload();
 	}
 
 	if (command == CMD_PORT_GET) { // send the V.bmc_di buffer
@@ -183,10 +268,9 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.PORT_DATA = true;
 		spi_stat_ss.port_count++;
 		channel = data_in2;
-		serial_buffer_ss.raw_index = 0;
+		serial_buffer_ss.raw_index = 1;
 		serial_buffer_ss.make_value = true;
 		spi_stat_ss.slave_tx_count++;
-		serial_buffer_ss.raw_index++;
 
 		spi_comm_ss.REMOTE_LINK = true;
 		while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data

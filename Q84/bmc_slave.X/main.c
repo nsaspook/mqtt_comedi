@@ -243,6 +243,7 @@ V_data V = {
 	.log_s6f11 = true,
 	.log_abort = false,
 	.log_char = false,
+	.bmc_ao=0,
 };
 
 B_type B = {
@@ -564,6 +565,7 @@ void main(void)
 			if (ADC_IsConversionDone()) {
 				adc_buffer[channel_FVR_Buffer2] = ADC_GetConversionResult();
 			};
+			DAC1DATL = (uint8_t) V.bmc_ao;
 		}
 
 		if (TimerDone(TMR_DISPLAY)) { // limit update rate
@@ -599,8 +601,8 @@ void main(void)
 			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "A1 0x%.2x, A2 0x%.2x               ", V.v_tx_line, V.v_rx_line);
 
 #endif
-			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "0x%.2lx 0x%.2lx %d %d %d                      ",
-				spi_stat_ss.spi_error_count, spi_stat_ss.spi_noerror_count, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK);
+			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "0x%.2lx 0x%.2lx %d %d %d %x                     ",
+				spi_stat_ss.spi_error_count, spi_stat_ss.spi_noerror_count, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK, V.bmc_ao);
 
 			// convert ADC values to char for display
 			update_rs232_line_status();

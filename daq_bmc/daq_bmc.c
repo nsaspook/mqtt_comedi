@@ -360,10 +360,11 @@ static const uint8_t ads1220_r3 = ADS1220_IDAC_OFF | ADS1220_DRDY_MODE;
 #define ads1220  8
 #define ads8330  9
 #define special  10
-#define picslq84 11
 #define n_chips  11 /* set to the last chip array index number */
 #define MAX_AI   32
 #define MAX_AO   2
+
+#define SMP_CORES 4
 
 #define CONF_Q84 110
 
@@ -532,6 +533,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 	{
 		.name = "defdev0",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
+		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
 		.max_speed_hz = 4000000,
 		.min_acq_ns = 22160,
 		.rate_min = 20000,
@@ -606,8 +608,9 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.n_transfers = 3,
 	},
 	{
-		.name = "pic18f47q84",
+		.name = "picsl12",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
+		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
 		.max_speed_hz = 4000000,
 		.min_acq_ns = 20000,
 		.rate_min = 20000,
@@ -652,18 +655,6 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.n_chan_bits = 12,
 		.n_chan = 2,
 		.n_transfers = SPECIAL_LEN,
-	},
-	{
-		.name = "picslq84",
-		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
-		.max_speed_hz = 4000000,
-		.min_acq_ns = 20000,
-		.rate_min = 20000,
-		.spi_mode = 0,
-		.spi_bpw = 8,
-		.n_chan_bits = 12,
-		.n_chan = 0x40,
-		.n_transfers = 3,
 	},
 };
 
@@ -1167,7 +1158,7 @@ static void daqbmc_ao_set_chan_range(struct comedi_device *dev,
  */
 static void daqbmc_ao_put_sample(struct comedi_device *dev,
 	struct comedi_subdevice *s,
-	uint16_t val)
+	uint16_t value)
 {
 	const struct daqbmc_board *board = dev->board_ptr;
 	struct daqbmc_private *devpriv = dev->private;
@@ -1176,13 +1167,87 @@ static void daqbmc_ao_put_sample(struct comedi_device *dev,
 	struct comedi_spibmc *pdata = spi->dev.platform_data;
 	uint32_t chan, range;
 
+	uint32_t val_mode = 0;
+	uint32_t tmp, val_value;
+	static struct spi_message m;
+
 	mutex_lock(&devpriv->drvdata_lock);
 	chan = devpriv->ao_chan & board->n_aochan_mask;
 	range = devpriv->ao_range;
-	pdata->tx_buff[0] = (0x10 | (chan << 7) | ((~range & 0x01) << 5) | ((val >> 8)& 0x0f));
-	pdata->tx_buff[1] = val & 0xff;
-	spi_write(spi, pdata->tx_buff, 2);
-	s->readback[chan] = val;
+
+	pdata->tx_buff[1] = value & 0xff;
+
+	val_value = value;
+	tmp = spi->mode;
+	{
+		struct spi_controller *ctlr = spi->controller;
+
+		if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
+			ctlr->cs_gpiods[spi->chip_select]) {
+			tmp &= ~SPI_CS_HIGH;
+		}
+		tmp |= spi->mode & ~SPI_MODE_MASK;
+		spi->mode = tmp & SPI_MODE_USER_MASK;
+		val_mode = spi_setup(spi);
+	}
+
+	/* use single transfers for each byte of the complete SPI transaction */
+
+	devpriv->do_count++;
+	pdata->one_t.tx_buf = pdata->tx_buff;
+	pdata->one_t.rx_buf = pdata->rx_buff;
+
+	pdata->tx_buff[0] = CMD_DAC_GO;
+	pdata->one_t.cs_change = false;
+	pdata->one_t.len = 1;
+	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
+	spi_bus_lock(spi->master);
+	spi_sync_locked(spi, &m);
+	spi_bus_unlock(spi->master);
+
+	pdata->tx_buff[0] = (uint8_t) (val_value & 0xff);
+	pdata->one_t.cs_change = false;
+	pdata->one_t.len = 1;
+	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
+	spi_bus_lock(spi->master);
+	spi_sync_locked(spi, &m);
+	spi_bus_unlock(spi->master);
+
+	pdata->tx_buff[0] = (uint8_t) ((val_value >> 8)&0xff);
+	pdata->one_t.cs_change = false;
+	pdata->one_t.len = 1;
+	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
+	spi_bus_lock(spi->master);
+	spi_sync_locked(spi, &m);
+	spi_bus_unlock(spi->master);
+
+	pdata->tx_buff[0] = (uint8_t) (val_value & 0xff); // dupe
+	pdata->one_t.cs_change = false;
+	pdata->one_t.len = 1;
+	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
+	spi_bus_lock(spi->master);
+	spi_sync_locked(spi, &m);
+	spi_bus_unlock(spi->master);
+
+	{
+		struct spi_controller *ctlr = spi->controller;
+		u32 save = spi->mode;
+
+		if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
+			ctlr->cs_gpiods[spi->chip_select]) {
+			tmp |= SPI_CS_HIGH;
+		}
+		tmp |= spi->mode & ~SPI_MODE_MASK;
+		spi->mode = tmp & SPI_MODE_USER_MASK;
+		val_mode = spi_setup(spi);
+		if (val_mode < 0) {
+			spi->mode = save;
+		} else {
+			dev_dbg(&spi->dev, "spi mode %x\n", tmp);
+		}
+	}
+
+	s->readback[chan] = value;
 	devpriv->ao_count++;
 	mutex_unlock(&devpriv->drvdata_lock);
 	smp_mb__after_atomic();
@@ -1193,51 +1258,9 @@ static void daqbmc_ao_put_sample(struct comedi_device *dev,
  */
 static void daqbmc_ao_put_samples(struct comedi_device *dev,
 	struct comedi_subdevice *s,
-	uint16_t *val)
+	uint16_t *value)
 {
-	const struct daqbmc_board *board = dev->board_ptr;
-	struct daqbmc_private *devpriv = dev->private;
-	struct spi_param_type *spi_data = s->private;
-	struct spi_device *spi = spi_data->spi;
-	struct comedi_spibmc *pdata = spi->dev.platform_data;
-	static struct spi_message m;
-	uint32_t chan, range;
-
-	mutex_lock(&devpriv->drvdata_lock);
-	chan = devpriv->ao_chan & board->n_aochan_mask;
-	range = devpriv->ao_range;
-	pdata->tx_buff[0] = (0x10 | (chan << 7) | ((~range & 0x01) << 5) | ((val[0] >> 8)& 0x0f));
-	pdata->tx_buff[1] = val[0] & 0xff;
-	s->readback[chan] = val[chan];
-	chan++;
-	chan &= board->n_aochan_mask; /* binary bit toggle to the next channel */
-	pdata->tx_buff[2] = (0x10 | (chan << 7) | ((~range & 0x01) << 5) | ((val[1] >> 8)& 0x0f));
-	pdata->tx_buff[3] = val[1] & 0xff;
-	s->readback[chan] = val[chan];
-
-	/* use two spi transfers for the message */
-	pdata->t[0].cs_change = true;
-	pdata->t[0].len = 2;
-	pdata->t[0].tx_buf = &pdata->tx_buff[0];
-	pdata->t[0].rx_buf = &pdata->rx_buff[0];
-#ifdef CS_CHANGE_USECS
-	pdata->t[0].cs_change_delay = CS_CHANGE_DELAY_USECS10;
-#endif
-	pdata->t[1].cs_change = false;
-	pdata->t[1].len = 2;
-	pdata->t[1].tx_buf = &pdata->tx_buff[2];
-	pdata->t[1].rx_buf = &pdata->rx_buff[2];
-#ifdef CS_CHANGE_USECS
-	pdata->t[1].cs_change_delay = CS_CHANGE_DELAY_USECS10;
-#endif
-	spi_message_init_with_transfers(&m, &pdata->t[0], 2);
-	spi_bus_lock(spi->master);
-	spi_sync_locked(spi, &m);
-	spi_bus_unlock(spi->master);
-
-	devpriv->ao_count += 2;
-	mutex_unlock(&devpriv->drvdata_lock);
-	smp_mb__after_atomic();
+	daqbmc_ao_put_sample(dev, s, value[0]);
 }
 
 /*
@@ -1338,17 +1361,13 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		val_mode = spi_setup(spi);
 	}
 
-		/* use two spi transfers for the complete SPI transaction */
-
+		/* use three spi transfers for the complete SPI transaction */
+		pdata->one_t.tx_buf = pdata->tx_buff;
+		pdata->one_t.rx_buf = pdata->rx_buff;
 
 		pdata->tx_buff[0] = CMD_ADC_GO + chan;
 		pdata->one_t.cs_change = false;
 		pdata->one_t.len = 1;
-#ifdef CS_CHANGE_USECS
-		pdata->one_t.cs_change_delay = CS_CHANGE_DELAY_USECS0;
-		pdata->one_t.delay = CS_CHANGE_DELAY_USECS0;
-		pdata->one_t.word_delay = CS_CHANGE_DELAY_USECS0;
-#endif
 		/*
 		 * send ADC GO command request to the bmcboard
 		 */
@@ -1357,93 +1376,32 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		spi_sync_locked(spi, &m);
 		spi_bus_unlock(spi->master);
 
-		pdata->tx_buff[0] = CMD_ADC_DATA;
-		pdata->tx_buff[1] = CMD_ADC_DATA;
 		pdata->one_t.cs_change = false;
-		pdata->one_t.len = 2;
-#ifdef CS_CHANGE_USECS
-		pdata->one_t.cs_change_delay = CS_CHANGE_DELAY_USECS0;
-		pdata->one_t.delay = CS_CHANGE_DELAY_USECS0;
-		pdata->one_t.word_delay = CS_CHANGE_DELAY_USECS0;
-#endif
-		/*
-		 * get the 16-bit ADC result bytes from the bmcboard
-		 */
-		spi_message_init_with_transfers(&m, &pdata->one_t, 1); // two transfers per message
+		pdata->one_t.len = 1;
+		pdata->tx_buff[0] = 1;
+		spi_message_init_with_transfers(&m, &pdata->one_t, 1);
 		spi_bus_lock(spi->master);
 		spi_sync_locked(spi, &m);
 		spi_bus_unlock(spi->master);
-		val = pdata->rx_buff[1];
+
+		pdata->one_t.cs_change = false;
+		pdata->one_t.len = 1;
+		pdata->tx_buff[0] = 2;
+		spi_message_init_with_transfers(&m, &pdata->one_t, 1);
+		spi_bus_lock(spi->master);
+		spi_sync_locked(spi, &m);
+		spi_bus_unlock(spi->master);
+		val = (pdata->rx_buff[0]);
+
+		pdata->one_t.cs_change = false;
+		pdata->one_t.len = 1;
+		pdata->tx_buff[0] = 3;
+		spi_message_init_with_transfers(&m, &pdata->one_t, 1);
+		spi_bus_lock(spi->master);
+		spi_sync_locked(spi, &m);
+		spi_bus_unlock(spi->master);
 		val += (pdata->rx_buff[0] << 8);
-		devpriv->ai_count++;
-	{
-		struct spi_controller *ctlr = spi->controller;
-		u32 save = spi->mode;
 
-		if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
-			ctlr->cs_gpiods[spi->chip_select]) {
-			tmp |= SPI_CS_HIGH;
-		}
-		tmp |= spi->mode & ~SPI_MODE_MASK;
-		spi->mode = tmp & SPI_MODE_USER_MASK;
-		val_mode = spi_setup(spi);
-		if (val_mode < 0) {
-			spi->mode = save;
-		} else {
-			dev_dbg(&spi->dev, "spi mode %x\n", tmp);
-		}
-	}
-		break;
-	case picslq84:
-		tmp = spi->mode;
-	{
-		struct spi_controller *ctlr = spi->controller;
-
-		if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
-			ctlr->cs_gpiods[spi->chip_select]) {
-			tmp &= ~SPI_CS_HIGH;
-		}
-		tmp |= spi->mode & ~SPI_MODE_MASK;
-		spi->mode = tmp & SPI_MODE_USER_MASK;
-		val_mode = spi_setup(spi);
-	}
-		pdata->tx_buff[0] = CMD_ADC_GO + chan;
-		pdata->tx_buff[1] = CMD_ADC_DATA;
-		pdata->tx_buff[2] = CMD_ADC_DATA;
-		/* use three spi transfers for the message */
-		pdata->t[0].cs_change = false;
-		pdata->t[0].len = 1;
-		pdata->t[0].tx_buf = &pdata->tx_buff[0];
-		pdata->t[0].rx_buf = &pdata->rx_buff[0];
-#ifdef CS_CHANGE_USECS
-		pdata->t[0].cs_change_delay = CS_CHANGE_DELAY_USECS0;
-		pdata->t[0].delay = CS_CHANGE_DELAY_USECS0;
-		pdata->t[0].word_delay = CS_CHANGE_DELAY_USECS0;
-#endif
-		pdata->t[1].cs_change = false;
-		pdata->t[1].len = 1;
-		pdata->t[1].tx_buf = &pdata->tx_buff[1];
-		pdata->t[1].rx_buf = &pdata->rx_buff[1];
-#ifdef CS_CHANGE_USECS
-		pdata->t[1].cs_change_delay = CS_CHANGE_DELAY_USECS0;
-		pdata->t[1].delay = CS_CHANGE_DELAY_USECS0;
-		pdata->t[1].word_delay = CS_CHANGE_DELAY_USECS0;
-#endif
-		pdata->t[2].cs_change = false;
-		pdata->t[2].len = 1;
-		pdata->t[2].tx_buf = &pdata->tx_buff[2];
-		pdata->t[2].rx_buf = &pdata->rx_buff[2];
-#ifdef CS_CHANGE_USECS
-		pdata->t[2].cs_change_delay = CS_CHANGE_DELAY_USECS0;
-		pdata->t[2].delay = CS_CHANGE_DELAY_USECS0;
-		pdata->t[2].word_delay = CS_CHANGE_DELAY_USECS0;
-#endif
-		spi_message_init_with_transfers(&m, &pdata->t[0], 3);
-		spi_bus_lock(spi->master);
-		spi_sync_locked(spi, &m);
-		spi_bus_unlock(spi->master);
-		val = pdata->rx_buff[2];
-		val += (pdata->rx_buff[1] << 8);
 		devpriv->ai_count++;
 	{
 		struct spi_controller *ctlr = spi->controller;
@@ -2181,7 +2139,7 @@ static int32_t daqbmc_ao_delay_rate(struct comedi_device *dev,
 	int32_t device_type,
 	bool test_mode)
 {
-	struct daqbmc_private *devpriv = dev->private;
+	//	struct daqbmc_private *devpriv = dev->private;
 	int32_t spacing_usecs = 0, sample_freq, total_sample_time, delay_time;
 	if (test_mode) {
 		dev_info(dev->class_dev,
@@ -2713,11 +2671,11 @@ static void pinModeOPi(struct comedi_device *dev,
 	uint32_t pin,
 	uint32_t mode)
 {
-	struct comedi_subdevice *s = dev->read_subdev;
+	//	struct comedi_subdevice *s = dev->read_subdev;
 	struct daqbmc_private *devpriv = dev->private;
-	struct spi_param_type *spi_data = s->private;
-	struct spi_device *spi = spi_data->spi;
-	struct comedi_spibmc *pdata = spi->dev.platform_data;
+	//	struct spi_param_type *spi_data = s->private;
+	//	struct spi_device *spi = spi_data->spi;
+	//	struct comedi_spibmc *pdata = spi->dev.platform_data;
 
 	devpriv->mode_count++;
 
@@ -2924,7 +2882,7 @@ static int daqbmc_dio_insn_bits(struct comedi_device *dev,
 	uint32_t * data)
 {
 	struct daqbmc_private *devpriv = dev->private;
-	struct spi_param_type *spi_data = s->private;
+	//	struct spi_param_type *spi_data = s->private;
 	uint32_t pinOPi;
 
 	devpriv->pinMode = pinModeOPi;
@@ -2954,7 +2912,7 @@ static int daqbmc_dio_insn_bits0(struct comedi_device *dev,
 	uint32_t * data)
 {
 	struct daqbmc_private *devpriv = dev->private;
-	struct spi_param_type *spi_data = s->private;
+	//	struct spi_param_type *spi_data = s->private;
 	uint32_t pinOPi;
 
 	devpriv->pinMode = pinModeOPi;
@@ -2980,7 +2938,7 @@ static int daqbmc_dio_insn_bits4(struct comedi_device *dev,
 	uint32_t * data)
 {
 	struct daqbmc_private *devpriv = dev->private;
-	struct spi_param_type *spi_data = s->private;
+	//	struct spi_param_type *spi_data = s->private;
 	devpriv->pinMode = pinModeOPi;
 	devpriv->digitalWrite = digitalWriteOPi;
 	devpriv->digitalRead = digitalReadOPi;
@@ -3152,6 +3110,20 @@ static int32_t daqbmc_create_thread(struct comedi_device *dev,
 		return PTR_ERR(devpriv->ai_spi->daqbmc_task);
 	}
 
+	devpriv->ao_spi->daqbmc_task =
+		kthread_create_on_node(&daqbmc_ao_thread_function,
+		(void *) dev,
+		cpu_to_node(devpriv->ao_node),
+		"%s_d/%d", name_ptr,
+		devpriv->ao_node);
+	if (!IS_ERR(devpriv->ao_spi->daqbmc_task)) {
+		kthread_bind(devpriv->ao_spi->daqbmc_task, devpriv->ao_node);
+		wake_up_process(devpriv->ao_spi->daqbmc_task);
+	} else {
+
+		return PTR_ERR(devpriv->ao_spi->daqbmc_task);
+	}
+
 	return 0;
 }
 
@@ -3191,7 +3163,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	di_conf = 1;
 
 	devpriv->cpu_nodes = num_online_cpus();
-	if (devpriv->cpu_nodes >= 4) {
+	if (devpriv->cpu_nodes >= SMP_CORES) {
 		dev_info(dev->class_dev, "%d cpu(s) online for threads\n",
 			devpriv->cpu_nodes);
 		devpriv->ai_node = thisboard->ai_node;
@@ -3252,6 +3224,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		 */
 		if (pdata->slave.spi->chip_select == thisboard->ai_cs) {
 			devpriv->ai_spi = &pdata->slave;
+			devpriv->ao_spi = &pdata->slave;
 			pdata->one_t.tx_buf = pdata->tx_buff;
 			pdata->one_t.rx_buf = pdata->rx_buff;
 			if (daqbmc_conf == 4 || daqbmc_conf == 14) { /* ads1220 mode */
@@ -3584,7 +3557,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 
 	/* daq-bmc ao */
 	s = &dev->subdevices[2];
-	s->private = devpriv->ai_spi;
+	s->private = devpriv->ao_spi;
 	s->type = COMEDI_SUBD_AO;
 	/* we support single-ended (ground)  */
 	s->n_chan = thisboard->n_aochan;
@@ -3594,7 +3567,16 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	s->range_table = &daqbmc_ao_range;
 	s->insn_write = daqbmc_ao_winsn;
 	s->insn_read = comedi_readback_insn_read;
-	s->subdev_flags = devpriv->ai_spi->device_spi->ao_subdev_flags - SDF_CMD_WRITE;
+
+	if (devpriv->smp) {
+		s->subdev_flags = devpriv->ao_spi->device_spi->ao_subdev_flags;
+		s->do_cmdtest = daqbmc_ao_cmdtest;
+		s->do_cmd = daqbmc_ao_cmd;
+		s->cancel = daqbmc_ao_cancel;
+	} else {
+		s->subdev_flags = devpriv->ao_spi->device_spi->ao_subdev_flags - SDF_CMD_WRITE;
+	}
+
 	ret = comedi_alloc_subdev_readback(s);
 	if (ret) {
 		dev_err(dev->class_dev,
@@ -3633,6 +3615,13 @@ static void daqbmc_detach(struct comedi_device * dev)
 
 	/* wakeup and kill the threads */
 	if (devpriv->smp) {
+		if (devpriv->ao_spi->daqbmc_task) {
+			set_bit(AO_CMD_RUNNING, &devpriv->state_bits);
+			wake_up_interruptible(&daqbmc_ao_thread_wq);
+			kthread_stop(devpriv->ao_spi->daqbmc_task);
+		}
+		devpriv->ao_spi->daqbmc_task = NULL;
+
 		if (devpriv->ai_spi->daqbmc_task) {
 
 			set_bit(AI_CMD_RUNNING, &devpriv->state_bits);
@@ -3766,6 +3755,7 @@ static int spibmc_spi_remove(struct spi_device * spi)
 {
 	struct comedi_spibmc *pdata = spi->dev.platform_data;
 
+	dev_info(&spi->dev, "spi device removal\n");
 	if (!list_empty(&device_list)) {
 		list_del(&pdata->device_entry);
 	}
