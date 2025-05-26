@@ -40,14 +40,9 @@
 #include "slaveo.h"
 #include <pic18f47q84.h>
 
-static void spi2_tx_wait(void);
-static void spi2_tx_busy(void);
-static void spi2_pace_write(const uint8_t);
-
 void check_slaveo(void) /* SPI Slave error check */
 {
 	if (SPI2STATUSbits.TXWE) { // check for overruns/collisions
-		//		spi_stat_ss.spi_error_count++;
 	}
 }
 
@@ -76,9 +71,11 @@ void init_slaveo(void)
 void slaveo_rx_isr(void)
 {
 	uint8_t command, char_rxtmp, char_txtmp, cmd_dummy = CMD_DUMMY;
-	bool zombie = true;
+
 	/* we only get this when the master wants data, the slave never generates one */
 	// SPI port #2 SLAVE receiver
+	
+#ifdef SLAVE_DEBUG
 	if (SPI2INTFbits.RXOIF) {
 		SPI2INTFbits.RXOIF = 0;
 		spi_stat_ss.rxof_bit++;
@@ -86,16 +83,16 @@ void slaveo_rx_isr(void)
 	if (SPI2INTFbits.TXUIF) {
 		SPI2INTFbits.TXUIF = 0;
 	}
-	MLED_SetHigh();
-	spi_stat_ss.slave_int_count++;
-	MLED_SetLow();
+#endif
 
+#ifdef SLAVE_DEBUG
 	if (SPI2STATUSbits.SPI2RXRE) {
 	} else {
 		if (spi_comm_ss.PORT_DATA) {
 			spi_stat_ss.spi_noerror_count++;
 		}
 	}
+#endif
 
 	data_in2 = SPI2RXB;
 	serial_buffer_ss.data[serial_buffer_ss.raw_index] = data_in2;
@@ -117,6 +114,7 @@ void slaveo_rx_isr(void)
 			data_in2 = 0;
 		}
 	}
+
 	if (serial_buffer_ss.get_value) {
 		if (serial_buffer_ss.raw_index == PORT_GET_BYTES) {
 			SPI2TXB = (uint8_t) V.bmc_di >> ((uint8_t) 8 * (uint8_t) (serial_buffer_ss.raw_index));
@@ -138,39 +136,12 @@ void slaveo_rx_isr(void)
 	}
 
 	command = data_in2 & HI_NIBBLE;
-	serial_buffer_ss.command = command;
 
-	if (UART1_is_rx_ready()) { // we need to read the buffer in sync with the *_CHAR_* commands so it's polled
-		MLED_SetLow();
-		char_rxtmp = UART1_Read();
-		serial_buffer_ss.data[1] = char_rxtmp;
-		cmd_dummy |= UART_DUMMY_MASK; // We have real USART data waiting
-		spi_comm_ss.CHAR_DATA = true;
-	}
-
-	if (command == CMD_CHAR_GO) {
-		char_txtmp = (data_in2 & LO_NIBBLE); // read lower 4 bits
-		spi_comm_ss.PORT_DATA = false;
-		zombie = false;
-		spi_stat_ss.char_count++;
-	}
-
-	if (command == CMD_CHAR_DATA) {
-		zombie = false;
-		if (UART1_is_tx_ready()) { // The USART send buffer is ready
-			UART1_Write((uint8_t) ((uint8_t) ((uint8_t) data_in2 & (uint8_t) LO_NIBBLE) << (uint8_t) 4) | (uint8_t) char_txtmp);
-		} else {
-		}
-		serial_buffer_ss.tx_buffer = cmd_dummy;
-		cmd_dummy = CMD_DUMMY; // clear rx bit
-		spi_comm_ss.CHAR_DATA = false;
-		spi_comm_ss.REMOTE_LINK = true;
-		/* reset link data timer if we are talking */
-		TMR0_Reload();
+	if (serial_buffer_ss.get_value || serial_buffer_ss.make_value) {
+		goto isr_end;
 	}
 
 	if (command == CMD_ADC_GO) { // Found a GO for a conversion command
-		zombie = false;
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = false;
 		spi_stat_ss.adc_count++;
@@ -191,7 +162,6 @@ void slaveo_rx_isr(void)
 	}
 
 	if (command == CMD_PORT_GET) { // send the V.bmc_di buffer
-		zombie = false;
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = true;
 		spi_stat_ss.port_count++;
@@ -206,7 +176,6 @@ void slaveo_rx_isr(void)
 	}
 
 	if (command == CMD_PORT_GO) { // Found a GO for a DO command
-		zombie = false;
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = true;
 		spi_stat_ss.port_count++;
@@ -223,16 +192,43 @@ void slaveo_rx_isr(void)
 		TMR0_Reload();
 	}
 
+	if (UART1_is_rx_ready()) { // we need to read the buffer in sync with the *_CHAR_* commands so it's polled
+		MLED_SetLow();
+		char_rxtmp = UART1_Read();
+		serial_buffer_ss.data[1] = char_rxtmp;
+		cmd_dummy |= UART_DUMMY_MASK; // We have real USART data waiting
+		spi_comm_ss.CHAR_DATA = true;
+	}
+
+	if (command == CMD_CHAR_GO) {
+		char_txtmp = (data_in2 & LO_NIBBLE); // read lower 4 bits
+		spi_comm_ss.PORT_DATA = false;
+		spi_stat_ss.char_count++;
+	}
+
+	if (command == CMD_CHAR_DATA) {
+		if (UART1_is_tx_ready()) { // The USART send buffer is ready
+			UART1_Write((uint8_t) ((uint8_t) ((uint8_t) data_in2 & (uint8_t) LO_NIBBLE) << (uint8_t) 4) | (uint8_t) char_txtmp);
+		} else {
+		}
+		serial_buffer_ss.tx_buffer = cmd_dummy;
+		cmd_dummy = CMD_DUMMY; // clear rx bit
+		spi_comm_ss.CHAR_DATA = false;
+		spi_comm_ss.REMOTE_LINK = true;
+		/* reset link data timer if we are talking */
+		TMR0_Reload();
+	}
+
 	if (command == CMD_CHAR_RX) {
 		spi_comm_ss.PORT_DATA = false;
 		serial_buffer_ss.tx_buffer = char_rxtmp;
 		cmd_dummy = CMD_DUMMY; // clear rx bit
 	}
 
-	if (zombie) {
-		spi_stat_ss.zombie_count++;
-	}
-
+isr_end:
+	MLED_SetHigh();
+	spi_stat_ss.slave_int_count++;
+	MLED_SetLow();
 }
 
 void slaveo_spi_isr(void)
@@ -248,33 +244,4 @@ void slaveo_time_isr(void)
 	}
 	MLED_SetLow();
 	DLED_SetLow();
-}
-
-static void spi2_tx_wait(void)
-{
-	uint32_t timeout = 0;
-
-	while (SPI2STATUSbits.SPI2TXBE) {
-		if (timeout++ > 10000) {
-			break;
-		}
-	}
-}
-
-static void spi2_tx_busy(void)
-{
-	uint32_t timeout = 0;
-
-	while (SPI2CON2bits.BUSY) {
-		if (timeout++ > 10000) {
-			break;
-		}
-	}
-}
-
-static void spi2_pace_write(const uint8_t data)
-{
-	//	spi2_tx_wait();
-	SPI2_ExchangeByte(data);
-	spi2_tx_busy();
 }

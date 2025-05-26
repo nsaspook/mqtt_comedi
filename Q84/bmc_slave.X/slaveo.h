@@ -20,6 +20,8 @@ extern "C" {
 #include "eadog.h"
 #include "timers.h"
 
+#define SLAVE_DEBUG
+	
 	/* PIC Slave commands */
 #define CMD_ZERO        0b00000000
 #define CMD_ADC_GO      0b10000000	// Read ADC data
