@@ -722,7 +722,6 @@ void SetBMCPriority(void)
 	INTCON0bits.GIE = 1; // Enable Interrupts;
 }
 
-
 /**
  End of File
  */

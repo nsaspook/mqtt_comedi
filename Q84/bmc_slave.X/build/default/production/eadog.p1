@@ -3611,12 +3611,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 [e :U _spi_lcd_byte ]
 [f ]
-"458
-[e :U 3460 ]
-{
-[e = . . _LATBbits 0 1 -> ~ -> . . _LATBbits 0 1 `i `uc ]
-}
-[e :U 3459 ]
 "459
 [e :UE 3457 ]
 }
@@ -3629,13 +3623,13 @@ Version 4.0 HI-TECH Software Intermediate Code
 "466
 [e = *U + . _spi_link 8 * -> ++ _inx -> -> 1 `i `Vuc `ux -> -> # *U . _spi_link 8 `ui `ux _SPI1RXB ]
 "467
-[e $ ! > -> _inx `i -> 3 `i 3462  ]
+[e $ ! > -> _inx `i -> 3 `i 3459  ]
 [e = _inx -> -> 0 `i `uc ]
-[e :U 3462 ]
+[e :U 3459 ]
 "468
 [e ++ . _spi_link 12 -> -> 1 `i `Vl ]
 "469
-[e :UE 3461 ]
+[e :UE 3458 ]
 }
 "474
 [v _spi_or_byte `(v ~T0 @X0 1 sf ]
@@ -3643,16 +3637,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 [e :U _spi_or_byte ]
 [f ]
-"476
-[e :U 3466 ]
-{
-[e = . . _LATBbits 0 1 -> ~ -> . . _LATBbits 0 1 `i `uc ]
-}
-[e :U 3465 ]
 "477
 [e ++ . _spi_link 13 -> -> 1 `i `Vl ]
 "478
-[e :UE 3463 ]
+[e :UE 3460 ]
 }
 "483
 [v _spi_des_byte `(v ~T0 @X0 1 sf ]
@@ -3660,18 +3648,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 [e :U _spi_des_byte ]
 [f ]
-"485
-[e :U 3470 ]
-{
-[e = . . _LATBbits 0 1 -> ~ -> . . _LATBbits 0 1 `i `uc ]
-}
-[e :U 3469 ]
 "486
 [e ++ . _spi_link 11 -> -> 1 `i `Vl ]
 "487
 [e = . _spi_link 4 -> -> 0 `i `uc ]
 "488
-[e :UE 3467 ]
+[e :UE 3461 ]
 }
 "490
 [v _spi_rec_done `(v ~T0 @X0 1 ef ]
@@ -3680,7 +3662,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _spi_rec_done ]
 [f ]
 "494
-[e :UE 3471 ]
+[e :UE 3462 ]
 }
 "499
 [v _eaDogM_Scroll_String `(*uc ~T0 @X0 1 ef1`*uc ]
@@ -3707,9 +3689,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _scroll_line_pos -> -> 4 `i `uc ]
 "508
 [e ) &U *U + &U *U + &U _Sstr * -> -> -> 4 `i `ui `ux -> * -> # *U &U *U &U _Sstr `ui -> -> 21 `i `ui `ux * -> -> -> 0 `i `ui `ux -> -> # *U &U *U + &U _Sstr * -> -> -> 4 `i `ui `ux -> * -> # *U &U *U &U _Sstr `ui -> -> 21 `i `ui `ux `ui `ux ]
-[e $UE 3472  ]
+[e $UE 3463  ]
 "509
-[e :UE 3472 ]
+[e :UE 3463 ]
 }
 "514
 [v _eaDogM_Scroll_Task `(v ~T0 @X0 1 ef ]
@@ -3718,25 +3700,25 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _eaDogM_Scroll_Task ]
 [f ]
 "516
-[e $ ! ! != -> _scroll_lock `i -> 0 `i 3474  ]
+[e $ ! ! != -> _scroll_lock `i -> 0 `i 3465  ]
 {
 "517
-[e $UE 3473  ]
+[e $UE 3464  ]
 "518
 }
-[e :U 3474 ]
+[e :U 3465 ]
 "520
-[e $ ! == -> _scroll_line_pos `i -> 0 `i 3475  ]
+[e $ ! == -> _scroll_line_pos `i -> 0 `i 3466  ]
 {
 "521
 [e = _scroll_lock -> -> 0 `i `a ]
 "522
 [e = _scroll_line_pos -> -> 4 `i `uc ]
 "523
-[e $UE 3473  ]
+[e $UE 3464  ]
 "524
 }
-[e :U 3475 ]
+[e :U 3466 ]
 "526
 [e = _scroll_lock -> -> 0 `i `a ]
 "527
@@ -3746,7 +3728,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "529
 [e = _scroll_lock -> -> 1 `i `a ]
 "531
-[e :UE 3473 ]
+[e :UE 3464 ]
 }
 "533
 [v _no_dma_set_lcd `(v ~T0 @X0 1 ef ]
@@ -3769,7 +3751,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "541
 [e ( _wdtdelay (1 -> -> -> 1500 `i `l `ul ]
 "542
-[e :UE 3476 ]
+[e :UE 3467 ]
 }
 "544
 [v _check_lcd_dim `(v ~T0 @X0 1 ef1`Ca ]
@@ -3781,14 +3763,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 "545
 [f ]
 "546
-[e $ ! != -> . _B 2 `i -> 0 `i 3478  ]
+[e $ ! != -> . _B 2 `i -> 0 `i 3469  ]
 {
 "547
 [e = . _B 2 -> -> 0 `i `a ]
 "548
 [e = . _B 1 -> -> 0 `i `us ]
 "550
-[e $ ! != -> _dim `i -> 0 `i 3479  ]
+[e $ ! != -> _dim `i -> 0 `i 3470  ]
 {
 "551
 [e ( _send_lcd_cmd_dma (1 -> -> 83 `i `uc ]
@@ -3796,8 +3778,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e ( _send_lcd_data_dma (1 -> -> 1 `i `uc ]
 "553
 }
-[e $U 3480  ]
-[e :U 3479 ]
+[e $U 3471  ]
+[e :U 3470 ]
 {
 "554
 [e ( _send_lcd_cmd_dma (1 -> -> 83 `i `uc ]
@@ -3805,12 +3787,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e ( _send_lcd_data_dma (1 -> -> 8 `i `uc ]
 "556
 }
-[e :U 3480 ]
+[e :U 3471 ]
 "566
 }
-[e :U 3478 ]
+[e :U 3469 ]
 "567
-[e :UE 3477 ]
+[e :UE 3468 ]
 }
 "569
 [v _set_lcd_dim `(v ~T0 @X0 1 ef1`Ca ]
@@ -3822,14 +3804,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 "570
 [f ]
 "571
-[e $ ! != -> . _B 2 `i -> 0 `i 3482  ]
+[e $ ! != -> . _B 2 `i -> 0 `i 3473  ]
 {
 "572
 [e = . _B 2 -> -> 0 `i `a ]
 "573
 [e = . _B 1 -> -> 0 `i `us ]
 "575
-[e $ ! != -> _dim `i -> 0 `i 3483  ]
+[e $ ! != -> _dim `i -> 0 `i 3474  ]
 {
 "576
 [e ( _send_lcd_cmd_dma (1 -> -> 83 `i `uc ]
@@ -3837,8 +3819,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e ( _send_lcd_data_dma (1 -> -> 1 `i `uc ]
 "578
 }
-[e $U 3484  ]
-[e :U 3483 ]
+[e $U 3475  ]
+[e :U 3474 ]
 {
 "579
 [e ( _send_lcd_cmd_dma (1 -> -> 83 `i `uc ]
@@ -3846,12 +3828,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e ( _send_lcd_data_dma (1 -> -> 8 `i `uc ]
 "581
 }
-[e :U 3484 ]
+[e :U 3475 ]
 "591
 }
-[e :U 3482 ]
+[e :U 3473 ]
 "593
-[e $ ! >= -> ++ . _B 1 -> -> 1 `i `Vus `ui -> -> 6 `i `ui 3485  ]
+[e $ ! >= -> ++ . _B 1 -> -> 1 `i `Vus `ui -> -> 6 `i `ui 3476  ]
 {
 "594
 [e = . _B 1 -> -> 0 `i `us ]
@@ -3861,9 +3843,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e ( _send_lcd_data_dma (1 -> -> 1 `i `uc ]
 "602
 }
-[e :U 3485 ]
+[e :U 3476 ]
 "603
-[e :UE 3481 ]
+[e :UE 3472 ]
 }
 "608
 [v _wdtdelay `(v ~T0 @X0 1 sf1`Cul ]
@@ -3879,18 +3861,18 @@ Version 4.0 HI-TECH Software Intermediate Code
 "612
 {
 [e = _dcount -> -> -> 0 `i `l `ul ]
-[e $ <= _dcount _delay 3487  ]
-[e $U 3488  ]
-[e :U 3487 ]
+[e $ <= _dcount _delay 3478  ]
+[e $U 3479  ]
+[e :U 3478 ]
 {
 "613
 [; <"  clrwdt ;# ">
 "614
 }
 [e ++ _dcount -> -> -> 1 `i `l `ul ]
-[e $ <= _dcount _delay 3487  ]
-[e :U 3488 ]
+[e $ <= _dcount _delay 3478  ]
+[e :U 3479 ]
 }
 "615
-[e :UE 3486 ]
+[e :UE 3477 ]
 }

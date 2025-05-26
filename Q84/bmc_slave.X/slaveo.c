@@ -79,6 +79,7 @@ void slaveo_rx_isr(void)
 	if (SPI2INTFbits.RXOIF) {
 		SPI2INTFbits.RXOIF = 0;
 		spi_stat_ss.rxof_bit++;
+		MLED_SetHigh();
 	}
 	if (SPI2INTFbits.TXUIF) {
 		SPI2INTFbits.TXUIF = 0;
@@ -90,6 +91,7 @@ void slaveo_rx_isr(void)
 	} else {
 		if (spi_comm_ss.PORT_DATA) {
 			spi_stat_ss.spi_noerror_count++;
+			MLED_SetHigh();
 		}
 	}
 #endif
@@ -133,6 +135,7 @@ void slaveo_rx_isr(void)
 	}
 	if (++serial_buffer_ss.raw_index > 8) {
 		serial_buffer_ss.raw_index = 0;
+		MLED_SetHigh();
 	}
 
 	command = data_in2 & HI_NIBBLE;
@@ -226,7 +229,6 @@ void slaveo_rx_isr(void)
 	}
 
 isr_end:
-	MLED_SetHigh();
 	spi_stat_ss.slave_int_count++;
 	MLED_SetLow();
 }

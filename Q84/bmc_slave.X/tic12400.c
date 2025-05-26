@@ -229,6 +229,7 @@ bool tic12400_init(void)
 		tic12400_fail_value = 0;
 	}
 fail:
+	MLED_SetHigh();
 	return !tic12400_init_fail; // flip to return true if NO configuration failures
 }
 
@@ -249,11 +250,13 @@ uint32_t tic12400_wr(const ticbuf_type * buffer, uint16_t del)
 		tic12400_parity_status = true;
 		tic12400_read_error = true;
 		tic12400_parity_count++;
+		MLED_SetHigh();
 		send_spi1_tic12400_dma((void*) &ticstat02, 4);
 	};
 	if (ticvalue & spi_fail_bit_v) {
 		tic12400_read_error = true;
 		tic12400_fail_count++;
+		MLED_SetHigh();
 		send_spi1_tic12400_dma((void*) &ticstat02, 4);
 	}
 	if (del) {

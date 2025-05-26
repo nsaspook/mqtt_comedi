@@ -455,7 +455,7 @@ void clear_lcd_done(void)
  */
 static void spi_lcd_byte(void)
 {
-	MLED_Toggle();
+//	MLED_Toggle();
 }
 
 /*
@@ -473,7 +473,7 @@ void spi_src_byte(void)
  */
 static void spi_or_byte(void)
 {
-	MLED_Toggle();
+//	MLED_Toggle();
 	spi_link.or_bytes++;
 }
 
@@ -482,7 +482,7 @@ static void spi_or_byte(void)
  */
 static void spi_des_byte(void)
 {
-	MLED_Toggle();
+//	MLED_Toggle();
 	spi_link.des_bytes++;
 	spi_link.READ_DATA = false;
 }
