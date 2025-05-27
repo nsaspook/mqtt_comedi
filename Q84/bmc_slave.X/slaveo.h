@@ -37,7 +37,7 @@ extern "C" {
 #define CMD_DEAD        0b11111111      // This is usually a bad response
 
 #define CMD_DUMMY       0b01100111	/* 7 channels 4.096 */
-#define NUM_AI_CHAN     13
+#define NUM_AI_CHAN     15
 #define AI_BUFFER_NUM	0x40
 #define AI_CHAN_FIX	5
 
@@ -68,7 +68,7 @@ extern "C" {
 	struct spi_stat_type_ss {
 		volatile uint32_t adc_count, dac_count,
 		port_count, port_error_count, port_data_count, zombie_count,
-		char_count, char_error_count, rxof_bit, txdone_bit,
+		char_count, char_error_count, rxof_bit, txdone_bit, txuf_bit,
 		slave_int_count, last_slave_int_count, slave_tx_count,
 		comm_count, idle_count, spi_error_count, spi_noerror_count;
 		volatile uint8_t comm_ok, rx_raw_buffer[16], raw_index;

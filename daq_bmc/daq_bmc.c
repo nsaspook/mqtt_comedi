@@ -1193,7 +1193,6 @@ static void daqbmc_ao_put_sample(struct comedi_device *dev,
 
 	/* use single transfers for each byte of the complete SPI transaction */
 
-	devpriv->do_count++;
 	pdata->one_t.tx_buf = pdata->tx_buff;
 	pdata->one_t.rx_buf = pdata->rx_buff;
 
@@ -2671,11 +2670,7 @@ static void pinModeOPi(struct comedi_device *dev,
 	uint32_t pin,
 	uint32_t mode)
 {
-	//	struct comedi_subdevice *s = dev->read_subdev;
 	struct daqbmc_private *devpriv = dev->private;
-	//	struct spi_param_type *spi_data = s->private;
-	//	struct spi_device *spi = spi_data->spi;
-	//	struct comedi_spibmc *pdata = spi->dev.platform_data;
 
 	devpriv->mode_count++;
 
@@ -2912,7 +2907,6 @@ static int daqbmc_dio_insn_bits0(struct comedi_device *dev,
 	uint32_t * data)
 {
 	struct daqbmc_private *devpriv = dev->private;
-	//	struct spi_param_type *spi_data = s->private;
 	uint32_t pinOPi;
 
 	devpriv->pinMode = pinModeOPi;
@@ -2938,7 +2932,6 @@ static int daqbmc_dio_insn_bits4(struct comedi_device *dev,
 	uint32_t * data)
 {
 	struct daqbmc_private *devpriv = dev->private;
-	//	struct spi_param_type *spi_data = s->private;
 	devpriv->pinMode = pinModeOPi;
 	devpriv->digitalWrite = digitalWriteOPi;
 	devpriv->digitalRead = digitalReadOPi;

@@ -73,13 +73,13 @@ bool init_display(void)
 	SPI1CON0bits.EN = 0;
 	// mode 3
 	SPI1CON1 = 0x20;
-	// SSET disabled; RXR suspended if the RxFIFO is full; TXR required for a transfer; 
+	// SSET disabled; RXR suspended if the RxFIFO is full; TXR required for a transfer;
 	SPI1CON2 = 0x03;
-	// BAUD 0; 
+	// BAUD 0;
 	SPI1BAUD = 0x04; // 50kHz SCK
-	// CLKSEL MFINTOSC; 
+	// CLKSEL MFINTOSC;
 	SPI1CLK = 0x02;
-	// BMODE every byte; LSBF MSb first; EN enabled; MST bus master; 
+	// BMODE every byte; LSBF MSb first; EN enabled; MST bus master;
 	SPI1CON0 = 0x83;
 	SPI1CON0bits.EN = 1;
 #endif
@@ -89,7 +89,6 @@ bool init_display(void)
 
 #ifdef USE_LCD_DMA
 	SPI1INTFbits.SPI1TXUIF = 0;
-
 	DMASELECT = 0; // use DMA1 TX
 	DMAnCON0bits.EN = 0;
 	SPI1CON0bits.EN = 0;
@@ -217,7 +216,6 @@ void send_spi1_tic12400_dma(uint8_t *strPtr, const uint8_t len)
 	wait_lcd_done();
 	TIC_CS_SetLow(); /* SPI select display */
 	spi_link.des_bytes++;
-//	spi_link.READ_DATA = true;
 	memcpy(spi_link.txbuf, strPtr, len);
 	spi_link.rxbuf[0] = SPI1_ExchangeByte(spi_link.txbuf[0]);
 	spi_link.rxbuf[1] = SPI1_ExchangeByte(spi_link.txbuf[1]);
@@ -455,7 +453,6 @@ void clear_lcd_done(void)
  */
 static void spi_lcd_byte(void)
 {
-//	MLED_Toggle();
 }
 
 /*
@@ -473,7 +470,6 @@ void spi_src_byte(void)
  */
 static void spi_or_byte(void)
 {
-//	MLED_Toggle();
 	spi_link.or_bytes++;
 }
 
@@ -482,7 +478,6 @@ static void spi_or_byte(void)
  */
 static void spi_des_byte(void)
 {
-//	MLED_Toggle();
 	spi_link.des_bytes++;
 	spi_link.READ_DATA = false;
 }

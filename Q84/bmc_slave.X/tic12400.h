@@ -40,17 +40,6 @@ extern "C" {
 #define raw_mask_11         0b100000000000000
 
 	extern volatile struct spi_link_type spi_link;
-	/*
-	 * TIC12400 command structure
-	 */
-	//typedef struct __attribute__((packed))
-	//{
-	//	uint32_t par : 1;
-	//	uint32_t data : 24;
-	//	uint32_t addr : 6;
-	//	uint32_t wr : 1;
-	//}
-	//ticbuf_type;
 
 	typedef struct __attribute__((packed))
 	{
@@ -60,24 +49,6 @@ extern "C" {
 		uint8_t data0;
 	}
 	ticbuf_type;
-
-
-	/*
-	 * TIC12400 response structure
-	 */
-	//typedef struct __attribute__((packed))
-	//{
-	//	uint32_t par : 1;
-	//	uint32_t data : 24;
-	//	uint32_t oi : 1;
-	//	uint32_t temp : 1;
-	//	uint32_t vs_th : 1;
-	//	uint32_t ssc : 1;
-	//	uint32_t parity_fail : 1;
-	//	uint32_t spi_fail : 1;
-	//	uint32_t por : 1;
-	//}
-	//ticread_type;
 
 	/*
 	 * TIC12400 response structure

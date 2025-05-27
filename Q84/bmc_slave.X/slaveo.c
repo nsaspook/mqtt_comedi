@@ -16,7 +16,7 @@
 
 /*
  * bit 7 high for commands sent from the MASTER
- * 
+ *
  */
 
 #define	TIMEROFFSET	26474           // timer0 16bit counter value for 1 second to overflow
@@ -53,18 +53,19 @@ void check_slaveo(void) /* SPI Slave error check */
 void init_slaveo(void)
 {
 	uint8_t val = 0xff;
+
+	SPI2CON0bits.EN = 0;
 	SPI2_SetRxInterruptHandler(slaveo_rx_isr);
 	TMR0_StartTimer();
 	TMR0_SetInterruptHandler(slaveo_time_isr);
 	SPI2_SetInterruptHandler(slaveo_spi_isr);
-	SPI2CON0bits.EN = 0;
 	while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
 		val = SPI2RXB;
 	}
 	serial_buffer_ss.data[2] = val;
 	SPI2STATUSbits.RXRE = 0;
-	SPI2CON0bits.EN = 0;
 	SPI2CON2bits.TXR = 1; // FIFO required for transmit
+	SPI2CON0bits.EN = 1;
 	ADC_SelectContext(CONTEXT_1);
 }
 
@@ -77,16 +78,10 @@ void slaveo_rx_isr(void)
 
 #ifdef SLAVE_DEBUG
 	if (SPI2INTFbits.RXOIF) {
-		SPI2INTFbits.RXOIF = 0;
 		spi_stat_ss.rxof_bit++;
 		MLED_SetHigh();
 	}
-	if (SPI2INTFbits.TXUIF) {
-		SPI2INTFbits.TXUIF = 0;
-	}
-#endif
 
-#ifdef SLAVE_DEBUG
 	if (SPI2STATUSbits.SPI2RXRE) {
 	} else {
 		if (spi_comm_ss.PORT_DATA) {
@@ -107,12 +102,6 @@ void slaveo_rx_isr(void)
 			data_in2 = 0;
 			serial_buffer_ss.make_value = false;
 			serial_buffer_ss.raw_index = 0;
-			data_in2 = SPI2RXB;
-			while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
-				data_in2 = SPI2RXB;
-			}
-			SPI2STATUSbits.SPI2CLRBF = 1;
-
 			spi_stat_ss.txdone_bit++; // number of completed packets
 			spi_stat_ss.slave_tx_count++;
 			data_in2 = 0;
@@ -128,12 +117,6 @@ void slaveo_rx_isr(void)
 			V.bmc_ao = serial_buffer_ss.data[1];
 			serial_buffer_ss.dac_value = false;
 			serial_buffer_ss.raw_index = 0;
-			data_in2 = SPI2RXB;
-			while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
-				data_in2 = SPI2RXB;
-			}
-			SPI2STATUSbits.SPI2CLRBF = 1;
-
 			spi_stat_ss.txdone_bit++; // number of completed packets
 			spi_stat_ss.slave_tx_count++;
 			data_in2 = 0;
@@ -149,12 +132,6 @@ void slaveo_rx_isr(void)
 			SPI2TXB = (uint8_t) V.bmc_di >> ((uint8_t) 8 * (uint8_t) (serial_buffer_ss.raw_index));
 			serial_buffer_ss.get_value = false;
 			serial_buffer_ss.raw_index = 0;
-			data_in2 = SPI2RXB;
-			while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
-				data_in2 = SPI2RXB;
-			}
-			SPI2STATUSbits.SPI2CLRBF = 1;
-
 			spi_stat_ss.txdone_bit++; // number of completed packets
 			data_in2 = 0;
 		} else {
@@ -170,12 +147,6 @@ void slaveo_rx_isr(void)
 			SPI2TXB = ((adc_buffer[channel] >> 8)&0x00ff);
 			serial_buffer_ss.adc_value = false;
 			serial_buffer_ss.raw_index = 0;
-			data_in2 = SPI2RXB;
-			while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
-				data_in2 = SPI2RXB;
-			}
-			SPI2STATUSbits.SPI2CLRBF = 1;
-
 			spi_stat_ss.txdone_bit++; // number of completed packets
 			data_in2 = 0;
 		} else {
@@ -191,6 +162,7 @@ void slaveo_rx_isr(void)
 
 	if (++serial_buffer_ss.raw_index > 8) {
 		serial_buffer_ss.raw_index = 0;
+		spi_stat_ss.txuf_bit++; // buffer high watermark cleared
 		MLED_SetHigh();
 	}
 
@@ -207,11 +179,7 @@ void slaveo_rx_isr(void)
 		serial_buffer_ss.raw_index = 1;
 		serial_buffer_ss.dac_value = true;
 		spi_stat_ss.slave_tx_count++;
-
 		spi_comm_ss.REMOTE_LINK = true;
-		while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
-			data_in2 = SPI2RXB;
-		}
 		TMR0_Reload();
 	}
 
@@ -220,9 +188,6 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.PORT_DATA = false;
 		spi_stat_ss.adc_count++;
 		channel = data_in2 & LO_NIBBLE; // only 16 possible channels so higher numbers needs to be munged
-		if (channel > AI_BUFFER_NUM) {
-			channel = channel_ANA0; // invalid channel so set to analog 0
-		}
 		if (channel > AI_CHAN_FIX) {
 			switch (channel) {
 			case 0x6:
@@ -234,18 +199,29 @@ void slaveo_rx_isr(void)
 			case 0x8:
 				channel = channel_AND5;
 				break;
-			default:
+			case 0x9:
+				channel = channel_VSS;
+				break;
+			case 0xa:
+				channel = channel_Temp;
+				break;
+			case 0xb:
+				channel = channel_DAC1;
+				break;
+			case 0xc:
 				channel = channel_FVR_Buffer1;
+				break;
+			case 0xd:
+				channel = channel_FVR_Buffer2;
+				break;
+			default:
+				channel = channel_ANA0;
 				break;
 			}
 		}
 		serial_buffer_ss.raw_index = 1;
 		serial_buffer_ss.adc_value = true;
-
 		spi_comm_ss.REMOTE_LINK = true;
-		while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
-			data_in2 = SPI2RXB;
-		}
 		TMR0_Reload();
 	}
 
@@ -255,11 +231,7 @@ void slaveo_rx_isr(void)
 		spi_stat_ss.port_count++;
 		serial_buffer_ss.raw_index = 0;
 		serial_buffer_ss.get_value = true;
-
 		spi_comm_ss.REMOTE_LINK = true;
-		while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
-			data_in2 = SPI2RXB;
-		}
 		TMR0_Reload();
 	}
 
@@ -271,11 +243,7 @@ void slaveo_rx_isr(void)
 		serial_buffer_ss.raw_index = 1;
 		serial_buffer_ss.make_value = true;
 		spi_stat_ss.slave_tx_count++;
-
 		spi_comm_ss.REMOTE_LINK = true;
-		while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
-			data_in2 = SPI2RXB;
-		}
 		TMR0_Reload();
 	}
 

@@ -4,7 +4,7 @@
  * LED2 GREEN	1 second CPU running blinker
  * LED3 GREEN	I/O indicator
  * LED4 GREEN	5VDC Power
- * 
+ *
  * SPI1 MODE 3 MASTER to DISPLAY and MODE 1 to DIO SLAVE devices
  * SPI2 MODE 0 SLAVE to OPi controller MASTER SPI port
  */
@@ -243,7 +243,7 @@ V_data V = {
 	.log_s6f11 = true,
 	.log_abort = false,
 	.log_char = false,
-	.bmc_ao=0,
+	.bmc_ao = 0,
 };
 
 B_type B = {
@@ -412,7 +412,11 @@ void main(void)
 			set_vterm(V.vterm); // set to buffer 0
 			snprintf(V.info, MAX_INFO, " Terminal Info               ");
 			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, " OPI DAQ %u   %s      ", V.uart_speed_fast & 0x01, VER);
-			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " Version %s           ", VER);
+#ifdef DIS_DEBUG			
+			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " DEBUG Active Display           ");
+#else
+			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " RUN Static Display             ");
+#endif
 			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " NSASPOOK             ");
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, " %s                   ", (char *) build_date);
 			snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, " INFO                 ");
@@ -445,7 +449,9 @@ void main(void)
 			break;
 		default:
 			V.ui_state = UI_STATE_INIT;
+#ifdef DIS_DEBUG
 			refresh_lcd();
+#endif
 			WaitMs(TDELAY);
 			break;
 		}
@@ -576,6 +582,7 @@ void main(void)
 			if (TimerDone(TMR_HELPDIS)) {
 				set_display_info(DIS_STR);
 			}
+#ifdef DIS_DEBUG
 #ifdef DIO_TEST
 #ifdef DIO_SHOW_BUF
 			if (spi_stat_ss.slave_tx_count < 0x2fff) { // clear startup counts of empty fifo
@@ -602,8 +609,8 @@ void main(void)
 
 #endif
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "0x%.2lx 0x%.2lx %d %d %d %x                     ",
-				spi_stat_ss.spi_error_count, spi_stat_ss.spi_noerror_count, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK, V.bmc_ao);
-
+				spi_stat_ss.spi_error_count, spi_stat_ss.txuf_bit, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK, V.bmc_ao);
+#endif
 			// convert ADC values to char for display
 			update_rs232_line_status();
 
@@ -622,6 +629,7 @@ void main(void)
 			/*
 			 * update info screen data points
 			 */
+#ifdef DIS_DEBUG
 			snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "RS232 TX %3dV:%c                       ", V.tx_volts, V.tx_rs232);
 			snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "RS232 RX %3dV:%c                       ", V.rx_volts, V.rx_rs232);
 			snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "A1 0x%.2x, A2 0x%.2x                   ", V.v_tx_line, V.v_rx_line);
@@ -629,14 +637,15 @@ void main(void)
 			snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "                                       ");
 			snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "                                       ");
 			snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "A1 0x%.2x, A2 0x%.2x                   ", V.v_tx_line, V.v_rx_line);
-			snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "0x%.2lx 0x%.2lx %d %d %d                 ", spi_stat_ss.spi_error_count, spi_stat_ss.spi_noerror_count, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK);
-
+			snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "0x%.2lx 0x%.2lx %d %d %d                 ", spi_stat_ss.spi_error_count, spi_stat_ss.txuf_bit, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK);
+#endif
 			/*
 			 * don't default update the LCD when displaying HELP text
 			 */
 			if (!V.set_sequ) {
+#ifdef DIS_DEBUG
 				refresh_lcd();
-				test_slave();
+#endif
 			}
 		}
 
@@ -647,10 +656,14 @@ void main(void)
 			if (TimerDone(TMR_HELP)) {
 				V.set_sequ = false;
 				set_vterm(V.vterm);
+#ifdef DIS_DEBUG
 				refresh_lcd();
+#endif
 			} else {
 				set_vterm(HELP_VTERM);
+#ifdef DIS_DEBUG
 				refresh_lcd();
+#endif
 			}
 		}
 
@@ -698,8 +711,7 @@ int8_t test_slave(void)
 
 	DLED_SetHigh();
 	while (!ADC_IsConversionDone());
-	SPI2CON0bits.EN = 0;
-	SPI2CON0bits.EN = 1;
+	while (SPI2CON2bits.BUSY);
 	return(int8_t) ret;
 }
 

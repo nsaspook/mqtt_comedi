@@ -57,7 +57,6 @@ extern "C" {
 #define MC33996_DATA_LEN        8
 
 	void mc33996_version(void);
-
 	bool mc33996_init(void);
 	void mc33996_update(uint16_t);
 

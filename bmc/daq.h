@@ -53,7 +53,7 @@ extern "C" {
                 usbboard = 1,
         } board_t;
 
-        typedef enum {
+        typedef enum { // need to keep all ADC channels in the 4-bit 0x0f range
                 channel_ANA0 = 0x0,
                 channel_ANA1 = 0x1,
                 channel_ANA2 = 0x2,
@@ -62,12 +62,12 @@ extern "C" {
                 channel_ANC6 = 0x6,
                 channel_ANC7 = 0x7,
                 channel_AND5 = 0x8,
-                channel_VSS = 0x3B,
-                channel_Temp = 0x3C,
-                channel_DAC1 = 0x3D,
-                channel_FVR_Buffer1 = 0x3E,
-                channel_FVR_Buffer2 = 0x3F
-        } ADC_channel_t;
+                channel_VSS = 0x9,
+                channel_Temp = 0xA,
+                channel_DAC1 = 0xB,
+                channel_FVR_Buffer1 = 0xC,
+                channel_FVR_Buffer2 = 0xD
+        } ADC_channel_t; // the BMCboard will translate to the correct hardwar channel
 
         struct didata {
                 uint32_t D0 : 1; // 
