@@ -41,7 +41,7 @@ void mc33996_version(void)
 
 bool mc33996_init(void)
 {
-	DEBUG1_SetHigh(); // mcz_pwm
+//	DEBUG1_SetHigh(); // mcz_pwm
 	send_spi1_mc33996_dma((void*) &mc_pwm, 3); // NO PWM
 	send_spi1_mc33996_dma((void*) &mc_onoff, 3); // ALL I/O off
 	send_spi1_mc33996_dma((void*) &mc_gsrc, 3); // ALL I/O off

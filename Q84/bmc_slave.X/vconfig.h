@@ -22,7 +22,7 @@ extern "C" {
 
 #define NHD		// SPI 20X4 display, nhd-0420d3z-nsw-bbw
 	
-//#define DIS_DEBUG
+#define DIS_DEBUG
 
 #define VER	"V0.13"
 	/** \file vconfig.h

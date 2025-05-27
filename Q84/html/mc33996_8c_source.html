@@ -148,16 +148,15 @@ $(function(){initNavTree('mc33996_8c_source.html','',''); initResizable(true); }
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    send_spi1_mc33996_dma((<span class="keywordtype">void</span>*) &amp;mc_gsrc, 3); <span class="comment">// ALL I/O off</span></div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    send_spi1_mc33996_dma((<span class="keywordtype">void</span>*) &amp;mc_sfpd, 3); <span class="comment">// thermal only</span></div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    send_spi1_mc33996_dma((<span class="keywordtype">void</span>*) &amp;mc_olce, 3); <span class="comment">// open load</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keywordtype">void</span> mc33996_update(uint16_t data)</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>{</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    mc_onoff.out = (data&amp;0xff00) &gt;&gt; 8;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    mc_onoff.out += (data&amp;0x00ff) &lt;&lt; 8;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    send_spi1_mc33996_dma((<span class="keywordtype">void</span>*) &amp;mc_onoff, 3);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>};</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>};</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="keywordtype">void</span> mc33996_update(uint16_t data)</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>{</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    mc_onoff.out = (uint16_t)((data&amp;0xff00) &gt;&gt; 8); <span class="comment">// byte order swap</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    mc_onoff.out |= (uint16_t)((data&amp;0x00ff) &lt;&lt; 8);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    send_spi1_mc33996_dma((<span class="keywordtype">void</span>*) &amp;mc_onoff, 3);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>};</div>
 <div class="ttc" id="amc33996_8h_html"><div class="ttname"><a href="mc33996_8h.html">mc33996.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

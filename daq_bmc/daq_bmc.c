@@ -377,7 +377,7 @@ static const uint32_t PIC18_CMDD_47Q84 = 4;
 static const uint32_t SPI_BUFF_SIZE = 128000; // normally 5000
 static const uint32_t SPI_BUFF_SIZE_NOHUNK = 64000; // normally 64
 static const uint32_t MAX_CHANLIST_LEN = 256;
-static const uint32_t CONV_SPEED = 5000; /* 10s of nsecs: the true rate is ~3000/5000 so we need a fixup,  two conversions per mix scan */
+static const uint32_t CONV_SPEED = 50000; /* 10s of nsecs: the true rate is ~3000/5000 so we need a fixup,  two conversions per mix scan */
 static const uint32_t CONV_SPEED_FIX = 19; /* usecs: round it up to ~50usecs total with this */
 static const uint32_t CONV_SPEED_FIX_FREERUN = 1; /* usecs: round it up to ~30usecs total with this */
 static const uint32_t CONV_SPEED_FIX_FAST = 9; /* used for the MCP3002 ADC */
@@ -388,7 +388,7 @@ static const struct spi_delay CS_CHANGE_DELAY_USECS0 = {
 	.unit = 0
 };
 static const struct spi_delay CS_CHANGE_DELAY_USECS10 = {
-	.value = 25,
+	.value = 10,
 	.unit = 0
 };
 
@@ -536,7 +536,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
 		.max_speed_hz = 4000000,
 		.min_acq_ns = 22160,
-		.rate_min = 20000,
+		.rate_min = 1000,
 		.spi_mode = 0,
 		.spi_bpw = 8,
 		.n_transfers = 3,
@@ -612,8 +612,8 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
 		.max_speed_hz = 4000000,
-		.min_acq_ns = 20000,
-		.rate_min = 20000,
+		.min_acq_ns = 50000,
+		.rate_min = 1000,
 		.spi_mode = 0,
 		.spi_bpw = 8,
 		.n_chan_bits = 12,
@@ -682,8 +682,8 @@ static const struct daqbmc_board daqbmc_boards[] = {
 		.n_aochan = 2,
 		.n_aochan_mask = 0x01,
 		.n_aochan_bits = 12,
-		.ai_ns_min_calc = 35000,
-		.ao_ns_min_calc = 20000,
+		.ai_ns_min_calc = 1000000,
+		.ao_ns_min_calc = 1000000,
 		.ai_cs = 1,
 		.ao_cs = 1,
 		.ai_node = 3,
@@ -1360,7 +1360,7 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		val_mode = spi_setup(spi);
 	}
 
-		/* use three spi transfers for the complete SPI transaction */
+		/* use four spi transfers for the complete SPI transaction */
 		pdata->one_t.tx_buf = pdata->tx_buff;
 		pdata->one_t.rx_buf = pdata->rx_buff;
 
@@ -2794,7 +2794,7 @@ static int digitalReadOPi(struct comedi_device *dev,
 		val_mode = spi_setup(spi);
 	}
 
-	/* use two spi transfers for the complete SPI transaction */
+	/* use five spi transfers for the complete SPI transaction */
 
 	pdata->tx_buff[0] = CMD_PORT_GET;
 	pdata->one_t.cs_change = false;
@@ -2850,6 +2850,9 @@ static int digitalReadOPi(struct comedi_device *dev,
 	val_value = pdata->rx_buff[2];
 	val_value += (pdata->rx_buff[3] << 8);
 	val_value += (pdata->rx_buff[4] << 16);
+
+	pdata->one_t.tx_buf = pdata->tx_buff;
+	pdata->one_t.rx_buf = pdata->rx_buff;
 
 	{
 		struct spi_controller *ctlr = spi->controller;
@@ -3276,7 +3279,6 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 				 * setup ads8330 register
 				 */
 				pdata->one_t.len = 2;
-				//				pdata->one_t.delay_usecs = 0;
 				pdata->tx_buff[0] = (ADS8330_CMR_DEFAULT) >> 8; /* software reset */
 				pdata->tx_buff[1] = 0;
 				spi_message_init_with_transfers(&m,

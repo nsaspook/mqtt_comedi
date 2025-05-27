@@ -141,7 +141,7 @@ $(function(){initNavTree('daq_8h_source.html','',''); initResizable(true); });
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#define HV_SCALE_RAW    4.096f</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#define OVER_SAMP       8</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#define OVER_SAMP       1</span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#include &lt;comedilib.h&gt;</span></div>
@@ -155,21 +155,21 @@ $(function(){initNavTree('daq_8h_source.html','',''); initResizable(true); });
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                usbboard = 1,</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        } board_t;</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keyword">typedef</span> <span class="keyword">enum</span> { <span class="comment">// need to keep all ADC channels in the 4-bit 0x0f range</span></div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                channel_ANA0 = 0x0,</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                channel_ANA1 = 0x1,</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                channel_ANA2 = 0x2,</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                channel_ANA4 = 0x4,</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                channel_ANA5 = 0x5,</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                channel_ANC6 = 0x16,</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                channel_ANC7 = 0x17,</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                channel_AND5 = 0x1D,</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>                channel_VSS = 0x3B,</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>                channel_Temp = 0x3C,</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>                channel_DAC1 = 0x3D,</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>                channel_FVR_Buffer1 = 0x3E,</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>                channel_FVR_Buffer2 = 0x3F</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        } ADC_channel_t;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                channel_ANC6 = 0x6,</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                channel_ANC7 = 0x7,</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                channel_AND5 = 0x8,</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>                channel_VSS = 0x9,</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>                channel_Temp = 0xA,</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>                channel_DAC1 = 0xB,</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>                channel_FVR_Buffer1 = 0xC,</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>                channel_FVR_Buffer2 = 0xD</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        } ADC_channel_t; <span class="comment">// the BMCboard will translate to the correct hardwar channel</span></div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
 <div class="foldopen" id="foldopen00072" data-start="{" data-end="};">
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="structdidata.html">   72</a></span>        <span class="keyword">struct </span><a class="code hl_struct" href="structdidata.html">didata</a> {</div>
@@ -187,55 +187,58 @@ $(function(){initNavTree('daq_8h_source.html','',''); initResizable(true); });
 <div class="foldopen" id="foldopen00083" data-start="{" data-end="};">
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="uniondio__buf__type.html">   83</a></span>        <span class="keyword">union </span><a class="code hl_union" href="uniondio__buf__type.html">dio_buf_type</a> {</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                uint32_t dio_buf;</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                <span class="keyword">struct </span><a class="code hl_struct" href="structdidata.html">didata</a> d;</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        };</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                uint8_t bytes[4];</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                <span class="keyword">struct </span><a class="code hl_struct" href="structdidata.html">didata</a> d;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        };</div>
 </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
-<div class="foldopen" id="foldopen00088" data-start="{" data-end="};">
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="structbmcdata.html">   88</a></span>        <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="structbmcdata.html">bmcdata</a> {</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                <span class="keywordtype">double</span> pv_voltage, cc_voltage, input_voltage, b1_voltage, b2_voltage, system_voltage, logic_voltage;</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                <span class="keywordtype">double</span> pv_current, cc_current, battery_current;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                <span class="keyword">struct </span><a class="code hl_struct" href="structdidata.html">didata</a> datain;</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                <span class="keyword">union </span><a class="code hl_union" href="uniondio__buf__type.html">dio_buf_type</a> dataout;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                int32_t adc_sample[32];</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                int32_t dac_sample[32];</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                int32_t utc;</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                board_t BOARD;</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                <span class="keywordtype">char</span> * BNAME;</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        } bmctype;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="foldopen" id="foldopen00089" data-start="{" data-end="};">
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="structbmcdata.html">   89</a></span>        <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="structbmcdata.html">bmcdata</a> {</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                <span class="keywordtype">double</span> pv_voltage, cc_voltage, input_voltage, b1_voltage, b2_voltage, system_voltage, logic_voltage;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                <span class="keywordtype">double</span> pv_current, cc_current, battery_current;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                <span class="keyword">struct </span><a class="code hl_struct" href="structdidata.html">didata</a> datain;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                <span class="keyword">union </span><a class="code hl_union" href="uniondio__buf__type.html">dio_buf_type</a> dataout;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                int32_t adc_sample[32];</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                int32_t dac_sample[32];</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                uint32_t data_in;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                int32_t utc;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                board_t BOARD;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                <span class="keywordtype">char</span> * BNAME;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        } bmctype;</div>
 </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        <span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="keyword">struct </span><a class="code hl_struct" href="structbmcdata.html">bmcdata</a> bmc;</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="keyword">extern</span> <span class="keyword">struct </span><a class="code hl_struct" href="structdidata.html">didata</a> datain;</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keyword">extern</span> <span class="keyword">struct </span>dodata dataout;</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="keyword">extern</span> <span class="keywordtype">int</span> maxdata_ai, ranges_ai, channels_ai;</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <span class="keyword">extern</span> <span class="keywordtype">int</span> maxdata_ao, ranges_ao, channels_ao;</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <span class="keyword">extern</span> <span class="keywordtype">int</span> maxdata_di, ranges_di, channels_di, datain_di;</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        <span class="keyword">extern</span> <span class="keywordtype">int</span> maxdata_do, ranges_do, channels_do, datain_do;</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <span class="keyword">extern</span> <span class="keywordtype">int</span> maxdata_counter, ranges_counter, channels_counter, datain_counter;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        <span class="keywordtype">int</span> init_daq(<span class="keywordtype">double</span>, <span class="keywordtype">double</span>, <span class="keywordtype">int</span>);</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        <span class="keywordtype">int</span> init_dac(<span class="keywordtype">double</span>, <span class="keywordtype">double</span>, <span class="keywordtype">int</span>);</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        <span class="keywordtype">int</span> init_dio(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="keywordtype">int</span> adc_range(<span class="keywordtype">double</span>, <span class="keywordtype">double</span>);</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <span class="keywordtype">int</span> dac_range(<span class="keywordtype">double</span>, <span class="keywordtype">double</span>);</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        <span class="keywordtype">double</span> get_adc_volts(<span class="keywordtype">int</span>);</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <span class="keywordtype">int</span> set_dac_volts(<span class="keywordtype">int</span>, <span class="keywordtype">double</span>);</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        <span class="keywordtype">int</span> set_dac_raw(<span class="keywordtype">int</span>, lsampl_t);</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <span class="keywordtype">int</span> get_dio_bit(<span class="keywordtype">int</span>);</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <span class="keywordtype">int</span> put_dio_bit(<span class="keywordtype">int</span>, <span class="keywordtype">int</span>);</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <span class="keywordtype">int</span> set_dio_input(<span class="keywordtype">int</span>);</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        <span class="keywordtype">int</span> set_dio_output(<span class="keywordtype">int</span>);</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <span class="keywordtype">int</span> get_data_sample(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        <span class="keywordtype">double</span> lp_filter(<span class="keywordtype">double</span>, <span class="keywordtype">int</span>, <span class="keywordtype">int</span>);</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>}</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="preprocessor">#endif </span><span class="comment">/* DAQ_H */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
-<div class="ttc" id="astructbmcdata_html"><div class="ttname"><a href="structbmcdata.html">bmcdata</a></div><div class="ttdef"><b>Definition</b> <a href="#l00088">daq.h:88</a></div></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="keyword">struct </span><a class="code hl_struct" href="structbmcdata.html">bmcdata</a> bmc;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <span class="keyword">extern</span> <span class="keyword">struct </span><a class="code hl_struct" href="structdidata.html">didata</a> datain;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="keyword">extern</span> <span class="keyword">struct </span>dodata dataout;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <span class="keyword">extern</span> <span class="keyword">union </span><a class="code hl_union" href="uniondio__buf__type.html">dio_buf_type</a> obits;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        <span class="keyword">extern</span> <span class="keywordtype">int</span> maxdata_ai, ranges_ai, channels_ai;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <span class="keyword">extern</span> <span class="keywordtype">int</span> maxdata_ao, ranges_ao, channels_ao;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        <span class="keyword">extern</span> <span class="keywordtype">int</span> maxdata_di, ranges_di, channels_di, datain_di;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        <span class="keyword">extern</span> <span class="keywordtype">int</span> maxdata_do, ranges_do, channels_do, datain_do;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        <span class="keyword">extern</span> <span class="keywordtype">int</span> maxdata_counter, ranges_counter, channels_counter, datain_counter;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="keywordtype">int</span> init_daq(<span class="keywordtype">double</span>, <span class="keywordtype">double</span>, <span class="keywordtype">int</span>);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <span class="keywordtype">int</span> init_dac(<span class="keywordtype">double</span>, <span class="keywordtype">double</span>, <span class="keywordtype">int</span>);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        <span class="keywordtype">int</span> init_dio(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <span class="keywordtype">int</span> adc_range(<span class="keywordtype">double</span>, <span class="keywordtype">double</span>);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        <span class="keywordtype">int</span> dac_range(<span class="keywordtype">double</span>, <span class="keywordtype">double</span>);</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <span class="keywordtype">double</span> get_adc_volts(<span class="keywordtype">int</span>);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <span class="keywordtype">int</span> set_dac_volts(<span class="keywordtype">int</span>, <span class="keywordtype">double</span>);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <span class="keywordtype">int</span> set_dac_raw(<span class="keywordtype">int</span>, lsampl_t);</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        <span class="keywordtype">int</span> get_dio_bit(<span class="keywordtype">int</span>);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <span class="keywordtype">int</span> put_dio_bit(<span class="keywordtype">int</span>, <span class="keywordtype">int</span>);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        <span class="keywordtype">int</span> set_dio_input(<span class="keywordtype">int</span>);</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        <span class="keywordtype">int</span> set_dio_output(<span class="keywordtype">int</span>);</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        <span class="keywordtype">int</span> get_data_sample(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        <span class="keywordtype">double</span> lp_filter(<span class="keywordtype">double</span>, <span class="keywordtype">int</span>, <span class="keywordtype">int</span>);</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>}</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="preprocessor">#endif </span><span class="comment">/* DAQ_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="ttc" id="astructbmcdata_html"><div class="ttname"><a href="structbmcdata.html">bmcdata</a></div><div class="ttdef"><b>Definition</b> <a href="#l00089">daq.h:89</a></div></div>
 <div class="ttc" id="astructdidata_html"><div class="ttname"><a href="structdidata.html">didata</a></div><div class="ttdef"><b>Definition</b> <a href="#l00072">daq.h:72</a></div></div>
 <div class="ttc" id="auniondio__buf__type_html"><div class="ttname"><a href="uniondio__buf__type.html">dio_buf_type</a></div><div class="ttdef"><b>Definition</b> <a href="#l00083">daq.h:83</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

@@ -76,6 +76,7 @@ void slaveo_rx_isr(void)
 	/* we only get this when the master wants data, the slave never generates one */
 	// SPI port #2 SLAVE receiver
 
+	DEBUG1_SetHigh();
 #ifdef SLAVE_DEBUG
 	if (SPI2INTFbits.RXOIF) {
 		spi_stat_ss.rxof_bit++;
@@ -160,7 +161,7 @@ void slaveo_rx_isr(void)
 		}
 	}
 
-	if (++serial_buffer_ss.raw_index > 8) {
+	if (++serial_buffer_ss.raw_index > SPI_BUFFER_LEN-1) {
 		serial_buffer_ss.raw_index = 0;
 		spi_stat_ss.txuf_bit++; // buffer high watermark cleared
 		MLED_SetHigh();
@@ -283,6 +284,7 @@ void slaveo_rx_isr(void)
 isr_end:
 	spi_stat_ss.slave_int_count++;
 	MLED_SetLow();
+	DEBUG1_SetLow();
 }
 
 void slaveo_spi_isr(void)
@@ -294,6 +296,8 @@ void slaveo_spi_isr(void)
 
 void slaveo_time_isr(void)
 {
+	SPI2CON0bits.EN = 0; // reset OPi SPI link module
+	SPI2CON0bits.EN = 1;
 	if (SPI2STATUSbits.TXWE || SPI2STATUSbits.RXRE) { // check for overruns/collisions
 	}
 	MLED_SetLow();

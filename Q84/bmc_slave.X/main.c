@@ -411,9 +411,9 @@ void main(void)
 			srand(1957);
 			set_vterm(V.vterm); // set to buffer 0
 			snprintf(V.info, MAX_INFO, " Terminal Info               ");
-			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, " OPI DAQ %u   %s      ", V.uart_speed_fast & 0x01, VER);
+			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, " OPI BMCDAQ %u %s      ", V.uart_speed_fast & 0x01, VER);
 #ifdef DIS_DEBUG			
-			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " DEBUG Active Display           ");
+			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " DEBUG Vari Display           ");
 #else
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " RUN Static Display             ");
 #endif
@@ -571,7 +571,7 @@ void main(void)
 			if (ADC_IsConversionDone()) {
 				adc_buffer[channel_FVR_Buffer2] = ADC_GetConversionResult();
 			};
-			DAC1DATL = (uint8_t) V.bmc_ao;
+			DAC1DATL = (uint8_t) V.bmc_ao; // update DAC1 output
 		}
 
 		if (TimerDone(TMR_DISPLAY)) { // limit update rate
@@ -610,9 +610,10 @@ void main(void)
 #endif
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "0x%.2lx 0x%.2lx %d %d %d %x                     ",
 				spi_stat_ss.spi_error_count, spi_stat_ss.txuf_bit, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK, V.bmc_ao);
-#endif
+
 			// convert ADC values to char for display
 			update_rs232_line_status();
+#endif
 
 			if (V.vterm_switch++ > (SWITCH_VTERM)) {
 				set_vterm(switcher);
