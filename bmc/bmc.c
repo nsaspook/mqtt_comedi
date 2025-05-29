@@ -126,6 +126,7 @@ void led_lightshow(int speed)
 		}
 		j = 0;
 	}
+//	bmc.dataout.dio_buf=0xff;
 }
 
 int main(int argc, char *argv[])

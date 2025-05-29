@@ -11,7 +11,7 @@ mc33996buf_type mc_onoff = {
 
 const mc33996buf_type mc_pwm = {
 	.cmd = mc33996_pwm,
-	.out = 0x0000,
+	.out = 0xffff,
 };
 
 const mc33996buf_type mc_reset = {
