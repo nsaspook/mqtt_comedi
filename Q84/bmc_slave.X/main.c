@@ -458,7 +458,7 @@ void main(void)
 
 		if (TimerDone(TMR_ADC)) {
 			SPI_MC33996();
-			mc33996_update((uint16_t) V.bmc_do);
+//			mc33996_update((uint16_t) V.bmc_do);
 			SPI_TIC12400();
 			tic12400_read_sw(0, (uintptr_t) NULL);
 			V.bmc_di = tic12400_switch;

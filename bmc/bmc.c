@@ -126,7 +126,6 @@ void led_lightshow(int speed)
 		}
 		j = 0;
 	}
-//	bmc.dataout.dio_buf=0xff;
 }
 
 int main(int argc, char *argv[])
@@ -172,17 +171,17 @@ int main(int argc, char *argv[])
 		fflush(fout);
 		while (true) {
 			usleep(MAIN_DELAY); // sample rate ~1 msec
-			set_dac_raw(0, sine_wave[i++]);
+//			set_dac_raw(0, sine_wave[i++]);
 			get_data_sample();
 			if (!bmc.datain.D0) {
 				if (bmc.BOARD == bmcboard) {
-					led_lightshow(300);
+					led_lightshow(25);
 				} else {
 					led_lightshow(10);
 				}
 			}
 			if (ha_flag_vars_ss.runner) { // timer or trigger from mqtt
-				comedi_push_mqtt(); // send json formatted data to the mqtt server
+//				comedi_push_mqtt(); // send json formatted data to the mqtt server
 				ha_flag_vars_ss.runner = false;
 			}
 		}

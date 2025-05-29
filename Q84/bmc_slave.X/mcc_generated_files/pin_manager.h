@@ -541,25 +541,25 @@
 #define RD6_SetAnalogMode()         do { ANSELDbits.ANSELD6 = 1; } while(0)
 #define RD6_SetDigitalMode()        do { ANSELDbits.ANSELD6 = 0; } while(0)
 
-// get/set DEBUG1 aliases
-#define DEBUG1_TRIS                 TRISDbits.TRISD7
-#define DEBUG1_LAT                  LATDbits.LATD7
-#define DEBUG1_PORT                 PORTDbits.RD7
-#define DEBUG1_WPU                  WPUDbits.WPUD7
-#define DEBUG1_OD                   ODCONDbits.ODCD7
-#define DEBUG1_ANS                  ANSELDbits.ANSELD7
-#define DEBUG1_SetHigh()            do { LATDbits.LATD7 = 1; } while(0)
-#define DEBUG1_SetLow()             do { LATDbits.LATD7 = 0; } while(0)
-#define DEBUG1_Toggle()             do { LATDbits.LATD7 = ~LATDbits.LATD7; } while(0)
-#define DEBUG1_GetValue()           PORTDbits.RD7
-#define DEBUG1_SetDigitalInput()    do { TRISDbits.TRISD7 = 1; } while(0)
-#define DEBUG1_SetDigitalOutput()   do { TRISDbits.TRISD7 = 0; } while(0)
-#define DEBUG1_SetPullup()          do { WPUDbits.WPUD7 = 1; } while(0)
-#define DEBUG1_ResetPullup()        do { WPUDbits.WPUD7 = 0; } while(0)
-#define DEBUG1_SetPushPull()        do { ODCONDbits.ODCD7 = 0; } while(0)
-#define DEBUG1_SetOpenDrain()       do { ODCONDbits.ODCD7 = 1; } while(0)
-#define DEBUG1_SetAnalogMode()      do { ANSELDbits.ANSELD7 = 1; } while(0)
-#define DEBUG1_SetDigitalMode()     do { ANSELDbits.ANSELD7 = 0; } while(0)
+// get/set MCZ_PWM aliases
+#define MCZ_PWM_TRIS                 TRISDbits.TRISD7
+#define MCZ_PWM_LAT                  LATDbits.LATD7
+#define MCZ_PWM_PORT                 PORTDbits.RD7
+#define MCZ_PWM_WPU                  WPUDbits.WPUD7
+#define MCZ_PWM_OD                   ODCONDbits.ODCD7
+#define MCZ_PWM_ANS                  ANSELDbits.ANSELD7
+#define MCZ_PWM_SetHigh()            do { LATDbits.LATD7 = 1; } while(0)
+#define MCZ_PWM_SetLow()             do { LATDbits.LATD7 = 0; } while(0)
+#define MCZ_PWM_Toggle()             do { LATDbits.LATD7 = ~LATDbits.LATD7; } while(0)
+#define MCZ_PWM_GetValue()           PORTDbits.RD7
+#define MCZ_PWM_SetDigitalInput()    do { TRISDbits.TRISD7 = 1; } while(0)
+#define MCZ_PWM_SetDigitalOutput()   do { TRISDbits.TRISD7 = 0; } while(0)
+#define MCZ_PWM_SetPullup()          do { WPUDbits.WPUD7 = 1; } while(0)
+#define MCZ_PWM_ResetPullup()        do { WPUDbits.WPUD7 = 0; } while(0)
+#define MCZ_PWM_SetPushPull()        do { ODCONDbits.ODCD7 = 0; } while(0)
+#define MCZ_PWM_SetOpenDrain()       do { ODCONDbits.ODCD7 = 1; } while(0)
+#define MCZ_PWM_SetAnalogMode()      do { ANSELDbits.ANSELD7 = 1; } while(0)
+#define MCZ_PWM_SetDigitalMode()     do { ANSELDbits.ANSELD7 = 0; } while(0)
 
 // get/set MCZ_CS aliases
 #define MCZ_CS_TRIS                 TRISEbits.TRISE0

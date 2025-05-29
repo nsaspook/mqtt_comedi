@@ -39,8 +39,8 @@ void SPI_TIC12400(void)
 	//EN enabled; LSBF MSb first; MST bus master; BMODE every byte;
 	SPI1CON0 = 0x03;
 	//SMP Middle; CKE Idle to active; CKP Idle:Low, Active:High; FST disabled; SSP active high; SDIP active high; SDOP active high;
-	SPI1CON1bits.CKP = 0;
-	SPI1CON1bits.CKE = 1;
+	SPI1CON1bits.CKP = 0; // SCK starts low
+	SPI1CON1bits.CKE = 0;
 	SPI1CON1bits.SMP = 1;
 	SPI1CON1bits.FST = 0;
 	SPI1CON1bits.SDIP = 0;
@@ -67,7 +67,7 @@ void SPI_MC33996(void)
 	//EN enabled; LSBF MSb first; MST bus master; BMODE every byte;
 	SPI1CON0 = 0x03;
 	//SMP Middle; CKE Idle to active; CKP Idle:Low, Active:High; FST disabled; SSP active high; SDIP active high; SDOP active high;
-	SPI1CON1bits.CKP = 0;
+	SPI1CON1bits.CKP = 1;
 	SPI1CON1bits.CKE = 1;
 	SPI1CON1bits.SMP = 1;
 	SPI1CON1bits.FST = 0;

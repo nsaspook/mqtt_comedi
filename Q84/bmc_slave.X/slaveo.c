@@ -76,18 +76,18 @@ void slaveo_rx_isr(void)
 	/* we only get this when the master wants data, the slave never generates one */
 	// SPI port #2 SLAVE receiver
 
-	DEBUG1_SetHigh();
+	TP1_SetHigh();
 #ifdef SLAVE_DEBUG
 	if (SPI2INTFbits.RXOIF) {
 		spi_stat_ss.rxof_bit++;
-		MLED_SetHigh();
+//		MLED_SetHigh();
 	}
 
 	if (SPI2STATUSbits.SPI2RXRE) {
 	} else {
 		if (spi_comm_ss.PORT_DATA) {
 			spi_stat_ss.spi_noerror_count++;
-			MLED_SetHigh();
+//			MLED_SetHigh();
 		}
 	}
 #endif
@@ -164,7 +164,7 @@ void slaveo_rx_isr(void)
 	if (++serial_buffer_ss.raw_index > SPI_BUFFER_LEN-1) {
 		serial_buffer_ss.raw_index = 0;
 		spi_stat_ss.txuf_bit++; // buffer high watermark cleared
-		MLED_SetHigh();
+//		MLED_SetHigh();
 	}
 
 	command = data_in2 & HI_NIBBLE;
@@ -283,13 +283,13 @@ void slaveo_rx_isr(void)
 
 isr_end:
 	spi_stat_ss.slave_int_count++;
-	MLED_SetLow();
-	DEBUG1_SetLow();
+//	MLED_SetLow();
+	TP1_SetLow();
 }
 
 void slaveo_spi_isr(void)
 {
-	MLED_SetLow();
+//	MLED_SetLow();
 	spi_stat_ss.spi_error_count++;
 	SPI2INTF = 0;
 }
@@ -300,6 +300,6 @@ void slaveo_time_isr(void)
 	SPI2CON0bits.EN = 1;
 	if (SPI2STATUSbits.TXWE || SPI2STATUSbits.RXRE) { // check for overruns/collisions
 	}
-	MLED_SetLow();
+//	MLED_SetLow();
 	DLED_SetLow();
 }

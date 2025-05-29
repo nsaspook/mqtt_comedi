@@ -83,16 +83,16 @@ const ticbuf_type ticread05 = {
 	.data0 = 0x01,
 };
 const ticbuf_type ticdevid01 = {
-	.data3 = 0x02,
+	.data3 = 0x02, // register read 2
 	.data2 = 0x00,
 	.data1 = 0x00,
 	.data0 = 0x00,
 };
 const ticbuf_type ticstat02 = {
-	.data3 = 0x04,
+	.data3 = 0x04, // register read 4
 	.data2 = 0x00,
 	.data1 = 0x00,
-	.data0 = 0x02,
+	.data0 = 0x00,
 };
 const ticbuf_type ticreset1a = {
 	.data3 = 0xb4,
@@ -144,6 +144,7 @@ void tic12400_reset(void)
  */
 bool tic12400_init(void)
 {
+	return true;
 	if (tic12400_init_fail) {
 		tic12400_status = tic12400_wr(&ticstat02, 0); // get status to check for proper operation
 		if (((tic12400_status & por_bit_s))) { // check for any high bits beyond POR bits set
@@ -246,14 +247,14 @@ uint32_t tic12400_wr(const ticbuf_type * buffer, uint16_t del)
 	ticvalue += (uint32_t) ((uint32_t) spi_link.rxbuf[3] << (uint32_t) 24)&0xff000000;
 	tic12400_read_error = false;
 
-	if (ticvalue & parity_fail_v) { // check for command parity errors
+	if ( spi_link.rxbuf[3]& parity_fail_v) { // check for command parity errors
 		tic12400_parity_status = true;
 		tic12400_read_error = true;
 		tic12400_parity_count++;
 		MLED_SetHigh();
 		send_spi1_tic12400_dma((void*) &ticstat02, 4);
 	};
-	if (ticvalue & spi_fail_bit_v) {
+	if (spi_link.rxbuf[3] & spi_fail_bit_v) {
 		tic12400_read_error = true;
 		tic12400_fail_count++;
 		MLED_SetHigh();
@@ -275,14 +276,10 @@ uint32_t tic12400_get_sw(void)
 		return 0;
 	}
 	if (tic12400_switch & (raw_mask_0)) {
-		//		BSP_LED1_Clear();
 	} else {
-		//		BSP_LED1_Set();
 	}
 	if (tic12400_switch & (raw_mask_11)) {
-		//		BSP_LED2_Clear();
 	} else {
-		//		BSP_LED2_Set();
 	}
 	tic12400_event = false;
 	return tic12400_switch;
@@ -308,6 +305,8 @@ bool tic12400_parity(uint32_t v)
 void tic12400_read_sw(uint32_t a, uintptr_t b)
 {
 	tic12400_value = tic12400_wr(&ticread05, 0); // read switch
+	tic12400_value = tic12400_wr(&ticdevid01, 0); // read switch
+	send_spi1_tic12400_dma((void*) &ticstat02, 4);
 
 	if ((tic12400_value & ssc_bit_s) && tic12400_parity(tic12400_value)) { // only trigger on switch state change
 		tic12400_event = true;
