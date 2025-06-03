@@ -4,6 +4,7 @@
 #include "eadog.h"
 
 static const char *build_date = __DATE__, *build_time = __TIME__;
+static volatile uint8_t dummy_b = 0;
 
 /*
  * SPI1
@@ -49,10 +50,17 @@ void SPI_TIC12400(void)
 	//CLKSEL FOSC;
 	SPI1CLK = 0x00;
 	//BAUD 7;  4MHz
-	SPI1BAUD = 0x07;
+	SPI1BAUD = 0x20;
 	SPI1CON0bits.EN = 1;
 	SPI1STATUSbits.CLRBF = 0;
+	SPI1_ExchangeByte(0xff);
+	SPI1_ExchangeByte(0xff);
+	dummy_b = SPI1_ReadByte();
+	dummy_b = SPI1_ReadByte();
+	dummy_b = SPI1_ReadByte();
+	dummy_b = SPI1_ReadByte();
 }
+
 /*
  * SPI1
  */
@@ -80,4 +88,8 @@ void SPI_MC33996(void)
 	SPI1BAUD = 0x07;
 	SPI1CON0bits.EN = 1;
 	SPI1STATUSbits.CLRBF = 0;
+	SPI1_ExchangeByte(0xff);
+	SPI1_ExchangeByte(0xff);
+	dummy_b = SPI1_ReadByte();
+	dummy_b = SPI1_ReadByte();
 }

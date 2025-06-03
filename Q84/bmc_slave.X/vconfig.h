@@ -22,7 +22,7 @@ extern "C" {
 
 #define NHD		// SPI 20X4 display, nhd-0420d3z-nsw-bbw
 	
-#define DIS_DEBUG
+#define DIS_DEBUG	// active status display, disable during normal operation
 
 #define VER	"V0.13"
 	/** \file vconfig.h
@@ -39,11 +39,17 @@ extern "C" {
 	 * V0.13 fix ADC higher channels and cleanup SPI link protocols
 	 */
 	/*
-	 * TIC12400 testing mode
+	 * TIC12400 testing modes
 	 */
 #define DIO_TEST
 #define DIO_SHOW_BUF
+#define DI_DEBUG
 
+	/* analog testing a calibration mode
+	 * 
+	 */
+	
+#define AIO_TEST
 
 #define SLED	MLED_LAT
 #define DLED	DLED_LAT

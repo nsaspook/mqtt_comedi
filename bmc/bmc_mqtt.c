@@ -405,27 +405,38 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	over_sample = 0.0f; // over-sample avg
 	for (int i = 0; i < OVER_SAMP; i++) {
 		if (bmc.BOARD == bmcboard) {
-			over_sample += ac0_filter(get_adc_volts(channel_ANA1));
+			over_sample += ac0_filter(get_adc_volts(channel_ANA4));
 		} else {
 			over_sample += ac0_filter(get_adc_volts(0));
 		}
 	}
-	E.adc[0] = over_sample / (double) OVER_SAMP;
+	if (bmc.BOARD == bmcboard) {
+		E.adc[channel_ANA4] = over_sample / (double) OVER_SAMP;
+	} else {
+		E.adc[channel_ANA0] = over_sample / (double) OVER_SAMP;
+	}
 
 	over_sample = 0.0f; // over-sample avg
 	for (int i = 0; i < OVER_SAMP; i++) {
 		if (bmc.BOARD == bmcboard) {
-			over_sample += ac1_filter(get_adc_volts(channel_ANA2));
+			over_sample += ac1_filter(get_adc_volts(channel_ANA5));
 		} else {
 			over_sample += ac1_filter(get_adc_volts(1));
 		}
 	}
-	E.adc[1] = over_sample / (double) OVER_SAMP;
 	if (bmc.BOARD == bmcboard) {
-		E.adc[channel_ANA4] = get_adc_volts(channel_ANA4);
-		E.adc[channel_ANA5] = get_adc_volts(channel_ANA5);
+		E.adc[channel_ANA5] = over_sample / (double) OVER_SAMP;
+	} else {
+		E.adc[channel_ANA1] = over_sample / (double) OVER_SAMP;
+	}
+
+	if (bmc.BOARD == bmcboard) {
+		E.adc[channel_ANA0] = get_adc_volts(channel_ANA0);
+		E.adc[channel_ANA1] = get_adc_volts(channel_ANA1);
+		E.adc[channel_ANA2] = get_adc_volts(channel_ANA2);
 		E.adc[channel_ANC6] = get_adc_volts(channel_ANC6);
 		E.adc[channel_ANC7] = get_adc_volts(channel_ANC7);
+		E.adc[channel_AND5] = get_adc_volts(channel_AND5);
 	}
 #endif
 
@@ -435,6 +446,8 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	if (pacer++ > 500) {
 		pacer = 0;
 		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x \n", log_time(false), topic_p, obits.dio_buf, bmc.data_in);
+		fprintf(fout, "ANA0 %fV, ANA1 %fV, ANA2 %f, ANA4 %fV, ANA5 %fV\n", get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2),
+			get_adc_volts(channel_ANA4), get_adc_volts(channel_ANA5));
 		fflush(fout);
 		E.mqtt_count++;
 		E.sequence++;
@@ -450,10 +463,17 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "mqtt_di_16b", 64);
 		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (double) E.di_16b);
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_adc0", 64);
-		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[0]);
-		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_adc1", 64);
-		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[1]);
-		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "build_date", 64);
+		if (bmc.BOARD == bmcboard) {
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA4]);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_adc1", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA5]);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "build_date", 64);
+		} else {
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA0]);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_adc1", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA1]);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "build_date", 64);
+		}
 		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], FW_Date);
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "build_time", 64);
 		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], FW_Time);

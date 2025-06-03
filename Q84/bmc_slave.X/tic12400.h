@@ -26,13 +26,15 @@ extern "C" {
 	 */
 #define TIC12400_DRIVER "V0.6"
 
-#define por_bit_s		0b00111110000000000000000000000000
-#define spi_fail_bit_s		0b01000000000000000000000000000000
-#define ssc_bit_s		0b00010000000000000000000000000000
-#define spi_fail_bit_v		0b0100000
-#define parity_fail_v		0b0010000
-#define id_mask_d		0b00000000000000000000011111111111
+#define por_bit_s		0b01100110
+#define spi_fail_bit_s		0b01000000
+#define ssc_bit_s		0b00001000
+#define spi_fail_bit_v		0b01000000
+#define parity_fail_v		0b00100000
+#define id_mask_d		0b00000000
 #define switch_mask_d		0x00ffffff
+
+#define write_bit		0b10000000
 	/*
 	 * switch bit masks in the raw 32-bit register from the TIC12400
 	 */
@@ -70,11 +72,12 @@ extern "C" {
 	void tic12400_read_sw(uint32_t, uintptr_t);
 	bool tic12400_parity(uint32_t);
 
-	extern volatile uint32_t tic12400_status, tic12400_counts, tic12400_value_counts, tic12400_id;
+	extern volatile uint32_t tic12400_status, tic12400_counts, tic12400_value_counts, tic12400_id, tic12400_read_status;
 	extern volatile uint32_t tic12400_value, tic12400_switch, tic12400_fail_count, tic12400_parity_count;
 	extern volatile bool tic12400_init_fail, tic12400_event;
 	extern volatile bool tic12400_parity_status, tic12400_read_error;
 	extern volatile int32_t tic12400_fail_value;
+	volatile uint8_t b_read;
 
 #ifdef	__cplusplus
 }

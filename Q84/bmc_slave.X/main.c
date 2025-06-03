@@ -369,19 +369,9 @@ void main(void)
 			UART1_Initialize115200();
 		}
 	}
-	uint16_t few = 0;
-	while (!tic12400_init()) {
-		if (few++ > 10) {
-			break;
-		}
-	}
-	few = 0;
-	while (!mc33996_init()) {
-		if (few++ > 10) {
-			break;
-		}
-	}
-	init_slaveo();
+
+
+
 	/*
 	 * master processing I/O loop
 	 */
@@ -407,13 +397,21 @@ void main(void)
 			refresh_lcd();
 			WaitMs(LDELAY);
 
+			SPI_TIC12400();
+			tic12400_reset();
+			tic12400_init();
+			SPI_MC33996();
+			mc33996_init();
+			init_slaveo();
+			SPI_EADOG();
+
 			V.ui_state = UI_STATE_HOST;
 			srand(1957);
 			set_vterm(V.vterm); // set to buffer 0
 			snprintf(V.info, MAX_INFO, " Terminal Info               ");
-			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, " OPI BMCDAQ %u %s      ", V.uart_speed_fast & 0x01, VER);
+			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, " OPI BMCDAQ %u %s        ", V.uart_speed_fast & 0x01, VER);
 #ifdef DIS_DEBUG			
-			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " DEBUG Vari Display           ");
+			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " TIC %ld %lX %lX         ", tic12400_fail_value, tic12400_id & 0xffff, tic12400_read_status);
 #else
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " RUN Static Display             ");
 #endif
@@ -457,12 +455,12 @@ void main(void)
 		}
 
 		if (TimerDone(TMR_ADC)) {
-			SPI_MC33996();
-//			mc33996_update((uint16_t) V.bmc_do);
-			SPI_TIC12400();
-			tic12400_read_sw(0, (uintptr_t) NULL);
-			V.bmc_di = tic12400_switch;
-			SPI_EADOG();
+			//			SPI_MC33996();
+			//			mc33996_update((uint16_t) V.bmc_do);
+			//			SPI_TIC12400();
+			//			tic12400_read_sw(0, (uintptr_t) NULL);
+			//			V.bmc_di = tic12400_switch;
+			//			SPI_EADOG();
 			StartTimer(TMR_ADC, ADCDELAY);
 			spi_stat_ss.adc_count++; // just keep count
 
@@ -583,6 +581,20 @@ void main(void)
 				set_display_info(DIS_STR);
 			}
 #ifdef DIS_DEBUG
+
+#ifdef AIO_TEST
+			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%u,%u,%u,%u               ",
+				adc_buffer[channel_ANA0], adc_buffer[channel_ANA1], adc_buffer[channel_ANA2], adc_buffer[channel_ANA4]);
+
+			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%u,%u,%u,%u                ",
+				adc_buffer[channel_ANA5], adc_buffer[channel_ANC6], adc_buffer[channel_ANC7], adc_buffer[channel_AND5]);
+
+			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%u,%u                      ",
+				adc_buffer[channel_VSS], adc_buffer[channel_Temp]);
+
+			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%2u,%2u,%2u                ",
+				adc_buffer[channel_DAC1], adc_buffer[channel_FVR_Buffer1], adc_buffer[channel_FVR_Buffer2]);
+#else
 #ifdef DIO_TEST
 #ifdef DIO_SHOW_BUF
 			if (spi_stat_ss.slave_tx_count < 0x2fff) { // clear startup counts of empty fifo
@@ -608,9 +620,16 @@ void main(void)
 			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "A1 0x%.2x, A2 0x%.2x               ", V.v_tx_line, V.v_rx_line);
 
 #endif
-			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "0x%.2lx 0x%.2lx %d %d %d %x                     ",
-				spi_stat_ss.spi_error_count, spi_stat_ss.txuf_bit, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK, V.bmc_ao);
 
+
+#ifdef DI_DEBUG
+			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "vc%lu fv%ld fc%ld rs%lX                   ",
+				tic12400_value_counts, tic12400_fail_value, tic12400_fail_count, tic12400_read_status);
+#else
+			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "0x%.2lx 0x%.2lx %x %lu                  ",
+				spi_stat_ss.spi_error_count, spi_stat_ss.txuf_bit, V.bmc_ao, tic12400_value_counts);
+#endif
+#endif
 			// convert ADC values to char for display
 			update_rs232_line_status();
 #endif
@@ -634,11 +653,12 @@ void main(void)
 			snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "RS232 TX %3dV:%c                       ", V.tx_volts, V.tx_rs232);
 			snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "RS232 RX %3dV:%c                       ", V.rx_volts, V.rx_rs232);
 			snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "A1 0x%.2x, A2 0x%.2x                   ", V.v_tx_line, V.v_rx_line);
-			snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "B0 0x%.2X, B1 0x%.2X                   ", serial_buffer_ss.data[0], serial_buffer_ss.data[1]);
+			snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "B0 0x%.2X, B1 0x%.2X %x                  ", serial_buffer_ss.data[0], serial_buffer_ss.data[1], b_read);
 			snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "                                       ");
 			snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "                                       ");
 			snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "A1 0x%.2x, A2 0x%.2x                   ", V.v_tx_line, V.v_rx_line);
-			snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "0x%.2lx 0x%.2lx %d %d %d                 ", spi_stat_ss.spi_error_count, spi_stat_ss.txuf_bit, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK);
+			snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "0x%.2lx 0x%.2lx %d %d %d %x                 ",
+				spi_stat_ss.spi_error_count, spi_stat_ss.txuf_bit, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK, b_read);
 #endif
 			/*
 			 * don't default update the LCD when displaying HELP text

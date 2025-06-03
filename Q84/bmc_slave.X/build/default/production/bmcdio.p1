@@ -66,6 +66,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S170 . . . ]
 "3714
 [v _SPI1CON1bits `VS170 ~T0 @X0 0 e@133 ]
+"66 ./mcc_generated_files/spi1.h
+[v _SPI1_ExchangeByte `(uc ~T0 @X0 0 ef1`uc ]
+"71
+[v _SPI1_ReadByte `(uc ~T0 @X0 0 ef ]
 "304 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [; <" BOOTREG equ 038h ;# ">
 "336
@@ -2482,7 +2486,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _SPI2_InterruptHandler `*F24508 ~T0 @X0 1 e ]
 "77
 [v _SPI2_RxInterruptHandler `*F24514 ~T0 @X0 1 e ]
-"96 ./vconfig.h
+"102 ./vconfig.h
 [v _msg_gemcmds `Cuc ~T0 @X0 -> 33 `i e ]
 [i _msg_gemcmds
 :U ..
@@ -2521,7 +2525,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"97
+"103
 [v _msg_freecmds `Cuc ~T0 @X0 -> 32 `i e ]
 [i _msg_freecmds
 :U ..
@@ -2559,7 +2563,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"98
+"104
 [v _msg_gemremote `Cuc ~T0 @X0 -> 26 `i e ]
 [i _msg_gemremote
 :U ..
@@ -2592,7 +2596,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ]
 [v F24746 `Cuc ~T0 @X0 -> 20 `i t ]
-"272
+"278
 [v _spin `F24746 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
@@ -2671,6 +2675,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
+"80 ./tic12400.h
+[v _b_read `Vuc ~T0 @X0 1 e ]
 "6 bmcdio.c
 [v _build_date `*Cuc ~T0 @X0 1 s ]
 [i _build_date
@@ -2680,156 +2686,181 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _build_time
 :s 2C
 ]
-"11
-[v _SPI_EADOG `(v ~T0 @X0 1 ef ]
+"7
+[v _dummy_b `Vuc ~T0 @X0 1 s ]
+[i _dummy_b
+-> -> 0 `i `uc
+]
 "12
+[v _SPI_EADOG `(v ~T0 @X0 1 ef ]
+"13
 {
 [e :U _SPI_EADOG ]
 [f ]
-"13
-[e ( _wait_lcd_done ..  ]
 "14
+[e ( _wait_lcd_done ..  ]
+"15
 [e :U 3372 ]
 {
 [e = . . _LATEbits 0 0 -> -> 1 `i `uc ]
 }
 [e :U 3371 ]
-"15
+"16
 [e :U 3375 ]
 {
 [e = . . _LATEbits 0 1 -> -> 1 `i `uc ]
 }
 [e :U 3374 ]
-"16
+"17
 [e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
-"18
-[e = _SPI1CON1 -> -> 36 `i `uc ]
 "19
+[e = _SPI1CON1 -> -> 36 `i `uc ]
+"20
 [e = _SPI1CON2 -> -> 2 `i `uc ]
-"21
+"22
 [e = _SPI1CLK -> -> 2 `i `uc ]
-"23
-[e = _SPI1BAUD -> -> 4 `i `uc ]
 "24
-[e = _SPI1CON0 -> -> 131 `i `uc ]
+[e = _SPI1BAUD -> -> 4 `i `uc ]
 "25
-[e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
+[e = _SPI1CON0 -> -> 131 `i `uc ]
 "26
+[e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
+"27
 [e :UE 3369 ]
 }
-"31
-[v _SPI_TIC12400 `(v ~T0 @X0 1 ef ]
 "32
+[v _SPI_TIC12400 `(v ~T0 @X0 1 ef ]
+"33
 {
 [e :U _SPI_TIC12400 ]
 [f ]
-"33
-[e ( _wait_lcd_done ..  ]
 "34
+[e ( _wait_lcd_done ..  ]
+"35
 [e :U 3379 ]
 {
 [e = . . _LATEbits 0 0 -> -> 1 `i `uc ]
 }
 [e :U 3378 ]
-"35
+"36
 [e :U 3382 ]
 {
 [e = . . _LATEbits 0 1 -> -> 1 `i `uc ]
 }
 [e :U 3381 ]
-"36
+"37
 [e :U 3385 ]
 {
 [e = . . _LATDbits 0 3 -> -> 1 `i `uc ]
 }
 [e :U 3384 ]
-"37
-[e = . . _SPI1STATUSbits 0 2 -> -> 1 `i `uc ]
 "38
+[e = . . _SPI1STATUSbits 0 2 -> -> 1 `i `uc ]
+"39
 [e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
-"40
+"41
 [e = _SPI1CON0 -> -> 3 `i `uc ]
-"42
-[e = . . _SPI1CON1bits 0 5 -> -> 0 `i `uc ]
 "43
-[e = . . _SPI1CON1bits 0 6 -> -> 0 `i `uc ]
+[e = . . _SPI1CON1bits 0 5 -> -> 0 `i `uc ]
 "44
-[e = . . _SPI1CON1bits 0 7 -> -> 1 `i `uc ]
+[e = . . _SPI1CON1bits 0 6 -> -> 0 `i `uc ]
 "45
-[e = . . _SPI1CON1bits 0 4 -> -> 0 `i `uc ]
+[e = . . _SPI1CON1bits 0 7 -> -> 1 `i `uc ]
 "46
-[e = . . _SPI1CON1bits 0 1 -> -> 0 `i `uc ]
+[e = . . _SPI1CON1bits 0 4 -> -> 0 `i `uc ]
 "47
-[e = . . _SPI1CON1bits 0 0 -> -> 0 `i `uc ]
+[e = . . _SPI1CON1bits 0 1 -> -> 0 `i `uc ]
 "48
+[e = . . _SPI1CON1bits 0 0 -> -> 0 `i `uc ]
+"49
 [e = _SPI1CON2 -> -> 3 `i `uc ]
-"50
+"51
 [e = _SPI1CLK -> -> 0 `i `uc ]
-"52
-[e = _SPI1BAUD -> -> 7 `i `uc ]
 "53
-[e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
+[e = _SPI1BAUD -> -> 32 `i `uc ]
 "54
-[e = . . _SPI1STATUSbits 0 2 -> -> 0 `i `uc ]
+[e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
 "55
+[e = . . _SPI1STATUSbits 0 2 -> -> 0 `i `uc ]
+"56
+[e ( _SPI1_ExchangeByte (1 -> -> 255 `i `uc ]
+"57
+[e ( _SPI1_ExchangeByte (1 -> -> 255 `i `uc ]
+"58
+[e = _dummy_b ( _SPI1_ReadByte ..  ]
+"59
+[e = _dummy_b ( _SPI1_ReadByte ..  ]
+"60
+[e = _dummy_b ( _SPI1_ReadByte ..  ]
+"61
+[e = _dummy_b ( _SPI1_ReadByte ..  ]
+"62
 [e :UE 3376 ]
 }
-"59
+"67
 [v _SPI_MC33996 `(v ~T0 @X0 1 ef ]
-"60
+"68
 {
 [e :U _SPI_MC33996 ]
 [f ]
-"61
+"69
 [e ( _wait_lcd_done ..  ]
-"62
+"70
 [e :U 3389 ]
 {
 [e = . . _LATEbits 0 0 -> -> 1 `i `uc ]
 }
 [e :U 3388 ]
-"63
+"71
 [e :U 3392 ]
 {
 [e = . . _LATEbits 0 1 -> -> 1 `i `uc ]
 }
 [e :U 3391 ]
-"64
+"72
 [e :U 3395 ]
 {
 [e = . . _LATDbits 0 3 -> -> 1 `i `uc ]
 }
 [e :U 3394 ]
-"65
-[e = . . _SPI1STATUSbits 0 2 -> -> 1 `i `uc ]
-"66
-[e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
-"68
-[e = _SPI1CON0 -> -> 3 `i `uc ]
-"70
-[e = . . _SPI1CON1bits 0 5 -> -> 1 `i `uc ]
-"71
-[e = . . _SPI1CON1bits 0 6 -> -> 1 `i `uc ]
-"72
-[e = . . _SPI1CON1bits 0 7 -> -> 1 `i `uc ]
 "73
-[e = . . _SPI1CON1bits 0 4 -> -> 0 `i `uc ]
+[e = . . _SPI1STATUSbits 0 2 -> -> 1 `i `uc ]
 "74
-[e = . . _SPI1CON1bits 0 1 -> -> 0 `i `uc ]
-"75
-[e = . . _SPI1CON1bits 0 0 -> -> 0 `i `uc ]
+[e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
 "76
-[e = _SPI1CON2 -> -> 3 `i `uc ]
+[e = _SPI1CON0 -> -> 3 `i `uc ]
 "78
-[e = _SPI1CLK -> -> 0 `i `uc ]
+[e = . . _SPI1CON1bits 0 5 -> -> 1 `i `uc ]
+"79
+[e = . . _SPI1CON1bits 0 6 -> -> 1 `i `uc ]
 "80
-[e = _SPI1BAUD -> -> 7 `i `uc ]
+[e = . . _SPI1CON1bits 0 7 -> -> 1 `i `uc ]
 "81
-[e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
+[e = . . _SPI1CON1bits 0 4 -> -> 0 `i `uc ]
 "82
-[e = . . _SPI1STATUSbits 0 2 -> -> 0 `i `uc ]
+[e = . . _SPI1CON1bits 0 1 -> -> 0 `i `uc ]
 "83
+[e = . . _SPI1CON1bits 0 0 -> -> 0 `i `uc ]
+"84
+[e = _SPI1CON2 -> -> 3 `i `uc ]
+"86
+[e = _SPI1CLK -> -> 0 `i `uc ]
+"88
+[e = _SPI1BAUD -> -> 7 `i `uc ]
+"89
+[e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
+"90
+[e = . . _SPI1STATUSbits 0 2 -> -> 0 `i `uc ]
+"91
+[e ( _SPI1_ExchangeByte (1 -> -> 255 `i `uc ]
+"92
+[e ( _SPI1_ExchangeByte (1 -> -> 255 `i `uc ]
+"93
+[e = _dummy_b ( _SPI1_ReadByte ..  ]
+"94
+[e = _dummy_b ( _SPI1_ReadByte ..  ]
+"95
 [e :UE 3386 ]
 }
-[a 2C 49 52 58 50 52 58 53 57 0 ]
-[a 1C 77 97 121 32 50 57 32 50 48 50 53 0 ]
+[a 1C 74 117 110 32 32 50 32 50 48 50 53 0 ]
+[a 2C 49 53 58 51 54 58 52 52 0 ]

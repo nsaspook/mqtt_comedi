@@ -154,7 +154,7 @@ void PIN_MANAGER_Initialize(void)
     SPI1SDIPPS = 0x14;   //RC4->SPI1:SDI1;    
 }
   
-void __interrupt(irq(IOC),base(8),low_priority) PIN_MANAGER_IOC()
+void __interrupt(irq(IOC),base(8)) PIN_MANAGER_IOC()
 {   
 	// interrupt on change for pin IOCBF6
     if(IOCBFbits.IOCBF6 == 1)

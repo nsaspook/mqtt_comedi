@@ -371,7 +371,7 @@ int init_dio(void)
 
 int get_data_sample(void)
 {
-	bmc.datain.D0 = get_dio_bit(0);
+//	bmc.datain.D0 = get_dio_bit(0);
 	if (bmc.BOARD == bmcboard) {
 		bmc.datain.D0 = 0;
 	}
@@ -389,7 +389,7 @@ int get_data_sample(void)
 		obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
 		if (bmc.BOARD == bmcboard) {
 //			obits.bytes[1] = ~bmc.dataout.bytes[0];
-//			comedi_dio_bitfield2(it, subdev_do, obits.dio_buf, &obits.dio_buf, 0);
+			comedi_dio_bitfield2(it, subdev_do, obits.dio_buf, &obits.dio_buf, 0);
 		} else {
 			comedi_dio_bitfield2(it, subdev_do, 0xff, &obits.dio_buf, 0);
 		}
