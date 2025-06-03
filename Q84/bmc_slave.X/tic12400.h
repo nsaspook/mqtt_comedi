@@ -74,7 +74,7 @@ extern "C" {
 
 	extern volatile uint32_t tic12400_status, tic12400_counts, tic12400_value_counts, tic12400_id, tic12400_read_status;
 	extern volatile uint32_t tic12400_value, tic12400_switch, tic12400_fail_count, tic12400_parity_count;
-	extern volatile bool tic12400_init_fail, tic12400_event;
+	extern volatile bool tic12400_init_ok, tic12400_event;
 	extern volatile bool tic12400_parity_status, tic12400_read_error;
 	extern volatile int32_t tic12400_fail_value;
 	volatile uint8_t b_read;

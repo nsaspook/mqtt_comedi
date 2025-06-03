@@ -20,6 +20,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _LATDbits `VS3157 ~T0 @X0 0 e@1217 ]
 "109 ./eadog.h
 [v _send_spi1_mc33996_dma `(v ~T0 @X0 0 ef2`*uc`Cuc ]
+"106 ./vconfig.h
+[s S3356 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 `us 1 `uc 1 `*uc 1 `*uc 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 ]
+[n S3356 spi_link_type SPI_LCD SPI_AUX LCD_TIMER LCD_DATA READ_DATA delay config txbuf rxbuf int_count int_read des_bytes src_bytes or_bytes ]
+"44 ./tic12400.h
+[v _spi_link `VS3356 ~T0 @X0 0 e ]
 "304 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [; <" BOOTREG equ 038h ;# ">
 "336
@@ -2545,9 +2550,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-[v F24581 `Cuc ~T0 @X0 -> 20 `i t ]
-"278
-[v _spin `F24581 ~T0 @X0 -> 6 `i e ]
+[v F24583 `Cuc ~T0 @X0 -> 20 `i t ]
+"279
+[v _spin `F24583 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
 :U ..
@@ -2730,31 +2735,45 @@ Version 4.0 HI-TECH Software Intermediate Code
 "49
 [e ( _send_spi1_mc33996_dma (2 , -> -> &U _mc_olce `*v `*uc -> -> 3 `i `uc ]
 "50
+[e $ ! != -> *U + . _spi_link 8 * -> -> 2 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 255 `i 3374  ]
+{
+"51
 [e ) -> -> 1 `i `a ]
 [e $UE 3370  ]
-"51
+"52
+}
+[e $U 3375  ]
+[e :U 3374 ]
+{
+"53
+[e ) -> -> 0 `i `a ]
+[e $UE 3370  ]
+"54
+}
+[e :U 3375 ]
+"55
 [e :UE 3370 ]
 }
-"53
+"57
 [v _mc33996_update `(v ~T0 @X0 1 ef1`us ]
-"54
+"58
 {
 [e :U _mc33996_update ]
-"53
-[v _data `us ~T0 @X0 1 r1 ]
-"54
-[f ]
-"55
-[e = . _mc_onoff 1 -> >> & -> _data `ui -> 65280 `ui -> 8 `i `us ]
-"56
-[e =| . _mc_onoff 1 -> -> << & -> _data `ui -> -> 255 `i `ui -> 8 `i `us `us ]
 "57
-[e ( _send_spi1_mc33996_dma (2 , -> -> &U _mc_onoff `*v `*uc -> -> 3 `i `uc ]
+[v _data `us ~T0 @X0 1 r1 ]
 "58
-[e :UE 3374 ]
+[f ]
+"59
+[e = . _mc_onoff 1 -> >> & -> _data `ui -> 65280 `ui -> 8 `i `us ]
+"60
+[e =| . _mc_onoff 1 -> -> << & -> _data `ui -> -> 255 `i `ui -> 8 `i `us `us ]
+"61
+[e ( _send_spi1_mc33996_dma (2 , -> -> &U _mc_onoff `*v `*uc -> -> 3 `i `uc ]
+"62
+[e :UE 3376 ]
 }
 [p f _printf 8650752 ]
 [a 4C 86 48 46 54 0 ]
-[a 1C 74 117 110 32 32 50 32 50 48 50 53 0 ]
-[a 2C 49 53 58 51 54 58 52 52 0 ]
+[a 1C 74 117 110 32 32 51 32 50 48 50 53 0 ]
+[a 2C 49 48 58 53 49 58 50 52 0 ]
 [a 3C 13 45 45 45 32 77 67 51 51 57 57 54 32 68 114 105 118 101 114 32 86 101 114 115 105 111 110 32 37 115 32 37 115 32 37 115 32 45 45 45 13 10 0 ]

@@ -244,6 +244,8 @@ V_data V = {
 	.log_abort = false,
 	.log_char = false,
 	.bmc_ao = 0,
+	.di_fail = false,
+	.do_fail = false,
 };
 
 B_type B = {
@@ -399,9 +401,15 @@ void main(void)
 
 			SPI_TIC12400();
 			tic12400_reset();
-			tic12400_init();
+			if (!tic12400_init()) {
+				V.di_fail = true;
+				spi_stat_ss.daq_conf |= 0x01; // no DI
+			};
 			SPI_MC33996();
-			mc33996_init();
+			if (!mc33996_init()) {
+				V.do_fail = true;
+				spi_stat_ss.daq_conf |= 0x02; // no DO
+			};
 			init_slaveo();
 			SPI_EADOG();
 
@@ -455,12 +463,16 @@ void main(void)
 		}
 
 		if (TimerDone(TMR_ADC)) {
-			//			SPI_MC33996();
-			//			mc33996_update((uint16_t) V.bmc_do);
-			//			SPI_TIC12400();
-			//			tic12400_read_sw(0, (uintptr_t) NULL);
-			//			V.bmc_di = tic12400_switch;
-			//			SPI_EADOG();
+			if (!V.do_fail) {
+				SPI_MC33996();
+				mc33996_update((uint16_t) V.bmc_do);
+			}
+			if (!V.di_fail) {
+				SPI_TIC12400();
+				tic12400_read_sw(0, (uintptr_t) NULL);
+				V.bmc_di = tic12400_switch;
+			}
+			SPI_EADOG();
 			StartTimer(TMR_ADC, ADCDELAY);
 			spi_stat_ss.adc_count++; // just keep count
 
@@ -589,8 +601,8 @@ void main(void)
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%u,%u,%u,%u                ",
 				adc_buffer[channel_ANA5], adc_buffer[channel_ANC6], adc_buffer[channel_ANC7], adc_buffer[channel_AND5]);
 
-			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%u,%u                      ",
-				adc_buffer[channel_VSS], adc_buffer[channel_Temp]);
+			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%u,%u config 0X%.2X                     ",
+				adc_buffer[channel_VSS], adc_buffer[channel_Temp], spi_stat_ss.daq_conf);
 
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%2u,%2u,%2u                ",
 				adc_buffer[channel_DAC1], adc_buffer[channel_FVR_Buffer1], adc_buffer[channel_FVR_Buffer2]);

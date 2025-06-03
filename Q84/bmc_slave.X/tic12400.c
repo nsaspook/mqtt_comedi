@@ -118,7 +118,7 @@ const ticbuf_type ticreset1a = {
  */
 volatile uint32_t tic12400_status = 0, tic12400_counts = 0, tic12400_value_counts = 0, tic12400_id = 0, tic12400_read_status;
 volatile uint32_t tic12400_value = 1957, tic12400_switch, ticvalue = 0, tic12400_fail_count, tic12400_parity_count;
-volatile bool tic12400_init_fail = false, tic12400_event = false; // chip error detection flag
+volatile bool tic12400_init_ok = false, tic12400_event = false; // chip error detection flag
 volatile bool tic12400_parity_status = false, tic12400_read_error = false;
 volatile int32_t tic12400_fail_value = 0;
 volatile uint8_t b_read = 0;
@@ -166,6 +166,7 @@ bool tic12400_init(void)
 		WaitMs(10);
 		tic12400_fail_value = -1;
 		tic12400_fail_count++;
+		goto fail;
 	}
 	send_spi1_tic12400_dma((void*) &setup32, 4);
 	if (((spi_link.rxbuf[0] & parity_fail_v))) { // check for any high bits beyond POR bits set
@@ -232,14 +233,14 @@ bool tic12400_init(void)
 	tic12400_read_status = tic12400_wr(&setup1a_read, 0);
 
 	IOCBF6_SetInterruptHandler(tic_int_handler);
-	tic12400_init_fail = false;
+	tic12400_init_ok = true;
 	goto good_setup;
 
 fail:
-	tic12400_init_fail = true;
+	tic12400_init_ok = false;
 	MLED_SetHigh();
 good_setup:
-	return !tic12400_init_fail; // flip to return true if NO configuration failures
+	return tic12400_init_ok;
 }
 
 /*
@@ -281,7 +282,7 @@ uint32_t tic12400_wr(const ticbuf_type * buffer, uint16_t del)
  */
 uint32_t tic12400_get_sw(void)
 {
-	if (tic12400_init_fail) { // Trouble in River City
+	if (tic12400_init_ok == false) { // Trouble in River City
 		return 0;
 	}
 	if (tic12400_switch & (raw_mask_0)) {
@@ -325,7 +326,9 @@ void tic12400_read_sw(uint32_t a, uintptr_t b)
 
 void tic_int_handler(void)
 {
-	tic12400_read_sw(0, (uintptr_t) NULL);
+	if (tic12400_init_ok) {
+		tic12400_read_sw(0, (uintptr_t) NULL);
+	}
 	MLED_SetHigh();
 	b_read = PORTB;
 }

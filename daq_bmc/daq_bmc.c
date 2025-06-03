@@ -2927,6 +2927,20 @@ static int daqbmc_dio_insn_bits0(struct comedi_device *dev,
 	return insn->n;
 }
 
+static int daqbmc_dio_insn_bits_none(struct comedi_device *dev,
+	struct comedi_subdevice *s,
+	struct comedi_insn *insn,
+	uint32_t * data)
+{
+	struct daqbmc_private *devpriv = dev->private;
+
+	if (unlikely(!devpriv)) {
+		return -EFAULT;
+	}
+
+	return insn->n;
+}
+
 // read only
 
 static int daqbmc_dio_insn_bits4(struct comedi_device *dev,
@@ -2982,6 +2996,20 @@ static int daqbmc_dio_insn_config(struct comedi_device *dev,
 	dev_dbg(dev->class_dev, "%s: gpio pins setting 0x%x\n",
 		dev->board_name,
 		(uint32_t) s->io_bits);
+
+	return insn->n;
+}
+
+static int daqbmc_dio_insn_config_none(struct comedi_device *dev,
+	struct comedi_subdevice *s,
+	struct comedi_insn *insn,
+	uint32_t * data)
+{
+	struct daqbmc_private *devpriv = dev->private;
+
+	if (unlikely(!devpriv)) {
+		return -EFAULT;
+	}
 
 	return insn->n;
 }
@@ -3387,7 +3415,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	dev_info(dev->class_dev,
 		"%s device detection started, daqbmc_conf option value %i\n",
 		thisboard->name, daqbmc_conf);
-	devpriv->num_subdev = 1;
+	devpriv->num_subdev = 0;
 	if (daqbmc_spi_probe(dev, devpriv->ai_spi)) {
 		devpriv->num_subdev += 2;
 	} else {
@@ -3396,7 +3424,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	}
 
 	if (do_conf || di_conf) {
-		devpriv->num_subdev += 2; // subdevices array 3 dio read-only, 4 di
+		devpriv->num_subdev += 2; // subdevices array 2 do , 3 di
 	}
 
 	/* 
@@ -3412,7 +3440,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	/* daq_bmc dio */
 
 	if (do_conf) {
-		s = &dev->subdevices[3];
+		s = &dev->subdevices[2];
 		s->type = COMEDI_SUBD_DO;
 		s->subdev_flags = SDF_WRITABLE | SDF_GROUND | SDF_COMMON;
 		s->n_chan = num_do_chan;
@@ -3426,7 +3454,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	}
 
 	if (di_conf) {
-		s = &dev->subdevices[4];
+		s = &dev->subdevices[3];
 		s->type = COMEDI_SUBD_DI;
 		s->subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON;
 		s->n_chan = num_di_chan;
@@ -3438,32 +3466,18 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		s->state = 0;
 	}
 
-	if (dio_conf) {
-		s = &dev->subdevices[0];
-		s->type = COMEDI_SUBD_DIO;
-		s->subdev_flags = SDF_READABLE | SDF_WRITABLE | SDF_GROUND | SDF_COMMON;
-		s->n_chan = num_do_chan;
-		s->len_chanlist = num_do_chan;
-		s->range_table = &range_digital;
-		s->maxdata = 1;
-		s->insn_bits = daqbmc_dio_insn_bits0;
-		s->insn_config = daqbmc_dio_insn_config;
-		s->state = 0;
-		s->io_bits = 0x0000ffff;
-	}
-
 	dev_info(dev->class_dev,
 		"Digital Out channels %d, Digital In channels %d, Digital I/O channels %d\n",
 		num_do_chan, num_di_chan, num_dio_chan);
 
-	if (devpriv->num_subdev > 1) { /* setup comedi for on-board devices */
+	if (devpriv->num_subdev > 0) { /* setup comedi for on-board devices */
 		/* daq_bmc ai */
 		if (devpriv->use_hunking) {
 			dev_info(dev->class_dev,
 				"hunk ai transfers enabled, length: %i\n",
 				hunk_len);
 		}
-		s = &dev->subdevices[1];
+		s = &dev->subdevices[0];
 		s->private = devpriv->ai_spi;
 		s->type = COMEDI_SUBD_AI;
 		/* default setups, we support single-ended (ground)  */
@@ -3551,7 +3565,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	}
 
 	/* daq-bmc ao */
-	s = &dev->subdevices[2];
+	s = &dev->subdevices[1];
 	s->private = devpriv->ao_spi;
 	s->type = COMEDI_SUBD_AO;
 	/* we support single-ended (ground)  */
@@ -3868,7 +3882,7 @@ static int32_t daqbmc_spi_setup(struct spi_param_type * spi)
 static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	struct spi_param_type * spi_adc)
 {
-	int32_t ret = 0, reset;
+	int32_t ret = 0, reset, bmcconf = 0;
 	const struct daqbmc_board *thisboard = dev->board_ptr;
 
 	if (!spi_adc->spi) {
@@ -3942,6 +3956,14 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 		}
 
 		ret = CONF_Q84; // Force Q84 12-bit mode
+
+		bmcconf = spi_w8r8(spi_adc->spi, CMD_DUMMY_CFG);
+
+		if ((bmcconf & 0xff) != 0x00) {
+			do_conf = 0;
+			di_conf = 0;
+			dio_conf = 0;
+		}
 
 		daqbmc_spi_setup(spi_adc);
 		spi_adc->pic18 = 2; /* PIC24/Q84 mode 12 bits */

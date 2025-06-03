@@ -158,7 +158,6 @@ int main(int argc, char *argv[])
 #endif
 		if (init_dio() < 0) {
 			fprintf(fout, "Missing Digital subdevice(s)\n");
-			return -1;
 		}
 
 
@@ -171,8 +170,8 @@ int main(int argc, char *argv[])
 		fflush(fout);
 		while (true) {
 			usleep(MAIN_DELAY); // sample rate ~1 msec
-//			set_dac_raw(0, sine_wave[i++]);
-//			get_data_sample();
+			set_dac_raw(0, sine_wave[i++]);
+			get_data_sample();
 			if (!bmc.datain.D0) {
 				if (bmc.BOARD == bmcboard) {
 					led_lightshow(25);

@@ -30,13 +30,13 @@ extern "C" {
          * scale adc result into calibrated units
          * for USB boards, BMC boards use driver ranges
          */
-#define HV_SCALE0        83.6f
-#define HV_SCALE1        74.4f
-#define HV_SCALE2        83.6f
-#define HV_SCALE3        83.6f
-#define HV_SCALE4        64.1890f
-#define HV_SCALE5        64.1415f
-#define HV_SCALE_RAW    4.096f
+#define HV_SCALE0               83.6f
+#define HV_SCALE1               74.4f
+#define HV_SCALE2               83.6f
+#define HV_SCALE3               83.6f
+#define HV_SCALE4               64.1890f
+#define HV_SCALE5               64.1415f
+#define HV_SCALE_RAW            4.36460f
 
 
 #define OVER_SAMP       1

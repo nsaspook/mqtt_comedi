@@ -265,7 +265,8 @@ extern "C" {
 		int16_t tx_volts, rx_volts;
 		char tx_rs232, rx_rs232;
 		int16_t secs_value, cmd_value;
-		time_t utc_cmd_value;
+		time_t utc_cmd_value,
+		di_fail, do_fail;
 	} V_data;
 
 	typedef struct V_help {

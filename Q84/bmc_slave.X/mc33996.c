@@ -47,12 +47,16 @@ bool mc33996_init(void)
 	send_spi1_mc33996_dma((void*) &mc_gsrc, 3); // ALL I/O off
 	send_spi1_mc33996_dma((void*) &mc_sfpd, 3); // thermal only
 	send_spi1_mc33996_dma((void*) &mc_olce, 3); // open load
-	return true;
+	if (spi_link.rxbuf[2] != 0xff) {
+		return true;
+	} else {
+		return false;
+	}
 };
 
 void mc33996_update(uint16_t data)
 {
-	mc_onoff.out = (uint16_t)((data&0xff00) >> 8); // byte order swap
-	mc_onoff.out |= (uint16_t)((data&0x00ff) << 8);
+	mc_onoff.out = (uint16_t) ((data & 0xff00) >> 8); // byte order swap
+	mc_onoff.out |= (uint16_t) ((data & 0x00ff) << 8);
 	send_spi1_mc33996_dma((void*) &mc_onoff, 3);
 };
