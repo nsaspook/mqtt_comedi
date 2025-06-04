@@ -227,6 +227,7 @@ double get_adc_volts(int chan)
 			} else {
 				ad_range->max = HV_SCALE5;
 			}
+			ad_range->min = 0.0f;
 		} else {
 			ad_range->max = HV_SCALE_RAW;
 			ad_range->min = 0.0f;

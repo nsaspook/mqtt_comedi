@@ -131,9 +131,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "192 slaveo.c
 [c E23616 0 1 2 4 5 22 23 29 59 60 61 62 63 .. ]
 [n E23616 . channel_ANA0 channel_ANA1 channel_ANA2 channel_ANA4 channel_ANA5 channel_ANC6 channel_ANC7 channel_AND5 channel_VSS channel_Temp channel_DAC1 channel_FVR_Buffer1 channel_FVR_Buffer2  ]
-"4960 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
-[v _SPI2INTF `Vuc ~T0 @X0 0 e@151 ]
-"3570
+"3570 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [s S3154 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S3154 . LATB0 LATB1 LATB2 LATB3 LATB4 LATB5 LATB6 LATB7 ]
 "3569
@@ -141,6 +139,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S3153 . . ]
 "3581
 [v _LATBbits `VS3153 ~T0 @X0 0 e@1215 ]
+"4960
+[v _SPI2INTF `Vuc ~T0 @X0 0 e@151 ]
 "304 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [; <" BOOTREG equ 038h ;# ">
 "336
@@ -3191,55 +3191,89 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 3415 ]
 "248
+[e $ ! == -> _command `i -> 64 `i 3416  ]
+{
+"249
 [e = _SPI2TXB . _spi_stat_ss 21 ]
 "250
-[e :U 3399 ]
+[e $ ! && && && ! != -> . _serial_buffer_ss 11 `i -> 0 `i ! != -> . _serial_buffer_ss 10 `i -> 0 `i ! != -> . _serial_buffer_ss 8 `i -> 0 `i ! != -> . _serial_buffer_ss 9 `i -> 0 `i 3417  ]
+{
 "251
-[e ++ . _spi_stat_ss 11 -> -> 1 `i `Vul ]
+[e :U 3420 ]
+{
+[e = . . _LATBbits 0 1 -> -> 1 `i `uc ]
+}
+[e :U 3419 ]
 "252
-[e :U 3418 ]
+[e = . _serial_buffer_ss 6 -> -> 0 `i `uc ]
+"253
+[e = . _serial_buffer_ss 11 -> -> 0 `i `a ]
+"254
+[e = . _serial_buffer_ss 8 -> -> 0 `i `a ]
+"255
+[e = . _serial_buffer_ss 10 -> -> 0 `i `a ]
+"256
+[e = . _serial_buffer_ss 9 -> -> 0 `i `a ]
+"257
+[e :U 3423 ]
+{
+[e = . . _LATBbits 0 1 -> -> 0 `i `uc ]
+}
+[e :U 3422 ]
+"258
+}
+[e :U 3417 ]
+"259
+}
+[e :U 3416 ]
+"261
+[e :U 3399 ]
+"262
+[e ++ . _spi_stat_ss 11 -> -> 1 `i `Vul ]
+"263
+[e :U 3426 ]
 {
 [e = . . _LATCbits 0 2 -> -> 0 `i `uc ]
 }
-[e :U 3417 ]
-"253
+[e :U 3425 ]
+"264
 [e :UE 3375 ]
 }
-"255
+"266
 [v _slaveo_spi_isr `(v ~T0 @X0 1 ef ]
-"256
+"267
 {
 [e :U _slaveo_spi_isr ]
 [f ]
-"257
+"268
 [e ++ . _spi_stat_ss 16 -> -> 1 `i `Vul ]
-"258
+"269
 [e = _SPI2INTF -> -> 0 `i `uc ]
-"259
-[e :UE 3419 ]
+"270
+[e :UE 3427 ]
 }
-"261
+"272
 [v _slaveo_time_isr `(v ~T0 @X0 1 ef ]
-"262
+"273
 {
 [e :U _slaveo_time_isr ]
 [f ]
-"263
+"274
 [e = . . _SPI2CON0bits 0 4 -> -> 0 `i `uc ]
-"264
+"275
 [e = . . _SPI2CON0bits 0 4 -> -> 1 `i `uc ]
-"265
-[e $ ! || != -> . . _SPI2STATUSbits 0 7 `i -> 0 `i != -> . . _SPI2STATUSbits 0 3 `i -> 0 `i 3421  ]
+"276
+[e $ ! || != -> . . _SPI2STATUSbits 0 7 `i -> 0 `i != -> . . _SPI2STATUSbits 0 3 `i -> 0 `i 3429  ]
 {
-"266
+"277
 }
-[e :U 3421 ]
-"267
-[e :U 3424 ]
+[e :U 3429 ]
+"278
+[e :U 3432 ]
 {
 [e = . . _LATBbits 0 3 -> -> 0 `i `uc ]
 }
-[e :U 3423 ]
-"268
-[e :UE 3420 ]
+[e :U 3431 ]
+"279
+[e :UE 3428 ]
 }

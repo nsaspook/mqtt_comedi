@@ -21,8 +21,8 @@ extern "C" {
 #include "mcc_generated_files/pin_manager.h"
 
 #define NHD		// SPI 20X4 display, nhd-0420d3z-nsw-bbw
-	
-#define DIS_DEBUG	// active status display, disable during normal operation
+
+//#define DIS_DEBUG	// active status display, disable during normal operation
 
 #define VER	"V0.13"
 	/** \file vconfig.h
@@ -48,7 +48,7 @@ extern "C" {
 	/* analog testing a calibration mode
 	 * 
 	 */
-	
+
 #define AIO_TEST
 
 #define SLED	MLED_LAT

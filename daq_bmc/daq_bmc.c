@@ -364,7 +364,7 @@ static const uint8_t ads1220_r3 = ADS1220_IDAC_OFF | ADS1220_DRDY_MODE;
 #define MAX_AI   32
 #define MAX_AO   2
 
-#define SMP_CORES 4
+#define SMP_CORES 8
 
 #define CONF_Q84 110
 
@@ -3466,9 +3466,11 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		s->state = 0;
 	}
 
-	dev_info(dev->class_dev,
-		"Digital Out channels %d, Digital In channels %d, Digital I/O channels %d\n",
-		num_do_chan, num_di_chan, num_dio_chan);
+	if (do_conf && di_conf) {
+		dev_info(dev->class_dev,
+			"Digital Out channels %d, Digital In channels %d\n",
+			num_do_chan, num_di_chan);
+	}
 
 	if (devpriv->num_subdev > 0) { /* setup comedi for on-board devices */
 		/* daq_bmc ai */
@@ -3592,6 +3594,10 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			"alloc subdevice readback failed!\n");
 		return ret;
 	}
+
+	dev_info(dev->class_dev,
+		"Analog Out channels %d, Analog In channels %d\n",
+		thisboard->n_aochan, devpriv->ai_spi->chan);
 
 	/* 
 	 * setup the timer to call my_timer_ai_callback 
@@ -3963,7 +3969,13 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 			do_conf = 0;
 			di_conf = 0;
 			dio_conf = 0;
+			dev_info(dev->class_dev,
+				"BMCBoard Digital DIO Disabled\n");
 		}
+
+		dev_info(dev->class_dev,
+			"BMCBoard configuration code 0X%X\n",
+			bmcconf);
 
 		daqbmc_spi_setup(spi_adc);
 		spi_adc->pic18 = 2; /* PIC24/Q84 mode 12 bits */

@@ -36,7 +36,7 @@ extern "C" {
 #define HV_SCALE3               83.6f
 #define HV_SCALE4               64.1890f
 #define HV_SCALE5               64.1415f
-#define HV_SCALE_RAW            4.36460f
+#define HV_SCALE_RAW            4.096f
 
 
 #define OVER_SAMP       1

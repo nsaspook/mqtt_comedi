@@ -638,8 +638,8 @@ void main(void)
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "vc%lu fv%ld fc%ld rs%lX                   ",
 				tic12400_value_counts, tic12400_fail_value, tic12400_fail_count, tic12400_read_status);
 #else
-			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "0x%.2lx 0x%.2lx %x %lu                  ",
-				spi_stat_ss.spi_error_count, spi_stat_ss.txuf_bit, V.bmc_ao, tic12400_value_counts);
+			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "0x%.2lx 0x%.2lx %x %lu 0X%.2X                 ",
+				spi_stat_ss.spi_error_count, spi_stat_ss.txuf_bit, V.bmc_ao, tic12400_value_counts, spi_stat_ss.daq_conf);
 #endif
 #endif
 			// convert ADC values to char for display

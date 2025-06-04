@@ -159,7 +159,7 @@ void slaveo_rx_isr(void)
 		}
 	}
 
-	if (++serial_buffer_ss.raw_index > SPI_BUFFER_LEN-1) {
+	if (++serial_buffer_ss.raw_index > SPI_BUFFER_LEN - 1) {
 		serial_buffer_ss.raw_index = 0;
 		spi_stat_ss.txuf_bit++; // buffer high watermark cleared
 	}
@@ -244,8 +244,19 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
 	}
-	
-	SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits for unregistered inputs
+
+	if (command == CMD_DUMMY_CFG) {
+		SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits for unregistered inputs
+		if (!serial_buffer_ss.adc_value && !serial_buffer_ss.dac_value && !serial_buffer_ss.make_value && !serial_buffer_ss.get_value) {
+			MLED_SetHigh();
+			serial_buffer_ss.raw_index = 0;
+			serial_buffer_ss.adc_value = false;
+			serial_buffer_ss.make_value = false;
+			serial_buffer_ss.dac_value = false;
+			serial_buffer_ss.get_value = false;
+			MLED_SetLow();
+		}
+	}
 
 isr_end:
 	spi_stat_ss.slave_int_count++;
