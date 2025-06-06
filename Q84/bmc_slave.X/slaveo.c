@@ -56,8 +56,6 @@ void init_slaveo(void)
 
 	SPI2CON0bits.EN = 0;
 	SPI2_SetRxInterruptHandler(slaveo_rx_isr);
-	TMR0_StartTimer();
-	TMR0_SetInterruptHandler(slaveo_time_isr);
 	SPI2_SetInterruptHandler(slaveo_spi_isr);
 	while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
 		val = SPI2RXB;
@@ -212,6 +210,18 @@ void slaveo_rx_isr(void)
 				break;
 			case 0xd:
 				channel = channel_FVR_Buffer2;
+				break;
+			case 0xf:
+				SPI1CON0bits.EN = 0;
+				MLED_SetHigh();
+				serial_buffer_ss.raw_index = 0;
+				serial_buffer_ss.adc_value = false;
+				serial_buffer_ss.make_value = false;
+				serial_buffer_ss.dac_value = false;
+				serial_buffer_ss.get_value = false;
+				MLED_SetLow();
+				SPI1CON0bits.EN = 1;
+				channel = channel_ANA0;
 				break;
 			default:
 				channel = channel_ANA0;

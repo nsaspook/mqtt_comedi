@@ -66,8 +66,10 @@ extern "C" {
                 channel_Temp = 0xA,
                 channel_DAC1 = 0xB,
                 channel_FVR_Buffer1 = 0xC,
-                channel_FVR_Buffer2 = 0xD
-        } ADC_channel_t; // the BMCboard will translate to the correct hardwar channel
+                channel_FVR_Buffer2 = 0xD,
+                channel_config = 0xE,
+                channel_init = 0xF
+        } ADC_channel_t; // the BMCboard will translate to the correct hardware channel
 
         struct didata {
                 uint32_t D0 : 1; // 

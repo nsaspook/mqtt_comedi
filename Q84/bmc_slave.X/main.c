@@ -271,7 +271,7 @@ volatile uint16_t adc_buffer[AI_BUFFER_NUM] = {0}, adc_data_in = 0;
 volatile uint16_t tickCount[TMR_COUNT] = {0};
 volatile uint8_t mode_sw = false, faker;
 void onesec_io(void);
-int8_t test_slave(void);
+void test_slave(void);
 void SetBMCPriority(void);
 
 /** \file main.c
@@ -446,6 +446,8 @@ void main(void)
 			StartTimer(TMR_SEQ, SEQDELAY);
 			StartTimer(TMR_HELP, TDELAY);
 			StartTimer(TMR_ADC, ADCDELAY);
+			TMR0_SetInterruptHandler(test_slave);
+			TMR0_StartTimer();
 			break;
 		case UI_STATE_HOST:
 			set_display_info(DIS_STR);
@@ -738,14 +740,12 @@ char spinners(uint8_t shape, const uint8_t reset)
 	return c;
 }
 
-int8_t test_slave(void)
+/*
+ * Master activity reset timer, no SPI comms for 1 second causes system restart
+ */
+void test_slave(void)
 {
-	static uint8_t ret = 0;
-
-	DLED_SetHigh();
-	while (!ADC_IsConversionDone());
-	while (SPI2CON2bits.BUSY);
-	return(int8_t) ret;
+	RESET();
 }
 
 /*
