@@ -33,7 +33,7 @@ struct ha_flag_type ha_flag_vars_ss = {
 struct ha_daq_hosts_type ha_daq_host = {
 	.hosts[0] = "10.1.1.30",
 	.hosts[1] = "10.1.1.39",
-	.hosts[2] = "10.1.2.30",
+	.hosts[2] = "10.1.2.46",
 	.hosts[3] = "10.1.2.39",
 	.topics[0] = "comedi/bmc/data/bmc/1",
 	.topics[1] = "comedi/bmc/data/bmc/2",
@@ -91,6 +91,9 @@ void showIP(void)
 			}
 			if (strcmp(host, &ha_daq_host.hosts[1][0]) == 0) {
 				ha_daq_host.hindex = 1;
+			}
+			if (strcmp(host, &ha_daq_host.hosts[2][0]) == 0) {
+				ha_daq_host.hindex = 2;
 			}
 		}
 	}

@@ -45,7 +45,7 @@ extern "C" {
 #include <comedilib.h>
 #include "bmc.h"
 
-#define BMCBoard        "BMCBoard"
+#define BMCBoard        "BMCboard"
 #define USBBoard        "K8055 (VM110)"
 
         typedef enum {

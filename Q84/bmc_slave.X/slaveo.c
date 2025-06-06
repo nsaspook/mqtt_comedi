@@ -77,6 +77,7 @@ void slaveo_rx_isr(void)
 	// SPI port #2 SLAVE receiver
 
 	TP1_SetHigh();
+	DLED_SetHigh();
 #ifdef SLAVE_DEBUG
 	if (SPI2INTFbits.RXOIF) {
 		spi_stat_ss.rxof_bit++;
@@ -247,6 +248,7 @@ void slaveo_rx_isr(void)
 
 	if (command == CMD_DUMMY_CFG) {
 		SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits for unregistered inputs
+		SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits for unregistered inputs
 		if (!serial_buffer_ss.adc_value && !serial_buffer_ss.dac_value && !serial_buffer_ss.make_value && !serial_buffer_ss.get_value) {
 			MLED_SetHigh();
 			serial_buffer_ss.raw_index = 0;
@@ -260,6 +262,7 @@ void slaveo_rx_isr(void)
 
 isr_end:
 	spi_stat_ss.slave_int_count++;
+	DLED_SetLow();
 	TP1_SetLow();
 }
 
