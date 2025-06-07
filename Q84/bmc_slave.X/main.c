@@ -314,64 +314,67 @@ void main(void)
 	 * during a power-up.
 	 * 9600 and 115200 are the normal speeds for serial communications
 	 */
-	V.speed_spin = DATAEE_ReadByte(UART_SPEED_LOCK_EADR);
-	V.uart_speed_fast = DATAEE_ReadByte(UART_SPEED_EADR);
-	DATAEE_WriteByte(UART_SPEED_LOCK_EADR, temp_lock);
-	DATAEE_WriteByte(UART_SPEED_EADR, V.uart_speed_fast + 1);
-
-	if (V.uart_speed_fast % 2 == 0) { // Even/Odd selection for just two speeds
-		speed_text = "Locked 9600bps";
-	} else {
-		speed_text = "Locked 115200bps";
-	}
-	// as soon as you see all LEDS ON, power down, quickly POWER CYCLE to LOCK baud rate
-	MLED_SetHigh();
-	RLED_SetHigh();
-	DLED_SetHigh();
-	WaitMs(TDELAY);
-	RLED_SetLow(); // start complete power-up serial speed setups, LEDS OFF
-	MLED_SetLow();
-	DLED_SetLow();
-	temp_lock = true;
-	if (V.speed_spin) { // update the speed lock status byte
-		DATAEE_WriteByte(UART_SPEED_LOCK_EADR, temp_lock);
-	}
-	DATAEE_WriteByte(UART_SPEED_EADR, V.uart_speed_fast); // update the speed setting byte
-
-	if (V.speed_spin) { // serial speed with alternate with every power cycle
-		/*
-		 * get saved state of serial speed flag
-		 */
+//	speed_text = "default bps";
+//	if (PCON0bits.POR == 0) { // only check with real power resets
+		V.speed_spin = DATAEE_ReadByte(UART_SPEED_LOCK_EADR);
 		V.uart_speed_fast = DATAEE_ReadByte(UART_SPEED_EADR);
-		if (V.uart_speed_fast == 0xFF) { // programmer fill number
-			V.uart_speed_fast = 0;
-			DATAEE_WriteByte(UART_SPEED_EADR, V.uart_speed_fast); // start at zero
-		}
-		if (V.uart_speed_fast % 2 == 0) {
-			UART2_Initialize115200();
-			UART1_Initialize115200();
-			speed_text = "115200bps";
-		} else {
-			UART2_Initialize();
-			UART1_Initialize();
-			speed_text = "9600bps";
-		}
-		/*
-		 * ALternate the speed setting with each restart
-		 */
-		DATAEE_WriteByte(UART_SPEED_EADR, ++V.uart_speed_fast);
-		DATAEE_WriteByte(UART_SPEED_LOCK_EADR, V.speed_spin);
-	} else { // serial port speed is locked
-		V.uart_speed_fast = DATAEE_ReadByte(UART_SPEED_EADR); // just read and set the speed setting
-		if (V.uart_speed_fast % 2 == 0) {
-			UART2_Initialize();
-			UART1_Initialize();
-		} else {
-			UART2_Initialize115200();
-			UART1_Initialize115200();
-		}
-	}
+		DATAEE_WriteByte(UART_SPEED_LOCK_EADR, temp_lock);
+		DATAEE_WriteByte(UART_SPEED_EADR, V.uart_speed_fast + 1);
 
+		if (V.uart_speed_fast % 2 == 0) { // Even/Odd selection for just two speeds
+			speed_text = "Locked 9600bps";
+		} else {
+			speed_text = "Locked 115200bps";
+		}
+		// as soon as you see all LEDS ON, power down, quickly POWER CYCLE to LOCK baud rate
+		MLED_SetHigh();
+		RLED_SetHigh();
+		DLED_SetHigh();
+		WaitMs(TDELAY);
+		RLED_SetLow(); // start complete power-up serial speed setups, LEDS OFF
+		MLED_SetLow();
+		DLED_SetLow();
+
+		temp_lock = true;
+		if (V.speed_spin) { // update the speed lock status byte
+			DATAEE_WriteByte(UART_SPEED_LOCK_EADR, temp_lock);
+		}
+		DATAEE_WriteByte(UART_SPEED_EADR, V.uart_speed_fast); // update the speed setting byte
+
+		if (V.speed_spin) { // serial speed with alternate with every power cycle
+			/*
+			 * get saved state of serial speed flag
+			 */
+			V.uart_speed_fast = DATAEE_ReadByte(UART_SPEED_EADR);
+			if (V.uart_speed_fast == 0xFF) { // programmer fill number
+				V.uart_speed_fast = 0;
+				DATAEE_WriteByte(UART_SPEED_EADR, V.uart_speed_fast); // start at zero
+			}
+			if (V.uart_speed_fast % 2 == 0) {
+				UART2_Initialize115200();
+				UART1_Initialize115200();
+				speed_text = "115200bps";
+			} else {
+				UART2_Initialize();
+				UART1_Initialize();
+				speed_text = "9600bps";
+			}
+			/*
+			 * ALternate the speed setting with each restart
+			 */
+			DATAEE_WriteByte(UART_SPEED_EADR, ++V.uart_speed_fast);
+			DATAEE_WriteByte(UART_SPEED_LOCK_EADR, V.speed_spin);
+		} else { // serial port speed is locked
+			V.uart_speed_fast = DATAEE_ReadByte(UART_SPEED_EADR); // just read and set the speed setting
+			if (V.uart_speed_fast % 2 == 0) {
+				UART2_Initialize();
+				UART1_Initialize();
+			} else {
+				UART2_Initialize115200();
+				UART1_Initialize115200();
+			}
+		}
+//	}
 
 
 	/*

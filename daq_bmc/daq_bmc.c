@@ -620,7 +620,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.spi_mode = 0,
 		.spi_bpw = 8,
 		.n_chan_bits = 12,
-		.n_chan = 13,
+		.n_chan = 16,
 		.n_transfers = 3,
 	},
 	{
@@ -680,7 +680,7 @@ static const struct daqbmc_board daqbmc_boards[] = {
 	{
 		.name = "BMCboard",
 		.board_type = 0,
-		.n_aichan = 13,
+		.n_aichan = 16,
 		.n_aichan_bits = 12,
 		.n_aochan = 2,
 		.n_aochan_mask = 0x01,
@@ -1384,7 +1384,6 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		spi_bus_lock(spi->master);
 		spi_sync_locked(spi, &m);
 		spi_bus_unlock(spi->master);
-		bmcconf=(pdata->rx_buff[0]);
 
 		pdata->one_t.cs_change = false;
 		pdata->one_t.len = 1;

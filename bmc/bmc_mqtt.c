@@ -450,8 +450,8 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	if (pacer++ > 500) {
 		pacer = 0;
 		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x\n", log_time(false), topic_p, obits.dio_buf, bmc.data_in);
-		fprintf(fout, "ANA0 %fV, ANA1 %fV, ANA2 %f, ANA4 %fV, ANA5 %fV, AND5 %fV\n", get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2),
-			get_adc_volts(channel_ANA4), get_adc_volts(channel_ANA5), E.adc[channel_AND5]);
+		fprintf(fout, "ANA0 %lfV, ANA1 %fV, ANA2 %f, ANA4 %fV, ANA5 %fV, AND5 %fV\n", get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2),
+			E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5]);
 		fflush(fout);
 		E.mqtt_count++;
 		E.sequence++;
