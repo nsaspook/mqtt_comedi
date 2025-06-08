@@ -34,7 +34,7 @@ struct ha_flag_type ha_flag_vars_ss = {
 struct ha_daq_hosts_type ha_daq_host = {
 	.hosts[0] = "10.1.1.30",
 	.hosts[1] = "10.1.1.39",
-	.hosts[2] = "10.1.2.46",
+	.hosts[2] = "10.1.1.46",
 	.hosts[3] = "10.1.2.39",
 	.topics[0] = "comedi/bmc/data/bmc/1",
 	.topics[1] = "comedi/bmc/data/bmc/2",
@@ -52,6 +52,14 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.scaler[1] = HV_SCALE1,
 	.scaler[2] = HV_SCALE2,
 	.scaler[3] = HV_SCALE3,
+	.scaler4[0] = HV_SCALE4_0,
+	.scaler4[1] = HV_SCALE4_1,
+	.scaler4[2] = HV_SCALE4_2,
+	.scaler4[3] = HV_SCALE4_3,
+	.scaler5[0] = HV_SCALE5_0,
+	.scaler5[1] = HV_SCALE5_1,
+	.scaler5[2] = HV_SCALE5_2,
+	.scaler5[3] = HV_SCALE5_3,
 	.hindex = 0,
 };
 
@@ -450,8 +458,9 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	if (pacer++ > 500) {
 		pacer = 0;
 		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x\n", log_time(false), topic_p, obits.dio_buf, bmc.data_in);
-		fprintf(fout, "ANA0 %lfV, ANA1 %fV, ANA2 %f, ANA4 %fV, ANA5 %fV, AND5 %fV\n", get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2),
-			E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5]);
+		fprintf(fout, "ANA0 %lfV, ANA1 %fV, ANA2 %f, ANA4 %fV, ANA5 %fV, AND5 %fV : Scaler Index %d, Scaler ANA4 %f, Scaler ANA5 %f\n",
+			get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2),
+			E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], ha_daq_host.hindex, ha_daq_host.scaler4[ha_daq_host.hindex], ha_daq_host.scaler5[ha_daq_host.hindex]);
 		fflush(fout);
 		E.mqtt_count++;
 		E.sequence++;

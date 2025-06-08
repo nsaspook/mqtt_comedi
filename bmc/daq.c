@@ -223,9 +223,9 @@ double get_adc_volts(int chan)
 	if (bmc.BOARD == bmcboard) {
 		if (chan == channel_ANA4 || chan == channel_ANA5) {
 			if (chan == channel_ANA4) {
-				ad_range->max = HV_SCALE4;
+				ad_range->max = ha_daq_host.scaler4[ha_daq_host.hindex];
 			} else {
-				ad_range->max = HV_SCALE5;
+				ad_range->max = ha_daq_host.scaler5[ha_daq_host.hindex];
 			}
 			ad_range->min = 0.0f;
 		} else {

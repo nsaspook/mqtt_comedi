@@ -32,10 +32,18 @@ extern "C" {
          */
 #define HV_SCALE0               83.6f
 #define HV_SCALE1               74.4f
-#define HV_SCALE2               83.6f
+#define HV_SCALE2               74.4f
 #define HV_SCALE3               83.6f
 #define HV_SCALE4               64.1890f
 #define HV_SCALE5               64.1415f
+#define HV_SCALE4_0             64.1890f
+#define HV_SCALE5_0             64.1415f
+#define HV_SCALE4_1             64.1890f
+#define HV_SCALE5_1             64.1415f  
+#define HV_SCALE4_2             64.1890f
+#define HV_SCALE5_2             64.1415f
+#define HV_SCALE4_3             64.1890f
+#define HV_SCALE5_3             64.1415f
 #define HV_SCALE_RAW            4.096f
 
 
@@ -45,7 +53,7 @@ extern "C" {
 #include <comedilib.h>
 #include "bmc.h"
 
-#define BMCBoard        "BMCboard"
+#define BMCBoard        "BMCboard (Q84)"
 #define USBBoard        "K8055 (VM110)"
 
         typedef enum {
