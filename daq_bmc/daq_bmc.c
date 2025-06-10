@@ -3968,8 +3968,6 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 		bmcconf = spi_w8r8(spi_adc->spi, CMD_DUMMY_CFG); // send again to get the response
 
 		if ((bmcconf & 0xff) != 0x00) {
-			do_conf = 0;
-			di_conf = 0;
 			dio_conf = 0;
 			dev_info(dev->class_dev,
 				"BMCBoard Digital DIO Disabled\n");

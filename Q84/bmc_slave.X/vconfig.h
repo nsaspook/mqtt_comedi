@@ -49,7 +49,7 @@ extern "C" {
 	 * 
 	 */
 
-#define AIO_TEST
+//#define AIO_TEST
 
 #define SLED	MLED_LAT
 #define DLED	DLED_LAT

@@ -60,6 +60,10 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.scaler5[1] = HV_SCALE5_1,
 	.scaler5[2] = HV_SCALE5_2,
 	.scaler5[3] = HV_SCALE5_3,
+	.pacer[0] = 1500, // opiha
+	.pacer[1] = 500, // daq1
+	.pacer[2] = 3000, // daq2
+	.pacer[3] = 500,
 	.hindex = 0,
 };
 
@@ -455,7 +459,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	E.do_16b = bmc.dataout.dio_buf;
 	E.di_16b = bmc.data_in;
 
-	if (pacer++ > 500) {
+	if (pacer++ > ha_daq_host.pacer[ha_daq_host.hindex]) {
 		pacer = 0;
 		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x\n", log_time(false), topic_p, obits.dio_buf, bmc.data_in);
 		fprintf(fout, "ANA0 %lfV, ANA1 %fV, ANA2 %f, ANA4 %fV, ANA5 %fV, AND5 %fV : Scaler Index %d, Scaler ANA4 %f, Scaler ANA5 %f\n",

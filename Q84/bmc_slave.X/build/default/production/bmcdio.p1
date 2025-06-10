@@ -44,17 +44,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S3157 . . ]
 "3705
 [v _LATDbits `VS3157 ~T0 @X0 0 e@1217 ]
-"3873
-[s S177 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S177 . RXBF . CLRBF RXRE . TXBE . TXWE ]
-"3883
-[s S178 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S178 . SPI1RXBF . SPI1CLRBF SPI1RXRE . SPI1TXBE . SPI1TXWE ]
-"3872
-[u S176 `S177 1 `S178 1 ]
-[n S176 . . . ]
-"3894
-[v _SPI1STATUSbits `VS176 ~T0 @X0 0 e@135 ]
 "3693
 [s S171 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S171 . SDOP SDIP SSP . FST CKP CKE SMP ]
@@ -66,10 +55,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S170 . . . ]
 "3714
 [v _SPI1CON1bits `VS170 ~T0 @X0 0 e@133 ]
-"66 ./mcc_generated_files/spi1.h
-[v _SPI1_ExchangeByte `(uc ~T0 @X0 0 ef1`uc ]
-"71
-[v _SPI1_ReadByte `(uc ~T0 @X0 0 ef ]
 "304 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [; <" BOOTREG equ 038h ;# ">
 "336
@@ -2754,8 +2739,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = . . _LATDbits 0 3 -> -> 1 `i `uc ]
 }
 [e :U 3384 ]
-"38
-[e = . . _SPI1STATUSbits 0 2 -> -> 1 `i `uc ]
 "39
 [e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
 "41
@@ -2777,23 +2760,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 "51
 [e = _SPI1CLK -> -> 0 `i `uc ]
 "53
-[e = _SPI1BAUD -> -> 32 `i `uc ]
+[e = _SPI1BAUD -> -> 7 `i `uc ]
 "54
 [e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
-"55
-[e = . . _SPI1STATUSbits 0 2 -> -> 0 `i `uc ]
-"56
-[e ( _SPI1_ExchangeByte (1 -> -> 255 `i `uc ]
-"57
-[e ( _SPI1_ExchangeByte (1 -> -> 255 `i `uc ]
-"58
-[e = _dummy_b ( _SPI1_ReadByte ..  ]
-"59
-[e = _dummy_b ( _SPI1_ReadByte ..  ]
-"60
-[e = _dummy_b ( _SPI1_ReadByte ..  ]
-"61
-[e = _dummy_b ( _SPI1_ReadByte ..  ]
 "62
 [e :UE 3376 ]
 }
@@ -2823,14 +2792,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = . . _LATDbits 0 3 -> -> 1 `i `uc ]
 }
 [e :U 3394 ]
-"73
-[e = . . _SPI1STATUSbits 0 2 -> -> 1 `i `uc ]
 "74
 [e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
 "76
 [e = _SPI1CON0 -> -> 3 `i `uc ]
 "78
-[e = . . _SPI1CON1bits 0 5 -> -> 1 `i `uc ]
+[e = . . _SPI1CON1bits 0 5 -> -> 0 `i `uc ]
 "79
 [e = . . _SPI1CON1bits 0 6 -> -> 1 `i `uc ]
 "80
@@ -2849,18 +2816,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _SPI1BAUD -> -> 7 `i `uc ]
 "89
 [e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
-"90
-[e = . . _SPI1STATUSbits 0 2 -> -> 0 `i `uc ]
-"91
-[e ( _SPI1_ExchangeByte (1 -> -> 255 `i `uc ]
-"92
-[e ( _SPI1_ExchangeByte (1 -> -> 255 `i `uc ]
-"93
-[e = _dummy_b ( _SPI1_ReadByte ..  ]
-"94
-[e = _dummy_b ( _SPI1_ReadByte ..  ]
 "95
 [e :UE 3386 ]
 }
-[a 1C 74 117 110 32 32 54 32 50 48 50 53 0 ]
-[a 2C 49 48 58 53 48 58 49 51 0 ]
+[a 1C 74 117 110 32 32 56 32 50 48 50 53 0 ]
+[a 2C 50 51 58 50 51 58 48 52 0 ]

@@ -49,6 +49,7 @@ extern "C" {
                 char hname[4][NI_MAXHOST];
                 double scaler[4], scaler4[4], scaler5[4];
                 uint8_t hindex;
+                uint32_t pacer[4];
         };
 
         extern struct ha_flag_type ha_flag_vars_ss, ha_daq_hosts_type;
