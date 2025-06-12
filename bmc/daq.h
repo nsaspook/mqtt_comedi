@@ -107,7 +107,7 @@ extern "C" {
                 int32_t utc;
                 board_t BOARD;
                 char * BNAME;
-        } bmctype;
+        }  __attribute__((packed)) bmctype;
 
         extern volatile struct bmcdata bmc;
         extern struct didata datain;

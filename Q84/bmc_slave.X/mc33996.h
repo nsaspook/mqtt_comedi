@@ -28,7 +28,7 @@ extern "C" {
 	 */
 	typedef struct __attribute__((packed))
 	{
-		uint8_t cmd;
+		const uint8_t cmd;
 		uint16_t out;
 	}
 	mc33996buf_type;
@@ -43,6 +43,12 @@ extern "C" {
 	}
 	mc33996read_type;
 
+	typedef struct __attribute__((packed))
+	{
+		uint8_t cmd[16];
+	}
+	mc33996init_type;
+
 #define mc33996_onoff           0b00000000
 #define mc33996_olce            0b00000100
 #define mc33996_gsrc            0b00001011
@@ -51,15 +57,16 @@ extern "C" {
 #define mc33996_andor           0b00010100	
 #define mc33996_reset           0b00011000
 #define mc33996_magic_h         0x19
-#define mc33996_magic_l         0x57       
+#define mc33996_magic_l         0x57
 
 #define MC33996_DATA            6
 #define MC33996_DATA_LEN        8
 
+	extern mc33996init_type mc_init;
+
 	void mc33996_version(void);
 	bool mc33996_init(void);
-	void mc33996_update(uint16_t);
-
+	void mc33996_update(const uint16_t);
 
 #ifdef	__cplusplus
 }

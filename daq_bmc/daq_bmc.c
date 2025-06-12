@@ -2744,7 +2744,6 @@ static void digitalWriteOPi(struct comedi_device *dev,
 	spi_sync_locked(spi, &m);
 	spi_bus_unlock(spi->master);
 
-
 	{
 		struct spi_controller *ctlr = spi->controller;
 		u32 save = spi->mode;

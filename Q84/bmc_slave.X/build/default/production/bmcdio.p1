@@ -55,6 +55,21 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S170 . . . ]
 "3714
 [v _SPI1CON1bits `VS170 ~T0 @X0 0 e@133 ]
+"3873
+[s S177 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S177 . RXBF . CLRBF RXRE . TXBE . TXWE ]
+"3883
+[s S178 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S178 . SPI1RXBF . SPI1CLRBF SPI1RXRE . SPI1TXBE . SPI1TXWE ]
+"3872
+[u S176 `S177 1 `S178 1 ]
+[n S176 . . . ]
+"3894
+[v _SPI1STATUSbits `VS176 ~T0 @X0 0 e@135 ]
+"66 ./mcc_generated_files/spi1.h
+[v _SPI1_ExchangeByte `(uc ~T0 @X0 0 ef1`uc ]
+"71
+[v _SPI1_ReadByte `(uc ~T0 @X0 0 ef ]
 "304 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [; <" BOOTREG equ 038h ;# ">
 "336
@@ -2471,7 +2486,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _SPI2_InterruptHandler `*F24508 ~T0 @X0 1 e ]
 "77
 [v _SPI2_RxInterruptHandler `*F24514 ~T0 @X0 1 e ]
-"102 ./vconfig.h
+"103 ./vconfig.h
 [v _msg_gemcmds `Cuc ~T0 @X0 -> 33 `i e ]
 [i _msg_gemcmds
 :U ..
@@ -2510,7 +2525,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"103
+"104
 [v _msg_freecmds `Cuc ~T0 @X0 -> 32 `i e ]
 [i _msg_freecmds
 :U ..
@@ -2548,7 +2563,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"104
+"105
 [v _msg_gemremote `Cuc ~T0 @X0 -> 26 `i e ]
 [i _msg_gemremote
 :U ..
@@ -2581,7 +2596,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ]
 [v F24748 `Cuc ~T0 @X0 -> 20 `i t ]
-"279
+"280
 [v _spin `F24748 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
@@ -2685,17 +2700,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 "14
 [e ( _wait_lcd_done ..  ]
 "15
-[e :U 3372 ]
+[e :U 3373 ]
 {
 [e = . . _LATEbits 0 0 -> -> 1 `i `uc ]
 }
-[e :U 3371 ]
+[e :U 3372 ]
 "16
-[e :U 3375 ]
+[e :U 3376 ]
 {
 [e = . . _LATEbits 0 1 -> -> 1 `i `uc ]
 }
-[e :U 3374 ]
+[e :U 3375 ]
 "17
 [e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
 "19
@@ -2711,7 +2726,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "26
 [e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
 "27
-[e :UE 3369 ]
+[e :UE 3370 ]
 }
 "32
 [v _SPI_TIC12400 `(v ~T0 @X0 1 ef ]
@@ -2722,23 +2737,23 @@ Version 4.0 HI-TECH Software Intermediate Code
 "34
 [e ( _wait_lcd_done ..  ]
 "35
-[e :U 3379 ]
+[e :U 3380 ]
 {
 [e = . . _LATEbits 0 0 -> -> 1 `i `uc ]
 }
-[e :U 3378 ]
+[e :U 3379 ]
 "36
-[e :U 3382 ]
+[e :U 3383 ]
 {
 [e = . . _LATEbits 0 1 -> -> 1 `i `uc ]
 }
-[e :U 3381 ]
+[e :U 3382 ]
 "37
-[e :U 3385 ]
+[e :U 3386 ]
 {
 [e = . . _LATDbits 0 3 -> -> 1 `i `uc ]
 }
-[e :U 3384 ]
+[e :U 3385 ]
 "39
 [e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
 "41
@@ -2764,7 +2779,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "54
 [e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
 "62
-[e :UE 3376 ]
+[e :UE 3377 ]
 }
 "67
 [v _SPI_MC33996 `(v ~T0 @X0 1 ef ]
@@ -2775,23 +2790,25 @@ Version 4.0 HI-TECH Software Intermediate Code
 "69
 [e ( _wait_lcd_done ..  ]
 "70
-[e :U 3389 ]
+[e :U 3390 ]
 {
 [e = . . _LATEbits 0 0 -> -> 1 `i `uc ]
 }
-[e :U 3388 ]
+[e :U 3389 ]
 "71
-[e :U 3392 ]
+[e :U 3393 ]
 {
 [e = . . _LATEbits 0 1 -> -> 1 `i `uc ]
 }
-[e :U 3391 ]
+[e :U 3392 ]
 "72
-[e :U 3395 ]
+[e :U 3396 ]
 {
 [e = . . _LATDbits 0 3 -> -> 1 `i `uc ]
 }
-[e :U 3394 ]
+[e :U 3395 ]
+"73
+[e = . . _SPI1STATUSbits 0 2 -> -> 1 `i `uc ]
 "74
 [e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
 "76
@@ -2799,7 +2816,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "78
 [e = . . _SPI1CON1bits 0 5 -> -> 0 `i `uc ]
 "79
-[e = . . _SPI1CON1bits 0 6 -> -> 1 `i `uc ]
+[e = . . _SPI1CON1bits 0 6 -> -> 0 `i `uc ]
 "80
 [e = . . _SPI1CON1bits 0 7 -> -> 1 `i `uc ]
 "81
@@ -2816,8 +2833,18 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _SPI1BAUD -> -> 7 `i `uc ]
 "89
 [e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
+"90
+[e = . . _SPI1STATUSbits 0 2 -> -> 0 `i `uc ]
+"91
+[e ( _SPI1_ExchangeByte (1 -> -> 255 `i `uc ]
+"92
+[e ( _SPI1_ExchangeByte (1 -> -> 255 `i `uc ]
+"93
+[e = _dummy_b ( _SPI1_ReadByte ..  ]
+"94
+[e = _dummy_b ( _SPI1_ReadByte ..  ]
 "95
-[e :UE 3386 ]
+[e :UE 3387 ]
 }
-[a 1C 74 117 110 32 32 56 32 50 48 50 53 0 ]
-[a 2C 50 51 58 50 51 58 48 52 0 ]
+[a 2C 49 50 58 53 52 58 50 56 0 ]
+[a 1C 74 117 110 32 49 50 32 50 48 50 53 0 ]

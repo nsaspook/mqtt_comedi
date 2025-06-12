@@ -70,13 +70,13 @@ void SPI_MC33996(void)
 	MCZ_CS_SetHigh();
 	TIC_CS_SetHigh();
 	CS_SetHigh();
-//	SPI1STATUSbits.CLRBF = 1;
+	SPI1STATUSbits.CLRBF = 1;
 	SPI1CON0bits.EN = 0;
 	//EN enabled; LSBF MSb first; MST bus master; BMODE every byte;
 	SPI1CON0 = 0x03;
 	//SMP Middle; CKE Idle to active; CKP Idle:Low, Active:High; FST disabled; SSP active high; SDIP active high; SDOP active high;
 	SPI1CON1bits.CKP = 0;
-	SPI1CON1bits.CKE = 1;
+	SPI1CON1bits.CKE = 0;
 	SPI1CON1bits.SMP = 1;
 	SPI1CON1bits.FST = 0;
 	SPI1CON1bits.SDIP = 0;
@@ -87,9 +87,9 @@ void SPI_MC33996(void)
 	//BAUD 7;  4MHz
 	SPI1BAUD = 0x07;
 	SPI1CON0bits.EN = 1;
-//	SPI1STATUSbits.CLRBF = 0;
-//	SPI1_ExchangeByte(0xff);
-//	SPI1_ExchangeByte(0xff);
-//	dummy_b = SPI1_ReadByte();
-//	dummy_b = SPI1_ReadByte();
+	SPI1STATUSbits.CLRBF = 0;
+	SPI1_ExchangeByte(0xff);
+	SPI1_ExchangeByte(0xff);
+	dummy_b = SPI1_ReadByte();
+	dummy_b = SPI1_ReadByte();
 }

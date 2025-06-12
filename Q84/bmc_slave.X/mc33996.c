@@ -11,7 +11,7 @@ mc33996buf_type mc_onoff = {
 
 const mc33996buf_type mc_pwm = {
 	.cmd = mc33996_pwm,
-	.out = 0xffff,
+	.out = 0x0000,
 };
 
 const mc33996buf_type mc_reset = {
@@ -31,8 +31,10 @@ const mc33996buf_type mc_sfpd = {
 
 const mc33996buf_type mc_olce = {
 	.cmd = mc33996_olce,
-	.out = 0xffff,
+	.out = 0x0000,
 };
+
+mc33996init_type mc_init;
 
 void mc33996_version(void)
 {
@@ -42,21 +44,29 @@ void mc33996_version(void)
 bool mc33996_init(void)
 {
 	MCZ_PWM_SetLow();
-	send_spi1_mc33996_dma((void*) &mc_pwm, 3); // NO PWM
+	mc_init.cmd[0] = 0x19;
+	mc_init.cmd[1] = 0x57;
+	mc_init.cmd[2] = 0x07;
+	mc_init.cmd[3] = 0x00;
+	mc_init.cmd[4] = 0xff;
+	mc_init.cmd[5] = 0xff;
+
+	send_spi1_mc33996_dma((void*) mc_init.cmd, 6); // powerup SPI Integrity Check
+	if (mc_init.cmd[3] != 0x19 || mc_init.cmd[4] != 0x57 || mc_init.cmd[5] != 0x07) {
+		return false;
+	}
+
+	send_spi1_mc33996_dma((void*) &mc_pwm, 3); // PWM
 	send_spi1_mc33996_dma((void*) &mc_onoff, 3); // ALL I/O off
 	send_spi1_mc33996_dma((void*) &mc_gsrc, 3); // ALL I/O off
 	send_spi1_mc33996_dma((void*) &mc_sfpd, 3); // thermal only
 	send_spi1_mc33996_dma((void*) &mc_olce, 3); // open load
-	if (spi_link.rxbuf[2] != 0xff) {
-		return true;
-	} else {
-		return false;
-	}
+	return true;
 };
 
-void mc33996_update(uint16_t data)
+void mc33996_update(const uint16_t data)
 {
-	mc_onoff.out = (uint16_t) ((data & 0xff00) >> 8); // byte order swap
-	mc_onoff.out |= (uint16_t) ((data & 0x00ff) << 8);
-	send_spi1_mc33996_dma((void*) &mc_onoff, 3);
+	mc_onoff.out = (uint16_t) (((data & 0xff00) >> 8) & 0x00ff); // byte order swap
+	mc_onoff.out |= (uint16_t) (((data & 0x00ff) << 8) & 0xff00);
+	send_spi1_mc33996_dma((void*) &mc_onoff.cmd, 3);
 };

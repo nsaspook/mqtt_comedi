@@ -215,92 +215,30 @@ void send_spi1_tic12400_dma(uint8_t *strPtr, const uint8_t len)
 {
 	wait_lcd_done();
 	TIC_CS_SetLow(); /* SPI select display */
-	spi_link.READ_DATA = false; // extra time before CS goes high
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
 	spi_link.des_bytes++;
 	memcpy(spi_link.txbuf, strPtr, len);
 	spi_link.rxbuf[0] = SPI1_ExchangeByte(spi_link.txbuf[0]);
 	spi_link.rxbuf[1] = SPI1_ExchangeByte(spi_link.txbuf[1]);
 	spi_link.rxbuf[2] = SPI1_ExchangeByte(spi_link.txbuf[2]);
 	spi_link.rxbuf[3] = SPI1_ExchangeByte(spi_link.txbuf[3]);
-	spi_link.READ_DATA = false; // extra time before CS goes high
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
 	TIC_CS_SetHigh();
 }
 
 void send_spi1_mc33996_dma(uint8_t *strPtr, const uint8_t len)
 {
+	uint8_t *mc_cmd = strPtr;
+
 	wait_lcd_done();
-	spi_link.READ_DATA = true;
+	CS_SetHigh();
 	MCZ_CS_SetLow(); /* SPI select display */
-	spi_link.READ_DATA = false; // extra time before CS goes high
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
 	spi_link.des_bytes++;
-	spi_link.READ_DATA = true;
-	memcpy(spi_link.txbuf, strPtr, len);
-	spi_link.rxbuf[0] = SPI1_ExchangeByte(spi_link.txbuf[0]);
-	spi_link.rxbuf[1] = SPI1_ExchangeByte(spi_link.txbuf[1]);
-	spi_link.rxbuf[2] = SPI1_ExchangeByte(spi_link.txbuf[2]);
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false; // extra time before CS goes high
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
-	spi_link.READ_DATA = false;
+//	memcpy(mc_cmd, strPtr, len);
+	if (len > 8) {
+		MCZ_CS_SetHigh();
+		return;
+	}
+	spi_link.des_bytes++;
+	SPI1_ExchangeBlock(mc_cmd, len);
 	MCZ_CS_SetHigh();
 }
 

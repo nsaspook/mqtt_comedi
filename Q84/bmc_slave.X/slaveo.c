@@ -69,7 +69,7 @@ void init_slaveo(void)
 
 void slaveo_rx_isr(void)
 {
-	uint8_t command, char_rxtmp, char_txtmp, cmd_dummy = CMD_DUMMY;
+	uint8_t command;
 
 	/* we only get this when the master wants data, the slave never generates one */
 	// SPI port #2 SLAVE receiver

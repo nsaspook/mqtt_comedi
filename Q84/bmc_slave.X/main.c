@@ -266,7 +266,8 @@ volatile struct serial_buffer_type_ss serial_buffer_ss = {
 };
 
 volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0, channel = 0, upper;
-volatile uint16_t adc_buffer[AI_BUFFER_NUM] = {0}, adc_data_in = 0;
+volatile uint16_t adc_buffer[AI_BUFFER_NUM] = {0}, adc_data_in = 0, out_buf = 0;
+volatile uint32_t in_buf = 0;
 
 volatile uint16_t tickCount[TMR_COUNT] = {0};
 volatile uint8_t mode_sw = false, faker;
@@ -280,10 +281,8 @@ void SetBMCPriority(void);
  */
 void main(void)
 {
-	UI_STATES mode; /* link configuration host/equipment/etc ... */
 	char * s, * speed_text;
-	uint8_t temp_lock = false, slowly = 0;
-	static uint8_t looper = 0;
+	uint8_t temp_lock = false;
 
 	SPI2STATUSbits.SPI2CLRBF;
 
@@ -302,7 +301,6 @@ void main(void)
 	mconfig_init(); // zero the entire text buffer
 
 	V.ui_state = UI_STATE_INIT;
-	mode = UI_STATE_HOST;
 
 	TMR2_StartTimer();
 	TMR5_SetInterruptHandler(onesec_io);
@@ -314,67 +312,67 @@ void main(void)
 	 * during a power-up.
 	 * 9600 and 115200 are the normal speeds for serial communications
 	 */
-//	speed_text = "default bps";
-//	if (PCON0bits.POR == 0) { // only check with real power resets
-		V.speed_spin = DATAEE_ReadByte(UART_SPEED_LOCK_EADR);
-		V.uart_speed_fast = DATAEE_ReadByte(UART_SPEED_EADR);
+	//	speed_text = "default bps";
+	//	if (PCON0bits.POR == 0) { // only check with real power resets
+	V.speed_spin = DATAEE_ReadByte(UART_SPEED_LOCK_EADR);
+	V.uart_speed_fast = DATAEE_ReadByte(UART_SPEED_EADR);
+	DATAEE_WriteByte(UART_SPEED_LOCK_EADR, temp_lock);
+	DATAEE_WriteByte(UART_SPEED_EADR, V.uart_speed_fast + 1);
+
+	if (V.uart_speed_fast % 2 == 0) { // Even/Odd selection for just two speeds
+		speed_text = "Locked 9600bps";
+	} else {
+		speed_text = "Locked 115200bps";
+	}
+	// as soon as you see all LEDS ON, power down, quickly POWER CYCLE to LOCK baud rate
+	MLED_SetHigh();
+	RLED_SetHigh();
+	DLED_SetHigh();
+	WaitMs(TDELAY);
+	RLED_SetLow(); // start complete power-up serial speed setups, LEDS OFF
+	MLED_SetLow();
+	DLED_SetLow();
+
+	temp_lock = true;
+	if (V.speed_spin) { // update the speed lock status byte
 		DATAEE_WriteByte(UART_SPEED_LOCK_EADR, temp_lock);
-		DATAEE_WriteByte(UART_SPEED_EADR, V.uart_speed_fast + 1);
+	}
+	DATAEE_WriteByte(UART_SPEED_EADR, V.uart_speed_fast); // update the speed setting byte
 
-		if (V.uart_speed_fast % 2 == 0) { // Even/Odd selection for just two speeds
-			speed_text = "Locked 9600bps";
+	if (V.speed_spin) { // serial speed with alternate with every power cycle
+		/*
+		 * get saved state of serial speed flag
+		 */
+		V.uart_speed_fast = DATAEE_ReadByte(UART_SPEED_EADR);
+		if (V.uart_speed_fast == 0xFF) { // programmer fill number
+			V.uart_speed_fast = 0;
+			DATAEE_WriteByte(UART_SPEED_EADR, V.uart_speed_fast); // start at zero
+		}
+		if (V.uart_speed_fast % 2 == 0) {
+			UART2_Initialize115200();
+			UART1_Initialize115200();
+			speed_text = "115200bps";
 		} else {
-			speed_text = "Locked 115200bps";
+			UART2_Initialize();
+			UART1_Initialize();
+			speed_text = "9600bps";
 		}
-		// as soon as you see all LEDS ON, power down, quickly POWER CYCLE to LOCK baud rate
-		MLED_SetHigh();
-		RLED_SetHigh();
-		DLED_SetHigh();
-		WaitMs(TDELAY);
-		RLED_SetLow(); // start complete power-up serial speed setups, LEDS OFF
-		MLED_SetLow();
-		DLED_SetLow();
-
-		temp_lock = true;
-		if (V.speed_spin) { // update the speed lock status byte
-			DATAEE_WriteByte(UART_SPEED_LOCK_EADR, temp_lock);
+		/*
+		 * ALternate the speed setting with each restart
+		 */
+		DATAEE_WriteByte(UART_SPEED_EADR, ++V.uart_speed_fast);
+		DATAEE_WriteByte(UART_SPEED_LOCK_EADR, V.speed_spin);
+	} else { // serial port speed is locked
+		V.uart_speed_fast = DATAEE_ReadByte(UART_SPEED_EADR); // just read and set the speed setting
+		if (V.uart_speed_fast % 2 == 0) {
+			UART2_Initialize();
+			UART1_Initialize();
+		} else {
+			UART2_Initialize115200();
+			UART1_Initialize115200();
 		}
-		DATAEE_WriteByte(UART_SPEED_EADR, V.uart_speed_fast); // update the speed setting byte
-
-		if (V.speed_spin) { // serial speed with alternate with every power cycle
-			/*
-			 * get saved state of serial speed flag
-			 */
-			V.uart_speed_fast = DATAEE_ReadByte(UART_SPEED_EADR);
-			if (V.uart_speed_fast == 0xFF) { // programmer fill number
-				V.uart_speed_fast = 0;
-				DATAEE_WriteByte(UART_SPEED_EADR, V.uart_speed_fast); // start at zero
-			}
-			if (V.uart_speed_fast % 2 == 0) {
-				UART2_Initialize115200();
-				UART1_Initialize115200();
-				speed_text = "115200bps";
-			} else {
-				UART2_Initialize();
-				UART1_Initialize();
-				speed_text = "9600bps";
-			}
-			/*
-			 * ALternate the speed setting with each restart
-			 */
-			DATAEE_WriteByte(UART_SPEED_EADR, ++V.uart_speed_fast);
-			DATAEE_WriteByte(UART_SPEED_LOCK_EADR, V.speed_spin);
-		} else { // serial port speed is locked
-			V.uart_speed_fast = DATAEE_ReadByte(UART_SPEED_EADR); // just read and set the speed setting
-			if (V.uart_speed_fast % 2 == 0) {
-				UART2_Initialize();
-				UART1_Initialize();
-			} else {
-				UART2_Initialize115200();
-				UART1_Initialize115200();
-			}
-		}
-//	}
+	}
+	//	}
 
 
 	/*
@@ -468,17 +466,27 @@ void main(void)
 		}
 
 		if (TimerDone(TMR_ADC)) {
+			StartTimer(TMR_ADC, ADCDELAY);
 			if (!V.do_fail) {
 				SPI_MC33996();
-				mc33996_update((uint16_t) V.bmc_do);
+				INTERRUPT_GlobalInterruptHighDisable();
+				if (serial_buffer_ss.make_value == false) {
+					out_buf = (uint16_t) 0xff & V.bmc_do;
+				}
+				INTERRUPT_GlobalInterruptHighEnable();
+				mc33996_update(out_buf);
 			}
 			if (!V.di_fail) {
 				SPI_TIC12400();
 				tic12400_read_sw(0, (uintptr_t) NULL);
-				V.bmc_di = tic12400_switch;
+				in_buf = tic12400_switch;
+				INTERRUPT_GlobalInterruptHighDisable();
+				if (serial_buffer_ss.get_value == false) {
+					V.bmc_di = in_buf;
+				}
+				INTERRUPT_GlobalInterruptHighEnable();
 			}
 			SPI_EADOG();
-			StartTimer(TMR_ADC, ADCDELAY);
 			spi_stat_ss.adc_count++; // just keep count
 
 			ADC_DischargeSampleCapacitor();
@@ -621,7 +629,11 @@ void main(void)
 				V.bmc_do, V.bmc_di, spi_stat_ss.port_count, spi_stat_ss.slave_tx_count);
 
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "0x%.2x 0x%.2x 0x%.2x 0x%.2x                  ",
+#ifdef SER_DEBUG
 				serial_buffer_ss.data[3], serial_buffer_ss.data[2], serial_buffer_ss.data[1], serial_buffer_ss.data[0]);
+#else
+				mc_init.cmd[3], mc_init.cmd[4], mc_init.cmd[5], serial_buffer_ss.data[0]);
+#endif
 
 			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "TX %lx, RX %lx, %d %d %d         ",
 				spi_stat_ss.txdone_bit, spi_stat_ss.rxof_bit, SPI2INTFbits.TCZIF, SPI2STATUSbits.SPI2RXRE, SPI2STATUSbits.SPI2TXWE);
