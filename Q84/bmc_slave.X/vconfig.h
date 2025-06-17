@@ -44,7 +44,9 @@ extern "C" {
 #define DIO_TEST
 #define DIO_SHOW_BUF
 #define DI_DEBUG
-#define SER_DEBUG
+//#define SER_DEBUG
+	
+#define DI_MC_CMD
 
 	/* analog testing a calibration mode
 	 * 

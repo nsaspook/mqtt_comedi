@@ -51,6 +51,8 @@ bool ADC_OPEN = true, DIO_OPEN = true, ADC_ERROR = false, DEV_OPEN = true,
 bool DO_OPEN = true, DI_OPEN = true, DO_ERROR = false;
 union dio_buf_type obits, ibits;
 
+uint32_t datain;
+
 int init_daq(double min_range, double max_range, int range_update)
 {
 	int i = 0;
@@ -367,30 +369,19 @@ int init_dio(void)
 int get_data_sample(void)
 {
 	if (DI_OPEN) {
-		//		bmc.datain.D0 = get_dio_bit(0);
+//		comedi_dio_bitfield2(it, subdev_di, 0x00, &datain, 0x00);
 		if (bmc.BOARD == bmcboard) {
-			bmc.datain.D0 = 0;
 		}
 	}
 
 	if (DO_OPEN) {
-		if (JUST_BITS) { // send I/O bit by bit
-			put_dio_bit(0, bmc.dataout.d.D0);
-			put_dio_bit(1, bmc.dataout.d.D1);
-			put_dio_bit(2, bmc.dataout.d.D2);
-			put_dio_bit(3, bmc.dataout.d.D3);
-			put_dio_bit(4, bmc.dataout.d.D4);
-			put_dio_bit(5, bmc.dataout.d.D5);
-			put_dio_bit(6, bmc.dataout.d.D6);
-			put_dio_bit(7, bmc.dataout.d.D7);
-		} else { // send I/O as a byte mask
-			obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
-			if (bmc.BOARD == bmcboard) {
-//				obits.bytes[1] = ~bmc.dataout.bytes[0];
-				comedi_dio_bitfield2(it, subdev_do, obits.dio_buf, &obits.dio_buf, 0);
-			} else {
-				comedi_dio_bitfield2(it, subdev_do, 0xff, &obits.dio_buf, 0);
-			}
+		// send I/O as a byte mask
+		obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
+		if (bmc.BOARD == bmcboard) {
+			obits.bytes[1] = ~bmc.dataout.bytes[0];
+			comedi_dio_bitfield2(it, subdev_do, obits.dio_buf, &obits.dio_buf, 0);
+		} else {
+			comedi_dio_bitfield2(it, subdev_do, 0xff, &obits.dio_buf, 0);
 		}
 	}
 

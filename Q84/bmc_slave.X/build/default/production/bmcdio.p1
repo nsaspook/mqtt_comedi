@@ -44,17 +44,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S3157 . . ]
 "3705
 [v _LATDbits `VS3157 ~T0 @X0 0 e@1217 ]
-"3693
-[s S171 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S171 . SDOP SDIP SSP . FST CKP CKE SMP ]
-"3703
-[s S172 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S172 . SPI1SDOP SPI1SDIP SPI1SSP . SPI1FST SPI1CKP SPI1CKE SPI1SMP ]
-"3692
-[u S170 `S171 1 `S172 1 ]
-[n S170 . . . ]
-"3714
-[v _SPI1CON1bits `VS170 ~T0 @X0 0 e@133 ]
 "3873
 [s S177 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S177 . RXBF . CLRBF RXRE . TXBE . TXWE ]
@@ -66,10 +55,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S176 . . . ]
 "3894
 [v _SPI1STATUSbits `VS176 ~T0 @X0 0 e@135 ]
-"66 ./mcc_generated_files/spi1.h
-[v _SPI1_ExchangeByte `(uc ~T0 @X0 0 ef1`uc ]
-"71
-[v _SPI1_ReadByte `(uc ~T0 @X0 0 ef ]
+"3693
+[s S171 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S171 . SDOP SDIP SSP . FST CKP CKE SMP ]
+"3703
+[s S172 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S172 . SPI1SDOP SPI1SDIP SPI1SSP . SPI1FST SPI1CKP SPI1CKE SPI1SMP ]
+"3692
+[u S170 `S171 1 `S172 1 ]
+[n S170 . . . ]
+"3714
+[v _SPI1CON1bits `VS170 ~T0 @X0 0 e@133 ]
 "304 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [; <" BOOTREG equ 038h ;# ">
 "336
@@ -2486,7 +2482,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _SPI2_InterruptHandler `*F24508 ~T0 @X0 1 e ]
 "77
 [v _SPI2_RxInterruptHandler `*F24514 ~T0 @X0 1 e ]
-"103 ./vconfig.h
+"105 ./vconfig.h
 [v _msg_gemcmds `Cuc ~T0 @X0 -> 33 `i e ]
 [i _msg_gemcmds
 :U ..
@@ -2525,7 +2521,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"104
+"106
 [v _msg_freecmds `Cuc ~T0 @X0 -> 32 `i e ]
 [i _msg_freecmds
 :U ..
@@ -2563,7 +2559,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"105
+"107
 [v _msg_gemremote `Cuc ~T0 @X0 -> 26 `i e ]
 [i _msg_gemremote
 :U ..
@@ -2596,7 +2592,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ]
 [v F24748 `Cuc ~T0 @X0 -> 20 `i t ]
-"280
+"282
 [v _spin `F24748 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
@@ -2675,7 +2671,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-"80 ./tic12400.h
+"86 ./tic12400.h
 [v _b_read `Vuc ~T0 @X0 1 e ]
 "6 bmcdio.c
 [v _build_date `*Cuc ~T0 @X0 1 s ]
@@ -2700,17 +2696,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 "14
 [e ( _wait_lcd_done ..  ]
 "15
-[e :U 3373 ]
+[e :U 3374 ]
 {
 [e = . . _LATEbits 0 0 -> -> 1 `i `uc ]
 }
-[e :U 3372 ]
+[e :U 3373 ]
 "16
-[e :U 3376 ]
+[e :U 3377 ]
 {
 [e = . . _LATEbits 0 1 -> -> 1 `i `uc ]
 }
-[e :U 3375 ]
+[e :U 3376 ]
 "17
 [e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
 "19
@@ -2726,7 +2722,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "26
 [e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
 "27
-[e :UE 3370 ]
+[e :UE 3371 ]
 }
 "32
 [v _SPI_TIC12400 `(v ~T0 @X0 1 ef ]
@@ -2737,23 +2733,25 @@ Version 4.0 HI-TECH Software Intermediate Code
 "34
 [e ( _wait_lcd_done ..  ]
 "35
-[e :U 3380 ]
+[e :U 3381 ]
 {
 [e = . . _LATEbits 0 0 -> -> 1 `i `uc ]
 }
-[e :U 3379 ]
+[e :U 3380 ]
 "36
-[e :U 3383 ]
+[e :U 3384 ]
 {
 [e = . . _LATEbits 0 1 -> -> 1 `i `uc ]
 }
-[e :U 3382 ]
+[e :U 3383 ]
 "37
-[e :U 3386 ]
+[e :U 3387 ]
 {
 [e = . . _LATDbits 0 3 -> -> 1 `i `uc ]
 }
-[e :U 3385 ]
+[e :U 3386 ]
+"38
+[e = . . _SPI1STATUSbits 0 2 -> -> 1 `i `uc ]
 "39
 [e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
 "41
@@ -2778,73 +2776,67 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _SPI1BAUD -> -> 7 `i `uc ]
 "54
 [e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
-"62
-[e :UE 3377 ]
+"55
+[e = . . _SPI1STATUSbits 0 2 -> -> 0 `i `uc ]
+"56
+[e :UE 3378 ]
 }
-"67
+"61
 [v _SPI_MC33996 `(v ~T0 @X0 1 ef ]
-"68
+"62
 {
 [e :U _SPI_MC33996 ]
 [f ]
-"69
+"63
 [e ( _wait_lcd_done ..  ]
-"70
-[e :U 3390 ]
+"64
+[e :U 3391 ]
 {
 [e = . . _LATEbits 0 0 -> -> 1 `i `uc ]
 }
-[e :U 3389 ]
-"71
-[e :U 3393 ]
+[e :U 3390 ]
+"65
+[e :U 3394 ]
 {
 [e = . . _LATEbits 0 1 -> -> 1 `i `uc ]
 }
-[e :U 3392 ]
-"72
-[e :U 3396 ]
+[e :U 3393 ]
+"66
+[e :U 3397 ]
 {
 [e = . . _LATDbits 0 3 -> -> 1 `i `uc ]
 }
-[e :U 3395 ]
-"73
+[e :U 3396 ]
+"67
 [e = . . _SPI1STATUSbits 0 2 -> -> 1 `i `uc ]
-"74
+"68
 [e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
-"76
+"70
 [e = _SPI1CON0 -> -> 3 `i `uc ]
-"78
+"72
 [e = . . _SPI1CON1bits 0 5 -> -> 0 `i `uc ]
-"79
+"73
 [e = . . _SPI1CON1bits 0 6 -> -> 0 `i `uc ]
-"80
+"74
 [e = . . _SPI1CON1bits 0 7 -> -> 1 `i `uc ]
-"81
+"75
 [e = . . _SPI1CON1bits 0 4 -> -> 0 `i `uc ]
-"82
+"76
 [e = . . _SPI1CON1bits 0 1 -> -> 0 `i `uc ]
-"83
+"77
 [e = . . _SPI1CON1bits 0 0 -> -> 0 `i `uc ]
-"84
+"78
 [e = _SPI1CON2 -> -> 3 `i `uc ]
-"86
+"80
 [e = _SPI1CLK -> -> 0 `i `uc ]
-"88
+"82
 [e = _SPI1BAUD -> -> 7 `i `uc ]
-"89
+"83
 [e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
-"90
+"84
 [e = . . _SPI1STATUSbits 0 2 -> -> 0 `i `uc ]
-"91
-[e ( _SPI1_ExchangeByte (1 -> -> 255 `i `uc ]
-"92
-[e ( _SPI1_ExchangeByte (1 -> -> 255 `i `uc ]
-"93
-[e = _dummy_b ( _SPI1_ReadByte ..  ]
-"94
-[e = _dummy_b ( _SPI1_ReadByte ..  ]
-"95
-[e :UE 3387 ]
+"85
+[e :UE 3388 ]
 }
-[a 2C 49 50 58 53 52 58 50 56 0 ]
-[a 1C 74 117 110 32 49 50 32 50 48 50 53 0 ]
+[a 1C 74 117 110 32 49 54 32 50 48 50 53 0 ]
+[a 2C 49 48 58 49 56 58 48 51 0 ]

@@ -2668,16 +2668,6 @@ static int32_t daqbmc_ao_cancel(struct comedi_device *dev,
  *
  */
 
-static void pinModeOPi(struct comedi_device *dev,
-	uint32_t pin,
-	uint32_t mode)
-{
-	struct daqbmc_private *devpriv = dev->private;
-
-	devpriv->mode_count++;
-
-}
-
 static void digitalWriteOPi(struct comedi_device *dev,
 	uint32_t pin,
 	uint32_t *value)
@@ -2875,37 +2865,31 @@ static int digitalReadOPi(struct comedi_device *dev,
 	return val_value;
 }
 
-static int daqbmc_dio_insn_bits(struct comedi_device *dev,
+static int daqbmc_do_insn_bits(struct comedi_device *dev,
 	struct comedi_subdevice *s,
 	struct comedi_insn *insn,
 	uint32_t * data)
 {
 	struct daqbmc_private *devpriv = dev->private;
-	//	struct spi_param_type *spi_data = s->private;
 	uint32_t pinOPi;
-
-	devpriv->pinMode = pinModeOPi;
-	devpriv->digitalWrite = digitalWriteOPi;
-	devpriv->digitalRead = digitalReadOPi;
 
 	if (unlikely(!devpriv)) {
 		return -EFAULT;
 	}
+	devpriv->digitalWrite = digitalWriteOPi;
 
 	/* s->state contains the GPIO bits */
-	/* s->io_bits contains the GPIO direction */
+	if (comedi_dio_update_state(s, data)) {
+		pinOPi = s->state;
+		devpriv->digitalWrite(dev, pinOPi, data);
+	}
 
-	comedi_dio_update_state(s, data);
-	/* Do nothing on marked pins */
-	devpriv->digitalWrite(dev, pinOPi, data);
-	data[1] = devpriv->digitalRead(dev, data);
+	data[1] = s->state;
 
 	return insn->n;
 }
 
-// write only
-
-static int daqbmc_dio_insn_bits0(struct comedi_device *dev,
+static int daqbmc_di_insn_bits(struct comedi_device *dev,
 	struct comedi_subdevice *s,
 	struct comedi_insn *insn,
 	uint32_t * data)
@@ -2913,106 +2897,119 @@ static int daqbmc_dio_insn_bits0(struct comedi_device *dev,
 	struct daqbmc_private *devpriv = dev->private;
 	uint32_t pinOPi;
 
-	devpriv->pinMode = pinModeOPi;
-	devpriv->digitalWrite = digitalWriteOPi;
+	if (unlikely(!devpriv)) {
+		return -EFAULT;
+	}
 	devpriv->digitalRead = digitalReadOPi;
 
-	if (unlikely(!devpriv)) {
-		return -EFAULT;
-	}
+	pinOPi = digitalReadOPi(dev, data);
 
-	comedi_dio_update_state(s, data);
-	/* Do nothing on marked pins */
-	devpriv->digitalWrite(dev, pinOPi, data);
-
-	return insn->n;
+	pinOPi = 0x195707;
+	data[1] = pinOPi;
+	return 2;
 }
 
-static int daqbmc_dio_insn_bits_none(struct comedi_device *dev,
-	struct comedi_subdevice *s,
-	struct comedi_insn *insn,
-	uint32_t * data)
+static int digitalQuery(struct spi_param_type * spi_data)
 {
-	struct daqbmc_private *devpriv = dev->private;
+	struct spi_device *spi = spi_data->spi;
+	struct comedi_spibmc *pdata = spi->dev.platform_data;
 
-	if (unlikely(!devpriv)) {
-		return -EFAULT;
+	uint32_t val_mode = 0;
+	uint32_t tmp, val_value;
+	static struct spi_message m;
+
+	pdata->one_t.tx_buf = pdata->tx_buff;
+	pdata->one_t.rx_buf = pdata->rx_buff;
+
+	tmp = spi->mode;
+	{
+		struct spi_controller *ctlr = spi->controller;
+
+		if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
+			ctlr->cs_gpiods[spi->chip_select]) {
+			tmp &= ~SPI_CS_HIGH;
+		}
+		tmp |= spi->mode & ~SPI_MODE_MASK;
+		spi->mode = tmp & SPI_MODE_USER_MASK;
+		val_mode = spi_setup(spi);
 	}
 
-	return insn->n;
-}
+	/* use five spi transfers for the complete SPI transaction */
 
-// read only
+	pdata->tx_buff[0] = CMD_DUMMY_CFG;
+	pdata->one_t.cs_change = false;
+	pdata->one_t.len = 1;
 
-static int daqbmc_dio_insn_bits4(struct comedi_device *dev,
-	struct comedi_subdevice *s,
-	struct comedi_insn *insn,
-	uint32_t * data)
-{
-	struct daqbmc_private *devpriv = dev->private;
-	devpriv->pinMode = pinModeOPi;
-	devpriv->digitalWrite = digitalWriteOPi;
-	devpriv->digitalRead = digitalReadOPi;
+	/*
+	 * send PORT GET command request
+	 */
+	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
+	spi_bus_lock(spi->master);
+	spi_sync_locked(spi, &m);
+	spi_bus_unlock(spi->master);
 
-	if (unlikely(!devpriv)) {
-		return -EFAULT;
+	/*
+	 * send dummies to get the data
+	 */
+	pdata->tx_buff[0] = CMD_DUMMY_CFG;
+	pdata->one_t.rx_buf = &pdata->rx_buff[1];
+	pdata->one_t.cs_change = false;
+	pdata->one_t.len = 1;
+	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
+	spi_bus_lock(spi->master);
+	spi_sync_locked(spi, &m);
+	spi_bus_unlock(spi->master);
+
+	pdata->tx_buff[0] = CMD_DUMMY_CFG;
+	pdata->one_t.rx_buf = &pdata->rx_buff[2];
+	pdata->one_t.cs_change = false;
+	pdata->one_t.len = 1;
+	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
+	spi_bus_lock(spi->master);
+	spi_sync_locked(spi, &m);
+	spi_bus_unlock(spi->master);
+
+	pdata->tx_buff[0] = CMD_DUMMY_CFG;
+	pdata->one_t.rx_buf = &pdata->rx_buff[3];
+	pdata->one_t.cs_change = false;
+	pdata->one_t.len = 1;
+	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
+	spi_bus_lock(spi->master);
+	spi_sync_locked(spi, &m);
+	spi_bus_unlock(spi->master);
+
+	pdata->tx_buff[0] = CMD_DUMMY_CFG;
+	pdata->one_t.rx_buf = &pdata->rx_buff[4];
+	pdata->one_t.cs_change = false;
+	pdata->one_t.len = 1;
+	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
+	spi_bus_lock(spi->master);
+	spi_sync_locked(spi, &m);
+	spi_bus_unlock(spi->master);
+
+	val_value = pdata->rx_buff[4];
+
+	pdata->one_t.tx_buf = pdata->tx_buff;
+	pdata->one_t.rx_buf = pdata->rx_buff;
+
+	{
+		struct spi_controller *ctlr = spi->controller;
+		u32 save = spi->mode;
+
+		if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
+			ctlr->cs_gpiods[spi->chip_select]) {
+			tmp |= SPI_CS_HIGH;
+		}
+		tmp |= spi->mode & ~SPI_MODE_MASK;
+		spi->mode = tmp & SPI_MODE_USER_MASK;
+		val_mode = spi_setup(spi);
+		if (val_mode < 0) {
+			spi->mode = save;
+		} else {
+			dev_dbg(&spi->dev, "spi mode %x\n", tmp);
+		}
 	}
-
-	data[1] = devpriv->digitalRead(dev, data);
-
-	return insn->n;
-}
-
-/*
- * query or change DIO config
- * FIXME for I/O spi device
- */
-static int daqbmc_dio_insn_config(struct comedi_device *dev,
-	struct comedi_subdevice *s,
-	struct comedi_insn *insn,
-	uint32_t * data)
-{
-	struct daqbmc_private *devpriv = dev->private;
-	uint32_t opi_pin = CR_CHAN(insn->chanspec), chan = 1 << opi_pin;
-
-	if (unlikely(!devpriv)) {
-		return -EFAULT;
-	}
-
-	switch (data[0]) {
-	case INSN_CONFIG_DIO_OUTPUT:
-		s->io_bits = 0x0000ffff;
-		break;
-	case INSN_CONFIG_DIO_INPUT:
-		s->io_bits = 0x00ffffff;
-		break;
-	case INSN_CONFIG_DIO_QUERY:
-		data[1] = (s->io_bits & chan) ? COMEDI_OUTPUT : COMEDI_INPUT;
-		return insn->n;
-		break;
-	default:
-		return -EINVAL;
-	}
-
-	dev_dbg(dev->class_dev, "%s: gpio pins setting 0x%x\n",
-		dev->board_name,
-		(uint32_t) s->io_bits);
-
-	return insn->n;
-}
-
-static int daqbmc_dio_insn_config_none(struct comedi_device *dev,
-	struct comedi_subdevice *s,
-	struct comedi_insn *insn,
-	uint32_t * data)
-{
-	struct daqbmc_private *devpriv = dev->private;
-
-	if (unlikely(!devpriv)) {
-		return -EFAULT;
-	}
-
-	return insn->n;
+	return val_value;
 }
 
 /*
@@ -3185,9 +3182,6 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	/* set hardware defaults table */
 	dev->board_ptr = thisboard;
 	daqbmc_conf = picsl12;
-	dio_conf = 1;
-	do_conf = 1;
-	di_conf = 1;
 
 	devpriv->cpu_nodes = num_online_cpus();
 	if (devpriv->cpu_nodes >= SMP_CORES) {
@@ -3424,8 +3418,11 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		return -EINVAL;
 	}
 
-	if (do_conf || di_conf) {
-		devpriv->num_subdev += 2; // subdevices array 2 do , 3 di
+	if (do_conf) {
+		devpriv->num_subdev += 1; // subdevices array 2 do , 3 di
+	}
+	if (di_conf) {
+		devpriv->num_subdev += 1;
 	}
 
 	/*
@@ -3441,36 +3438,38 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	/* daq_bmc dio */
 
 	if (do_conf) {
-		s = &dev->subdevices[2];
+		s = &dev->subdevices[3];
 		s->type = COMEDI_SUBD_DO;
-		s->subdev_flags = SDF_WRITABLE | SDF_GROUND | SDF_COMMON;
+		s->subdev_flags = SDF_WRITABLE;
 		s->n_chan = num_do_chan;
 		s->len_chanlist = num_do_chan;
 		s->range_table = &range_digital;
 		s->maxdata = 1;
-		s->insn_bits = daqbmc_dio_insn_bits0;
-		s->insn_config = daqbmc_dio_insn_config;
-		s->state = 0;
+		s->insn_bits = daqbmc_do_insn_bits;
+		//		s->insn_config = daqbmc_dio_insn_config;
 		s->io_bits = 0x00ffffff;
 	}
 
 	if (di_conf) {
-		s = &dev->subdevices[3];
+		s = &dev->subdevices[2];
 		s->type = COMEDI_SUBD_DI;
-		s->subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON;
+		s->subdev_flags = SDF_READABLE;
 		s->n_chan = num_di_chan;
 		s->len_chanlist = num_di_chan;
 		s->range_table = &range_digital;
 		s->maxdata = 1;
-		s->insn_bits = daqbmc_dio_insn_bits4;
-		s->insn_config = daqbmc_dio_insn_config;
-		s->state = 0;
+		s->insn_bits = daqbmc_di_insn_bits;
+		//		s->insn_config = daqbmc_dio_insn_config;
 	}
 
-	if (do_conf && di_conf) {
+	if (do_conf) {
 		dev_info(dev->class_dev,
-			"Digital Out channels %d, Digital In channels %d\n",
-			num_do_chan, num_di_chan);
+			"Digital Out channels %d\n", num_do_chan);
+	}
+
+	if (di_conf) {
+		dev_info(dev->class_dev,
+			"Digital In channels %d\n", num_di_chan);
 	}
 
 	if (devpriv->num_subdev > 0) { /* setup comedi for on-board devices */
@@ -3702,9 +3701,9 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 	 * Do only one chip select for the BMCboard
 	 */
 	dev_info(&spi->dev,
-		"Default SPI setup: spi cs %d: %d Hz: bpw %u, mode 0x%x\n",
+		"Default SPI setup: spi cs %d: %d Hz: bpw %u, mode 0x%x, do_conf=%d, di_conf=%d\n",
 		spi->chip_select, spi->max_speed_hz, spi->bits_per_word,
-		spi->mode);
+		spi->mode, do_conf, di_conf);
 
 	if (spi->chip_select == CSnA) {
 		/*
@@ -3945,8 +3944,6 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 		 * probes
 		 */
 		daqbmc_spi_setup(spi_adc);
-		spi_w8r8(spi_adc->spi, CMD_DUMMY_CFG);
-		spi_w8r8(spi_adc->spi, CMD_DUMMY_CFG);
 
 		daqbmc_conf = picsl12; // Q84
 		switch (daqbmc_conf) {
@@ -3962,27 +3959,25 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 
 		ret = CONF_Q84; // Force Q84 12-bit mode
 
-		bmcconf = spi_w8r8(spi_adc->spi, CMD_DUMMY_CFG); // send command
-		usleep_range(300, 350);
-		bmcconf = spi_w8r8(spi_adc->spi, CMD_DUMMY_CFG); // send again to get the response
-
-		if ((bmcconf & 0xff) != 0x00) {
-			dio_conf = 0;
-			dev_info(dev->class_dev,
-				"BMCBoard Digital DIO Disabled\n");
-		}
-
-		dev_info(dev->class_dev,
-			"BMCBoard configuration code 0X%X\n",
-			bmcconf);
-
 		daqbmc_spi_setup(spi_adc);
 		spi_adc->pic18 = 2; /* PIC24/Q84 mode 12 bits */
 		spi_adc->device_type = picsl12;
 		spi_adc->chan = spi_adc->device_spi->n_chan;
 		spi_adc->range = 0; // 4.096 default
 		spi_adc->bits = spi_adc->device_spi->n_chan_bits;
-		;
+
+		bmcconf = digitalQuery(spi_adc);
+		dev_info(dev->class_dev,
+			"BMCBoard configuration code 0X%X\n",
+			bmcconf);
+
+		if (((bmcconf & 0xff) != 0x00) || (do_conf == 0) || (di_conf == 0)) {
+			dio_conf = 0;
+			do_conf = 0;
+			di_conf = 0;
+			dev_info(dev->class_dev,
+				"BMCBoard Digital DIO Disabled\n");
+		}
 		dev_info(dev->class_dev,
 			"%s device detected, "
 			"%i channels, range code %i, device code %i, "

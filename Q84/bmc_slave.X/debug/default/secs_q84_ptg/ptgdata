@@ -1,0 +1,258 @@
+######################## Device Info ########################
+devInf = DeviceInfo()
+devInf.deviceName = "PIC18F47Q84"
+devInf.programmerType = "PIC18ENH_V2"
+devInf.family = "Advanced 8-bit MCUs (PIC18)"
+devInf.subFamily = "PIC18EGG"
+devInf.useRowEraseIfVoltageIsLow = True
+devInf.voltageBelowWhichUseRowErase = 2100
+devInf.Vpp = 9000
+devInf.deviceIDMask = 0xffff
+devInf.deviceID = 0x9904
+memTypeInfo = []
+memInf = MemInfo()
+memInf.type = "Pgm"
+memInf.exists = True
+memInf.startAddr = 0x0
+memInf.endAddr = 0x1ffff
+memInf.rowSize = 0x80
+memInf.rowEraseSize = 0x80
+memInf.addrInc = 0x2
+memInf.widthProgram = 0x2
+memInf.mask = 0xffff
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "Cfg"
+memInf.exists = True
+memInf.startAddr = 0x300000
+memInf.endAddr = 0x300023
+memInf.rowSize = 0x1
+memInf.rowEraseSize = 0x0
+memInf.addrInc = 0x1
+memInf.widthProgram = 0x1
+memInf.mask = 0xff
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "BootFlash"
+memInf.exists = False
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "EEData"
+memInf.exists = True
+memInf.startAddr = 0x380000
+memInf.endAddr = 0x3803ff
+memInf.rowSize = 0x1
+memInf.rowEraseSize = 0x0
+memInf.addrInc = 0x1
+memInf.widthProgram = 0x1
+memInf.mask = 0xff
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "UserID"
+memInf.exists = True
+memInf.startAddr = 0x200000
+memInf.endAddr = 0x20003f
+memInf.rowSize = 0x0
+memInf.rowEraseSize = 0x0
+memInf.addrInc = 0x2
+memInf.widthProgram = 0x2
+memInf.mask = 0xffff
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "Test"
+memInf.exists = True
+memInf.startAddr = 0x200000
+memInf.endAddr = 0x2403ff
+memInf.rowSize = 0x80
+memInf.rowEraseSize = 0x80
+memInf.addrInc = 0x2
+memInf.widthProgram = 0x2
+memInf.mask = 0xffff
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "FileRegs"
+memInf.exists = False
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "Periph"
+memInf.exists = False
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "DataFlash"
+memInf.exists = False
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "FlashData"
+memInf.exists = False
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "Emulation"
+memInf.exists = False
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "NMMR"
+memInf.exists = False
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "InstructionRam"
+memInf.exists = False
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "UserOTP"
+memInf.exists = False
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "FBoot"
+memInf.exists = False
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "EDS"
+memInf.exists = False
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "DevID"
+memInf.exists = True
+memInf.startAddr = 0x3ffffe
+memInf.endAddr = 0x3fffff
+memInf.rowSize = 0x1
+memInf.rowEraseSize = 0x0
+memInf.addrInc = 0x1
+memInf.widthProgram = 0x1
+memInf.mask = 0x7fffffff
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "Calibration"
+memInf.exists = False
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "DCI"
+memInf.exists = True
+memInf.startAddr = 0x3c0000
+memInf.endAddr = 0x3c000f
+memInf.rowSize = 0x80
+memInf.rowEraseSize = 0x0
+memInf.addrInc = 0x2
+memInf.widthProgram = 0x2
+memInf.mask = 0xffff
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "DIA"
+memInf.exists = True
+memInf.startAddr = 0x2c0000
+memInf.endAddr = 0x2c003f
+memInf.rowSize = 0x80
+memInf.rowEraseSize = 0x0
+memInf.addrInc = 0x2
+memInf.widthProgram = 0x2
+memInf.mask = 0xffff
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "RWW"
+memInf.exists = False
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "OTPConfig"
+memInf.exists = False
+memTypeInfo.append(memInf)
+memInf = MemInfo()
+memInf.type = "UDID"
+memInf.exists = False
+memTypeInfo.append(memInf)
+devInf.setMemInfo(memTypeInfo)
+
+######################## Power Info ########################
+power = PowerInfo()
+power.shutDownSystem = False
+power.isToolPower = False
+power.useVPPfirst = False
+power.useLowVoltageProgramming = False
+power.useMaintainActivePower = False
+power.voltage = 5000
+
+######################## Tool Info ########################
+tool = ToolInfo()
+tool.speedLevel = 1
+tool.PGCResistance = 4700
+tool.PGDResistance = 4700
+tool.PGCPullDir = 2
+tool.PGDPullDir = 2
+tool.ICSPSelected = 0
+tool.communicationSpeed = 2000
+tool.communicationInterface = "SWD"
+tool.physicalActivation = "nohv"
+
+######################## Operation Info ########################
+o = Opinfo("erase",0x0)
+oi.append(o)
+
+######################## Operation Info ########################
+o = Opinfo("write",0x0)
+t = Tinfo()
+t.start = 0x0
+t.end = 0x17f
+t.data = "write_Pgm_st_0x0_op1_0.dat"
+t.type = "Pgm"
+t.mask = 0x0
+o.addTI(t)
+t = Tinfo()
+t.start = 0xfb00
+t.end = 0x14fff
+t.data = "write_Pgm_st_0xfb00_op1_1.dat"
+t.type = "Pgm"
+t.mask = 0x0
+o.addTI(t)
+t = Tinfo()
+t.start = 0x300000
+t.end = 0x300023
+t.data = "write_Cfg_st_0x300000_op1_2.dat"
+t.type = "Cfg"
+t.mask = 0x0
+o.addTI(t)
+t = Tinfo()
+t.start = 0x200000
+t.end = 0x20003f
+t.data = "write_UserID_st_0x200000_op1_3.dat"
+t.type = "UserID"
+t.mask = 0x0
+o.addTI(t)
+oi.append(o)
+
+######################## Operation Info ########################
+o = Opinfo("releasefromreset",0x0)
+oi.append(o)
+
+######################## Scripts ########################
+EnterTMOD_HV= b'\xb1\x94\x02\x00\xb2\x00\x41\xb0\x94\x05\x00'
+EnterTMOD_LV= b'\x42\xb0\x94\x01\x00\xa0\xe8\x03\xb2\x00\xb1\x94\x02\x00\xa0\xe8\x03\x83\x20\x50\x48\x43\x4d'
+EnterTMOD_VPPFirst= b'\xb6\xdf\xb1\x94\x05\x00\xb2\x00\x41\xb0\x94\x0a\x00\xde\xa0\xe8\x03'
+EraseChip= b'\x83\x08\x18\x00\x00\x00\xa0\x01\x00\x87\x18\x0f\x00\x00\x00\xa0\xf8\x2a'
+EraseDataEEmem= b'\x83\x08\x18\x00\x00\x00\xa0\x01\x00\x87\x18\x01\x00\x00\x00\xa0\xf8\x2a'
+EraseDataEEmemRange= b'\x91\x00\x91\x01\x83\x08\x80\x00\x00\x00\xa0\x01\x00\x86\x18\x00\x00\x00\x00\xa0\x01\x00\xad\x01\x83\x08\xe0\x00\x00\x00\xa0\x01\x00\x87\x18\xff\x00\x00\x00\xa0\xf8\x2a\xae'
+EraseProgmemRange= b'\x91\x00\x91\x01\xf5\x01\x00\x01\xad\x01\x83\x08\x80\x00\x00\x00\xa0\x01\x00\x86\x18\x00\x00\x00\x00\xa0\x01\x00\x83\x08\xf0\x00\x00\x00\xa0\xf8\x2a\x92\x00\x00\x01\x00\x00\xae'
+EraseTestmem= b'\x83\x08\x80\x00\x00\x00\xa0\x01\x00\x87\x18\x00\x00\x24\x00\xa0\x01\x00\x83\x08\xc4\x00\x00\x00\xa0\x01\x00\x87\x18\x55\x63\x00\x00\xa0\x01\x00\x83\x08\x18\x00\x00\x00\xa0\x01\x00\x87\x18\x10\x00\x00\x00\xa0\xf8\x2a'
+EraseTestmemRange= b'\x91\x00\x91\x01\xf5\x01\x00\x01\xad\x01\x83\x08\x80\x00\x00\x00\xa0\x01\x00\x86\x18\x00\x00\x00\x00\xa0\x01\x00\x83\x08\xc4\x00\x00\x00\xa0\x01\x00\x87\x18\x55\x63\x00\x00\xa0\x01\x00\x83\x08\xf0\x00\x00\x00\xa0\xf8\x2a\x92\x00\x00\x01\x00\x00\xae'
+ExitTMOD= b'\xb2\x03\xb1\x94\x01\x00\xa0\x01\x00'
+GetDeviceID= b'\x95\x83\x08\x80\x00\x00\x00\xa0\x01\x00\x87\x18\xfe\xff\x3f\x00\xa0\x01\x00\x83\x08\xfc\x00\x00\x00\xa0\x01\x00\x84\xa0\x01\x00\x83\x08\x80\x00\x00\x00\xa0\x01\x00\x87\x18\xfc\xff\x3f\x00\xa0\x01\x00\x83\x08\xfc\x00\x00\x00\xa0\x01\x00\x84\xa0\x01\x00'
+ReadConfigmem= b'\x91\x00\x91\x01\x83\x08\x80\x00\x00\x00\xa0\x01\x00\x86\x18\x00\x00\x00\x00\xa0\x01\x00\x95\xad\x01\x83\x08\xfe\x00\x00\x00\xa0\x01\x00\x48\xa0\x01\x00\xae'
+ReadDataEEmem= b'\x91\x00\x91\x01\x83\x08\x80\x00\x00\x00\xa0\x01\x00\x86\x18\x00\x00\x00\x00\xa0\x01\x00\x95\xad\x01\x83\x08\xfe\x00\x00\x00\xa0\x01\x00\x48\xa0\x01\x00\xae'
+ReadProgmem= b'\x91\x00\x91\x01\x93\x01\x02\x00\x83\x08\x80\x00\x00\x00\xa0\x01\x00\x86\x18\x00\x00\x00\x00\xa0\x01\x00\x95\xad\x01\x83\x08\xfe\x00\x00\x00\xa0\x01\x00\x84\xa0\x01\x00\xae'
+ReadTestmem= b'\x91\x00\x91\x01\x93\x01\x02\x00\x83\x08\x80\x00\x00\x00\xa0\x01\x00\x86\x18\x00\x00\x00\x00\xa0\x01\x00\x95\xad\x01\x83\x08\xfe\x00\x00\x00\xa0\x01\x00\x84\xa0\x01\x00\xae'
+ReadIDmem= b'\x91\x00\x91\x01\x93\x01\x02\x00\x83\x08\x80\x00\x00\x00\xa0\x01\x00\x86\x18\x00\x00\x00\x00\xa0\x01\x00\x95\xad\x01\x83\x08\xfe\x00\x00\x00\xa0\x01\x00\x84\xa0\x01\x00\xae'
+SetSpeedFromDevice= b'\xec\xfa\x00\x00\x00'
+WriteConfigmem= b'\x91\x00\x91\x01\x93\x01\x01\x00\x83\x08\x80\x00\x00\x00\xa0\x01\x00\x86\x18\x00\x00\x00\x00\xa0\x01\x00\xad\x01\x83\x08\xe0\x00\x00\x00\xa0\x01\x00\x49\xa0\xf8\x2a\xae'
+WriteDataEEmem= b'\x91\x00\x91\x01\x93\x01\x01\x00\x83\x08\x80\x00\x00\x00\xa0\x01\x00\x86\x18\x00\x00\x00\x00\xa0\x01\x00\xad\x01\x83\x08\xe0\x00\x00\x00\xa0\x01\x00\x49\xa0\xf8\x2a\xae'
+WriteTestmem= b'\x91\x00\x91\x01\x93\x01\x02\x00\x83\x08\x80\x00\x00\x00\xa0\x01\x00\x86\x18\x00\x00\x00\x00\xa0\x01\x00\xad\x01\x83\x08\xc4\x00\x00\x00\xa0\x01\x00\x87\x18\x55\x63\x00\x00\x94\x03\x00\x83\x08\xe0\x00\x00\x00\xa0\x01\x00\x88\xa0\x4b\x00\xae'
+WriteIDmem= b'\x91\x00\x91\x01\x93\x01\x02\x00\x83\x08\x80\x00\x00\x00\xa0\x01\x00\x86\x18\x00\x00\x00\x00\xa0\x01\x00\xad\x01\x83\x08\xe0\x00\x00\x00\xa0\x01\x00\x88\xa0\x4b\x00\xae'
+WriteProgmem= b'\x91\x00\x91\x01\x93\x01\x02\x00\x83\x08\x80\x00\x00\x00\xa0\x01\x00\x86\x18\x00\x00\x00\x00\xa0\x01\x00\xad\x01\x83\x08\xe0\x00\x00\x00\xa0\x01\x00\x88\xa0\x4b\x00\xae'
+GetVersionDE= b'\x95\x31\x01\x00\x00\x04\x00'
+ReadRAM= b'\x91\x00\x91\x01\x90\x02\x04\x00\x00\x00\x64\x00\x02\x64\x01\x02\x95\x33\x02\x02\x01'
+WriteRAM= b'\x91\x00\x91\x01\x90\x02\x00\x00\x00\x00\x64\x00\x02\x64\x01\x02\x92\x01\x04\x00\x00\x00\x33\x03\x01\x02'
+ReadEmu= b'\x91\x00\x91\x01\x90\x02\x04\x00\x00\x00\x64\x00\x02\x64\x01\x02\x95\x33\x08\x02\x01'
+WriteEmu= b'\x91\x00\x91\x01\x90\x02\x00\x00\x00\x00\x64\x00\x02\x64\x01\x02\x92\x01\x04\x00\x00\x00\x33\x07\x01\x02'
+ReadProgmemDE= b'\x91\x00\x91\x01\x60\x02\x01\x93\x02\x02\x00\x64\x00\x03\x64\x02\x02\x9b\x03\x05\x95\x33\x09\x03\x01'
+WriteProgmemDE= b'\x91\x00\x91\x01\x93\x01\x02\x00\xad\x01\x64\x00\x03\x65\x02\x00\x00\x00\x02\x31\x0a\x07\x00\x00\x00\xa0\x4b\x00\x92\x00\x02\x00\x00\x00\xae'
+EraseProgmemDE= b'\x91\x00\x64\x00\x03\x31\x0b\x03\x00\x00\x00\xa0\xf8\x2a'
+ReadTestmemDE= b'\x91\x00\x91\x01\x60\x02\x01\x64\x00\x03\x64\x02\x02\x9b\x03\x05\x95\x33\x0f\x03\x01'
+ReadEEDataDE= b'\x91\x00\x91\x01\x60\x02\x01\x64\x00\x03\x64\x02\x02\x9b\x03\x05\x95\x33\x0c\x03\x01'
+GetHardwareStack= b'\x91\x00\x91\x01\x95\x33\x12\x00\x01'
+

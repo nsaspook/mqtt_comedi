@@ -123,6 +123,8 @@ volatile bool tic12400_parity_status = false, tic12400_read_error = false;
 volatile int32_t tic12400_fail_value = 0;
 volatile uint8_t b_read = 0;
 
+ticrw_type tic_rw;
+
 static const char *build_date = __DATE__, *build_time = __TIME__;
 
 static void tic_int_handler(void);

@@ -63,6 +63,12 @@ extern "C" {
 		uint8_t data0;
 	}
 	ticread_type;
+	
+		typedef struct __attribute__((packed))
+	{
+		uint8_t cmd[16];
+	}
+	ticrw_type;
 
 	void tic12400_version(void);
 	void tic12400_reset(void);
@@ -78,6 +84,7 @@ extern "C" {
 	extern volatile bool tic12400_parity_status, tic12400_read_error;
 	extern volatile int32_t tic12400_fail_value;
 	volatile uint8_t b_read;
+	extern ticrw_type tic_rw;
 
 #ifdef	__cplusplus
 }

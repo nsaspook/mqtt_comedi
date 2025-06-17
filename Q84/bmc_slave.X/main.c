@@ -467,15 +467,6 @@ void main(void)
 
 		if (TimerDone(TMR_ADC)) {
 			StartTimer(TMR_ADC, ADCDELAY);
-			if (!V.do_fail) {
-				SPI_MC33996();
-				INTERRUPT_GlobalInterruptHighDisable();
-				if (serial_buffer_ss.make_value == false) {
-					out_buf = (uint16_t) 0xff & V.bmc_do;
-				}
-				INTERRUPT_GlobalInterruptHighEnable();
-				mc33996_update(out_buf);
-			}
 			if (!V.di_fail) {
 				SPI_TIC12400();
 				tic12400_read_sw(0, (uintptr_t) NULL);
@@ -485,6 +476,15 @@ void main(void)
 					V.bmc_di = in_buf;
 				}
 				INTERRUPT_GlobalInterruptHighEnable();
+			}
+			if (!V.do_fail) {
+				SPI_MC33996();
+				INTERRUPT_GlobalInterruptHighDisable();
+				if (serial_buffer_ss.make_value == false) {
+					out_buf = (uint16_t) 0xff & V.bmc_do;
+				}
+				INTERRUPT_GlobalInterruptHighEnable();
+				mc33996_update(out_buf);
 			}
 			SPI_EADOG();
 			spi_stat_ss.adc_count++; // just keep count
@@ -632,7 +632,11 @@ void main(void)
 #ifdef SER_DEBUG
 				serial_buffer_ss.data[3], serial_buffer_ss.data[2], serial_buffer_ss.data[1], serial_buffer_ss.data[0]);
 #else
+#ifndef DI_MC_CMD
 				mc_init.cmd[3], mc_init.cmd[4], mc_init.cmd[5], serial_buffer_ss.data[0]);
+#else
+				tic_rw.cmd[0], tic_rw.cmd[1], tic_rw.cmd[2], tic_rw.cmd[3]);
+#endif
 #endif
 
 			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "TX %lx, RX %lx, %d %d %d         ",
