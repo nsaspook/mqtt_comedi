@@ -467,6 +467,7 @@ void main(void)
 
 		if (TimerDone(TMR_ADC)) {
 			StartTimer(TMR_ADC, ADCDELAY);
+
 			if (!V.di_fail) {
 				SPI_TIC12400();
 				tic12400_read_sw(0, (uintptr_t) NULL);
@@ -477,6 +478,7 @@ void main(void)
 				}
 				INTERRUPT_GlobalInterruptHighEnable();
 			}
+
 			if (!V.do_fail) {
 				SPI_MC33996();
 				INTERRUPT_GlobalInterruptHighDisable();
@@ -486,8 +488,11 @@ void main(void)
 				INTERRUPT_GlobalInterruptHighEnable();
 				mc33996_update(out_buf);
 			}
+
 			SPI_EADOG();
 			spi_stat_ss.adc_count++; // just keep count
+
+
 
 			ADC_DischargeSampleCapacitor();
 			ADC_StartConversion(channel_ANA0);
@@ -595,6 +600,7 @@ void main(void)
 				adc_buffer[channel_FVR_Buffer2] = ADC_GetConversionResult();
 			};
 			DAC1DATL = (uint8_t) V.bmc_ao; // update DAC1 output
+
 		}
 
 		if (TimerDone(TMR_DISPLAY)) { // limit update rate
@@ -764,7 +770,7 @@ char spinners(uint8_t shape, const uint8_t reset)
  */
 void test_slave(void)
 {
-	RESET();
+	//	RESET();
 }
 
 /*

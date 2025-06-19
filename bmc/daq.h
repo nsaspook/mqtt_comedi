@@ -47,7 +47,7 @@ extern "C" {
 #define HV_SCALE_RAW            4.096f
 
 
-#define OVER_SAMP       64
+#define OVER_SAMP       32
 
 #include <stdint.h>
 #include <comedilib.h>

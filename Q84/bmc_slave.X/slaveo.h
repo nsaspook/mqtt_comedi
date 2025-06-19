@@ -52,6 +52,7 @@ extern "C" {
 #define UART_DUMMY_MASK	0b01000000
 
 #define PORT_GET_BYTES	4
+#define CFG_GET_BYTES	3
 #define ADC_GET_BYTES	3
 #define PORT_GO_BYTES	3
 #define DAC_GO_BYTES	3
@@ -79,7 +80,7 @@ extern "C" {
 	struct serial_buffer_type_ss {
 		volatile uint8_t data[16], tx_buffer, adcl, adc2, adch, command, raw_index;
 		volatile uint32_t place;
-		volatile bool make_value, get_value, dac_value, adc_value;
+		volatile bool make_value, get_value, dac_value, adc_value, cfg_value;
 	};
 
 	extern volatile struct spi_link_type_ss spi_comm_ss;

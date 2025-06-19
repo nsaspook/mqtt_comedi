@@ -3165,6 +3165,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	struct daqbmc_private *devpriv;
 	struct comedi_spibmc *pdata;
 	struct spi_message m;
+	int32_t val = 0;
 
 	/*
 	 * auto free on exit of comedi module
@@ -3359,6 +3360,89 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 				spi_bus_lock(pdata->slave.spi->master);
 				spi_sync_locked(pdata->slave.spi, &m);
 				spi_bus_unlock(pdata->slave.spi->master);
+			}
+			if (daqbmc_conf == picsl12) {
+				uint32_t val_mode = 0;
+				uint32_t tmp;
+
+				mutex_lock(&devpriv->drvdata_lock);
+				for (int i = 0; i < 24; i++) {
+					tmp = pdata->slave.spi->mode;
+					{
+						struct spi_controller *ctlr = pdata->slave.spi->controller;
+
+						if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
+							ctlr->cs_gpiods[pdata->slave.spi->chip_select]) {
+							tmp &= ~SPI_CS_HIGH;
+						}
+						tmp |= pdata->slave.spi->mode & ~SPI_MODE_MASK;
+						pdata->slave.spi->mode = tmp & SPI_MODE_USER_MASK;
+						val_mode = spi_setup(pdata->slave.spi);
+					}
+					devpriv->ai_spi = &pdata->slave;
+					pdata->one_t.tx_buf = pdata->tx_buff;
+					pdata->one_t.rx_buf = pdata->rx_buff;
+					pdata->one_t.cs_change = false;
+					pdata->one_t.len = 1;
+					pdata->tx_buff[0] = CMD_DUMMY_CFG;
+					spi_message_init_with_transfers(&m, &pdata->one_t, 1);
+					spi_bus_lock(pdata->slave.spi->master);
+					spi_sync_locked(pdata->slave.spi, &m);
+					spi_bus_unlock(pdata->slave.spi->master);
+					usleep_range(40, 50);
+
+					pdata->one_t.cs_change = false;
+					pdata->one_t.len = 1;
+					pdata->tx_buff[0] = 1;
+					spi_message_init_with_transfers(&m, &pdata->one_t, 1);
+					spi_bus_lock(pdata->slave.spi->master);
+					spi_sync_locked(pdata->slave.spi, &m);
+					spi_bus_unlock(pdata->slave.spi->master);
+					usleep_range(40, 50);
+
+					pdata->one_t.cs_change = false;
+					pdata->one_t.len = 1;
+					pdata->tx_buff[0] = 2;
+					spi_message_init_with_transfers(&m, &pdata->one_t, 1);
+					spi_bus_lock(pdata->slave.spi->master);
+					spi_sync_locked(pdata->slave.spi, &m);
+					spi_bus_unlock(pdata->slave.spi->master);
+					usleep_range(40, 50);
+
+					pdata->one_t.cs_change = false;
+					pdata->one_t.len = 1;
+					pdata->tx_buff[0] = 3;
+					spi_message_init_with_transfers(&m, &pdata->one_t, 1);
+					spi_bus_lock(pdata->slave.spi->master);
+					spi_sync_locked(pdata->slave.spi, &m);
+					spi_bus_unlock(pdata->slave.spi->master);
+					usleep_range(40, 50);
+					val = (pdata->rx_buff[0]);
+
+					dev_info(dev->class_dev, "Q84  BMCBoard configuration code 0x%x\n",
+						val);
+					if (val != 0) {
+						do_conf = 0;
+						di_conf = 0;
+					}
+
+					{
+						struct spi_controller *ctlr = pdata->slave.spi->controller;
+						u32 save = pdata->slave.spi->mode;
+
+						if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
+							ctlr->cs_gpiods[pdata->slave.spi->chip_select]) {
+							tmp |= SPI_CS_HIGH;
+						}
+						tmp |= pdata->slave.spi->mode & ~SPI_MODE_MASK;
+						pdata->slave.spi->mode = tmp & SPI_MODE_USER_MASK;
+						val_mode = spi_setup(pdata->slave.spi);
+						if (val_mode < 0) {
+							pdata->slave.spi->mode = save;
+						}
+					}
+				}
+				mutex_unlock(&devpriv->drvdata_lock);
 			}
 			clear_bit(CSnA, &spi_device_missing);
 		} else {
@@ -3708,7 +3792,7 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 	if (spi->chip_select == CSnA) {
 		/*
 		 * get a copy of the slave device 0 to share with Comedi
-		 * we need a device to talk to the ADC
+		 * we need a device to talk to the Q84
 		 *
 		 * create entry into the Comedi device list
 		 */
@@ -3732,12 +3816,12 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 	/*
 	 * Check for basic errors
 	 */
-	ret = spi_w8r8(spi, 0); /* check for spi comm error */
-	if (ret < 0) {
-		dev_err(&spi->dev, "spi comm error\n");
-		ret = -EIO;
-		goto kfree_rx_exit;
-	}
+	//	ret = spi_w8r8(spi, 0); /* check for spi comm error */
+	//	if (ret < 0) {
+	//		dev_err(&spi->dev, "spi comm error\n");
+	//		ret = -EIO;
+	//		goto kfree_rx_exit;
+	//	}
 
 	/* setup comedi part of driver */
 	if (spi->chip_select == CSnA) {
@@ -3966,12 +4050,7 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 		spi_adc->range = 0; // 4.096 default
 		spi_adc->bits = spi_adc->device_spi->n_chan_bits;
 
-		bmcconf = digitalQuery(spi_adc);
-		dev_info(dev->class_dev,
-			"BMCBoard configuration code 0X%X\n",
-			bmcconf);
-
-		if (((bmcconf & 0xff) != 0x00) || (do_conf == 0) || (di_conf == 0)) {
+		if ((do_conf == 0) || (di_conf == 0)) {
 			dio_conf = 0;
 			do_conf = 0;
 			di_conf = 0;

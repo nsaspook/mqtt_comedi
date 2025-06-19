@@ -158,6 +158,25 @@ void slaveo_rx_isr(void)
 		}
 	}
 
+	// GET_CFG_BYTES
+	if (serial_buffer_ss.cfg_value) {
+		if (serial_buffer_ss.raw_index == CFG_GET_BYTES) {
+			SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits for unregistered inputs
+			serial_buffer_ss.cfg_value = false;
+			serial_buffer_ss.raw_index = 0;
+			spi_stat_ss.txdone_bit++; // number of completed packets
+			data_in2 = 0;
+		} else {
+			spi_stat_ss.slave_tx_count++;
+			if (serial_buffer_ss.raw_index == 1) {
+				SPI2TXB = serial_buffer_ss.raw_index;
+			} else {
+				SPI2TXB = serial_buffer_ss.raw_index;
+			}
+			data_in2 = 0;
+		}
+	}
+
 	if (++serial_buffer_ss.raw_index > SPI_BUFFER_LEN - 1) {
 		serial_buffer_ss.raw_index = 0;
 		spi_stat_ss.txuf_bit++; // buffer high watermark cleared
@@ -165,7 +184,7 @@ void slaveo_rx_isr(void)
 
 	command = data_in2 & HI_NIBBLE;
 
-	if (serial_buffer_ss.dac_value || serial_buffer_ss.get_value || serial_buffer_ss.make_value || serial_buffer_ss.dac_value) {
+	if (serial_buffer_ss.dac_value || serial_buffer_ss.get_value || serial_buffer_ss.make_value || serial_buffer_ss.dac_value || serial_buffer_ss.cfg_value) {
 		goto isr_end;
 	}
 
@@ -219,6 +238,7 @@ void slaveo_rx_isr(void)
 				serial_buffer_ss.make_value = false;
 				serial_buffer_ss.dac_value = false;
 				serial_buffer_ss.get_value = false;
+				serial_buffer_ss.cfg_value = false;
 				MLED_SetLow();
 				SPI1CON0bits.EN = 1;
 				channel = channel_ANA0;
@@ -257,17 +277,18 @@ void slaveo_rx_isr(void)
 	}
 
 	if (command == CMD_DUMMY_CFG) {
-		SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits for unregistered inputs
-		SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits for unregistered inputs
+		serial_buffer_ss.raw_index = 1;
+		serial_buffer_ss.cfg_value = false;
 		if (!serial_buffer_ss.adc_value && !serial_buffer_ss.dac_value && !serial_buffer_ss.make_value && !serial_buffer_ss.get_value) {
 			MLED_SetHigh();
-			serial_buffer_ss.raw_index = 0;
 			serial_buffer_ss.adc_value = false;
 			serial_buffer_ss.make_value = false;
 			serial_buffer_ss.dac_value = false;
 			serial_buffer_ss.get_value = false;
 			MLED_SetLow();
 		}
+		TMR0_Reload();
+		StartTimer(TMR_ADC, ADCDELAY);
 	}
 
 isr_end:
