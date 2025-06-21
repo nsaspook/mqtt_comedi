@@ -13,14 +13,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S3370 . cmd ]
 "117 /opt/microchip/xc8/v3.00/pic/include/c99/stdio.h
 [v _printf `(i ~T0 @X0 0 ev`*Cuc ]
-"3694 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
-[s S3158 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S3158 . LATD0 LATD1 LATD2 LATD3 LATD4 LATD5 LATD6 LATD7 ]
-"3693
-[u S3157 `S3158 1 ]
-[n S3157 . . ]
-"3705
-[v _LATDbits `VS3157 ~T0 @X0 0 e@1217 ]
 "109 ./eadog.h
 [v _send_spi1_mc33996_dma `(v ~T0 @X0 0 ef2`*uc`Cuc ]
 "304 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
@@ -2655,7 +2647,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 :U ..
 :U ..
 -> -> 16 `i `uc
--> -> 0 `i `us
+-> -> 65535 `ui `us
 ..
 ..
 ]
@@ -2719,70 +2711,64 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _mc33996_init ]
 [f ]
 "46
-[e :U 3375 ]
-{
-[e = . . _LATDbits 0 7 -> -> 0 `i `uc ]
-}
-[e :U 3374 ]
-"47
 [e = *U + &U . _mc_init 0 * -> -> -> 0 `i `ui `ux -> -> # *U &U . _mc_init 0 `ui `ux -> -> 25 `i `uc ]
-"48
+"47
 [e = *U + &U . _mc_init 0 * -> -> -> 1 `i `ui `ux -> -> # *U &U . _mc_init 0 `ui `ux -> -> 87 `i `uc ]
-"49
+"48
 [e = *U + &U . _mc_init 0 * -> -> -> 2 `i `ui `ux -> -> # *U &U . _mc_init 0 `ui `ux -> -> 7 `i `uc ]
-"50
+"49
 [e = *U + &U . _mc_init 0 * -> -> -> 3 `i `ui `ux -> -> # *U &U . _mc_init 0 `ui `ux -> -> 0 `i `uc ]
-"51
+"50
 [e = *U + &U . _mc_init 0 * -> -> -> 4 `i `ui `ux -> -> # *U &U . _mc_init 0 `ui `ux -> -> 255 `i `uc ]
-"52
+"51
 [e = *U + &U . _mc_init 0 * -> -> -> 5 `i `ui `ux -> -> # *U &U . _mc_init 0 `ui `ux -> -> 255 `i `uc ]
-"54
+"53
 [e ( _send_spi1_mc33996_dma (2 , -> -> &U . _mc_init 0 `*v `*uc -> -> 6 `i `uc ]
-"55
-[e $ ! || || != -> *U + &U . _mc_init 0 * -> -> -> 3 `i `ui `ux -> -> # *U &U . _mc_init 0 `ui `ux `i -> 25 `i != -> *U + &U . _mc_init 0 * -> -> -> 4 `i `ui `ux -> -> # *U &U . _mc_init 0 `ui `ux `i -> 87 `i != -> *U + &U . _mc_init 0 * -> -> -> 5 `i `ui `ux -> -> # *U &U . _mc_init 0 `ui `ux `i -> 7 `i 3376  ]
+"54
+[e $ ! || || != -> *U + &U . _mc_init 0 * -> -> -> 3 `i `ui `ux -> -> # *U &U . _mc_init 0 `ui `ux `i -> 25 `i != -> *U + &U . _mc_init 0 * -> -> -> 4 `i `ui `ux -> -> # *U &U . _mc_init 0 `ui `ux `i -> 87 `i != -> *U + &U . _mc_init 0 * -> -> -> 5 `i `ui `ux -> -> # *U &U . _mc_init 0 `ui `ux `i -> 7 `i 3373  ]
 {
-"56
+"55
 [e ) -> -> 0 `i `a ]
 [e $UE 3372  ]
-"57
+"56
 }
-[e :U 3376 ]
-"59
+[e :U 3373 ]
+"58
 [e ( _send_spi1_mc33996_dma (2 , -> -> &U _mc_pwm `*v `*uc -> -> 3 `i `uc ]
-"60
+"59
 [e ( _send_spi1_mc33996_dma (2 , -> -> &U _mc_onoff `*v `*uc -> -> 3 `i `uc ]
-"61
+"60
 [e ( _send_spi1_mc33996_dma (2 , -> -> &U _mc_gsrc `*v `*uc -> -> 3 `i `uc ]
-"62
+"61
 [e ( _send_spi1_mc33996_dma (2 , -> -> &U _mc_sfpd `*v `*uc -> -> 3 `i `uc ]
-"63
+"62
 [e ( _send_spi1_mc33996_dma (2 , -> -> &U _mc_olce `*v `*uc -> -> 3 `i `uc ]
-"64
+"63
 [e ) -> -> 1 `i `a ]
 [e $UE 3372  ]
-"65
+"64
 [e :UE 3372 ]
 }
-"67
+"66
 [v _mc33996_update `(v ~T0 @X0 1 ef1`Cus ]
-"68
+"67
 {
 [e :U _mc33996_update ]
-"67
+"66
 [v _data `Cus ~T0 @X0 1 r1 ]
-"68
+"67
 [f ]
-"69
+"68
 [e = . _mc_onoff 1 -> & >> & -> _data `ui -> 65280 `ui -> 8 `i -> -> 255 `i `ui `us ]
-"70
+"69
 [e =| . _mc_onoff 1 -> -> & << & -> _data `ui -> -> 255 `i `ui -> 8 `i -> 65280 `ui `us `us ]
-"71
+"70
 [e ( _send_spi1_mc33996_dma (2 , -> -> &U . _mc_onoff 0 `*v `*uc -> -> 3 `i `uc ]
-"72
-[e :UE 3377 ]
+"71
+[e :UE 3374 ]
 }
 [p f _printf 8650752 ]
-[a 2C 48 55 58 52 50 58 49 55 0 ]
+[a 2C 49 57 58 53 49 58 48 55 0 ]
 [a 4C 86 48 46 54 0 ]
-[a 1C 74 117 110 32 49 57 32 50 48 50 53 0 ]
+[a 1C 74 117 110 32 50 48 32 50 48 50 53 0 ]
 [a 3C 13 45 45 45 32 77 67 51 51 57 57 54 32 68 114 105 118 101 114 32 86 101 114 115 105 111 110 32 37 115 32 37 115 32 37 115 32 45 45 45 13 10 0 ]

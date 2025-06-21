@@ -63,7 +63,7 @@ void PIN_MANAGER_Initialize(void)
     LATE = 0x07;
     LATD = 0xDA;
     LATA = 0x00;
-    LATB = 0x11;
+    LATB = 0x01;
     LATC = 0x02;
 
     /**
@@ -87,11 +87,11 @@ void PIN_MANAGER_Initialize(void)
     /**
     WPUx registers
     */
-    WPUD = 0x0F;
-    WPUE = 0x04;
+    WPUD = 0x8F;
+    WPUE = 0x07;
     WPUB = 0x71;
     WPUA = 0x00;
-    WPUC = 0x11;
+    WPUC = 0x31;
 
     /**
     ODx registers
@@ -100,7 +100,7 @@ void PIN_MANAGER_Initialize(void)
     ODCONA = 0x00;
     ODCONB = 0x01;
     ODCONC = 0x00;
-    ODCOND = 0x00;
+    ODCOND = 0x80;
 
     /**
     SLRCONx registers

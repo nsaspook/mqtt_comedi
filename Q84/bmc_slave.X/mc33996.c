@@ -11,7 +11,7 @@ mc33996buf_type mc_onoff = {
 
 const mc33996buf_type mc_pwm = {
 	.cmd = mc33996_pwm,
-	.out = 0x0000,
+	.out = 0xffff,
 };
 
 const mc33996buf_type mc_reset = {
@@ -43,7 +43,6 @@ void mc33996_version(void)
 
 bool mc33996_init(void)
 {
-	MCZ_PWM_SetLow();
 	mc_init.cmd[0] = 0x19;
 	mc_init.cmd[1] = 0x57;
 	mc_init.cmd[2] = 0x07;

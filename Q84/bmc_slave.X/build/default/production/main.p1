@@ -218,7 +218,15 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _check_help `(v ~T0 @X0 0 ef1`Ca ]
 "54 /opt/microchip/xc8/v3.00/pic/include/c99/string.h
 [v _strlen `(ui ~T0 @X0 0 ef1`*Cuc ]
-"5774 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
+"3694 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
+[s S3161 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S3161 . LATD0 LATD1 LATD2 LATD3 LATD4 LATD5 LATD6 LATD7 ]
+"3693
+[u S3160 `S3161 1 ]
+[n S3160 . . ]
+"3705
+[v _LATDbits `VS3160 ~T0 @X0 0 e@1217 ]
+"5774
 [v _PRLOCK `Vuc ~T0 @X0 0 e@180 ]
 "5780
 [s S264 :1 `uc 1 ]
@@ -4555,43 +4563,49 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 [e :U _test_slave ]
 [f ]
-"774
+"773
+[e :U 3496 ]
+{
+[e = . . _LATDbits 0 7 -> -> 0 `i `uc ]
+}
+[e :U 3495 ]
+"775
 [e :UE 3493 ]
 }
-"780
-[v _SetBMCPriority `(v ~T0 @X0 1 ef ]
 "781
+[v _SetBMCPriority `(v ~T0 @X0 1 ef ]
+"782
 {
 [e :U _SetBMCPriority ]
 [f ]
-"782
-[e = . . _INTCON0bits 0 6 -> -> 0 `i `uc ]
 "783
-[e = _PRLOCK -> -> 85 `i `uc ]
-"784
-[e = _PRLOCK -> -> 170 `i `uc ]
-"785
-[e = . . _PRLOCKbits 0 0 -> -> 0 `i `uc ]
-"786
-[e = . . _INTCON0bits 0 6 -> -> 1 `i `uc ]
-"787
-[e = _ISRPR -> -> 1 `i `uc ]
-"788
-[e = _DMA1PR -> -> 2 `i `uc ]
-"789
-[e = _MAINPR -> -> 7 `i `uc ]
-"790
 [e = . . _INTCON0bits 0 6 -> -> 0 `i `uc ]
-"791
+"784
 [e = _PRLOCK -> -> 85 `i `uc ]
-"792
+"785
 [e = _PRLOCK -> -> 170 `i `uc ]
-"793
-[e = . . _PRLOCKbits 0 0 -> -> 1 `i `uc ]
-"794
+"786
+[e = . . _PRLOCKbits 0 0 -> -> 0 `i `uc ]
+"787
 [e = . . _INTCON0bits 0 6 -> -> 1 `i `uc ]
+"788
+[e = _ISRPR -> -> 1 `i `uc ]
+"789
+[e = _DMA1PR -> -> 2 `i `uc ]
+"790
+[e = _MAINPR -> -> 7 `i `uc ]
+"791
+[e = . . _INTCON0bits 0 6 -> -> 0 `i `uc ]
+"792
+[e = _PRLOCK -> -> 85 `i `uc ]
+"793
+[e = _PRLOCK -> -> 170 `i `uc ]
+"794
+[e = . . _PRLOCKbits 0 0 -> -> 1 `i `uc ]
 "795
-[e :UE 3494 ]
+[e = . . _INTCON0bits 0 6 -> -> 1 `i `uc ]
+"796
+[e :UE 3497 ]
 }
 [p f _snprintf 15565968 ]
 [a 9C 76 111 99 107 101 100 32 57 54 48 48 98 112 115 0 ]
@@ -4600,8 +4614,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [a 11C 49 49 53 50 48 48 98 112 115 0 ]
 [a 5C 79 70 70 76 73 78 69 0 ]
 [a 3C 68 73 83 65 66 76 69 0 ]
-[a 2C 49 49 58 51 49 58 50 55 0 ]
-[a 1C 74 117 110 32 49 57 32 50 48 50 53 0 ]
+[a 2C 49 57 58 53 49 58 48 55 0 ]
+[a 1C 74 117 110 32 50 48 32 50 48 50 53 0 ]
 [a 19C 86 48 46 49 51 0 ]
 [a 25C 86 48 46 49 51 0 ]
 [a 29C 86 48 46 49 51 0 ]

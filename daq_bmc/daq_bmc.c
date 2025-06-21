@@ -54,23 +54,19 @@ Driver: "experimental" daq_bmc in progress ...
  * for 6.1.33+ kernels with device-tree enabled for Orange PI Zero 3
  * see README.md for install instructions
  *
-Description: BMCBOARD daq_bmc
+Description: BMCBOARD daq_bmc spibmc
 Author: nsaspook <nsaspooksma2@gmail.com>
  *
 
 Devices: [] BMCBOARD (daq_bmc)
 Status: inprogress (DIO 95%) (AI 95%) AO (96%) (My code cleanup 95%)
-Updated: Mar 4 12:07:20 +0000
+Updated: Jun 20 12:07:20 +0000
 
-The DAQ-BMC appears in Comedi as a  digital I/O subdevice (0) with
-17 or 21 or 30 channels,
-a analog input subdevice (1) with a Mux for bipolar input voltages
-2 differential-ended channels: (0) inputs 0-1, (1) inputs 2-3
-2 single-ended channels: (2) (3) for inputs 2 or 3
-a internal short of inputs for a offset reading: (4) with the ADC1220 adc, OR
-a analog input subdevice (1) with 2 single-ended channels with onboard adc, OR
-a analog input subdevice (1) with single-ended channels set by the SPI slave device
-and a analog output subdevice(2) with 2 channels with onboard dac
+The DAQ-BMC appears in Comedi as a digital I/O subdeviceswith
+16 DO and 24 DI,
+
+a analog input subdevice with single-ended channels set by the SPI slave device
+and a analog output subdevice with 2 channels with onboard dac
  *
  * Caveats:
  *
@@ -79,7 +75,6 @@ Analog: The type and resolution of the onboard ADC/DAC chips are set
 by the module option variable daqbmc_conf in the /etc/modprobe.d directory
  * options daq_bmc daqbmc_conf=7
  *
-0 = Factory BMCboard configuratin of MCP3002 ADC and MCP4802 ADC: 10bit in/8bit out
 1 = MCP3202 ADC and MCP4822 DAC: 12bit in/12bit out
 2 = MCP3002 ADC and MCP4822 DAC: 10bit in/12bit out
 3 = MCP3202 ADC and MCP4802 DAC: 12bit in/8bit out
@@ -88,15 +83,15 @@ by the module option variable daqbmc_conf in the /etc/modprobe.d directory
 5 = force PIC slave P8722 mode
 6 = force PIC slave P25k22 mode
 7 = force PIC slave PIC18F47Q84 mode
+0 = force PIC slave PIC18F47Q84 mode with NO DIO
 16 = ADS8330 ADC and MCP4822 DAC: 16bit in/12bit out
-17 = ADS8330 ADC and MCP4802 DAC: 16bit in/8bit out
+9 = ADS8330 ADC and MCP4802 DAC: 16bit in/8bit out
 99 = special ADC test device and MCP4822 DAC
  *
  * Module parameters are found in the /sys/modules/daq_bmc/parameters directory
  *
- * The input  range is 0 to 1023/4095 for 0.0 to 3.3(Vdd) onboard devices, 2.048 volts/Vdd for PIC slaves
- * or +-0.512, +-1.024, +-2.048 for the ADS1220 device with usable range in double %2.6fV format for output
- * The output range is 0 to 4095 for 0.0 to 2.048 onboard devices (output resolution depends on the device)
+ * The input  range is 0 to 4095 for 0.0 to 4.096(Vdd) onboard devices
+ * The output range is 0 to 256 for 0.0 to 2.048 onboard devices (output resolution depends on the device)
  * In the async command mode transfers can be handled in HUNK mode by creating a SPI message
  * of many conversion sequences into one message, this allows for close to native driver wire-speed
  * HUNK_LEN data samples into the Comedi read buffer with a special mix_mode for
@@ -108,16 +103,7 @@ by the module option variable daqbmc_conf in the /etc/modprobe.d directory
 
  *  PIC Slave Info:
  *
- * bit 7 high for commands sent from the MASTER
- * bit 6 0 send lower or 1 send upper byte ADC result first
- * bits 3..0 port address
- * all zeros sent to the PIC slave will return 8 bits from the ADC buffer
- *
- * bit 7 low  for config data sent in CMD_DUMMY per uC type
- * bits 6 config bit code always 1
- * bit	5 0=ADC ref VDD, 1=ADC rec FVR=2.048
- * bit  4 0=10bit adc, 1=12bit adc
- * bits 3..0 number of ADC channels
+ * bits 3..0 select of ADC channel
  *
  */
 
@@ -138,8 +124,8 @@ by the module option variable daqbmc_conf in the /etc/modprobe.d directory
 
 #define CHECKMARK 0x1957
 
-#define bmc_version "version 0.5 "
-#define spibmc_version "version 1.0 "
+#define bmc_version "version 0.6 "
+#define spibmc_version "version 1.1 "
 
 /* Command Definitions */
 #define ADS8330_CMR_DEFAULT 0b1111000000000000ul /* reset to device default */
@@ -359,9 +345,10 @@ static const uint8_t ads1220_r3 = ADS1220_IDAC_OFF | ADS1220_DRDY_MODE;
 #define mcp4822  5
 #define picsl10  6
 #define picsl12  7
-#define defdev7  7
+#define picsl12_AO  0
 #define ads1220  8
 #define ads8330  9
+#define ads8330_12  16
 #define special  10
 #define n_chips  11 /* set to the last chip array index number */
 #define MAX_AI   32
@@ -444,7 +431,8 @@ static DECLARE_COMPLETION(done);
  */
 static int32_t daqbmc_conf = picsl12;
 module_param(daqbmc_conf, int, S_IRUGO);
-MODULE_PARM_DESC(daqbmc_conf, "hardware configuration: default 6=bmcboard standard");
+MODULE_PARM_DESC(daqbmc_conf, "hardware configuration: default 7=bmcboard standard");
+
 static int32_t pullups = 2;
 module_param(pullups, int, S_IRUGO);
 MODULE_PARM_DESC(pullups, "gpio pins 0: none 1: down 2: up: 2=default");
@@ -534,7 +522,18 @@ struct daqbmc_device {
  */
 static const struct daqbmc_device daqbmc_devices[] = {
 	{
-		.name = "defdev0",
+		.name = "picsl12_AO",
+		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
+		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
+		.max_speed_hz = 4000000,
+		.min_acq_ns = 50000,
+		.rate_min = 1000,
+		.spi_mode = 0,
+		.spi_bpw = 8,
+		.n_chan_bits = 12,
+		.n_chan = 16,
+		.n_transfers = 3,
+
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
 		.max_speed_hz = 4000000,
@@ -1349,6 +1348,7 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		break;
 	case picsl10:
 	case picsl12:
+	case picsl12_AO:
 		tmp = spi->mode;
 	{
 		struct spi_controller *ctlr = spi->controller;
@@ -2909,109 +2909,6 @@ static int daqbmc_di_insn_bits(struct comedi_device *dev,
 	return 2;
 }
 
-static int digitalQuery(struct spi_param_type * spi_data)
-{
-	struct spi_device *spi = spi_data->spi;
-	struct comedi_spibmc *pdata = spi->dev.platform_data;
-
-	uint32_t val_mode = 0;
-	uint32_t tmp, val_value;
-	static struct spi_message m;
-
-	pdata->one_t.tx_buf = pdata->tx_buff;
-	pdata->one_t.rx_buf = pdata->rx_buff;
-
-	tmp = spi->mode;
-	{
-		struct spi_controller *ctlr = spi->controller;
-
-		if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
-			ctlr->cs_gpiods[spi->chip_select]) {
-			tmp &= ~SPI_CS_HIGH;
-		}
-		tmp |= spi->mode & ~SPI_MODE_MASK;
-		spi->mode = tmp & SPI_MODE_USER_MASK;
-		val_mode = spi_setup(spi);
-	}
-
-	/* use five spi transfers for the complete SPI transaction */
-
-	pdata->tx_buff[0] = CMD_DUMMY_CFG;
-	pdata->one_t.cs_change = false;
-	pdata->one_t.len = 1;
-
-	/*
-	 * send PORT GET command request
-	 */
-	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
-	spi_bus_lock(spi->master);
-	spi_sync_locked(spi, &m);
-	spi_bus_unlock(spi->master);
-
-	/*
-	 * send dummies to get the data
-	 */
-	pdata->tx_buff[0] = CMD_DUMMY_CFG;
-	pdata->one_t.rx_buf = &pdata->rx_buff[1];
-	pdata->one_t.cs_change = false;
-	pdata->one_t.len = 1;
-	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
-	spi_bus_lock(spi->master);
-	spi_sync_locked(spi, &m);
-	spi_bus_unlock(spi->master);
-
-	pdata->tx_buff[0] = CMD_DUMMY_CFG;
-	pdata->one_t.rx_buf = &pdata->rx_buff[2];
-	pdata->one_t.cs_change = false;
-	pdata->one_t.len = 1;
-	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
-	spi_bus_lock(spi->master);
-	spi_sync_locked(spi, &m);
-	spi_bus_unlock(spi->master);
-
-	pdata->tx_buff[0] = CMD_DUMMY_CFG;
-	pdata->one_t.rx_buf = &pdata->rx_buff[3];
-	pdata->one_t.cs_change = false;
-	pdata->one_t.len = 1;
-	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
-	spi_bus_lock(spi->master);
-	spi_sync_locked(spi, &m);
-	spi_bus_unlock(spi->master);
-
-	pdata->tx_buff[0] = CMD_DUMMY_CFG;
-	pdata->one_t.rx_buf = &pdata->rx_buff[4];
-	pdata->one_t.cs_change = false;
-	pdata->one_t.len = 1;
-	spi_message_init_with_transfers(&m, &pdata->one_t, 1); //one transfer per message
-	spi_bus_lock(spi->master);
-	spi_sync_locked(spi, &m);
-	spi_bus_unlock(spi->master);
-
-	val_value = pdata->rx_buff[4];
-
-	pdata->one_t.tx_buf = pdata->tx_buff;
-	pdata->one_t.rx_buf = pdata->rx_buff;
-
-	{
-		struct spi_controller *ctlr = spi->controller;
-		u32 save = spi->mode;
-
-		if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
-			ctlr->cs_gpiods[spi->chip_select]) {
-			tmp |= SPI_CS_HIGH;
-		}
-		tmp |= spi->mode & ~SPI_MODE_MASK;
-		spi->mode = tmp & SPI_MODE_USER_MASK;
-		val_mode = spi_setup(spi);
-		if (val_mode < 0) {
-			spi->mode = save;
-		} else {
-			dev_dbg(&spi->dev, "spi mode %x\n", tmp);
-		}
-	}
-	return val_value;
-}
-
 /*
  * Talk to the ADC via the SPI
  */
@@ -3182,7 +3079,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 
 	/* set hardware defaults table */
 	dev->board_ptr = thisboard;
-	daqbmc_conf = picsl12;
+
 
 	devpriv->cpu_nodes = num_online_cpus();
 	if (devpriv->cpu_nodes >= SMP_CORES) {
@@ -3300,7 +3197,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 				spi_sync_locked(pdata->slave.spi, &m);
 				spi_bus_unlock(pdata->slave.spi->master);
 			}
-			if (daqbmc_conf == 16 || daqbmc_conf == 17) { /* ads8330 mode */
+			if (daqbmc_conf == ads8330_12 || daqbmc_conf == ads8330) { /* ads8330 mode */
 				/*
 				 * setup ads8330 register
 				 */
@@ -3361,7 +3258,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 				spi_sync_locked(pdata->slave.spi, &m);
 				spi_bus_unlock(pdata->slave.spi->master);
 			}
-			if (daqbmc_conf == picsl12) {
+			if (daqbmc_conf == picsl12 || daqbmc_conf == picsl12_AO) {
 				uint32_t val_mode = 0;
 				uint32_t tmp;
 
@@ -3419,8 +3316,6 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 					usleep_range(40, 50);
 					val = (pdata->rx_buff[0]);
 
-					dev_info(dev->class_dev, "Q84  BMCBoard configuration code 0x%x\n",
-						val);
 					if (val != 0) {
 						do_conf = 0;
 						di_conf = 0;
@@ -3442,6 +3337,8 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 						}
 					}
 				}
+				dev_info(dev->class_dev, "Q84  BMCBoard configuration code 0x%x\n",
+					val);
 				mutex_unlock(&devpriv->drvdata_lock);
 			}
 			clear_bit(CSnA, &spi_device_missing);
@@ -3586,7 +3483,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			s->subdev_flags = devpriv->ai_spi->device_spi->ai_subdev_flags - SDF_CMD_READ;
 		}
 
-		if (devpriv->ai_spi->device_type == picsl12) {
+		if (devpriv->ai_spi->device_type == picsl12 || devpriv->ai_spi->device_type == picsl12_AO) {
 			s->n_chan = devpriv->ai_spi->chan;
 			s->len_chanlist = devpriv->ai_spi->chan;
 			s->maxdata = 4095;
@@ -3785,9 +3682,9 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 	 * Do only one chip select for the BMCboard
 	 */
 	dev_info(&spi->dev,
-		"Default SPI setup: spi cs %d: %d Hz: bpw %u, mode 0x%x, do_conf=%d, di_conf=%d\n",
+		"Default SPI setup: spi cs %d: %d Hz: bpw %u, mode 0x%x, do_conf=%d, di_conf=%d, daqbmc_conf=%d\n",
 		spi->chip_select, spi->max_speed_hz, spi->bits_per_word,
-		spi->mode, do_conf, di_conf);
+		spi->mode, do_conf, di_conf, daqbmc_conf);
 
 	if (spi->chip_select == CSnA) {
 		/*
@@ -3802,15 +3699,15 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 		 * put entry into the Comedi device list
 		 */
 		list_add_tail(&pdata->device_entry, &device_list);
-		spi->mode = daqbmc_devices[defdev7].spi_mode;
-		spi->max_speed_hz = daqbmc_devices[defdev7].max_speed_hz;
+		spi->mode = daqbmc_devices[daqbmc_conf].spi_mode;
+		spi->max_speed_hz = daqbmc_devices[daqbmc_conf].max_speed_hz;
 		spi->word_delay = CS_CHANGE_DELAY_USECS10;
 		spi->cs_setup = CS_CHANGE_DELAY_USECS0;
 		spi->cs_hold = CS_CHANGE_DELAY_USECS0;
 		spi->cs_inactive = CS_CHANGE_DELAY_USECS0;
 	}
 
-	spi->bits_per_word = daqbmc_devices[defdev7].spi_bpw;
+	spi->bits_per_word = daqbmc_devices[daqbmc_conf].spi_bpw;
 	spi_setup(spi);
 
 	/*
@@ -3973,7 +3870,7 @@ static int32_t daqbmc_spi_setup(struct spi_param_type * spi)
 static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	struct spi_param_type * spi_adc)
 {
-	int32_t ret = 0, reset, bmcconf = 0;
+	int32_t ret = 0, reset;
 	const struct daqbmc_board *thisboard = dev->board_ptr;
 
 	if (!spi_adc->spi) {
@@ -3999,13 +3896,16 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	case 7:
 		spi_adc->device_type = picsl12;
 		break;
+	case 0:
+		spi_adc->device_type = picsl12_AO;
+		break;
 	case 14:
 		spi_adc->device_type = ads1220;
 		break;
 	case 16:
 		spi_adc->device_type = ads8330;
 		break;
-	case 17:
+	case 9:
 		spi_adc->device_type = ads8330;
 		break;
 	case 99:
@@ -4013,7 +3913,7 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 		special_test = true;
 		break;
 	default:
-		spi_adc->device_type = picsl12;
+		spi_adc->device_type = picsl12_AO;
 	}
 
 	spi_adc->device_spi = &daqbmc_devices[spi_adc->device_type];
@@ -4029,11 +3929,11 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 		 */
 		daqbmc_spi_setup(spi_adc);
 
-		daqbmc_conf = picsl12; // Q84
 		switch (daqbmc_conf) {
 		case 5:
 		case 6:
 		case picsl12:
+		case picsl12_AO:
 			ret = CONF_Q84; /* P47Q84 slave mode */
 			dev_info(dev->class_dev, "PIC18F47Q84 DAQ device, SPI mode\n");
 			break;
@@ -4045,12 +3945,12 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 
 		daqbmc_spi_setup(spi_adc);
 		spi_adc->pic18 = 2; /* PIC24/Q84 mode 12 bits */
-		spi_adc->device_type = picsl12;
+		spi_adc->device_type = daqbmc_conf;
 		spi_adc->chan = spi_adc->device_spi->n_chan;
 		spi_adc->range = 0; // 4.096 default
 		spi_adc->bits = spi_adc->device_spi->n_chan_bits;
 
-		if ((do_conf == 0) || (di_conf == 0)) {
+		if ((daqbmc_conf == picsl12_AO) || (do_conf == 0) || (di_conf == 0)) { // no DIO board version
 			dio_conf = 0;
 			do_conf = 0;
 			di_conf = 0;
