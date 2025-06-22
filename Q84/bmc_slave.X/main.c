@@ -770,6 +770,8 @@ char spinners(uint8_t shape, const uint8_t reset)
  */
 void test_slave(void)
 {
+	
+	
 		MCZ_PWM_SetLow();
 	//	RESET();
 }

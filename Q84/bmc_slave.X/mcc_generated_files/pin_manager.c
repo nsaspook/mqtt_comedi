@@ -61,10 +61,10 @@ void PIN_MANAGER_Initialize(void)
     LATx registers
     */
     LATE = 0x07;
-    LATD = 0xDA;
+    LATD = 0xDE;
     LATA = 0x00;
-    LATB = 0x01;
-    LATC = 0x02;
+    LATB = 0x51;
+    LATC = 0x2A;
 
     /**
     TRISx registers
