@@ -282,8 +282,9 @@ void SetBMCPriority(void);
 void main(void)
 {
 	char * s, * speed_text;
+#ifdef FLIP_SERIAL	
 	uint8_t temp_lock = false;
-
+#endif
 	SPI2STATUSbits.SPI2CLRBF;
 
 	// Initialize the device
@@ -307,13 +308,12 @@ void main(void)
 	TMR5_StartTimer();
 	TMR6_StartTimer();
 
+#ifdef FLIP_SERIAL
 	/** Speed locking setup code.
 	 * Use a few EEPROM bytes to cycle or lock the serial port baud rate
 	 * during a power-up.
 	 * 9600 and 115200 are the normal speeds for serial communications
 	 */
-	//	speed_text = "default bps";
-	//	if (PCON0bits.POR == 0) { // only check with real power resets
 	V.speed_spin = DATAEE_ReadByte(UART_SPEED_LOCK_EADR);
 	V.uart_speed_fast = DATAEE_ReadByte(UART_SPEED_EADR);
 	DATAEE_WriteByte(UART_SPEED_LOCK_EADR, temp_lock);
@@ -372,8 +372,15 @@ void main(void)
 			UART1_Initialize115200();
 		}
 	}
-	//	}
-
+#else
+	speed_text = "Locked 115200bps";
+	UART2_Initialize115200();
+	UART1_Initialize115200();
+	WaitMs(SDELAY);
+	RLED_SetLow(); // start complete power-up serial speed setups, LEDS OFF
+	MLED_SetLow();
+	DLED_SetLow();
+#endif
 
 	/*
 	 * master processing I/O loop
@@ -770,9 +777,9 @@ char spinners(uint8_t shape, const uint8_t reset)
  */
 void test_slave(void)
 {
-	
-	
-		MCZ_PWM_SetLow();
+
+
+	MCZ_PWM_SetLow();
 	//	RESET();
 }
 

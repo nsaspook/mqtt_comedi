@@ -292,11 +292,6 @@ by the module option variable daqbmc_conf in the /etc/modprobe.d directory
 #define ADS1220_DRDY_MODE 0x02
 
 /*
- * for optional SPI framework patch
- */
-//#define CS_CHANGE_USECS
-
-/*
  * SPI transfer buffer size
  * must be a define to init buffer sizes
  * normally 1024
@@ -354,7 +349,7 @@ static const uint8_t ads1220_r3 = ADS1220_IDAC_OFF | ADS1220_DRDY_MODE;
 #define MAX_AI   32
 #define MAX_AO   2
 
-#define SMP_CORES 8
+#define SMP_CORES 4
 
 #define CONF_Q84 110
 
@@ -390,11 +385,11 @@ static const uint8_t BMC_MAX_CHAN = 0x40;
 static const uint32_t CSnA = 1; /*  BMCboard Q84 ADC */
 
 #define SPI_MODE_MASK  (SPI_MODE_X_MASK | SPI_CS_HIGH \
-				| SPI_LSB_FIRST | SPI_3WIRE | SPI_LOOP \
-				| SPI_NO_CS | SPI_READY | SPI_TX_DUAL \
-				| SPI_TX_QUAD | SPI_TX_OCTAL | SPI_RX_DUAL \
-				| SPI_RX_QUAD | SPI_RX_OCTAL \
-				| SPI_RX_CPHA_FLIP)
+                                | SPI_LSB_FIRST | SPI_3WIRE | SPI_LOOP \
+                                | SPI_NO_CS | SPI_READY | SPI_TX_DUAL \
+                                | SPI_TX_QUAD | SPI_TX_OCTAL | SPI_RX_DUAL \
+                                | SPI_RX_QUAD | SPI_RX_OCTAL \
+                                | SPI_RX_CPHA_FLIP)
 
 /*
  * PIC Slave commands
@@ -423,7 +418,6 @@ static const uint32_t NUM_DIO_CHAN_REV3 = 24;
 static const uint32_t DIO_PINS_DEFAULT = 0xffffff;
 
 static DECLARE_COMPLETION(done);
-//static DECLARE_COMPLETION(done1);
 
 /*
  * module configuration and data variables
@@ -688,7 +682,7 @@ static const struct daqbmc_board daqbmc_boards[] = {
 		.ao_ns_min_calc = 1000000,
 		.ai_cs = 1,
 		.ao_cs = 1,
-		.ai_node = 3,
+		.ai_node = 1,
 		.ao_node = 2,
 	},
 	{
@@ -701,7 +695,7 @@ static const struct daqbmc_board daqbmc_boards[] = {
 		.ao_ns_min_calc = 12000,
 		.ai_cs = 1,
 		.ao_cs = 1,
-		.ai_node = 3,
+		.ai_node = 1,
 		.ao_node = 2,
 	},
 };
@@ -972,7 +966,7 @@ static DECLARE_WAIT_QUEUE_HEAD(daqbmc_ao_thread_wq);
 static int32_t daqbmc_ao_thread_function(void *data)
 {
 	struct comedi_device *dev = (void*) data;
-	struct comedi_subdevice *s = &dev->subdevices[2];
+	struct comedi_subdevice *s = dev->write_subdev;
 	struct daqbmc_private *devpriv = dev->private;
 	struct spi_param_type *spi_data = s->private;
 	struct spi_device *spi = spi_data->spi;
@@ -1291,9 +1285,6 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 		/* read the ads1220 3 byte data result */
 		pdata->one_t.len = 4;
 		pdata->one_t.cs_change = false;
-#ifdef CS_CHANGE_USECS
-		pdata->one_t.cs_change_delay = CS_CHANGE_DELAY_USECS10;
-#endif
 		pdata->tx_buff[0] = ADS1220_CMD_RDATA;
 		pdata->tx_buff[1] = 0;
 		pdata->tx_buff[2] = 0;
@@ -1327,9 +1318,6 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 			pdata->tx_buff[3] = 0;
 			pdata->t[0].len = 2;
 			pdata->t[0].cs_change = false;
-#ifdef CS_CHANGE_USECS
-			pdata->t[0].cs_change_delay = CS_CHANGE_DELAY_USECS10;
-#endif
 			pdata->t[0].tx_buf = &pdata->tx_buff[0];
 			pdata->t[0].rx_buf = &pdata->rx_buff[0];
 			spi_message_init_with_transfers(&m, &pdata->t[0], 1);
@@ -1705,12 +1693,6 @@ static int32_t transfer_to_hunk_buf(struct comedi_device *dev,
 		pdata->t[i].len = len; // set to len, a fixed number is for testing
 		pdata->t[i].tx_buf = tx_buff;
 		pdata->t[i].rx_buf = rx_buff;
-		/*
-		 * cs_change_usecs is a optional patch to spi.h and spi.c
-		 */
-#ifdef CS_CHANGE_USECS
-		pdata->t[i].cs_change_delay = CS_CHANGE_DELAY_USECS0;
-#endif
 		tx_buff += len; /* move to the next data set */
 		rx_buff += len;
 	}
@@ -1858,9 +1840,6 @@ static void daqbmc_ai_setup_eoc(struct comedi_device *dev,
 	/* format the transfer array */
 	pdata->t[0].cs_change = false;
 	pdata->t[0].len = len;
-#ifdef CS_CHANGE_USECS
-	pdata->t[0].cs_change_delay = CS_CHANGE_DELAY_USECS0;
-#endif
 	pdata->t[0].tx_buf = pdata->tx_buff;
 	pdata->t[0].rx_buf = pdata->rx_buff;
 }
@@ -2663,11 +2642,8 @@ static int32_t daqbmc_ao_cancel(struct comedi_device *dev,
 }
 
 /*
- * FIXME for I/O spi device
- *
- *
+ * DO SPI transaction
  */
-
 static void digitalWriteOPi(struct comedi_device *dev,
 	uint32_t pin,
 	uint32_t *value)
@@ -2754,6 +2730,9 @@ static void digitalWriteOPi(struct comedi_device *dev,
 
 }
 
+/*
+ * DI SPI transaction
+ */
 static int digitalReadOPi(struct comedi_device *dev,
 	uint32_t * data)
 {
@@ -3025,7 +3004,6 @@ static int32_t daqbmc_create_thread(struct comedi_device *dev,
 		kthread_bind(devpriv->ai_spi->daqbmc_task, devpriv->ai_node);
 		wake_up_process(devpriv->ai_spi->daqbmc_task);
 	} else {
-
 		return PTR_ERR(devpriv->ai_spi->daqbmc_task);
 	}
 
@@ -3039,7 +3017,6 @@ static int32_t daqbmc_create_thread(struct comedi_device *dev,
 		kthread_bind(devpriv->ao_spi->daqbmc_task, devpriv->ao_node);
 		wake_up_process(devpriv->ao_spi->daqbmc_task);
 	} else {
-
 		return PTR_ERR(devpriv->ao_spi->daqbmc_task);
 	}
 
@@ -3214,9 +3191,6 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 				spi_bus_unlock(pdata->slave.spi->master);
 				usleep_range(400, 500);
 				pdata->one_t.len = 2;
-#ifdef CS_CHANGE_USECS
-				pdata->one_t.cs_change_delay = CS_CHANGE_DELAY_USECS0;
-#endif
 				pdata->tx_buff[0] = (ADS8330_CMR_CONF_AUTO) >> 8;
 				pdata->tx_buff[1] = ADS8330_CFR_CONF_AUTO;
 				spi_message_init_with_transfers(&m,
@@ -3226,9 +3200,6 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 				spi_bus_unlock(pdata->slave.spi->master);
 				usleep_range(40, 50);
 				pdata->one_t.len = 2;
-#ifdef CS_CHANGE_USECS
-				pdata->one_t.cs_change_delay = CS_CHANGE_DELAY_USECS0;
-#endif
 				pdata->tx_buff[0] = ADS8330_CMR_RCFR >> 8;
 				pdata->tx_buff[1] = 0;
 				spi_message_init_with_transfers(&m,
@@ -3248,9 +3219,6 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 				}
 				usleep_range(40, 50);
 				pdata->one_t.len = 1;
-#ifdef CS_CHANGE_USECS
-				pdata->one_t.cs_change_delay = CS_CHANGE_DELAY_USECS0;
-#endif
 				pdata->tx_buff[0] = ADS8330_CMR_CH0; /* set to channel 0 */
 				spi_message_init_with_transfers(&m,
 					&pdata->one_t, 1);
@@ -3416,7 +3384,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		return ret;
 	}
 
-	/* daq_bmc dio */
+	/* daq_bmc do di */
 
 	if (do_conf) {
 		s = &dev->subdevices[3];
@@ -3427,7 +3395,6 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		s->range_table = &range_digital;
 		s->maxdata = 1;
 		s->insn_bits = daqbmc_do_insn_bits;
-		//		s->insn_config = daqbmc_dio_insn_config;
 		s->io_bits = 0x00ffffff;
 	}
 
@@ -3440,7 +3407,6 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		s->range_table = &range_digital;
 		s->maxdata = 1;
 		s->insn_bits = daqbmc_di_insn_bits;
-		//		s->insn_config = daqbmc_dio_insn_config;
 	}
 
 	if (do_conf) {
@@ -3568,6 +3534,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	} else {
 		s->subdev_flags = devpriv->ao_spi->device_spi->ao_subdev_flags - SDF_CMD_WRITE;
 	}
+	dev->write_subdev = s;
 
 	ret = comedi_alloc_subdev_readback(s);
 	if (ret) {
@@ -3710,17 +3677,7 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 	spi->bits_per_word = daqbmc_devices[daqbmc_conf].spi_bpw;
 	spi_setup(spi);
 
-	/*
-	 * Check for basic errors
-	 */
-	//	ret = spi_w8r8(spi, 0); /* check for spi comm error */
-	//	if (ret < 0) {
-	//		dev_err(&spi->dev, "spi comm error\n");
-	//		ret = -EIO;
-	//		goto kfree_rx_exit;
-	//	}
-
-	/* setup comedi part of driver */
+	/* setup Comedi part of driver */
 	if (spi->chip_select == CSnA) {
 		ret = comedi_driver_register(&daqbmc_driver);
 		if (ret < 0) {
@@ -3752,7 +3709,7 @@ static int spibmc_spi_remove(struct spi_device * spi)
 {
 	struct comedi_spibmc *pdata = spi->dev.platform_data;
 
-	dev_info(&spi->dev, "spi device removal\n");
+	dev_info(&spi->dev, "spibmc device link removed \n");
 	if (!list_empty(&device_list)) {
 		list_del(&pdata->device_entry);
 	}
@@ -3767,7 +3724,7 @@ static int spibmc_spi_remove(struct spi_device * spi)
 	if (pdata) {
 		kfree(pdata);
 	}
-	dev_info(&spi->dev, "released\n");
+	dev_info(&spi->dev, "spibmc driver released\n");
 
 	return 0;
 }
@@ -3935,7 +3892,7 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 		case picsl12:
 		case picsl12_AO:
 			ret = CONF_Q84; /* P47Q84 slave mode */
-			dev_info(dev->class_dev, "PIC18F47Q84 DAQ device, SPI mode\n");
+			dev_info(dev->class_dev, "PIC18F47Q84 DAQ device, SPI slave mode\n");
 			break;
 		default:
 			ret = spi_w8r8(spi_adc->spi, CMD_DUMMY_CFG);
@@ -4039,7 +3996,7 @@ static void __exit daqbmc_exit(void)
 module_exit(daqbmc_exit);
 
 MODULE_AUTHOR("NSASPOOK <nsaspooksma2@gmail.com");
-MODULE_DESCRIPTION("OPi DIO/AI/AO SPI Driver");
+MODULE_DESCRIPTION("OPi DI/DO/AI/AO SPI Driver");
 MODULE_VERSION("6.1.31");
 MODULE_LICENSE("GPL");
 MODULE_ALIAS("spi:spibmc");
