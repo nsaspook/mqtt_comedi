@@ -1,5 +1,5 @@
 Version 4.0 HI-TECH Software Intermediate Code
-[v F23301 `(v ~T0 @X0 0 tf ]
+[v F23302 `(v ~T0 @X0 0 tf ]
 "39425 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [v _T0CON1 `Vuc ~T0 @X0 0 e@795 ]
 "39047
@@ -22,10 +22,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S3092 . . ]
 "1743
 [v _PIE3bits `VS3092 ~T0 @X0 0 e@1185 ]
-[v F23292 `(v ~T0 @X0 0 tf ]
-"292 mcc_generated_files/tmr0.h
-[v _TMR0_SetInterruptHandler `(v ~T0 @X0 0 ef1`*F23292 ]
-"328
+[v F23293 `(v ~T0 @X0 0 tf ]
+"315 mcc_generated_files/tmr0.h
+[v _TMR0_SetInterruptHandler `(v ~T0 @X0 0 ef1`*F23293 ]
+"351
 [v _TMR0_DefaultInterruptHandler `(v ~T0 @X0 0 ef ]
 "39301 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [v _T0CON0 `Vuc ~T0 @X0 0 e@794 ]
@@ -48,9 +48,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _T0CON0bits `VS1831 ~T0 @X0 0 e@794 ]
 [t ~ __interrupt . k ]
 [t T1 __interrupt irq ( TMR0 ) base ( 8 ) ]
-[v F23314 `(v ~T0 @X0 0 tf ]
-[v F23316 `(v ~T0 @X0 0 tf ]
-[v F23318 `(v ~T0 @X0 0 tf ]
+"297 mcc_generated_files/tmr0.h
+[v _TMR0_CallBack `(v ~T0 @X0 0 ef ]
+[v F23317 `(v ~T0 @X0 0 tf ]
+[v F23319 `(v ~T0 @X0 0 tf ]
+[v F23321 `(v ~T0 @X0 0 tf ]
 "304 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [; <" BOOTREG equ 038h ;# ">
 "336
@@ -2452,7 +2454,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "59 mcc_generated_files/tmr0.c
 [v _timer0ReloadVal16bit `Vus ~T0 @X0 1 e ]
 "65
-[v _TMR0_InterruptHandler `*F23301 ~T0 @X0 1 e ]
+[v _TMR0_InterruptHandler `*F23302 ~T0 @X0 1 e ]
 "67
 [v _TMR0_Initialize `(v ~T0 @X0 1 ef ]
 "68
@@ -2462,9 +2464,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 "72
 [e = _T0CON1 -> -> 77 `i `uc ]
 "75
-[e = _TMR0H -> -> 179 `i `uc ]
+[e = _TMR0H -> -> 27 `i `uc ]
 "78
-[e = _TMR0L -> -> 181 `i `uc ]
+[e = _TMR0L -> -> 30 `i `uc ]
 "81
 [e = _timer0ReloadVal16bit -> | << -> _TMR0H `i -> 8 `i -> _TMR0L `i `us ]
 "84
@@ -2560,40 +2562,65 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 [e :U _TMR0_ISR ]
 [f ]
-"138
-[e = . . _PIR3bits 0 7 -> -> 0 `i `uc ]
+"137
+[v F23315 `Vus ~T0 @X0 1 s CountCallBack ]
+[i F23315
+-> -> 0 `i `us
+]
 "140
+[e = . . _PIR3bits 0 7 -> -> 0 `i `uc ]
+"142
 [e = _TMR0H -> >> -> _timer0ReloadVal16bit `ui -> 8 `i `uc ]
-"141
-[e = _TMR0L -> _timer0ReloadVal16bit `uc ]
 "143
-[e $ ! != _TMR0_InterruptHandler -> -> 0 `i `*F23314 3352  ]
-"144
-{
-"145
-[e ( *U _TMR0_InterruptHandler ..  ]
+[e = _TMR0L -> _timer0ReloadVal16bit `uc ]
 "146
+[e $ ! >= -> =+ F23315 -> -> 1 `i `Vus `ui -> -> 4 `i `ui 3352  ]
+"147
+{
+"149
+[e ( _TMR0_CallBack ..  ]
+"152
+[e = F23315 -> -> 0 `i `us ]
+"153
 }
 [e :U 3352 ]
-"149
+"156
 [e :UE 3351 ]
 }
-"152
-[v _TMR0_SetInterruptHandler `(v ~T0 @X0 1 ef1`*F23316 ]
+"158
+[v _TMR0_CallBack `(v ~T0 @X0 1 ef ]
+"159
 {
-[e :U _TMR0_SetInterruptHandler ]
-[v _InterruptHandler `*F23318 ~T0 @X0 1 r1 ]
+[e :U _TMR0_CallBack ]
 [f ]
-"153
-[e = _TMR0_InterruptHandler _InterruptHandler ]
-"154
+"162
+[e $ ! != _TMR0_InterruptHandler -> -> 0 `i `*F23317 3354  ]
+"163
+{
+"164
+[e ( *U _TMR0_InterruptHandler ..  ]
+"165
+}
+[e :U 3354 ]
+"166
 [e :UE 3353 ]
 }
-"156
+"168
+[v _TMR0_SetInterruptHandler `(v ~T0 @X0 1 ef1`*F23319 ]
+{
+[e :U _TMR0_SetInterruptHandler ]
+[v _InterruptHandler `*F23321 ~T0 @X0 1 r1 ]
+[f ]
+"169
+[e = _TMR0_InterruptHandler _InterruptHandler ]
+"170
+[e :UE 3355 ]
+}
+"172
 [v _TMR0_DefaultInterruptHandler `(v ~T0 @X0 1 ef ]
 {
 [e :U _TMR0_DefaultInterruptHandler ]
 [f ]
-"159
-[e :UE 3354 ]
+"175
+[e :UE 3356 ]
 }

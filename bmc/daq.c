@@ -369,7 +369,7 @@ int init_dio(void)
 int get_data_sample(void)
 {
 	if (DI_OPEN) {
-//		comedi_dio_bitfield2(it, subdev_di, 0x00, &datain, 0x00);
+		//		comedi_dio_bitfield2(it, subdev_di, 0x00, &datain, 0x00);
 		if (bmc.BOARD == bmcboard) {
 		}
 	}

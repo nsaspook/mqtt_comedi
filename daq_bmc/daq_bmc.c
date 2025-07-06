@@ -124,7 +124,7 @@ by the module option variable daqbmc_conf in the /etc/modprobe.d directory
 
 #define CHECKMARK 0x1957
 
-#define bmc_version "version 0.6 "
+#define bmc_version "version 0.7 "
 #define spibmc_version "version 1.1 "
 
 /* Command Definitions */
@@ -362,8 +362,9 @@ static const uint32_t PIC18_CMDD_47Q84 = 4;
 static const uint32_t SPI_BUFF_SIZE = 128000; // normally 5000
 static const uint32_t SPI_BUFF_SIZE_NOHUNK = 64000; // normally 64
 static const uint32_t MAX_CHANLIST_LEN = 256;
-static const uint32_t CONV_SPEED = 50000; /* 10s of nsecs: the true rate is ~3000/5000 so we need a fixup,  two conversions per mix scan */
+static const uint32_t CONV_SPEED = 50000; /* 10s of nsecs: the true rate is ~3000/5000 so we need a fixup,  two conversions per result */
 static const uint32_t CONV_SPEED_FIX = 19; /* usecs: round it up to ~50usecs total with this */
+static const uint32_t CONV_SPEED_FIX_Q84 = 39; /* usecs: round it up to ~50usecs total with this */
 static const uint32_t CONV_SPEED_FIX_FREERUN = 1; /* usecs: round it up to ~30usecs total with this */
 static const uint32_t CONV_SPEED_FIX_FAST = 9; /* used for the MCP3002 ADC */
 static const uint32_t CONV_ADS8330 = 0; /* used for the ADS8330 ADC */
@@ -425,7 +426,7 @@ static DECLARE_COMPLETION(done);
  */
 static int32_t daqbmc_conf = picsl12;
 module_param(daqbmc_conf, int, S_IRUGO);
-MODULE_PARM_DESC(daqbmc_conf, "hardware configuration: default 7=bmcboard standard");
+MODULE_PARM_DESC(daqbmc_conf, "hardware configuration: default 7=bmcboard standard, 0=bmcboard without DI or DO");
 
 static int32_t pullups = 2;
 module_param(pullups, int, S_IRUGO);
@@ -517,24 +518,15 @@ struct daqbmc_device {
 static const struct daqbmc_device daqbmc_devices[] = {
 	{
 		.name = "picsl12_AO",
-		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
+		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
 		.max_speed_hz = 4000000,
-		.min_acq_ns = 50000,
+		.min_acq_ns = 90000,
 		.rate_min = 1000,
 		.spi_mode = 0,
 		.spi_bpw = 8,
 		.n_chan_bits = 12,
 		.n_chan = 16,
-		.n_transfers = 3,
-
-		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
-		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
-		.max_speed_hz = 4000000,
-		.min_acq_ns = 22160,
-		.rate_min = 1000,
-		.spi_mode = 0,
-		.spi_bpw = 8,
 		.n_transfers = 3,
 	},
 	{
@@ -605,10 +597,10 @@ static const struct daqbmc_device daqbmc_devices[] = {
 	},
 	{
 		.name = "picsl12",
-		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
+		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
 		.max_speed_hz = 4000000,
-		.min_acq_ns = 50000,
+		.min_acq_ns = 90000,
 		.rate_min = 1000,
 		.spi_mode = 0,
 		.spi_bpw = 8,
@@ -675,7 +667,7 @@ static const struct daqbmc_board daqbmc_boards[] = {
 		.board_type = 0,
 		.n_aichan = 16,
 		.n_aichan_bits = 12,
-		.n_aochan = 2,
+		.n_aochan = 1,
 		.n_aochan_mask = 0x01,
 		.n_aochan_bits = 12,
 		.ai_ns_min_calc = 1000000,
@@ -2119,7 +2111,6 @@ static int32_t daqbmc_ao_delay_rate(struct comedi_device *dev,
 	int32_t device_type,
 	bool test_mode)
 {
-	//	struct daqbmc_private *devpriv = dev->private;
 	int32_t spacing_usecs = 0, sample_freq, total_sample_time, delay_time;
 	if (test_mode) {
 		dev_info(dev->class_dev,
@@ -2311,6 +2302,10 @@ static int32_t daqbmc_ai_delay_rate(struct comedi_device *dev,
 	}
 	if (device_type == ads8330) {
 		spacing_usecs += CONV_ADS8330;
+	}
+
+	if (device_type == picsl12 || device_type == picsl12_AO) {
+		spacing_usecs += CONV_SPEED_FIX_Q84;
 	}
 	dev_info(dev->class_dev, "ai rate %i, spacing usecs %i\n", rate, spacing_usecs);
 	return spacing_usecs;
@@ -2950,7 +2945,6 @@ static int32_t daqbmc_ai_insn_config(struct comedi_device *dev,
 	result = insn->n;
 
 	if (data[1] > 0) {
-
 		devpriv->ai_count = devpriv->ai_count;
 	}
 
@@ -2994,18 +2988,18 @@ static int32_t daqbmc_create_thread(struct comedi_device *dev,
 		name_ptr = thread_name;
 	}
 
-	devpriv->ai_spi->daqbmc_task =
-		kthread_create_on_node(&daqbmc_ai_thread_function,
-		(void *) dev,
-		cpu_to_node(devpriv->ai_node),
-		"%s_a/%d", name_ptr,
-		devpriv->ai_node);
-	if (!IS_ERR(devpriv->ai_spi->daqbmc_task)) {
-		kthread_bind(devpriv->ai_spi->daqbmc_task, devpriv->ai_node);
-		wake_up_process(devpriv->ai_spi->daqbmc_task);
-	} else {
-		return PTR_ERR(devpriv->ai_spi->daqbmc_task);
-	}
+	//	devpriv->ai_spi->daqbmc_task =
+	//		kthread_create_on_node(&daqbmc_ai_thread_function,
+	//		(void *) dev,
+	//		cpu_to_node(devpriv->ai_node),
+	//		"%s_a/%d", name_ptr,
+	//		devpriv->ai_node);
+	//	if (!IS_ERR(devpriv->ai_spi->daqbmc_task)) {
+	//		kthread_bind(devpriv->ai_spi->daqbmc_task, devpriv->ai_node);
+	//		wake_up_process(devpriv->ai_spi->daqbmc_task);
+	//	} else {
+	//		return PTR_ERR(devpriv->ai_spi->daqbmc_task);
+	//	}
 
 	devpriv->ao_spi->daqbmc_task =
 		kthread_create_on_node(&daqbmc_ao_thread_function,
@@ -3439,35 +3433,15 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			s->range_table = &daqbmc_ai_range3_300;
 		}
 		s->insn_read = daqbmc_ai_rinsn;
-		if (devpriv->smp) {
-			s->subdev_flags = devpriv->ai_spi->device_spi->ai_subdev_flags;
-			s->do_cmdtest = daqbmc_ai_cmdtest;
-			s->do_cmd = daqbmc_ai_cmd;
-			s->poll = daqbmc_ai_poll;
-			s->cancel = daqbmc_ai_cancel;
-		} else {
-			s->subdev_flags = devpriv->ai_spi->device_spi->ai_subdev_flags - SDF_CMD_READ;
-		}
+		s->subdev_flags = devpriv->ai_spi->device_spi->ai_subdev_flags;
 
-		if (devpriv->ai_spi->device_type == picsl12 || devpriv->ai_spi->device_type == picsl12_AO) {
+		if (devpriv->ai_spi->device_type == picsl12 || devpriv->ai_spi->device_type == picsl12_AO) { // no async
+			s->maxdata = (1 << devpriv->ai_spi->device_spi->n_chan_bits) - 1;
+			s->range_table = &daqbmc_ai_rangeq84;
 			s->n_chan = devpriv->ai_spi->chan;
 			s->len_chanlist = devpriv->ai_spi->chan;
-			s->maxdata = 4095;
-			if (devpriv->ai_spi->range) {
-				s->range_table = &daqbmc_ai_rangeq84;
-			} else {
-				s->range_table = &daqbmc_ai_rangeq84;
-			}
-			s->insn_read = daqbmc_ai_rinsn;
-			if (devpriv->smp) {
-				s->subdev_flags = devpriv->ai_spi->device_spi->ai_subdev_flags;
-				s->do_cmdtest = daqbmc_ai_cmdtest;
-				s->do_cmd = daqbmc_ai_cmd;
-				s->poll = daqbmc_ai_poll;
-				s->cancel = daqbmc_ai_cancel;
-			} else {
-				s->subdev_flags = devpriv->ai_spi->device_spi->ai_subdev_flags - SDF_CMD_READ;
-			}
+			//			s->insn_config = daqbmc_ai_insn_config;
+			s->subdev_flags = devpriv->ai_spi->device_spi->ai_subdev_flags;
 		}
 		if (devpriv->ai_spi->device_type == ads1220) {
 			/* we support single-ended (ground) & diff bipolar  24-bit samples */
@@ -3502,7 +3476,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 				s->poll = daqbmc_ai_poll;
 				s->cancel = daqbmc_ai_cancel;
 			} else {
-				s->subdev_flags = devpriv->ai_spi->device_spi->ai_subdev_flags - SDF_CMD_READ;
+				s->subdev_flags = devpriv->ai_spi->device_spi->ai_subdev_flags;
 			}
 		}
 
@@ -3551,7 +3525,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	 * setup the timer to call my_timer_ai_callback
 	 */
 	timer_setup(&devpriv->ai_spi->my_timer, my_timer_ai_callback, 0);
-	/*		(unsigned long) dev); */
+
 	/*
 	 * setup kthreads on other cores if possible
 	 */

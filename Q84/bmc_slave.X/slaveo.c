@@ -285,6 +285,7 @@ void slaveo_rx_isr(void)
 			serial_buffer_ss.make_value = false;
 			serial_buffer_ss.dac_value = false;
 			serial_buffer_ss.get_value = false;
+			MCZ_PWM_SetLow();
 			MLED_SetLow();
 		}
 		TMR0_Reload();

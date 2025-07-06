@@ -263,7 +263,7 @@ void delivered(void *context, MQTTClient_deliveryToken dt)
 }
 
 /** \file bmc_mqtt.c
- * 
+ *
  */
 void bmc_mqtt_init(void)
 {
@@ -278,8 +278,7 @@ void bmc_mqtt_init(void)
 	if (fout == NULL) {
 		fout = fopen(LOG_TO_FILE_ALT, "a");
 		if (fout == NULL) {
-			fout = stdout;
-			printf("\r\n%s Unable to open LOG file %s \r\n", log_time(false), LOG_TO_FILE_ALT);
+			fout = fopen(LOG_TO_FILE_ALT, "a+"); // create a new file
 		}
 	}
 #else
@@ -525,7 +524,6 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 					}
 					break;
 				} else {
-
 					spam = 0;
 				}
 			};

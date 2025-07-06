@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   bmc.h
  * Author: root
  *
@@ -48,7 +48,7 @@ extern "C" {
 #define CLIENTID1       "Energy_Mqtt_BMC1"
 #define CLIENTID2       "Energy_Mqtt_BMC2"
 #define CLIENTID3       "Energy_Mqtt_BMC3"
-#define TOPIC_P         
+#define TOPIC_P
 #define TOPIC_SPAM      "comedi/bmc/data/spam"
 #define TOPIC_PACA      "home-assistant/comedi/bmc"
 #define TOPIC_AI        "comedi/bmc/data/ai"
@@ -77,31 +77,31 @@ extern "C" {
 
 #define ANA_BUFFERS     0x40
 
-        /*
-         * system testing defines
-         * all should be undefined for normal operation
-         */
-        //#define DAC_TESTING
-        //digital only
-        //#define DIGITAL_ONLY
+	/*
+	 * system testing defines
+	 * all should be undefined for normal operation
+	 */
+	//#define DAC_TESTING
+	//digital only
+	//#define DIGITAL_ONLY
 
-        extern FILE* fout; // logging stream
-        extern struct energy_type E;
+	extern FILE* fout; // logging stream
+	extern struct energy_type E;
 
-        struct energy_type {
-                volatile bool once_gti, once_ac, iammeter, fm80, dumpload, homeassistant, once_gti_zero, comedi;
-                volatile double gti_low_adj, ac_low_adj, dl_excess_adj;
-                volatile bool ac_sw_on, gti_sw_on, ac_sw_status, gti_sw_status, solar_shutdown, solar_mode, startup, ac_mismatch, dc_mismatch, mode_mismatch, dl_excess;
-                volatile uint32_t speed_go, im_delay, im_display, gti_delay, sequence, mqtt_count;
-                volatile int32_t rc, sane;
-                volatile uint32_t thirty_sec_clock, log_spam, log_time_reset;
-                pthread_mutex_t ha_lock;
-                volatile int16_t di_16b, do_16b;
-                double adc[ANA_BUFFERS], dac[ANA_BUFFERS];
-                MQTTClient client_p, client_sd, client_ha;
-        };
+	struct energy_type {
+		volatile bool once_gti, once_ac, iammeter, fm80, dumpload, homeassistant, once_gti_zero, comedi;
+		volatile double gti_low_adj, ac_low_adj, dl_excess_adj;
+		volatile bool ac_sw_on, gti_sw_on, ac_sw_status, gti_sw_status, solar_shutdown, solar_mode, startup, ac_mismatch, dc_mismatch, mode_mismatch, dl_excess;
+		volatile uint32_t speed_go, im_delay, im_display, gti_delay, sequence, mqtt_count;
+		volatile int32_t rc, sane;
+		volatile uint32_t thirty_sec_clock, log_spam, log_time_reset;
+		pthread_mutex_t ha_lock;
+		volatile int16_t di_16b, do_16b;
+		double adc[ANA_BUFFERS], dac[ANA_BUFFERS];
+		MQTTClient client_p, client_sd, client_ha;
+	};
 
-        void led_lightshow(int);
+	void led_lightshow(int);
 
 #ifdef __cplusplus
 }

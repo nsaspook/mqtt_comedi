@@ -71,11 +71,11 @@ void TMR0_Initialize(void)
     // T0CS FOSC/4; T0CKPS 1:8192; T0ASYNC synchronised; 
     T0CON1 = 0x4D;
 
-    // TMR0H 179; 
-    TMR0H = 0xB3;
+    // TMR0H 27; 
+    TMR0H = 0x1B;
 
-    // TMR0L 181; 
-    TMR0L = 0xB5;
+    // TMR0L 30; 
+    TMR0L = 0x1E;
 
     // Load TMR0 value to the 16-bit reload variable
     timer0ReloadVal16bit = (TMR0H << 8) | TMR0L;
@@ -134,20 +134,36 @@ void TMR0_Reload(void)
 
 void __interrupt(irq(TMR0),base(8)) TMR0_ISR()
 {
+    static volatile uint16_t CountCallBack = 0;
+
     // clear the TMR0 interrupt flag
     PIR3bits.TMR0IF = 0;
     // Write to the Timer0 register
     TMR0H = timer0ReloadVal16bit >> 8;
     TMR0L = (uint8_t) timer0ReloadVal16bit;
 
-    if(TMR0_InterruptHandler)
+    // callback function - called every 4th pass
+    if (++CountCallBack >= TMR0_INTERRUPT_TICKER_FACTOR)
     {
-        TMR0_InterruptHandler();
+        // ticker function call
+        TMR0_CallBack();
+
+        // reset ticker counter
+        CountCallBack = 0;
     }
 
     // add your TMR0 interrupt custom code
 }
 
+void TMR0_CallBack(void)
+{
+    // Add your custom callback code here
+
+    if(TMR0_InterruptHandler)
+    {
+        TMR0_InterruptHandler();
+    }
+}
 
 void TMR0_SetInterruptHandler(void (* InterruptHandler)(void)){
     TMR0_InterruptHandler = InterruptHandler;
