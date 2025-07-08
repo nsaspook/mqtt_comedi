@@ -285,7 +285,7 @@ Typedefs</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:abaf162c1efebcc3af6a46b1ca9b8499b" id="r_abaf162c1efebcc3af6a46b1ca9b8499b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abaf162c1efebcc3af6a46b1ca9b8499b">onesec_io</a> (void)</td></tr>
-<tr class="memitem:a2e615526238e1e23cb8a75e4d3f2191f" id="r_a2e615526238e1e23cb8a75e4d3f2191f"><td class="memItemLeft" align="right" valign="top">int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e615526238e1e23cb8a75e4d3f2191f">test_slave</a> (void)</td></tr>
+<tr class="memitem:af11df404e6559795be7bd147ffa4c015" id="r_af11df404e6559795be7bd147ffa4c015"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af11df404e6559795be7bd147ffa4c015">test_slave</a> (void)</td></tr>
 <tr class="memitem:adc09e9259b2ef9fa24490870004e1c38" id="r_adc09e9259b2ef9fa24490870004e1c38"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adc09e9259b2ef9fa24490870004e1c38">SetBMCPriority</a> (void)</td></tr>
 <tr class="memitem:a6288eba0f8e8ad3ab1544ad731eb7667" id="r_a6288eba0f8e8ad3ab1544ad731eb7667"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6288eba0f8e8ad3ab1544ad731eb7667">main</a> (void)</td></tr>
 <tr class="memitem:a2c7bc8ae77786e8970ac3f03b92a1d00" id="r_a2c7bc8ae77786e8970ac3f03b92a1d00"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c7bc8ae77786e8970ac3f03b92a1d00">spinners</a> (uint8_t shape, const uint8_t reset)</td></tr>
@@ -306,6 +306,8 @@ Variables</h2></td></tr>
 <tr class="memitem:abc640bf4a8c9358954135c1fd1b0af4b" id="r_abc640bf4a8c9358954135c1fd1b0af4b"><td class="memItemLeft" align="right" valign="top">volatile uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc640bf4a8c9358954135c1fd1b0af4b">upper</a></td></tr>
 <tr class="memitem:a8684d19035db1c8da57163a57cd4cd76" id="r_a8684d19035db1c8da57163a57cd4cd76"><td class="memItemLeft" align="right" valign="top">volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8684d19035db1c8da57163a57cd4cd76">adc_buffer</a> [AI_BUFFER_NUM] = {0}</td></tr>
 <tr class="memitem:a328abcaa467b0a3acadc8d456be75a38" id="r_a328abcaa467b0a3acadc8d456be75a38"><td class="memItemLeft" align="right" valign="top">volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a328abcaa467b0a3acadc8d456be75a38">adc_data_in</a> = 0</td></tr>
+<tr class="memitem:a7702a7becafb60adcc823d6880fefc76" id="r_a7702a7becafb60adcc823d6880fefc76"><td class="memItemLeft" align="right" valign="top">volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7702a7becafb60adcc823d6880fefc76">out_buf</a> = 0</td></tr>
+<tr class="memitem:af92c5ee8ba90b6e70fd4a3ef0e1fa482" id="r_af92c5ee8ba90b6e70fd4a3ef0e1fa482"><td class="memItemLeft" align="right" valign="top">volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af92c5ee8ba90b6e70fd4a3ef0e1fa482">in_buf</a> = 0</td></tr>
 <tr class="memitem:ada284e1e4e960e3a4fd5c0b0a93314e1" id="r_ada284e1e4e960e3a4fd5c0b0a93314e1"><td class="memItemLeft" align="right" valign="top">volatile uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada284e1e4e960e3a4fd5c0b0a93314e1">tickCount</a> [TMR_COUNT] = {0}</td></tr>
 <tr class="memitem:a100a8078f274b8dcba40099c11217cf6" id="r_a100a8078f274b8dcba40099c11217cf6"><td class="memItemLeft" align="right" valign="top">volatile uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a100a8078f274b8dcba40099c11217cf6">mode_sw</a> = false</td></tr>
 <tr class="memitem:aae51255fe85ff54dd87fdc3aef4a2062" id="r_aae51255fe85ff54dd87fdc3aef4a2062"><td class="memItemLeft" align="right" valign="top">volatile uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aae51255fe85ff54dd87fdc3aef4a2062">faker</a></td></tr>
@@ -411,27 +413,8 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Speed locking setup code. Use a few EEPROM bytes to cycle or lock the serial port baud rate during a power-up. 9600 and 115200 are the normal speeds for serial communications</p>
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00279">279</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="main_8c_a6288eba0f8e8ad3ab1544ad731eb7667_cgraph.png" border="0" usemap="#amain_8c_a6288eba0f8e8ad3ab1544ad731eb7667_cgraph" loading="lazy" alt=""/></div>
-<map name="amain_8c_a6288eba0f8e8ad3ab1544ad731eb7667_cgraph" id="amain_8c_a6288eba0f8e8ad3ab1544ad731eb7667_cgraph">
-<area shape="rect" title=" " alt="" coords="5,104,60,129"/>
-<area shape="rect" href="group__adc__context__scan.html#ga281da9f1502be02e9d368e2040b6c065" title="This API is used to discharge input sample capacitor for selected context by setting the channel to A..." alt="" coords="108,5,341,31"/>
-<area shape="poly" title=" " alt="" coords="41,102,68,70,86,54,107,40,121,33,124,38,109,44,89,58,71,74,45,106"/>
-<area shape="rect" href="group__adc__context__scan.html#ga9650956bd92194e1b9f0bfd5bb2d73dd" title="This API is used to retrieve the result of latest A/D conversion. Correct ADC context should be selec..." alt="" coords="127,55,322,80"/>
-<area shape="poly" title=" " alt="" coords="59,104,107,89,141,80,143,86,109,94,61,109"/>
-<area shape="rect" href="group__adc__context__scan.html#gad5c10c1709aeacf08e783c3ea174463b" title="This API checks if ongoing A/D conversion is complete." alt="" coords="137,104,312,129"/>
-<area shape="poly" title=" " alt="" coords="60,114,124,114,124,119,60,119"/>
-<area shape="rect" href="group__adc__context__scan.html#gac707a2b4c0d69dbebd00de5bb18b83e4" title="This API starts A/D conversion on selected channel. Correct ADC context should be selected using ADC_..." alt="" coords="144,153,305,179"/>
-<area shape="poly" title=" " alt="" coords="61,123,109,138,147,148,146,153,107,143,59,128"/>
-<area shape="rect" href="mconfig_8c.html#a914644e400a0b8a58f027b2d57842838" title=" " alt="" coords="169,203,281,228"/>
-<area shape="poly" title=" " alt="" coords="45,128,72,159,109,188,156,204,154,209,107,192,68,162,41,132"/>
-</map>
-</div>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00282">282</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -450,7 +433,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00683">683</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00749">749</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -469,7 +452,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00723">723</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00790">790</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -492,18 +475,18 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00693">693</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00759">759</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
-<a id="a2e615526238e1e23cb8a75e4d3f2191f" name="a2e615526238e1e23cb8a75e4d3f2191f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e615526238e1e23cb8a75e4d3f2191f">&#9670;&#160;</a></span>test_slave()</h2>
+<a id="af11df404e6559795be7bd147ffa4c015" name="af11df404e6559795be7bd147ffa4c015"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af11df404e6559795be7bd147ffa4c015">&#9670;&#160;</a></span>test_slave()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int8_t test_slave </td>
+          <td class="memname">void test_slave </td>
           <td>(</td>
           <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -511,7 +494,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00709">709</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00778">778</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -528,7 +511,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00267">267</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00269">269</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -544,7 +527,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00266">266</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00268">268</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -560,7 +543,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00266">266</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00268">268</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -576,7 +559,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00267">267</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00269">269</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -597,7 +580,7 @@ Here is the call graph for this function:</div>
 <div class="line">    .dim_delay = DIM_DELAY,</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00249">249</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00251">251</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -637,7 +620,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00266">266</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00268">268</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -653,7 +636,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00266">266</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00268">268</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -665,6 +648,22 @@ Here is the call graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">volatile uint8_t faker</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00273">273</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
+<a id="af92c5ee8ba90b6e70fd4a3ef0e1fa482" name="af92c5ee8ba90b6e70fd4a3ef0e1fa482"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af92c5ee8ba90b6e70fd4a3ef0e1fa482">&#9670;&#160;</a></span>in_buf</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint32_t in_buf = 0</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -685,7 +684,23 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00270">270</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00273">273</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
+<a id="a7702a7becafb60adcc823d6880fefc76" name="a7702a7becafb60adcc823d6880fefc76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7702a7becafb60adcc823d6880fefc76">&#9670;&#160;</a></span>out_buf</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint16_t out_buf = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00269">269</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -707,7 +722,7 @@ Here is the call graph for this function:</div>
 <div class="line">    .make_value = <span class="keyword">false</span>,</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00259">259</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00261">261</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -723,7 +738,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00255">255</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00257">257</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -766,7 +781,7 @@ Here is the call graph for this function:</div>
 <div class="line">    .raw_index = 0,</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00256">256</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00258">258</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -787,7 +802,7 @@ Here is the call graph for this function:</div>
 <p>@Summary This is the generated driver implementation file for the TMR6 driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs</p>
 <p>@Description This source file provides APIs for TMR6. Generation Information : Product Revision : PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8 Device : PIC18F47Q84 Driver Version : 2.11 The generated drivers are tested against the following: Compiler : XC8 2.36 and above MPLAB : MPLAB X 6.00 Section: Included Files </p>
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00269">269</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00272">272</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -803,7 +818,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00266">266</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00268">268</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>

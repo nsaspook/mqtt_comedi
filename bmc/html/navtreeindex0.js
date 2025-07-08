@@ -39,12 +39,11 @@ var NAVTREEINDEX0 =
 "mcp2210_8h_source.html":[1,0,13],
 "pages.html":[],
 "structbmcdata.html":[0,0,0],
-"structdidata.html":[0,0,1],
-"structenergy__type.html":[0,0,3],
-"structha__daq__hosts__type.html":[0,0,4],
-"structha__flag__type.html":[0,0,5],
-"structmcp2210__spi__type.html":[0,0,6],
+"structenergy__type.html":[0,0,2],
+"structha__daq__hosts__type.html":[0,0,3],
+"structha__flag__type.html":[0,0,4],
+"structmcp2210__spi__type.html":[0,0,5],
 "tic12400_8c_source.html":[1,0,14],
 "tic12400_8h_source.html":[1,0,15],
-"uniondio__buf__type.html":[0,0,2]
+"uniondio__buf__type.html":[0,0,1]
 };

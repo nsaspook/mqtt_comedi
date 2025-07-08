@@ -140,35 +140,39 @@ $(function(){initNavTree('tmr0_8h_source.html','',''); initResizable(true); });
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="keywordtype">void</span> TMR0_Initialize(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="keywordtype">void</span> TMR0_StartTimer(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span></div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="keywordtype">void</span> TMR0_StopTimer(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span></div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>uint16_t TMR0_ReadTimer(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span></div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="keywordtype">void</span> TMR0_WriteTimer(uint16_t timerVal);</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span></div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="keywordtype">void</span> TMR0_Reload(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span> </div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span> </div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span></div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> <span class="keywordtype">void</span> TMR0_SetInterruptHandler(<span class="keywordtype">void</span> (* InterruptHandler)(<span class="keywordtype">void</span>));</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span></div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span><span class="keyword">extern</span> void (*TMR0_InterruptHandler)(void);</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span></div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span><span class="keywordtype">void</span> TMR0_DefaultInterruptHandler(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span><span class="preprocessor">#ifdef __cplusplus  </span><span class="comment">// Provide C++ Compatibility</span></div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span> </div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>    }</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span> </div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> </div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span><span class="preprocessor">#endif </span><span class="comment">// TMR0_H</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">#define TMR0_INTERRUPT_TICKER_FACTOR    4</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="keywordtype">void</span> TMR0_Initialize(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="keywordtype">void</span> TMR0_StartTimer(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span></div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="keywordtype">void</span> TMR0_StopTimer(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>uint16_t TMR0_ReadTimer(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span></div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span><span class="keywordtype">void</span> TMR0_WriteTimer(uint16_t timerVal);</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span></div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="keywordtype">void</span> TMR0_Reload(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span> </div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span></div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span><span class="keywordtype">void</span> TMR0_CallBack(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span></div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span> <span class="keywordtype">void</span> TMR0_SetInterruptHandler(<span class="keywordtype">void</span> (* InterruptHandler)(<span class="keywordtype">void</span>));</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span></div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span><span class="keyword">extern</span> void (*TMR0_InterruptHandler)(void);</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span></div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span><span class="keywordtype">void</span> TMR0_DefaultInterruptHandler(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span> </div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span><span class="preprocessor">#ifdef __cplusplus  </span><span class="comment">// Provide C++ Compatibility</span></div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span> </div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>    }</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span> </div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span> </div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span><span class="preprocessor">#endif </span><span class="comment">// TMR0_H</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

@@ -55,7 +55,6 @@ extern "C" {
 #define TOPIC_AO        "comedi/bmc/data/ao"
 #define TOPIC_DI        "comedi/bmc/data/di"
 #define TOPIC_DO        "comedi/bmc/data/do"
-#define QOS             1
 
 #define TIMEOUT         10000L
 #define SPACING_USEC    500 * 1000

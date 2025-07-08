@@ -17,7 +17,7 @@ extern "C" {
 
 #define MAIN_DELAY      1000 // 1.0 msec comedi sample rate max
 
-#define QOS             1
+#define QOS             2
 
 #define RDEV_SIZE        10
 
