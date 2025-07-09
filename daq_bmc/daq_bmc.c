@@ -150,20 +150,16 @@ static LIST_HEAD(device_list);
 
 /* analog chip types  index to daqbmc_device array */
 
-#define picsl12  7
-#define picsl12_AO  0
-#define n_chips  7
-#define MAX_AI   32
+#define picsl12  0 // index into chip config array
+#define picsl12_AO  1
+#define n_chips  3 // including the special testing device
+#define MAX_AI   32 // max possible Q84 ADC channel
 #define MAX_AO   1
-
 #define SMP_CORES 4
-
-#define CONF_Q84 110
+#define CONF_Q84 3
 
 #define I8254_MAX_COUNT   0x10000
 
-static const uint32_t PIC18_CONVD_25K22 = 24;
-static const uint32_t PIC18_CMDD_25K22 = 4;
 static const uint32_t PIC18_CONVD_47Q84 = 24;
 static const uint32_t PIC18_CMDD_47Q84 = 4;
 static const uint32_t SPI_BUFF_SIZE = 128000; // normally 5000
@@ -221,7 +217,6 @@ static const uint8_t CMD_DEAD = 0xff; /* This is usually a bad response */
 static const uint32_t NUM_DIO_CHAN = 24;
 static const uint32_t NUM_DO_CHAN = 16;
 static const uint32_t NUM_DI_CHAN = 24;
-static const uint32_t NUM_DIO_CHAN_REV2 = 24;
 static const uint32_t NUM_DIO_CHAN_REV3 = 24;
 static const uint32_t DIO_PINS_DEFAULT = 0xffffff;
 
@@ -240,9 +235,6 @@ module_param(pullups, int, S_IRUGO);
 MODULE_PARM_DESC(pullups, "gpio pins 0: none 1: down 2: up: 2=default");
 static int32_t gpiosafe = 1;
 module_param(gpiosafe, int, S_IRUGO);
-static int32_t dio_conf = 1;
-module_param(dio_conf, int, S_IRUGO);
-MODULE_PARM_DESC(dio_conf, "internal board rev code");
 static int32_t di_conf = 1;
 module_param(di_conf, int, S_IRUGO);
 MODULE_PARM_DESC(di_conf, "internal board rev code");
@@ -324,85 +316,6 @@ struct daqbmc_device {
  */
 static const struct daqbmc_device daqbmc_devices[] = {
 	{
-		.name = "picsl12_AO",
-		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
-		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
-		.max_speed_hz = 4000000,
-		.min_acq_ns = 90000,
-		.rate_min = 1000,
-		.spi_mode = 0,
-		.spi_bpw = 8,
-		.n_chan_bits = 12,
-		.n_chan = 16,
-		.n_transfers = 3,
-	},
-	{
-		.name = "mcp3002",
-		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
-		.max_speed_hz = 4000000,
-		.min_acq_ns = 20000,
-		.rate_min = 30000,
-		.spi_mode = 3,
-		.spi_bpw = 8,
-		.n_chan_bits = 2,
-		.n_transfers = 2,
-	},
-	{
-		.name = "mcp3202",
-		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
-		.max_speed_hz = 4000000,
-		.min_acq_ns = 28800,
-		.rate_min = 30000,
-		.spi_mode = 3,
-		.spi_bpw = 8,
-		.n_chan_bits = 0,
-		.n_transfers = 3,
-	},
-	{
-		.name = "mcp4802",
-		.ao_subdev_flags = SDF_WRITABLE | SDF_GROUND | SDF_CMD_WRITE,
-		.max_speed_hz = 16000000,
-		.min_acq_ns = 5400,
-		.rate_min = 6000,
-		.spi_mode = 3,
-		.spi_bpw = 8,
-		.n_chan_bits = 4,
-		.n_transfers = 2,
-	},
-	{
-		.name = "mcp4812",
-		.ao_subdev_flags = SDF_WRITABLE | SDF_GROUND | SDF_CMD_WRITE,
-		.max_speed_hz = 16000000,
-		.min_acq_ns = 5400,
-		.rate_min = 6000,
-		.spi_mode = 3,
-		.spi_bpw = 8,
-		.n_chan_bits = 2,
-		.n_transfers = 2,
-	},
-	{
-		.name = "mcp4822",
-		.ao_subdev_flags = SDF_WRITABLE | SDF_GROUND | SDF_CMD_WRITE,
-		.max_speed_hz = 16000000,
-		.min_acq_ns = 5400,
-		.rate_min = 6000,
-		.spi_mode = 3,
-		.spi_bpw = 8,
-		.n_chan_bits = 0,
-		.n_transfers = 2,
-	},
-	{
-		.name = "picsl10",
-		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
-		.max_speed_hz = 4000000,
-		.min_acq_ns = 20000,
-		.rate_min = 20000,
-		.spi_mode = 0,
-		.spi_bpw = 8,
-		.n_chan_bits = 2,
-		.n_transfers = 3,
-	},
-	{
 		.name = "picsl12",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
@@ -416,28 +329,17 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.n_transfers = 3,
 	},
 	{
-		.name = "ads1220",
-		.ai_subdev_flags = SDF_READABLE | SDF_DIFF | SDF_GROUND | SDF_CMD_READ | SDF_COMMON | SDF_LSAMPL,
-		.max_speed_hz = 500000,
-		.min_acq_ns = 20000,
-		.rate_min = 200000,
-		.spi_mode = 1,
+		.name = "picsl12_AO",
+		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
+		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
+		.max_speed_hz = 4000000,
+		.min_acq_ns = 90000,
+		.rate_min = 1000,
+		.spi_mode = 0,
 		.spi_bpw = 8,
-		.n_chan_bits = 24,
-		.n_chan = 5,
+		.n_chan_bits = 12,
+		.n_chan = 16,
 		.n_transfers = 3,
-	},
-	{
-		.name = "ads8330",
-		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
-		.max_speed_hz = 16000000,
-		.min_acq_ns = 3200,
-		.rate_min = 3000,
-		.spi_mode = 1,
-		.spi_bpw = 8,
-		.n_chan_bits = 16,
-		.n_chan = 2,
-		.n_transfers = 2,
 	},
 	{
 		.name = "special",
@@ -631,16 +533,18 @@ static void daqbmc_ao_put_samples(struct comedi_device *,
 /*
  * piBoardRev:
  *	Return a number representing the hardware revision of the board.
- *	Revision is currently 1,2 or 3. -1 is returned on error.
+ *	Revision is currently 3 only. -1 is returned on error.
  *********************************************************************
  */
 
 static int32_t piBoardRev(struct comedi_device *dev)
 {
-	static int32_t boardRev = 1;
+	static int32_t boardRev = 3; // hardwired for now
 
 	dev_info(dev->class_dev, "BMCboard hardware rev %i\n", boardRev);
-	dio_conf = boardRev; /* set module param */
+	/*
+	 * set module param
+	 */
 	do_conf = boardRev;
 	di_conf = boardRev;
 
@@ -692,17 +596,17 @@ static int32_t daqbmc_ao_thread_function(void *data)
 }
 
 /*
- * AI async thread timer
+ * AO async thread timer
  *
  */
-static void daqbmc_ai_start_pacer(struct comedi_device *dev,
+static void daqbmc_ao_start_pacer(struct comedi_device *dev,
 	bool load_timers)
 {
 	struct daqbmc_private *devpriv = dev->private;
 
 	if (load_timers) {
 		/* setup timer interval to 100 msecs */
-		mod_timer(&devpriv->ai_spi->my_timer, jiffies
+		mod_timer(&devpriv->ao_spi->my_timer, jiffies
 			+ msecs_to_jiffies(100));
 	}
 }
@@ -1322,7 +1226,7 @@ static void my_timer_ai_callback(struct timer_list *t)
 		devpriv->run = true;
 		devpriv->timer = true;
 	}
-	daqbmc_ai_start_pacer(dev, true);
+	daqbmc_ao_start_pacer(dev, true);
 	if (speed_test) {
 	}
 }
@@ -1679,19 +1583,6 @@ static int32_t daqbmc_create_thread(struct comedi_device *dev,
 		name_ptr = thread_name;
 	}
 
-	//	devpriv->ai_spi->daqbmc_task =
-	//		kthread_create_on_node(&daqbmc_ai_thread_function,
-	//		(void *) dev,
-	//		cpu_to_node(devpriv->ai_node),
-	//		"%s_a/%d", name_ptr,
-	//		devpriv->ai_node);
-	//	if (!IS_ERR(devpriv->ai_spi->daqbmc_task)) {
-	//		kthread_bind(devpriv->ai_spi->daqbmc_task, devpriv->ai_node);
-	//		wake_up_process(devpriv->ai_spi->daqbmc_task);
-	//	} else {
-	//		return PTR_ERR(devpriv->ai_spi->daqbmc_task);
-	//	}
-
 	devpriv->ao_spi->daqbmc_task =
 		kthread_create_on_node(&daqbmc_ao_thread_function,
 		(void *) dev,
@@ -1918,7 +1809,10 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	devpriv->ai_conv_delay_10nsecs = CONV_SPEED;
 	devpriv->timing_lockout = false;
 
-	/* Use OPi board type Zero 3 */
+	/*
+	 * Use OPi board type Zero 3
+	 * need to get Soc address for Zero 3
+	 */
 	devpriv->OPisys_rev = 3; /* what board are we running on? */
 	if (devpriv->OPisys_rev < 2) {
 		dev_err(dev->class_dev, "invalid OPi board revision! %u\n",
@@ -1928,14 +1822,11 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 
 	devpriv->board_rev = piBoardRev(dev);
 	switch (devpriv->board_rev) {
-	case 2:
-		num_dio_chan = NUM_DIO_CHAN_REV2; /* This a Rev 2 board */
-		break;
 	case 3:
 		num_dio_chan = NUM_DIO_CHAN_REV3; /* This a Rev 3 board */
 		break;
 	default:
-		num_dio_chan = NUM_DIO_CHAN; /* Rev 1 board OPI Zero 3 setup */
+		num_dio_chan = NUM_DIO_CHAN_REV3; /* Rev 3 board OPI Zero 3 setup */
 	}
 
 	dev_info(dev->class_dev,
@@ -2008,7 +1899,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 				"hunk ai transfers enabled, length: %i\n",
 				hunk_len);
 		}
-		s = &dev->subdevices[0];
+		s = &dev->subdevices[0]; // AI setup
 		s->private = devpriv->ai_spi;
 		s->type = COMEDI_SUBD_AI;
 		/* default setups, we support single-ended (ground)  */
@@ -2028,7 +1919,6 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			s->range_table = &daqbmc_ai_rangeq84;
 			s->n_chan = devpriv->ai_spi->chan;
 			s->len_chanlist = devpriv->ai_spi->chan;
-			//			s->insn_config = daqbmc_ai_insn_config;
 			s->subdev_flags = devpriv->ai_spi->device_spi->ai_subdev_flags;
 		}
 
@@ -2037,30 +1927,30 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			dev_info(dev->class_dev, "16 bit and less device buffers set to 16 bits\n");
 		}
 		dev->read_subdev = s;
-	}
 
-	/* daq-bmc ao */
-	s = &dev->subdevices[1];
-	s->private = devpriv->ao_spi;
-	s->type = COMEDI_SUBD_AO;
-	/* we support single-ended (ground)  */
-	s->n_chan = thisboard->n_aochan;
-	s->len_chanlist = thisboard->n_aochan;
-	/* analog resolution depends on the DAC chip 8,10,12 bits */
-	s->maxdata = (1 << thisboard->n_aochan_bits) - 1;
-	s->range_table = &daqbmc_ao_range;
-	s->insn_write = daqbmc_ao_winsn;
-	s->insn_read = comedi_readback_insn_read;
+		/* daq-bmc ao */
+		s = &dev->subdevices[1];
+		s->private = devpriv->ao_spi;
+		s->type = COMEDI_SUBD_AO;
+		/* we support single-ended (ground)  */
+		s->n_chan = thisboard->n_aochan;
+		s->len_chanlist = thisboard->n_aochan;
+		/* analog resolution depends on the DAC chip 8,10,12 bits */
+		s->maxdata = (1 << thisboard->n_aochan_bits) - 1;
+		s->range_table = &daqbmc_ao_range;
+		s->insn_write = daqbmc_ao_winsn;
+		s->insn_read = comedi_readback_insn_read;
 
-	if (devpriv->smp) {
-		s->subdev_flags = devpriv->ao_spi->device_spi->ao_subdev_flags;
-		s->do_cmdtest = daqbmc_ao_cmdtest;
-		s->do_cmd = daqbmc_ao_cmd;
-		s->cancel = daqbmc_ao_cancel;
-	} else {
-		s->subdev_flags = devpriv->ao_spi->device_spi->ao_subdev_flags - SDF_CMD_WRITE;
+		if (devpriv->smp) {
+			s->subdev_flags = devpriv->ao_spi->device_spi->ao_subdev_flags;
+			s->do_cmdtest = daqbmc_ao_cmdtest;
+			s->do_cmd = daqbmc_ao_cmd;
+			s->cancel = daqbmc_ao_cancel;
+		} else {
+			s->subdev_flags = devpriv->ao_spi->device_spi->ao_subdev_flags - SDF_CMD_WRITE;
+		}
+		dev->write_subdev = s;
 	}
-	dev->write_subdev = s;
 
 	ret = comedi_alloc_subdev_readback(s);
 	if (ret) {
@@ -2127,9 +2017,8 @@ static struct comedi_driver daqbmc_driver = {
 };
 
 /*
- * called for each listed spibmc device
+ * called for each listed spibmc SPI device
  * SO THIS RUNS FIRST, setup basic spi comm parameters here
- * so it defaults to slow speed
  */
 static int32_t spibmc_spi_probe(struct spi_device * spi)
 {
@@ -2345,7 +2234,6 @@ static int32_t daqbmc_spi_setup(struct spi_param_type * spi)
 static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	struct spi_param_type * spi_adc)
 {
-	int32_t ret = 0;
 	const struct daqbmc_board *thisboard = dev->board_ptr;
 
 	if (!spi_adc->spi) {
@@ -2355,10 +2243,10 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	}
 
 	switch (daqbmc_conf) {
-	case 7:
+	case 0:
 		spi_adc->device_type = picsl12;
 		break;
-	case 0:
+	case 1:
 		spi_adc->device_type = picsl12_AO;
 		break;
 	default:
@@ -2368,7 +2256,7 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	spi_adc->device_spi = &daqbmc_devices[spi_adc->device_type];
 
 	/* default setup */
-	spi_adc->pic18 = 0;
+	spi_adc->pic18 = CONF_Q84; /* Q84 mode 12 bits */
 	spi_adc->chan = thisboard->n_aichan;
 
 	/*
@@ -2377,29 +2265,21 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	 */
 	daqbmc_spi_setup(spi_adc);
 
-	switch (daqbmc_conf) {
-	case 5:
-	case 6:
+	switch (daqbmc_conf) { //default or modified my comedi.conf modules.d file
 	case picsl12:
 	case picsl12_AO:
-		ret = CONF_Q84; /* P47Q84 slave mode */
+	default:
 		dev_info(dev->class_dev, "PIC18F47Q84 DAQ device, SPI slave mode\n");
 		break;
-	default:
-		ret = spi_w8r8(spi_adc->spi, CMD_DUMMY_CFG);
 	}
 
-	ret = CONF_Q84; // Force Q84 12-bit mode
-
 	daqbmc_spi_setup(spi_adc);
-	spi_adc->pic18 = 2; /* PIC24/Q84 mode 12 bits */
 	spi_adc->device_type = daqbmc_conf;
 	spi_adc->chan = spi_adc->device_spi->n_chan;
 	spi_adc->range = 0; // 4.096 default
 	spi_adc->bits = spi_adc->device_spi->n_chan_bits;
 
 	if ((daqbmc_conf == picsl12_AO) || (do_conf == 0) || (di_conf == 0)) { // no DIO board version
-		dio_conf = 0;
 		do_conf = 0;
 		di_conf = 0;
 		dev_info(dev->class_dev,
@@ -2408,10 +2288,10 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	dev_info(dev->class_dev,
 		"%s device detected, "
 		"%i channels, range code %i, device code %i, "
-		"bits code %i, controller code %i, detect Code %i\n",
+		"bits code %i, controller code %i\n",
 		spi_adc->device_spi->name,
 		spi_adc->chan, spi_adc->range, spi_adc->device_type,
-		spi_adc->bits, spi_adc->pic18, ret);
+		spi_adc->bits, spi_adc->pic18);
 
 	dev_info(dev->class_dev,
 		"Board SPI setup: spi cs %d: %d Hz: mode 0x%x: "
@@ -2424,16 +2304,17 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	return spi_adc->chan;
 }
 
+/*
+ * Linux Module setups
+ */
 static int32_t __init daqbmc_init(void)
 {
-
 	return spi_register_driver(&spibmc_spi_driver);
 }
 module_init(daqbmc_init);
 
 static void __exit daqbmc_exit(void)
 {
-
 	struct comedi_spibmc *pdata;
 	static struct spi_param_type *slave_spi;
 
