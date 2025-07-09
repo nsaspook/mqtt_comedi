@@ -2411,7 +2411,7 @@ static int32_t daqgert_ao_cmd(struct comedi_device *dev,
 		/* enable this acquisition operation */
 		smp_mb__before_atomic();
 		set_bit(AI_CMD_RUNNING, &devpriv->state_bits);
-		wake_up_interruptible(&daqgert_ai_thread_wq);
+		wake_up_interruptible(&daqgert_ao_thread_wq);
 		smp_mb__after_atomic();
 		devpriv->ao_cmd_canceled = false;
 	} else {
