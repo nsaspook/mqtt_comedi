@@ -9,22 +9,22 @@ extern "C" {
 #include "bmc.h"
 #include "daq.h"
 
-#define MQTT_RETRY 10
+#define MQTT_RETRY	10
 
 #define HA_SW_DELAY     400000  // usecs
 #define TOKEN_DELAY     600
 #define GTI_TOKEN_DELAY 300
 
-#define MAIN_DELAY      1000 // 1.0 msec comedi sample rate max
+#define MAIN_DELAY      500 // 1.0 msec comedi sample rate max
 
 #define QOS             2
 
-#define RDEV_SIZE        10
+#define RDEV_SIZE	10
 
 #define SLEEP_CODE      0
 #define FLOAT_CODE      1
 
-#define MBMQTT  1024
+#define MBMQTT		1024
 
 	enum mqtt_id {
 		P8055_ID,

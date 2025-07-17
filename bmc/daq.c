@@ -368,12 +368,17 @@ int init_dio(void)
 
 int get_data_sample(void)
 {
+
 	if (DI_OPEN) {
-		//		comedi_dio_bitfield2(it, subdev_di, 0x00, &datain, 0x00);
 		if (bmc.BOARD == bmcboard) {
+			comedi_dio_bitfield2(it, subdev_di, 0x00, &datain, 0x00);
+		} else {
+			comedi_dio_bitfield2(it, subdev_di, 0x00, &datain, 0x00);
 		}
 	}
 
+	usleep(50);
+	
 	if (DO_OPEN) {
 		// send I/O as a byte mask
 		obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output

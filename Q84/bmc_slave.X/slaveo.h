@@ -51,11 +51,11 @@ extern "C" {
 #define	ADC_SWAP_MASK	0b01000000
 #define UART_DUMMY_MASK	0b01000000
 
-#define PORT_GET_BYTES	4
-#define CFG_GET_BYTES	3
-#define ADC_GET_BYTES	3
-#define PORT_GO_BYTES	3
-#define DAC_GO_BYTES	3
+#define PORT_GET_BYTES	7
+#define CFG_GET_BYTES	7
+#define ADC_GET_BYTES	7
+#define PORT_GO_BYTES	7
+#define DAC_GO_BYTES	7
 
 	struct spi_link_type_ss { // internal state table
 		uint8_t SPI_DATA : 1;

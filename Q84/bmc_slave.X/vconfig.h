@@ -22,9 +22,9 @@ extern "C" {
 
 #define NHD		// SPI 20X4 display, nhd-0420d3z-nsw-bbw
 
-//#define DIS_DEBUG	// active status display, disable during normal operation
+	//#define DIS_DEBUG	// active status display, disable during normal operation
 
-#define VER	"V0.14"
+#define VER	"V0.15"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 47Q84.
@@ -38,6 +38,7 @@ extern "C" {
 	 * V0.12 5 transfers for 24 bit DI SPI
 	 * V0.13 fix ADC higher channels and cleanup SPI link protocols
 	 * V0.14 remove serial speed switching code
+	 * V0.15 update to 9 byte packets for all commands
 	 */
 	/*
 	 * TIC12400 testing modes
@@ -45,15 +46,15 @@ extern "C" {
 #define DIO_TEST
 #define DIO_SHOW_BUF
 #define DI_DEBUG
-//#define SER_DEBUG
-	
+	//#define SER_DEBUG
+
 #define DI_MC_CMD
 
 	/* analog testing a calibration mode
 	 * 
 	 */
 
-//#define AIO_TEST
+	//#define AIO_TEST
 
 #define SLED	MLED_LAT
 #define DLED	DLED_LAT

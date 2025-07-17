@@ -171,7 +171,7 @@ void slaveo_rx_isr(void)
 			if (serial_buffer_ss.raw_index == 1) {
 				SPI2TXB = serial_buffer_ss.raw_index;
 			} else {
-				SPI2TXB = serial_buffer_ss.raw_index;
+				SPI2TXB = spi_stat_ss.daq_conf;
 			}
 			data_in2 = 0;
 		}
@@ -258,7 +258,7 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = true;
 		spi_stat_ss.port_count++;
-		serial_buffer_ss.raw_index = 0;
+		serial_buffer_ss.raw_index = 1;
 		serial_buffer_ss.get_value = true;
 		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();

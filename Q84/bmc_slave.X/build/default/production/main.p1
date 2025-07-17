@@ -18,10 +18,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n E24606 . LINK_STATE_IDLE LINK_STATE_ENQ LINK_STATE_EOT LINK_STATE_ACK LINK_STATE_DONE LINK_STATE_NAK LINK_STATE_ERROR  ]
 [c E24547 0 1 2 3 4 5 6 7 8 9 10 11 .. ]
 [n E24547 . DIS_STR DIS_TERM DIS_LOG DIS_LOAD DIS_UNLOAD DIS_PUMP DIS_HELP DIS_SEQUENCE DIS_SEQUENCE_M DIS_ERR DIS_FREE DIS_CLEAR  ]
-"143 ./vconfig.h
+"144 ./vconfig.h
 [s S3358 `uc -> 32 `i `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 :1 `uc 1 `E24547 1 `E24547 1 `us 1 `us 1 ]
 [n S3358 terminal_type ack mesgid TID mcode mparm cmdlen log_seq host_display_ack info help_temp ceid log_num ]
-"246
+"247
 [s S3359 `E24575 1 `E24584 1 `E24591 1 `E24600 1 `E24606 1 `E24606 1 `E24606 1 `uc -> 128 `i `uc -> 160 `i `uc -> 64 `i `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `l 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `E24584 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `Vus 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :4 `uc 1 :4 `uc 1 `S3358 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `Vuc 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `us 1 `us 1 `s 1 `s 1 `uc 1 `uc 1 `s 1 `s 1 `ul 1 `ul 1 `ul 1 ]
 [n S3359 V_data s_state ui_state g_state e_types m_l_state r_l_state t_l_state buf terminal info ticks systemb tx_total rx_total bt_total br_total brn_total btn_total bmc_do bmc_di utc_ticks testing stream function error abort msg_error msg_ret alarm event ui_sw r_checksum t_checksum checksum_error timer_error ping mode_pwm equip_timeout sequences all_errors ceid bmc_ao rbit wbit ebit failed_send failed_receive response uart llid sid ping_count euart vterm vterm_switch uart_speed_fast ticker flipper queue debug help stack help_id rerror speed_spin set_sequ log_s6f11 log_abort log_char v_tx_line v_rx_line tx_volts rx_volts tx_rs232 rx_rs232 secs_value cmd_value utc_cmd_value di_fail do_fail ]
 "206 main.c
@@ -35,7 +35,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n E24644 . RECV_ERROR_NONE RECV_ERROR_NAK RECV_ERROR_EOT RECV_ERROR_T2 RECV_ERROR_T3 RECV_ERROR_CKSUM RECV_ERROR_DATA  ]
 [c E24653 0 20 40 .. ]
 [n E24653 . TICKER_ZERO TICKER_LOW TICKER_HIGH  ]
-"122 ./vconfig.h
+"123 ./vconfig.h
 [s S3357 `Va 1 `Vus 1 `Va 1 ]
 [n S3357 B_type one_sec_flag dim_delay display_update ]
 "60 ./slaveo.h
@@ -95,9 +95,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _TMR5_StartTimer `(v ~T0 @X0 0 ef ]
 "542 ./mcc_generated_files/tmr6.h
 [v _TMR6_StartTimer `(v ~T0 @X0 0 ef ]
-"298 ./vconfig.h
+"299 ./vconfig.h
 [v _UART2_Initialize115200 `(v ~T0 @X0 0 ef ]
-"297
+"298
 [v _UART1_Initialize115200 `(v ~T0 @X0 0 ef ]
 "30 ./timers.h
 [v _WaitMs `(v ~T0 @X0 0 ef1`us ]
@@ -154,21 +154,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _TMR0_StartTimer `(v ~T0 @X0 0 ef ]
 "53 ./mydisplay.h
 [v _set_display_info `(E24547 ~T0 @X0 0 ef1`CE24547 ]
-"279 ./vconfig.h
+"280 ./vconfig.h
 [v _spinners `(uc ~T0 @X0 0 ef2`uc`Cuc ]
 [v F24770 `(a ~T0 @X0 1 tf1`uc ]
 "29 ./timers.h
 [v _TimerDone `TF24770 ~T0 @X0 0 e ]
-"78 ./tic12400.h
-[v _tic12400_read_sw `(v ~T0 @X0 0 ef2`ul`um ]
-"82
-[v _tic12400_switch `Vul ~T0 @X0 0 e ]
 "69 ./mc33996.h
 [v _mc33996_update `(v ~T0 @X0 0 ef1`Cus ]
 [v F23826 `(v ~T0 @X0 1 tf ]
 "456 ./mcc_generated_files/adc.h
 [v _ADC_DischargeSampleCapacitor `TF23826 ~T0 @X0 0 e ]
-"505 main.c
+"494 main.c
 [c E23783 0 1 2 4 5 22 23 29 59 60 61 62 63 .. ]
 [n E23783 . channel_ANA0 channel_ANA1 channel_ANA2 channel_ANA4 channel_ANA5 channel_ANC6 channel_ANC7 channel_AND5 channel_VSS channel_Temp channel_DAC1 channel_FVR_Buffer1 channel_FVR_Buffer2  ]
 "301 ./mcc_generated_files/adc.h
@@ -179,6 +175,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _ADC_GetConversionResult `(us ~T0 @X0 0 ef ]
 "3253 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [v _DAC1DATL `Vuc ~T0 @X0 0 e@125 ]
+"78 ./tic12400.h
+[v _tic12400_read_sw `(v ~T0 @X0 0 ef2`ul`um ]
+"82
+[v _tic12400_switch `Vul ~T0 @X0 0 e ]
 "52 ./mydisplay.h
 [v _check_help `(v ~T0 @X0 0 ef1`Ca ]
 "54 /opt/microchip/xc8/v3.00/pic/include/c99/string.h
@@ -2771,7 +2771,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _SPI2_InterruptHandler `*F24358 ~T0 @X0 1 e ]
 "77
 [v _SPI2_RxInterruptHandler `*F24364 ~T0 @X0 1 e ]
-"105 ./vconfig.h
+"106 ./vconfig.h
 [v _msg_gemcmds `Cuc ~T0 @X0 -> 33 `i e ]
 [i _msg_gemcmds
 :U ..
@@ -2810,7 +2810,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"106
+"107
 [v _msg_freecmds `Cuc ~T0 @X0 -> 32 `i e ]
 [i _msg_freecmds
 :U ..
@@ -2848,7 +2848,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"107
+"108
 [v _msg_gemremote `Cuc ~T0 @X0 -> 26 `i e ]
 [i _msg_gemremote
 :U ..
@@ -2881,7 +2881,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ]
 [v F24749 `Cuc ~T0 @X0 -> 20 `i t ]
-"282
+"283
 [v _spin `F24749 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
@@ -3842,347 +3842,347 @@ Version 4.0 HI-TECH Software Intermediate Code
 "476
 [e ( _StartTimer (2 , -> . `E24755 1 `uc -> -> 2 `i `us ]
 "478
-[e $ ! ! != . _V 78 -> -> -> 0 `i `l `ul 3392  ]
+[e $ ! ! != . _V 79 -> -> -> 0 `i `l `ul 3392  ]
 {
 "479
-[e ( _SPI_TIC12400 ..  ]
+[e ( _SPI_MC33996 ..  ]
 "480
-[e ( _tic12400_read_sw (2 , -> -> -> 0 `i `l `ul -> -> -> 0 `i `*v `um ]
-"481
-[e = _in_buf _tic12400_switch ]
-"482
 [e = . . _INTCON0bits 1 1 -> -> 0 `i `uc ]
-"483
-[e $ ! == -> . _serial_buffer_ss 9 `i -> 0 `i 3393  ]
+"481
+[e $ ! == -> . _serial_buffer_ss 8 `i -> 0 `i 3393  ]
 {
-"484
-[e = . _V 19 _in_buf ]
-"485
+"482
+[e = _out_buf -> & -> -> -> 255 `i `us `ul . _V 18 `us ]
+"483
 }
 [e :U 3393 ]
-"486
+"484
 [e = . . _INTCON0bits 1 1 -> -> 1 `i `uc ]
-"487
+"485
+[e ( _mc33996_update (1 _out_buf ]
+"486
 }
 [e :U 3392 ]
+"488
+[e ( _SPI_EADOG ..  ]
 "489
-[e $ ! ! != . _V 79 -> -> -> 0 `i `l `ul 3394  ]
-{
-"490
-[e ( _SPI_MC33996 ..  ]
-"491
-[e = . . _INTCON0bits 1 1 -> -> 0 `i `uc ]
-"492
-[e $ ! == -> . _serial_buffer_ss 8 `i -> 0 `i 3395  ]
-{
+[e ++ . _spi_stat_ss 0 -> -> 1 `i `Vul ]
 "493
-[e = _out_buf -> & -> -> -> 255 `i `us `ul . _V 18 `us ]
+[e ( _ADC_DischargeSampleCapacitor ..  ]
 "494
-}
-[e :U 3395 ]
+[e ( _ADC_StartConversion (1 . `E23783 0 ]
 "495
-[e = . . _INTCON0bits 1 1 -> -> 1 `i `uc ]
+[e $U 3394  ]
+[e :U 3395 ]
+{
 "496
-[e ( _mc33996_update (1 _out_buf ]
-"497
 }
 [e :U 3394 ]
-"499
-[e ( _SPI_EADOG ..  ]
-"500
-[e ++ . _spi_stat_ss 0 -> -> 1 `i `Vul ]
-"504
-[e ( _ADC_DischargeSampleCapacitor ..  ]
-"505
-[e ( _ADC_StartConversion (1 . `E23783 0 ]
-"506
-[e $U 3396  ]
-[e :U 3397 ]
-{
-"507
-}
+"495
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3395  ]
 [e :U 3396 ]
-"506
+"497
 [e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3397  ]
-[e :U 3398 ]
-"508
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3399  ]
 {
-"509
+"498
 [e = *U + &U _adc_buffer * -> . `E23783 0 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
-"510
+"499
 }
-[e :U 3399 ]
-"512
+[e :U 3397 ]
+"501
 [e ( _ADC_DischargeSampleCapacitor ..  ]
-"513
+"502
 [e ( _ADC_StartConversion (1 . `E23783 1 ]
-"514
-[e $U 3400  ]
+"503
+[e $U 3398  ]
+[e :U 3399 ]
+{
+"504
+}
+[e :U 3398 ]
+"503
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3399  ]
+[e :U 3400 ]
+"505
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3401  ]
+{
+"506
+[e = . _V 69 ( _ADC_GetConversionResult ..  ]
+"507
+[e = *U + &U _adc_buffer * -> . `E23783 1 `ux -> -> # *U &U _adc_buffer `ui `ux . _V 69 ]
+"508
+}
 [e :U 3401 ]
+"510
+[e ( _ADC_DischargeSampleCapacitor ..  ]
+"511
+[e ( _ADC_StartConversion (1 . `E23783 2 ]
+"512
+[e $U 3402  ]
+[e :U 3403 ]
+{
+"513
+}
+[e :U 3402 ]
+"512
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3403  ]
+[e :U 3404 ]
+"514
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3405  ]
 {
 "515
-}
-[e :U 3400 ]
-"514
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3401  ]
-[e :U 3402 ]
+[e = . _V 70 ( _ADC_GetConversionResult ..  ]
 "516
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3403  ]
-{
+[e = *U + &U _adc_buffer * -> . `E23783 2 `ux -> -> # *U &U _adc_buffer `ui `ux . _V 70 ]
 "517
-[e = . _V 69 ( _ADC_GetConversionResult ..  ]
-"518
-[e = *U + &U _adc_buffer * -> . `E23783 1 `ux -> -> # *U &U _adc_buffer `ui `ux . _V 69 ]
-"519
 }
-[e :U 3403 ]
-"521
-[e ( _ADC_DischargeSampleCapacitor ..  ]
-"522
-[e ( _ADC_StartConversion (1 . `E23783 2 ]
-"523
-[e $U 3404  ]
 [e :U 3405 ]
+"519
+[e ( _ADC_DischargeSampleCapacitor ..  ]
+"520
+[e ( _ADC_StartConversion (1 . `E23783 3 ]
+"521
+[e $U 3406  ]
+[e :U 3407 ]
+{
+"522
+}
+[e :U 3406 ]
+"521
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3407  ]
+[e :U 3408 ]
+"523
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3409  ]
 {
 "524
-}
-[e :U 3404 ]
-"523
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3405  ]
-[e :U 3406 ]
+[e = *U + &U _adc_buffer * -> . `E23783 3 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
 "525
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3407  ]
-{
-"526
-[e = . _V 70 ( _ADC_GetConversionResult ..  ]
-"527
-[e = *U + &U _adc_buffer * -> . `E23783 2 `ux -> -> # *U &U _adc_buffer `ui `ux . _V 70 ]
-"528
 }
-[e :U 3407 ]
-"530
-[e ( _ADC_DischargeSampleCapacitor ..  ]
-"531
-[e ( _ADC_StartConversion (1 . `E23783 3 ]
-"532
-[e $U 3408  ]
 [e :U 3409 ]
+"527
+[e ( _ADC_DischargeSampleCapacitor ..  ]
+"528
+[e ( _ADC_StartConversion (1 . `E23783 4 ]
+"529
+[e $U 3410  ]
+[e :U 3411 ]
 {
+"530
+}
+[e :U 3410 ]
+"529
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3411  ]
+[e :U 3412 ]
+"531
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3413  ]
+{
+"532
+[e = *U + &U _adc_buffer * -> . `E23783 4 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
 "533
 }
-[e :U 3408 ]
-"532
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3409  ]
-[e :U 3410 ]
-"534
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3411  ]
-{
-"535
-[e = *U + &U _adc_buffer * -> . `E23783 3 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
-"536
-}
-[e :U 3411 ]
-"538
-[e ( _ADC_DischargeSampleCapacitor ..  ]
-"539
-[e ( _ADC_StartConversion (1 . `E23783 4 ]
-"540
-[e $U 3412  ]
 [e :U 3413 ]
+"535
+[e ( _ADC_DischargeSampleCapacitor ..  ]
+"536
+[e ( _ADC_StartConversion (1 . `E23783 5 ]
+"537
+[e $U 3414  ]
+[e :U 3415 ]
 {
+"538
+}
+[e :U 3414 ]
+"537
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3415  ]
+[e :U 3416 ]
+"539
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3417  ]
+{
+"540
+[e = *U + &U _adc_buffer * -> . `E23783 5 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
 "541
 }
-[e :U 3412 ]
-"540
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3413  ]
-[e :U 3414 ]
-"542
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3415  ]
-{
-"543
-[e = *U + &U _adc_buffer * -> . `E23783 4 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
-"544
-}
-[e :U 3415 ]
-"546
-[e ( _ADC_DischargeSampleCapacitor ..  ]
-"547
-[e ( _ADC_StartConversion (1 . `E23783 5 ]
-"548
-[e $U 3416  ]
 [e :U 3417 ]
+"543
+[e ( _ADC_DischargeSampleCapacitor ..  ]
+"544
+[e ( _ADC_StartConversion (1 . `E23783 6 ]
+"545
+[e $U 3418  ]
+[e :U 3419 ]
 {
+"546
+}
+[e :U 3418 ]
+"545
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3419  ]
+[e :U 3420 ]
+"547
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3421  ]
+{
+"548
+[e = *U + &U _adc_buffer * -> . `E23783 6 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
 "549
 }
-[e :U 3416 ]
-"548
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3417  ]
-[e :U 3418 ]
-"550
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3419  ]
-{
-"551
-[e = *U + &U _adc_buffer * -> . `E23783 5 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
-"552
-}
-[e :U 3419 ]
-"554
-[e ( _ADC_DischargeSampleCapacitor ..  ]
-"555
-[e ( _ADC_StartConversion (1 . `E23783 6 ]
-"556
-[e $U 3420  ]
 [e :U 3421 ]
+"551
+[e ( _ADC_DischargeSampleCapacitor ..  ]
+"552
+[e ( _ADC_StartConversion (1 . `E23783 7 ]
+"553
+[e $U 3422  ]
+[e :U 3423 ]
 {
+"554
+}
+[e :U 3422 ]
+"553
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3423  ]
+[e :U 3424 ]
+"555
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3425  ]
+{
+"556
+[e = *U + &U _adc_buffer * -> . `E23783 7 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
 "557
 }
-[e :U 3420 ]
-"556
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3421  ]
-[e :U 3422 ]
-"558
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3423  ]
-{
-"559
-[e = *U + &U _adc_buffer * -> . `E23783 6 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
-"560
-}
-[e :U 3423 ]
-"562
-[e ( _ADC_DischargeSampleCapacitor ..  ]
-"563
-[e ( _ADC_StartConversion (1 . `E23783 7 ]
-"564
-[e $U 3424  ]
 [e :U 3425 ]
+"559
+[e ( _ADC_DischargeSampleCapacitor ..  ]
+"560
+[e ( _ADC_StartConversion (1 . `E23783 8 ]
+"561
+[e $U 3426  ]
+[e :U 3427 ]
 {
+"562
+}
+[e :U 3426 ]
+"561
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3427  ]
+[e :U 3428 ]
+"563
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3429  ]
+{
+"564
+[e = *U + &U _adc_buffer * -> . `E23783 8 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
 "565
 }
-[e :U 3424 ]
-"564
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3425  ]
-[e :U 3426 ]
-"566
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3427  ]
-{
-"567
-[e = *U + &U _adc_buffer * -> . `E23783 7 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
-"568
-}
-[e :U 3427 ]
-"570
-[e ( _ADC_DischargeSampleCapacitor ..  ]
-"571
-[e ( _ADC_StartConversion (1 . `E23783 8 ]
-"572
-[e $U 3428  ]
 [e :U 3429 ]
+"567
+[e ( _ADC_DischargeSampleCapacitor ..  ]
+"568
+[e ( _ADC_StartConversion (1 . `E23783 9 ]
+"569
+[e $U 3430  ]
+[e :U 3431 ]
 {
+"570
+}
+[e :U 3430 ]
+"569
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3431  ]
+[e :U 3432 ]
+"571
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3433  ]
+{
+"572
+[e = *U + &U _adc_buffer * -> . `E23783 9 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
 "573
 }
-[e :U 3428 ]
-"572
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3429  ]
-[e :U 3430 ]
-"574
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3431  ]
-{
-"575
-[e = *U + &U _adc_buffer * -> . `E23783 8 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
-"576
-}
-[e :U 3431 ]
-"578
-[e ( _ADC_DischargeSampleCapacitor ..  ]
-"579
-[e ( _ADC_StartConversion (1 . `E23783 9 ]
-"580
-[e $U 3432  ]
 [e :U 3433 ]
+"575
+[e ( _ADC_DischargeSampleCapacitor ..  ]
+"576
+[e ( _ADC_StartConversion (1 . `E23783 10 ]
+"577
+[e $U 3434  ]
+[e :U 3435 ]
 {
+"578
+}
+[e :U 3434 ]
+"577
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3435  ]
+[e :U 3436 ]
+"579
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3437  ]
+{
+"580
+[e = *U + &U _adc_buffer * -> . `E23783 10 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
 "581
 }
-[e :U 3432 ]
-"580
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3433  ]
-[e :U 3434 ]
-"582
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3435  ]
-{
-"583
-[e = *U + &U _adc_buffer * -> . `E23783 9 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
-"584
-}
-[e :U 3435 ]
-"586
-[e ( _ADC_DischargeSampleCapacitor ..  ]
-"587
-[e ( _ADC_StartConversion (1 . `E23783 10 ]
-"588
-[e $U 3436  ]
 [e :U 3437 ]
+"583
+[e ( _ADC_DischargeSampleCapacitor ..  ]
+"584
+[e ( _ADC_StartConversion (1 . `E23783 11 ]
+"585
+[e $U 3438  ]
+[e :U 3439 ]
 {
+"586
+}
+[e :U 3438 ]
+"585
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3439  ]
+[e :U 3440 ]
+"587
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3441  ]
+{
+"588
+[e = *U + &U _adc_buffer * -> . `E23783 11 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
 "589
 }
-[e :U 3436 ]
-"588
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3437  ]
-[e :U 3438 ]
-"590
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3439  ]
-{
-"591
-[e = *U + &U _adc_buffer * -> . `E23783 10 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
-"592
-}
-[e :U 3439 ]
-"594
-[e ( _ADC_DischargeSampleCapacitor ..  ]
-"595
-[e ( _ADC_StartConversion (1 . `E23783 11 ]
-"596
-[e $U 3440  ]
 [e :U 3441 ]
+"591
+[e ( _ADC_DischargeSampleCapacitor ..  ]
+"592
+[e ( _ADC_StartConversion (1 . `E23783 12 ]
+"593
+[e $U 3442  ]
+[e :U 3443 ]
 {
+"594
+}
+[e :U 3442 ]
+"593
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3443  ]
+[e :U 3444 ]
+"595
+[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3445  ]
+{
+"596
+[e = *U + &U _adc_buffer * -> . `E23783 12 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
 "597
 }
-[e :U 3440 ]
-"596
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3441  ]
-[e :U 3442 ]
-"598
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3443  ]
-{
-"599
-[e = *U + &U _adc_buffer * -> . `E23783 11 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
-"600
-}
-[e :U 3443 ]
-"602
-[e ( _ADC_DischargeSampleCapacitor ..  ]
-"603
-[e ( _ADC_StartConversion (1 . `E23783 12 ]
-"604
-[e $U 3444  ]
 [e :U 3445 ]
+"598
+[e = _DAC1DATL -> . _V 41 `uc ]
+"600
+[e $ ! ! != . _V 78 -> -> -> 0 `i `l `ul 3446  ]
 {
-"605
-}
-[e :U 3444 ]
+"601
+[e ( _SPI_TIC12400 ..  ]
+"602
+[e ( _tic12400_read_sw (2 , -> -> -> 0 `i `l `ul -> -> -> 0 `i `*v `um ]
+"603
+[e = _in_buf _tic12400_switch ]
 "604
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3445  ]
-[e :U 3446 ]
-"606
-[e $ ! != -> ( _ADC_IsConversionDone ..  `i -> 0 `i 3447  ]
+[e = . . _INTCON0bits 1 1 -> -> 0 `i `uc ]
+"605
+[e $ ! == -> . _serial_buffer_ss 9 `i -> 0 `i 3447  ]
 {
+"606
+[e = . _V 19 _in_buf ]
 "607
-[e = *U + &U _adc_buffer * -> . `E23783 12 `ux -> -> # *U &U _adc_buffer `ui `ux ( _ADC_GetConversionResult ..  ]
-"608
 }
 [e :U 3447 ]
+"608
+[e = . . _INTCON0bits 1 1 -> -> 1 `i `uc ]
 "609
-[e = _DAC1DATL -> . _V 41 `uc ]
+}
+[e :U 3446 ]
 "611
 }
 [e :U 3391 ]
@@ -4413,13 +4413,13 @@ Version 4.0 HI-TECH Software Intermediate Code
 [a 9C 76 111 99 107 101 100 32 49 49 53 50 48 48 98 112 115 0 ]
 [a 5C 79 70 70 76 73 78 69 0 ]
 [a 3C 68 73 83 65 66 76 69 0 ]
-[a 2C 48 54 58 49 56 58 51 53 0 ]
-[a 1C 74 117 108 32 32 54 32 50 48 50 53 0 ]
-[a 16C 86 48 46 49 52 0 ]
-[a 22C 86 48 46 49 52 0 ]
-[a 26C 86 48 46 49 52 0 ]
-[a 28C 86 48 46 49 52 0 ]
-[a 33C 86 48 46 49 52 0 ]
+[a 2C 49 55 58 52 50 58 50 55 0 ]
+[a 1C 74 117 108 32 49 54 32 50 48 50 53 0 ]
+[a 16C 86 48 46 49 53 0 ]
+[a 22C 86 48 46 49 53 0 ]
+[a 26C 86 48 46 49 53 0 ]
+[a 28C 86 48 46 49 53 0 ]
+[a 33C 86 48 46 49 53 0 ]
 [a 7C 82 69 77 79 84 69 32 0 ]
 [a 6C 79 78 76 73 78 69 32 0 ]
 [a 8C 69 82 82 79 82 32 32 0 ]

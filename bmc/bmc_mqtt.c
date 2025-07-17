@@ -284,6 +284,8 @@ void bmc_mqtt_init(void)
 #else
 	fout = stdout;
 #endif
+	fprintf(fout, "\r\n%s LOG Version %s : MQTT Version %s : Host Name %s", log_time(false), LOG_VERSION, MQTT_VERSION, hname);
+	fflush(fout);
 
 	/*
 	 * set the timer for MQTT publishing sample speed
@@ -407,16 +409,17 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	cJSON *json;
 	time_t rawtime;
 	static uint32_t spam = 0;
-	double over_sample;
 	static uint32_t pacer = 1001;
 
 	MQTTClient_message pubmsg = MQTTClient_message_initializer;
 	MQTTClient_deliveryToken token;
 	ha_flag_vars_ss.deliveredtoken = 0;
 
-
+	//#define DIGITAL_ONLY
 
 #ifndef DIGITAL_ONLY
+	double over_sample;
+
 	over_sample = 0.0f; // over-sample avg
 	for (int i = 0; i < OVER_SAMP; i++) {
 		if (bmc.BOARD == bmcboard) {

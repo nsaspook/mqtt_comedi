@@ -282,7 +282,7 @@ void SetBMCPriority(void);
 void main(void)
 {
 	char * s, * speed_text;
-#ifdef FLIP_SERIAL	
+#ifdef FLIP_SERIAL
 	uint8_t temp_lock = false;
 #endif
 	SPI2STATUSbits.SPI2CLRBF;
@@ -426,7 +426,7 @@ void main(void)
 			set_vterm(V.vterm); // set to buffer 0
 			snprintf(V.info, MAX_INFO, " Terminal Info               ");
 			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, " OPI BMCDAQ %u %s        ", V.uart_speed_fast & 0x01, VER);
-#ifdef DIS_DEBUG			
+#ifdef DIS_DEBUG
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " TIC %ld %lX %lX         ", tic12400_fail_value, tic12400_id & 0xffff, tic12400_read_status);
 #else
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " RUN Static Display             ");
@@ -474,17 +474,6 @@ void main(void)
 
 		if (TimerDone(TMR_ADC)) {
 			StartTimer(TMR_ADC, ADCDELAY);
-
-			if (!V.di_fail) {
-				SPI_TIC12400();
-				tic12400_read_sw(0, (uintptr_t) NULL);
-				in_buf = tic12400_switch;
-				INTERRUPT_GlobalInterruptHighDisable();
-				if (serial_buffer_ss.get_value == false) {
-					V.bmc_di = in_buf;
-				}
-				INTERRUPT_GlobalInterruptHighEnable();
-			}
 
 			if (!V.do_fail) {
 				SPI_MC33996();
@@ -607,6 +596,17 @@ void main(void)
 				adc_buffer[channel_FVR_Buffer2] = ADC_GetConversionResult();
 			};
 			DAC1DATL = (uint8_t) V.bmc_ao; // update DAC1 output
+
+			if (!V.di_fail) {
+				SPI_TIC12400();
+				tic12400_read_sw(0, (uintptr_t) NULL);
+				in_buf = tic12400_switch;
+				INTERRUPT_GlobalInterruptHighDisable();
+				if (serial_buffer_ss.get_value == false) {
+					V.bmc_di = in_buf;
+				}
+				INTERRUPT_GlobalInterruptHighEnable();
+			}
 
 		}
 
