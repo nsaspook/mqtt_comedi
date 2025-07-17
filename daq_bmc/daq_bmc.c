@@ -145,12 +145,12 @@ static const uint32_t CONV_SPEED_FIX_FAST = 9; /* used for the MCP3002 ADC */
 static const uint32_t CONV_ADS8330 = 0; /* used for the ADS8330 ADC */
 static const uint32_t MAX_BOARD_RATE = 1000000000;
 static const struct spi_delay CS_CHANGE_DELAY_USECS0 = {
-	.value = 0,
-	.unit = 0
+	.value = 1,
+	.unit = SPI_DELAY_UNIT_USECS,
 };
 static const struct spi_delay CS_CHANGE_DELAY_USECS10 = {
 	.value = 10,
-	.unit = 0
+	.unit = SPI_DELAY_UNIT_USECS,
 };
 
 //static const uint8_t BMC_MAX_CHAN = 0x40;
@@ -198,7 +198,7 @@ static DECLARE_COMPLETION(done);
  * module configuration and data variables
  * found at /sys/modules/daq_bmc/parameters
  */
-static int32_t daqbmc_conf = picsl12;
+static int32_t daqbmc_conf = picsl12_AO;
 module_param(daqbmc_conf, int, S_IRUGO);
 MODULE_PARM_DESC(daqbmc_conf, "hardware configuration: default 0=bmcboard standard, 1=bmcboard without DI or DO");
 static int32_t di_conf = 1;
@@ -298,33 +298,34 @@ struct daqbmc_device {
 
 /*
  * Use only MODE 0 for Orange PI SPI connections
+ * Max SCK 12MHz
  */
 static const struct daqbmc_device daqbmc_devices[] = {
 	{
 		.name = "picsl12",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
-		.max_speed_hz = 4000000,
-		.min_acq_ns = 90000,
+		.max_speed_hz = 12000000,
+		.min_acq_ns = 180000,
 		.rate_min = 1000,
 		.spi_mode = 0,
 		.spi_bpw = 8,
 		.n_chan_bits = 12,
 		.n_chan = 16,
-		.n_transfers = 3,
+		.n_transfers = Q84_BYTES,
 	},
 	{
 		.name = "picsl12_AO",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
-		.max_speed_hz = 4000000,
-		.min_acq_ns = 90000,
+		.max_speed_hz = 8000000,
+		.min_acq_ns = 180000,
 		.rate_min = 1000,
 		.spi_mode = 0,
 		.spi_bpw = 8,
 		.n_chan_bits = 12,
 		.n_chan = 16,
-		.n_transfers = 3,
+		.n_transfers = Q84_BYTES,
 	},
 	{
 		.name = "special",
@@ -544,7 +545,15 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	struct spi_device *spi = spi_data->spi;
 	int32_t ret = 0;
 
-	/* use nine spi transfers for the complete SPI transaction */
+	if (spi == NULL) {
+		ret = -ESHUTDOWN;
+	}
+	/*
+	 * use nine spi transfers for the complete SPI transaction
+	 * we need the inter-byte processing time on the slave side
+	 * with only a two byte FIFO
+	 */
+	packet->one_t.speed_hz = spi->max_speed_hz;
 
 	/*
 	 * send the cmd and 4-bit channel data
@@ -555,8 +564,11 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	packet->one_t.len = 1;
 	spi_message_init_with_transfers(packet->m, &packet->one_t, 1); //one transfer per message
 	spi_bus_lock(spi->master);
-	spi_sync_locked(spi, packet->m);
+	ret = spi_sync_locked(spi, packet->m);
 	spi_bus_unlock(spi->master);
+	if (ret == 0) {
+		ret = packet->m->actual_length;
+	}
 
 	/*
 	 * send the data
@@ -1821,10 +1833,10 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 		list_add_tail(&pdata->device_entry, &device_list);
 		spi->mode = daqbmc_devices[daqbmc_conf].spi_mode;
 		spi->max_speed_hz = daqbmc_devices[daqbmc_conf].max_speed_hz;
-		spi->word_delay = CS_CHANGE_DELAY_USECS10;
-		spi->cs_setup = CS_CHANGE_DELAY_USECS10;
-		spi->cs_hold = CS_CHANGE_DELAY_USECS10;
-		spi->cs_inactive = CS_CHANGE_DELAY_USECS10;
+		spi->word_delay = CS_CHANGE_DELAY_USECS0;
+		spi->cs_setup = CS_CHANGE_DELAY_USECS0;
+		spi->cs_hold = CS_CHANGE_DELAY_USECS0;
+		spi->cs_inactive = CS_CHANGE_DELAY_USECS0;
 	}
 
 	spi->bits_per_word = daqbmc_devices[daqbmc_conf].spi_bpw;
