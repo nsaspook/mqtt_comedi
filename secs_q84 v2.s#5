@@ -14493,7 +14493,6 @@ Source: &lt;a href="http://www.ti.com/lit/gpn/tic12400"&gt; Datasheet &lt;/a&gt;
 <part name="R18" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="0ohm"/>
 <part name="VSS50" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="R19" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="1k"/>
-<part name="P+3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="LED4" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIP-LED0603" package3d_urn="urn:adsk.eagle:package:15819/3" value="POWER"/>
 <part name="VSS2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="R1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="0ohm"/>
@@ -14614,6 +14613,10 @@ Source: &lt;a href="http://www.ti.com/lit/gpn/tic12400"&gt; Datasheet &lt;/a&gt;
 <part name="TIC0_7" library="87914-1016" deviceset="87914-1016" device=""/>
 <part name="TIC16_23" library="87914-1016" deviceset="87914-1016" device=""/>
 <part name="TIC8_15" library="87914-1016" deviceset="87914-1016" device=""/>
+<part name="VDD26" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VDD" device=""/>
+<part name="SHORT_VV" library="jumper" library_urn="urn:adsk.eagle:library:252" deviceset="SJ" device="" package3d_urn="urn:adsk.eagle:package:15471/1" value="short_vv"/>
+<part name="VDD27" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VDD" device=""/>
+<part name="P+3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -14939,9 +14942,6 @@ Source: &lt;a href="http://www.ti.com/lit/gpn/tic12400"&gt; Datasheet &lt;/a&gt;
 <instance part="R19" gate="G$1" x="266.7" y="63.5" smashed="yes" rot="R270">
 <attribute name="NAME" x="268.1986" y="67.31" size="1.778" layer="95" rot="R270"/>
 <attribute name="VALUE" x="263.398" y="67.31" size="1.778" layer="96" rot="R270"/>
-</instance>
-<instance part="P+3" gate="VCC" x="266.7" y="71.12" smashed="yes">
-<attribute name="VALUE" x="264.16" y="68.58" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="LED4" gate="G$1" x="266.7" y="55.88" smashed="yes">
 <attribute name="NAME" x="270.256" y="51.308" size="1.778" layer="95" rot="R90"/>
@@ -15358,6 +15358,19 @@ Source: &lt;a href="http://www.ti.com/lit/gpn/tic12400"&gt; Datasheet &lt;/a&gt;
 <attribute name="NAME" x="128.27" y="-152.4" size="1.778" layer="95" align="center-left"/>
 <attribute name="VALUE" x="128.27" y="-154.94" size="1.778" layer="96" align="center-left"/>
 </instance>
+<instance part="VDD26" gate="G$1" x="266.7" y="71.12" smashed="yes">
+<attribute name="VALUE" x="264.16" y="68.58" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="SHORT_VV" gate="1" x="63.5" y="73.66" smashed="yes" rot="R180">
+<attribute name="NAME" x="66.04" y="71.12" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="66.04" y="77.47" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="VDD27" gate="G$1" x="71.12" y="73.66" smashed="yes" rot="R270">
+<attribute name="VALUE" x="76.2" y="71.12" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="P+3" gate="VCC" x="55.88" y="73.66" smashed="yes" rot="R90">
+<attribute name="VALUE" x="58.42" y="71.12" size="1.778" layer="96" rot="R180"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -15576,6 +15589,16 @@ Source: &lt;a href="http://www.ti.com/lit/gpn/tic12400"&gt; Datasheet &lt;/a&gt;
 <pinref part="DO2" gate="G$1" pin="9"/>
 <pinref part="VDD25" gate="G$1" pin="VDD"/>
 <junction x="185.42" y="-111.76"/>
+</segment>
+<segment>
+<pinref part="R19" gate="G$1" pin="1"/>
+<pinref part="VDD26" gate="G$1" pin="VDD"/>
+<junction x="266.7" y="68.58"/>
+</segment>
+<segment>
+<pinref part="SHORT_VV" gate="1" pin="1"/>
+<pinref part="VDD27" gate="G$1" pin="VDD"/>
+<junction x="68.58" y="73.66"/>
 </segment>
 </net>
 <net name="VSS" class="1">
@@ -17230,14 +17253,14 @@ Source: &lt;a href="http://www.ti.com/lit/gpn/tic12400"&gt; Datasheet &lt;/a&gt;
 <junction x="281.94" y="121.92"/>
 </segment>
 <segment>
-<pinref part="R19" gate="G$1" pin="1"/>
-<pinref part="P+3" gate="VCC" pin="VCC"/>
-<junction x="266.7" y="68.58"/>
-</segment>
-<segment>
 <pinref part="C2" gate="G$1" pin="1"/>
 <pinref part="P+4" gate="VCC" pin="VCC"/>
 <junction x="93.98" y="-2.54"/>
+</segment>
+<segment>
+<pinref part="SHORT_VV" gate="1" pin="2"/>
+<pinref part="P+3" gate="VCC" pin="VCC"/>
+<junction x="58.42" y="73.66"/>
 </segment>
 </net>
 <net name="RS232EQTX" class="0">

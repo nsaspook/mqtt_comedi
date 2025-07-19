@@ -6,7 +6,7 @@
  * LED4 GREEN	5VDC Power
  *
  * SPI1 MODE 3 MASTER to DISPLAY and MODE 1 to DIO SLAVE devices
- * SPI2 MODE 0 SLAVE to OPi controller MASTER SPI port
+ * SPI2 MODE 3 SLAVE to OPi controller MASTER SPI port
  */
 
 /*
@@ -257,6 +257,7 @@ B_type B = {
 volatile struct spi_link_type_ss spi_comm_ss = {false, false, false, false, false, false, false, false};
 volatile struct spi_stat_type_ss spi_stat_ss = {
 	.raw_index = 0,
+	.daq_conf = 0,
 };
 volatile struct serial_buffer_type_ss serial_buffer_ss = {
 	.tx_buffer = 0x81,
@@ -291,6 +292,7 @@ void main(void)
 	SYSTEM_Initialize();
 
 	PIE1bits.ADIE = 0; // lock ADC interrupts off
+	SPI_OPI();
 	// Enable high priority global interrupts
 	INTERRUPT_GlobalInterruptHighEnable();
 
@@ -392,7 +394,7 @@ void main(void)
 		logging_cmds();
 
 		/*
-		 * protocol state machine for HOST emulation
+		 * protocol state machine
 		 */
 		switch (V.ui_state) {
 		case UI_STATE_INIT:
@@ -411,12 +413,12 @@ void main(void)
 			tic12400_reset();
 			if (!tic12400_init()) {
 				V.di_fail = true;
-				spi_stat_ss.daq_conf |= 0x01; // no DI
+				failure = true;
 			};
 			SPI_MC33996();
 			if (!mc33996_init()) {
 				V.do_fail = true;
-				spi_stat_ss.daq_conf |= 0x02; // no DO
+				failure = true;
 			};
 			init_slaveo();
 			SPI_EADOG();
@@ -487,8 +489,6 @@ void main(void)
 
 			SPI_EADOG();
 			spi_stat_ss.adc_count++; // just keep count
-
-
 
 			ADC_DischargeSampleCapacitor();
 			ADC_StartConversion(channel_ANA0);
@@ -599,7 +599,7 @@ void main(void)
 
 			if (!V.di_fail) {
 				SPI_TIC12400();
-				tic12400_read_sw(0, (uintptr_t) NULL);
+				//				tic12400_read_sw(0, (uintptr_t) NULL);
 				in_buf = tic12400_switch;
 				INTERRUPT_GlobalInterruptHighDisable();
 				if (serial_buffer_ss.get_value == false) {

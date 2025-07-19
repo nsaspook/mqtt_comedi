@@ -83,3 +83,10 @@ void SPI_MC33996(void)
 	SPI1CON0bits.EN = 1;
 	SPI1STATUSbits.CLRBF = 0;
 }
+
+/*
+ * SPI2
+ */
+void SPI_OPI(void)
+{
+}

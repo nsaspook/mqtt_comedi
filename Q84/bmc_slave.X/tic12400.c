@@ -168,7 +168,6 @@ bool tic12400_init(void)
 		WaitMs(10);
 		tic12400_fail_value = -1;
 		tic12400_fail_count++;
-		goto fail;
 	}
 	send_spi1_tic12400_dma((void*) &setup32, 4);
 	if (((spi_link.rxbuf[0] & parity_fail_v))) { // check for any high bits beyond POR bits set
@@ -205,21 +204,13 @@ bool tic12400_init(void)
 		tic12400_fail_count++;
 		tic12400_fail_value = -8;
 	}
-	//	send_spi1_tic12400_dma((void*) &setup25, 4);
-	//	if (((spi_link.rxbuf[0] & parity_fail_v))) { // check for any high bits beyond POR bits set
-	//		tic12400_fail_count++;
-	//		tic12400_fail_value = -9;
-	//	}
+
 	send_spi1_tic12400_dma((void*) &setup1d, 4);
 	if (((spi_link.rxbuf[0] & parity_fail_v))) { // check for any high bits beyond POR bits set
 		tic12400_fail_count++;
 		tic12400_fail_value = -10;
 	}
-	//	send_spi1_tic12400_dma((void*) &setup1e, 4);
-	//	if (((spi_link.rxbuf[0] & parity_fail_v))) { // check for any high bits beyond POR bits set
-	//		tic12400_fail_count++;
-	//		tic12400_fail_value = -11;
-	//	}
+
 	send_spi1_tic12400_dma((void*) &setup1a_trigger, 4);
 	WaitMs(2);
 	if (spi_link.rxbuf[0] & spi_fail_bit_v) {
@@ -235,13 +226,13 @@ bool tic12400_init(void)
 	tic12400_read_status = tic12400_wr(&setup1a_read, 0);
 
 	IOCBF6_SetInterruptHandler(tic_int_handler);
-	tic12400_init_ok = true;
-	goto good_setup;
+	if (tic12400_fail_count > 10) {
+		tic12400_init_ok = false;
+		MLED_SetHigh();
+	} else {
+		tic12400_init_ok = true;
+	}
 
-fail:
-	tic12400_init_ok = false;
-//	MLED_SetHigh();
-good_setup:
 	return tic12400_init_ok;
 }
 
@@ -263,13 +254,13 @@ uint32_t tic12400_wr(const ticbuf_type * buffer, uint16_t del)
 		tic12400_parity_status = true;
 		tic12400_read_error = true;
 		tic12400_parity_count++;
-//		MLED_SetHigh();
+		//		MLED_SetHigh();
 		send_spi1_tic12400_dma((void*) &ticstat02, 4);
 	};
 	if (spi_link.rxbuf[0] & spi_fail_bit_v) {
 		tic12400_read_error = true;
 		tic12400_fail_count++;
-//		MLED_SetHigh();
+		//		MLED_SetHigh();
 		send_spi1_tic12400_dma((void*) &ticstat02, 4);
 	}
 	if (del) {
@@ -330,7 +321,9 @@ void tic_int_handler(void)
 {
 	if (tic12400_init_ok) {
 		tic12400_read_sw(0, (uintptr_t) NULL);
+		MLED_SetHigh();
+		tic12400_switch = tic12400_counts++;
 	}
-//	MLED_SetHigh();
+
 	b_read = PORTB;
 }

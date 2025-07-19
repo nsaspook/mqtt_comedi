@@ -165,7 +165,7 @@ void TMR6_LoadPeriodRegister(uint8_t periodVal)
 	TMR6_Period8BitSet(periodVal);
 }
 
-void __interrupt(irq(TMR6),base(8),low_priority) TMR6_ISR()
+void __interrupt(irq(TMR6),base(8)) TMR6_ISR()
 {
 
 	// clear the TMR6 interrupt flag

@@ -40,6 +40,8 @@
 #include "slaveo.h"
 #include <pic18f47q84.h>
 
+volatile bool failure = false;
+
 void check_slaveo(void) /* SPI Slave error check */
 {
 	if (SPI2STATUSbits.TXWE) { // check for overruns/collisions
@@ -127,14 +129,16 @@ void slaveo_rx_isr(void)
 	// PORT_GET_BYTES
 	if (serial_buffer_ss.get_value) {
 		if (serial_buffer_ss.raw_index == PORT_GET_BYTES) {
-			SPI2TXB = (uint8_t) V.bmc_di >> ((uint8_t) 8 * (uint8_t) (serial_buffer_ss.raw_index));
+			//SPI2TXB = (uint8_t) V.bmc_di >> ((uint8_t) 8 * (uint8_t) (serial_buffer_ss.raw_index));
+			SPI2TXB = (uint8_t) V.bmc_di;
 			serial_buffer_ss.get_value = false;
 			serial_buffer_ss.raw_index = 0;
 			spi_stat_ss.txdone_bit++; // number of completed packets
 			data_in2 = 0;
 		} else {
 			spi_stat_ss.slave_tx_count++;
-			SPI2TXB = (uint8_t) V.bmc_di >> ((uint8_t) 8 * (uint8_t) (serial_buffer_ss.raw_index));
+			//SPI2TXB = (uint8_t) V.bmc_di >> ((uint8_t) 8 * (uint8_t) (serial_buffer_ss.raw_index));
+			SPI2TXB = (uint8_t) V.bmc_di;
 			data_in2 = 0;
 		}
 	}
@@ -142,7 +146,12 @@ void slaveo_rx_isr(void)
 	// ADC_GET_BYTES
 	if (serial_buffer_ss.adc_value) {
 		if (serial_buffer_ss.raw_index == ADC_GET_BYTES) {
-			SPI2TXB = ((adc_buffer[channel] >> 8)&0x00ff);
+			//SPI2TXB = ((adc_buffer[channel] >> 8)&0x00ff);
+			if (V.di_fail || V.do_fail) {
+				SPI2TXB = (0x24);
+			} else {
+				SPI2TXB = (0x00);
+			}
 			serial_buffer_ss.adc_value = false;
 			serial_buffer_ss.raw_index = 0;
 			spi_stat_ss.txdone_bit++; // number of completed packets
@@ -161,7 +170,7 @@ void slaveo_rx_isr(void)
 	// GET_CFG_BYTES
 	if (serial_buffer_ss.cfg_value) {
 		if (serial_buffer_ss.raw_index == CFG_GET_BYTES) {
-			SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits for unregistered inputs
+			SPI2TXB = CHECKBYTE;
 			serial_buffer_ss.cfg_value = false;
 			serial_buffer_ss.raw_index = 0;
 			spi_stat_ss.txdone_bit++; // number of completed packets
@@ -169,9 +178,9 @@ void slaveo_rx_isr(void)
 		} else {
 			spi_stat_ss.slave_tx_count++;
 			if (serial_buffer_ss.raw_index == 1) {
-				SPI2TXB = serial_buffer_ss.raw_index;
+				SPI2TXB = CHECKBYTE;
 			} else {
-				SPI2TXB = spi_stat_ss.daq_conf;
+				SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits
 			}
 			data_in2 = 0;
 		}
@@ -278,7 +287,7 @@ void slaveo_rx_isr(void)
 
 	if (command == CMD_DUMMY_CFG) {
 		serial_buffer_ss.raw_index = 1;
-		serial_buffer_ss.cfg_value = false;
+		serial_buffer_ss.cfg_value = true;
 		if (!serial_buffer_ss.adc_value && !serial_buffer_ss.dac_value && !serial_buffer_ss.make_value && !serial_buffer_ss.get_value) {
 			MLED_SetHigh();
 			serial_buffer_ss.adc_value = false;
@@ -288,6 +297,8 @@ void slaveo_rx_isr(void)
 			MCZ_PWM_SetLow();
 			MLED_SetLow();
 		}
+
+		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
 		StartTimer(TMR_ADC, ADCDELAY);
 	}

@@ -36,6 +36,8 @@ extern "C" {
 #define CMD_DUMMY_CFG	0b01000000	// stuff config data in SPI buffer
 #define CMD_DEAD        0b11111111      // This is usually a bad response
 
+#define CHECKBYTE	0x57
+
 #define CMD_DUMMY       0b01100111	/* 7 channels 4.096 */
 #define NUM_AI_CHAN     15
 #define AI_BUFFER_NUM	0x40
@@ -89,6 +91,7 @@ extern "C" {
 	extern volatile uint8_t data_in2, adc_buffer_ptr, adc_channel, channel, upper;
 	extern volatile uint16_t adc_buffer[AI_BUFFER_NUM], adc_data_in, dac_buffer[AO_BUFFER_NUM], dac_data_in;
 	extern V_data V;
+	volatile bool failure;
 
 	void check_slaveo(void);
 	void init_slaveo(void);
