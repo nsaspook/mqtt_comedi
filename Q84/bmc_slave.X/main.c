@@ -268,7 +268,6 @@ volatile struct serial_buffer_type_ss serial_buffer_ss = {
 
 volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0, channel = 0, upper;
 volatile uint16_t adc_buffer[AI_BUFFER_NUM] = {0}, adc_data_in = 0, out_buf = 0;
-volatile uint32_t in_buf = 0;
 
 volatile uint16_t tickCount[TMR_COUNT] = {0};
 volatile uint8_t mode_sw = false, faker;
@@ -429,7 +428,7 @@ void main(void)
 			snprintf(V.info, MAX_INFO, " Terminal Info               ");
 			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, " OPI BMCDAQ %u %s        ", V.uart_speed_fast & 0x01, VER);
 #ifdef DIS_DEBUG
-			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " TIC %ld %lX %lX         ", tic12400_fail_value, tic12400_id & 0xffff, tic12400_read_status);
+			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " TIC %ld 0x%lX 0x%lX         ", tic12400_fail_value, tic12400_id & 0xffff, tic12400_read_status);
 #else
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " RUN Static Display             ");
 #endif
@@ -599,11 +598,10 @@ void main(void)
 
 			if (!V.di_fail) {
 				SPI_TIC12400();
-				//				tic12400_read_sw(0, (uintptr_t) NULL);
-				in_buf = tic12400_switch;
+				tic12400_read_sw(0, (uintptr_t) NULL);
 				INTERRUPT_GlobalInterruptHighDisable();
+				//				in_buf = tic12400_switch;
 				if (serial_buffer_ss.get_value == false) {
-					V.bmc_di = in_buf;
 				}
 				INTERRUPT_GlobalInterruptHighEnable();
 			}

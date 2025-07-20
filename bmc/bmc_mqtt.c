@@ -415,7 +415,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	MQTTClient_deliveryToken token;
 	ha_flag_vars_ss.deliveredtoken = 0;
 
-	//#define DIGITAL_ONLY
+//#define DIGITAL_ONLY
 
 #ifndef DIGITAL_ONLY
 	double over_sample;

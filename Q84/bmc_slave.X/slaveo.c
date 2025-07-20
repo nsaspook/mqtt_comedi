@@ -5,10 +5,6 @@
  *
  * Fully interrupt driven SPI slave ADC for OPI
  *
- * Version
- *              0.03 beta version
- *
- * nsaspook@sma2.rain..com    Sept 2016
  */
 /** \file slaveo.c
  * BMCboard SPI DAQ slave for the Orange PI
@@ -41,6 +37,8 @@
 #include <pic18f47q84.h>
 
 volatile bool failure = false;
+volatile uint8_t in_buf1 = 0x19, in_buf2 = 0x57, in_buf3 = 0x07;
+volatile uint8_t tmp_buf = 0;
 
 void check_slaveo(void) /* SPI Slave error check */
 {
@@ -50,7 +48,7 @@ void check_slaveo(void) /* SPI Slave error check */
 
 /*
  * setup the interrupt call backs and data structures
- * For SPI2 using MODE 0, ONLY USE MODE 0 with Orange PI SPI links
+ * For SPI2 using MODE 3, DON'T USE MODE 0 with Orange PI SPI links
  */
 void init_slaveo(void)
 {
@@ -129,16 +127,20 @@ void slaveo_rx_isr(void)
 	// PORT_GET_BYTES
 	if (serial_buffer_ss.get_value) {
 		if (serial_buffer_ss.raw_index == PORT_GET_BYTES) {
-			//SPI2TXB = (uint8_t) V.bmc_di >> ((uint8_t) 8 * (uint8_t) (serial_buffer_ss.raw_index));
-			SPI2TXB = (uint8_t) V.bmc_di;
+			tmp_buf = (uint8_t) in_buf3;
+			SPI2TXB = tmp_buf;
 			serial_buffer_ss.get_value = false;
 			serial_buffer_ss.raw_index = 0;
 			spi_stat_ss.txdone_bit++; // number of completed packets
 			data_in2 = 0;
 		} else {
 			spi_stat_ss.slave_tx_count++;
-			//SPI2TXB = (uint8_t) V.bmc_di >> ((uint8_t) 8 * (uint8_t) (serial_buffer_ss.raw_index));
-			SPI2TXB = (uint8_t) V.bmc_di;
+			if (serial_buffer_ss.raw_index == 1) {
+				tmp_buf = (uint8_t) in_buf1;
+			} else {
+				tmp_buf = (uint8_t) in_buf2;
+			}
+			SPI2TXB = tmp_buf;
 			data_in2 = 0;
 		}
 	}
@@ -146,7 +148,6 @@ void slaveo_rx_isr(void)
 	// ADC_GET_BYTES
 	if (serial_buffer_ss.adc_value) {
 		if (serial_buffer_ss.raw_index == ADC_GET_BYTES) {
-			//SPI2TXB = ((adc_buffer[channel] >> 8)&0x00ff);
 			if (V.di_fail || V.do_fail) {
 				SPI2TXB = (0x24);
 			} else {

@@ -1278,19 +1278,19 @@ static int digitalReadOPi(struct comedi_device *dev,
 
 	/* use single transfer for all bytes of the complete SPI transaction */
 	packet->bmc_byte_t[BMC_CMD] = CMD_PORT_GET;
-	packet->bmc_byte_t[BMC_D0] = CMD_PORT_GET;
-	packet->bmc_byte_t[BMC_D1] = CMD_PORT_GET;
-	packet->bmc_byte_t[BMC_D2] = CMD_PORT_GET;
-	packet->bmc_byte_t[BMC_D3] = CMD_PORT_GET;
-	packet->bmc_byte_t[BMC_D4] = CMD_PORT_GET;
-	packet->bmc_byte_t[BMC_EXT] = CMD_PORT_GET;
+	packet->bmc_byte_t[BMC_D0] = BMC_D0;
+	packet->bmc_byte_t[BMC_D1] = BMC_D1;
+	packet->bmc_byte_t[BMC_D2] = BMC_D2;
+	packet->bmc_byte_t[BMC_D3] = BMC_D3;
+	packet->bmc_byte_t[BMC_D4] = BMC_D4;
+	packet->bmc_byte_t[BMC_EXT] = BMC_EXT;
 	packet->bmc_byte_t[BMC_CKSUM] = CHECKBYTE;
 	packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
 	bmc_spi_exchange(dev, packet);
 
-	val_value = packet->bmc_byte_r[BMC_D2];
-	val_value += (packet->bmc_byte_r[BMC_D3] << 8);
-	val_value += (packet->bmc_byte_r[BMC_D4] << 16);
+	val_value = packet->bmc_byte_r[BMC_D1];
+	val_value += (packet->bmc_byte_r[BMC_D2] << 8);
+	val_value += (packet->bmc_byte_r[BMC_DUMMY] << 16);
 
 	devpriv->di_count++;
 	kfree(packet);

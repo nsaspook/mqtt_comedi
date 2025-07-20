@@ -63,8 +63,8 @@ extern "C" {
 		uint8_t data0;
 	}
 	ticread_type;
-	
-		typedef struct __attribute__((packed))
+
+	typedef struct __attribute__((packed))
 	{
 		uint8_t cmd[16];
 	}
@@ -85,6 +85,7 @@ extern "C" {
 	extern volatile int32_t tic12400_fail_value;
 	volatile uint8_t b_read;
 	extern ticrw_type tic_rw;
+	extern volatile uint8_t in_buf1, in_buf2, in_buf3;
 
 #ifdef	__cplusplus
 }

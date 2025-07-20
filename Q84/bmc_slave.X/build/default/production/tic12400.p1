@@ -17,7 +17,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _send_spi1_tic12400_dma `(v ~T0 @X0 0 ef2`*uc`Cuc ]
 "30 ./timers.h
 [v _WaitMs `(v ~T0 @X0 0 ef1`us ]
-"110 ./vconfig.h
+"111 ./vconfig.h
 [s S3356 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 `us 1 `uc 1 `*uc 1 `*uc 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 ]
 [n S3356 spi_link_type SPI_LCD SPI_AUX LCD_TIMER LCD_DATA READ_DATA delay config txbuf rxbuf int_count int_read des_bytes src_bytes or_bytes ]
 "44 ./tic12400.h
@@ -27,7 +27,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v F23287 `(v ~T0 @X0 0 tf ]
 "659 ./mcc_generated_files/pin_manager.h
 [v _IOCBF6_SetInterruptHandler `(v ~T0 @X0 0 ef1`*F23287 ]
-"130 tic12400.c
+"118 tic12400.c
 [v _tic_int_handler `(v ~T0 @X0 0 sf ]
 "3570 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [s S3154 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
@@ -37,7 +37,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S3153 . . ]
 "3581
 [v _LATBbits `VS3153 ~T0 @X0 0 e@1215 ]
-"4124
+"88 ./tic12400.h
+[v _in_buf1 `Vuc ~T0 @X0 0 e ]
+[v _in_buf2 `Vuc ~T0 @X0 0 e ]
+[v _in_buf3 `Vuc ~T0 @X0 0 e ]
+"4124 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [v _PORTB `Vuc ~T0 @X0 0 e@1231 ]
 "304 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f47q84.h
 [; <" BOOTREG equ 038h ;# ">
@@ -2455,7 +2459,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _SPI2_InterruptHandler `*F24191 ~T0 @X0 1 e ]
 "77
 [v _SPI2_RxInterruptHandler `*F24197 ~T0 @X0 1 e ]
-"106 ./vconfig.h
+"107 ./vconfig.h
 [v _msg_gemcmds `Cuc ~T0 @X0 -> 33 `i e ]
 [i _msg_gemcmds
 :U ..
@@ -2494,7 +2498,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"107
+"108
 [v _msg_freecmds `Cuc ~T0 @X0 -> 32 `i e ]
 [i _msg_freecmds
 :U ..
@@ -2532,7 +2536,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"108
+"109
 [v _msg_gemremote `Cuc ~T0 @X0 -> 26 `i e ]
 [i _msg_gemremote
 :U ..
@@ -2565,7 +2569,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ]
 [v F24584 `Cuc ~T0 @X0 -> 20 `i t ]
-"283
+"284
 [v _spin `F24584 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
@@ -2644,7 +2648,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-"94 ./slaveo.h
+"106 ./slaveo.h
 [v _failure `Va ~T0 @X0 1 e ]
 "86 ./tic12400.h
 [v _b_read `Vuc ~T0 @X0 1 e ]
@@ -2697,30 +2701,18 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ]
 "37
-[v _setup1a `CS3368 ~T0 @X0 1 e ]
-[i _setup1a
-:U ..
-:U ..
--> + -> 52 `i -> 128 `i `uc
--> -> 1 `i `uc
--> -> 128 `i `uc
--> -> 1 `i `uc
-..
-..
-]
-"43
 [v _setup1a_trigger `CS3368 ~T0 @X0 1 e ]
 [i _setup1a_trigger
 :U ..
 :U ..
 -> + -> 52 `i -> 128 `i `uc
--> -> 7 `i `uc
--> -> 151 `i `uc
--> -> 252 `i `uc
+-> -> 0 `i `uc
+-> -> 16 `i `uc
+-> -> 0 `i `uc
 ..
 ..
 ]
-"49
+"43
 [v _setup1a_read `CS3368 ~T0 @X0 1 e ]
 [i _setup1a_read
 :U ..
@@ -2732,7 +2724,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-"55
+"49
 [v _setup22 `CS3368 ~T0 @X0 1 e ]
 [i _setup22
 :U ..
@@ -2744,7 +2736,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-"61
+"55
 [v _setup23 `CS3368 ~T0 @X0 1 e ]
 [i _setup23
 :U ..
@@ -2756,31 +2748,19 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-"67
+"61
 [v _setup24 `CS3368 ~T0 @X0 1 e ]
 [i _setup24
 :U ..
 :U ..
 -> + -> 72 `i -> 128 `i `uc
 -> -> 0 `i `uc
--> -> 31 `i `uc
--> -> 254 `i `uc
+-> -> 128 `i `uc
+-> -> 0 `i `uc
 ..
 ..
 ]
-"73
-[v _setup25 `CS3368 ~T0 @X0 1 e ]
-[i _setup25
-:U ..
-:U ..
--> + -> 75 `i -> 128 `i `uc
--> -> 127 `i `uc
--> -> 255 `i `uc
--> -> 255 `i `uc
-..
-..
-]
-"79
+"67
 [v _setup1d `CS3368 ~T0 @X0 1 e ]
 [i _setup1d
 :U ..
@@ -2792,7 +2772,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-"85
+"73
 [v _setup1e `CS3368 ~T0 @X0 1 e ]
 [i _setup1e
 :U ..
@@ -2804,7 +2784,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-"91
+"79
 [v _ticread05 `CS3368 ~T0 @X0 1 e ]
 [i _ticread05
 :U ..
@@ -2816,7 +2796,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-"97
+"85
 [v _ticdevid01 `CS3368 ~T0 @X0 1 e ]
 [i _ticdevid01
 :U ..
@@ -2828,7 +2808,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-"103
+"91
 [v _ticstat02 `CS3368 ~T0 @X0 1 e ]
 [i _ticstat02
 :U ..
@@ -2840,7 +2820,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-"109
+"97
 [v _ticreset1a `CS3368 ~T0 @X0 1 e ]
 [i _ticreset1a
 :U ..
@@ -2852,7 +2832,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-"119
+"107
 [v _tic12400_status `Vul ~T0 @X0 1 e ]
 [i _tic12400_status
 -> -> -> 0 `i `l `ul
@@ -2870,7 +2850,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> -> 0 `i `l `ul
 ]
 [v _tic12400_read_status `Vul ~T0 @X0 1 e ]
-"120
+"108
 [v _tic12400_value `Vul ~T0 @X0 1 e ]
 [i _tic12400_value
 -> -> -> 1957 `i `l `ul
@@ -2882,7 +2862,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ]
 [v _tic12400_fail_count `Vul ~T0 @X0 1 e ]
 [v _tic12400_parity_count `Vul ~T0 @X0 1 e ]
-"121
+"109
 [v _tic12400_init_ok `Va ~T0 @X0 1 e ]
 [i _tic12400_init_ok
 -> -> 0 `i `a
@@ -2891,7 +2871,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _tic12400_event
 -> -> 0 `i `a
 ]
-"122
+"110
 [v _tic12400_parity_status `Va ~T0 @X0 1 e ]
 [i _tic12400_parity_status
 -> -> 0 `i `a
@@ -2900,19 +2880,19 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _tic12400_read_error
 -> -> 0 `i `a
 ]
-"123
+"111
 [v _tic12400_fail_value `Vl ~T0 @X0 1 e ]
 [i _tic12400_fail_value
 -> -> 0 `i `l
 ]
-"124
+"112
 [v _b_read `Vuc ~T0 @X0 1 e ]
 [i _b_read
 -> -> 0 `i `uc
 ]
-"126
+"114
 [v _tic_rw `S3370 ~T0 @X0 1 e ]
-"128
+"116
 [v _build_date `*Cuc ~T0 @X0 1 s ]
 [i _build_date
 :s 1C
@@ -2921,207 +2901,199 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _build_time
 :s 2C
 ]
-"132
+"120
 [v _tic12400_version `(v ~T0 @X0 1 ef ]
-"133
+"121
 {
 [e :U _tic12400_version ]
 [f ]
-"134
+"122
 [e ( _printf , , , (. :s 3C :s 4C _build_date _build_time ]
-"135
+"123
 [e :UE 3371 ]
 }
-"144
+"133
 [v _tic12400_reset `(v ~T0 @X0 1 ef ]
-"145
+"134
 {
 [e :U _tic12400_reset ]
 [f ]
-"146
+"135
 [e ( _send_spi1_tic12400_dma (2 , -> -> &U _ticreset1a `*v `*uc -> -> 4 `i `uc ]
-"147
+"136
 [e ( _WaitMs (1 -> -> 10 `i `us ]
-"148
+"137
 [e ( _send_spi1_tic12400_dma (2 , -> -> &U _ticreset1a `*v `*uc -> -> 4 `i `uc ]
-"149
+"138
 [e ( _WaitMs (1 -> -> 10 `i `us ]
-"150
+"139
 [e = _tic12400_fail_value -> -> 0 `i `l ]
-"151
+"140
 [e :UE 3372 ]
 }
-"162
+"151
 [v _tic12400_init `(a ~T0 @X0 1 ef ]
-"163
+"152
 {
 [e :U _tic12400_init ]
 [f ]
-"164
+"153
 [e ( _send_spi1_tic12400_dma (2 , -> -> &U _ticstat02 `*v `*uc -> -> 4 `i `uc ]
-"165
+"154
 [e ( _send_spi1_tic12400_dma (2 , -> -> &U _ticstat02 `*v `*uc -> -> 4 `i `uc ]
-"166
+"155
 [e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3374  ]
 {
-"167
+"156
 [e ( _send_spi1_tic12400_dma (2 , -> -> &U _ticreset1a `*v `*uc -> -> 4 `i `uc ]
-"168
+"157
 [e ( _WaitMs (1 -> -> 10 `i `us ]
-"169
+"158
 [e = _tic12400_fail_value -> -U -> 1 `i `l ]
+"159
+[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
+"160
+[e = _tic12400_read_status -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul ]
+"161
+}
+[e :U 3374 ]
+"162
+[e ( _send_spi1_tic12400_dma (2 , -> -> &U _setup32 `*v `*uc -> -> 4 `i `uc ]
+"163
+[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3375  ]
+{
+"164
+[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
+"165
+[e = _tic12400_fail_value -> -U -> 2 `i `l ]
+"166
+[e = _tic12400_read_status -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul ]
+"167
+}
+[e :U 3375 ]
+"168
+[e ( _send_spi1_tic12400_dma (2 , -> -> &U _setup21 `*v `*uc -> -> 4 `i `uc ]
+"169
+[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3376  ]
+{
 "170
 [e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
 "171
-}
-[e :U 3374 ]
-"172
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _setup32 `*v `*uc -> -> 4 `i `uc ]
-"173
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3375  ]
-{
-"174
-[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
-"175
-[e = _tic12400_fail_value -> -U -> 2 `i `l ]
-"176
-}
-[e :U 3375 ]
-"177
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _setup21 `*v `*uc -> -> 4 `i `uc ]
-"178
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3376  ]
-{
-"179
-[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
-"180
 [e = _tic12400_fail_value -> -U -> 3 `i `l ]
-"181
+"172
+[e = _tic12400_read_status -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul ]
+"173
 }
 [e :U 3376 ]
-"182
+"174
 [e ( _send_spi1_tic12400_dma (2 , -> -> &U _setup1c `*v `*uc -> -> 4 `i `uc ]
-"183
+"175
 [e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3377  ]
 {
-"184
+"176
 [e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
-"185
+"177
 [e = _tic12400_fail_value -> -U -> 4 `i `l ]
-"186
+"178
+[e = _tic12400_read_status -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul ]
+"179
 }
 [e :U 3377 ]
-"187
+"180
 [e ( _send_spi1_tic12400_dma (2 , -> -> &U _setup1b `*v `*uc -> -> 4 `i `uc ]
-"188
+"181
 [e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3378  ]
 {
-"189
+"182
 [e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
-"190
+"183
 [e = _tic12400_fail_value -> -U -> 5 `i `l ]
-"191
+"184
+[e = _tic12400_read_status -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul ]
+"185
 }
 [e :U 3378 ]
-"192
+"186
 [e ( _send_spi1_tic12400_dma (2 , -> -> &U _setup22 `*v `*uc -> -> 4 `i `uc ]
-"193
+"187
 [e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3379  ]
+{
+"188
+[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
+"189
+[e = _tic12400_fail_value -> -U -> 6 `i `l ]
+"190
+[e = _tic12400_read_status -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul ]
+"191
+}
+[e :U 3379 ]
+"192
+[e ( _send_spi1_tic12400_dma (2 , -> -> &U _setup23 `*v `*uc -> -> 4 `i `uc ]
+"193
+[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3380  ]
 {
 "194
 [e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
 "195
-[e = _tic12400_fail_value -> -U -> 6 `i `l ]
-"196
-}
-[e :U 3379 ]
-"197
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _setup23 `*v `*uc -> -> 4 `i `uc ]
-"198
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3380  ]
-{
-"199
-[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
-"200
 [e = _tic12400_fail_value -> -U -> 7 `i `l ]
-"201
+"196
+[e = _tic12400_read_status -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul ]
+"197
 }
 [e :U 3380 ]
-"202
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _setup24 `*v `*uc -> -> 4 `i `uc ]
-"203
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3381  ]
-{
-"204
-[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
-"205
-[e = _tic12400_fail_value -> -U -> 8 `i `l ]
-"206
-}
-[e :U 3381 ]
-"208
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _setup1d `*v `*uc -> -> 4 `i `uc ]
-"209
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3382  ]
-{
-"210
-[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
-"211
-[e = _tic12400_fail_value -> -U -> 10 `i `l ]
-"212
-}
-[e :U 3382 ]
 "214
 [e ( _send_spi1_tic12400_dma (2 , -> -> &U _setup1a_trigger `*v `*uc -> -> 4 `i `uc ]
 "215
 [e ( _WaitMs (1 -> -> 2 `i `us ]
 "216
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 64 `i -> 0 `i 3383  ]
+[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 64 `i -> 0 `i 3381  ]
 {
 "217
 [e = _tic12400_fail_value -> -U -> 12 `i `l ]
 "218
 [e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
 "219
-}
-[e :U 3383 ]
+[e = _tic12400_read_status -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul ]
 "220
-[e = _tic12400_id >> ( _tic12400_wr (2 , &U _ticdevid01 -> -> 0 `i `us -> 1 `i ]
-"221
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 64 `i -> 0 `i 3384  ]
-{
-"222
-[e = _tic12400_fail_value -> -U -> 13 `i `l ]
-"223
-[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
-"224
 }
-[e :U 3384 ]
+[e :U 3381 ]
+"221
+[e = _tic12400_id >> ( _tic12400_wr (2 , &U _ticdevid01 -> -> 0 `i `us -> 1 `i ]
+"222
+[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 64 `i -> 0 `i 3382  ]
+{
+"223
+[e = _tic12400_fail_value -> -U -> 13 `i `l ]
+"224
+[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
+"225
+[e = _tic12400_read_status -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul ]
 "226
-[e = _tic12400_read_status ( _tic12400_wr (2 , &U _setup1a_read -> -> 0 `i `us ]
+}
+[e :U 3382 ]
 "228
 [e ( _IOCBF6_SetInterruptHandler (1 &U _tic_int_handler ]
 "229
-[e $ ! > _tic12400_fail_count -> -> -> 10 `i `l `ul 3385  ]
+[e $ ! > _tic12400_fail_count -> -> -> 1 `i `l `ul 3383  ]
 {
 "230
 [e = _tic12400_init_ok -> -> 0 `i `a ]
 "231
-[e :U 3388 ]
+[e :U 3386 ]
 {
 [e = . . _LATBbits 0 1 -> -> 1 `i `uc ]
 }
-[e :U 3387 ]
+[e :U 3385 ]
 "232
 }
-[e $U 3389  ]
-[e :U 3385 ]
+[e $U 3387  ]
+[e :U 3383 ]
 {
 "233
 [e = _tic12400_init_ok -> -> 1 `i `a ]
 "234
 }
-[e :U 3389 ]
+[e :U 3387 ]
 "236
 [e ) _tic12400_init_ok ]
 [e $UE 3373  ]
@@ -3143,179 +3115,183 @@ Version 4.0 HI-TECH Software Intermediate Code
 "247
 [e = _ticvalue & -> *U + . _spi_link 8 * -> -> 3 `i `x -> -> # *U . _spi_link 8 `i `x `ul -> -> -> 255 `i `l `ul ]
 "248
-[e =+ _ticvalue -> & -> << -> *U + . _spi_link 8 * -> -> 2 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 8 `i `ul -> -> 65280 `ui `ul `Vul ]
+[e = _in_buf1 *U + . _spi_link 8 * -> -> 3 `i `x -> -> # *U . _spi_link 8 `i `x ]
 "249
-[e =+ _ticvalue -> & << -> *U + . _spi_link 8 * -> -> 1 `i `x -> -> # *U . _spi_link 8 `i `x `ul -> -> 16 `i `ul -> -> 16711680 `l `ul `Vul ]
+[e = _in_buf2 *U + . _spi_link 8 * -> -> 2 `i `x -> -> # *U . _spi_link 8 `i `x ]
 "250
-[e =+ _ticvalue -> & << -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul -> -> 24 `i `ul -> 4278190080 `ul `Vul ]
+[e = _in_buf3 *U + . _spi_link 8 * -> -> 1 `i `x -> -> # *U . _spi_link 8 `i `x ]
 "251
-[e = _tic12400_read_error -> -> 0 `i `a ]
+[e =+ _ticvalue -> & -> << -> *U + . _spi_link 8 * -> -> 2 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 8 `i `ul -> -> 65280 `ui `ul `Vul ]
+"252
+[e =+ _ticvalue -> & << -> *U + . _spi_link 8 * -> -> 1 `i `x -> -> # *U . _spi_link 8 `i `x `ul -> -> 16 `i `ul -> -> 16711680 `l `ul `Vul ]
 "253
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3391  ]
-{
+[e =+ _ticvalue -> & << -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul -> -> 24 `i `ul -> 4278190080 `ul `Vul ]
 "254
-[e = _tic12400_parity_status -> -> 1 `i `a ]
-"255
-[e = _tic12400_read_error -> -> 1 `i `a ]
+[e = _tic12400_read_error -> -> 0 `i `a ]
 "256
-[e ++ _tic12400_parity_count -> -> 1 `i `Vul ]
+[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3389  ]
+{
+"257
+[e = _tic12400_parity_status -> -> 1 `i `a ]
 "258
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _ticstat02 `*v `*uc -> -> 4 `i `uc ]
+[e = _tic12400_read_error -> -> 1 `i `a ]
 "259
+[e ++ _tic12400_parity_count -> -> 1 `i `Vul ]
+"260
+[e ( _send_spi1_tic12400_dma (2 , -> -> &U _ticstat02 `*v `*uc -> -> 4 `i `uc ]
+"261
+}
+[e :U 3389 ]
+"262
+[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 64 `i -> 0 `i 3390  ]
+{
+"263
+[e = _tic12400_read_error -> -> 1 `i `a ]
+"264
+[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
+"265
+[e ( _send_spi1_tic12400_dma (2 , -> -> &U _ticstat02 `*v `*uc -> -> 4 `i `uc ]
+"266
+}
+[e :U 3390 ]
+"267
+[e $ ! != -> _del `ui -> -> 0 `i `ui 3391  ]
+{
+"268
+[e ( _WaitMs (1 _del ]
+"269
 }
 [e :U 3391 ]
-"260
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 64 `i -> 0 `i 3392  ]
-{
-"261
-[e = _tic12400_read_error -> -> 1 `i `a ]
-"262
-[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
-"264
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _ticstat02 `*v `*uc -> -> 4 `i `uc ]
-"265
-}
-[e :U 3392 ]
-"266
-[e $ ! != -> _del `ui -> -> 0 `i `ui 3393  ]
-{
-"267
-[e ( _WaitMs (1 _del ]
-"268
-}
-[e :U 3393 ]
-"269
-[e ) _ticvalue ]
-[e $UE 3390  ]
 "270
-[e :UE 3390 ]
+[e ) _ticvalue ]
+[e $UE 3388  ]
+"271
+[e :UE 3388 ]
 }
-"276
-[v _tic12400_get_sw `(ul ~T0 @X0 1 ef ]
 "277
+[v _tic12400_get_sw `(ul ~T0 @X0 1 ef ]
+"278
 {
 [e :U _tic12400_get_sw ]
 [f ]
-"278
-[e $ ! == -> _tic12400_init_ok `i -> 0 `i 3395  ]
-{
 "279
-[e ) -> -> -> 0 `i `l `ul ]
-[e $UE 3394  ]
+[e $ ! == -> _tic12400_init_ok `i -> 0 `i 3393  ]
+{
 "280
+[e ) -> -> -> 0 `i `l `ul ]
+[e $UE 3392  ]
+"281
+}
+[e :U 3393 ]
+"282
+[e $ ! != & _tic12400_switch -> -> -> 2 `i `l `ul -> -> -> 0 `i `l `ul 3394  ]
+{
+"283
+}
+[e $U 3395  ]
+[e :U 3394 ]
+{
+"284
 }
 [e :U 3395 ]
-"281
-[e $ ! != & _tic12400_switch -> -> -> 2 `i `l `ul -> -> -> 0 `i `l `ul 3396  ]
+"285
+[e $ ! != & _tic12400_switch -> -> -> 16384 `i `l `ul -> -> -> 0 `i `l `ul 3396  ]
 {
-"282
+"286
 }
 [e $U 3397  ]
 [e :U 3396 ]
 {
-"283
+"287
 }
 [e :U 3397 ]
-"284
-[e $ ! != & _tic12400_switch -> -> -> 16384 `i `l `ul -> -> -> 0 `i `l `ul 3398  ]
-{
-"285
-}
-[e $U 3399  ]
-[e :U 3398 ]
-{
-"286
-}
-[e :U 3399 ]
-"287
-[e = _tic12400_event -> -> 0 `i `a ]
 "288
-[e ) _tic12400_switch ]
-[e $UE 3394  ]
+[e = _tic12400_event -> -> 0 `i `a ]
 "289
-[e :UE 3394 ]
+[e ) _tic12400_switch ]
+[e $UE 3392  ]
+"290
+[e :UE 3392 ]
 }
-"295
-[v _tic12400_parity `(a ~T0 @X0 1 ef1`ul ]
 "296
+[v _tic12400_parity `(a ~T0 @X0 1 ef1`ul ]
+"297
 {
 [e :U _tic12400_parity ]
-"295
-[v _v `ul ~T0 @X0 1 r1 ]
 "296
-[f ]
+[v _v `ul ~T0 @X0 1 r1 ]
 "297
-[e =^ _v >> _v -> 16 `i ]
+[f ]
 "298
-[e =^ _v >> _v -> 8 `i ]
+[e =^ _v >> _v -> 16 `i ]
 "299
-[e =^ _v >> _v -> 4 `i ]
+[e =^ _v >> _v -> 8 `i ]
 "300
-[e =& _v -> -> -> 15 `i `l `ul ]
+[e =^ _v >> _v -> 4 `i ]
 "301
-[e ) -> & >> -> 27030 `i _v -> 1 `i `a ]
-[e $UE 3400  ]
+[e =& _v -> -> -> 15 `i `l `ul ]
 "302
-[e :UE 3400 ]
+[e ) -> & >> -> 27030 `i _v -> 1 `i `a ]
+[e $UE 3398  ]
+"303
+[e :UE 3398 ]
 }
-"308
-[v _tic12400_read_sw `(v ~T0 @X0 1 ef2`ul`um ]
 "309
+[v _tic12400_read_sw `(v ~T0 @X0 1 ef2`ul`um ]
+"310
 {
 [e :U _tic12400_read_sw ]
-"308
+"309
 [v _a `ul ~T0 @X0 1 r1 ]
 [v _b `um ~T0 @X0 1 r2 ]
-"309
-[f ]
 "310
+[f ]
+"311
 [e = _tic12400_value ( _tic12400_wr (2 , &U _ticread05 -> -> 0 `i `us ]
-"312
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 8 `i -> 0 `i 3402  ]
-{
 "313
-[e = _tic12400_event -> -> 1 `i `a ]
+[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 8 `i -> 0 `i 3400  ]
+{
 "314
-[e ++ _tic12400_value_counts -> -> 1 `i `Vul ]
+[e = _tic12400_event -> -> 1 `i `a ]
 "315
-}
-[e :U 3402 ]
+[e ++ _tic12400_value_counts -> -> 1 `i `Vul ]
 "316
-[e = _tic12400_switch & >> _tic12400_value -> 1 `i -> -> 16777215 `l `ul ]
-"317
-[e ++ _tic12400_counts -> -> 1 `i `Vul ]
-"318
-[e :UE 3401 ]
 }
-"320
-[v _tic_int_handler `(v ~T0 @X0 1 ef ]
+[e :U 3400 ]
+"317
+[e = _tic12400_switch & >> _tic12400_value -> 1 `i -> -> 16777215 `l `ul ]
+"318
+[e ++ _tic12400_counts -> -> 1 `i `Vul ]
+"319
+[e :UE 3399 ]
+}
 "321
+[v _tic_int_handler `(v ~T0 @X0 1 ef ]
+"322
 {
 [e :U _tic_int_handler ]
 [f ]
-"322
-[e $ ! != -> _tic12400_init_ok `i -> 0 `i 3404  ]
-{
 "323
-[e ( _tic12400_read_sw (2 , -> -> -> 0 `i `l `ul -> -> -> 0 `i `*v `um ]
+[e $ ! != -> _tic12400_init_ok `i -> 0 `i 3402  ]
+{
 "324
-[e :U 3407 ]
+[e ( _tic12400_read_sw (2 , -> -> -> 0 `i `l `ul -> -> -> 0 `i `*v `um ]
+"325
+[e :U 3405 ]
 {
 [e = . . _LATBbits 0 1 -> -> 1 `i `uc ]
 }
-[e :U 3406 ]
-"325
-[e = _tic12400_switch ++ _tic12400_counts -> -> 1 `i `Vul ]
+[e :U 3404 ]
 "326
 }
-[e :U 3404 ]
+[e :U 3402 ]
 "328
 [e = _b_read _PORTB ]
 "329
-[e :UE 3403 ]
+[e :UE 3401 ]
 }
 [p f _printf 8650752 ]
-[a 2C 50 50 58 52 53 58 52 54 0 ]
 [a 4C 86 48 46 54 0 ]
-[a 1C 74 117 108 32 49 56 32 50 48 50 53 0 ]
+[a 1C 74 117 108 32 50 48 32 50 48 50 53 0 ]
+[a 2C 49 50 58 51 49 58 48 51 0 ]
 [a 3C 13 45 45 45 32 84 73 67 49 50 52 48 48 32 68 114 105 118 101 114 32 86 101 114 115 105 111 110 32 37 115 32 37 115 32 37 115 32 45 45 45 13 10 0 ]

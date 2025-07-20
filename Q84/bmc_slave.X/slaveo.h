@@ -85,6 +85,18 @@ extern "C" {
 		volatile bool make_value, get_value, dac_value, adc_value, cfg_value;
 	};
 
+	enum daqbmc_packet_index {
+		BMC_CMD = 0,
+		BMC_D0,
+		BMC_D1,
+		BMC_D2,
+		BMC_D3,
+		BMC_D4,
+		BMC_EXT = 6,
+		BMC_CKSUM = 7,
+		BMC_DUMMY,
+	};
+
 	extern volatile struct spi_link_type_ss spi_comm_ss;
 	extern volatile struct serial_buffer_type_ss serial_buffer_ss;
 	extern volatile struct spi_stat_type_ss spi_stat_ss, report_stat_ss;
@@ -92,6 +104,8 @@ extern "C" {
 	extern volatile uint16_t adc_buffer[AI_BUFFER_NUM], adc_data_in, dac_buffer[AO_BUFFER_NUM], dac_data_in;
 	extern V_data V;
 	volatile bool failure;
+	extern volatile uint8_t in_buf1, in_buf2, in_buf3;
+	extern volatile uint8_t tmp_buf;
 
 	void check_slaveo(void);
 	void init_slaveo(void);
