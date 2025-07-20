@@ -368,7 +368,6 @@ int init_dio(void)
 
 int get_data_sample(void)
 {
-
 	if (DI_OPEN) {
 		if (bmc.BOARD == bmcboard) {
 			comedi_dio_bitfield2(it, subdev_di, 0x00, &datain, 0x00);
@@ -389,7 +388,6 @@ int get_data_sample(void)
 			comedi_dio_bitfield2(it, subdev_do, 0xff, &obits.dio_buf, 0);
 		}
 	}
-
 	return 0;
 }
 
