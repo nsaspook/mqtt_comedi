@@ -70,7 +70,7 @@ extern "C" {
 #define BDELAY		300
 #define DDELAY		500 // display update spacing
 #define DFLIP		1500 // display info flipping spacing
-#define ADCDELAY	2 // adc update rate ms
+#define ADCDELAY	1 // adc update rate ms
 
 	/*
 	 * characters per line on the display

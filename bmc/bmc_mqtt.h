@@ -15,7 +15,7 @@ extern "C" {
 #define TOKEN_DELAY     600
 #define GTI_TOKEN_DELAY 300
 
-#define MAIN_DELAY      500 // 1.0 msec comedi sample rate max
+#define MAIN_DELAY      250 // 1.0 msec comedi sample rate max
 
 #define QOS             2
 

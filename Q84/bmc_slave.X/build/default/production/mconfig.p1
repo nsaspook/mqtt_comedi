@@ -8,13 +8,13 @@ Version 4.0 HI-TECH Software Intermediate Code
 "277 ./vconfig.h
 [s S3360 `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i ]
 [n S3360 V_help message display extrams ]
-[v F25038 `uc ~T0 @X0 -> 128 `i t ]
-[v F25037 `F25038 ~T0 @X0 -> 4 `i t ]
+[v F25040 `uc ~T0 @X0 -> 128 `i t ]
+[v F25039 `F25040 ~T0 @X0 -> 4 `i t ]
 "13 mconfig.c
 [c E24382 0 1 2 3 4 5 6 7 8 9 10 11 .. ]
 [n E24382 . DIS_STR DIS_TERM DIS_LOG DIS_LOAD DIS_UNLOAD DIS_PUMP DIS_HELP DIS_SEQUENCE DIS_SEQUENCE_M DIS_ERR DIS_FREE DIS_CLEAR  ]
 "6
-[s S3371 `F25037 -> 4 `i :2 `uc 1 `E24382 1 ]
+[s S3371 `F25039 -> 4 `i :2 `uc 1 `E24382 1 ]
 [n S3371 D_data lcd vterm last_info ]
 "29 /opt/microchip/xc8/v3.00/pic/include/c99/string.h
 [v _memset `(*v ~T0 @X0 0 ef3`*v`i`ui ]
@@ -2668,7 +2668,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-"106 ./slaveo.h
+"108 ./slaveo.h
 [v _failure `Va ~T0 @X0 1 e ]
 "86 ./tic12400.h
 [v _b_read `Vuc ~T0 @X0 1 e ]
@@ -3686,9 +3686,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 "222
 [e :UE 3399 ]
 }
-[v F25130 `(E24382 ~T0 @X0 1 tf ]
+[v F25132 `(E24382 ~T0 @X0 1 tf ]
 "224
-[v _display_info `TF25130 ~T0 @X0 1 e ]
+[v _display_info `TF25132 ~T0 @X0 1 e ]
 "225
 {
 [e :U _display_info ]
@@ -3699,9 +3699,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 "227
 [e :UE 3408 ]
 }
-[v F25132 `(E24382 ~T0 @X0 1 tf ]
+[v F25134 `(E24382 ~T0 @X0 1 tf ]
 "229
-[v _display_help `TF25132 ~T0 @X0 1 e ]
+[v _display_help `TF25134 ~T0 @X0 1 e ]
 "230
 {
 [e :U _display_help ]
@@ -3722,22 +3722,22 @@ Version 4.0 HI-TECH Software Intermediate Code
 "235
 [f ]
 "236
-[v F25135 `E24382 ~T0 @X0 1 s old_info ]
-[i F25135
+[v F25137 `E24382 ~T0 @X0 1 s old_info ]
+[i F25137
 . `E24382 0
 ]
 "238
 [e $ ! != -> ( _TimerDone (1 -> . `E24755 2 `uc `i -> 0 `i 3411  ]
 {
 "239
-[e = F25135 . . _V 47 8 ]
+[e = F25137 . . _V 47 8 ]
 "240
 [e = . . _V 47 8 _new_response_info ]
 "241
 }
 [e :U 3411 ]
 "242
-[e ) F25135 ]
+[e ) F25137 ]
 [e $UE 3410  ]
 "243
 [e :UE 3410 ]
@@ -3752,13 +3752,13 @@ Version 4.0 HI-TECH Software Intermediate Code
 "246
 [f ]
 "247
-[v F25138 `E24382 ~T0 @X0 1 s old_info ]
+[v F25140 `E24382 ~T0 @X0 1 s old_info ]
 "249
-[e = F25138 . . _V 47 9 ]
+[e = F25140 . . _V 47 9 ]
 "250
 [e = . . _V 47 9 _new_response_info ]
 "251
-[e ) F25138 ]
+[e ) F25140 ]
 [e $UE 3412  ]
 "252
 [e :UE 3412 ]
@@ -3813,23 +3813,23 @@ Version 4.0 HI-TECH Software Intermediate Code
 "411
 [f ]
 "412
-[v F25147 `ul ~T0 @X0 1 s current_time ]
+[v F25149 `ul ~T0 @X0 1 s current_time ]
 "414
 [e = . . _PIE8bits 0 4 -> -> 0 `i `uc ]
 "415
-[e = F25147 . _V 20 ]
+[e = F25149 . _V 20 ]
 "416
 [e = . . _PIE8bits 0 4 -> -> 1 `i `uc ]
 "417
 [e $ ! != _t -> -> 0 `i `*ul 3417  ]
 {
 "418
-[e = _t &U F25147 ]
+[e = _t &U F25149 ]
 "419
 }
 [e :U 3417 ]
 "420
-[e ) F25147 ]
+[e ) F25149 ]
 [e $UE 3416  ]
 "421
 [e :UE 3416 ]

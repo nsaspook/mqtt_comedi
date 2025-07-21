@@ -30,9 +30,9 @@ extern "C" {
 #define CMD_CHAR_GO     0b10110000
 #define CMD_ADC_DATA	0b11000000
 #define CMD_PORT_DATA	0b11010000
-#define CMD_CHAR_DATA	0b11100000
+#define CMD_CHAR_DATA	0b11100000	// Send serial TX buffer
 #define CMD_PORT_GET    0b11110000	// Read DI data
-#define CMD_CHAR_RX     0b00010000	// Get RX buffer
+#define CMD_CHAR_GET    0b00010000	// Get serial RX buffer
 #define CMD_DUMMY_CFG	0b01000000	// stuff config data in SPI buffer
 #define CMD_DEAD        0b11111111      // This is usually a bad response
 
@@ -54,9 +54,11 @@ extern "C" {
 #define UART_DUMMY_MASK	0b01000000
 
 #define PORT_GET_BYTES	7
+#define CHAR_GET_BYTES	7
 #define CFG_GET_BYTES	7
 #define ADC_GET_BYTES	7
 #define PORT_GO_BYTES	7
+#define CHAR_GO_BYTES	7
 #define DAC_GO_BYTES	7
 
 	struct spi_link_type_ss { // internal state table
@@ -82,7 +84,7 @@ extern "C" {
 	struct serial_buffer_type_ss {
 		volatile uint8_t data[16], tx_buffer, adcl, adc2, adch, command, raw_index;
 		volatile uint32_t place;
-		volatile bool make_value, get_value, dac_value, adc_value, cfg_value;
+		volatile bool make_value, get_value, dac_value, adc_value, cfg_value, cmake_value, cget_value;
 	};
 
 	enum daqbmc_packet_index {

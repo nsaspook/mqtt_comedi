@@ -85,7 +85,7 @@ by the module option variable daqbmc_conf in the /etc/modprobe.d directory
 #define CHECKMARK 0x1957
 #define CHECKBYTE 0x57
 
-#define bmc_version "version 0.91 "
+#define bmc_version "version 0.92 "
 #define spibmc_version "version 1.2 "
 
 /*
@@ -170,7 +170,7 @@ static const uint8_t CMD_ADC_DATA = 0xc0;
 static const uint8_t CMD_PORT_DATA = 0xd0;
 static const uint8_t CMD_CHAR_DATA = 0xe0;
 static const uint8_t CMD_PORT_GET = 0xf0; /* read data from input DI buffer */
-static const uint8_t CMD_CHAR_RX = 0x10; /* Get RX buffer */
+static const uint8_t CMD_CHAR_GET = 0x10; /* Get RX buffer */
 static const uint8_t CMD_DUMMY_CFG = 0x40; /* stuff config data in SPI buffer */
 static const uint8_t CMD_DEAD = 0xff; /* This is usually a bad response */
 
@@ -1321,6 +1321,98 @@ static int daqbmc_do_insn_bits(struct comedi_device *dev,
 	return insn->n;
 }
 
+/*
+ * Serial TX SPI Q84 transaction, 24-bit data
+ */
+static void serialWriteOPi(struct comedi_device *dev,
+	uint32_t pin,
+	uint32_t *value)
+{
+	struct daqbmc_private *devpriv = dev->private;
+	uint32_t val_value;
+	struct bmc_packet_type *packet = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC);
+
+	if (!packet) {
+		return;
+	}
+
+	val_value = value[0];
+
+	/* use single transfer for all bytes of the complete SPI transaction */
+	packet->bmc_byte_t[BMC_CMD] = CMD_CHAR_GO;
+	packet->bmc_byte_t[BMC_D0] = (uint8_t) (val_value & 0xff); // serial data
+	packet->bmc_byte_t[BMC_D1] = (uint8_t) ((val_value >> 8)&0xff); // serial channel
+	packet->bmc_byte_t[BMC_D2] = (uint8_t) ((val_value >> 16)&0xff); // serial options
+	packet->bmc_byte_t[BMC_D3] = 3;
+	packet->bmc_byte_t[BMC_D4] = 4;
+	packet->bmc_byte_t[BMC_EXT] = 0;
+	packet->bmc_byte_t[BMC_CKSUM] = CHECKBYTE;
+	packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
+	bmc_spi_exchange(dev, packet);
+
+	devpriv->do_count++;
+	kfree(packet);
+}
+
+/*
+ * Serial RX SPI Q84 transaction, 24-bit data
+ */
+static int serialReadOPi(struct comedi_device *dev, uint32_t * data)
+{
+	struct daqbmc_private *devpriv = dev->private;
+	uint32_t val_value;
+	struct bmc_packet_type *packet = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC);
+	
+	if (!packet) {
+		return 0;
+	}
+
+	/* use single transfer for all bytes of the complete SPI transaction */
+	packet->bmc_byte_t[BMC_CMD] = CMD_CHAR_GET;
+	packet->bmc_byte_t[BMC_D0] = BMC_D0;
+	packet->bmc_byte_t[BMC_D1] = BMC_D1;
+	packet->bmc_byte_t[BMC_D2] = BMC_D2;
+	packet->bmc_byte_t[BMC_D3] = BMC_D3;
+	packet->bmc_byte_t[BMC_D4] = BMC_D4;
+	packet->bmc_byte_t[BMC_EXT] = BMC_EXT;
+	packet->bmc_byte_t[BMC_CKSUM] = CHECKBYTE;
+	packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
+	bmc_spi_exchange(dev, packet);
+
+	val_value = packet->bmc_byte_r[BMC_D1]; // serial data is fresh
+	val_value += (packet->bmc_byte_r[BMC_D2] << 8); // serial channel
+	val_value += (packet->bmc_byte_r[BMC_DUMMY] << 16); // serial data
+
+	devpriv->di_count++;
+	kfree(packet);
+
+	return val_value;
+}
+
+static int daqbmc_sio_insn_bits(struct comedi_device *dev,
+	struct comedi_subdevice *s,
+	struct comedi_insn *insn,
+	uint32_t * data)
+{
+	struct daqbmc_private *devpriv = dev->private;
+	uint32_t val, mask;
+
+	if (unlikely(!devpriv)) {
+		return -EFAULT;
+	}
+
+	mask = data[0] & s->io_bits;
+	if (mask) { // only send serial data if bits are set
+		serialWriteOPi(dev, mask, data);
+	}
+
+	val = serialReadOPi(dev, data);
+
+	data[1] = val;
+
+	return insn->n;
+}
+
 static int daqbmc_di_insn_bits(struct comedi_device *dev,
 	struct comedi_subdevice *s,
 	struct comedi_insn *insn,
@@ -1629,7 +1721,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		thisboard->name, daqbmc_conf);
 	devpriv->num_subdev = 0;
 	if (daqbmc_spi_probe(dev, devpriv->ai_spi)) {
-		devpriv->num_subdev += 4;
+		devpriv->num_subdev += 5;
 	} else {
 		dev_err(dev->class_dev, "board device detection failed!\n");
 		return -EINVAL;
@@ -1733,6 +1825,19 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	}
 
 	if (do_conf) {
+		s = &dev->subdevices[4];
+		s->type = COMEDI_SUBD_SERIAL;
+		s->subdev_flags = SDF_READABLE | SDF_WRITABLE;
+		s->n_chan = 4;
+		s->len_chanlist = 4;
+		s->range_table = &range_digital;
+		s->maxdata = 1;
+		s->insn_bits = daqbmc_sio_insn_bits;
+		s->state = 0;
+		s->io_bits = 0x0300; // bits 0..1 TX outputs for serial channels 0..1 in second byte
+		dev_info(dev->class_dev,
+			"RS232 and TTL serial TX/RX channels %d\n", 4);
+
 		s = &dev->subdevices[3];
 		s->type = COMEDI_SUBD_DO;
 		s->subdev_flags = SDF_WRITABLE;

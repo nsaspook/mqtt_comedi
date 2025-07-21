@@ -174,7 +174,7 @@ int main(int argc, char *argv[])
 			get_data_sample();
 
 			if (bmc.BOARD == bmcboard) {
-				led_lightshow(75);
+				led_lightshow(15);
 			} else {
 				led_lightshow(10);
 			}

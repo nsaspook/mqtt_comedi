@@ -92,6 +92,25 @@ void slaveo_rx_isr(void)
 	data_in2 = SPI2RXB;
 	serial_buffer_ss.data[serial_buffer_ss.raw_index] = data_in2;
 
+	// CHAR_GO_BYTES
+	if (serial_buffer_ss.cmake_value) {
+		if (serial_buffer_ss.raw_index == CHAR_GO_BYTES) {
+			/*
+			 * uart1 or uart2 0..1 select in serial_buffer_ss.data[2]
+			 */
+			UART1_Write(serial_buffer_ss.data[1]);
+			data_in2 = 0;
+			serial_buffer_ss.cmake_value = false;
+			serial_buffer_ss.raw_index = 0;
+			spi_stat_ss.txdone_bit++; // number of completed packets
+			spi_stat_ss.slave_tx_count++;
+			data_in2 = 0;
+		} else {
+			spi_stat_ss.slave_tx_count++;
+			data_in2 = 0;
+		}
+	}
+
 	// PORT_GO_BYTES
 	if (serial_buffer_ss.make_value) {
 		if (serial_buffer_ss.raw_index == PORT_GO_BYTES) {
@@ -120,6 +139,34 @@ void slaveo_rx_isr(void)
 			data_in2 = 0;
 		} else {
 			spi_stat_ss.slave_tx_count++;
+			data_in2 = 0;
+		}
+	}
+
+	// CHAR_GET_BYTES
+	if (serial_buffer_ss.cget_value) {
+		if (serial_buffer_ss.raw_index == CHAR_GET_BYTES) {
+			/*
+			 * uart1 or uart2 0..1 select in serial_buffer_ss.data[2]
+			 */
+			if (UART1_is_rx_ready()) {
+				tmp_buf = UART1_Read();
+			} else {
+				tmp_buf = 0;
+			}
+			SPI2TXB = tmp_buf;
+			serial_buffer_ss.cget_value = false;
+			serial_buffer_ss.raw_index = 0;
+			spi_stat_ss.txdone_bit++; // number of completed packets
+			data_in2 = 0;
+		} else {
+			spi_stat_ss.slave_tx_count++;
+			if (serial_buffer_ss.raw_index == 1) {
+				tmp_buf = UART1_is_rx_ready(); // new data is ready
+			} else {
+				tmp_buf = CHECKBYTE;
+			}
+			SPI2TXB = tmp_buf;
 			data_in2 = 0;
 		}
 	}
@@ -194,13 +241,14 @@ void slaveo_rx_isr(void)
 
 	command = data_in2 & HI_NIBBLE;
 
-	if (serial_buffer_ss.dac_value || serial_buffer_ss.get_value || serial_buffer_ss.make_value || serial_buffer_ss.dac_value || serial_buffer_ss.cfg_value) {
+	if (serial_buffer_ss.dac_value || serial_buffer_ss.get_value || serial_buffer_ss.make_value || serial_buffer_ss.dac_value || serial_buffer_ss.cfg_value || serial_buffer_ss.cget_value || serial_buffer_ss.cmake_value) {
 		goto isr_end;
 	}
 
 	if (command == CMD_DAC_GO) { // Found a GO for a DAC conversion command
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = false;
+		spi_comm_ss.CHAR_DATA = false;
 		spi_stat_ss.dac_count++;
 		serial_buffer_ss.raw_index = 1;
 		serial_buffer_ss.dac_value = true;
@@ -212,6 +260,7 @@ void slaveo_rx_isr(void)
 	if (command == CMD_ADC_GO) { // Found a GO for a conversion command
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = false;
+		spi_comm_ss.CHAR_DATA = false;
 		spi_stat_ss.adc_count++;
 		channel = data_in2 & LO_NIBBLE; // only 16 possible channels so higher numbers needs to be munged
 		if (channel > AI_CHAN_FIX) {
@@ -267,6 +316,7 @@ void slaveo_rx_isr(void)
 	if (!V.di_fail && command == CMD_PORT_GET) { // send the V.bmc_di buffer
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = true;
+		spi_comm_ss.CHAR_DATA = false;
 		spi_stat_ss.port_count++;
 		serial_buffer_ss.raw_index = 1;
 		serial_buffer_ss.get_value = true;
@@ -277,10 +327,35 @@ void slaveo_rx_isr(void)
 	if (!V.do_fail && command == CMD_PORT_GO) { // Found a GO for a DO command
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = true;
+		spi_comm_ss.CHAR_DATA = false;
 		spi_stat_ss.port_count++;
 		channel = data_in2;
 		serial_buffer_ss.raw_index = 1;
 		serial_buffer_ss.make_value = true;
+		spi_stat_ss.slave_tx_count++;
+		spi_comm_ss.REMOTE_LINK = true;
+		TMR0_Reload();
+	}
+
+	if (!V.do_fail && command == CMD_CHAR_GET) { // send the serial buffer
+		spi_comm_ss.ADC_RUN = false;
+		spi_comm_ss.PORT_DATA = false;
+		spi_comm_ss.CHAR_DATA = true;
+		spi_stat_ss.char_count++;
+		serial_buffer_ss.raw_index = 1;
+		serial_buffer_ss.cget_value = true;
+		spi_comm_ss.REMOTE_LINK = true;
+		TMR0_Reload();
+	}
+
+	if (!V.do_fail && command == CMD_CHAR_GO) { // get data for the serial buffer
+		spi_comm_ss.ADC_RUN = false;
+		spi_comm_ss.PORT_DATA = false;
+		spi_comm_ss.CHAR_DATA = true;
+		spi_stat_ss.char_count++;
+		channel = data_in2;
+		serial_buffer_ss.raw_index = 1;
+		serial_buffer_ss.cmake_value = true;
 		spi_stat_ss.slave_tx_count++;
 		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();

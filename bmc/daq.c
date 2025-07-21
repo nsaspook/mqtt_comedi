@@ -42,11 +42,16 @@ int chan_counter = 0; /* change this to your channel */
 int range_counter = 0; /* more on this later */
 int maxdata_counter, ranges_counter, channels_counter, datain_counter;
 
+int subdev_serial0; /* change this to your input subdevice */
+int chan_serial0 = 0; /* change this to your channel */
+int range_serial0 = 0; /* more on this later */
+int maxdata_serial0, ranges_serial0, channels_serial0, datain_serial0;
+
 comedi_t *it;
 comedi_range *ad_range, *da_range;
 bool ADC_OPEN = true, DIO_OPEN = true, ADC_ERROR = false, DEV_OPEN = true,
 	DIO_ERROR = false, HAS_AO = false, DAC_ERROR = false, PWM_OPEN = true,
-	PWM_ERROR = false;
+	PWM_ERROR = false, TX_OPEN = true, RX_OPEN = true;
 
 bool DO_OPEN = true, DI_OPEN = true, DO_ERROR = false;
 union dio_buf_type obits, ibits;
@@ -298,6 +303,8 @@ int init_dio(void)
 			DI_OPEN = false;
 			DEV_OPEN = false;
 			PWM_OPEN = false;
+			TX_OPEN = false;
+			RX_OPEN = false;
 			return -1;
 		}
 		DEV_OPEN = true;
@@ -321,6 +328,11 @@ int init_dio(void)
 	subdev_counter = comedi_find_subdevice_by_type(it, COMEDI_SUBD_COUNTER, subdev_counter);
 	if (subdev_counter < 0) {
 		PWM_OPEN = false;
+	}
+
+	subdev_serial0 = comedi_find_subdevice_by_type(it, COMEDI_SUBD_SERIAL, subdev_serial0);
+	if (subdev_serial0 < 0) {
+		TX_OPEN = false;
 	}
 
 	if (DO_OPEN) {
@@ -363,6 +375,16 @@ int init_dio(void)
 		ranges_counter = comedi_get_n_ranges(it, subdev_counter, i);
 		fprintf(fout, "Ranges %i \r\n", ranges_counter);
 	}
+
+	if (TX_OPEN) {
+		fprintf(fout, "Subdev SER %i ", subdev_serial0);
+		channels_serial0 = comedi_get_n_channels(it, subdev_serial0);
+		fprintf(fout, "Digital Channels %i ", channels_serial0);
+		maxdata_serial0 = comedi_get_maxdata(it, subdev_serial0, i);
+		fprintf(fout, "Maxdata %i ", maxdata_serial0);
+		ranges_serial0 = comedi_get_n_ranges(it, subdev_serial0, i);
+		fprintf(fout, "Ranges %i \r\n", ranges_serial0);
+	}
 	return 0;
 }
 
@@ -377,7 +399,7 @@ int get_data_sample(void)
 	}
 
 	usleep(50);
-	
+
 	if (DO_OPEN) {
 		// send I/O as a byte mask
 		obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
