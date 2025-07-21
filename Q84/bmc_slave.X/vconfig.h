@@ -24,7 +24,7 @@ extern "C" {
 
 //#define DIS_DEBUG	// active status display, disable during normal operation
 
-#define VER	"V0.16"
+#define VER	"V0.17"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 47Q84.
@@ -40,6 +40,7 @@ extern "C" {
 	 * V0.14 remove serial speed switching code
 	 * V0.15 update to 9 byte packets for all commands
 	 * V.016 fix TIC12400 I/O bugs
+	 * V.017 code cleanup
 	 */
 	/*
 	 * TIC12400 testing modes

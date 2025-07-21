@@ -260,10 +260,8 @@ volatile struct spi_stat_type_ss spi_stat_ss = {
 	.daq_conf = 0,
 };
 volatile struct serial_buffer_type_ss serial_buffer_ss = {
-	.tx_buffer = 0x81,
-	.data[0] = 0x57,
-	.raw_index = 0,
-	.make_value = false,
+	.data[BMC_CMD] = CHECKBYTE,
+	.raw_index = BMC_CMD,
 };
 
 volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0, channel = 0, upper;

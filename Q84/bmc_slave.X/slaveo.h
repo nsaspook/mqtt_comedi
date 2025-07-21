@@ -20,6 +20,8 @@ extern "C" {
 #include "eadog.h"
 #include "timers.h"
 
+#define SLAVEO_DRIVER "V0.7"
+	
 #define SLAVE_DEBUG
 
 	/* PIC Slave commands */
@@ -46,7 +48,8 @@ extern "C" {
 #define NUM_AO_CHAN     1
 #define AO_BUFFER_NUM	0x40
 
-#define SPI_BUFFER_LEN	8
+#define SPI_BUFFER_LEN	10
+#define PACKET_BUF_SIZ	16
 
 #define	HI_NIBBLE       0xf0
 #define	LO_NIBBLE       0x0f
@@ -78,11 +81,11 @@ extern "C" {
 		char_count, char_error_count, rxof_bit, txdone_bit, txuf_bit,
 		slave_int_count, last_slave_int_count, slave_tx_count,
 		comm_count, idle_count, spi_error_count, spi_noerror_count;
-		volatile uint8_t comm_ok, rx_raw_buffer[SPI_BUFFER_LEN], raw_index, daq_conf;
+		volatile uint8_t comm_ok, raw_index, daq_conf;
 	};
 
 	struct serial_buffer_type_ss {
-		volatile uint8_t data[16], tx_buffer, adcl, adc2, adch, command, raw_index;
+		volatile uint8_t data[PACKET_BUF_SIZ], adcl, adc2, adch, command, raw_index;
 		volatile uint32_t place;
 		volatile bool make_value, get_value, dac_value, adc_value, cfg_value, cmake_value, cget_value;
 	};

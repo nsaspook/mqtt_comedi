@@ -42,6 +42,10 @@ The DAQ-BMC appears in Comedi as a digital I/O subdevices with
 a analog input subdevice with 16 possible single-ended channels set by the SPI slave device
 and a analog output subdevice with 1 channel with onboard dac
  *
+ a serial r/w device with two ports, one RS232, the other TTL
+ *
+ *
+ *
  * Caveats:
  *
 
@@ -85,8 +89,8 @@ by the module option variable daqbmc_conf in the /etc/modprobe.d directory
 #define CHECKMARK 0x1957
 #define CHECKBYTE 0x57
 
-#define bmc_version "version 0.92 "
-#define spibmc_version "version 1.2 "
+#define bmc_version "version 0.93 "
+#define spibmc_version "version 1.3 "
 
 /*
  * SPI transfer buffer size
@@ -174,6 +178,18 @@ static const uint8_t CMD_CHAR_GET = 0x10; /* Get RX buffer */
 static const uint8_t CMD_DUMMY_CFG = 0x40; /* stuff config data in SPI buffer */
 static const uint8_t CMD_DEAD = 0xff; /* This is usually a bad response */
 
+enum daqbmc_packet_index {
+	BMC_CMD = 0,
+	BMC_D0,
+	BMC_D1,
+	BMC_D2,
+	BMC_D3,
+	BMC_D4,
+	BMC_EXT,
+	BMC_CKSUM,
+	BMC_DUMMY,
+};
+
 /*
  * driver hardware numbers
  */
@@ -256,18 +272,6 @@ struct bmc_packet_type {
 	uint8_t bmc_byte_r[Q84_BYTES];
 	struct spi_transfer one_t;
 	struct spi_message m[1]; // make this a pointer
-};
-
-enum daqbmc_packet_index {
-	BMC_CMD = 0,
-	BMC_D0,
-	BMC_D1,
-	BMC_D2,
-	BMC_D3,
-	BMC_D4,
-	BMC_EXT,
-	BMC_CKSUM,
-	BMC_DUMMY,
 };
 
 struct daqbmc_device {
@@ -748,9 +752,9 @@ static void daqbmc_ao_put_sample(struct comedi_device *dev,
 	packet->bmc_byte_t[BMC_D0] = (uint8_t) (value & 0xff);
 	packet->bmc_byte_t[BMC_D1] = (uint8_t) ((value >> 8)&0xff);
 	packet->bmc_byte_t[BMC_D2] = (uint8_t) (value & 0xff);
-	packet->bmc_byte_t[BMC_D3] = CMD_DAC_GO;
-	packet->bmc_byte_t[BMC_D4] = CMD_DAC_GO;
-	packet->bmc_byte_t[BMC_EXT] = CMD_DAC_GO;
+	packet->bmc_byte_t[BMC_D3] = BMC_D3;
+	packet->bmc_byte_t[BMC_D4] = BMC_D4;
+	packet->bmc_byte_t[BMC_EXT] = BMC_EXT;
 	packet->bmc_byte_t[BMC_CKSUM] = CHECKBYTE;
 	packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
 	bmc_spi_exchange(dev, packet);
@@ -796,9 +800,9 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 	packet->bmc_byte_t[BMC_D0] = BMC_D0;
 	packet->bmc_byte_t[BMC_D1] = BMC_D1;
 	packet->bmc_byte_t[BMC_D2] = BMC_D2;
-	packet->bmc_byte_t[BMC_D3] = CMD_ADC_GO + chan;
-	packet->bmc_byte_t[BMC_D4] = CMD_ADC_GO + chan;
-	packet->bmc_byte_t[BMC_EXT] = CMD_ADC_GO + chan;
+	packet->bmc_byte_t[BMC_D3] = BMC_D3;
+	packet->bmc_byte_t[BMC_D4] = BMC_D4;
+	packet->bmc_byte_t[BMC_EXT] = BMC_EXT;
 	packet->bmc_byte_t[BMC_CKSUM] = CHECKBYTE;
 	packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
 	bmc_spi_exchange(dev, packet);
@@ -1251,9 +1255,9 @@ static void digitalWriteOPi(struct comedi_device *dev,
 	packet->bmc_byte_t[BMC_D0] = (uint8_t) (val_value & 0xff);
 	packet->bmc_byte_t[BMC_D1] = (uint8_t) ((val_value >> 8)&0xff);
 	packet->bmc_byte_t[BMC_D2] = (uint8_t) ((val_value >> 16)&0xff);
-	packet->bmc_byte_t[BMC_D3] = 3;
-	packet->bmc_byte_t[BMC_D4] = 4;
-	packet->bmc_byte_t[BMC_EXT] = 0;
+	packet->bmc_byte_t[BMC_D3] = BMC_D3;
+	packet->bmc_byte_t[BMC_D4] = BMC_D4;
+	packet->bmc_byte_t[BMC_EXT] = BMC_EXT;
 	packet->bmc_byte_t[BMC_CKSUM] = CHECKBYTE;
 	packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
 	bmc_spi_exchange(dev, packet);
@@ -1343,9 +1347,9 @@ static void serialWriteOPi(struct comedi_device *dev,
 	packet->bmc_byte_t[BMC_D0] = (uint8_t) (val_value & 0xff); // serial data
 	packet->bmc_byte_t[BMC_D1] = (uint8_t) ((val_value >> 8)&0xff); // serial channel
 	packet->bmc_byte_t[BMC_D2] = (uint8_t) ((val_value >> 16)&0xff); // serial options
-	packet->bmc_byte_t[BMC_D3] = 3;
-	packet->bmc_byte_t[BMC_D4] = 4;
-	packet->bmc_byte_t[BMC_EXT] = 0;
+	packet->bmc_byte_t[BMC_D3] = BMC_D3;
+	packet->bmc_byte_t[BMC_D4] = BMC_D4;
+	packet->bmc_byte_t[BMC_EXT] = BMC_EXT;
 	packet->bmc_byte_t[BMC_CKSUM] = CHECKBYTE;
 	packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
 	bmc_spi_exchange(dev, packet);
@@ -1362,7 +1366,7 @@ static int serialReadOPi(struct comedi_device *dev, uint32_t * data)
 	struct daqbmc_private *devpriv = dev->private;
 	uint32_t val_value;
 	struct bmc_packet_type *packet = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC);
-	
+
 	if (!packet) {
 		return 0;
 	}

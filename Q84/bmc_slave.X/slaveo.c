@@ -40,10 +40,23 @@ volatile bool failure = false;
 volatile uint8_t in_buf1 = 0x19, in_buf2 = 0x57, in_buf3 = 0x07;
 volatile uint8_t tmp_buf = 0;
 
+static void clear_slaveo_flags(void);
+
 void check_slaveo(void) /* SPI Slave error check */
 {
 	if (SPI2STATUSbits.TXWE) { // check for overruns/collisions
 	}
+}
+
+static void clear_slaveo_flags(void)
+{
+	serial_buffer_ss.adc_value = false;
+	serial_buffer_ss.make_value = false;
+	serial_buffer_ss.dac_value = false;
+	serial_buffer_ss.get_value = false;
+	serial_buffer_ss.cfg_value = false;
+	serial_buffer_ss.cmake_value = false;
+	serial_buffer_ss.cget_value = false;
 }
 
 /*
@@ -52,7 +65,7 @@ void check_slaveo(void) /* SPI Slave error check */
  */
 void init_slaveo(void)
 {
-	uint8_t val = 0xff;
+	uint8_t val = CHECKBYTE;
 
 	SPI2CON0bits.EN = 0;
 	SPI2_SetRxInterruptHandler(slaveo_rx_isr);
@@ -60,7 +73,7 @@ void init_slaveo(void)
 	while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
 		val = SPI2RXB;
 	}
-	serial_buffer_ss.data[2] = val;
+	serial_buffer_ss.data[BMC_D1] = val;
 	SPI2STATUSbits.RXRE = 0;
 	SPI2CON2bits.TXR = 1; // FIFO required for transmit
 	SPI2CON0bits.EN = 1;
@@ -98,10 +111,10 @@ void slaveo_rx_isr(void)
 			/*
 			 * uart1 or uart2 0..1 select in serial_buffer_ss.data[2]
 			 */
-			UART1_Write(serial_buffer_ss.data[1]);
+			UART1_Write(serial_buffer_ss.data[BMC_D0]);
 			data_in2 = 0;
 			serial_buffer_ss.cmake_value = false;
-			serial_buffer_ss.raw_index = 0;
+			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
 			spi_stat_ss.slave_tx_count++;
 			data_in2 = 0;
@@ -114,11 +127,11 @@ void slaveo_rx_isr(void)
 	// PORT_GO_BYTES
 	if (serial_buffer_ss.make_value) {
 		if (serial_buffer_ss.raw_index == PORT_GO_BYTES) {
-			V.bmc_do = serial_buffer_ss.data[1];
-			V.bmc_do += (uint32_t) (serial_buffer_ss.data[2] << 8u)&0x0000ff00;
+			V.bmc_do = serial_buffer_ss.data[BMC_D0];
+			V.bmc_do += (uint32_t) (serial_buffer_ss.data[BMC_D1] << 8u)&0x0000ff00;
 			data_in2 = 0;
 			serial_buffer_ss.make_value = false;
-			serial_buffer_ss.raw_index = 0;
+			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
 			spi_stat_ss.slave_tx_count++;
 			data_in2 = 0;
@@ -131,9 +144,9 @@ void slaveo_rx_isr(void)
 	// DAC_GO_BYTES
 	if (serial_buffer_ss.dac_value) {
 		if (serial_buffer_ss.raw_index == DAC_GO_BYTES) {
-			V.bmc_ao = serial_buffer_ss.data[1];
+			V.bmc_ao = serial_buffer_ss.data[BMC_D0];
 			serial_buffer_ss.dac_value = false;
-			serial_buffer_ss.raw_index = 0;
+			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
 			spi_stat_ss.slave_tx_count++;
 			data_in2 = 0;
@@ -156,12 +169,12 @@ void slaveo_rx_isr(void)
 			}
 			SPI2TXB = tmp_buf;
 			serial_buffer_ss.cget_value = false;
-			serial_buffer_ss.raw_index = 0;
+			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
 			data_in2 = 0;
 		} else {
 			spi_stat_ss.slave_tx_count++;
-			if (serial_buffer_ss.raw_index == 1) {
+			if (serial_buffer_ss.raw_index == BMC_D0) {
 				tmp_buf = UART1_is_rx_ready(); // new data is ready
 			} else {
 				tmp_buf = CHECKBYTE;
@@ -177,12 +190,12 @@ void slaveo_rx_isr(void)
 			tmp_buf = (uint8_t) in_buf3;
 			SPI2TXB = tmp_buf;
 			serial_buffer_ss.get_value = false;
-			serial_buffer_ss.raw_index = 0;
+			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
 			data_in2 = 0;
 		} else {
 			spi_stat_ss.slave_tx_count++;
-			if (serial_buffer_ss.raw_index == 1) {
+			if (serial_buffer_ss.raw_index == BMC_D0) {
 				tmp_buf = (uint8_t) in_buf1;
 			} else {
 				tmp_buf = (uint8_t) in_buf2;
@@ -201,12 +214,12 @@ void slaveo_rx_isr(void)
 				SPI2TXB = (0x00);
 			}
 			serial_buffer_ss.adc_value = false;
-			serial_buffer_ss.raw_index = 0;
+			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
 			data_in2 = 0;
 		} else {
 			spi_stat_ss.slave_tx_count++;
-			if (serial_buffer_ss.raw_index == 1) {
+			if (serial_buffer_ss.raw_index == BMC_D0) {
 				SPI2TXB = (adc_buffer[channel] &0x00ff);
 			} else {
 				SPI2TXB = ((adc_buffer[channel] >> 8)&0x00ff);
@@ -220,12 +233,12 @@ void slaveo_rx_isr(void)
 		if (serial_buffer_ss.raw_index == CFG_GET_BYTES) {
 			SPI2TXB = CHECKBYTE;
 			serial_buffer_ss.cfg_value = false;
-			serial_buffer_ss.raw_index = 0;
+			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
 			data_in2 = 0;
 		} else {
 			spi_stat_ss.slave_tx_count++;
-			if (serial_buffer_ss.raw_index == 1) {
+			if (serial_buffer_ss.raw_index == BMC_D0) {
 				SPI2TXB = CHECKBYTE;
 			} else {
 				SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits
@@ -235,7 +248,7 @@ void slaveo_rx_isr(void)
 	}
 
 	if (++serial_buffer_ss.raw_index > SPI_BUFFER_LEN - 1) {
-		serial_buffer_ss.raw_index = 0;
+		serial_buffer_ss.raw_index = BMC_CMD;
 		spi_stat_ss.txuf_bit++; // buffer high watermark cleared
 	}
 
@@ -250,7 +263,7 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.PORT_DATA = false;
 		spi_comm_ss.CHAR_DATA = false;
 		spi_stat_ss.dac_count++;
-		serial_buffer_ss.raw_index = 1;
+		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.dac_value = true;
 		spi_stat_ss.slave_tx_count++;
 		spi_comm_ss.REMOTE_LINK = true;
@@ -292,12 +305,8 @@ void slaveo_rx_isr(void)
 			case 0xf:
 				SPI1CON0bits.EN = 0;
 				MLED_SetHigh();
-				serial_buffer_ss.raw_index = 0;
-				serial_buffer_ss.adc_value = false;
-				serial_buffer_ss.make_value = false;
-				serial_buffer_ss.dac_value = false;
-				serial_buffer_ss.get_value = false;
-				serial_buffer_ss.cfg_value = false;
+				serial_buffer_ss.raw_index = BMC_CMD;
+				clear_slaveo_flags();
 				MLED_SetLow();
 				SPI1CON0bits.EN = 1;
 				channel = channel_ANA0;
@@ -307,7 +316,7 @@ void slaveo_rx_isr(void)
 				break;
 			}
 		}
-		serial_buffer_ss.raw_index = 1;
+		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.adc_value = true;
 		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
@@ -318,7 +327,7 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.PORT_DATA = true;
 		spi_comm_ss.CHAR_DATA = false;
 		spi_stat_ss.port_count++;
-		serial_buffer_ss.raw_index = 1;
+		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.get_value = true;
 		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
@@ -330,7 +339,7 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.CHAR_DATA = false;
 		spi_stat_ss.port_count++;
 		channel = data_in2;
-		serial_buffer_ss.raw_index = 1;
+		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.make_value = true;
 		spi_stat_ss.slave_tx_count++;
 		spi_comm_ss.REMOTE_LINK = true;
@@ -342,7 +351,7 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.PORT_DATA = false;
 		spi_comm_ss.CHAR_DATA = true;
 		spi_stat_ss.char_count++;
-		serial_buffer_ss.raw_index = 1;
+		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.cget_value = true;
 		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
@@ -354,7 +363,7 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.CHAR_DATA = true;
 		spi_stat_ss.char_count++;
 		channel = data_in2;
-		serial_buffer_ss.raw_index = 1;
+		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.cmake_value = true;
 		spi_stat_ss.slave_tx_count++;
 		spi_comm_ss.REMOTE_LINK = true;
@@ -362,14 +371,11 @@ void slaveo_rx_isr(void)
 	}
 
 	if (command == CMD_DUMMY_CFG) {
-		serial_buffer_ss.raw_index = 1;
+		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.cfg_value = true;
-		if (!serial_buffer_ss.adc_value && !serial_buffer_ss.dac_value && !serial_buffer_ss.make_value && !serial_buffer_ss.get_value) {
+		if (!serial_buffer_ss.adc_value && !serial_buffer_ss.dac_value && !serial_buffer_ss.make_value && !serial_buffer_ss.get_value&& !serial_buffer_ss.cmake_value && !serial_buffer_ss.cget_value) {
 			MLED_SetHigh();
-			serial_buffer_ss.adc_value = false;
-			serial_buffer_ss.make_value = false;
-			serial_buffer_ss.dac_value = false;
-			serial_buffer_ss.get_value = false;
+			clear_slaveo_flags();
 			MCZ_PWM_SetLow();
 			MLED_SetLow();
 		}
