@@ -1822,7 +1822,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		daqbmc_conf = picsl12_AO;
 		dev->n_subdevices = daqbmc_devices[daqbmc_conf].n_subdev; // only show the analog devices
 		dev_info(dev->class_dev,
-			"BMCBoard Digital DI DO Disabled\n");
+			"BMCBoard Digital DI DO Disabled, controller device %s \n", daqbmc_devices[daqbmc_conf].name);
 	}
 
 	if (do_conf) { // add the extra sub-devices
