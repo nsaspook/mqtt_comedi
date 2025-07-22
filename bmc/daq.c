@@ -51,12 +51,12 @@ comedi_t *it;
 comedi_range *ad_range, *da_range;
 bool ADC_OPEN = true, DIO_OPEN = true, ADC_ERROR = false, DEV_OPEN = true,
 	DIO_ERROR = false, HAS_AO = false, DAC_ERROR = false, PWM_OPEN = true,
-	PWM_ERROR = false, TX_OPEN = true, RX_OPEN = true;
+	PWM_ERROR = false, SERIAL_OPEN = true, RX_OPEN = true;
 
 bool DO_OPEN = true, DI_OPEN = true, DO_ERROR = false;
 union dio_buf_type obits, ibits;
 
-uint32_t datain;
+uint32_t datain, serial_buf;
 
 int init_daq(double min_range, double max_range, int range_update)
 {
@@ -303,7 +303,7 @@ int init_dio(void)
 			DI_OPEN = false;
 			DEV_OPEN = false;
 			PWM_OPEN = false;
-			TX_OPEN = false;
+			SERIAL_OPEN = false;
 			RX_OPEN = false;
 			return -1;
 		}
@@ -330,9 +330,9 @@ int init_dio(void)
 		PWM_OPEN = false;
 	}
 
-	subdev_serial0 = comedi_find_subdevice_by_type(it, COMEDI_SUBD_SERIAL, subdev_serial0);
+	subdev_serial0 = comedi_find_subdevice_by_type(it, COMEDI_SUBD_MEMORY, subdev_serial0);
 	if (subdev_serial0 < 0) {
-		TX_OPEN = false;
+		SERIAL_OPEN = false;
 	}
 
 	if (DO_OPEN) {
@@ -376,7 +376,7 @@ int init_dio(void)
 		fprintf(fout, "Ranges %i \r\n", ranges_counter);
 	}
 
-	if (TX_OPEN) {
+	if (SERIAL_OPEN) {
 		fprintf(fout, "Subdev SER %i ", subdev_serial0);
 		channels_serial0 = comedi_get_n_channels(it, subdev_serial0);
 		fprintf(fout, "Digital Channels %i ", channels_serial0);
@@ -409,6 +409,13 @@ int get_data_sample(void)
 		} else {
 			comedi_dio_bitfield2(it, subdev_do, 0xff, &obits.dio_buf, 0);
 		}
+	}
+
+	if (SERIAL_OPEN) {
+		serial_buf = 0x57;
+
+		comedi_data_write(it, subdev_serial0, 0, range_ao, AREF_GROUND, serial_buf);
+		comedi_data_read(it, subdev_serial0, 0, range_ao, AREF_GROUND, &serial_buf);
 	}
 	return 0;
 }

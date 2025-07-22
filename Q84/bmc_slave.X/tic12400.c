@@ -1,7 +1,8 @@
 /** \file tic12400.c
  * TC12400 driver for Q84 v0.1
- * uses SPI5 mode1 at 4MHz no interrupts
+ * uses SPI1 mode1 at 4MHz no interrupts
  * external interrupt 2 is used to detect chip switch events
+ * only runs polled mode for now
  */
 
 #include "tic12400.h"

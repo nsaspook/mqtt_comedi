@@ -415,7 +415,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	MQTTClient_deliveryToken token;
 	ha_flag_vars_ss.deliveredtoken = 0;
 
-//#define DIGITAL_ONLY
+	//#define DIGITAL_ONLY
 
 #ifndef DIGITAL_ONLY
 	double over_sample;
@@ -465,9 +465,10 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		pacer = 0;
 		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain);
 		if (bmc.BOARD == bmcboard) {
-			fprintf(fout, "ANA0 %lfV, ANA1 %fV, ANA2 %f, ANA4 %fV, ANA5 %fV, AND5 %fV : Scaler Index %d, Scaler ANA4 %f, Scaler ANA5 %f\n",
+			fprintf(fout, "ANA0 %lfV, ANA1 %fV, ANA2 %f, ANA4 %fV, ANA5 %fV, AND5 %fV : Scaler Index %d, Scaler ANA4 %f, Scaler ANA5 %f, Serial 0X%X\n",
 				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2),
-				E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], ha_daq_host.hindex, ha_daq_host.scaler4[ha_daq_host.hindex], ha_daq_host.scaler5[ha_daq_host.hindex]);
+				E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], ha_daq_host.hindex, ha_daq_host.scaler4[ha_daq_host.hindex], ha_daq_host.scaler5[ha_daq_host.hindex],
+				serial_buf);
 		} else {
 			fprintf(fout, "ANA0 %lfV, ANA1 %fV : Scaler Index %d, Scaler ANA4 %f, Scaler ANA5 %f\n",
 				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1),

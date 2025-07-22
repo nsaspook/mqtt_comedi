@@ -109,7 +109,7 @@ void slaveo_rx_isr(void)
 	if (serial_buffer_ss.cmake_value) {
 		if (serial_buffer_ss.raw_index == CHAR_GO_BYTES) {
 			/*
-			 * uart1 or uart2 0..1 select in serial_buffer_ss.data[2]
+			 * uart1 only
 			 */
 			UART1_Write(serial_buffer_ss.data[BMC_D0]);
 			data_in2 = 0;
@@ -160,7 +160,7 @@ void slaveo_rx_isr(void)
 	if (serial_buffer_ss.cget_value) {
 		if (serial_buffer_ss.raw_index == CHAR_GET_BYTES) {
 			/*
-			 * uart1 or uart2 0..1 select in serial_buffer_ss.data[2]
+			 * uart1 only
 			 */
 			if (UART1_is_rx_ready()) {
 				tmp_buf = UART1_Read();
@@ -175,9 +175,9 @@ void slaveo_rx_isr(void)
 		} else {
 			spi_stat_ss.slave_tx_count++;
 			if (serial_buffer_ss.raw_index == BMC_D0) {
-				tmp_buf = UART1_is_rx_ready(); // new data is ready
+				tmp_buf = 0x00; // 
 			} else {
-				tmp_buf = CHECKBYTE;
+				tmp_buf = UART1_is_rx_ready(); // new data is ready
 			}
 			SPI2TXB = tmp_buf;
 			data_in2 = 0;

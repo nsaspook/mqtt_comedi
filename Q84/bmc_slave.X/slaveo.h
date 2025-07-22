@@ -20,8 +20,8 @@ extern "C" {
 #include "eadog.h"
 #include "timers.h"
 
-#define SLAVEO_DRIVER "V0.7"
-	
+#define SLAVEO_DRIVER "V0.8"
+
 #define SLAVE_DEBUG
 
 	/* PIC Slave commands */

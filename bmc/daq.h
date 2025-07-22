@@ -96,7 +96,7 @@ extern "C" {
 	} __attribute__((packed)) bmctype;
 
 	extern volatile struct bmcdata bmc;
-	extern uint32_t datain;
+	extern uint32_t datain, serial_buf;
 	extern struct dodata dataout;
 	extern union dio_buf_type obits;
 

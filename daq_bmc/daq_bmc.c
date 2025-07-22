@@ -34,7 +34,7 @@ Author: nsaspook <nsaspooksma2@gmail.com>
 
 Devices: [] BMCBOARD (daq_bmc)
 Status: inprogress
-Updated: Jun 20 12:07:20 +0000
+Updated: Jul 20 12:07:20 +0000
 
 The DAQ-BMC appears in Comedi as a digital I/O subdevices with
 16 DO and 24 DI,
@@ -42,19 +42,16 @@ The DAQ-BMC appears in Comedi as a digital I/O subdevices with
 a analog input subdevice with 16 possible single-ended channels set by the SPI slave device
 and a analog output subdevice with 1 channel with onboard dac
  *
- a serial r/w device with two ports, one RS232, the other TTL
- *
+ a serial r/w memory subdevice with two possible ports, one RS232, the other TTL
+ * the TTL port is currently not used remotely on the Q84 by Comedi
  *
  *
  * Caveats:
  *
-
-Analog: The type and resolution of the onboard ADC/DAC chips are set
-by the module option variable daqbmc_conf in the /etc/modprobe.d directory
- * options daq_bmc daqbmc_conf=7
  *
  * 0 = force PIC slave PIC18F47Q84 mode
  * 1 = force PIC slave PIC18F47Q84 mode with NO DI or DO
+ * This is normally autodetected
  *
  * Module parameters are found in the /sys/modules/daq_bmc/parameters directory
  *
@@ -133,6 +130,7 @@ static LIST_HEAD(device_list);
 #define SMP_CORES 4
 #define CONF_Q84 3
 #define Q84_BYTES 9
+#define MEM_BYTES 4
 
 #define I8254_MAX_COUNT   0x10000
 
@@ -178,6 +176,9 @@ static const uint8_t CMD_CHAR_GET = 0x10; /* Get RX buffer */
 static const uint8_t CMD_DUMMY_CFG = 0x40; /* stuff config data in SPI buffer */
 static const uint8_t CMD_DEAD = 0xff; /* This is usually a bad response */
 
+/*
+ * SPI packet link BYTE id's
+ */
 enum daqbmc_packet_index {
 	BMC_CMD = 0,
 	BMC_D0,
@@ -289,8 +290,8 @@ struct daqbmc_device {
 };
 
 /*
- * Use only MODE 0 for Orange PI SPI connections
- * Max SCK 12MHz
+ * Use only MODE 3 for Orange PI SPI connections, MODE 0 seems to have issues on this board
+ * Max SCK 12MHz, normally runs at 8MHz
  */
 static const struct daqbmc_device daqbmc_devices[] = {
 	{
@@ -398,15 +399,6 @@ static const struct comedi_lrange daqbmc_ao_range = {1,
 	{/* gains 1,2 */
 		UNI_RANGE(4.096),
 	}};
-
-static const struct comedi_lrange range_ads1220_ai = {
-	3,
-	{ /* gains 1,2,4 */
-		BIP_RANGE(2.048),
-		BIP_RANGE(1.024),
-		BIP_RANGE(0.512)
-	}
-};
 
 /*
  * SPI attached devices used by Comedi for I/O
@@ -530,7 +522,7 @@ static int32_t piBoardRev(struct comedi_device *dev)
 }
 
 /*
- * standard 9 byte SPI data packet with ~20us spacing between bytes
+ * My standard 9 byte SPI data packet with ~20us spacing between bytes
  */
 static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_type * packet)
 {
@@ -1302,6 +1294,9 @@ static int digitalReadOPi(struct comedi_device *dev,
 	return val_value;
 }
 
+/*
+ * Handle Digital output requests
+ */
 static int daqbmc_do_insn_bits(struct comedi_device *dev,
 	struct comedi_subdevice *s,
 	struct comedi_insn *insn,
@@ -1326,13 +1321,13 @@ static int daqbmc_do_insn_bits(struct comedi_device *dev,
 }
 
 /*
- * Serial TX SPI Q84 transaction, 24-bit data
+ * Serial TX/RX SPI Q84 transaction, 24-bit data
+ * This is memory mapped to the memory sub-device
  */
 static void serialWriteOPi(struct comedi_device *dev,
-	uint32_t pin,
+	uint32_t chan,
 	uint32_t *value)
 {
-	struct daqbmc_private *devpriv = dev->private;
 	uint32_t val_value;
 	struct bmc_packet_type *packet = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC);
 
@@ -1341,40 +1336,25 @@ static void serialWriteOPi(struct comedi_device *dev,
 	}
 
 	val_value = value[0];
-
-	/* use single transfer for all bytes of the complete SPI transaction */
-	packet->bmc_byte_t[BMC_CMD] = CMD_CHAR_GO;
-	packet->bmc_byte_t[BMC_D0] = (uint8_t) (val_value & 0xff); // serial data
-	packet->bmc_byte_t[BMC_D1] = (uint8_t) ((val_value >> 8)&0xff); // serial channel
-	packet->bmc_byte_t[BMC_D2] = (uint8_t) ((val_value >> 16)&0xff); // serial options
-	packet->bmc_byte_t[BMC_D3] = BMC_D3;
-	packet->bmc_byte_t[BMC_D4] = BMC_D4;
-	packet->bmc_byte_t[BMC_EXT] = BMC_EXT;
-	packet->bmc_byte_t[BMC_CKSUM] = CHECKBYTE;
-	packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
-	bmc_spi_exchange(dev, packet);
-
-	devpriv->do_count++;
-	kfree(packet);
-}
-
-/*
- * Serial RX SPI Q84 transaction, 24-bit data
- */
-static int serialReadOPi(struct comedi_device *dev, uint32_t * data)
-{
-	struct daqbmc_private *devpriv = dev->private;
-	uint32_t val_value;
-	struct bmc_packet_type *packet = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC);
-
-	if (!packet) {
-		return 0;
+	if (chan < 2) {
+		send TX packet
+		/* use single transfer for all bytes of the complete SPI transaction */
+		packet->bmc_byte_t[BMC_CMD] = CMD_CHAR_GO;
+		packet->bmc_byte_t[BMC_D0] = (uint8_t) (val_value & 0xff); // serial data
+		packet->bmc_byte_t[BMC_D1] = (uint8_t) chan; // serial channel
+		packet->bmc_byte_t[BMC_D2] = (uint8_t) ((val_value >> 16)&0xff); // serial options
+		packet->bmc_byte_t[BMC_D3] = BMC_D3;
+		packet->bmc_byte_t[BMC_D4] = BMC_D4;
+		packet->bmc_byte_t[BMC_EXT] = BMC_EXT;
+		packet->bmc_byte_t[BMC_CKSUM] = CHECKBYTE;
+		packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
+		bmc_spi_exchange(dev, packet);
 	}
 
-	/* use single transfer for all bytes of the complete SPI transaction */
+	// always check for received data
 	packet->bmc_byte_t[BMC_CMD] = CMD_CHAR_GET;
 	packet->bmc_byte_t[BMC_D0] = BMC_D0;
-	packet->bmc_byte_t[BMC_D1] = BMC_D1;
+	packet->bmc_byte_t[BMC_D1] = (uint8_t) chan;
 	packet->bmc_byte_t[BMC_D2] = BMC_D2;
 	packet->bmc_byte_t[BMC_D3] = BMC_D3;
 	packet->bmc_byte_t[BMC_D4] = BMC_D4;
@@ -1383,40 +1363,43 @@ static int serialReadOPi(struct comedi_device *dev, uint32_t * data)
 	packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
 	bmc_spi_exchange(dev, packet);
 
-	val_value = packet->bmc_byte_r[BMC_D1]; // serial data is fresh
+	val_value = packet->bmc_byte_r[BMC_DUMMY]; // serial data
 	val_value += (packet->bmc_byte_r[BMC_D2] << 8); // serial channel
-	val_value += (packet->bmc_byte_r[BMC_DUMMY] << 16); // serial data
+	val_value += (packet->bmc_byte_r[BMC_D1] << 16); // serial data is fresh
 
-	devpriv->di_count++;
+	value[0] = val_value;
+
 	kfree(packet);
-
-	return val_value;
 }
 
-static int daqbmc_sio_insn_bits(struct comedi_device *dev,
+/*
+ * Handle memory-mapped serial port requests
+ */
+static int daqbmc_sio_insn_write(struct comedi_device *dev,
 	struct comedi_subdevice *s,
 	struct comedi_insn *insn,
 	uint32_t * data)
 {
 	struct daqbmc_private *devpriv = dev->private;
-	uint32_t val, mask;
+	unsigned int chan = CR_CHAN(insn->chanspec);
 
 	if (unlikely(!devpriv)) {
 		return -EFAULT;
 	}
 
-	mask = data[0] & s->io_bits;
-	if (mask) { // only send serial data if bits are set
-		serialWriteOPi(dev, mask, data);
+	if (insn->n > 0) {
+		uint32_t val = data[insn->n - 1];
+
+		serialWriteOPi(dev, chan, &val);
+		s->readback[chan] = val;
 	}
-
-	val = serialReadOPi(dev, data);
-
-	data[1] = val;
 
 	return insn->n;
 }
 
+/*
+ * Handle Digital input requests
+ */
 static int daqbmc_di_insn_bits(struct comedi_device *dev,
 	struct comedi_subdevice *s,
 	struct comedi_insn *insn,
@@ -1526,6 +1509,7 @@ static int32_t daqbmc_create_thread(struct comedi_device *dev,
 
 /*
  * returns slave device configuration data
+ * used to set the Analog only mode of the board automatically
  */
 static int32_t daqbmc_bmc_get_config(struct comedi_device *dev)
 {
@@ -1828,17 +1812,20 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			"BMCBoard Digital DI DO Disabled\n");
 	}
 
-	if (do_conf) {
+	if (do_conf) { // add the extra sub-devices
 		s = &dev->subdevices[4];
-		s->type = COMEDI_SUBD_SERIAL;
-		s->subdev_flags = SDF_READABLE | SDF_WRITABLE;
-		s->n_chan = 4;
-		s->len_chanlist = 4;
-		s->range_table = &range_digital;
-		s->maxdata = 1;
-		s->insn_bits = daqbmc_sio_insn_bits;
-		s->state = 0;
-		s->io_bits = 0x0300; // bits 0..1 TX outputs for serial channels 0..1 in second byte
+		s->type = COMEDI_SUBD_MEMORY;
+		s->subdev_flags = SDF_READABLE | SDF_WRITABLE | SDF_INTERNAL;
+		s->n_chan = MEM_SIZE;
+		s->maxdata = 0xffff;
+		s->insn_write = daqbmc_sio_insn_write;
+		ret = comedi_alloc_subdev_readback(s);
+		if (ret) {
+			return ret;
+		}
+		for (int i = 0; i < s->n_chan; i++) {
+			s->readback[i] = 0x1957;
+		}
 		dev_info(dev->class_dev,
 			"RS232 and TTL serial TX/RX channels %d\n", 4);
 
