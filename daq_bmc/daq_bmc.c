@@ -124,13 +124,15 @@ static LIST_HEAD(device_list);
 
 #define picsl12  0 // index into chip config array
 #define picsl12_AO 1
+#define SUBDEV  5
+#define SUBDEV_AO 2
 #define n_chips  3 // including the special testing device
 #define MAX_AI  32 // max possible Q84 ADC channel
 #define MAX_AO  1
 #define SMP_CORES 4
 #define CONF_Q84 3
 #define Q84_BYTES 9
-#define MEM_BYTES 4
+#define MEM_BLOCKS 4
 
 #define I8254_MAX_COUNT   0x10000
 
@@ -203,13 +205,13 @@ static DECLARE_COMPLETION(done);
  * module configuration and data variables
  * found at /sys/modules/daq_bmc/parameters
  */
-static int32_t daqbmc_conf = picsl12;
+static int32_t daqbmc_conf = picsl12; // value 0
 module_param(daqbmc_conf, int, S_IRUGO);
 MODULE_PARM_DESC(daqbmc_conf, "hardware configuration: default 0=bmcboard standard, 1=bmcboard without DI or DO");
-static int32_t di_conf = 1;
+static int32_t di_conf = 1; // default true
 module_param(di_conf, int, S_IRUGO);
 MODULE_PARM_DESC(di_conf, "make digital input subdevice");
-static int32_t do_conf = 1;
+static int32_t do_conf = 1; // default true
 module_param(do_conf, int, S_IRUGO);
 MODULE_PARM_DESC(do_conf, "make digital output subdevice");
 static uint32_t ai_count = 0;
@@ -219,8 +221,10 @@ static uint32_t ao_count = 0;
 module_param(ao_count, uint, S_IRUGO);
 static uint32_t do_count = 0;
 module_param(do_count, uint, S_IRUGO);
-static uint32_t d1_count = 0;
-module_param(d1_count, uint, S_IRUGO);
+static uint32_t di_count = 0;
+module_param(di_count, uint, S_IRUGO);
+static uint32_t serial_count = 0;
+module_param(serial_count, uint, S_IRUGO);
 MODULE_PARM_DESC(ao_count, "total dac samples");
 static uint32_t hunk_count = 0;
 module_param(hunk_count, uint, S_IRUGO);
@@ -232,6 +236,9 @@ MODULE_PARM_DESC(bmc_autoload, "boot autoload: default 1=load module");
 static int32_t bmc_type = 0;
 module_param(bmc_type, int, S_IRUGO);
 MODULE_PARM_DESC(bmc_type, "i/o board type: default 0=bmcboard");
+static int32_t bmc_rev = 3;
+module_param(bmc_rev, int, S_IRUGO);
+MODULE_PARM_DESC(bmc_rev, "board revision: default 3=OPI Zero 3 4G");
 static int32_t speed_test = 0;
 module_param(speed_test, int, S_IRUGO);
 MODULE_PARM_DESC(speed_test, "sample timing test: 1=enable");
@@ -287,6 +294,7 @@ struct daqbmc_device {
 	uint32_t n_chan_bits;
 	uint32_t n_chan;
 	uint32_t n_transfers;
+	uint32_t n_subdev;
 };
 
 /*
@@ -306,6 +314,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.n_chan_bits = 12,
 		.n_chan = 16,
 		.n_transfers = Q84_BYTES,
+		.n_subdev = SUBDEV,
 	},
 	{
 		.name = "picsl12_AO",
@@ -319,6 +328,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.n_chan_bits = 12,
 		.n_chan = 16,
 		.n_transfers = Q84_BYTES,
+		.n_subdev = SUBDEV_AO,
 	},
 	{
 		.name = "special",
@@ -510,14 +520,13 @@ static int32_t bmc_spi_exchange(struct comedi_device *, struct bmc_packet_type *
  */
 static int32_t piBoardRev(struct comedi_device *dev)
 {
-	static int32_t boardRev = 3; // hardwired for now
+	int32_t boardRev = 3; // hardwired for now
 
 	dev_info(dev->class_dev, "BMCboard hardware rev %i\n", boardRev);
 	/*
 	 * set module param
 	 */
-	do_conf = boardRev;
-	di_conf = boardRev;
+	bmc_rev = boardRev;
 	return boardRev;
 }
 
@@ -1317,6 +1326,7 @@ static int daqbmc_do_insn_bits(struct comedi_device *dev,
 	}
 
 	data[1] = s->state;
+	do_count++;
 	return insn->n;
 }
 
@@ -1337,7 +1347,7 @@ static void serialWriteOPi(struct comedi_device *dev,
 
 	val_value = value[0];
 	if (chan < 2) {
-		send TX packet
+		// send TX packet
 		/* use single transfer for all bytes of the complete SPI transaction */
 		packet->bmc_byte_t[BMC_CMD] = CMD_CHAR_GO;
 		packet->bmc_byte_t[BMC_D0] = (uint8_t) (val_value & 0xff); // serial data
@@ -1392,6 +1402,7 @@ static int daqbmc_sio_insn_write(struct comedi_device *dev,
 
 		serialWriteOPi(dev, chan, &val);
 		s->readback[chan] = val;
+		serial_count++;
 	}
 
 	return insn->n;
@@ -1416,6 +1427,7 @@ static int daqbmc_di_insn_bits(struct comedi_device *dev,
 	pinOPi = digitalReadOPi(dev, data);
 
 	data[1] = pinOPi;
+	di_count++;
 	return 2;
 }
 
@@ -1535,10 +1547,11 @@ static int32_t daqbmc_bmc_get_config(struct comedi_device *dev)
 	packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
 	bmc_spi_exchange(dev, packet);
 	val = (packet->bmc_byte_r[BMC_DUMMY]);
+#ifdef DEBUG_CONF
 	dev_info(dev->class_dev, "%x %x %x %x %x %x %x %x %x\n", packet->bmc_byte_r[BMC_CMD], packet->bmc_byte_r[BMC_D0],
 		packet->bmc_byte_r[BMC_D1], packet->bmc_byte_r[BMC_D2], packet->bmc_byte_r[BMC_D3], packet->bmc_byte_r[BMC_D4],
 		packet->bmc_byte_r[BMC_EXT], packet->bmc_byte_r[BMC_CKSUM], packet->bmc_byte_r[BMC_DUMMY]);
-
+#endif
 	/* use single transfer for all bytes of the complete SPI transaction */
 	packet->bmc_byte_t[BMC_CMD] = CMD_DUMMY_CFG;
 	packet->bmc_byte_t[BMC_D0] = BMC_D0;
@@ -1550,11 +1563,11 @@ static int32_t daqbmc_bmc_get_config(struct comedi_device *dev)
 	packet->bmc_byte_t[BMC_CKSUM] = CHECKBYTE;
 	packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
 	bmc_spi_exchange(dev, packet);
-
+#ifdef DEBUG_CONF
 	dev_info(dev->class_dev, "%x %x %x %x %x %x %x %x %x\n", packet->bmc_byte_r[BMC_CMD], packet->bmc_byte_r[BMC_D0],
 		packet->bmc_byte_r[BMC_D1], packet->bmc_byte_r[BMC_D2], packet->bmc_byte_r[BMC_D3], packet->bmc_byte_r[BMC_D4],
 		packet->bmc_byte_r[BMC_EXT], packet->bmc_byte_r[BMC_CKSUM], packet->bmc_byte_r[BMC_DUMMY]);
-
+#endif
 	devpriv->ai_count++;
 	mutex_unlock(&devpriv->drvdata_lock);
 	clear_bit(SPI_AI_RUN, &devpriv->state_bits);
@@ -1578,7 +1591,6 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	int32_t num_di_chan = NUM_DI_CHAN;
 	struct daqbmc_private *devpriv;
 	struct comedi_spibmc *pdata;
-
 
 	/*
 	 * auto free on exit of comedi module
@@ -1705,19 +1717,19 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	}
 
 	dev_info(dev->class_dev,
-		"%s device detection started, daqbmc_conf option value 0x%x\n",
-		thisboard->name, daqbmc_conf);
+		"%s board revision detection started, board_rev value 0x%x\n",
+		thisboard->name, devpriv->board_rev);
 	devpriv->num_subdev = 0;
 	if (daqbmc_spi_probe(dev, devpriv->ai_spi)) {
-		devpriv->num_subdev += 5;
+		devpriv->num_subdev += daqbmc_devices[picsl12].n_subdev;
 	} else {
-		dev_err(dev->class_dev, "board device detection failed!\n");
+		dev_err(dev->class_dev, "board revision detection failed!\n");
 		return -EINVAL;
 	}
 
 	/*
 	 * all Comedi buffers default to 32 bits
-	 * add AI and AO channels
+	 * always add AI and AO channels
 	 */
 	ret = comedi_alloc_subdevices(dev, devpriv->num_subdev);
 	if (ret) {
@@ -1783,14 +1795,15 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			s->subdev_flags = devpriv->ao_spi->device_spi->ao_subdev_flags - SDF_CMD_WRITE;
 		}
 		dev->write_subdev = s;
+
+		ret = comedi_alloc_subdev_readback(s);
+		if (ret) {
+			dev_err(dev->class_dev,
+				"alloc AO subdevice readback failed!\n");
+			return ret;
+		}
 	}
 
-	ret = comedi_alloc_subdev_readback(s);
-	if (ret) {
-		dev_err(dev->class_dev,
-			"alloc subdevice readback failed!\n");
-		return ret;
-	}
 	/*
 	 * Probe the BMCboard for configuration data
 	 */
@@ -1806,8 +1819,8 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	if (ret != 0) { // sub-device codes from the Q84
 		di_conf = false;
 		do_conf = false;
-		dev->n_subdevices = 2; // only show the analog devices
 		daqbmc_conf = picsl12_AO;
+		dev->n_subdevices = daqbmc_devices[daqbmc_conf].n_subdev; // only show the analog devices
 		dev_info(dev->class_dev,
 			"BMCBoard Digital DI DO Disabled\n");
 	}
@@ -1816,15 +1829,17 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		s = &dev->subdevices[4];
 		s->type = COMEDI_SUBD_MEMORY;
 		s->subdev_flags = SDF_READABLE | SDF_WRITABLE | SDF_INTERNAL;
-		s->n_chan = MEM_SIZE;
+		s->n_chan = MEM_BLOCKS;
 		s->maxdata = 0xffff;
 		s->insn_write = daqbmc_sio_insn_write;
 		ret = comedi_alloc_subdev_readback(s);
 		if (ret) {
+			dev_err(dev->class_dev,
+				"alloc MEMORY subdevice readback failed!\n");
 			return ret;
 		}
 		for (int i = 0; i < s->n_chan; i++) {
-			s->readback[i] = 0x1957;
+			s->readback[i] = CHECKMARK;
 		}
 		dev_info(dev->class_dev,
 			"RS232 and TTL serial TX/RX channels %d\n", 4);
@@ -1882,7 +1897,7 @@ static void daqbmc_detach(struct comedi_device * dev)
 {
 	struct daqbmc_private *devpriv = dev->private;
 
-	dev->n_subdevices = 4; // set to correct number of sub-devices allocated
+	dev->n_subdevices = SUBDEV; // set to correct number of sub-devices allocated
 	/* wakeup and kill the threads */
 	if (devpriv->smp) {
 		if (devpriv->ao_spi->daqbmc_task) {
