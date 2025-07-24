@@ -70,7 +70,6 @@ and a analog output subdevice with 1 channel with onboard dac
 
 #include <linux/module.h>
 #include <linux/comedi/comedidev.h>
-#include <linux/comedi/comedi_8255.h>
 #include <linux/interrupt.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
@@ -271,9 +270,6 @@ struct comedi_8254 {
 		struct comedi_subdevice *s,
 		struct comedi_insn *insn, unsigned int *data);
 };
-
-void comedi_8254_ns_to_timer(struct comedi_8254 *i8254,
-	unsigned int *nanosec, unsigned int flags);
 
 struct bmc_packet_type {
 	uint8_t bmc_byte_t[Q84_BYTES];
@@ -486,7 +482,6 @@ struct daqbmc_private {
 	int32_t ao_node;
 	uint32_t cpu_nodes;
 	bool smp;
-	struct comedi_8254 pacer;
 	struct comedi_device *dev;
 	struct timer_list ai_timer;
 	void (*pinMode) (struct comedi_device *dev, uint32_t pin, uint32_t mode);
@@ -1096,90 +1091,6 @@ static int32_t daqbmc_ao_cmdtest(struct comedi_device *dev,
 		return 4;
 	}
 	return 0;
-}
-
-/*
- * comedi_8254_cascade_ns_to_timer - calculate the cascaded divisor values
- * @i8254:	comedi_8254 struct for the timer
- * @nanosec:	the desired ns time
- * @flags:	comedi_cmd flags
- */
-void comedi_8254_cascade_ns_to_timer(struct comedi_8254 *i8254,
-	unsigned int *nanosec,
-	unsigned int flags)
-{
-	unsigned int d1 = i8254->next_div1 ? i8254->next_div1 : I8254_MAX_COUNT;
-	unsigned int d2 = i8254->next_div2 ? i8254->next_div2 : I8254_MAX_COUNT;
-	unsigned int div = d1 * d2;
-	unsigned int ns_lub = 0xffffffff;
-	unsigned int ns_glb = 0;
-	unsigned int d1_lub = 0;
-	unsigned int d1_glb = 0;
-	unsigned int d2_lub = 0;
-	unsigned int d2_glb = 0;
-	unsigned int start;
-	unsigned int ns;
-	unsigned int ns_low;
-	unsigned int ns_high;
-
-	/* exit early if everything is already correct */
-	if (div * i8254->osc_base == *nanosec &&
-		d1 > 1 && d1 <= I8254_MAX_COUNT &&
-		d2 > 1 && d2 <= I8254_MAX_COUNT &&
-		/* check for overflow */
-		div > d1 && div > d2 &&
-		div * i8254->osc_base > div &&
-		div * i8254->osc_base > i8254->osc_base)
-		return;
-
-	div = *nanosec / i8254->osc_base;
-	d2 = I8254_MAX_COUNT;
-	start = div / d2;
-	if (start < 2) {
-		start = 2;
-	}
-	for (d1 = start; d1 <= div / d1 + 1 && d1 <= I8254_MAX_COUNT; d1++) {
-		for (d2 = div / d1; d1 * d2 <= div + d1 + 1 && d2 <= I8254_MAX_COUNT; d2++) {
-			ns = i8254->osc_base * d1 * d2;
-			if (ns <= *nanosec && ns > ns_glb) {
-				ns_glb = ns;
-				d1_glb = d1;
-				d2_glb = d2;
-			}
-			if (ns >= *nanosec && ns < ns_lub) {
-				ns_lub = ns;
-				d1_lub = d1;
-				d2_lub = d2;
-			}
-		}
-	}
-
-	switch (flags & CMDF_ROUND_MASK) {
-	case CMDF_ROUND_NEAREST:
-	default:
-		ns_high = d1_lub * d2_lub * i8254->osc_base;
-		ns_low = d1_glb * d2_glb * i8254->osc_base;
-		if (ns_high - *nanosec < *nanosec - ns_low) {
-			d1 = d1_lub;
-			d2 = d2_lub;
-		} else {
-			d1 = d1_glb;
-			d2 = d2_glb;
-		}
-		break;
-	case CMDF_ROUND_UP:
-		d1 = d1_lub;
-		d2 = d2_lub;
-		break;
-	case CMDF_ROUND_DOWN:
-		d1 = d1_glb;
-		d2 = d2_glb;
-		break;
-	}
-
-	*nanosec = d1 * d2 * i8254->osc_base;
-	i8254->next_div1 = d1;
-	i8254->next_div2 = d2;
 }
 
 /*
