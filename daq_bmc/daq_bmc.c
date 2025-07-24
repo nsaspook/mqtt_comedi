@@ -85,7 +85,7 @@ and a analog output subdevice with 1 channel with onboard dac
 #define CHECKMARK 0x1957
 #define CHECKBYTE 0x57
 
-#define bmc_version "version 0.93 "
+#define bmc_version "version 0.94 "
 #define spibmc_version "version 1.3 "
 
 /*
@@ -250,27 +250,6 @@ MODULE_PARM_DESC(lsamp_size, "16 or 32 bit lsampl size: 0=16 bit");
 static int32_t use_hunking = 0;
 module_param(use_hunking, int, S_IRUGO);
 
-struct comedi_8254 {
-	unsigned long iobase;
-	void __iomem *mmio;
-	unsigned int iosize;
-	unsigned int regshift;
-	unsigned int osc_base;
-	unsigned int divisor;
-	unsigned int divisor1;
-	unsigned int divisor2;
-	unsigned int next_div;
-	unsigned int next_div1;
-	unsigned int next_div2;
-	unsigned int clock_src[3];
-	unsigned int gate_src[3];
-	bool busy[3];
-
-	int (*insn_config)(struct comedi_device *dev,
-		struct comedi_subdevice *s,
-		struct comedi_insn *insn, unsigned int *data);
-};
-
 struct bmc_packet_type {
 	uint8_t bmc_byte_t[Q84_BYTES];
 	uint8_t bmc_byte_r[Q84_BYTES];
@@ -412,12 +391,10 @@ static const struct comedi_lrange daqbmc_ao_range = {1,
 struct spi_param_type {
 	uint32_t range : 2;
 	uint32_t bits : 2;
-	uint32_t link : 1;
 	uint32_t pic18 : 2;
 	uint32_t chan : 8;
 	struct spi_device *spi;
 	int32_t device_type;
-	int32_t device_detect;
 	const struct daqbmc_device *device_spi;
 	int32_t hunk_size; /* the number of needed values returned as data */
 	struct timer_list my_timer;
@@ -461,7 +438,6 @@ struct daqbmc_private {
 	uint32_t ai_conv_delay_usecs, ai_conv_delay_10nsecs, ai_cmd_delay_usecs;
 	int32_t ai_chan, ao_chan, ai_range, ao_range;
 	struct mutex drvdata_lock, cmd_lock;
-	uint32_t val;
 	uint32_t ai_hunk;
 	uint32_t run;
 	uint32_t use_hunking : 1;
@@ -484,7 +460,6 @@ struct daqbmc_private {
 	bool smp;
 	struct comedi_device *dev;
 	struct timer_list ai_timer;
-	void (*pinMode) (struct comedi_device *dev, uint32_t pin, uint32_t mode);
 	void (*digitalWrite) (struct comedi_device *dev, uint32_t pin, uint32_t * value);
 	int (*digitalRead) (struct comedi_device *dev, uint32_t * data);
 };
@@ -537,6 +512,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 
 	if (spi == NULL) {
 		ret = -ESHUTDOWN;
+		return ret;
 	}
 	/*
 	 * use nine spi transfers for the complete SPI transaction
@@ -750,7 +726,7 @@ static void daqbmc_ao_put_sample(struct comedi_device *dev,
 	packet->bmc_byte_t[BMC_D2] = (uint8_t) (value & 0xff);
 	packet->bmc_byte_t[BMC_D3] = BMC_D3;
 	packet->bmc_byte_t[BMC_D4] = BMC_D4;
-	packet->bmc_byte_t[BMC_EXT] = BMC_EXT;
+	packet->bmc_byte_t[BMC_EXT] = (uint8_t) range;
 	packet->bmc_byte_t[BMC_CKSUM] = CHECKBYTE;
 	packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
 	bmc_spi_exchange(dev, packet);
@@ -1085,11 +1061,11 @@ static int32_t daqbmc_ao_cmdtest(struct comedi_device *dev,
 		return 3;
 	}
 
-	/* step 4: fix up any arguments */
+	/*
+	 *  step 4: fix up any arguments
+	 * no fixups
+	 */
 
-	if (err) {
-		return 4;
-	}
 	return 0;
 }
 
@@ -1389,9 +1365,9 @@ static int32_t daqbmc_ao_winsn(struct comedi_device *dev,
 {
 	struct daqbmc_private *devpriv = dev->private;
 	uint32_t chan = CR_CHAN(insn->chanspec);
-	uint32_t n, val = s->readback[chan];
+	uint32_t n, val;
 
-	daqbmc_ao_set_chan_range(dev, insn->chanspec, false);
+	daqbmc_ao_set_chan_range(dev, chan, false);
 	for (n = 0; n < insn->n; n++) {
 		val = data[n];
 		daqbmc_ao_put_sample(dev, s, val);
@@ -1529,10 +1505,10 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	} else {
 		use_hunking = false;
 	}
-	if (daqbmc_conf == 4 || daqbmc_conf == 14 || daqbmc_conf == 99) { /* single transfers, ADC is in continuous conversion mode */
+	if (daqbmc_conf == 0 || daqbmc_conf == 1) { /* single transfers, ADC is in continuous conversion mode */
 		use_hunking = false;
 	}
-	devpriv->use_hunking = use_hunking; /* defaults to true */
+	devpriv->use_hunking = use_hunking; /* defaults to false */
 
 	if (speed_test) {
 		dev_info(dev->class_dev, "samples per second speed test mode\n");
@@ -1553,26 +1529,19 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	list_for_each_entry(pdata, &device_list, device_entry)
 	{
 		/*
-		 * use smaller SPI data buffers if we can't hunk
+		 * use smaller SPI data buffers if we don't hunk
 		 */
-		if (!devpriv->use_hunking) {
-			if (pdata->rx_buff) {
-				kfree(pdata->rx_buff);
-			}
-			if (pdata->tx_buff) {
-				kfree(pdata->tx_buff);
-			}
-			pdata->tx_buff = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL);
-			if (!pdata->tx_buff) {
-				ret = -ENOMEM;
-				goto daqbmc_kfree_exit;
-			}
-			pdata->rx_buff = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL);
-			if (!pdata->rx_buff) {
-				ret = -ENOMEM;
-				goto daqbmc_kfree_tx_exit;
-			}
+		pdata->tx_buff = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL);
+		if (!pdata->tx_buff) {
+			ret = -ENOMEM;
+			goto daqbmc_kfree_exit;
 		}
+		pdata->rx_buff = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL);
+		if (!pdata->rx_buff) {
+			ret = -ENOMEM;
+			goto daqbmc_kfree_tx_exit;
+		}
+
 		/*
 		 * we have a valid device pointer, see which one and
 		 * probe/init hardware for special cases that may need
