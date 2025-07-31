@@ -241,8 +241,9 @@ void send_spi1_mc33996_dma(uint8_t *strPtr, const uint8_t len)
 		MCZ_CS_SetHigh();
 		return;
 	}
-	spi_link.des_bytes++;
-	SPI1_ExchangeBlock(mc_cmd, len);
+	memcpy(mc33996_w_buf, mc_cmd, len);
+	SPI1_ExchangeBlock(mc33996_w_buf, len);
+	memcpy(mc_init.cmd, mc33996_w_buf, len);
 	MCZ_CS_SetHigh();
 }
 

@@ -36,6 +36,8 @@ const mc33996buf_type mc_olce = {
 
 mc33996init_type mc_init;
 
+uint8_t mc33996_w_buf[8];
+
 void mc33996_version(void)
 {
 	printf("\r--- MC33996 Driver Version %s %s %s ---\r\n", MC33996_DRIVER, build_date, build_time);
@@ -67,5 +69,5 @@ void mc33996_update(const uint16_t data)
 {
 	mc_onoff.out = (uint16_t) (((data & 0xff00) >> 8) & 0x00ff); // byte order swap
 	mc_onoff.out |= (uint16_t) (((data & 0x00ff) << 8) & 0xff00);
-		send_spi1_mc33996_dma((void*) &mc_onoff.cmd, 3);
+	send_spi1_mc33996_dma((void*) &mc_onoff.cmd, 3);
 };

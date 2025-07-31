@@ -63,6 +63,7 @@ extern "C" {
 #define MC33996_DATA_LEN        8
 
 	extern mc33996init_type mc_init;
+	extern uint8_t mc33996_w_buf[8];
 
 	void mc33996_version(void);
 	bool mc33996_init(void);
