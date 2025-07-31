@@ -14,7 +14,7 @@
     This header file provides implementations for driver APIs for SPI2.
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8
-        Device            :  PIC18F47Q84
+        Device            :  PIC18F57Q84
         Driver Version    :  3.0.0
     The generated drivers are tested against the following:
         Compiler          :  XC8 2.36 and above or later

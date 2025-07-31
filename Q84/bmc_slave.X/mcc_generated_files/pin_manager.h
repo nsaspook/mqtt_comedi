@@ -14,7 +14,7 @@
     This header file provides APIs for driver for .
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8
-        Device            :  PIC18F47Q84
+        Device            :  PIC18F57Q84
         Driver Version    :  2.11
     The generated drivers are tested against the following:
         Compiler          :  XC8 2.36 and above
@@ -608,6 +608,62 @@
 #define SS_CS_SetOpenDrain()       do { ODCONEbits.ODCE2 = 1; } while(0)
 #define SS_CS_SetAnalogMode()      do { ANSELEbits.ANSELE2 = 1; } while(0)
 #define SS_CS_SetDigitalMode()     do { ANSELEbits.ANSELE2 = 0; } while(0)
+
+// get/set RF0 procedures
+#define RF0_SetHigh()            do { LATFbits.LATF0 = 1; } while(0)
+#define RF0_SetLow()             do { LATFbits.LATF0 = 0; } while(0)
+#define RF0_Toggle()             do { LATFbits.LATF0 = ~LATFbits.LATF0; } while(0)
+#define RF0_GetValue()              PORTFbits.RF0
+#define RF0_SetDigitalInput()    do { TRISFbits.TRISF0 = 1; } while(0)
+#define RF0_SetDigitalOutput()   do { TRISFbits.TRISF0 = 0; } while(0)
+#define RF0_SetPullup()             do { WPUFbits.WPUF0 = 1; } while(0)
+#define RF0_ResetPullup()           do { WPUFbits.WPUF0 = 0; } while(0)
+#define RF0_SetAnalogMode()         do { ANSELFbits.ANSELF0 = 1; } while(0)
+#define RF0_SetDigitalMode()        do { ANSELFbits.ANSELF0 = 0; } while(0)
+
+// get/set RF1 procedures
+#define RF1_SetHigh()            do { LATFbits.LATF1 = 1; } while(0)
+#define RF1_SetLow()             do { LATFbits.LATF1 = 0; } while(0)
+#define RF1_Toggle()             do { LATFbits.LATF1 = ~LATFbits.LATF1; } while(0)
+#define RF1_GetValue()              PORTFbits.RF1
+#define RF1_SetDigitalInput()    do { TRISFbits.TRISF1 = 1; } while(0)
+#define RF1_SetDigitalOutput()   do { TRISFbits.TRISF1 = 0; } while(0)
+#define RF1_SetPullup()             do { WPUFbits.WPUF1 = 1; } while(0)
+#define RF1_ResetPullup()           do { WPUFbits.WPUF1 = 0; } while(0)
+#define RF1_SetAnalogMode()         do { ANSELFbits.ANSELF1 = 1; } while(0)
+#define RF1_SetDigitalMode()        do { ANSELFbits.ANSELF1 = 0; } while(0)
+
+// get/set RF2 procedures
+#define RF2_SetHigh()            do { LATFbits.LATF2 = 1; } while(0)
+#define RF2_SetLow()             do { LATFbits.LATF2 = 0; } while(0)
+#define RF2_Toggle()             do { LATFbits.LATF2 = ~LATFbits.LATF2; } while(0)
+#define RF2_GetValue()              PORTFbits.RF2
+#define RF2_SetDigitalInput()    do { TRISFbits.TRISF2 = 1; } while(0)
+#define RF2_SetDigitalOutput()   do { TRISFbits.TRISF2 = 0; } while(0)
+#define RF2_SetPullup()             do { WPUFbits.WPUF2 = 1; } while(0)
+#define RF2_ResetPullup()           do { WPUFbits.WPUF2 = 0; } while(0)
+#define RF2_SetAnalogMode()         do { ANSELFbits.ANSELF2 = 1; } while(0)
+#define RF2_SetDigitalMode()        do { ANSELFbits.ANSELF2 = 0; } while(0)
+
+// get/set DE3 aliases
+#define DE3_TRIS                 TRISFbits.TRISF3
+#define DE3_LAT                  LATFbits.LATF3
+#define DE3_PORT                 PORTFbits.RF3
+#define DE3_WPU                  WPUFbits.WPUF3
+#define DE3_OD                   ODCONFbits.ODCF3
+#define DE3_ANS                  ANSELFbits.ANSELF3
+#define DE3_SetHigh()            do { LATFbits.LATF3 = 1; } while(0)
+#define DE3_SetLow()             do { LATFbits.LATF3 = 0; } while(0)
+#define DE3_Toggle()             do { LATFbits.LATF3 = ~LATFbits.LATF3; } while(0)
+#define DE3_GetValue()           PORTFbits.RF3
+#define DE3_SetDigitalInput()    do { TRISFbits.TRISF3 = 1; } while(0)
+#define DE3_SetDigitalOutput()   do { TRISFbits.TRISF3 = 0; } while(0)
+#define DE3_SetPullup()          do { WPUFbits.WPUF3 = 1; } while(0)
+#define DE3_ResetPullup()        do { WPUFbits.WPUF3 = 0; } while(0)
+#define DE3_SetPushPull()        do { ODCONFbits.ODCF3 = 0; } while(0)
+#define DE3_SetOpenDrain()       do { ODCONFbits.ODCF3 = 1; } while(0)
+#define DE3_SetAnalogMode()      do { ANSELFbits.ANSELF3 = 1; } while(0)
+#define DE3_SetDigitalMode()     do { ANSELFbits.ANSELF3 = 0; } while(0)
 
 /**
    @Param

@@ -34,7 +34,7 @@
 
 #include <xc.h>
 #include "slaveo.h"
-#include <pic18f47q84.h>
+//#include <pic18f57q84.h>
 
 volatile bool failure = false;
 volatile uint8_t in_buf1 = 0x19, in_buf2 = 0x57, in_buf3 = 0x07;

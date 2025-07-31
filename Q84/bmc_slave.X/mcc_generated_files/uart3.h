@@ -1,17 +1,17 @@
 /**
-  UART2 Generated Driver API Header File
+  UART3 Generated Driver API Header File
 
   @Company
     Microchip Technology Inc.
 
   @File Name
-    uart2.h
+    uart3.h
 
   @Summary
-    This is the generated header file for the UART2 driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
+    This is the generated header file for the UART3 driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
 
   @Description
-    This header file provides APIs for driver for UART2.
+    This header file provides APIs for driver for UART3.
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8
         Device            :  PIC18F57Q84
@@ -44,8 +44,8 @@
     SOFTWARE.
 */
 
-#ifndef UART2_H
-#define UART2_H
+#ifndef UART3_H
+#define UART3_H
 
 /**
   Section: Included Files
@@ -65,7 +65,7 @@
   Section: Macro Declarations
 */
 
-#define UART2_DataReady  (UART2_is_rx_ready())
+#define UART3_DataReady  (UART3_is_rx_ready())
 
 /**
   Section: Data Type Definitions
@@ -79,25 +79,25 @@ typedef union {
         unsigned reserved : 5;
     };
     uint8_t status;
-}uart2_status_t;
+}uart3_status_t;
 
 /**
  Section: Global variables
  */
-extern volatile uint8_t uart2TxBufferRemaining;
-extern volatile uint8_t uart2RxCount;
+extern volatile uint8_t uart3TxBufferRemaining;
+extern volatile uint8_t uart3RxCount;
 
 /**
-  Section: UART2 APIs
+  Section: UART3 APIs
 */
 
 /**
   @Summary
-    Initialization routine that takes inputs from the UART2 GUI.
+    Initialization routine that takes inputs from the UART3 GUI.
 
   @Description
-    This routine initializes the UART2 driver.
-    This routine must be called before any other UART2 routine is called.
+    This routine initializes the UART3 driver.
+    This routine must be called before any other UART3 routine is called.
 
   @Preconditions
     None
@@ -112,29 +112,29 @@ extern volatile uint8_t uart2RxCount;
 
   @Example
 */
-void UART2_Initialize(void);
+void UART3_Initialize(void);
 
 /**
   @Summary
-    Checks if the UART2 receiver ready for reading
+    Checks if the UART3 receiver ready for reading
 
   @Description
-    This routine checks if UART2 receiver has received data 
+    This routine checks if UART3 receiver has received data 
     and ready to be read
 
   @Preconditions
-    UART2_Initialize() function should be called
+    UART3_Initialize() function should be called
     before calling this function
-    UART2 receiver should be enabled before calling this 
+    UART3 receiver should be enabled before calling this 
     function
 
   @Param
     None
 
   @Returns
-    Status of UART2 receiver
-    TRUE: UART2 receiver is ready for reading
-    FALSE: UART2 receiver is not ready for reading
+    Status of UART3 receiver
+    TRUE: UART3 receiver is ready for reading
+    FALSE: UART3 receiver is not ready for reading
     
   @Example
     <code>
@@ -148,41 +148,41 @@ void UART2_Initialize(void);
         while(1)
         {
             // Logic to echo received data
-            if(UART2_is_rx_ready())
+            if(UART3_is_rx_ready())
             {
-                rxData = UART2_Read();
-                if(UART2_is_tx_ready())
+                rxData = UART3_Read();
+                if(UART3_is_tx_ready())
                 {
-                    UART2_Write(rxData);
+                    UART3_Write(rxData);
                 }
             }
         }
     }
     </code>
 */
-bool UART2_is_rx_ready(void);
+bool UART3_is_rx_ready(void);
 
 /**
   @Summary
-    Checks if the UART2 transmitter is ready to transmit data
+    Checks if the UART3 transmitter is ready to transmit data
 
   @Description
-    This routine checks if UART2 transmitter is ready 
+    This routine checks if UART3 transmitter is ready 
     to accept and transmit data byte
 
   @Preconditions
-    UART2_Initialize() function should have been called
+    UART3_Initialize() function should have been called
     before calling this function.
-    UART2 transmitter should be enabled before calling 
+    UART3 transmitter should be enabled before calling 
     this function
 
   @Param
     None
 
   @Returns
-    Status of UART2 transmitter
-    TRUE: UART2 transmitter is ready
-    FALSE: UART2 transmitter is not ready
+    Status of UART3 transmitter
+    TRUE: UART3 transmitter is ready
+    FALSE: UART3 transmitter is not ready
     
   @Example
     <code>
@@ -196,38 +196,38 @@ bool UART2_is_rx_ready(void);
         while(1)
         {
             // Logic to echo received data
-            if(UART2_is_rx_ready())
+            if(UART3_is_rx_ready())
             {
-                rxData = UART2_Read();
-                if(UART2_is_tx_ready())
+                rxData = UART3_Read();
+                if(UART3_is_tx_ready())
                 {
-                    UART2_Write(rxData);
+                    UART3_Write(rxData);
                 }
             }
         }
     }
     </code>
 */
-bool UART2_is_tx_ready(void);
+bool UART3_is_tx_ready(void);
 
 /**
   @Summary
-    Checks if UART2 data is transmitted
+    Checks if UART3 data is transmitted
 
   @Description
     This function return the status of transmit shift register
 
   @Preconditions
-    UART2_Initialize() function should be called
+    UART3_Initialize() function should be called
     before calling this function
-    UART2 transmitter should be enabled and UART2_Write
+    UART3 transmitter should be enabled and UART3_Write
     should be called before calling this function
 
   @Param
     None
 
   @Returns
-    Status of UART2 transmit shift register
+    Status of UART3 transmit shift register
     TRUE: Data completely shifted out if the UART shift register
     FALSE: Data is not completely shifted out of the shift register
     
@@ -242,12 +242,12 @@ bool UART2_is_tx_ready(void);
         
         while(1)
         {
-            if(UART2_is_tx_ready())
+            if(UART3_is_tx_ready())
             {
                 LED_0_SetHigh();
-                UART2Write(rxData);
+                UART3Write(rxData);
             }
-            if(UART2_is_tx_done()
+            if(UART3_is_tx_done()
             {
                 LED_0_SetLow();
             }
@@ -255,7 +255,7 @@ bool UART2_is_tx_ready(void);
     }
     </code>
 */
-bool UART2_is_tx_done(void);
+bool UART3_is_tx_done(void);
 
 /**
   @Summary
@@ -265,7 +265,7 @@ bool UART2_is_tx_done(void);
     This routine gets the error status of the last read byte.
 
   @Preconditions
-    UART2_Initialize() function should have been called
+    UART3_Initialize() function should have been called
     before calling this function. The returned value is only
     updated after a read is called.
 
@@ -280,7 +280,7 @@ bool UART2_is_tx_done(void);
     void main(void)
     {
         volatile uint8_t rxData;
-        volatile uart2_status_t rxStatus;
+        volatile uart3_status_t rxStatus;
         
         // Initialize the device
         SYSTEM_Initialize();
@@ -291,10 +291,10 @@ bool UART2_is_tx_done(void);
         while(1)
         {
             // Logic to echo received data
-            if(UART2_is_rx_ready())
+            if(UART3_is_rx_ready())
             {
-                rxData = UART2_Read();
-                rxStatus = UART2_get_last_status();
+                rxData = UART3_Read();
+                rxStatus = UART3_get_last_status();
                 if(rxStatus.ferr){
                     LED_0_SetHigh();
                 }
@@ -303,21 +303,21 @@ bool UART2_is_tx_done(void);
     }
     </code>
  */
-uart2_status_t UART2_get_last_status(void);
+uart3_status_t UART3_get_last_status(void);
 
 /**
   @Summary
-    Read a byte of data from the UART2.
+    Read a byte of data from the UART3.
 
   @Description
-    This routine reads a byte of data from the UART2.
+    This routine reads a byte of data from the UART3.
 
   @Preconditions
-    UART2_Initialize() function should have been called
+    UART3_Initialize() function should have been called
     before calling this function. The transfer status should be checked to see
     if the receiver is not empty before calling this function.
 	
-	UART2_DataReady is a macro which checks if any byte is received.
+	UART3_DataReady is a macro which checks if any byte is received.
 	Call this macro before using this function.
 
   @Param
@@ -345,41 +345,39 @@ uart2_status_t UART2_get_last_status(void);
                             printf("\t\t---- ----\n\n\r");
                             printf("Enter any string: ");
                             do{
-                            data = UART2_Read();		// Read data received
-                            UART2_Write(data);			// Echo back the data received
-                            }while(!UART2_DataReady);		//check if any data is received
+                            data = UART3_Read();		// Read data received
+                            UART3_Write(data);			// Echo back the data received
+                            }while(!UART3_DataReady);		//check if any data is received
 
                     }
     </code>
 */
-uint8_t UART2_Read(void);
+uint8_t UART3_Read(void);
 
  /**
   @Summary
-    Writes a byte of data to the UART2.
+    Writes a byte of data to the UART3.
 
   @Description
-    This routine writes a byte of data to the UART2.
+    This routine writes a byte of data to the UART3.
 
   @Preconditions
-    UART2_Initialize() function should have been called
+    UART3_Initialize() function should have been called
     before calling this function. The transfer status should be checked to see
     if transmitter is not busy before calling this function.
 
   @Param
-    txData  - Data byte to write to the UART2
+    txData  - Data byte to write to the UART3
 
   @Returns
     None
   
   @Example
       <code>
-          Refer to UART2_Read() for an example	
+          Refer to UART3_Read() for an example	
       </code>
 */
-void UART2_Write(uint8_t txData);
-
-void UART2_put_buffer(uint8_t);
+void UART3_Write(uint8_t txData);
 
 /**
   @Summary
@@ -391,7 +389,7 @@ void UART2_put_buffer(uint8_t);
     transmitter needs to be maintained in a non polled manner.
 
   @Preconditions
-    UART2_Initialize() function should have been called
+    UART3_Initialize() function should have been called
     for the ISR to execute correctly.
 
   @Param
@@ -400,7 +398,7 @@ void UART2_put_buffer(uint8_t);
   @Returns
     None
 */     
-void UART2_Transmit_ISR(void);
+void UART3_Transmit_ISR(void);
 
 /**
   @Summary
@@ -412,7 +410,7 @@ void UART2_Transmit_ISR(void);
     receiver needs to be maintained in a non polled manner.
 
   @Preconditions
-    UART2_Initialize() function should have been called
+    UART3_Initialize() function should have been called
     for the ISR to execute correctly.
 
   @Param
@@ -421,7 +419,7 @@ void UART2_Transmit_ISR(void);
   @Returns
     None
 */       
-void UART2_Receive_ISR(void);
+void UART3_Receive_ISR(void);
 
 /**
   @Summary
@@ -433,7 +431,7 @@ void UART2_Receive_ISR(void);
     ISR to maintain normal behavior
 
   @Preconditions
-    UART2_Initialize() function should have been called
+    UART3_Initialize() function should have been called
     for the ISR to execute correctly.
 
   @Param
@@ -442,17 +440,17 @@ void UART2_Receive_ISR(void);
   @Returns
     None
 */
-void UART2_RxDataHandler(void);
+void UART3_RxDataHandler(void);
 
 /**
   @Summary
-    Set UART2 Framing Error Handler
+    Set UART3 Framing Error Handler
 
   @Description
-    This API sets the function to be called upon UART2 framing error
+    This API sets the function to be called upon UART3 framing error
 
   @Preconditions
-    Initialize  the UART2 before calling this API
+    Initialize  the UART3 before calling this API
 
   @Param
     Address of function to be set as framing error handler
@@ -460,17 +458,17 @@ void UART2_RxDataHandler(void);
   @Returns
     None
 */
-void UART2_SetFramingErrorHandler(void (* interruptHandler)(void));
+void UART3_SetFramingErrorHandler(void (* interruptHandler)(void));
 
 /**
   @Summary
-    Set UART2 Overrun Error Handler
+    Set UART3 Overrun Error Handler
 
   @Description
-    This API sets the function to be called upon UART2 overrun error
+    This API sets the function to be called upon UART3 overrun error
 
   @Preconditions
-    Initialize  the UART2 module before calling this API
+    Initialize  the UART3 module before calling this API
 
   @Param
     Address of function to be set as overrun error handler
@@ -478,17 +476,17 @@ void UART2_SetFramingErrorHandler(void (* interruptHandler)(void));
   @Returns
     None
 */
-void UART2_SetOverrunErrorHandler(void (* interruptHandler)(void));
+void UART3_SetOverrunErrorHandler(void (* interruptHandler)(void));
 
 /**
   @Summary
-    Set UART2 Error Handler
+    Set UART3 Error Handler
 
   @Description
-    This API sets the function to be called upon UART2 error
+    This API sets the function to be called upon UART3 error
 
   @Preconditions
-    Initialize  the UART2 module before calling this API
+    Initialize  the UART3 module before calling this API
 
   @Param
     Address of function to be set as error handler
@@ -496,19 +494,19 @@ void UART2_SetOverrunErrorHandler(void (* interruptHandler)(void));
   @Returns
     None
 */
-void UART2_SetErrorHandler(void (* interruptHandler)(void));
+void UART3_SetErrorHandler(void (* interruptHandler)(void));
 
 
 
 /**
   @Summary
-    UART2 Receive Interrupt Handler
+    UART3 Receive Interrupt Handler
 
   @Description
-    This is a pointer to the function that will be called upon UART2 receive interrupt
+    This is a pointer to the function that will be called upon UART3 receive interrupt
 
   @Preconditions
-    Initialize  the UART2 module with receive interrupt enabled
+    Initialize  the UART3 module with receive interrupt enabled
 
   @Param
     None
@@ -516,17 +514,17 @@ void UART2_SetErrorHandler(void (* interruptHandler)(void));
   @Returns
     None
 */
-void (*UART2_RxInterruptHandler)(void);
+void (*UART3_RxInterruptHandler)(void);
 
 /**
   @Summary
-    UART2 Transmit Interrupt Handler
+    UART3 Transmit Interrupt Handler
 
   @Description
-    This is a pointer to the function that will be called upon UART2 transmit interrupt
+    This is a pointer to the function that will be called upon UART3 transmit interrupt
 
   @Preconditions
-    Initialize  the UART2 module with transmit interrupt enabled
+    Initialize  the UART3 module with transmit interrupt enabled
 
   @Param
     None
@@ -534,19 +532,19 @@ void (*UART2_RxInterruptHandler)(void);
   @Returns
     None
 */
-void (*UART2_TxInterruptHandler)(void);
+void (*UART3_TxInterruptHandler)(void);
 
 
 
 /**
   @Summary
-    Set UART2 Receive Interrupt Handler
+    Set UART3 Receive Interrupt Handler
 
   @Description
-    This API sets the function to be called upon UART2 receive interrupt
+    This API sets the function to be called upon UART3 receive interrupt
 
   @Preconditions
-    Initialize  the UART2 module with receive interrupt enabled before calling this API
+    Initialize  the UART3 module with receive interrupt enabled before calling this API
 
   @Param
     Address of function to be set as receive interrupt handler
@@ -554,17 +552,17 @@ void (*UART2_TxInterruptHandler)(void);
   @Returns
     None
 */
-void UART2_SetRxInterruptHandler(void (* InterruptHandler)(void));
+void UART3_SetRxInterruptHandler(void (* InterruptHandler)(void));
 
 /**
   @Summary
-    Set UART2 Transmit Interrupt Handler
+    Set UART3 Transmit Interrupt Handler
 
   @Description
-    This API sets the function to be called upon UART2 transmit interrupt
+    This API sets the function to be called upon UART3 transmit interrupt
 
   @Preconditions
-    Initialize  the UART2 module with transmit interrupt enabled before calling this API
+    Initialize  the UART3 module with transmit interrupt enabled before calling this API
 
   @Param
     Address of function to be set as transmit interrupt handler
@@ -572,7 +570,7 @@ void UART2_SetRxInterruptHandler(void (* InterruptHandler)(void));
   @Returns
     None
 */
-void UART2_SetTxInterruptHandler(void (* InterruptHandler)(void));
+void UART3_SetTxInterruptHandler(void (* InterruptHandler)(void));
 
 
 
@@ -582,7 +580,7 @@ void UART2_SetTxInterruptHandler(void (* InterruptHandler)(void));
 
 #endif
 
-#endif  // UART2_H
+#endif  // UART3_H
 /**
  End of File
 */
