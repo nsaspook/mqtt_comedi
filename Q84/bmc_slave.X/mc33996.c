@@ -45,15 +45,15 @@ void mc33996_version(void)
 
 bool mc33996_init(void)
 {
-	mc_init.cmd[0] = 0x19;
-	mc_init.cmd[1] = 0x57;
-	mc_init.cmd[2] = 0x07;
+	mc_init.cmd[0] = mc33996_reset;
+	mc_init.cmd[1] = mc33996_magic_h;
+	mc_init.cmd[2] = mc33996_magic_l;
 	mc_init.cmd[3] = 0x00;
 	mc_init.cmd[4] = 0xff;
 	mc_init.cmd[5] = 0xff;
 
 	send_spi1_mc33996_dma((void*) mc_init.cmd, 6); // powerup SPI Integrity Check
-	if (mc_init.cmd[3] != 0x19 || mc_init.cmd[4] != 0x57 || mc_init.cmd[5] != 0x07) {
+	if (mc_init.cmd[3] != mc33996_reset || mc_init.cmd[4] != mc33996_magic_h || mc_init.cmd[5] != mc33996_magic_l) {
 		return false;
 	}
 

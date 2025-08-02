@@ -25,7 +25,7 @@ extern "C" {
 	 * 32-bits SPI mode 1, 4MHz SCK
 	 * for onboard device comms
 	 */
-#define TIC12400_DRIVER "V0.7"
+#define TIC12400_DRIVER "V0.8"
 
 #define por_bit_s		0b01100110
 #define spi_fail_bit_s		0b01000000

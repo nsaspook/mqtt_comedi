@@ -21,7 +21,7 @@ extern "C" {
 	/*
 	 * 24-bits SPI mode 1, 4MHz SCK
 	 */
-#define MC33996_DRIVER "V0.6"   
+#define MC33996_DRIVER "V0.7"   
 
 	/*
 	 * MC33996 command structure

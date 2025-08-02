@@ -24,7 +24,7 @@ extern "C" {
 
 	//#define DIS_DEBUG	// active status display, disable during normal operation
 
-#define VER	"V0.17"
+#define VER	"V0.18"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 47Q84.
@@ -41,6 +41,7 @@ extern "C" {
 	 * V0.15 update to 9 byte packets for all commands
 	 * V.016 fix TIC12400 I/O bugs
 	 * V.017 code cleanup
+	 * V.018 more code cleanup
 	 */
 	/*
 	 * TIC12400 testing modes
@@ -53,7 +54,7 @@ extern "C" {
 #define DI_MC_CMD
 
 	/* analog testing a calibration mode
-	 * 
+	 *
 	 */
 
 	//#define AIO_TEST

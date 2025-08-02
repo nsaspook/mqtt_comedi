@@ -597,11 +597,6 @@ void main(void)
 			if (!V.di_fail) {
 				SPI_TIC12400();
 				tic12400_read_sw(0, (uintptr_t) NULL);
-				INTERRUPT_GlobalInterruptHighDisable();
-				//				in_buf = tic12400_switch;
-				if (serial_buffer_ss.get_value == false) {
-				}
-				INTERRUPT_GlobalInterruptHighEnable();
 			}
 
 		}
