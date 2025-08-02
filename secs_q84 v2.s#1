@@ -14817,6 +14817,9 @@ Source: &lt;a href="https://componentsearchengine.com/Datasheets/1/ADM3095EBRZ.p
 <part name="VSS82" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="DE3" library="jumper" library_urn="urn:adsk.eagle:library:252" deviceset="SJ" device="" package3d_urn="urn:adsk.eagle:package:15471/1" value="DE3"/>
 <part name="TXDE3" library="jumper" library_urn="urn:adsk.eagle:library:252" deviceset="SJ" device="" package3d_urn="urn:adsk.eagle:package:15471/1" value="TXDE3"/>
+<part name="AUX_IO" library="con-lstb" library_urn="urn:adsk.eagle:library:162" deviceset="MA06-1" device="" package3d_urn="urn:adsk.eagle:package:8340/1" value="AUX_IO"/>
+<part name="VDD31" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VDD" device=""/>
+<part name="VSS83" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -15659,6 +15662,16 @@ Source: &lt;a href="https://componentsearchengine.com/Datasheets/1/ADM3095EBRZ.p
 <attribute name="NAME" x="200.66" y="-33.02" size="1.778" layer="95" rot="R270"/>
 <attribute name="VALUE" x="204.47" y="-35.56" size="1.778" layer="96" rot="R270"/>
 </instance>
+<instance part="AUX_IO" gate="1" x="220.98" y="-180.34" smashed="yes">
+<attribute name="VALUE" x="219.71" y="-193.04" size="1.778" layer="96"/>
+<attribute name="NAME" x="219.71" y="-171.958" size="1.778" layer="95"/>
+</instance>
+<instance part="VDD31" gate="G$1" x="231.14" y="-185.42" smashed="yes" rot="R270">
+<attribute name="VALUE" x="238.76" y="-185.42" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="VSS83" gate="G$1" x="231.14" y="-187.96" smashed="yes" rot="R90">
+<attribute name="VALUE" x="233.68" y="-190.5" size="1.778" layer="96"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -15916,6 +15929,11 @@ Source: &lt;a href="https://componentsearchengine.com/Datasheets/1/ADM3095EBRZ.p
 <wire x1="274.32" y1="-17.78" x2="274.32" y2="-30.48" width="0.1524" layer="91"/>
 <junction x="279.4" y="-17.78"/>
 <junction x="274.32" y="-30.48"/>
+</segment>
+<segment>
+<pinref part="AUX_IO" gate="1" pin="2"/>
+<pinref part="VDD31" gate="G$1" pin="VDD"/>
+<junction x="228.6" y="-185.42"/>
 </segment>
 </net>
 <net name="VSS" class="1">
@@ -16455,6 +16473,11 @@ Source: &lt;a href="https://componentsearchengine.com/Datasheets/1/ADM3095EBRZ.p
 <pinref part="R32" gate="G$1" pin="1"/>
 <pinref part="VSS82" gate="G$1" pin="VSS"/>
 <junction x="276.86" y="2.54"/>
+</segment>
+<segment>
+<pinref part="AUX_IO" gate="1" pin="1"/>
+<pinref part="VSS83" gate="G$1" pin="VSS"/>
+<junction x="228.6" y="-187.96"/>
 </segment>
 </net>
 <net name="CPU_CLK" class="0">
@@ -18870,6 +18893,70 @@ Source: &lt;a href="https://componentsearchengine.com/Datasheets/1/ADM3095EBRZ.p
 <junction x="193.04" y="-53.34"/>
 <label x="193.04" y="-53.34" size="1.778" layer="95"/>
 <junction x="193.04" y="-40.64"/>
+</segment>
+</net>
+<net name="RF4" class="0">
+<segment>
+<pinref part="IC8" gate="G$1" pin="RF4"/>
+<wire x1="254" y1="-152.4" x2="241.3" y2="-152.4" width="0.1524" layer="91"/>
+<junction x="254" y="-152.4"/>
+<junction x="241.3" y="-152.4"/>
+<label x="243.84" y="-152.4" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="241.3" y1="-182.88" x2="228.6" y2="-182.88" width="0.1524" layer="91"/>
+<pinref part="AUX_IO" gate="1" pin="3"/>
+<junction x="228.6" y="-182.88"/>
+<junction x="241.3" y="-182.88"/>
+<label x="231.14" y="-182.88" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="RF7" class="0">
+<segment>
+<pinref part="IC8" gate="G$1" pin="RF7"/>
+<wire x1="266.7" y1="-180.34" x2="266.7" y2="-193.04" width="0.1524" layer="91"/>
+<junction x="266.7" y="-180.34"/>
+<junction x="266.7" y="-193.04"/>
+<label x="266.7" y="-190.5" size="1.778" layer="95" rot="R90"/>
+</segment>
+<segment>
+<wire x1="228.6" y1="-175.26" x2="241.3" y2="-175.26" width="0.1524" layer="91"/>
+<pinref part="AUX_IO" gate="1" pin="6"/>
+<junction x="228.6" y="-175.26"/>
+<junction x="241.3" y="-175.26"/>
+<label x="231.14" y="-175.26" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="RF6" class="0">
+<segment>
+<pinref part="IC8" gate="G$1" pin="RF6"/>
+<wire x1="264.16" y1="-180.34" x2="264.16" y2="-193.04" width="0.1524" layer="91"/>
+<junction x="264.16" y="-180.34"/>
+<junction x="264.16" y="-193.04"/>
+<label x="264.16" y="-190.5" size="1.778" layer="95" rot="R90"/>
+</segment>
+<segment>
+<wire x1="228.6" y1="-177.8" x2="241.3" y2="-177.8" width="0.1524" layer="91"/>
+<pinref part="AUX_IO" gate="1" pin="5"/>
+<junction x="228.6" y="-177.8"/>
+<junction x="241.3" y="-177.8"/>
+<label x="231.14" y="-177.8" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="RF5" class="0">
+<segment>
+<pinref part="IC8" gate="G$1" pin="RF5"/>
+<wire x1="261.62" y1="-180.34" x2="261.62" y2="-193.04" width="0.1524" layer="91"/>
+<junction x="261.62" y="-180.34"/>
+<junction x="261.62" y="-193.04"/>
+<label x="261.62" y="-190.5" size="1.778" layer="95" rot="R90"/>
+</segment>
+<segment>
+<wire x1="228.6" y1="-180.34" x2="241.3" y2="-180.34" width="0.1524" layer="91"/>
+<pinref part="AUX_IO" gate="1" pin="4"/>
+<junction x="228.6" y="-180.34"/>
+<junction x="241.3" y="-180.34"/>
+<label x="231.14" y="-180.34" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>
