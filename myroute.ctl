@@ -8,6 +8,12 @@
 
   tpViaShape      = round
 
+  ; Extended parameters:
+
+  AutoGrid        = 1
+  Efforts         = 0
+  TopRouterVariant  = 1
+
   ; Preferred Directions:
 
   PrefDir.1       = *
