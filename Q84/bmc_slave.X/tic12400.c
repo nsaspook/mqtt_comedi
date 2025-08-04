@@ -196,21 +196,6 @@ bool tic12400_init(void)
 		tic12400_fail_value = -7;
 		tic12400_read_status = spi_link.rxbuf[0];
 	}
-	/*
-	 * just poll for input status
-	 */
-	//	send_spi1_tic12400_dma((void*) &setup24, 4);
-	//	if (((spi_link.rxbuf[0] & parity_fail_v))) {
-	//		tic12400_fail_count++;
-	//		tic12400_fail_value = -8;
-	//		tic12400_read_status = spi_link.rxbuf[0];
-	//	}
-	//	send_spi1_tic12400_dma((void*) &setup1d, 4);
-	//	if (((spi_link.rxbuf[0] & parity_fail_v))) {
-	//		tic12400_fail_count++;
-	//		tic12400_fail_value = -10;
-	//		tic12400_read_status = spi_link.rxbuf[0];
-	//	}
 
 	send_spi1_tic12400_dma((void*) &setup1a_trigger, 4); // start monitoring and reporting switch inputs
 	WaitMs(2);
@@ -275,7 +260,8 @@ uint32_t tic12400_wr(const ticbuf_type * buffer, uint16_t del)
 
 /*
  * switch data reading testing routine
- * tic12400 value is updated in external interrupt #2 ISR
+ * switch interrupts to IOCBF6, sets tic12400_event
+ * this function clears tic12400_event
  */
 uint32_t tic12400_get_sw(void)
 {
@@ -324,9 +310,8 @@ void tic12400_read_sw(uint32_t a, uintptr_t b)
 void tic_int_handler(void)
 {
 	if (tic12400_init_ok) {
-		tic12400_read_sw(0, (uintptr_t) NULL);
+		tic12400_event = true;
 		MLED_SetHigh();
 	}
-
 	b_read = PORTB;
 }

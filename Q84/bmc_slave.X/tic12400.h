@@ -32,6 +32,7 @@ extern "C" {
 #define ssc_bit_s		0b00001000
 #define spi_fail_bit_v		0b01000000
 #define parity_fail_v		0b00100000
+#define por_bit_s_v		0b10000000
 #define id_mask_d		0b00000000
 #define switch_mask_d		0x00ffffff
 

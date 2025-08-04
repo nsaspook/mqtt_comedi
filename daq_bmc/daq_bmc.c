@@ -1183,6 +1183,7 @@ static int digitalReadOPi(struct comedi_device *dev,
 	val_value = packet->bmc_byte_r[BMC_D1];
 	val_value += (packet->bmc_byte_r[BMC_D2] << 8);
 	val_value += (packet->bmc_byte_r[BMC_DUMMY] << 16);
+	val_value = val_value >> 1; // shift out the tic12400 parity bit from results
 
 	devpriv->di_count++;
 	kfree(packet);

@@ -195,7 +195,7 @@ void slaveo_rx_isr(void)
 		} else {
 			spi_stat_ss.slave_tx_count++;
 			if (serial_buffer_ss.raw_index == BMC_D0) {
-				tmp_buf = (uint8_t) in_buf1;
+				tmp_buf = (uint8_t) in_buf1 | 0b00000001;
 			} else {
 				tmp_buf = (uint8_t) in_buf2;
 			}

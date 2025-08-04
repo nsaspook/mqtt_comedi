@@ -597,6 +597,9 @@ void main(void)
 			if (!V.di_fail) {
 				SPI_TIC12400();
 				tic12400_read_sw(0, (uintptr_t) NULL);
+				if (((spi_link.rxbuf[0] & por_bit_s_v))) { // check for POR bit set
+					tic12400_init();
+				}
 			}
 
 		}
