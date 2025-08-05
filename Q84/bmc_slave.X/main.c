@@ -478,7 +478,7 @@ void main(void)
 				SPI_MC33996();
 				INTERRUPT_GlobalInterruptHighDisable();
 				if (serial_buffer_ss.make_value == false) {
-					out_buf = (uint16_t) 0xff & V.bmc_do;
+					out_buf = (uint16_t) 0xffff & V.bmc_do;
 				}
 				INTERRUPT_GlobalInterruptHighEnable();
 				mc33996_update(out_buf);
