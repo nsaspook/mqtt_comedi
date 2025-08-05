@@ -14675,7 +14675,7 @@ Source: &lt;a href="http://www.ti.com/lit/gpn/tic12400"&gt; Datasheet &lt;/a&gt;
 <part name="FRAME1" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_C_L" device=""/>
 <part name="C29" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-US" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="10uf"/>
 <part name="VSS73" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
-<part name="INT_RESET" library="jumper" library_urn="urn:adsk.eagle:library:252" deviceset="SJ" device="" package3d_urn="urn:adsk.eagle:package:15471/1" value="reset"/>
+<part name="INT_RESET1" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2" value="int_reset"/>
 </parts>
 <sheets>
 <sheet>
@@ -15442,9 +15442,9 @@ Source: &lt;a href="http://www.ti.com/lit/gpn/tic12400"&gt; Datasheet &lt;/a&gt;
 <instance part="VSS73" gate="G$1" x="15.24" y="50.8" smashed="yes">
 <attribute name="VALUE" x="17.78" y="45.72" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="INT_RESET" gate="1" x="10.16" y="63.5" smashed="yes" rot="R180">
-<attribute name="NAME" x="12.7" y="60.96" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="12.7" y="67.31" size="1.778" layer="96" rot="R180"/>
+<instance part="INT_RESET1" gate="G$1" x="2.54" y="63.5" smashed="yes" rot="R180">
+<attribute name="NAME" x="8.89" y="57.785" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="-1.27" y="63.5" size="1.778" layer="96" rot="R180"/>
 </instance>
 </instances>
 <busses>
@@ -16277,10 +16277,8 @@ Source: &lt;a href="http://www.ti.com/lit/gpn/tic12400"&gt; Datasheet &lt;/a&gt;
 <net name="R_RESET" class="0">
 <segment>
 <pinref part="R5" gate="G$1" pin="1"/>
-<wire x1="15.24" y1="60.96" x2="15.24" y2="63.5" width="0.1524" layer="91"/>
 <pinref part="R6" gate="G$1" pin="1"/>
 <pinref part="C1" gate="G$1" pin="1"/>
-<wire x1="15.24" y1="63.5" x2="15.24" y2="66.04" width="0.1524" layer="91"/>
 <wire x1="15.24" y1="66.04" x2="15.24" y2="81.28" width="0.1524" layer="91"/>
 <wire x1="15.24" y1="81.28" x2="10.16" y2="81.28" width="0.1524" layer="91"/>
 <junction x="10.16" y="81.28"/>
@@ -16290,9 +16288,11 @@ Source: &lt;a href="http://www.ti.com/lit/gpn/tic12400"&gt; Datasheet &lt;/a&gt;
 <pinref part="C29" gate="G$1" pin="1"/>
 <wire x1="15.24" y1="60.96" x2="15.24" y2="63.5" width="0.1524" layer="91"/>
 <junction x="15.24" y="66.04"/>
-<pinref part="INT_RESET" gate="1" pin="1"/>
 <wire x1="15.24" y1="63.5" x2="15.24" y2="66.04" width="0.1524" layer="91"/>
 <junction x="15.24" y="63.5"/>
+<pinref part="INT_RESET1" gate="G$1" pin="1"/>
+<wire x1="5.08" y1="60.96" x2="15.24" y2="60.96" width="0.1524" layer="91"/>
+<junction x="5.08" y="60.96"/>
 </segment>
 <segment>
 <wire x1="-17.78" y1="78.74" x2="-30.48" y2="78.74" width="0.1524" layer="91"/>
@@ -17006,10 +17006,10 @@ Source: &lt;a href="http://www.ti.com/lit/gpn/tic12400"&gt; Datasheet &lt;/a&gt;
 </segment>
 <segment>
 <wire x1="-7.62" y1="63.5" x2="5.08" y2="63.5" width="0.1524" layer="91"/>
-<pinref part="INT_RESET" gate="1" pin="2"/>
-<junction x="5.08" y="63.5"/>
 <junction x="-7.62" y="63.5"/>
 <label x="-22.86" y="63.5" size="1.778" layer="95"/>
+<pinref part="INT_RESET1" gate="G$1" pin="2"/>
+<junction x="5.08" y="63.5"/>
 </segment>
 </net>
 <net name="SDI2" class="0">
