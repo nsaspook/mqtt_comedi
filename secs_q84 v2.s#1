@@ -15317,7 +15317,7 @@ Source: &lt;a href="http://www.ti.com/lit/gpn/tic12400"&gt; Datasheet &lt;/a&gt;
 <attribute name="VALUE" x="36.83" y="-66.04" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="VSS66" gate="G$1" x="38.1" y="-81.28" smashed="yes">
-<attribute name="VALUE" x="40.64" y="-86.36" size="1.778" layer="96" rot="R180"/>
+<attribute name="VALUE" x="45.72" y="-81.28" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="VSS67" gate="G$1" x="-5.08" y="-172.72" smashed="yes">
 <attribute name="VALUE" x="2.54" y="-172.72" size="1.778" layer="96" rot="R180"/>
@@ -15345,11 +15345,11 @@ Source: &lt;a href="http://www.ti.com/lit/gpn/tic12400"&gt; Datasheet &lt;/a&gt;
 </instance>
 <instance part="R28" gate="G$1" x="30.48" y="-91.44" smashed="yes" rot="R180">
 <attribute name="NAME" x="34.29" y="-92.9386" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="39.37" y="-93.218" size="1.778" layer="96" rot="R180"/>
+<attribute name="VALUE" x="44.45" y="-93.218" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="R29" gate="G$1" x="30.48" y="-88.9" smashed="yes" rot="R180">
-<attribute name="NAME" x="29.21" y="-85.3186" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="34.29" y="-85.598" size="1.778" layer="96" rot="R180"/>
+<attribute name="NAME" x="31.75" y="-85.3186" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="44.45" y="-85.598" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="TIC_DIGITAL" gate="1" x="114.3" y="-121.92" smashed="yes">
 <attribute name="VALUE" x="113.03" y="-132.08" size="1.778" layer="96"/>
@@ -18157,7 +18157,7 @@ Source: &lt;a href="http://www.ti.com/lit/gpn/tic12400"&gt; Datasheet &lt;/a&gt;
 <wire x1="35.56" y1="-88.9" x2="48.26" y2="-88.9" width="0.1524" layer="91"/>
 <junction x="35.56" y="-88.9"/>
 <junction x="48.26" y="-88.9"/>
-<label x="40.64" y="-88.9" size="1.778" layer="95"/>
+<label x="38.1" y="-88.9" size="1.778" layer="95"/>
 </segment>
 <segment>
 <wire x1="121.92" y1="-121.92" x2="127" y2="-121.92" width="0.1524" layer="91"/>

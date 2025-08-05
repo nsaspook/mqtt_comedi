@@ -16049,6 +16049,7 @@ Source: &lt;a href="http://www.ti.com/lit/gpn/tic12400"&gt; Datasheet &lt;/a&gt;
 <segment>
 <pinref part="LED4" gate="G$1" pin="C"/>
 <pinref part="VSS72" gate="G$1" pin="VSS"/>
+<junction x="266.7" y="50.8"/>
 </segment>
 <segment>
 <pinref part="TIC0_7" gate="G$1" pin="10"/>
