@@ -1,25 +1,25 @@
 EAGLE AutoRouter Statistics:
 
-Job           : C:/Users/nsasp/mqtt_comedi/secs_q84 v2.brd
+Job           : /public/bmc/secs_q84 v2.brd
 
-Start at      : 08:09:17 (8/2/2025)
-End at        : 16:00:00 (12/31/1969)
-Elapsed time  : 00:00:00
+Start at      : 17:10:41 (8/4/25)
+End at        : 17:14:29 (8/4/25)
+Elapsed time  : 00:03:44
 
-Signals       :   124   RoutingGrid: 3 mil  Layers: 4
-Connections   :   365   predefined:  362 ( 175 Vias )
+Signals       :   134   RoutingGrid: 3 mil  Layers: 4
+Connections   :   401   predefined:  399 ( 226 Vias )
 
-Router memory :   9541504
+Router memory :   9625696
 
-Passname          : TopRouter
+Passname          : TopRouter     Route Optimize1 Optimize2 Optimize3 Optimize4 Optimize5 Optimize6 Optimize7 Optimize8
 
-Time per pass     :  00:00:00
-Number of Ripups  :         0
-max. Level        :         0
-max. Total        :         0
+Time per pass     :  00:03:29  00:00:00  00:00:02  00:00:02  00:00:02  00:00:02  00:00:02  00:00:01  00:00:02  00:00:02
+Number of Ripups  :         0         0         0         0         0         0         0         0         0         0
+max. Level        :         0         0         0         0         0         0         0         0         0         0
+max. Total        :         0         0         0         0         0         0         0         0         0         0
 
-Routed            :         0
-Vias              :         0
-Resolution        :    99.2 %
+Routed            :         2         2         2         2         2         2         2         2         2         2
+Vias              :         0         0         0         0         0         0         0         0         0         0
+Resolution        :   100.0 %   100.0 %   100.0 %   100.0 %   100.0 %   100.0 %   100.0 %   100.0 %   100.0 %   100.0 %
 
 Final             : 100.0% finished
