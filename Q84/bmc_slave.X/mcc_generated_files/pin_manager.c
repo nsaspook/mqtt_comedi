@@ -14,7 +14,7 @@
     This header file provides implementations for pin APIs for all pins selected in the GUI.
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8
-        Device            :  PIC18F47Q84
+        Device            :  PIC18F57Q84
         Driver Version    :  2.11
     The generated drivers are tested against the following:
         Compiler          :  XC8 2.36 and above
@@ -63,6 +63,7 @@ void PIN_MANAGER_Initialize(void)
     LATE = 0x07;
     LATD = 0xDE;
     LATA = 0x00;
+    LATF = 0x02;
     LATB = 0x51;
     LATC = 0x2A;
 
@@ -70,6 +71,7 @@ void PIN_MANAGER_Initialize(void)
     TRISx registers
     */
     TRISE = 0x00;
+    TRISF = 0xF1;
     TRISA = 0xFF;
     TRISB = 0xE0;
     TRISC = 0xD1;
@@ -82,12 +84,14 @@ void PIN_MANAGER_Initialize(void)
     ANSELC = 0xC0;
     ANSELB = 0x80;
     ANSELE = 0x00;
+    ANSELF = 0xF0;
     ANSELA = 0xFF;
 
     /**
     WPUx registers
     */
     WPUD = 0x8F;
+    WPUF = 0x01;
     WPUE = 0x07;
     WPUB = 0x71;
     WPUA = 0x00;
@@ -97,6 +101,7 @@ void PIN_MANAGER_Initialize(void)
     ODx registers
     */
     ODCONE = 0x00;
+    ODCONF = 0x00;
     ODCONA = 0x00;
     ODCONB = 0x01;
     ODCONC = 0x00;
@@ -110,6 +115,7 @@ void PIN_MANAGER_Initialize(void)
     SLRCONC = 0xFF;
     SLRCOND = 0xFF;
     SLRCONE = 0x07;
+    SLRCONF = 0xFF;
 
     /**
     INLVLx registers
@@ -119,6 +125,7 @@ void PIN_MANAGER_Initialize(void)
     INLVLC = 0xFF;
     INLVLD = 0xFF;
     INLVLE = 0x0F;
+    INLVLF = 0xFF;
 
 
     /**
@@ -141,15 +148,18 @@ void PIN_MANAGER_Initialize(void)
     
 	
     U2RXPPS = 0x18;   //RD0->UART2:RX2;    
-    SPI1SCKPPS = 0x13;   //RC3->SPI1:SCK1;    
     SPI2SDIPPS = 0x0D;   //RB5->SPI2:SDI2;    
     RC3PPS = 0x31;   //RC3->SPI1:SCK1;    
     RC1PPS = 0x20;   //RC1->UART1:TX1;    
     RB4PPS = 0x35;   //RB4->SPI2:SDO2;    
-    RC5PPS = 0x32;   //RC5->SPI1:SDO1;    
+    RF1PPS = 0x26;   //RF1->UART3:TX3;    
     U1RXPPS = 0x10;   //RC0->UART1:RX1;    
+    U3RXPPS = 0x28;   //RF0->UART3:RX3;    
     RD6PPS = 0x23;   //RD6->UART2:TX2;    
+    RF2PPS = 0x27;   //RF2->UART3:TXDE3;    
     SPI2SCKPPS = 0x1A;   //RD2->SPI2:SCK2;    
+    SPI1SCKPPS = 0x13;   //RC3->SPI1:SCK1;    
+    RC5PPS = 0x32;   //RC5->SPI1:SDO1;    
     SPI1SDIPPS = 0x14;   //RC4->SPI1:SDI1;    
 }
   

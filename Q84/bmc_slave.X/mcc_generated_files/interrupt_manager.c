@@ -16,7 +16,7 @@
     all modules selected in the GUI.
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8
-        Device            :  PIC18F47Q84
+        Device            :  PIC18F57Q84
         Driver Version    :  2.12
     The generated drivers are tested against the following:
         Compiler          :  XC8 2.36 and above or later
@@ -83,6 +83,8 @@ void  INTERRUPT_Initialize (void)
     IPR8bits.U2TXIP = 1;
     IPR8bits.U2RXIP = 1;
     IPR0bits.IOCIP = 1;
+    IPR9bits.U3TXIP = 1;
+    IPR9bits.U3RXIP = 1;
     IPR4bits.U1TXIP = 1;
     IPR4bits.U1RXIP = 1;
     IPR3bits.TMR0IP = 1;

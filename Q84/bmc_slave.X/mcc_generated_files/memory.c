@@ -14,7 +14,7 @@
     This file provides implementations of driver APIs for MEMORY.
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8
-        Device            :  PIC18F47Q84
+        Device            :  PIC18F57Q84
         Driver Version    :  1.1.0
     The generated drivers are tested against the following:
         Compiler          :  XC8 2.36 and above
@@ -54,7 +54,7 @@
   Section: Program Flash Memory APIs
  */
 
-//128-words of Buffer RAM for PIC18F47Q84 is available at 0x3700
+//128-words of Buffer RAM for PIC18F57Q84 is available at 0x3700
 uint16_t bufferRAM __at(0x3700); 
 
 uint8_t FLASH_ReadByte(uint32_t flashAddr)
