@@ -398,17 +398,32 @@ int get_data_sample(void)
 		}
 	}
 
-	usleep(50);
+//	usleep(50);
 
 	if (DO_OPEN) {
 		// send I/O as a byte mask
-		obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
 		if (bmc.BOARD == bmcboard) {
-			obits.bytes[1] = ~bmc.dataout.bytes[0];
-			obits.bytes[2] = ~bmc.dataout.bytes[0];
-			obits.bytes[3] = ~bmc.dataout.bytes[0];
+			if (datain == 0x3fffff) {
+				obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
+				obits.bytes[1] = ~bmc.dataout.bytes[0];
+				obits.bytes[2] = ~bmc.dataout.bytes[0];
+				obits.bytes[3] = ~bmc.dataout.bytes[0];
+			} else {
+				if (datain == 0x3ffffe) {
+					obits.bytes[0] = ~bmc.dataout.bytes[0]; // buffer output
+					obits.bytes[1] = bmc.dataout.bytes[0];
+					obits.bytes[2] = bmc.dataout.bytes[0];
+					obits.bytes[3] = bmc.dataout.bytes[0];
+				} else {
+					obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
+					obits.bytes[1] = bmc.dataout.bytes[0];
+					obits.bytes[2] = bmc.dataout.bytes[0];
+					obits.bytes[3] = bmc.dataout.bytes[0];
+				}
+			}
 			comedi_dio_bitfield2(it, subdev_do, obits.dio_buf, &obits.dio_buf, 0);
 		} else {
+			obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
 			comedi_dio_bitfield2(it, subdev_do, 0xff, &obits.dio_buf, 0);
 		}
 	}
