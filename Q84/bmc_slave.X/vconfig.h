@@ -24,10 +24,10 @@ extern "C" {
 
 	//#define DIS_DEBUG	// active status display, disable during normal operation
 
-#define VER	"V0.18"
+#define VER	"V0.20"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
-	    Version for 47Q84.
+	    Version for 57Q84.
 
 	 * V0.01 OPI daq slave via SPI2
 	 * V0.03 add all ADC channels and clean up for SECS defines and variables
@@ -42,6 +42,7 @@ extern "C" {
 	 * V.016 fix TIC12400 I/O bugs
 	 * V.017 code cleanup
 	 * V.018 more code cleanup
+	 * V.020 18f57q84 version
 	 */
 	/*
 	 * TIC12400 testing modes

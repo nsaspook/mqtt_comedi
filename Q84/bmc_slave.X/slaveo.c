@@ -34,7 +34,6 @@
 
 #include <xc.h>
 #include "slaveo.h"
-//#include <pic18f57q84.h>
 
 volatile bool failure = false;
 volatile uint8_t in_buf1 = 0x19, in_buf2 = 0x57, in_buf3 = 0x07;
@@ -196,7 +195,7 @@ void slaveo_rx_isr(void)
 		} else {
 			spi_stat_ss.slave_tx_count++;
 			if (serial_buffer_ss.raw_index == BMC_D0) {
-				tmp_buf = (uint8_t) in_buf1;
+				tmp_buf = (uint8_t) in_buf1 | 0b00000001;
 			} else {
 				tmp_buf = (uint8_t) in_buf2;
 			}
