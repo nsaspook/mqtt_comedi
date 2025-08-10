@@ -31,6 +31,7 @@
 #define R_ALL_ON	0xff
 #define NO		LOW
 #define YES		HIGH
+#define STX		2
 
 #include <xc.h>
 #include "slaveo.h"
@@ -38,6 +39,7 @@
 volatile bool failure = false;
 volatile uint8_t in_buf1 = 0x19, in_buf2 = 0x57, in_buf3 = 0x07;
 volatile uint8_t tmp_buf = 0;
+volatile bool r_string_ready = false;
 
 static void clear_slaveo_flags(void);
 
@@ -105,13 +107,27 @@ void slaveo_rx_isr(void)
 	serial_buffer_ss.data[serial_buffer_ss.raw_index] = data_in2;
 
 	// CHAR_GO_BYTES
+	// use r_string array to buffer ascii data
 	if (serial_buffer_ss.cmake_value) {
 		if (serial_buffer_ss.raw_index == CHAR_GO_BYTES) {
 			/*
 			 * uart1 only
 			 */
 			UART1_Write(serial_buffer_ss.data[BMC_D0]);
-			data_in2 = 0;
+
+			if (!r_string_ready) {
+				if (serial_buffer_ss.data[BMC_D0] == STX) {
+					serial_buffer_ss.r_string_index = 0;
+					serial_buffer_ss.r_string[serial_buffer_ss.r_string_index] = 0;
+				} else {
+					serial_buffer_ss.r_string[serial_buffer_ss.r_string_index++] = serial_buffer_ss.data[BMC_D0];
+					if (serial_buffer_ss.r_string_index >= MAX_STRLEN) {
+						serial_buffer_ss.r_string[serial_buffer_ss.r_string_index] = 0;
+						serial_buffer_ss.r_string_index = 0;
+						r_string_ready = true;
+					}
+				}
+			}
 			serial_buffer_ss.cmake_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
@@ -156,6 +172,7 @@ void slaveo_rx_isr(void)
 	}
 
 	// CHAR_GET_BYTES
+	// use r_string array to buffer ascii data
 	if (serial_buffer_ss.cget_value) {
 		if (serial_buffer_ss.raw_index == CHAR_GET_BYTES) {
 			/*
@@ -174,7 +191,7 @@ void slaveo_rx_isr(void)
 		} else {
 			spi_stat_ss.slave_tx_count++;
 			if (serial_buffer_ss.raw_index == BMC_D0) {
-				tmp_buf = 0x00; // 
+				tmp_buf = 0x00; //
 			} else {
 				tmp_buf = UART1_is_rx_ready(); // new data is ready
 			}

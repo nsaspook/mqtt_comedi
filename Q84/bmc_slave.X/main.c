@@ -262,6 +262,7 @@ volatile struct spi_stat_type_ss spi_stat_ss = {
 volatile struct serial_buffer_type_ss serial_buffer_ss = {
 	.data[BMC_CMD] = CHECKBYTE,
 	.raw_index = BMC_CMD,
+	.r_string_index = 0,
 };
 
 volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0, channel = 0, upper;
@@ -306,6 +307,8 @@ void main(void)
 	TMR5_SetInterruptHandler(onesec_io);
 	TMR5_StartTimer();
 	TMR6_StartTimer();
+	TMR0_SetInterruptHandler(test_slave);
+	TMR0_StartTimer();
 
 #ifdef FLIP_SERIAL
 	/** Speed locking setup code.
@@ -386,7 +389,8 @@ void main(void)
 	 */
 	while (true) {
 		/*
-		 * check and parse logging configuration commands on UART3
+		 * check and parse logging configuration commands
+		 * not used
 		 */
 		logging_cmds();
 
@@ -424,7 +428,7 @@ void main(void)
 			srand(1957);
 			set_vterm(V.vterm); // set to buffer 0
 			snprintf(V.info, MAX_INFO, " Terminal Info               ");
-			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, " OPI BMCDAQ %u %s        ", V.uart_speed_fast & 0x01, VER);
+			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, " OPI DAQ_BMC %s        ", VER);
 #ifdef DIS_DEBUG
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " TIC %ld 0x%lX 0x%lX         ", tic12400_fail_value, tic12400_id & 0xffff, tic12400_read_status);
 #else
@@ -453,8 +457,6 @@ void main(void)
 			StartTimer(TMR_SEQ, SEQDELAY);
 			StartTimer(TMR_HELP, TDELAY);
 			StartTimer(TMR_ADC, ADCDELAY);
-			TMR0_SetInterruptHandler(test_slave);
-			TMR0_StartTimer();
 			break;
 		case UI_STATE_HOST:
 			set_display_info(DIS_STR);
@@ -601,16 +603,29 @@ void main(void)
 					tic12400_init();
 				}
 			}
-
 		}
 
 		if (TimerDone(TMR_DISPLAY)) { // limit update rate
 			static uint8_t switcher = INFO_VTERM;
 
+			SPI_EADOG();
 			StartTimer(TMR_DISPLAY, DDELAY);
 
 			if (TimerDone(TMR_HELPDIS)) {
 				set_display_info(DIS_STR);
+			}
+
+			/*
+			 * send ascii data to CLCD
+			 */
+			if (r_string_ready) {
+				char *strPtr = get_vterm_ptr(3, MAIN_VTERM);
+
+				set_vterm(MAIN_VTERM);
+				snprintf(strPtr, MAX_TEXT, "%s", serial_buffer_ss.r_string);
+				refresh_lcd();
+				serial_buffer_ss.r_string_index = 0;
+				r_string_ready = false;
 			}
 #ifdef DIS_DEBUG
 
@@ -771,8 +786,6 @@ char spinners(uint8_t shape, const uint8_t reset)
  */
 void test_slave(void)
 {
-
-
 	MCZ_PWM_SetLow();
 	//	RESET();
 }

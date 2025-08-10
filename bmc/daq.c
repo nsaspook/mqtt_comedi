@@ -58,6 +58,10 @@ union dio_buf_type obits, ibits;
 
 uint32_t datain, serial_buf;
 
+uint8_t daq_text[] = "daq_bmc nsaspook           ";
+uint8_t daq_text_index = 0;
+static uint32_t slow_text = 0;
+
 int init_daq(double min_range, double max_range, int range_update)
 {
 	int i = 0;
@@ -398,7 +402,7 @@ int get_data_sample(void)
 		}
 	}
 
-//	usleep(50);
+	//	usleep(50);
 
 	if (DO_OPEN) {
 		// send I/O as a byte mask
@@ -429,10 +433,19 @@ int get_data_sample(void)
 	}
 
 	if (SERIAL_OPEN) {
-		serial_buf = 0x57;
-
-		comedi_data_write(it, subdev_serial0, 0, range_ao, AREF_GROUND, serial_buf);
-		comedi_data_read(it, subdev_serial0, 0, range_ao, AREF_GROUND, &serial_buf);
+		if (++slow_text > SLOW_TEXT) {
+			slow_text = 0;
+			serial_buf = daq_text[daq_text_index++];
+			if (daq_text_index > MAX_STRLEN) {
+				serial_buf = STX;
+				comedi_data_write(it, subdev_serial0, 0, range_ao, AREF_GROUND, serial_buf);
+				daq_text_index = 0;
+				serial_buf = 0;
+			} else {
+				comedi_data_write(it, subdev_serial0, 0, range_ao, AREF_GROUND, serial_buf);
+				comedi_data_read(it, subdev_serial0, 0, range_ao, AREF_GROUND, &serial_buf);
+			}
+		}
 	}
 	return 0;
 }

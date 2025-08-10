@@ -50,6 +50,7 @@ extern "C" {
 
 #define SPI_BUFFER_LEN	10
 #define PACKET_BUF_SIZ	16
+#define RSTRING_BUF_SIZ	81
 
 #define	HI_NIBBLE       0xf0
 #define	LO_NIBBLE       0x0f
@@ -85,7 +86,7 @@ extern "C" {
 	};
 
 	struct serial_buffer_type_ss {
-		volatile uint8_t data[PACKET_BUF_SIZ], adcl, adc2, adch, command, raw_index;
+		volatile uint8_t data[PACKET_BUF_SIZ], r_string[RSTRING_BUF_SIZ], adcl, adc2, adch, command, raw_index, r_string_index;
 		volatile uint32_t place;
 		volatile bool make_value, get_value, dac_value, adc_value, cfg_value, cmake_value, cget_value;
 	};
@@ -111,6 +112,7 @@ extern "C" {
 	volatile bool failure;
 	extern volatile uint8_t in_buf1, in_buf2, in_buf3;
 	extern volatile uint8_t tmp_buf;
+	extern volatile bool r_string_ready;
 
 	void check_slaveo(void);
 	void init_slaveo(void);

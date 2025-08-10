@@ -24,7 +24,7 @@ extern "C" {
 
 	//#define DIS_DEBUG	// active status display, disable during normal operation
 
-#define VER	"V0.20"
+#define VER	"V0.21"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -43,6 +43,7 @@ extern "C" {
 	 * V.017 code cleanup
 	 * V.018 more code cleanup
 	 * V.020 18f57q84 version
+	 * V.021 fix-up serial data protocol with STX to mark start of string
 	 */
 	/*
 	 * TIC12400 testing modes
