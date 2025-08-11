@@ -26,7 +26,7 @@ extern "C" {
 #define LPCHANC        16
 #define STX		2
 	
-#define SLOW_TEXT	5
+#define SLOW_TEXT	1
 #define MAX_STRLEN      20
 
 #define JUST_BITS false

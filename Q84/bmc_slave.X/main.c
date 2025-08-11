@@ -263,6 +263,7 @@ volatile struct serial_buffer_type_ss serial_buffer_ss = {
 	.data[BMC_CMD] = CHECKBYTE,
 	.raw_index = BMC_CMD,
 	.r_string_index = 0,
+	.r_string_chan = 3,
 };
 
 volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0, channel = 0, upper;
@@ -619,10 +620,11 @@ void main(void)
 			 * send ascii data to CLCD
 			 */
 			if (r_string_ready) {
-				char *strPtr = get_vterm_ptr(3, MAIN_VTERM);
+				char *strPtr = get_vterm_ptr(serial_buffer_ss.r_string_chan, MAIN_VTERM);
+				static uint8_t upd = 0;
 
 				set_vterm(MAIN_VTERM);
-				snprintf(strPtr, MAX_TEXT, "%s", serial_buffer_ss.r_string);
+				snprintf(strPtr, MAX_TEXT, "%.2X %s", upd++, serial_buffer_ss.r_string);
 				refresh_lcd();
 				serial_buffer_ss.r_string_index = 0;
 				r_string_ready = false;

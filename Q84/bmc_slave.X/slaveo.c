@@ -116,11 +116,12 @@ void slaveo_rx_isr(void)
 			UART1_Write(serial_buffer_ss.data[BMC_D0]);
 
 			if (!r_string_ready) {
-				if (serial_buffer_ss.data[BMC_D0] == STX) {
+				if (serial_buffer_ss.data[BMC_D0] == STX) { // character sync
 					serial_buffer_ss.r_string_index = 0;
 					serial_buffer_ss.r_string[serial_buffer_ss.r_string_index] = 0;
 				} else {
 					serial_buffer_ss.r_string[serial_buffer_ss.r_string_index++] = serial_buffer_ss.data[BMC_D0];
+					serial_buffer_ss.r_string_chan = serial_buffer_ss.data[BMC_D1] & 0x03;
 					if (serial_buffer_ss.r_string_index >= MAX_STRLEN) {
 						serial_buffer_ss.r_string[serial_buffer_ss.r_string_index] = 0;
 						serial_buffer_ss.r_string_index = 0;

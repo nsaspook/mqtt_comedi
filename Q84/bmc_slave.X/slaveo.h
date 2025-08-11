@@ -86,7 +86,7 @@ extern "C" {
 	};
 
 	struct serial_buffer_type_ss {
-		volatile uint8_t data[PACKET_BUF_SIZ], r_string[RSTRING_BUF_SIZ], adcl, adc2, adch, command, raw_index, r_string_index;
+		volatile uint8_t data[PACKET_BUF_SIZ], r_string[RSTRING_BUF_SIZ], adcl, adc2, adch, command, raw_index, r_string_index, r_string_chan;
 		volatile uint32_t place;
 		volatile bool make_value, get_value, dac_value, adc_value, cfg_value, cmake_value, cget_value;
 	};

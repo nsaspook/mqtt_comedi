@@ -1234,7 +1234,7 @@ static void serialWriteOPi(struct comedi_device *dev,
 	}
 
 	val_value = value[0];
-	if (chan < 2) {
+	if (chan < 4) {
 		// send TX packet
 		/* use single transfer for all bytes of the complete SPI transaction */
 		packet->bmc_byte_t[BMC_CMD] = CMD_CHAR_GO;
