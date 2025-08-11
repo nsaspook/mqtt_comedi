@@ -101,7 +101,6 @@ extern "C" {
 
 	extern volatile struct bmcdata bmc;
 	extern uint32_t datain, serial_buf;
-	extern struct dodata dataout;
 	extern union dio_buf_type obits;
 
 	extern int maxdata_ai, ranges_ai, channels_ai;
