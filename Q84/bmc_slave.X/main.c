@@ -479,6 +479,9 @@ void main(void)
 
 			if (!V.do_fail) {
 				SPI_MC33996();
+				/*
+				 * interrupt lock for 16-bit atomic updates of out_buf
+				 */
 				INTERRUPT_GlobalInterruptHighDisable();
 				if (serial_buffer_ss.make_value == false) {
 					out_buf = (uint16_t) 0xffff & V.bmc_do;
@@ -599,6 +602,9 @@ void main(void)
 
 			if (!V.di_fail) {
 				SPI_TIC12400();
+				/*
+				 * spi_link.rxbuf has interrupt lock for 24-bit atomic updates inside tic12400_read_sw
+				 */
 				tic12400_read_sw(0, (uintptr_t) NULL);
 				if (((spi_link.rxbuf[0] & por_bit_s_v))) { // check for POR bit set
 					tic12400_init();
@@ -789,7 +795,6 @@ char spinners(uint8_t shape, const uint8_t reset)
 void test_slave(void)
 {
 	MCZ_PWM_SetLow();
-	//	RESET();
 }
 
 /*

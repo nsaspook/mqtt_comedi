@@ -16,9 +16,9 @@ extern "C" {
  * RS232 ADC configuration values for Mark, Space, Open and Voltage calibration
  */
 	
-#define LINE_OPEN_V	0x8c0 // open wire
-#define LINE_RECV_V	LINE_OPEN_V // connected to recever input only
-#define LINE_MARK_V	1425 // xmit -8 volts
+#define LINE_OPEN_V     0x8c0 // open wire
+#define LINE_RECV_V     LINE_OPEN_V // connected to recever input only
+#define LINE_MARK_V     1425 // xmit -8 volts
 #define LINE_SPACE_V	2390 // xmit +9 volts
 #define LINE_LIMIT_H	500
 #define LINE_LIMIT_LOW	100
