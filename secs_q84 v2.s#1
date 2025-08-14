@@ -15366,6 +15366,9 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <part name="MATE" library="con-lstb" library_urn="urn:adsk.eagle:library:162" deviceset="MA04-1" device="" package3d_urn="urn:adsk.eagle:package:8337/1" value="MATE"/>
 <part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="0V" device=""/>
 <part name="FM_RS" library="jumper" library_urn="urn:adsk.eagle:library:252" deviceset="SJ" device="" package3d_urn="urn:adsk.eagle:package:15471/1" value="FM_RS"/>
+<part name="LED5" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIP-LED0603" package3d_urn="urn:adsk.eagle:package:15819/3" value="FM80 POWER"/>
+<part name="R38" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
+<part name="GND5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="0V" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -16100,7 +16103,7 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <attribute name="VALUE" x="76.2" y="71.12" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="P+3" gate="VCC" x="55.88" y="73.66" smashed="yes" rot="R90">
-<attribute name="VALUE" x="58.42" y="71.12" size="1.778" layer="96" rot="R180"/>
+<attribute name="VALUE" x="53.34" y="73.66" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="FRAME1" gate="G$1" x="-142.24" y="-223.52" smashed="yes"/>
 <instance part="FRAME1" gate="G$2" x="309.88" y="-223.52" smashed="yes">
@@ -16310,6 +16313,17 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <instance part="FM_RS" gate="1" x="287.02" y="66.04" smashed="yes" rot="R270">
 <attribute name="NAME" x="276.86" y="68.58" size="1.778" layer="95"/>
 <attribute name="VALUE" x="276.86" y="64.77" size="1.778" layer="96"/>
+</instance>
+<instance part="LED5" gate="G$1" x="398.78" y="-93.98" smashed="yes">
+<attribute name="NAME" x="390.652" y="-95.504" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="393.192" y="-93.345" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="R38" gate="G$1" x="398.78" y="-86.36" smashed="yes" rot="R270">
+<attribute name="NAME" x="400.2786" y="-82.55" size="1.778" layer="95" rot="R270"/>
+<attribute name="VALUE" x="395.478" y="-82.55" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="GND5" gate="1" x="398.78" y="-101.6" smashed="yes">
+<attribute name="VALUE" x="396.875" y="-104.14" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -19786,6 +19800,11 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <junction x="327.66" y="-91.44"/>
 <label x="330.2" y="-91.44" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="LED5" gate="G$1" pin="C"/>
+<pinref part="GND5" gate="1" pin="0V"/>
+<junction x="398.78" y="-99.06"/>
+</segment>
 </net>
 <net name="FM80_24" class="0">
 <segment>
@@ -19804,12 +19823,26 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <junction x="327.66" y="-93.98"/>
 <label x="330.2" y="-93.98" size="1.778" layer="95"/>
 </segment>
+<segment>
+<wire x1="398.78" y1="-81.28" x2="398.78" y2="-68.58" width="0.1524" layer="91"/>
+<pinref part="R38" gate="G$1" pin="1"/>
+<junction x="398.78" y="-81.28"/>
+<junction x="398.78" y="-68.58"/>
+<label x="386.08" y="-73.66" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="N$13" class="0">
 <segment>
 <pinref part="IC1" gate="G$1" pin="R2OUT"/>
 <pinref part="FM_RS" gate="1" pin="1"/>
 <junction x="287.02" y="71.12"/>
+</segment>
+</net>
+<net name="N$15" class="0">
+<segment>
+<pinref part="LED5" gate="G$1" pin="A"/>
+<pinref part="R38" gate="G$1" pin="2"/>
+<junction x="398.78" y="-91.44"/>
 </segment>
 </net>
 </nets>
