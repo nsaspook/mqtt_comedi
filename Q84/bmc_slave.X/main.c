@@ -431,11 +431,20 @@ void main(void)
 			snprintf(V.info, MAX_INFO, " Terminal Info               ");
 			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, " OPI DAQ_BMC %s        ", VER);
 #ifdef DIS_DEBUG
-			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " TIC %ld 0x%lX 0x%lX         ", tic12400_fail_value, tic12400_id & 0xffff, tic12400_read_status);
+			if (V.di_fail) {
+				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " TIC %ld 0x%lX 0x%lX         ", tic12400_fail_value, tic12400_id & 0xffff, tic12400_read_status);
+			}
+			if (V.do_fail) {
+				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " MC 0x%X 0x%X 0x%X         ", mc_init.cmd[3], mc_init.cmd[4], mc_init.cmd[5]);
+			}
 #else
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " RUN Static Display             ");
 #endif
-			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " NSASPOOK             ");
+			if (failure) {
+				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " NSASPOOK Analog Dev  ");
+			} else {
+				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " NSASPOOK All Dev     ");
+			}
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, " %s                   ", (char *) build_date);
 			snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, " INFO                 ");
 			snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, " Version %s           ", VER);
@@ -451,6 +460,9 @@ void main(void)
 			snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, " %s                   ", (char *) build_date);
 			refresh_lcd();
 			WaitMs(TDELAY);
+			if (failure) {
+				WaitMs(SEQDELAY);
+			}
 			StartTimer(TMR_DISPLAY, DDELAY);
 			StartTimer(TMR_INFO, TDELAY);
 			StartTimer(TMR_FLIPPER, DFLIP);

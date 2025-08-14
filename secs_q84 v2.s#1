@@ -15241,11 +15241,11 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <part name="C19" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-US" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="0.1uf"/>
 <part name="VSS53" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="VSS54" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
-<part name="R20" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="0ohm"/>
-<part name="R21" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="0ohm"/>
-<part name="R22" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="0ohm"/>
-<part name="R23" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="0ohm"/>
-<part name="R24" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="0ohm"/>
+<part name="R20" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="56ohm"/>
+<part name="R21" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="56ohm"/>
+<part name="R22" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="56ohm"/>
+<part name="R23" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="56ohm"/>
+<part name="R24" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="56ohm"/>
 <part name="IC5" library="MCZ33996EK" deviceset="MCZ33996EK" device=""/>
 <part name="VSS14" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="VSS36" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
@@ -15873,24 +15873,24 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <attribute name="VALUE" x="325.12" y="-38.1" size="1.778" layer="96" rot="R270"/>
 </instance>
 <instance part="R20" gate="G$1" x="139.7" y="25.4" smashed="yes">
-<attribute name="NAME" x="135.89" y="26.8986" size="1.778" layer="95"/>
-<attribute name="VALUE" x="135.89" y="22.098" size="1.778" layer="96"/>
+<attribute name="NAME" x="110.49" y="24.3586" size="1.778" layer="95"/>
+<attribute name="VALUE" x="118.11" y="24.638" size="1.778" layer="96"/>
 </instance>
 <instance part="R21" gate="G$1" x="139.7" y="22.86" smashed="yes">
-<attribute name="NAME" x="135.89" y="24.3586" size="1.778" layer="95"/>
-<attribute name="VALUE" x="135.89" y="19.558" size="1.778" layer="96"/>
+<attribute name="NAME" x="110.49" y="21.8186" size="1.778" layer="95"/>
+<attribute name="VALUE" x="118.11" y="22.098" size="1.778" layer="96"/>
 </instance>
 <instance part="R22" gate="G$1" x="139.7" y="20.32" smashed="yes">
-<attribute name="NAME" x="135.89" y="21.8186" size="1.778" layer="95"/>
-<attribute name="VALUE" x="135.89" y="17.018" size="1.778" layer="96"/>
+<attribute name="NAME" x="110.49" y="19.2786" size="1.778" layer="95"/>
+<attribute name="VALUE" x="118.11" y="19.558" size="1.778" layer="96"/>
 </instance>
 <instance part="R23" gate="G$1" x="139.7" y="17.78" smashed="yes">
-<attribute name="NAME" x="135.89" y="19.2786" size="1.778" layer="95"/>
-<attribute name="VALUE" x="135.89" y="14.478" size="1.778" layer="96"/>
+<attribute name="NAME" x="110.49" y="16.7386" size="1.778" layer="95"/>
+<attribute name="VALUE" x="118.11" y="17.018" size="1.778" layer="96"/>
 </instance>
 <instance part="R24" gate="G$1" x="139.7" y="15.24" smashed="yes">
-<attribute name="NAME" x="135.89" y="16.7386" size="1.778" layer="95"/>
-<attribute name="VALUE" x="135.89" y="11.938" size="1.778" layer="96"/>
+<attribute name="NAME" x="110.49" y="14.1986" size="1.778" layer="95"/>
+<attribute name="VALUE" x="118.11" y="14.478" size="1.778" layer="96"/>
 </instance>
 <instance part="IC5" gate="G$1" x="78.74" y="-53.34" smashed="yes">
 <attribute name="NAME" x="105.41" y="-45.72" size="1.778" layer="95" align="center-left"/>
@@ -17461,6 +17461,13 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <junction x="388.62" y="-129.54"/>
 <label x="393.7" y="-129.54" size="1.778" layer="95"/>
 </segment>
+<segment>
+<wire x1="45.72" y1="7.62" x2="33.02" y2="7.62" width="0.1524" layer="91"/>
+<pinref part="PVP_0" gate="G$1" pin="3"/>
+<junction x="45.72" y="7.62"/>
+<junction x="33.02" y="7.62"/>
+<label x="35.56" y="7.62" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="SS2" class="0">
 <segment>
@@ -17631,6 +17638,13 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <junction x="355.6" y="-147.32"/>
 <label x="393.7" y="-137.16" size="1.778" layer="95"/>
 </segment>
+<segment>
+<wire x1="68.58" y1="7.62" x2="81.28" y2="7.62" width="0.1524" layer="91"/>
+<pinref part="PVP_0" gate="G$1" pin="8"/>
+<junction x="68.58" y="7.62"/>
+<junction x="81.28" y="7.62"/>
+<label x="71.12" y="7.62" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="ANA4" class="0">
 <segment>
@@ -17782,7 +17796,6 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <wire x1="86.36" y1="25.4" x2="99.06" y2="25.4" width="0.1524" layer="91"/>
 <label x="91.44" y="25.4" size="1.778" layer="95"/>
 <junction x="99.06" y="25.4"/>
-<label x="106.68" y="25.4" size="1.778" layer="95"/>
 <junction x="86.36" y="25.4"/>
 </segment>
 <segment>
