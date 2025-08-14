@@ -16100,7 +16100,7 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <attribute name="VALUE" x="76.2" y="71.12" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="P+3" gate="VCC" x="55.88" y="73.66" smashed="yes" rot="R90">
-<attribute name="VALUE" x="58.42" y="71.12" size="1.778" layer="96" rot="R180"/>
+<attribute name="VALUE" x="53.34" y="73.66" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="FRAME1" gate="G$1" x="-142.24" y="-223.52" smashed="yes"/>
 <instance part="FRAME1" gate="G$2" x="309.88" y="-223.52" smashed="yes">

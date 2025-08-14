@@ -15130,7 +15130,7 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <part name="VSS23" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="MISC_IO" library="con-lstb" library_urn="urn:adsk.eagle:library:162" deviceset="MA10-1" device="" package3d_urn="urn:adsk.eagle:package:8346/1" value="misc-io"/>
 <part name="VSS26" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
-<part name="LED1" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIPLED_0805" package3d_urn="urn:adsk.eagle:package:15821/2" value="L1"/>
+<part name="LED1_RED" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIPLED_0805" package3d_urn="urn:adsk.eagle:package:15821/2" value="L1"/>
 <part name="LED2" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIPLED_0805" package3d_urn="urn:adsk.eagle:package:15821/2" value="L2"/>
 <part name="LED3" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIPLED_0805" package3d_urn="urn:adsk.eagle:package:15821/2" value="L3"/>
 <part name="VSS28" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
@@ -15488,8 +15488,8 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <instance part="VSS26" gate="G$1" x="-5.08" y="20.32" smashed="yes" rot="R90">
 <attribute name="VALUE" x="0" y="22.86" size="1.778" layer="96" rot="R270"/>
 </instance>
-<instance part="LED1" gate="G$1" x="129.54" y="60.96" smashed="yes">
-<attribute name="NAME" x="133.096" y="56.388" size="1.778" layer="95" rot="R90"/>
+<instance part="LED1_RED" gate="G$1" x="129.54" y="60.96" smashed="yes">
+<attribute name="NAME" x="125.476" y="56.388" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="135.255" y="56.388" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="LED2" gate="G$1" x="137.16" y="60.96" smashed="yes">
@@ -16680,7 +16680,7 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <junction x="-7.62" y="20.32"/>
 </segment>
 <segment>
-<pinref part="LED1" gate="G$1" pin="C"/>
+<pinref part="LED1_RED" gate="G$1" pin="C"/>
 <pinref part="VSS28" gate="G$1" pin="VSS"/>
 <junction x="129.54" y="55.88"/>
 </segment>
@@ -18134,7 +18134,7 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 </net>
 <net name="N$4" class="0">
 <segment>
-<pinref part="LED1" gate="G$1" pin="A"/>
+<pinref part="LED1_RED" gate="G$1" pin="A"/>
 <pinref part="R7" gate="G$1" pin="1"/>
 <junction x="129.54" y="63.5"/>
 </segment>
