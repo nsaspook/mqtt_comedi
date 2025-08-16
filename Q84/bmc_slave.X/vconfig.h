@@ -125,7 +125,7 @@ extern "C" {
 		volatile int32_t int_count, int_read, des_bytes, src_bytes, or_bytes;
 	};
 
- 	typedef struct B_type {
+	typedef struct B_type {
 		volatile bool one_sec_flag;
 		volatile uint16_t dim_delay;
 		volatile bool display_update;
@@ -248,14 +248,14 @@ extern "C" {
 		TICKER_LOW = 20,
 		TICKER_HIGH = 40,
 	} TICKER_VAL;
-	
-		/*
+
+	/*
 	 * switch inputs and flags, uses the IOC interrupt and the software 
 	 * timing ISR for processing
 	 */
 	enum D_SW {
-		D_SW_A = 0,	// alternate LCD display
-		D_SW_L,		// history logging from FM80
+		D_SW_A = 0, // alternate LCD display
+		D_SW_L, // history logging from FM80
 		D_SW_M,
 		D_SW_COUNT // one extra for number of switches to check
 	};
@@ -306,6 +306,22 @@ extern "C" {
 	};
 #define SPIN_VAL_UPDATE	5
 
+	typedef uint16_t device_id_data_t;
+	typedef uint24_t device_id_address_t;
+	device_id_data_t DeviceID_Read(device_id_address_t);
+
+	typedef struct EB_data {
+		uint8_t checkmark;
+		uint8_t version, alt_display;
+		bool loaded;
+		float FMw, FMpv, FMa, FMbv, ENw, ENva, ENvar, ENac;
+		float volt_whole, bat_amp_whole;
+		float bat_energy;
+		uint16_t cc_mode, bat_cycles, bat_mode, time, date;
+		uint32_t bat_time, fm80_time, q84_sequence;
+		uint16_t crc;
+	} EB_data;
+
 	extern B_type B;
 
 	extern void UART1_Initialize19200(void);
@@ -313,6 +329,8 @@ extern "C" {
 
 	extern void UART1_Initialize115200(void);
 	extern void UART2_Initialize115200(void);
+
+	void update_time(struct tm *, EB_data *);
 
 #ifdef	__cplusplus
 }

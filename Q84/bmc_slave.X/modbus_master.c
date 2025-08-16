@@ -530,19 +530,19 @@ void mb_tx_test(C_data * client)
 	}
 }
 
-static void UART1_DefaultFramingErrorHandler_mb(void)
+static void UART3_DefaultFramingErrorHandler_mb(void)
 {
 	INT_TRACE; // GPIO interrupt scope trace
 	MM_ERROR_S;
 }
 
-static void UART1_DefaultOverrunErrorHandler_mb(void)
+static void UART3_DefaultOverrunErrorHandler_mb(void)
 {
 	INT_TRACE; // GPIO interrupt scope trace
 	MM_ERROR_S;
 }
 
-static void UART1_DefaultErrorHandler_mb(void)
+static void UART3_DefaultErrorHandler_mb(void)
 {
 	INT_TRACE; // GPIO interrupt scope trace
 	MM_ERROR_S;
@@ -550,9 +550,9 @@ static void UART1_DefaultErrorHandler_mb(void)
 
 void mb_setup(void)
 {
-	UART1_SetFramingErrorHandler(UART1_DefaultFramingErrorHandler_mb);
-	UART1_SetOverrunErrorHandler(UART1_DefaultOverrunErrorHandler_mb);
-	UART1_SetErrorHandler(UART1_DefaultErrorHandler_mb);
+	UART3_SetFramingErrorHandler(UART3_DefaultFramingErrorHandler_mb);
+	UART3_SetOverrunErrorHandler(UART3_DefaultOverrunErrorHandler_mb);
+	UART3_SetErrorHandler(UART3_DefaultErrorHandler_mb);
 }
 
 static bool modbus_write_check(C_data * client, bool* cstate, const uint16_t rec_length)
