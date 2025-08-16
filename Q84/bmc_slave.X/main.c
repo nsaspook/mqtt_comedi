@@ -180,6 +180,8 @@ typedef signed long long int24_t;
 #include "rs232.h"
 #include "slaveo.h"
 #include "bmcdio.h"
+#include "mxcmd.h"
+#include "modbus_master.h"
 
 #ifdef TRACE
 #define M_TRACE		TP1_Toggle()
@@ -248,10 +250,32 @@ V_data V = {
 	.do_fail = false,
 };
 
+
+
 B_type B = {
 	.one_sec_flag = false,
 	.display_update = false,
 	.dim_delay = DIM_DELAY,
+};
+
+BM_type BM = {
+	.one_sec_flag = false,
+	.ten_sec_flag = false,
+	.pacing = 0,
+	.rx_count = 0,
+	.flush = 0,
+	.canbus_online = 0,
+	.modbus_online = 0,
+	.log.select = 1,
+	.pv_high = false,
+	.pv_prev = STATUS_SLEEPING,
+	.pv_update = false,
+	.once = false,
+	.log.type = 1, // mxlog type
+	.display_dim = false,
+	.display_update = false,
+	.dim_delay = DIM_DELAY,
+	.display_on = true,
 };
 
 volatile struct spi_link_type_ss spi_comm_ss = {false, false, false, false, false, false, false, false};
@@ -307,7 +331,8 @@ void main(void)
 	TMR2_StartTimer();
 	TMR5_SetInterruptHandler(onesec_io);
 	TMR5_StartTimer();
-	TMR6_StartTimer();
+	TMR6_StartTimer(); // software timer and FM80 I/O
+	TMR6_SetInterruptHandler(FM_io);
 	TMR0_SetInterruptHandler(test_slave);
 	TMR0_StartTimer();
 

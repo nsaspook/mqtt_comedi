@@ -125,7 +125,7 @@ extern "C" {
 		volatile int32_t int_count, int_read, des_bytes, src_bytes, or_bytes;
 	};
 
-	typedef struct B_type {
+ 	typedef struct B_type {
 		volatile bool one_sec_flag;
 		volatile uint16_t dim_delay;
 		volatile bool display_update;
@@ -248,6 +248,17 @@ extern "C" {
 		TICKER_LOW = 20,
 		TICKER_HIGH = 40,
 	} TICKER_VAL;
+	
+		/*
+	 * switch inputs and flags, uses the IOC interrupt and the software 
+	 * timing ISR for processing
+	 */
+	enum D_SW {
+		D_SW_A = 0,	// alternate LCD display
+		D_SW_L,		// history logging from FM80
+		D_SW_M,
+		D_SW_COUNT // one extra for number of switches to check
+	};
 
 	typedef struct V_data { // control data structure
 		SEQ_STATES s_state;
