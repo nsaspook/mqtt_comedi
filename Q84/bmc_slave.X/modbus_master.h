@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   modbus_master.h
  * Author: root
  *

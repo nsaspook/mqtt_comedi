@@ -56,10 +56,12 @@ void SYSTEM_Initialize(void)
     OSCILLATOR_Initialize();
     DMA2_Initialize();
     DMA1_Initialize();
+    TMR4_Initialize();
     TMR2_Initialize();
     TMR0_Initialize();
     TMR6_Initialize();
     DMA3_Initialize();
+    TMR3_Initialize();
     DAC1_Initialize();
     TMR5_Initialize();
     UART1_Initialize();

@@ -1,5 +1,8 @@
 #include "mxcmd.h"
 
+/*
+ * FM80 MATE serial protocol communications
+ */
 static volatile uint8_t data = 0x00, dcount = 0, dstart = 0, rdstart = 0;
 static volatile uint16_t tbuf[FM_BUFFER + 1], rbuf[FM_BUFFER + 1];
 static uint16_t *p_tbuf = (uint16_t*) tbuf, *p_rbuf = (uint16_t*) rbuf;
@@ -41,7 +44,7 @@ uint8_t FM_tx(const uint16_t * data, const uint8_t count)
 }
 
 /*
- * serial I/O ISR, TMR4 500us I/O sample rate
+ * serial I/O ISR, TMR6 500us I/O sample rate
  * polls the required UART registers for 9-bit send and receive into 16-bit arrays
  */
 void FM_io(void)
@@ -64,9 +67,9 @@ void FM_io(void)
 	/*
 	 * handle framing errors
 	 */
-	if (U1ERRIRbits.RXFOIF) {
+	if (U2ERRIRbits.RXFOIF) {
 		rbuf[0] = U2RXB; // read bad data to clear error
-		U1ERRIRbits.RXFOIF = 0;
+		U2ERRIRbits.RXFOIF = 0;
 		rdstart = 0; // reset buffer to start
 	}
 
@@ -128,12 +131,12 @@ uint8_t FM_rx_count(void)
 	return count;
 }
 
-void onesec_io(void)
+void FM_onesec_io(void)
 {
 	BM.one_sec_flag = true;
 }
 
-void tensec_io(void)
+void FM_tensec_io(void)
 {
 	BM.ten_sec_flag = true;
 }

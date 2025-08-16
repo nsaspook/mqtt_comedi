@@ -80,8 +80,6 @@ void  INTERRUPT_Initialize (void)
     IPR10bits.DMA3DCNTIP = 1;
     IPR10bits.DMA3SCNTIP = 1;
     IPR10bits.DMA3ORIP = 1;
-    IPR8bits.U2TXIP = 1;
-    IPR8bits.U2RXIP = 1;
     IPR0bits.IOCIP = 1;
     IPR9bits.U3TXIP = 1;
     IPR9bits.U3RXIP = 1;
@@ -90,6 +88,8 @@ void  INTERRUPT_Initialize (void)
     IPR3bits.TMR0IP = 1;
     IPR15bits.TMR6IP = 1;
     IPR8bits.TMR5IP = 1;
+    IPR11bits.TMR4IP = 0;
+    IPR5bits.TMR3IP = 0;
 }
 
 void __interrupt(irq(default),base(8)) Default_ISR()

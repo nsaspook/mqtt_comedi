@@ -28,7 +28,7 @@ extern "C" {
 	 * 1.56 add battery voltage to SoC for boot setting of battery energy
 	 * 1.57 fix FM80 memcpy length bug in FM_rx and FM_tx
 	 * 1.58 add filter and masking to the canbus setup function so we can
-	 * properly receive canbus packets 
+	 * properly receive canbus packets
 	 * 1.59 CAN receive packet buffering and display
 	 * 1.60 misc code cleanups
 	 * 1.61 add FIFO for xmit

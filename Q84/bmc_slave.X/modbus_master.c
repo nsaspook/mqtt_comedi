@@ -168,10 +168,10 @@ uint8_t init_stream_params(void)
  */
 void init_mb_master_timers(void)
 {
-	TMR5_SetInterruptHandler(timer_500ms_tick);
-	TMR5_StartTimer();
-	TMR6_SetInterruptHandler(timer_2ms_tick);
-	TMR6_StartTimer();
+	TMR4_SetInterruptHandler(timer_500ms_tick);
+	TMR4_StartTimer();
+	TMR3_SetInterruptHandler(timer_2ms_tick);
+	TMR3_StartTimer();
 }
 
 /*
@@ -481,14 +481,14 @@ static void half_dup_rx(const bool delay)
 	DERE_SetLow(); // enable modbus receiver
 }
 
-// ISR function for TMR5
+// ISR function for TMR4
 
 void timer_500ms_tick(void)
 {
 	MT.clock_2hz++;
 }
 
-// ISR function for TMR6
+// ISR function for TMR3
 
 void timer_2ms_tick(void)
 {

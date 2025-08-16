@@ -645,25 +645,25 @@
 #define RF2_SetAnalogMode()         do { ANSELFbits.ANSELF2 = 1; } while(0)
 #define RF2_SetDigitalMode()        do { ANSELFbits.ANSELF2 = 0; } while(0)
 
-// get/set DE3 aliases
-#define DE3_TRIS                 TRISFbits.TRISF3
-#define DE3_LAT                  LATFbits.LATF3
-#define DE3_PORT                 PORTFbits.RF3
-#define DE3_WPU                  WPUFbits.WPUF3
-#define DE3_OD                   ODCONFbits.ODCF3
-#define DE3_ANS                  ANSELFbits.ANSELF3
-#define DE3_SetHigh()            do { LATFbits.LATF3 = 1; } while(0)
-#define DE3_SetLow()             do { LATFbits.LATF3 = 0; } while(0)
-#define DE3_Toggle()             do { LATFbits.LATF3 = ~LATFbits.LATF3; } while(0)
-#define DE3_GetValue()           PORTFbits.RF3
-#define DE3_SetDigitalInput()    do { TRISFbits.TRISF3 = 1; } while(0)
-#define DE3_SetDigitalOutput()   do { TRISFbits.TRISF3 = 0; } while(0)
-#define DE3_SetPullup()          do { WPUFbits.WPUF3 = 1; } while(0)
-#define DE3_ResetPullup()        do { WPUFbits.WPUF3 = 0; } while(0)
-#define DE3_SetPushPull()        do { ODCONFbits.ODCF3 = 0; } while(0)
-#define DE3_SetOpenDrain()       do { ODCONFbits.ODCF3 = 1; } while(0)
-#define DE3_SetAnalogMode()      do { ANSELFbits.ANSELF3 = 1; } while(0)
-#define DE3_SetDigitalMode()     do { ANSELFbits.ANSELF3 = 0; } while(0)
+// get/set DERE aliases
+#define DERE_TRIS                 TRISFbits.TRISF3
+#define DERE_LAT                  LATFbits.LATF3
+#define DERE_PORT                 PORTFbits.RF3
+#define DERE_WPU                  WPUFbits.WPUF3
+#define DERE_OD                   ODCONFbits.ODCF3
+#define DERE_ANS                  ANSELFbits.ANSELF3
+#define DERE_SetHigh()            do { LATFbits.LATF3 = 1; } while(0)
+#define DERE_SetLow()             do { LATFbits.LATF3 = 0; } while(0)
+#define DERE_Toggle()             do { LATFbits.LATF3 = ~LATFbits.LATF3; } while(0)
+#define DERE_GetValue()           PORTFbits.RF3
+#define DERE_SetDigitalInput()    do { TRISFbits.TRISF3 = 1; } while(0)
+#define DERE_SetDigitalOutput()   do { TRISFbits.TRISF3 = 0; } while(0)
+#define DERE_SetPullup()          do { WPUFbits.WPUF3 = 1; } while(0)
+#define DERE_ResetPullup()        do { WPUFbits.WPUF3 = 0; } while(0)
+#define DERE_SetPushPull()        do { ODCONFbits.ODCF3 = 0; } while(0)
+#define DERE_SetOpenDrain()       do { ODCONFbits.ODCF3 = 1; } while(0)
+#define DERE_SetAnalogMode()      do { ANSELFbits.ANSELF3 = 1; } while(0)
+#define DERE_SetDigitalMode()     do { ANSELFbits.ANSELF3 = 0; } while(0)
 
 /**
    @Param
