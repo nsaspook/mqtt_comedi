@@ -1,0 +1,78 @@
+\doxysection{mc33996.\+h}
+\hypertarget{mc33996_8h_source}{}\label{mc33996_8h_source}\index{bmc\_slave.X/mc33996.h@{bmc\_slave.X/mc33996.h}}
+\mbox{\hyperlink{mc33996_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00008}00008\ \textcolor{preprocessor}{\#ifndef\ MC33996\_H}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00009}00009\ \textcolor{preprocessor}{\#define\ MC33996\_H}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00011}00011\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00012}00012\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00013}00013\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00014}00014\ }
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00015}00015\ \textcolor{preprocessor}{\#include\ <xc.h>}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00016}00016\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00017}00017\ \textcolor{preprocessor}{\#include\ <stdbool.h>}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00018}00018\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00019}00019\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{mconfig_8h}{mconfig.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00021}00021\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00022}00022\ \textcolor{comment}{\ \ \ \ \ *\ 24-\/bits\ SPI\ mode\ 1,\ 4MHz\ SCK}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00023}00023\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00024}00024\ \textcolor{preprocessor}{\#define\ MC33996\_DRIVER\ "{}V0.7"{}\ \ \ }}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00026}00026\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00027}00027\ \textcolor{comment}{\ \ \ \ \ *\ MC33996\ command\ structure}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00028}00028\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00029}00029\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\_\_attribute\_\_((packed))}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00030}00030\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00031}00031\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t\ cmd;}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00032}00032\ \ \ \ \ \ \ \ \ uint16\_t\ out;}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00033}00033\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00034}00034\ \ \ \ \ mc33996buf\_type;}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00036}00036\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00037}00037\ \textcolor{comment}{\ \ \ \ \ *\ MC33996\ response\ structure}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00038}00038\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00039}00039\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\_\_attribute\_\_((packed))}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00040}00040\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00041}00041\ \ \ \ \ \ \ \ \ uint8\_t\ faults;}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00042}00042\ \ \ \ \ \ \ \ \ uint16\_t\ out\_faults;}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00043}00043\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00044}00044\ \ \ \ \ mc33996read\_type;}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00046}00046\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\_\_attribute\_\_((packed))}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00047}00047\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00048}00048\ \ \ \ \ \ \ \ \ uint8\_t\ cmd[16];}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00049}00049\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00050}00050\ \ \ \ \ mc33996init\_type;}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00052}00052\ \textcolor{preprocessor}{\#define\ mc33996\_onoff\ \ \ \ \ \ \ \ \ \ \ 0b00000000}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00053}00053\ \textcolor{preprocessor}{\#define\ mc33996\_olce\ \ \ \ \ \ \ \ \ \ \ \ 0b00000100}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00054}00054\ \textcolor{preprocessor}{\#define\ mc33996\_gsrc\ \ \ \ \ \ \ \ \ \ \ \ 0b00001011}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00055}00055\ \textcolor{preprocessor}{\#define\ mc33996\_sfpd\ \ \ \ \ \ \ \ \ \ \ \ 0b00001100}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00056}00056\ \textcolor{preprocessor}{\#define\ mc33996\_pwm\ \ \ \ \ \ \ \ \ \ \ \ \ 0b00010000}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00057}00057\ \textcolor{preprocessor}{\#define\ mc33996\_andor\ \ \ \ \ \ \ \ \ \ \ 0b00010100\ \ }}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00058}00058\ \textcolor{preprocessor}{\#define\ mc33996\_reset\ \ \ \ \ \ \ \ \ \ \ 0b00011000}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00059}00059\ \textcolor{preprocessor}{\#define\ mc33996\_magic\_h\ \ \ \ \ \ \ \ \ 0x19}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00060}00060\ \textcolor{preprocessor}{\#define\ mc33996\_magic\_l\ \ \ \ \ \ \ \ \ 0x57}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00062}00062\ \textcolor{preprocessor}{\#define\ MC33996\_DATA\ \ \ \ \ \ \ \ \ \ \ \ 6}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00063}00063\ \textcolor{preprocessor}{\#define\ MC33996\_DATA\_LEN\ \ \ \ \ \ \ \ 8}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00064}00064\ }
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00065}00065\ \ \ \ \ \textcolor{keyword}{extern}\ mc33996init\_type\ mc\_init;}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00066}00066\ \ \ \ \ \textcolor{keyword}{extern}\ uint8\_t\ mc33996\_w\_buf[8];}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00067}00067\ }
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00068}00068\ \ \ \ \ \textcolor{keywordtype}{void}\ mc33996\_version(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00069}00069\ \ \ \ \ \textcolor{keywordtype}{bool}\ mc33996\_init(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00070}00070\ \ \ \ \ \textcolor{keywordtype}{void}\ mc33996\_update(\textcolor{keyword}{const}\ uint16\_t);}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00072}00072\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00073}00073\ \}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00074}00074\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00075}00075\ }
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00076}00076\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{/*\ MC33996\_H\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{\Hypertarget{mc33996_8h_source_l00077}00077\ }
+
+\end{DoxyCode}

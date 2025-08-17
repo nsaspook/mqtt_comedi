@@ -1,9 +1,7 @@
 \doxysection{daq.\+c}
-\hypertarget{daq_8c_source}{}\label{daq_8c_source}
+\hypertarget{daq_8c_source}{}\label{daq_8c_source}\mbox{\hyperlink{daq_8c}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00001}00001\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00002}00002\ \textcolor{comment}{\ *\ \(\backslash\)file\ daq.c}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00003}00003\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00001}00001\ }
 \DoxyCodeLine{\Hypertarget{daq_8c_source_l00004}00004\ }
 \DoxyCodeLine{\Hypertarget{daq_8c_source_l00005}00005\ \textcolor{preprocessor}{\#include\ <stdio.h>}\ \textcolor{comment}{/*\ for\ printf()\ */}}
 \DoxyCodeLine{\Hypertarget{daq_8c_source_l00006}00006\ \textcolor{preprocessor}{\#include\ <unistd.h>}}
@@ -45,363 +43,443 @@
 \DoxyCodeLine{\Hypertarget{daq_8c_source_l00042}00042\ \textcolor{keywordtype}{int}\ range\_counter\ =\ 0;\ \textcolor{comment}{/*\ more\ on\ this\ later\ */}}
 \DoxyCodeLine{\Hypertarget{daq_8c_source_l00043}00043\ \textcolor{keywordtype}{int}\ maxdata\_counter,\ ranges\_counter,\ channels\_counter,\ datain\_counter;}
 \DoxyCodeLine{\Hypertarget{daq_8c_source_l00044}00044\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00045}00045\ comedi\_t\ *it;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00046}00046\ comedi\_range\ *ad\_range,\ *da\_range;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00047}00047\ \textcolor{keywordtype}{bool}\ ADC\_OPEN\ =\ \textcolor{keyword}{true},\ DIO\_OPEN\ =\ \textcolor{keyword}{true},\ ADC\_ERROR\ =\ \textcolor{keyword}{false},\ DEV\_OPEN\ =\ \textcolor{keyword}{true},}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00048}00048\ \ \ \ \ DIO\_ERROR\ =\ \textcolor{keyword}{false},\ HAS\_AO\ =\ \textcolor{keyword}{false},\ DAC\_ERROR\ =\ \textcolor{keyword}{false},\ PWM\_OPEN\ =\ \textcolor{keyword}{true},}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00049}00049\ \ \ \ \ PWM\_ERROR\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00050}00050\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00051}00051\ \textcolor{keywordtype}{bool}\ DO\_OPEN\ =\ \textcolor{keyword}{true},\ DI\_OPEN\ =\ \textcolor{keyword}{true},\ DO\_ERROR\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00052}00052\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00053}00053\ \textcolor{keywordtype}{int}\ init\_daq(\textcolor{keywordtype}{double}\ min\_range,\ \textcolor{keywordtype}{double}\ max\_range,\ \textcolor{keywordtype}{int}\ range\_update)}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00054}00054\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00055}00055\ \ \ \ \ \textcolor{keywordtype}{int}\ i\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00056}00056\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00057}00057\ \ \ \ \ it\ =\ comedi\_open(\textcolor{stringliteral}{"{}/dev/comedi0"{}});}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00058}00058\ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ ==\ NULL)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00059}00059\ \ \ \ \ \ \ \ \ comedi\_perror(\textcolor{stringliteral}{"{}comedi\_open"{}});}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00060}00060\ \ \ \ \ \ \ \ \ DEV\_OPEN\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00061}00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00062}00062\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00063}00063\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00064}00064\ \ \ \ \ subdev\_ai\ =\ comedi\_find\_subdevice\_by\_type(it,\ COMEDI\_SUBD\_AI,\ subdev\_ai);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00065}00065\ \ \ \ \ \textcolor{keywordflow}{if}\ (subdev\_ai\ <\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00066}00066\ \ \ \ \ \ \ \ \ ADC\_OPEN\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00067}00067\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00068}00068\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00069}00069\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00070}00070\ \ \ \ \ subdev\_ao\ =\ comedi\_find\_subdevice\_by\_type(it,\ COMEDI\_SUBD\_AO,\ subdev\_ao);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00071}00071\ \ \ \ \ \textcolor{keywordflow}{if}\ (subdev\_ao\ <\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00072}00072\ \ \ \ \ \ \ \ \ HAS\_AO\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00073}00073\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00074}00074\ \ \ \ \ \ \ \ \ HAS\_AO\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00075}00075\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00076}00076\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00077}00077\ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Comedi\ DAQ\ Board\ Name:\ \%s,\ Driver:\ \%s\(\backslash\)r\(\backslash\)n"{}},\ comedi\_get\_board\_name(it),\ comedi\_get\_driver\_name(it));}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00078}00078\ \ \ \ \ \textcolor{keywordflow}{if}\ (strcmp(comedi\_get\_board\_name(it),\ BMCBoard)\ ==\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00079}00079\ \ \ \ \ \ \ \ \ bmc.BOARD\ =\ bmcboard;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00080}00080\ \ \ \ \ \ \ \ \ bmc.BNAME\ =\ BMCBoard;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00081}00081\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00082}00082\ \ \ \ \ \textcolor{keywordflow}{if}\ (strcmp(comedi\_get\_board\_name(it),\ USBBoard)\ ==\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00083}00083\ \ \ \ \ \ \ \ \ bmc.BOARD\ =\ usbboard;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00084}00084\ \ \ \ \ \ \ \ \ bmc.BNAME\ =\ USBBoard;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00045}00045\ \textcolor{keywordtype}{int}\ subdev\_serial0;\ \textcolor{comment}{/*\ change\ this\ to\ your\ input\ subdevice\ */}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00046}00046\ \textcolor{keywordtype}{int}\ chan\_serial0\ =\ 0;\ \textcolor{comment}{/*\ change\ this\ to\ your\ channel\ */}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00047}00047\ \textcolor{keywordtype}{int}\ range\_serial0\ =\ 0;\ \textcolor{comment}{/*\ more\ on\ this\ later\ */}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00048}00048\ \textcolor{keywordtype}{int}\ maxdata\_serial0,\ ranges\_serial0,\ channels\_serial0,\ datain\_serial0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00050}00050\ comedi\_t\ *it;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00051}00051\ comedi\_range\ *ad\_range,\ *da\_range;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00052}00052\ \textcolor{keywordtype}{bool}\ ADC\_OPEN\ =\ \textcolor{keyword}{true},\ DIO\_OPEN\ =\ \textcolor{keyword}{true},\ ADC\_ERROR\ =\ \textcolor{keyword}{false},\ DEV\_OPEN\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00053}00053\ \ \ \ \ DIO\_ERROR\ =\ \textcolor{keyword}{false},\ HAS\_AO\ =\ \textcolor{keyword}{false},\ DAC\_ERROR\ =\ \textcolor{keyword}{false},\ PWM\_OPEN\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00054}00054\ \ \ \ \ PWM\_ERROR\ =\ \textcolor{keyword}{false},\ SERIAL\_OPEN\ =\ \textcolor{keyword}{true},\ RX\_OPEN\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00055}00055\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00056}00056\ \textcolor{keywordtype}{bool}\ DO\_OPEN\ =\ \textcolor{keyword}{true},\ DI\_OPEN\ =\ \textcolor{keyword}{true},\ DO\_ERROR\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00057}00057\ \textcolor{keyword}{union\ }\mbox{\hyperlink{uniondio__buf__type}{dio\_buf\_type}}\ obits,\ ibits;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00059}00059\ uint32\_t\ datain,\ serial\_buf;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00061}00061\ \textcolor{keywordtype}{char}\ *daq\_text[]\ =\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00062}00062\ \ \ \ \ \textcolor{stringliteral}{"{}daq\_bmc\ text\ 0\ \ \ \ \ \ \ \ \ \ \ "{}},}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00063}00063\ \ \ \ \ \textcolor{stringliteral}{"{}daq\_bmc\ text\ 1\ \ \ \ \ \ \ \ \ \ \ "{}},}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00064}00064\ \ \ \ \ \textcolor{stringliteral}{"{}daq\_bmc\ text\ 2\ \ \ \ \ \ \ \ \ \ \ "{}},}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00065}00065\ \ \ \ \ \textcolor{stringliteral}{"{}daq\_bmc\ text\ 3\ \ \ \ \ \ \ \ \ \ \ "{}},}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00066}00066\ \},\ *daq\_text\_ptr;;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00067}00067\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00068}00068\ uint8\_t\ daq\_text\_index\ =\ 0,\ line\_index\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00069}00069\ \textcolor{keyword}{static}\ uint32\_t\ slow\_text\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00070}00070\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00071}00071\ \textcolor{keywordtype}{int}\ init\_daq(\textcolor{keywordtype}{double}\ min\_range,\ \textcolor{keywordtype}{double}\ max\_range,\ \textcolor{keywordtype}{int}\ range\_update)}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00072}00072\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00073}00073\ \ \ \ \ \textcolor{keywordtype}{int}\ i\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00075}00075\ \ \ \ \ it\ =\ comedi\_open(\textcolor{stringliteral}{"{}/dev/comedi0"{}});}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00076}00076\ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ ==\ NULL)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00077}00077\ \ \ \ \ \ \ \ \ comedi\_perror(\textcolor{stringliteral}{"{}comedi\_open"{}});}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00078}00078\ \ \ \ \ \ \ \ \ DEV\_OPEN\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00079}00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00080}00080\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00081}00081\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00082}00082\ \ \ \ \ subdev\_ai\ =\ comedi\_find\_subdevice\_by\_type(it,\ COMEDI\_SUBD\_AI,\ subdev\_ai);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00083}00083\ \ \ \ \ \textcolor{keywordflow}{if}\ (subdev\_ai\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00084}00084\ \ \ \ \ \ \ \ \ ADC\_OPEN\ =\ \textcolor{keyword}{false};}
 \DoxyCodeLine{\Hypertarget{daq_8c_source_l00085}00085\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{daq_8c_source_l00086}00086\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00087}00087\ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Subdev\ AI\ \ \%i\ "{}},\ subdev\_ai);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00088}00088\ \ \ \ \ channels\_ai\ =\ comedi\_get\_n\_channels(it,\ subdev\_ai);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00089}00089\ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Analog\ \ Channels\ \%i\ "{}},\ channels\_ai);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00090}00090\ \ \ \ \ maxdata\_ai\ =\ comedi\_get\_maxdata(it,\ subdev\_ai,\ i);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00091}00091\ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Maxdata\ \%i\ "{}},\ maxdata\_ai);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00092}00092\ \ \ \ \ ranges\_ai\ =\ comedi\_get\_n\_ranges(it,\ subdev\_ai,\ i);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00093}00093\ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Ranges\ \%i\ "{}},\ ranges\_ai);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00094}00094\ \ \ \ \ ad\_range\ =\ comedi\_get\_range(it,\ subdev\_ai,\ i,\ range\_ai);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00095}00095\ \ \ \ \ \textcolor{keywordflow}{if}\ (range\_update)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00096}00096\ \ \ \ \ \ \ \ \ ad\_range-\/>min\ =\ min\_range;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00097}00097\ \ \ \ \ \ \ \ \ ad\_range-\/>max\ =\ max\_range;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00098}00098\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00099}00099\ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}:\ ad\_range\ .min\ =\ \%.3f,\ max\ =\ \%.3f\(\backslash\)r\(\backslash\)n"{}},\ ad\_range-\/>min,}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00100}00100\ \ \ \ \ \ \ \ \ ad\_range-\/>max);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00101}00101\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00102}00102\ \ \ \ \ \textcolor{keywordflow}{if}\ (HAS\_AO)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00103}00103\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Subdev\ AO\ \ \%i\ "{}},\ subdev\_ao);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00104}00104\ \ \ \ \ \ \ \ \ channels\_ao\ =\ comedi\_get\_n\_channels(it,\ subdev\_ao);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00105}00105\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Analog\ \ Channels\ \%i\ "{}},\ channels\_ao);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00106}00106\ \ \ \ \ \ \ \ \ maxdata\_ao\ =\ comedi\_get\_maxdata(it,\ subdev\_ao,\ i);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00107}00107\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Maxdata\ \%i\ "{}},\ maxdata\_ao);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00108}00108\ \ \ \ \ \ \ \ \ ranges\_ao\ =\ comedi\_get\_n\_ranges(it,\ subdev\_ao,\ i);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00109}00109\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Ranges\ \%i\ "{}},\ ranges\_ao);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00110}00110\ \ \ \ \ \ \ \ \ da\_range\ =\ comedi\_get\_range(it,\ subdev\_ao,\ i,\ range\_ao);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00111}00111\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}:\ da\_range\ .min\ =\ \%.3f,\ max\ =\ \%.3f\(\backslash\)r\(\backslash\)n"{}},\ da\_range-\/>min,}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00112}00112\ \ \ \ \ \ \ \ \ \ \ \ \ da\_range-\/>max);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00113}00113\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00114}00114\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00115}00115\ \ \ \ \ ADC\_OPEN\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00116}00116\ \ \ \ \ comedi\_set\_global\_oor\_behavior(COMEDI\_OOR\_NUMBER);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00117}00117\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00118}00118\ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00088}00088\ \ \ \ \ subdev\_ao\ =\ comedi\_find\_subdevice\_by\_type(it,\ COMEDI\_SUBD\_AO,\ subdev\_ao);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00089}00089\ \ \ \ \ \textcolor{keywordflow}{if}\ (subdev\_ao\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00090}00090\ \ \ \ \ \ \ \ \ HAS\_AO\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00091}00091\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00092}00092\ \ \ \ \ \ \ \ \ HAS\_AO\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00093}00093\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00095}00095\ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Comedi\ DAQ\ Board\ Name:\ \%s,\ Driver:\ \%s\(\backslash\)r\(\backslash\)n"{}},\ comedi\_get\_board\_name(it),\ comedi\_get\_driver\_name(it));}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00096}00096\ \ \ \ \ \textcolor{keywordflow}{if}\ (strcmp(comedi\_get\_board\_name(it),\ BMCBoard)\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00097}00097\ \ \ \ \ \ \ \ \ bmc.BOARD\ =\ bmcboard;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00098}00098\ \ \ \ \ \ \ \ \ bmc.BNAME\ =\ BMCBoard;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00099}00099\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00100}00100\ \ \ \ \ \textcolor{keywordflow}{if}\ (strcmp(comedi\_get\_board\_name(it),\ USBBoard)\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00101}00101\ \ \ \ \ \ \ \ \ bmc.BOARD\ =\ usbboard;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00102}00102\ \ \ \ \ \ \ \ \ bmc.BNAME\ =\ USBBoard;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00103}00103\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00104}00104\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00105}00105\ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Subdev\ AI\ \ \%i\ "{}},\ subdev\_ai);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00106}00106\ \ \ \ \ channels\_ai\ =\ comedi\_get\_n\_channels(it,\ subdev\_ai);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00107}00107\ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Analog\ \ Channels\ \%i\ "{}},\ channels\_ai);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00108}00108\ \ \ \ \ maxdata\_ai\ =\ comedi\_get\_maxdata(it,\ subdev\_ai,\ i);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00109}00109\ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Maxdata\ \%i\ "{}},\ maxdata\_ai);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00110}00110\ \ \ \ \ ranges\_ai\ =\ comedi\_get\_n\_ranges(it,\ subdev\_ai,\ i);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00111}00111\ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Ranges\ \%i\ "{}},\ ranges\_ai);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00112}00112\ \ \ \ \ ad\_range\ =\ comedi\_get\_range(it,\ subdev\_ai,\ i,\ range\_ai);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00113}00113\ \ \ \ \ \textcolor{keywordflow}{if}\ (range\_update)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00114}00114\ \ \ \ \ \ \ \ \ ad\_range-\/>min\ =\ min\_range;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00115}00115\ \ \ \ \ \ \ \ \ ad\_range-\/>max\ =\ max\_range;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00116}00116\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00117}00117\ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}:\ ad\_range\ .min\ =\ \%.3f,\ max\ =\ \%.3f\(\backslash\)r\(\backslash\)n"{}},\ ad\_range-\/>min,}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00118}00118\ \ \ \ \ \ \ \ \ ad\_range-\/>max);}
 \DoxyCodeLine{\Hypertarget{daq_8c_source_l00119}00119\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00120}00120\ \textcolor{keywordtype}{int}\ init\_dac(\textcolor{keywordtype}{double}\ min\_range,\ \textcolor{keywordtype}{double}\ max\_range,\ \textcolor{keywordtype}{int}\ range\_update)}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00121}00121\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00122}00122\ \ \ \ \ \textcolor{keywordtype}{int}\ i\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00123}00123\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00124}00124\ \ \ \ \ \textcolor{keywordflow}{if}\ (!DEV\_OPEN)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00125}00125\ \ \ \ \ \ \ \ \ it\ =\ comedi\_open(\textcolor{stringliteral}{"{}/dev/comedi0"{}});}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00126}00126\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ ==\ NULL)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00127}00127\ \ \ \ \ \ \ \ \ \ \ \ \ comedi\_perror(\textcolor{stringliteral}{"{}comedi\_open"{}});}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ ADC\_OPEN\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00129}00129\ \ \ \ \ \ \ \ \ \ \ \ \ DEV\_OPEN\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00130}00130\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00131}00131\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00132}00132\ \ \ \ \ \ \ \ \ DEV\_OPEN\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00133}00133\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00134}00134\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00135}00135\ \ \ \ \ subdev\_ao\ =\ comedi\_find\_subdevice\_by\_type(it,\ COMEDI\_SUBD\_AO,\ subdev\_ao);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00136}00136\ \ \ \ \ \textcolor{keywordflow}{if}\ (subdev\_ao\ <\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00137}00137\ \ \ \ \ \ \ \ \ HAS\_AO\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00138}00138\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00139}00139\ \ \ \ \ \ \ \ \ HAS\_AO\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00140}00140\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00141}00141\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00142}00142\ \ \ \ \ \textcolor{keywordflow}{if}\ (HAS\_AO)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00143}00143\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Subdev\ AO\ \ \%i\ "{}},\ subdev\_ao);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00144}00144\ \ \ \ \ \ \ \ \ channels\_ao\ =\ comedi\_get\_n\_channels(it,\ subdev\_ao);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00145}00145\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Analog\ \ Channels\ \%i\ "{}},\ channels\_ao);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00146}00146\ \ \ \ \ \ \ \ \ maxdata\_ao\ =\ comedi\_get\_maxdata(it,\ subdev\_ao,\ i);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00147}00147\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Maxdata\ \%i\ "{}},\ maxdata\_ao);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00148}00148\ \ \ \ \ \ \ \ \ ranges\_ao\ =\ comedi\_get\_n\_ranges(it,\ subdev\_ao,\ i);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00149}00149\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Ranges\ \%i\ "{}},\ ranges\_ao);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00150}00150\ \ \ \ \ \ \ \ \ da\_range\ =\ comedi\_get\_range(it,\ subdev\_ao,\ i,\ range\_ao);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00151}00151\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}:\ da\_range\ .min\ =\ \%.3f,\ max\ =\ \%.3f\(\backslash\)r\(\backslash\)n"{}},\ da\_range-\/>min,}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00152}00152\ \ \ \ \ \ \ \ \ \ \ \ \ da\_range-\/>max);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00120}00120\ \ \ \ \ \textcolor{keywordflow}{if}\ (HAS\_AO)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00121}00121\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Subdev\ AO\ \ \%i\ "{}},\ subdev\_ao);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00122}00122\ \ \ \ \ \ \ \ \ channels\_ao\ =\ comedi\_get\_n\_channels(it,\ subdev\_ao);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00123}00123\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Analog\ \ Channels\ \%i\ "{}},\ channels\_ao);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00124}00124\ \ \ \ \ \ \ \ \ maxdata\_ao\ =\ comedi\_get\_maxdata(it,\ subdev\_ao,\ i);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00125}00125\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Maxdata\ \%i\ "{}},\ maxdata\_ao);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00126}00126\ \ \ \ \ \ \ \ \ ranges\_ao\ =\ comedi\_get\_n\_ranges(it,\ subdev\_ao,\ i);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00127}00127\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Ranges\ \%i\ "{}},\ ranges\_ao);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00128}00128\ \ \ \ \ \ \ \ \ da\_range\ =\ comedi\_get\_range(it,\ subdev\_ao,\ i,\ range\_ao);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00129}00129\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}:\ da\_range\ .min\ =\ \%.3f,\ max\ =\ \%.3f\(\backslash\)r\(\backslash\)n"{}},\ da\_range-\/>min,}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00130}00130\ \ \ \ \ \ \ \ \ \ \ \ \ da\_range-\/>max);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00131}00131\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00132}00132\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00133}00133\ \ \ \ \ ADC\_OPEN\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00134}00134\ \ \ \ \ comedi\_set\_global\_oor\_behavior(COMEDI\_OOR\_NUMBER);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00135}00135\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00136}00136\ \ \ \ \ daq\_text\_ptr\ =\ daq\_text[0];}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00137}00137\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00138}00138\ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00139}00139\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00140}00140\ \textcolor{keywordtype}{int}\ init\_dac(\textcolor{keywordtype}{double}\ min\_range,\ \textcolor{keywordtype}{double}\ max\_range,\ \textcolor{keywordtype}{int}\ range\_update)}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00141}00141\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00142}00142\ \ \ \ \ \textcolor{keywordtype}{int}\ i\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00143}00143\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00144}00144\ \ \ \ \ \textcolor{keywordflow}{if}\ (!DEV\_OPEN)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00145}00145\ \ \ \ \ \ \ \ \ it\ =\ comedi\_open(\textcolor{stringliteral}{"{}/dev/comedi0"{}});}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00146}00146\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ ==\ NULL)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00147}00147\ \ \ \ \ \ \ \ \ \ \ \ \ comedi\_perror(\textcolor{stringliteral}{"{}comedi\_open"{}});}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00148}00148\ \ \ \ \ \ \ \ \ \ \ \ \ ADC\_OPEN\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00149}00149\ \ \ \ \ \ \ \ \ \ \ \ \ DEV\_OPEN\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00150}00150\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00151}00151\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00152}00152\ \ \ \ \ \ \ \ \ DEV\_OPEN\ =\ \textcolor{keyword}{true};}
 \DoxyCodeLine{\Hypertarget{daq_8c_source_l00153}00153\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{daq_8c_source_l00154}00154\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00155}00155\ \ \ \ \ comedi\_set\_global\_oor\_behavior(COMEDI\_OOR\_NUMBER);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00156}00156\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00157}00157\ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00158}00158\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00159}00159\ \textcolor{keywordtype}{int}\ adc\_range(\textcolor{keywordtype}{double}\ min\_range,\ \textcolor{keywordtype}{double}\ max\_range)}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00160}00160\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00161}00161\ \ \ \ \ \textcolor{keywordflow}{if}\ (ADC\_OPEN)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00162}00162\ \ \ \ \ \ \ \ \ ad\_range-\/>min\ =\ min\_range;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00163}00163\ \ \ \ \ \ \ \ \ ad\_range-\/>max\ =\ max\_range;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00164}00164\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00165}00165\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00166}00166\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00167}00167\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00168}00168\ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00169}00169\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00170}00170\ \textcolor{keywordtype}{int}\ dac\_range(\textcolor{keywordtype}{double}\ min\_range,\ \textcolor{keywordtype}{double}\ max\_range)}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00171}00171\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00172}00172\ \ \ \ \ \textcolor{keywordflow}{if}\ (ADC\_OPEN)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00173}00173\ \ \ \ \ \ \ \ \ da\_range-\/>min\ =\ min\_range;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00174}00174\ \ \ \ \ \ \ \ \ da\_range-\/>max\ =\ max\_range;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00175}00175\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00176}00176\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00177}00177\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00178}00178\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00179}00179\ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00180}00180\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00181}00181\ \textcolor{keywordtype}{int}\ set\_dac\_volts(\textcolor{keywordtype}{int}\ chan,\ \textcolor{keywordtype}{double}\ voltage)}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00182}00182\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00183}00183\ \ \ \ \ lsampl\_t\ data;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00184}00184\ \ \ \ \ \textcolor{keywordtype}{int}\ retval;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00185}00185\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00186}00186\ \ \ \ \ data\ =\ comedi\_from\_phys(voltage,\ da\_range,\ maxdata\_ao);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00187}00187\ \ \ \ \ bmc.dac\_sample[chan]\ =\ data;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00188}00188\ \ \ \ \ retval\ =\ comedi\_data\_write(it,\ subdev\_ao,\ chan,\ range\_ao,\ aref\_ao,\ data);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00189}00189\ \ \ \ \ \textcolor{keywordflow}{if}\ (retval\ <\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00190}00190\ \ \ \ \ \ \ \ \ comedi\_perror(\textcolor{stringliteral}{"{}comedi\_data\_write\ in\ set\_dac\_volts"{}});}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00191}00191\ \ \ \ \ \ \ \ \ DAC\_ERROR\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00192}00192\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00193}00193\ \ \ \ \ \textcolor{keywordflow}{return}\ retval;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00194}00194\ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00195}00195\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00196}00196\ \textcolor{keywordtype}{int}\ set\_dac\_raw(\textcolor{keywordtype}{int}\ chan,\ lsampl\_t\ voltage)}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00197}00197\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00198}00198\ \ \ \ \ \textcolor{keywordtype}{int}\ retval;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00199}00199\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00200}00200\ \ \ \ \ retval\ =\ comedi\_data\_write(it,\ subdev\_ao,\ chan,\ range\_ao,\ aref\_ao,\ voltage);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00201}00201\ \ \ \ \ \textcolor{keywordflow}{if}\ (retval\ <\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00202}00202\ \ \ \ \ \ \ \ \ comedi\_perror(\textcolor{stringliteral}{"{}comedi\_data\_write\ in\ set\_dac\_raw"{}});}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00203}00203\ \ \ \ \ \ \ \ \ DAC\_ERROR\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00204}00204\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00205}00205\ \ \ \ \ \textcolor{keywordflow}{return}\ retval;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00206}00206\ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00207}00207\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00208}00208\ \textcolor{keywordtype}{double}\ get\_adc\_volts(\textcolor{keywordtype}{int}\ chan)}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00209}00209\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00210}00210\ \ \ \ \ lsampl\_t\ data[16];}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00211}00211\ \ \ \ \ \textcolor{keywordtype}{int}\ retval;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00212}00212\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00213}00213\ \ \ \ \ retval\ =\ comedi\_data\_read\_n(it,\ subdev\_ai,\ chan,\ range\_ai,\ aref\_ai,\ \&data[0],\ 1);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00214}00214\ \ \ \ \ \textcolor{keywordflow}{if}\ (retval\ <\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00215}00215\ \ \ \ \ \ \ \ \ comedi\_perror(\textcolor{stringliteral}{"{}comedi\_data\_read\ in\ get\_adc\_volts"{}});}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00216}00216\ \ \ \ \ \ \ \ \ ADC\_ERROR\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00217}00217\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0.0;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00218}00218\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00219}00219\ \ \ \ \ bmc.adc\_sample[chan]\ =\ data[0];}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00220}00220\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00221}00221\ \ \ \ \ ad\_range-\/>min\ =\ 0.0f;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00222}00222\ \ \ \ \ \textcolor{keywordflow}{if}\ (bmc.BOARD\ ==\ bmcboard)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00223}00223\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (chan\ ==\ channel\_ANA4\ ||\ chan\ ==\ channel\_ANA5)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00224}00224\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (chan\ ==\ channel\_ANA4)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00225}00225\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ad\_range-\/>max\ =\ HV\_SCALE4;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00226}00226\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00227}00227\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ad\_range-\/>max\ =\ HV\_SCALE5;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00228}00228\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00229}00229\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00230}00230\ \ \ \ \ \ \ \ \ \ \ \ \ ad\_range-\/>max\ =\ HV\_SCALE\_RAW;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00231}00231\ \ \ \ \ \ \ \ \ \ \ \ \ ad\_range-\/>min\ =\ 0.0f;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00232}00232\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00233}00233\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00234}00234\ \ \ \ \ \ \ \ \ ad\_range-\/>max\ =\ ha\_daq\_host.scaler[ha\_daq\_host.hindex];}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00235}00235\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00236}00236\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00237}00237\ \ \ \ \ \textcolor{keywordflow}{return}\ comedi\_to\_phys(data[0],\ ad\_range,\ maxdata\_ai);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00238}00238\ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00239}00239\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00240}00240\ \textcolor{keywordtype}{int}\ set\_dio\_output(\textcolor{keywordtype}{int}\ chan)}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00241}00241\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00242}00242\ \ \ \ \ \textcolor{keywordflow}{return}\ comedi\_dio\_config(it,}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00243}00243\ \ \ \ \ \ \ \ \ subdev\_dio,}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00244}00244\ \ \ \ \ \ \ \ \ chan,}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00245}00245\ \ \ \ \ \ \ \ \ COMEDI\_OUTPUT);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00246}00246\ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00247}00247\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00248}00248\ \textcolor{keywordtype}{int}\ set\_dio\_input(\textcolor{keywordtype}{int}\ chan)}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00249}00249\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00250}00250\ \ \ \ \ \textcolor{keywordflow}{return}\ comedi\_dio\_config(it,}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00251}00251\ \ \ \ \ \ \ \ \ subdev\_dio,}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00252}00252\ \ \ \ \ \ \ \ \ chan,}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00253}00253\ \ \ \ \ \ \ \ \ COMEDI\_INPUT);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00254}00254\ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00255}00255\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00256}00256\ \textcolor{keywordtype}{int}\ get\_dio\_bit(\textcolor{keywordtype}{int}\ chan)}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00257}00257\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00258}00258\ \ \ \ \ lsampl\_t\ data;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00259}00259\ \ \ \ \ \textcolor{keywordtype}{int}\ retval;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00155}00155\ \ \ \ \ subdev\_ao\ =\ comedi\_find\_subdevice\_by\_type(it,\ COMEDI\_SUBD\_AO,\ subdev\_ao);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00156}00156\ \ \ \ \ \textcolor{keywordflow}{if}\ (subdev\_ao\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00157}00157\ \ \ \ \ \ \ \ \ HAS\_AO\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00158}00158\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00159}00159\ \ \ \ \ \ \ \ \ HAS\_AO\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00160}00160\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00161}00161\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00162}00162\ \ \ \ \ \textcolor{keywordflow}{if}\ (HAS\_AO)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00163}00163\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Subdev\ AO\ \ \%i\ "{}},\ subdev\_ao);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00164}00164\ \ \ \ \ \ \ \ \ channels\_ao\ =\ comedi\_get\_n\_channels(it,\ subdev\_ao);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00165}00165\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Analog\ \ Channels\ \%i\ "{}},\ channels\_ao);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00166}00166\ \ \ \ \ \ \ \ \ maxdata\_ao\ =\ comedi\_get\_maxdata(it,\ subdev\_ao,\ i);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00167}00167\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Maxdata\ \%i\ "{}},\ maxdata\_ao);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00168}00168\ \ \ \ \ \ \ \ \ ranges\_ao\ =\ comedi\_get\_n\_ranges(it,\ subdev\_ao,\ i);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00169}00169\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Ranges\ \%i\ "{}},\ ranges\_ao);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00170}00170\ \ \ \ \ \ \ \ \ da\_range\ =\ comedi\_get\_range(it,\ subdev\_ao,\ i,\ range\_ao);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00171}00171\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}:\ da\_range\ .min\ =\ \%.3f,\ max\ =\ \%.3f\(\backslash\)r\(\backslash\)n"{}},\ da\_range-\/>min,}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00172}00172\ \ \ \ \ \ \ \ \ \ \ \ \ da\_range-\/>max);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00173}00173\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00174}00174\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00175}00175\ \ \ \ \ comedi\_set\_global\_oor\_behavior(COMEDI\_OOR\_NUMBER);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00176}00176\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00177}00177\ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00178}00178\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00179}00179\ \textcolor{keywordtype}{int}\ adc\_range(\textcolor{keywordtype}{double}\ min\_range,\ \textcolor{keywordtype}{double}\ max\_range)}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00180}00180\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00181}00181\ \ \ \ \ \textcolor{keywordflow}{if}\ (ADC\_OPEN)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00182}00182\ \ \ \ \ \ \ \ \ ad\_range-\/>min\ =\ min\_range;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00183}00183\ \ \ \ \ \ \ \ \ ad\_range-\/>max\ =\ max\_range;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00184}00184\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00185}00185\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00186}00186\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00187}00187\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00188}00188\ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00189}00189\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00190}00190\ \textcolor{keywordtype}{int}\ dac\_range(\textcolor{keywordtype}{double}\ min\_range,\ \textcolor{keywordtype}{double}\ max\_range)}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00191}00191\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00192}00192\ \ \ \ \ \textcolor{keywordflow}{if}\ (ADC\_OPEN)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00193}00193\ \ \ \ \ \ \ \ \ da\_range-\/>min\ =\ min\_range;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00194}00194\ \ \ \ \ \ \ \ \ da\_range-\/>max\ =\ max\_range;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00195}00195\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00196}00196\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00197}00197\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00198}00198\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00199}00199\ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00200}00200\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00201}00201\ \textcolor{keywordtype}{int}\ set\_dac\_volts(\textcolor{keywordtype}{int}\ chan,\ \textcolor{keywordtype}{double}\ voltage)}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00202}00202\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00203}00203\ \ \ \ \ lsampl\_t\ data;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00204}00204\ \ \ \ \ \textcolor{keywordtype}{int}\ retval;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00205}00205\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00206}00206\ \ \ \ \ data\ =\ comedi\_from\_phys(voltage,\ da\_range,\ maxdata\_ao);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00207}00207\ \ \ \ \ bmc.dac\_sample[chan]\ =\ data;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00208}00208\ \ \ \ \ retval\ =\ comedi\_data\_write(it,\ subdev\_ao,\ chan,\ range\_ao,\ aref\_ao,\ data);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00209}00209\ \ \ \ \ \textcolor{keywordflow}{if}\ (retval\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00210}00210\ \ \ \ \ \ \ \ \ comedi\_perror(\textcolor{stringliteral}{"{}comedi\_data\_write\ in\ set\_dac\_volts"{}});}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00211}00211\ \ \ \ \ \ \ \ \ DAC\_ERROR\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00212}00212\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00213}00213\ \ \ \ \ \textcolor{keywordflow}{return}\ retval;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00214}00214\ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00215}00215\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00216}00216\ \textcolor{keywordtype}{int}\ set\_dac\_raw(\textcolor{keywordtype}{int}\ chan,\ lsampl\_t\ voltage)}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00217}00217\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00218}00218\ \ \ \ \ \textcolor{keywordtype}{int}\ retval;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00219}00219\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00220}00220\ \ \ \ \ retval\ =\ comedi\_data\_write(it,\ subdev\_ao,\ chan,\ range\_ao,\ aref\_ao,\ voltage);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00221}00221\ \ \ \ \ \textcolor{keywordflow}{if}\ (retval\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00222}00222\ \ \ \ \ \ \ \ \ comedi\_perror(\textcolor{stringliteral}{"{}comedi\_data\_write\ in\ set\_dac\_raw"{}});}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00223}00223\ \ \ \ \ \ \ \ \ DAC\_ERROR\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00224}00224\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00225}00225\ \ \ \ \ \textcolor{keywordflow}{return}\ retval;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00226}00226\ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00227}00227\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00228}00228\ \textcolor{keywordtype}{double}\ get\_adc\_volts(\textcolor{keywordtype}{int}\ chan)}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00229}00229\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00230}00230\ \ \ \ \ lsampl\_t\ data[16];}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00231}00231\ \ \ \ \ \textcolor{keywordtype}{int}\ retval;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00232}00232\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00233}00233\ \ \ \ \ retval\ =\ comedi\_data\_read\_n(it,\ subdev\_ai,\ chan,\ range\_ai,\ aref\_ai,\ \&data[0],\ 1);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00234}00234\ \ \ \ \ \textcolor{keywordflow}{if}\ (retval\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00235}00235\ \ \ \ \ \ \ \ \ comedi\_perror(\textcolor{stringliteral}{"{}comedi\_data\_read\ in\ get\_adc\_volts"{}});}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00236}00236\ \ \ \ \ \ \ \ \ ADC\_ERROR\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00237}00237\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0.0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00238}00238\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00239}00239\ \ \ \ \ bmc.adc\_sample[chan]\ =\ data[0];}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00240}00240\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00241}00241\ \ \ \ \ ad\_range-\/>min\ =\ 0.0f;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00242}00242\ \ \ \ \ \textcolor{keywordflow}{if}\ (bmc.BOARD\ ==\ bmcboard)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00243}00243\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (chan\ ==\ channel\_ANA4\ ||\ chan\ ==\ channel\_ANA5)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00244}00244\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (chan\ ==\ channel\_ANA4)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00245}00245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ad\_range-\/>max\ =\ ha\_daq\_host.scaler4[ha\_daq\_host.hindex];}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00246}00246\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00247}00247\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ad\_range-\/>max\ =\ ha\_daq\_host.scaler5[ha\_daq\_host.hindex];}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00248}00248\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00249}00249\ \ \ \ \ \ \ \ \ \ \ \ \ ad\_range-\/>min\ =\ 0.0f;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00250}00250\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00251}00251\ \ \ \ \ \ \ \ \ \ \ \ \ ad\_range-\/>max\ =\ HV\_SCALE\_RAW;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00252}00252\ \ \ \ \ \ \ \ \ \ \ \ \ ad\_range-\/>min\ =\ 0.0f;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00253}00253\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00254}00254\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00255}00255\ \ \ \ \ \ \ \ \ ad\_range-\/>max\ =\ ha\_daq\_host.scaler[ha\_daq\_host.hindex];}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00256}00256\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00257}00257\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00258}00258\ \ \ \ \ \textcolor{keywordflow}{return}\ comedi\_to\_phys(data[0],\ ad\_range,\ maxdata\_ai);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00259}00259\ \}}
 \DoxyCodeLine{\Hypertarget{daq_8c_source_l00260}00260\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00261}00261\ \ \ \ \ retval\ =\ comedi\_data\_read(it,\ subdev\_di,\ chan,\ range\_di,\ aref\_dio,\ \&data);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00262}00262\ \ \ \ \ \textcolor{keywordflow}{if}\ (retval\ <\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00263}00263\ \ \ \ \ \ \ \ \ comedi\_perror(\textcolor{stringliteral}{"{}comedi\_data\_read\ in\ get\_dio\_bits"{}});}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00264}00264\ \ \ \ \ \ \ \ \ DIO\_ERROR\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00265}00265\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00266}00266\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00267}00267\ \ \ \ \ \textcolor{keywordflow}{return}\ data;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00268}00268\ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00269}00269\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00270}00270\ \textcolor{keywordtype}{int}\ put\_dio\_bit(\textcolor{keywordtype}{int}\ chan,\ \textcolor{keywordtype}{int}\ bit\_data)}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00271}00271\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00272}00272\ \ \ \ \ lsampl\_t\ data\ =\ bit\_data;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00273}00273\ \ \ \ \ \textcolor{keywordtype}{int}\ retval;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00274}00274\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00275}00275\ \ \ \ \ retval\ =\ comedi\_data\_write(it,\ subdev\_do,\ chan,\ range\_do,\ aref\_dio,\ data);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00276}00276\ \ \ \ \ \textcolor{keywordflow}{if}\ (retval\ <\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00277}00277\ \ \ \ \ \ \ \ \ comedi\_perror(\textcolor{stringliteral}{"{}comedi\_data\_write\ in\ put\_dio\_bits"{}});}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00278}00278\ \ \ \ \ \ \ \ \ DIO\_ERROR\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00279}00279\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00280}00280\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00281}00281\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00282}00282\ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00283}00283\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00284}00284\ \textcolor{keywordtype}{int}\ init\_dio(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00285}00285\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00286}00286\ \ \ \ \ \textcolor{keywordtype}{int}\ i\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00287}00287\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00288}00288\ \ \ \ \ \textcolor{keywordflow}{if}\ (!DEV\_OPEN)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00289}00289\ \ \ \ \ \ \ \ \ it\ =\ comedi\_open(\textcolor{stringliteral}{"{}/dev/comedi0"{}});}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00290}00290\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ ==\ NULL)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00291}00291\ \ \ \ \ \ \ \ \ \ \ \ \ comedi\_perror(\textcolor{stringliteral}{"{}comedi\_open"{}});}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00292}00292\ \ \ \ \ \ \ \ \ \ \ \ \ DIO\_OPEN\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00293}00293\ \ \ \ \ \ \ \ \ \ \ \ \ DEV\_OPEN\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00294}00294\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00295}00295\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00296}00296\ \ \ \ \ \ \ \ \ DEV\_OPEN\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00297}00297\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00298}00298\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00299}00299\ \ \ \ \ subdev\_di\ =\ comedi\_find\_subdevice\_by\_type(it,\ COMEDI\_SUBD\_DI,\ subdev\_di);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00300}00300\ \ \ \ \ \textcolor{keywordflow}{if}\ (subdev\_di\ <\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00301}00301\ \ \ \ \ \ \ \ \ DI\_OPEN\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00302}00302\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00303}00303\ \ \ \ \ subdev\_do\ =\ comedi\_find\_subdevice\_by\_type(it,\ COMEDI\_SUBD\_DO,\ subdev\_do);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00304}00304\ \ \ \ \ \textcolor{keywordflow}{if}\ (subdev\_do\ <\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00305}00305\ \ \ \ \ \ \ \ \ DO\_OPEN\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00306}00306\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00307}00307\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00308}00308\ \ \ \ \ subdev\_dio\ =\ comedi\_find\_subdevice\_by\_type(it,\ COMEDI\_SUBD\_DIO,\ subdev\_dio);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00309}00309\ \ \ \ \ \textcolor{keywordflow}{if}\ (subdev\_dio\ <\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00310}00310\ \ \ \ \ \ \ \ \ DIO\_OPEN\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00311}00311\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00312}00312\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00313}00313\ \ \ \ \ subdev\_counter\ =\ comedi\_find\_subdevice\_by\_type(it,\ COMEDI\_SUBD\_COUNTER,\ subdev\_counter);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00314}00314\ \ \ \ \ \textcolor{keywordflow}{if}\ (subdev\_counter\ <\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00315}00315\ \ \ \ \ \ \ \ \ PWM\_OPEN\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00316}00316\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00317}00317\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00318}00318\ \ \ \ \ \textcolor{keywordflow}{if}\ (DI\_OPEN)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00319}00319\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Subdev\ DI\ \ \%i\ "{}},\ subdev\_di);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00320}00320\ \ \ \ \ \ \ \ \ channels\_di\ =\ comedi\_get\_n\_channels(it,\ subdev\_di);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00321}00321\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Digital\ Channels\ \%i\ "{}},\ channels\_di);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00322}00322\ \ \ \ \ \ \ \ \ maxdata\_di\ =\ comedi\_get\_maxdata(it,\ subdev\_di,\ i);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00323}00323\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Maxdata\ \%i\ "{}},\ maxdata\_di);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00324}00324\ \ \ \ \ \ \ \ \ ranges\_di\ =\ comedi\_get\_n\_ranges(it,\ subdev\_di,\ i);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00325}00325\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Ranges\ \%i\ \(\backslash\)r\(\backslash\)n"{}},\ ranges\_di);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00326}00326\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00327}00327\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00328}00328\ \ \ \ \ \textcolor{keywordflow}{if}\ (DO\_OPEN)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00329}00329\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Subdev\ DO\ \ \%i\ "{}},\ subdev\_do);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00330}00330\ \ \ \ \ \ \ \ \ channels\_do\ =\ comedi\_get\_n\_channels(it,\ subdev\_do);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00331}00331\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Digital\ Channels\ \%i\ "{}},\ channels\_do);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00332}00332\ \ \ \ \ \ \ \ \ maxdata\_do\ =\ comedi\_get\_maxdata(it,\ subdev\_do,\ i);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00333}00333\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Maxdata\ \%i\ "{}},\ maxdata\_do);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00334}00334\ \ \ \ \ \ \ \ \ ranges\_do\ =\ comedi\_get\_n\_ranges(it,\ subdev\_do,\ i);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00335}00335\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Ranges\ \%i\ \(\backslash\)r\(\backslash\)n"{}},\ ranges\_do);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00336}00336\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00337}00337\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00338}00338\ \ \ \ \ \textcolor{keywordflow}{if}\ (DIO\_OPEN)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00339}00339\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Subdev\ DIO\ \ \%i\ "{}},\ subdev\_dio);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00340}00340\ \ \ \ \ \ \ \ \ channels\_dio\ =\ comedi\_get\_n\_channels(it,\ subdev\_dio);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00341}00341\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Digital\ Channels\ \%i\ "{}},\ channels\_dio);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00342}00342\ \ \ \ \ \ \ \ \ maxdata\_dio\ =\ comedi\_get\_maxdata(it,\ subdev\_dio,\ i);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00343}00343\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Maxdata\ \%i\ "{}},\ maxdata\_dio);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00344}00344\ \ \ \ \ \ \ \ \ ranges\_dio\ =\ comedi\_get\_n\_ranges(it,\ subdev\_dio,\ i);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00345}00345\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Ranges\ \%i\ \(\backslash\)r\(\backslash\)n"{}},\ ranges\_dio);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00346}00346\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00347}00347\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00348}00348\ \ \ \ \ \textcolor{keywordflow}{if}\ (PWM\_OPEN)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00349}00349\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Subdev\ COU\ \%i\ "{}},\ subdev\_counter);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00350}00350\ \ \ \ \ \ \ \ \ channels\_counter\ =\ comedi\_get\_n\_channels(it,\ subdev\_counter);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00351}00351\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Digital\ Channels\ \%i\ "{}},\ channels\_counter);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00352}00352\ \ \ \ \ \ \ \ \ maxdata\_counter\ =\ comedi\_get\_maxdata(it,\ subdev\_counter,\ i);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00353}00353\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Maxdata\ \%i\ "{}},\ maxdata\_counter);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00354}00354\ \ \ \ \ \ \ \ \ ranges\_counter\ =\ comedi\_get\_n\_ranges(it,\ subdev\_counter,\ i);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00355}00355\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Ranges\ \%i\ \(\backslash\)r\(\backslash\)n"{}},\ ranges\_counter);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00356}00356\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00357}00357\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00358}00358\ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00261}00261\ \textcolor{keywordtype}{int}\ set\_dio\_output(\textcolor{keywordtype}{int}\ chan)}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00262}00262\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00263}00263\ \ \ \ \ \textcolor{keywordflow}{return}\ comedi\_dio\_config(it,}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00264}00264\ \ \ \ \ \ \ \ \ subdev\_dio,}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00265}00265\ \ \ \ \ \ \ \ \ chan,}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00266}00266\ \ \ \ \ \ \ \ \ COMEDI\_OUTPUT);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00267}00267\ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00268}00268\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00269}00269\ \textcolor{keywordtype}{int}\ set\_dio\_input(\textcolor{keywordtype}{int}\ chan)}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00270}00270\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00271}00271\ \ \ \ \ \textcolor{keywordflow}{return}\ comedi\_dio\_config(it,}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00272}00272\ \ \ \ \ \ \ \ \ subdev\_dio,}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00273}00273\ \ \ \ \ \ \ \ \ chan,}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00274}00274\ \ \ \ \ \ \ \ \ COMEDI\_INPUT);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00275}00275\ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00276}00276\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00277}00277\ \textcolor{keywordtype}{int}\ get\_dio\_bit(\textcolor{keywordtype}{int}\ chan)}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00278}00278\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00279}00279\ \ \ \ \ lsampl\_t\ data;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00280}00280\ \ \ \ \ \textcolor{keywordtype}{int}\ retval;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00281}00281\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00282}00282\ \ \ \ \ retval\ =\ comedi\_data\_read(it,\ subdev\_di,\ chan,\ range\_di,\ aref\_dio,\ \&data);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00283}00283\ \ \ \ \ \textcolor{keywordflow}{if}\ (retval\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00284}00284\ \ \ \ \ \ \ \ \ comedi\_perror(\textcolor{stringliteral}{"{}comedi\_data\_read\ in\ get\_di\_bits"{}});}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00285}00285\ \ \ \ \ \ \ \ \ DIO\_ERROR\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00286}00286\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00287}00287\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00288}00288\ \ \ \ \ \textcolor{keywordflow}{return}\ data;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00289}00289\ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00290}00290\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00291}00291\ \textcolor{keywordtype}{int}\ put\_dio\_bit(\textcolor{keywordtype}{int}\ chan,\ \textcolor{keywordtype}{int}\ bit\_data)}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00292}00292\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00293}00293\ \ \ \ \ lsampl\_t\ data\ =\ bit\_data;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00294}00294\ \ \ \ \ \textcolor{keywordtype}{int}\ retval;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00295}00295\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00296}00296\ \ \ \ \ retval\ =\ comedi\_data\_write(it,\ subdev\_do,\ chan,\ range\_do,\ aref\_dio,\ data);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00297}00297\ \ \ \ \ \textcolor{keywordflow}{if}\ (retval\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00298}00298\ \ \ \ \ \ \ \ \ comedi\_perror(\textcolor{stringliteral}{"{}comedi\_data\_write\ in\ put\_do\_bits"{}});}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00299}00299\ \ \ \ \ \ \ \ \ DIO\_ERROR\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00300}00300\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00301}00301\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00302}00302\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00303}00303\ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00304}00304\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00305}00305\ \textcolor{keywordtype}{int}\ init\_dio(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00306}00306\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00307}00307\ \ \ \ \ \textcolor{keywordtype}{int}\ i\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00308}00308\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00309}00309\ \ \ \ \ \textcolor{keywordflow}{if}\ (!DEV\_OPEN)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00310}00310\ \ \ \ \ \ \ \ \ it\ =\ comedi\_open(\textcolor{stringliteral}{"{}/dev/comedi0"{}});}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00311}00311\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ ==\ NULL)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00312}00312\ \ \ \ \ \ \ \ \ \ \ \ \ comedi\_perror(\textcolor{stringliteral}{"{}comedi\_open"{}});}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00313}00313\ \ \ \ \ \ \ \ \ \ \ \ \ DIO\_OPEN\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00314}00314\ \ \ \ \ \ \ \ \ \ \ \ \ DO\_OPEN\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00315}00315\ \ \ \ \ \ \ \ \ \ \ \ \ DI\_OPEN\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00316}00316\ \ \ \ \ \ \ \ \ \ \ \ \ DEV\_OPEN\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00317}00317\ \ \ \ \ \ \ \ \ \ \ \ \ PWM\_OPEN\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00318}00318\ \ \ \ \ \ \ \ \ \ \ \ \ SERIAL\_OPEN\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00319}00319\ \ \ \ \ \ \ \ \ \ \ \ \ RX\_OPEN\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00320}00320\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00321}00321\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00322}00322\ \ \ \ \ \ \ \ \ DEV\_OPEN\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00323}00323\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00324}00324\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00325}00325\ \ \ \ \ subdev\_di\ =\ comedi\_find\_subdevice\_by\_type(it,\ COMEDI\_SUBD\_DI,\ subdev\_di);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00326}00326\ \ \ \ \ \textcolor{keywordflow}{if}\ (subdev\_di\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00327}00327\ \ \ \ \ \ \ \ \ DI\_OPEN\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00328}00328\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00329}00329\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00330}00330\ \ \ \ \ subdev\_do\ =\ comedi\_find\_subdevice\_by\_type(it,\ COMEDI\_SUBD\_DO,\ subdev\_do);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00331}00331\ \ \ \ \ \textcolor{keywordflow}{if}\ (subdev\_do\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00332}00332\ \ \ \ \ \ \ \ \ DO\_OPEN\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00333}00333\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00334}00334\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00335}00335\ \ \ \ \ subdev\_dio\ =\ comedi\_find\_subdevice\_by\_type(it,\ COMEDI\_SUBD\_DIO,\ subdev\_dio);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00336}00336\ \ \ \ \ \textcolor{keywordflow}{if}\ (subdev\_dio\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00337}00337\ \ \ \ \ \ \ \ \ DIO\_OPEN\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00338}00338\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00339}00339\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00340}00340\ \ \ \ \ subdev\_counter\ =\ comedi\_find\_subdevice\_by\_type(it,\ COMEDI\_SUBD\_COUNTER,\ subdev\_counter);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00341}00341\ \ \ \ \ \textcolor{keywordflow}{if}\ (subdev\_counter\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00342}00342\ \ \ \ \ \ \ \ \ PWM\_OPEN\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00343}00343\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00344}00344\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00345}00345\ \ \ \ \ subdev\_serial0\ =\ comedi\_find\_subdevice\_by\_type(it,\ COMEDI\_SUBD\_MEMORY,\ subdev\_serial0);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00346}00346\ \ \ \ \ \textcolor{keywordflow}{if}\ (subdev\_serial0\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00347}00347\ \ \ \ \ \ \ \ \ SERIAL\_OPEN\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00348}00348\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00349}00349\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00350}00350\ \ \ \ \ \textcolor{keywordflow}{if}\ (DO\_OPEN)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00351}00351\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Subdev\ DO\ \ \%i\ "{}},\ subdev\_do);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00352}00352\ \ \ \ \ \ \ \ \ channels\_do\ =\ comedi\_get\_n\_channels(it,\ subdev\_do);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00353}00353\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Digital\ Channels\ \%i\ "{}},\ channels\_do);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00354}00354\ \ \ \ \ \ \ \ \ maxdata\_do\ =\ comedi\_get\_maxdata(it,\ subdev\_do,\ i);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00355}00355\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Maxdata\ \%i\ "{}},\ maxdata\_do);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00356}00356\ \ \ \ \ \ \ \ \ ranges\_do\ =\ comedi\_get\_n\_ranges(it,\ subdev\_do,\ i);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00357}00357\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Ranges\ \%i\ \(\backslash\)r\(\backslash\)n"{}},\ ranges\_do);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00358}00358\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{daq_8c_source_l00359}00359\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00360}00360\ \textcolor{keywordtype}{int}\ get\_data\_sample(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00361}00361\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00362}00362\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ obits;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00363}00363\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00364}00364\ \ \ \ \ bmc.datain.D0\ =\ get\_dio\_bit(0);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00365}00365\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00366}00366\ \ \ \ \ \textcolor{keywordflow}{if}\ (JUST\_BITS)\ \{\ \textcolor{comment}{//\ send\ I/O\ bit\ by\ bit}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00367}00367\ \ \ \ \ \ \ \ \ put\_dio\_bit(0,\ bmc.dataout.d.D0);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00368}00368\ \ \ \ \ \ \ \ \ put\_dio\_bit(1,\ bmc.dataout.d.D1);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00369}00369\ \ \ \ \ \ \ \ \ put\_dio\_bit(2,\ bmc.dataout.d.D2);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00370}00370\ \ \ \ \ \ \ \ \ put\_dio\_bit(3,\ bmc.dataout.d.D3);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00371}00371\ \ \ \ \ \ \ \ \ put\_dio\_bit(4,\ bmc.dataout.d.D4);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00372}00372\ \ \ \ \ \ \ \ \ put\_dio\_bit(5,\ bmc.dataout.d.D5);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00373}00373\ \ \ \ \ \ \ \ \ put\_dio\_bit(6,\ bmc.dataout.d.D6);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00374}00374\ \ \ \ \ \ \ \ \ put\_dio\_bit(7,\ bmc.dataout.d.D7);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00375}00375\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{\ \textcolor{comment}{//\ send\ I/O\ as\ a\ byte\ mask}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00376}00376\ \ \ \ \ \ \ \ \ obits\ =\ bmc.dataout.dio\_buf;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00377}00377\ \ \ \ \ \ \ \ \ comedi\_dio\_bitfield2(it,\ subdev\_do,\ 0xff,\ \&obits,\ 0);}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00378}00378\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00379}00379\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00380}00380\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00381}00381\ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00382}00382\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00383}00383\ \textcolor{keywordtype}{double}\ lp\_filter(\textcolor{keywordtype}{double}\ \textcolor{keyword}{new},\ \textcolor{keywordtype}{int}\ bn,\ \textcolor{keywordtype}{int}\ slow)\ \textcolor{comment}{//\ low\ pass\ filter,\ slow\ rate\ of\ change\ for\ new,\ LPCHANC\ channels,\ slow/fast\ select\ (-\/1)\ to\ zero\ channel}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00384}00384\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00385}00385\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ smooth[LPCHANC]\ =\ \{0\};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00386}00386\ \ \ \ \ \textcolor{keywordtype}{double}\ lp\_speed,\ lp\_x;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00387}00387\ }
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00388}00388\ \ \ \ \ \textcolor{keywordflow}{if}\ ((bn\ >=\ LPCHANC)\ ||\ (bn\ <\ 0))\ \textcolor{comment}{//\ check\ for\ proper\ array\ position}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00389}00389\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new};}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00390}00390\ \ \ \ \ \textcolor{keywordflow}{if}\ (slow)\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00391}00391\ \ \ \ \ \ \ \ \ lp\_speed\ =\ 0.033;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00392}00392\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00393}00393\ \ \ \ \ \ \ \ \ lp\_speed\ =\ 0.125;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00394}00394\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00395}00395\ \ \ \ \ lp\_x\ =\ ((smooth[bn]*100.0)\ +\ (((\textcolor{keyword}{new}\ *\ 100.0)-\/(smooth[bn]*100.0))\ *\ lp\_speed))\ /\ 100.0;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00396}00396\ \ \ \ \ smooth[bn]\ =\ lp\_x;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00397}00397\ \ \ \ \ \textcolor{keywordflow}{if}\ (slow\ ==\ (-\/1))\ \{\ \textcolor{comment}{//\ reset\ and\ return\ zero}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00398}00398\ \ \ \ \ \ \ \ \ lp\_x\ =\ 0.0;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00399}00399\ \ \ \ \ \ \ \ \ smooth[bn]\ =\ 0.0;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00400}00400\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00401}00401\ \ \ \ \ \textcolor{keywordflow}{return}\ lp\_x;}
-\DoxyCodeLine{\Hypertarget{daq_8c_source_l00402}00402\ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00360}00360\ \ \ \ \ \textcolor{keywordflow}{if}\ (DI\_OPEN)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00361}00361\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Subdev\ DI\ \ \%i\ "{}},\ subdev\_di);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00362}00362\ \ \ \ \ \ \ \ \ channels\_di\ =\ comedi\_get\_n\_channels(it,\ subdev\_di);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00363}00363\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Digital\ Channels\ \%i\ "{}},\ channels\_di);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00364}00364\ \ \ \ \ \ \ \ \ maxdata\_di\ =\ comedi\_get\_maxdata(it,\ subdev\_di,\ i);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00365}00365\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Maxdata\ \%i\ "{}},\ maxdata\_di);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00366}00366\ \ \ \ \ \ \ \ \ ranges\_di\ =\ comedi\_get\_n\_ranges(it,\ subdev\_di,\ i);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00367}00367\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Ranges\ \%i\ \(\backslash\)r\(\backslash\)n"{}},\ ranges\_di);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00368}00368\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00369}00369\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00370}00370\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00371}00371\ \ \ \ \ \textcolor{keywordflow}{if}\ (DIO\_OPEN)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00372}00372\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Subdev\ DIO\ \ \%i\ "{}},\ subdev\_dio);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00373}00373\ \ \ \ \ \ \ \ \ channels\_dio\ =\ comedi\_get\_n\_channels(it,\ subdev\_dio);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00374}00374\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Digital\ Channels\ \%i\ "{}},\ channels\_dio);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00375}00375\ \ \ \ \ \ \ \ \ maxdata\_dio\ =\ comedi\_get\_maxdata(it,\ subdev\_dio,\ i);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00376}00376\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Maxdata\ \%i\ "{}},\ maxdata\_dio);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00377}00377\ \ \ \ \ \ \ \ \ ranges\_dio\ =\ comedi\_get\_n\_ranges(it,\ subdev\_dio,\ i);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00378}00378\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Ranges\ \%i\ \(\backslash\)r\(\backslash\)n"{}},\ ranges\_dio);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00379}00379\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00380}00380\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00381}00381\ \ \ \ \ \textcolor{keywordflow}{if}\ (PWM\_OPEN)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00382}00382\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Subdev\ COU\ \%i\ "{}},\ subdev\_counter);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00383}00383\ \ \ \ \ \ \ \ \ channels\_counter\ =\ comedi\_get\_n\_channels(it,\ subdev\_counter);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00384}00384\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Digital\ Channels\ \%i\ "{}},\ channels\_counter);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00385}00385\ \ \ \ \ \ \ \ \ maxdata\_counter\ =\ comedi\_get\_maxdata(it,\ subdev\_counter,\ i);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00386}00386\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Maxdata\ \%i\ "{}},\ maxdata\_counter);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00387}00387\ \ \ \ \ \ \ \ \ ranges\_counter\ =\ comedi\_get\_n\_ranges(it,\ subdev\_counter,\ i);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00388}00388\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Ranges\ \%i\ \(\backslash\)r\(\backslash\)n"{}},\ ranges\_counter);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00389}00389\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00390}00390\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00391}00391\ \ \ \ \ \textcolor{keywordflow}{if}\ (SERIAL\_OPEN)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00392}00392\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Subdev\ SER\ \%i\ "{}},\ subdev\_serial0);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00393}00393\ \ \ \ \ \ \ \ \ channels\_serial0\ =\ comedi\_get\_n\_channels(it,\ subdev\_serial0);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00394}00394\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Digital\ Channels\ \%i\ "{}},\ channels\_serial0);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00395}00395\ \ \ \ \ \ \ \ \ maxdata\_serial0\ =\ comedi\_get\_maxdata(it,\ subdev\_serial0,\ i);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00396}00396\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Maxdata\ \%i\ "{}},\ maxdata\_serial0);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00397}00397\ \ \ \ \ \ \ \ \ ranges\_serial0\ =\ comedi\_get\_n\_ranges(it,\ subdev\_serial0,\ i);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00398}00398\ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Ranges\ \%i\ \(\backslash\)r\(\backslash\)n"{}},\ ranges\_serial0);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00399}00399\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00400}00400\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00401}00401\ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00402}00402\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00403}00403\ \textcolor{keywordtype}{int}\ get\_data\_sample(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00404}00404\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00405}00405\ \ \ \ \ \textcolor{keywordflow}{if}\ (DI\_OPEN)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00406}00406\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bmc.BOARD\ ==\ bmcboard)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00407}00407\ \ \ \ \ \ \ \ \ \ \ \ \ comedi\_dio\_bitfield2(it,\ subdev\_di,\ 0x00,\ \&datain,\ 0x00);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00408}00408\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00409}00409\ \ \ \ \ \ \ \ \ \ \ \ \ comedi\_dio\_bitfield2(it,\ subdev\_di,\ 0x00,\ \&datain,\ 0x00);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00410}00410\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00411}00411\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00412}00412\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00413}00413\ \ \ \ \ \textcolor{comment}{//\ \ usleep(50);}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00414}00414\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00415}00415\ \ \ \ \ \textcolor{keywordflow}{if}\ (DO\_OPEN)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00416}00416\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ send\ I/O\ as\ a\ byte\ mask}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00417}00417\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bmc.BOARD\ ==\ bmcboard)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00418}00418\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (datain\ ==\ 0x3fffff)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00419}00419\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ obits.bytes[0]\ =\ bmc.dataout.bytes[0];\ \textcolor{comment}{//\ buffer\ output}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00420}00420\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ obits.bytes[1]\ =\ \string~bmc.dataout.bytes[0];}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00421}00421\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ obits.bytes[2]\ =\ \string~bmc.dataout.bytes[0];}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00422}00422\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ obits.bytes[3]\ =\ \string~bmc.dataout.bytes[0];}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00423}00423\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00424}00424\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (datain\ ==\ 0x3ffffe)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00425}00425\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ obits.bytes[0]\ =\ \string~bmc.dataout.bytes[0];\ \textcolor{comment}{//\ buffer\ output}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00426}00426\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ obits.bytes[1]\ =\ bmc.dataout.bytes[0];}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00427}00427\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ obits.bytes[2]\ =\ bmc.dataout.bytes[0];}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00428}00428\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ obits.bytes[3]\ =\ bmc.dataout.bytes[0];}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00429}00429\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00430}00430\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ obits.bytes[0]\ =\ bmc.dataout.bytes[0];\ \textcolor{comment}{//\ buffer\ output}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00431}00431\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ obits.bytes[1]\ =\ bmc.dataout.bytes[0];}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00432}00432\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ obits.bytes[2]\ =\ bmc.dataout.bytes[0];}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00433}00433\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ obits.bytes[3]\ =\ bmc.dataout.bytes[0];}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00434}00434\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00435}00435\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00436}00436\ \ \ \ \ \ \ \ \ \ \ \ \ comedi\_dio\_bitfield2(it,\ subdev\_do,\ obits.dio\_buf,\ \&obits.dio\_buf,\ 0);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00437}00437\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00438}00438\ \ \ \ \ \ \ \ \ \ \ \ \ obits.bytes[0]\ =\ bmc.dataout.bytes[0];\ \textcolor{comment}{//\ buffer\ output}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00439}00439\ \ \ \ \ \ \ \ \ \ \ \ \ comedi\_dio\_bitfield2(it,\ subdev\_do,\ 0xff,\ \&obits.dio\_buf,\ 0);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00440}00440\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00441}00441\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00442}00442\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00443}00443\ \ \ \ \ \textcolor{keywordflow}{if}\ (SERIAL\_OPEN)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00444}00444\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (++slow\_text\ >\ SLOW\_TEXT)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00445}00445\ \ \ \ \ \ \ \ \ \ \ \ \ slow\_text\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00446}00446\ \ \ \ \ \ \ \ \ \ \ \ \ serial\_buf\ =\ daq\_text\_ptr[daq\_text\_index++];}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00447}00447\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (daq\_text\_index\ >\ MAX\_STRLEN)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00448}00448\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ serial\_buf\ =\ STX;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00449}00449\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ comedi\_data\_write(it,\ subdev\_serial0,\ 0,\ range\_ao,\ AREF\_GROUND,\ serial\_buf);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00450}00450\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ daq\_text\_index\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00451}00451\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ serial\_buf\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00452}00452\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ line\_index++;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00453}00453\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ daq\_text\_ptr\ =\ daq\_text[line\_index\ \&\ 0x03];}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00454}00454\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00455}00455\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ comedi\_data\_write(it,\ subdev\_serial0,\ line\_index\ \&\ 0x03,\ range\_ao,\ AREF\_GROUND,\ serial\_buf);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00456}00456\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ comedi\_data\_read(it,\ subdev\_serial0,\ line\_index\ \&\ 0x03,\ range\_ao,\ AREF\_GROUND,\ \&serial\_buf);}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00457}00457\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00458}00458\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00459}00459\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00460}00460\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00461}00461\ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00462}00462\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00463}00463\ \textcolor{keywordtype}{double}\ lp\_filter(\textcolor{keywordtype}{double}\ \textcolor{keyword}{new},\ \textcolor{keywordtype}{int}\ bn,\ \textcolor{keywordtype}{int}\ slow)\ \textcolor{comment}{//\ low\ pass\ filter,\ slow\ rate\ of\ change\ for\ new,\ LPCHANC\ channels,\ slow/fast\ select\ (-\/1)\ to\ zero\ channel}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00464}00464\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00465}00465\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ smooth[LPCHANC]\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00466}00466\ \ \ \ \ \textcolor{keywordtype}{double}\ lp\_speed,\ lp\_x;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00467}00467\ }
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00468}00468\ \ \ \ \ \textcolor{keywordflow}{if}\ ((bn\ >=\ LPCHANC)\ ||\ (bn\ <\ 0))\ \textcolor{comment}{//\ check\ for\ proper\ array\ position}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00469}00469\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new};}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00470}00470\ \ \ \ \ \textcolor{keywordflow}{if}\ (slow)\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00471}00471\ \ \ \ \ \ \ \ \ lp\_speed\ =\ 0.033;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00472}00472\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00473}00473\ \ \ \ \ \ \ \ \ lp\_speed\ =\ 0.125;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00474}00474\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00475}00475\ \ \ \ \ lp\_x\ =\ ((smooth[bn]*100.0)\ +\ (((\textcolor{keyword}{new}\ *\ 100.0)-\/(smooth[bn]*100.0))\ *\ lp\_speed))\ /\ 100.0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00476}00476\ \ \ \ \ smooth[bn]\ =\ lp\_x;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00477}00477\ \ \ \ \ \textcolor{keywordflow}{if}\ (slow\ ==\ (-\/1))\ \{\ \textcolor{comment}{//\ reset\ and\ return\ zero}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00478}00478\ \ \ \ \ \ \ \ \ lp\_x\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00479}00479\ \ \ \ \ \ \ \ \ smooth[bn]\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00480}00480\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00481}00481\ \ \ \ \ \textcolor{keywordflow}{return}\ lp\_x;}
+\DoxyCodeLine{\Hypertarget{daq_8c_source_l00482}00482\ \}}
 
 \end{DoxyCode}

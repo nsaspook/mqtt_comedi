@@ -1,0 +1,61 @@
+\doxysection{spi2.\+h}
+\hypertarget{spi2_8h_source}{}\label{spi2_8h_source}\index{bmc\_slave.X/mcc\_generated\_files/spi2.h@{bmc\_slave.X/mcc\_generated\_files/spi2.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00024}00024\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00025}00025\ \textcolor{comment}{\ \ \ \ (c)\ 2018\ Microchip\ Technology\ Inc.\ and\ its\ subsidiaries.\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00026}00026\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00027}00027\ \textcolor{comment}{\ \ \ \ Subject\ to\ your\ compliance\ with\ these\ terms,\ you\ may\ use\ Microchip\ software\ and\ any\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00028}00028\ \textcolor{comment}{\ \ \ \ derivatives\ exclusively\ with\ Microchip\ products.\ It\ is\ your\ responsibility\ to\ comply\ with\ third\ party\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00029}00029\ \textcolor{comment}{\ \ \ \ license\ terms\ applicable\ to\ your\ use\ of\ third\ party\ software\ (including\ open\ source\ software)\ that\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00030}00030\ \textcolor{comment}{\ \ \ \ may\ accompany\ Microchip\ software.}}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00031}00031\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00032}00032\ \textcolor{comment}{\ \ \ \ THIS\ SOFTWARE\ IS\ SUPPLIED\ BY\ MICROCHIP\ "{}AS\ IS"{}.\ NO\ WARRANTIES,\ WHETHER\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00033}00033\ \textcolor{comment}{\ \ \ \ EXPRESS,\ IMPLIED\ OR\ STATUTORY,\ APPLY\ TO\ THIS\ SOFTWARE,\ INCLUDING\ ANY\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00034}00034\ \textcolor{comment}{\ \ \ \ IMPLIED\ WARRANTIES\ OF\ NON-\/INFRINGEMENT,\ MERCHANTABILITY,\ AND\ FITNESS\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00035}00035\ \textcolor{comment}{\ \ \ \ FOR\ A\ PARTICULAR\ PURPOSE.}}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00036}00036\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00037}00037\ \textcolor{comment}{\ \ \ \ IN\ NO\ EVENT\ WILL\ MICROCHIP\ BE\ LIABLE\ FOR\ ANY\ INDIRECT,\ SPECIAL,\ PUNITIVE,\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00038}00038\ \textcolor{comment}{\ \ \ \ INCIDENTAL\ OR\ CONSEQUENTIAL\ LOSS,\ DAMAGE,\ COST\ OR\ EXPENSE\ OF\ ANY\ KIND\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00039}00039\ \textcolor{comment}{\ \ \ \ WHATSOEVER\ RELATED\ TO\ THE\ SOFTWARE,\ HOWEVER\ CAUSED,\ EVEN\ IF\ MICROCHIP\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00040}00040\ \textcolor{comment}{\ \ \ \ HAS\ BEEN\ ADVISED\ OF\ THE\ POSSIBILITY\ OR\ THE\ DAMAGES\ ARE\ FORESEEABLE.\ TO\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00041}00041\ \textcolor{comment}{\ \ \ \ THE\ FULLEST\ EXTENT\ ALLOWED\ BY\ LAW,\ MICROCHIP'S\ TOTAL\ LIABILITY\ ON\ ALL\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00042}00042\ \textcolor{comment}{\ \ \ \ CLAIMS\ IN\ ANY\ WAY\ RELATED\ TO\ THIS\ SOFTWARE\ WILL\ NOT\ EXCEED\ THE\ AMOUNT\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00043}00043\ \textcolor{comment}{\ \ \ \ OF\ FEES,\ IF\ ANY,\ THAT\ YOU\ HAVE\ PAID\ DIRECTLY\ TO\ MICROCHIP\ FOR\ THIS\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00044}00044\ \textcolor{comment}{\ \ \ \ SOFTWARE.}}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00045}00045\ \textcolor{comment}{*/}}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00046}00046\ }
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00047}00047\ \textcolor{preprocessor}{\#ifndef\ SPI2\_MASTER\_H}}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00048}00048\ \textcolor{preprocessor}{\#define\ SPI2\_MASTER\_H}}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00053}00053\ }
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00054}00054\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00055}00055\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00056}00056\ \textcolor{preprocessor}{\#include\ <stdbool.h>}}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00058}00058\ \textcolor{comment}{/*\ SPI\ interfaces\ */}}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00059}00059\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ \{\ }
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00060}00060\ \ \ \ \ SPI2\_DEFAULT}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00061}00061\ \}\ spi2\_modes\_t;}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00062}00062\ }
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00063}00063\ \textcolor{keyword}{typedef}\ void\ (*spi2InterruptHandler\_t)(void);}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00064}00064\ }
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00065}00065\ \textcolor{keywordtype}{void}\ SPI2\_Initialize(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00066}00066\ \textcolor{keywordtype}{bool}\ SPI2\_Open(spi2\_modes\_t\ spi2UniqueConfiguration);}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00067}00067\ \textcolor{keywordtype}{void}\ SPI2\_Close(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00068}00068\ uint8\_t\ SPI2\_ExchangeByte(uint8\_t\ data);}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00069}00069\ \textcolor{keywordtype}{void}\ SPI2\_ExchangeBlock(\textcolor{keywordtype}{void}\ *block,\ \textcolor{keywordtype}{size\_t}\ blockSize);}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00070}00070\ \textcolor{keywordtype}{void}\ SPI2\_WriteBlock(\textcolor{keywordtype}{void}\ *block,\ \textcolor{keywordtype}{size\_t}\ blockSize);}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00071}00071\ \textcolor{keywordtype}{void}\ SPI2\_ReadBlock(\textcolor{keywordtype}{void}\ *block,\ \textcolor{keywordtype}{size\_t}\ blockSize);}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00072}00072\ \textcolor{keywordtype}{void}\ SPI2\_WriteByte(uint8\_t\ \textcolor{keywordtype}{byte});}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00073}00073\ uint8\_t\ SPI2\_ReadByte(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00075}00075\ void\ (*SPI2\_InterruptHandler)(void);}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00076}00076\ \textcolor{keywordtype}{void}\ SPI2\_SetInterruptHandler(spi2InterruptHandler\_t\ handler);}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00077}00077\ void\ (*SPI2\_RxInterruptHandler)(void);}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00078}00078\ \textcolor{keywordtype}{void}\ SPI2\_SetRxInterruptHandler(spi2InterruptHandler\_t\ handler);}
+\DoxyCodeLine{\Hypertarget{spi2_8h_source_l00079}00079\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//SPI2\_H}}
+
+\end{DoxyCode}

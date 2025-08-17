@@ -1,0 +1,652 @@
+\doxysection{bmc\+\_\+slave.\+X/tic12400.c File Reference}
+\hypertarget{tic12400_8c}{}\label{tic12400_8c}\index{bmc\_slave.X/tic12400.c@{bmc\_slave.X/tic12400.c}}
+{\ttfamily \#include "{}tic12400.\+h"{}}\newline
+Include dependency graph for tic12400.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tic12400_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{tic12400_8c_a01a286b0669b609d7dd23df50f375399}{tic12400\+\_\+version}} (void)
+\item 
+void \mbox{\hyperlink{tic12400_8c_a653b04942481cedd707a57b01d4edf12}{tic12400\+\_\+reset}} (void)
+\item 
+bool \mbox{\hyperlink{tic12400_8c_ab681081c087e931263a80e240124a1c7}{tic12400\+\_\+init}} (void)
+\item 
+uint32\+\_\+t \mbox{\hyperlink{tic12400_8c_adf7493cd4406d8fa725ce1a1c62cdc8c}{tic12400\+\_\+wr}} (const ticbuf\+\_\+type \texorpdfstring{$\ast$}{*}buffer, uint16\+\_\+t del)
+\item 
+uint32\+\_\+t \mbox{\hyperlink{tic12400_8c_a9e3e931c701218b23340e18f6899c1ff}{tic12400\+\_\+get\+\_\+sw}} (void)
+\item 
+bool \mbox{\hyperlink{tic12400_8c_a00829fa8155fce152f22b9ce4642d6d8}{tic12400\+\_\+parity}} (uint32\+\_\+t v)
+\item 
+void \mbox{\hyperlink{tic12400_8c_aed820a5a1fb361e619f2ab635700e827}{tic12400\+\_\+read\+\_\+sw}} (uint32\+\_\+t a, uintptr\+\_\+t b)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const ticbuf\+\_\+type \mbox{\hyperlink{tic12400_8c_a018eca8f429cf1988729264de586a475}{setup32}}
+\item 
+const ticbuf\+\_\+type \mbox{\hyperlink{tic12400_8c_aef795a6311f0b0dd838b75b0f6c151fc}{setup21}}
+\item 
+const ticbuf\+\_\+type \mbox{\hyperlink{tic12400_8c_aa28f195486e95f2f04fd921a91df9c96}{setup1c}}
+\item 
+const ticbuf\+\_\+type \mbox{\hyperlink{tic12400_8c_a915d0aba9bba48ed96e8f710a0458d92}{setup1b}}
+\item 
+const ticbuf\+\_\+type \mbox{\hyperlink{tic12400_8c_a2970b8030705dbb74c19d05bf65cfc48}{setup1a\+\_\+trigger}}
+\item 
+const ticbuf\+\_\+type \mbox{\hyperlink{tic12400_8c_a9efa6b42b3e668ca005d691fe03ba38f}{setup1a\+\_\+read}}
+\item 
+const ticbuf\+\_\+type \mbox{\hyperlink{tic12400_8c_aa37e5ac9abbfc9db194c2485d3221440}{setup22}}
+\item 
+const ticbuf\+\_\+type \mbox{\hyperlink{tic12400_8c_a9839f594b0f0896d1ce576fe78107813}{setup23}}
+\item 
+const ticbuf\+\_\+type \mbox{\hyperlink{tic12400_8c_a52a39a2ccf7d40a3ff7dfab80be1fd80}{setup24}}
+\item 
+const ticbuf\+\_\+type \mbox{\hyperlink{tic12400_8c_a442697d2e9e08dedf5ab4e133c1d9e89}{setup1d}}
+\item 
+const ticbuf\+\_\+type \mbox{\hyperlink{tic12400_8c_ac99ee73e4f99ad4471aafbc308670141}{setup1e}}
+\item 
+const ticbuf\+\_\+type \mbox{\hyperlink{tic12400_8c_a7ebc4162ed9b748a5882ad9499575937}{ticread05}}
+\item 
+const ticbuf\+\_\+type \mbox{\hyperlink{tic12400_8c_a27ee8dbcfbce6a1f0ae65efcb7a7c026}{ticdevid01}}
+\item 
+const ticbuf\+\_\+type \mbox{\hyperlink{tic12400_8c_a8add5a5e1cf49e29d0b0ae1ffc50a324}{ticstat02}}
+\item 
+const ticbuf\+\_\+type \mbox{\hyperlink{tic12400_8c_a842dd9a0a127fceb360173ea67c824a0}{ticreset1a}}
+\item 
+volatile uint32\+\_\+t \mbox{\hyperlink{tic12400_8c_ab9cf687919ab226b4927717481b43300}{tic12400\+\_\+status}} = 0
+\item 
+volatile uint32\+\_\+t \mbox{\hyperlink{tic12400_8c_a1ce0f0b61da7cd68d7227e603d3bc826}{tic12400\+\_\+counts}} = 0
+\item 
+volatile uint32\+\_\+t \mbox{\hyperlink{tic12400_8c_a307a6fa303c38b9cf06e00e3895c01ee}{tic12400\+\_\+value\+\_\+counts}} = 0
+\item 
+volatile uint32\+\_\+t \mbox{\hyperlink{tic12400_8c_adeec812cb93bb40c22b00492505eb077}{tic12400\+\_\+id}} = 0
+\item 
+volatile uint32\+\_\+t \mbox{\hyperlink{tic12400_8c_aaba64f6e91ee3ac19a474c2c2bfafea1}{tic12400\+\_\+read\+\_\+status}}
+\item 
+volatile uint32\+\_\+t \mbox{\hyperlink{tic12400_8c_a829bd098d3cbbeeb63fec811121c53f1}{tic12400\+\_\+value}} = 1957
+\item 
+volatile uint32\+\_\+t \mbox{\hyperlink{tic12400_8c_a3932f330d9c024cb85de1b42d974ac85}{tic12400\+\_\+switch}}
+\item 
+volatile uint32\+\_\+t \mbox{\hyperlink{tic12400_8c_ad38b4db9546f962416b8b75bfebd1360}{ticvalue}} = 0
+\item 
+volatile uint32\+\_\+t \mbox{\hyperlink{tic12400_8c_a03b2802ef3d5f48325b1ea0f633bd19e}{tic12400\+\_\+fail\+\_\+count}}
+\item 
+volatile uint32\+\_\+t \mbox{\hyperlink{tic12400_8c_a2ba5a4140be0f7b8e8754e28e29ede5a}{tic12400\+\_\+parity\+\_\+count}}
+\item 
+volatile bool \mbox{\hyperlink{tic12400_8c_a12ec1222b5a4eb97adc7e8f51b4f3722}{tic12400\+\_\+init\+\_\+ok}} = false
+\item 
+volatile bool \mbox{\hyperlink{tic12400_8c_a650c7740493cd23b8101772b1d3b66a8}{tic12400\+\_\+event}} = false
+\item 
+volatile bool \mbox{\hyperlink{tic12400_8c_ad669a207ac69ba0ca5b5cdfc0e6b4c55}{tic12400\+\_\+parity\+\_\+status}} = false
+\item 
+volatile bool \mbox{\hyperlink{tic12400_8c_a5e4e7ec00bb5425f5b3af4faf20c4daa}{tic12400\+\_\+read\+\_\+error}} = false
+\item 
+volatile int32\+\_\+t \mbox{\hyperlink{tic12400_8c_a6a2576bb0a60555b7d56121c923ffe6e}{tic12400\+\_\+fail\+\_\+value}} = 0
+\item 
+volatile uint8\+\_\+t \mbox{\hyperlink{tic12400_8c_a631d564862a73be6103e273312001544}{b\+\_\+read}} = 0
+\item 
+ticrw\+\_\+type \mbox{\hyperlink{tic12400_8c_ae26696de60a4e47e1978ea5296ec8f17}{tic\+\_\+rw}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+TC12400 driver for Q84 v0.\+1 uses SPI1 mode1 at 4MHz no interrupts external interrupt 2 can be used to detect chip switch events only runs polled mode for now 
+
+Definition in file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{tic12400_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{tic12400_8c_a9e3e931c701218b23340e18f6899c1ff}\index{tic12400.c@{tic12400.c}!tic12400\_get\_sw@{tic12400\_get\_sw}}
+\index{tic12400\_get\_sw@{tic12400\_get\_sw}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_get\_sw()}{tic12400\_get\_sw()}}
+{\footnotesize\ttfamily \label{tic12400_8c_a9e3e931c701218b23340e18f6899c1ff} 
+uint32\+\_\+t tic12400\+\_\+get\+\_\+sw (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00266}{266}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_ab681081c087e931263a80e240124a1c7}\index{tic12400.c@{tic12400.c}!tic12400\_init@{tic12400\_init}}
+\index{tic12400\_init@{tic12400\_init}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_init()}{tic12400\_init()}}
+{\footnotesize\ttfamily \label{tic12400_8c_ab681081c087e931263a80e240124a1c7} 
+bool tic12400\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00152}{152}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a00829fa8155fce152f22b9ce4642d6d8}\index{tic12400.c@{tic12400.c}!tic12400\_parity@{tic12400\_parity}}
+\index{tic12400\_parity@{tic12400\_parity}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_parity()}{tic12400\_parity()}}
+{\footnotesize\ttfamily \label{tic12400_8c_a00829fa8155fce152f22b9ce4642d6d8} 
+bool tic12400\+\_\+parity (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{v}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00285}{285}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_aed820a5a1fb361e619f2ab635700e827}\index{tic12400.c@{tic12400.c}!tic12400\_read\_sw@{tic12400\_read\_sw}}
+\index{tic12400\_read\_sw@{tic12400\_read\_sw}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_read\_sw()}{tic12400\_read\_sw()}}
+{\footnotesize\ttfamily \label{tic12400_8c_aed820a5a1fb361e619f2ab635700e827} 
+void tic12400\+\_\+read\+\_\+sw (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{a}{, }\item[{uintptr\+\_\+t}]{b}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00298}{298}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a653b04942481cedd707a57b01d4edf12}\index{tic12400.c@{tic12400.c}!tic12400\_reset@{tic12400\_reset}}
+\index{tic12400\_reset@{tic12400\_reset}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_reset()}{tic12400\_reset()}}
+{\footnotesize\ttfamily \label{tic12400_8c_a653b04942481cedd707a57b01d4edf12} 
+void tic12400\+\_\+reset (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00134}{134}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a01a286b0669b609d7dd23df50f375399}\index{tic12400.c@{tic12400.c}!tic12400\_version@{tic12400\_version}}
+\index{tic12400\_version@{tic12400\_version}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_version()}{tic12400\_version()}}
+{\footnotesize\ttfamily \label{tic12400_8c_a01a286b0669b609d7dd23df50f375399} 
+void tic12400\+\_\+version (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00121}{121}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_adf7493cd4406d8fa725ce1a1c62cdc8c}\index{tic12400.c@{tic12400.c}!tic12400\_wr@{tic12400\_wr}}
+\index{tic12400\_wr@{tic12400\_wr}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_wr()}{tic12400\_wr()}}
+{\footnotesize\ttfamily \label{tic12400_8c_adf7493cd4406d8fa725ce1a1c62cdc8c} 
+uint32\+\_\+t tic12400\+\_\+wr (\begin{DoxyParamCaption}\item[{const ticbuf\+\_\+type \texorpdfstring{$\ast$}{*}}]{buffer}{, }\item[{uint16\+\_\+t}]{del}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00230}{230}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+
+
+\label{doc-var-members}
+\Hypertarget{tic12400_8c_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{tic12400_8c_a631d564862a73be6103e273312001544}\index{tic12400.c@{tic12400.c}!b\_read@{b\_read}}
+\index{b\_read@{b\_read}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{b\_read}{b\_read}}
+{\footnotesize\ttfamily \label{tic12400_8c_a631d564862a73be6103e273312001544} 
+volatile uint8\+\_\+t b\+\_\+read = 0}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00113}{113}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a9efa6b42b3e668ca005d691fe03ba38f}\index{tic12400.c@{tic12400.c}!setup1a\_read@{setup1a\_read}}
+\index{setup1a\_read@{setup1a\_read}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{setup1a\_read}{setup1a\_read}}
+{\footnotesize\ttfamily \label{tic12400_8c_a9efa6b42b3e668ca005d691fe03ba38f} 
+const ticbuf\+\_\+type setup1a\+\_\+read}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .data3\ =\ 0x34,\ }
+\DoxyCodeLine{\ \ \ \ .data2\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data1\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data0\ =\ 0x00,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00044}{44}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a2970b8030705dbb74c19d05bf65cfc48}\index{tic12400.c@{tic12400.c}!setup1a\_trigger@{setup1a\_trigger}}
+\index{setup1a\_trigger@{setup1a\_trigger}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{setup1a\_trigger}{setup1a\_trigger}}
+{\footnotesize\ttfamily \label{tic12400_8c_a2970b8030705dbb74c19d05bf65cfc48} 
+const ticbuf\+\_\+type setup1a\+\_\+trigger}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .data3\ =\ 0x34\ +\ write\_bit,\ }
+\DoxyCodeLine{\ \ \ \ .data2\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data1\ =\ 0x10,}
+\DoxyCodeLine{\ \ \ \ .data0\ =\ 0x00,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00038}{38}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a915d0aba9bba48ed96e8f710a0458d92}\index{tic12400.c@{tic12400.c}!setup1b@{setup1b}}
+\index{setup1b@{setup1b}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{setup1b}{setup1b}}
+{\footnotesize\ttfamily \label{tic12400_8c_a915d0aba9bba48ed96e8f710a0458d92} 
+const ticbuf\+\_\+type setup1b}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .data3\ =\ 0x37\ +\ write\_bit,}
+\DoxyCodeLine{\ \ \ \ .data2\ =\ 0x7f,}
+\DoxyCodeLine{\ \ \ \ .data1\ =\ 0xff,}
+\DoxyCodeLine{\ \ \ \ .data0\ =\ 0xff,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00032}{32}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_aa28f195486e95f2f04fd921a91df9c96}\index{tic12400.c@{tic12400.c}!setup1c@{setup1c}}
+\index{setup1c@{setup1c}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{setup1c}{setup1c}}
+{\footnotesize\ttfamily \label{tic12400_8c_aa28f195486e95f2f04fd921a91df9c96} 
+const ticbuf\+\_\+type setup1c}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .data3\ =\ 0x38\ +\ write\_bit,}
+\DoxyCodeLine{\ \ \ \ .data2\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data1\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data0\ =\ 0x01,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00026}{26}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a442697d2e9e08dedf5ab4e133c1d9e89}\index{tic12400.c@{tic12400.c}!setup1d@{setup1d}}
+\index{setup1d@{setup1d}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{setup1d}{setup1d}}
+{\footnotesize\ttfamily \label{tic12400_8c_a442697d2e9e08dedf5ab4e133c1d9e89} 
+const ticbuf\+\_\+type setup1d}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .data3\ =\ 0x3a\ +\ write\_bit,}
+\DoxyCodeLine{\ \ \ \ .data2\ =\ 0x7f,}
+\DoxyCodeLine{\ \ \ \ .data1\ =\ 0xff,}
+\DoxyCodeLine{\ \ \ \ .data0\ =\ 0xfe,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00068}{68}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_ac99ee73e4f99ad4471aafbc308670141}\index{tic12400.c@{tic12400.c}!setup1e@{setup1e}}
+\index{setup1e@{setup1e}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{setup1e}{setup1e}}
+{\footnotesize\ttfamily \label{tic12400_8c_ac99ee73e4f99ad4471aafbc308670141} 
+const ticbuf\+\_\+type setup1e}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .data3\ =\ 0x3c\ +\ write\_bit,}
+\DoxyCodeLine{\ \ \ \ .data2\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data1\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data0\ =\ 0x00,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00074}{74}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_aef795a6311f0b0dd838b75b0f6c151fc}\index{tic12400.c@{tic12400.c}!setup21@{setup21}}
+\index{setup21@{setup21}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{setup21}{setup21}}
+{\footnotesize\ttfamily \label{tic12400_8c_aef795a6311f0b0dd838b75b0f6c151fc} 
+const ticbuf\+\_\+type setup21}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .data3\ =\ 0x42\ +\ write\_bit,}
+\DoxyCodeLine{\ \ \ \ .data2\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data1\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data0\ =\ 0x00,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00020}{20}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_aa37e5ac9abbfc9db194c2485d3221440}\index{tic12400.c@{tic12400.c}!setup22@{setup22}}
+\index{setup22@{setup22}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{setup22}{setup22}}
+{\footnotesize\ttfamily \label{tic12400_8c_aa37e5ac9abbfc9db194c2485d3221440} 
+const ticbuf\+\_\+type setup22}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .data3\ =\ 0x45\ +\ write\_bit,}
+\DoxyCodeLine{\ \ \ \ .data2\ =\ 0x7f,}
+\DoxyCodeLine{\ \ \ \ .data1\ =\ 0xff,}
+\DoxyCodeLine{\ \ \ \ .data0\ =\ 0xff,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00050}{50}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a9839f594b0f0896d1ce576fe78107813}\index{tic12400.c@{tic12400.c}!setup23@{setup23}}
+\index{setup23@{setup23}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{setup23}{setup23}}
+{\footnotesize\ttfamily \label{tic12400_8c_a9839f594b0f0896d1ce576fe78107813} 
+const ticbuf\+\_\+type setup23}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .data3\ =\ 0x47\ +\ write\_bit,}
+\DoxyCodeLine{\ \ \ \ .data2\ =\ 0x7f,}
+\DoxyCodeLine{\ \ \ \ .data1\ =\ 0xff,}
+\DoxyCodeLine{\ \ \ \ .data0\ =\ 0xff,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00056}{56}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a52a39a2ccf7d40a3ff7dfab80be1fd80}\index{tic12400.c@{tic12400.c}!setup24@{setup24}}
+\index{setup24@{setup24}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{setup24}{setup24}}
+{\footnotesize\ttfamily \label{tic12400_8c_a52a39a2ccf7d40a3ff7dfab80be1fd80} 
+const ticbuf\+\_\+type setup24}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .data3\ =\ 0x48\ +\ write\_bit,}
+\DoxyCodeLine{\ \ \ \ .data2\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data1\ =\ 0x80,}
+\DoxyCodeLine{\ \ \ \ .data0\ =\ 0x00,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00062}{62}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a018eca8f429cf1988729264de586a475}\index{tic12400.c@{tic12400.c}!setup32@{setup32}}
+\index{setup32@{setup32}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{setup32}{setup32}}
+{\footnotesize\ttfamily \label{tic12400_8c_a018eca8f429cf1988729264de586a475} 
+const ticbuf\+\_\+type setup32}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .data3\ =\ 0x64\ +\ write\_bit,}
+\DoxyCodeLine{\ \ \ \ .data2\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data1\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data0\ =\ 0x01,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00014}{14}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a1ce0f0b61da7cd68d7227e603d3bc826}\index{tic12400.c@{tic12400.c}!tic12400\_counts@{tic12400\_counts}}
+\index{tic12400\_counts@{tic12400\_counts}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_counts}{tic12400\_counts}}
+{\footnotesize\ttfamily \label{tic12400_8c_a1ce0f0b61da7cd68d7227e603d3bc826} 
+volatile uint32\+\_\+t tic12400\+\_\+counts = 0}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00108}{108}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a650c7740493cd23b8101772b1d3b66a8}\index{tic12400.c@{tic12400.c}!tic12400\_event@{tic12400\_event}}
+\index{tic12400\_event@{tic12400\_event}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_event}{tic12400\_event}}
+{\footnotesize\ttfamily \label{tic12400_8c_a650c7740493cd23b8101772b1d3b66a8} 
+volatile bool tic12400\+\_\+event = false}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00110}{110}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a03b2802ef3d5f48325b1ea0f633bd19e}\index{tic12400.c@{tic12400.c}!tic12400\_fail\_count@{tic12400\_fail\_count}}
+\index{tic12400\_fail\_count@{tic12400\_fail\_count}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_fail\_count}{tic12400\_fail\_count}}
+{\footnotesize\ttfamily \label{tic12400_8c_a03b2802ef3d5f48325b1ea0f633bd19e} 
+volatile uint32\+\_\+t tic12400\+\_\+fail\+\_\+count}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00109}{109}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a6a2576bb0a60555b7d56121c923ffe6e}\index{tic12400.c@{tic12400.c}!tic12400\_fail\_value@{tic12400\_fail\_value}}
+\index{tic12400\_fail\_value@{tic12400\_fail\_value}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_fail\_value}{tic12400\_fail\_value}}
+{\footnotesize\ttfamily \label{tic12400_8c_a6a2576bb0a60555b7d56121c923ffe6e} 
+volatile int32\+\_\+t tic12400\+\_\+fail\+\_\+value = 0}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00112}{112}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_adeec812cb93bb40c22b00492505eb077}\index{tic12400.c@{tic12400.c}!tic12400\_id@{tic12400\_id}}
+\index{tic12400\_id@{tic12400\_id}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_id}{tic12400\_id}}
+{\footnotesize\ttfamily \label{tic12400_8c_adeec812cb93bb40c22b00492505eb077} 
+volatile uint32\+\_\+t tic12400\+\_\+id = 0}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00108}{108}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a12ec1222b5a4eb97adc7e8f51b4f3722}\index{tic12400.c@{tic12400.c}!tic12400\_init\_ok@{tic12400\_init\_ok}}
+\index{tic12400\_init\_ok@{tic12400\_init\_ok}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_init\_ok}{tic12400\_init\_ok}}
+{\footnotesize\ttfamily \label{tic12400_8c_a12ec1222b5a4eb97adc7e8f51b4f3722} 
+volatile bool tic12400\+\_\+init\+\_\+ok = false}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00110}{110}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a2ba5a4140be0f7b8e8754e28e29ede5a}\index{tic12400.c@{tic12400.c}!tic12400\_parity\_count@{tic12400\_parity\_count}}
+\index{tic12400\_parity\_count@{tic12400\_parity\_count}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_parity\_count}{tic12400\_parity\_count}}
+{\footnotesize\ttfamily \label{tic12400_8c_a2ba5a4140be0f7b8e8754e28e29ede5a} 
+volatile uint32\+\_\+t tic12400\+\_\+parity\+\_\+count}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00109}{109}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_ad669a207ac69ba0ca5b5cdfc0e6b4c55}\index{tic12400.c@{tic12400.c}!tic12400\_parity\_status@{tic12400\_parity\_status}}
+\index{tic12400\_parity\_status@{tic12400\_parity\_status}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_parity\_status}{tic12400\_parity\_status}}
+{\footnotesize\ttfamily \label{tic12400_8c_ad669a207ac69ba0ca5b5cdfc0e6b4c55} 
+volatile bool tic12400\+\_\+parity\+\_\+status = false}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00111}{111}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a5e4e7ec00bb5425f5b3af4faf20c4daa}\index{tic12400.c@{tic12400.c}!tic12400\_read\_error@{tic12400\_read\_error}}
+\index{tic12400\_read\_error@{tic12400\_read\_error}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_read\_error}{tic12400\_read\_error}}
+{\footnotesize\ttfamily \label{tic12400_8c_a5e4e7ec00bb5425f5b3af4faf20c4daa} 
+volatile bool tic12400\+\_\+read\+\_\+error = false}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00111}{111}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_aaba64f6e91ee3ac19a474c2c2bfafea1}\index{tic12400.c@{tic12400.c}!tic12400\_read\_status@{tic12400\_read\_status}}
+\index{tic12400\_read\_status@{tic12400\_read\_status}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_read\_status}{tic12400\_read\_status}}
+{\footnotesize\ttfamily \label{tic12400_8c_aaba64f6e91ee3ac19a474c2c2bfafea1} 
+volatile uint32\+\_\+t tic12400\+\_\+read\+\_\+status}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00108}{108}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_ab9cf687919ab226b4927717481b43300}\index{tic12400.c@{tic12400.c}!tic12400\_status@{tic12400\_status}}
+\index{tic12400\_status@{tic12400\_status}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_status}{tic12400\_status}}
+{\footnotesize\ttfamily \label{tic12400_8c_ab9cf687919ab226b4927717481b43300} 
+volatile uint32\+\_\+t tic12400\+\_\+status = 0}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00108}{108}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a3932f330d9c024cb85de1b42d974ac85}\index{tic12400.c@{tic12400.c}!tic12400\_switch@{tic12400\_switch}}
+\index{tic12400\_switch@{tic12400\_switch}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_switch}{tic12400\_switch}}
+{\footnotesize\ttfamily \label{tic12400_8c_a3932f330d9c024cb85de1b42d974ac85} 
+volatile uint32\+\_\+t tic12400\+\_\+switch}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00109}{109}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a829bd098d3cbbeeb63fec811121c53f1}\index{tic12400.c@{tic12400.c}!tic12400\_value@{tic12400\_value}}
+\index{tic12400\_value@{tic12400\_value}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_value}{tic12400\_value}}
+{\footnotesize\ttfamily \label{tic12400_8c_a829bd098d3cbbeeb63fec811121c53f1} 
+volatile uint32\+\_\+t tic12400\+\_\+value = 1957}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00109}{109}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a307a6fa303c38b9cf06e00e3895c01ee}\index{tic12400.c@{tic12400.c}!tic12400\_value\_counts@{tic12400\_value\_counts}}
+\index{tic12400\_value\_counts@{tic12400\_value\_counts}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic12400\_value\_counts}{tic12400\_value\_counts}}
+{\footnotesize\ttfamily \label{tic12400_8c_a307a6fa303c38b9cf06e00e3895c01ee} 
+volatile uint32\+\_\+t tic12400\+\_\+value\+\_\+counts = 0}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00108}{108}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_ae26696de60a4e47e1978ea5296ec8f17}\index{tic12400.c@{tic12400.c}!tic\_rw@{tic\_rw}}
+\index{tic\_rw@{tic\_rw}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{tic\_rw}{tic\_rw}}
+{\footnotesize\ttfamily \label{tic12400_8c_ae26696de60a4e47e1978ea5296ec8f17} 
+ticrw\+\_\+type tic\+\_\+rw}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00115}{115}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a27ee8dbcfbce6a1f0ae65efcb7a7c026}\index{tic12400.c@{tic12400.c}!ticdevid01@{ticdevid01}}
+\index{ticdevid01@{ticdevid01}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{ticdevid01}{ticdevid01}}
+{\footnotesize\ttfamily \label{tic12400_8c_a27ee8dbcfbce6a1f0ae65efcb7a7c026} 
+const ticbuf\+\_\+type ticdevid01}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .data3\ =\ 0x02,\ }
+\DoxyCodeLine{\ \ \ \ .data2\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data1\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data0\ =\ 0x01,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00086}{86}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a7ebc4162ed9b748a5882ad9499575937}\index{tic12400.c@{tic12400.c}!ticread05@{ticread05}}
+\index{ticread05@{ticread05}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{ticread05}{ticread05}}
+{\footnotesize\ttfamily \label{tic12400_8c_a7ebc4162ed9b748a5882ad9499575937} 
+const ticbuf\+\_\+type ticread05}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .data3\ =\ 0x0a,}
+\DoxyCodeLine{\ \ \ \ .data2\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data1\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data0\ =\ 0x01,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00080}{80}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a842dd9a0a127fceb360173ea67c824a0}\index{tic12400.c@{tic12400.c}!ticreset1a@{ticreset1a}}
+\index{ticreset1a@{ticreset1a}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{ticreset1a}{ticreset1a}}
+{\footnotesize\ttfamily \label{tic12400_8c_a842dd9a0a127fceb360173ea67c824a0} 
+const ticbuf\+\_\+type ticreset1a}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .data3\ =\ 0x34\ +\ write\_bit,\ }
+\DoxyCodeLine{\ \ \ \ .data2\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data1\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data0\ =\ 0x02,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00098}{98}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_a8add5a5e1cf49e29d0b0ae1ffc50a324}\index{tic12400.c@{tic12400.c}!ticstat02@{ticstat02}}
+\index{ticstat02@{ticstat02}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{ticstat02}{ticstat02}}
+{\footnotesize\ttfamily \label{tic12400_8c_a8add5a5e1cf49e29d0b0ae1ffc50a324} 
+const ticbuf\+\_\+type ticstat02}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .data3\ =\ 0x04,\ }
+\DoxyCodeLine{\ \ \ \ .data2\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data1\ =\ 0x00,}
+\DoxyCodeLine{\ \ \ \ .data0\ =\ 0x00,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00092}{92}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+
+\Hypertarget{tic12400_8c_ad38b4db9546f962416b8b75bfebd1360}\index{tic12400.c@{tic12400.c}!ticvalue@{ticvalue}}
+\index{ticvalue@{ticvalue}!tic12400.c@{tic12400.c}}
+\doxysubsubsection{\texorpdfstring{ticvalue}{ticvalue}}
+{\footnotesize\ttfamily \label{tic12400_8c_ad38b4db9546f962416b8b75bfebd1360} 
+volatile uint32\+\_\+t ticvalue = 0}
+
+
+
+Definition at line \mbox{\hyperlink{tic12400_8c_source_l00109}{109}} of file \mbox{\hyperlink{tic12400_8c_source}{tic12400.\+c}}.
+

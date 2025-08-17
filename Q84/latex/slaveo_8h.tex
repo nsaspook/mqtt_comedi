@@ -1,0 +1,799 @@
+\doxysection{bmc\+\_\+slave.\+X/slaveo.h File Reference}
+\hypertarget{slaveo_8h}{}\label{slaveo_8h}\index{bmc\_slave.X/slaveo.h@{bmc\_slave.X/slaveo.h}}
+{\ttfamily \#include $<$xc.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include "{}mconfig.\+h"{}}\newline
+{\ttfamily \#include "{}mcc\+\_\+generated\+\_\+files/tmr0.\+h"{}}\newline
+{\ttfamily \#include "{}eadog.\+h"{}}\newline
+{\ttfamily \#include "{}timers.\+h"{}}\newline
+Include dependency graph for slaveo.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{slaveo_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{slaveo_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structspi__link__type__ss}{spi\+\_\+link\+\_\+type\+\_\+ss}}
+\item 
+struct \mbox{\hyperlink{structspi__stat__type__ss}{spi\+\_\+stat\+\_\+type\+\_\+ss}}
+\item 
+struct \mbox{\hyperlink{structserial__buffer__type__ss}{serial\+\_\+buffer\+\_\+type\+\_\+ss}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a536e83422870fe45f45e29ab310b32bb}{SLAVEO\+\_\+\+DRIVER}}~"{}V0.\+8"{}
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a82a8421800c146cafebfe4fb027c609a}{SLAVE\+\_\+\+DEBUG}}
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_ac28b77ef3664a272954f66b0ae3ad260}{CMD\+\_\+\+ZERO}}~0b00000000
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_aabf17afb5dadda22c0f1dff8f64316a1}{CMD\+\_\+\+ADC\+\_\+\+GO}}~0b10000000
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a79c4d95f36b11dfc52ae61ac2093814d}{CMD\+\_\+\+DAC\+\_\+\+GO}}~0x90
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a36e8996b8ed0b54dffcee14919e6da68}{CMD\+\_\+\+PORT\+\_\+\+GO}}~0xa0
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_ab0a458610e06ccb7513072b8ab18fc6d}{CMD\+\_\+\+CHAR\+\_\+\+GO}}~0b10110000
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a53d07a2daf72dd117c84a6d94a902518}{CMD\+\_\+\+ADC\+\_\+\+DATA}}~0b11000000
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_abac8491ff738e1f90891867c19a927d5}{CMD\+\_\+\+PORT\+\_\+\+DATA}}~0b11010000
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_aff5f45c2fed24a9b7a69d7854abedfad}{CMD\+\_\+\+CHAR\+\_\+\+DATA}}~0b11100000
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_ab4e70063506972fd8c84e7cf15e92608}{CMD\+\_\+\+PORT\+\_\+\+GET}}~0b11110000
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a0a437a59afa27dce712883a246cf5c48}{CMD\+\_\+\+CHAR\+\_\+\+GET}}~0b00010000
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_ac0df3e3beccc91b75cf33e2cec489dc9}{CMD\+\_\+\+DUMMY\+\_\+\+CFG}}~0b01000000
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a0ed9ccd23e9bd8de60c718cbdf8672d4}{CMD\+\_\+\+DEAD}}~0b11111111
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_aee323f92dec304514358bb75c5737d58}{CHECKBYTE}}~0x57
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_ac36bd94752cfcd76289723ed08b19809}{CMD\+\_\+\+DUMMY}}~0b01100111 /\texorpdfstring{$\ast$}{*} 7 channels 4.\+096 \texorpdfstring{$\ast$}{*}/
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_aa156aeec442cc1ea624968c52d7239dd}{NUM\+\_\+\+AI\+\_\+\+CHAN}}~15
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_afec7806f24d486d23e49cfa6b6f9563a}{AI\+\_\+\+BUFFER\+\_\+\+NUM}}~0x40
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a15de5d2972b7a20c5583182a3b30b581}{AI\+\_\+\+CHAN\+\_\+\+FIX}}~5
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a5e232965d7bd1a7f601656070693f2d5}{NUM\+\_\+\+AO\+\_\+\+CHAN}}~1
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a8891e251d251e17f8a7d8affb3e2ae04}{AO\+\_\+\+BUFFER\+\_\+\+NUM}}~0x40
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_ac236b5f0aa5adc8f1546509d82fb5cdc}{SPI\+\_\+\+BUFFER\+\_\+\+LEN}}~10
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a0264cbb3ae1f347fbaad0f989ce9b89d}{PACKET\+\_\+\+BUF\+\_\+\+SIZ}}~16
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_ac2bb870098b24b1db60eb1951138dccc}{RSTRING\+\_\+\+BUF\+\_\+\+SIZ}}~81
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a30d02ae8779276d872f84bfff754cc1f}{HI\+\_\+\+NIBBLE}}~0xf0
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a9880da3967c5a23e094be4706f06ce6f}{LO\+\_\+\+NIBBLE}}~0x0f
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a11100cd5ae4a03cda680e0473f35183b}{ADC\+\_\+\+SWAP\+\_\+\+MASK}}~0b01000000
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a1d663fa8e7d7f4c378e172ae31790e37}{UART\+\_\+\+DUMMY\+\_\+\+MASK}}~0b01000000
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a5a363510c4027e02f852999161302036}{PORT\+\_\+\+GET\+\_\+\+BYTES}}~7
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a0b5256490c35a087895fb008003791d2}{CHAR\+\_\+\+GET\+\_\+\+BYTES}}~7
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_ab974ed07000c1bdf41a5807184a41c7d}{CFG\+\_\+\+GET\+\_\+\+BYTES}}~7
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a4c0f343fec3cf175790b4d00e365fc40}{ADC\+\_\+\+GET\+\_\+\+BYTES}}~7
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_aff229b007d289eb4b525b7acb0971f1a}{PORT\+\_\+\+GO\+\_\+\+BYTES}}~7
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a2c8d3a20377cd083ce44c796dd57755e}{CHAR\+\_\+\+GO\+\_\+\+BYTES}}~7
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_abc3163e76b4da17a036b220673bcbc96}{DAC\+\_\+\+GO\+\_\+\+BYTES}}~7
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries daqbmc\+\_\+packet\+\_\+index} \{ \newline
+{\bfseries BMC\+\_\+\+CMD} = 0
+, {\bfseries BMC\+\_\+\+D0}
+, {\bfseries BMC\+\_\+\+D1}
+, {\bfseries BMC\+\_\+\+D2}
+, \newline
+{\bfseries BMC\+\_\+\+D3}
+, {\bfseries BMC\+\_\+\+D4}
+, {\bfseries BMC\+\_\+\+EXT} = 6
+, {\bfseries BMC\+\_\+\+CKSUM} = 7
+, \newline
+{\bfseries BMC\+\_\+\+DUMMY}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{slaveo_8h_a13d71702fb808c4dca7fafe2f0ade8d8}{check\+\_\+slaveo}} (void)
+\item 
+void \mbox{\hyperlink{slaveo_8h_a58608aac44cc70084f48303adf0a5b7e}{init\+\_\+slaveo}} (void)
+\item 
+void \mbox{\hyperlink{slaveo_8h_abdd2f912d6ff91601027e43edc419c89}{slaveo\+\_\+rx\+\_\+isr}} (void)
+\item 
+void \mbox{\hyperlink{slaveo_8h_a38d27b693e0a3eda98599cb01addc31c}{slaveo\+\_\+spi\+\_\+isr}} (void)
+\item 
+void \mbox{\hyperlink{slaveo_8h_acb8f9ae744d1bcb20cb6188e44e32ec6}{slaveo\+\_\+time\+\_\+isr}} (void)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+volatile struct \mbox{\hyperlink{structspi__link__type__ss}{spi\+\_\+link\+\_\+type\+\_\+ss}} \mbox{\hyperlink{slaveo_8h_a661fa5b799a982c5482a7557b81dfe3c}{spi\+\_\+comm\+\_\+ss}}
+\item 
+volatile struct \mbox{\hyperlink{structserial__buffer__type__ss}{serial\+\_\+buffer\+\_\+type\+\_\+ss}} \mbox{\hyperlink{slaveo_8h_a4459788a7749e371d8ac2f24c79f781d}{serial\+\_\+buffer\+\_\+ss}}
+\item 
+\Hypertarget{slaveo_8h_af326a2640cc8e992664db7f5212e0968}\label{slaveo_8h_af326a2640cc8e992664db7f5212e0968} 
+volatile struct \mbox{\hyperlink{structspi__stat__type__ss}{spi\+\_\+stat\+\_\+type\+\_\+ss}} spi\+\_\+stat\+\_\+ss {\bfseries report\+\_\+stat\+\_\+ss}
+\item 
+volatile uint8\+\_\+t \mbox{\hyperlink{slaveo_8h_abf153ed8a2e07afd475e98ee051593ac}{data\+\_\+in2}}
+\item 
+volatile uint8\+\_\+t \mbox{\hyperlink{slaveo_8h_a409f4f0e050ad7863d2dcf4f6d2e0b77}{adc\+\_\+buffer\+\_\+ptr}}
+\item 
+volatile uint8\+\_\+t \mbox{\hyperlink{slaveo_8h_af637f42904417bf40f4bdd3b3f59a6e3}{adc\+\_\+channel}}
+\item 
+volatile uint8\+\_\+t \mbox{\hyperlink{slaveo_8h_a4b613adf1dc9edfbc9951cf9b86ec2e3}{channel}}
+\item 
+volatile uint8\+\_\+t \mbox{\hyperlink{slaveo_8h_abc640bf4a8c9358954135c1fd1b0af4b}{upper}}
+\item 
+volatile uint16\+\_\+t \mbox{\hyperlink{slaveo_8h_a8684d19035db1c8da57163a57cd4cd76}{adc\+\_\+buffer}} \mbox{[}AI\+\_\+\+BUFFER\+\_\+\+NUM\mbox{]}
+\item 
+volatile uint16\+\_\+t \mbox{\hyperlink{slaveo_8h_a328abcaa467b0a3acadc8d456be75a38}{adc\+\_\+data\+\_\+in}}
+\item 
+volatile uint16\+\_\+t \mbox{\hyperlink{slaveo_8h_a59decdcbfa4747da1d06b5a346ea58e5}{dac\+\_\+buffer}} \mbox{[}AO\+\_\+\+BUFFER\+\_\+\+NUM\mbox{]}
+\item 
+volatile uint16\+\_\+t \mbox{\hyperlink{slaveo_8h_ad7c822363bf92962cc511f719df133fd}{dac\+\_\+data\+\_\+in}}
+\item 
+\mbox{\hyperlink{structV__data}{V\+\_\+data}} \mbox{\hyperlink{slaveo_8h_a3677a1b059657e0e0bcfa48d64f81cb4}{V}}
+\item 
+volatile bool \mbox{\hyperlink{slaveo_8h_a9c80ef79451ebf55ab7f49e5d4d429be}{failure}}
+\item 
+volatile uint8\+\_\+t \mbox{\hyperlink{slaveo_8h_a8f56b26d3c2c03e3c004505d45319d97}{in\+\_\+buf1}}
+\item 
+volatile uint8\+\_\+t \mbox{\hyperlink{slaveo_8h_abdba0bb87d49916ea9e39822647f8a74}{in\+\_\+buf2}}
+\item 
+volatile uint8\+\_\+t \mbox{\hyperlink{slaveo_8h_a7aab907e5b001af4329672277f7177db}{in\+\_\+buf3}}
+\item 
+volatile uint8\+\_\+t \mbox{\hyperlink{slaveo_8h_a10f21e7ac31a5ea2ca838b37ead801e2}{tmp\+\_\+buf}}
+\item 
+volatile bool \mbox{\hyperlink{slaveo_8h_acef34ed2b8434815f3390436d7c05346}{r\+\_\+string\+\_\+ready}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+File\+: \doxylink{slaveo_8h}{slaveo.\+h} Author\+: root
+
+Created on April 26, 2025, 11\+:06 AM 
+
+Definition in file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+
+
+\label{doc-define-members}
+\Hypertarget{slaveo_8h_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{slaveo_8h_a4c0f343fec3cf175790b4d00e365fc40}\index{slaveo.h@{slaveo.h}!ADC\_GET\_BYTES@{ADC\_GET\_BYTES}}
+\index{ADC\_GET\_BYTES@{ADC\_GET\_BYTES}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{ADC\_GET\_BYTES}{ADC\_GET\_BYTES}}
+{\footnotesize\ttfamily \label{slaveo_8h_a4c0f343fec3cf175790b4d00e365fc40} 
+\#define ADC\+\_\+\+GET\+\_\+\+BYTES~7}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00063}{63}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a11100cd5ae4a03cda680e0473f35183b}\index{slaveo.h@{slaveo.h}!ADC\_SWAP\_MASK@{ADC\_SWAP\_MASK}}
+\index{ADC\_SWAP\_MASK@{ADC\_SWAP\_MASK}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{ADC\_SWAP\_MASK}{ADC\_SWAP\_MASK}}
+{\footnotesize\ttfamily \label{slaveo_8h_a11100cd5ae4a03cda680e0473f35183b} 
+\#define ADC\+\_\+\+SWAP\+\_\+\+MASK~0b01000000}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00057}{57}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_afec7806f24d486d23e49cfa6b6f9563a}\index{slaveo.h@{slaveo.h}!AI\_BUFFER\_NUM@{AI\_BUFFER\_NUM}}
+\index{AI\_BUFFER\_NUM@{AI\_BUFFER\_NUM}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{AI\_BUFFER\_NUM}{AI\_BUFFER\_NUM}}
+{\footnotesize\ttfamily \label{slaveo_8h_afec7806f24d486d23e49cfa6b6f9563a} 
+\#define AI\+\_\+\+BUFFER\+\_\+\+NUM~0x40}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00045}{45}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a15de5d2972b7a20c5583182a3b30b581}\index{slaveo.h@{slaveo.h}!AI\_CHAN\_FIX@{AI\_CHAN\_FIX}}
+\index{AI\_CHAN\_FIX@{AI\_CHAN\_FIX}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{AI\_CHAN\_FIX}{AI\_CHAN\_FIX}}
+{\footnotesize\ttfamily \label{slaveo_8h_a15de5d2972b7a20c5583182a3b30b581} 
+\#define AI\+\_\+\+CHAN\+\_\+\+FIX~5}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00046}{46}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a8891e251d251e17f8a7d8affb3e2ae04}\index{slaveo.h@{slaveo.h}!AO\_BUFFER\_NUM@{AO\_BUFFER\_NUM}}
+\index{AO\_BUFFER\_NUM@{AO\_BUFFER\_NUM}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{AO\_BUFFER\_NUM}{AO\_BUFFER\_NUM}}
+{\footnotesize\ttfamily \label{slaveo_8h_a8891e251d251e17f8a7d8affb3e2ae04} 
+\#define AO\+\_\+\+BUFFER\+\_\+\+NUM~0x40}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00049}{49}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_ab974ed07000c1bdf41a5807184a41c7d}\index{slaveo.h@{slaveo.h}!CFG\_GET\_BYTES@{CFG\_GET\_BYTES}}
+\index{CFG\_GET\_BYTES@{CFG\_GET\_BYTES}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{CFG\_GET\_BYTES}{CFG\_GET\_BYTES}}
+{\footnotesize\ttfamily \label{slaveo_8h_ab974ed07000c1bdf41a5807184a41c7d} 
+\#define CFG\+\_\+\+GET\+\_\+\+BYTES~7}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00062}{62}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a0b5256490c35a087895fb008003791d2}\index{slaveo.h@{slaveo.h}!CHAR\_GET\_BYTES@{CHAR\_GET\_BYTES}}
+\index{CHAR\_GET\_BYTES@{CHAR\_GET\_BYTES}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{CHAR\_GET\_BYTES}{CHAR\_GET\_BYTES}}
+{\footnotesize\ttfamily \label{slaveo_8h_a0b5256490c35a087895fb008003791d2} 
+\#define CHAR\+\_\+\+GET\+\_\+\+BYTES~7}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00061}{61}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a2c8d3a20377cd083ce44c796dd57755e}\index{slaveo.h@{slaveo.h}!CHAR\_GO\_BYTES@{CHAR\_GO\_BYTES}}
+\index{CHAR\_GO\_BYTES@{CHAR\_GO\_BYTES}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{CHAR\_GO\_BYTES}{CHAR\_GO\_BYTES}}
+{\footnotesize\ttfamily \label{slaveo_8h_a2c8d3a20377cd083ce44c796dd57755e} 
+\#define CHAR\+\_\+\+GO\+\_\+\+BYTES~7}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00065}{65}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_aee323f92dec304514358bb75c5737d58}\index{slaveo.h@{slaveo.h}!CHECKBYTE@{CHECKBYTE}}
+\index{CHECKBYTE@{CHECKBYTE}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{CHECKBYTE}{CHECKBYTE}}
+{\footnotesize\ttfamily \label{slaveo_8h_aee323f92dec304514358bb75c5737d58} 
+\#define CHECKBYTE~0x57}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00041}{41}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a53d07a2daf72dd117c84a6d94a902518}\index{slaveo.h@{slaveo.h}!CMD\_ADC\_DATA@{CMD\_ADC\_DATA}}
+\index{CMD\_ADC\_DATA@{CMD\_ADC\_DATA}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{CMD\_ADC\_DATA}{CMD\_ADC\_DATA}}
+{\footnotesize\ttfamily \label{slaveo_8h_a53d07a2daf72dd117c84a6d94a902518} 
+\#define CMD\+\_\+\+ADC\+\_\+\+DATA~0b11000000}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00033}{33}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_aabf17afb5dadda22c0f1dff8f64316a1}\index{slaveo.h@{slaveo.h}!CMD\_ADC\_GO@{CMD\_ADC\_GO}}
+\index{CMD\_ADC\_GO@{CMD\_ADC\_GO}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{CMD\_ADC\_GO}{CMD\_ADC\_GO}}
+{\footnotesize\ttfamily \label{slaveo_8h_aabf17afb5dadda22c0f1dff8f64316a1} 
+\#define CMD\+\_\+\+ADC\+\_\+\+GO~0b10000000}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00029}{29}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_aff5f45c2fed24a9b7a69d7854abedfad}\index{slaveo.h@{slaveo.h}!CMD\_CHAR\_DATA@{CMD\_CHAR\_DATA}}
+\index{CMD\_CHAR\_DATA@{CMD\_CHAR\_DATA}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{CMD\_CHAR\_DATA}{CMD\_CHAR\_DATA}}
+{\footnotesize\ttfamily \label{slaveo_8h_aff5f45c2fed24a9b7a69d7854abedfad} 
+\#define CMD\+\_\+\+CHAR\+\_\+\+DATA~0b11100000}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00035}{35}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a0a437a59afa27dce712883a246cf5c48}\index{slaveo.h@{slaveo.h}!CMD\_CHAR\_GET@{CMD\_CHAR\_GET}}
+\index{CMD\_CHAR\_GET@{CMD\_CHAR\_GET}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{CMD\_CHAR\_GET}{CMD\_CHAR\_GET}}
+{\footnotesize\ttfamily \label{slaveo_8h_a0a437a59afa27dce712883a246cf5c48} 
+\#define CMD\+\_\+\+CHAR\+\_\+\+GET~0b00010000}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00037}{37}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_ab0a458610e06ccb7513072b8ab18fc6d}\index{slaveo.h@{slaveo.h}!CMD\_CHAR\_GO@{CMD\_CHAR\_GO}}
+\index{CMD\_CHAR\_GO@{CMD\_CHAR\_GO}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{CMD\_CHAR\_GO}{CMD\_CHAR\_GO}}
+{\footnotesize\ttfamily \label{slaveo_8h_ab0a458610e06ccb7513072b8ab18fc6d} 
+\#define CMD\+\_\+\+CHAR\+\_\+\+GO~0b10110000}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00032}{32}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a79c4d95f36b11dfc52ae61ac2093814d}\index{slaveo.h@{slaveo.h}!CMD\_DAC\_GO@{CMD\_DAC\_GO}}
+\index{CMD\_DAC\_GO@{CMD\_DAC\_GO}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{CMD\_DAC\_GO}{CMD\_DAC\_GO}}
+{\footnotesize\ttfamily \label{slaveo_8h_a79c4d95f36b11dfc52ae61ac2093814d} 
+\#define CMD\+\_\+\+DAC\+\_\+\+GO~0x90}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00030}{30}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a0ed9ccd23e9bd8de60c718cbdf8672d4}\index{slaveo.h@{slaveo.h}!CMD\_DEAD@{CMD\_DEAD}}
+\index{CMD\_DEAD@{CMD\_DEAD}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{CMD\_DEAD}{CMD\_DEAD}}
+{\footnotesize\ttfamily \label{slaveo_8h_a0ed9ccd23e9bd8de60c718cbdf8672d4} 
+\#define CMD\+\_\+\+DEAD~0b11111111}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00039}{39}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_ac36bd94752cfcd76289723ed08b19809}\index{slaveo.h@{slaveo.h}!CMD\_DUMMY@{CMD\_DUMMY}}
+\index{CMD\_DUMMY@{CMD\_DUMMY}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{CMD\_DUMMY}{CMD\_DUMMY}}
+{\footnotesize\ttfamily \label{slaveo_8h_ac36bd94752cfcd76289723ed08b19809} 
+\#define CMD\+\_\+\+DUMMY~0b01100111 /\texorpdfstring{$\ast$}{*} 7 channels 4.\+096 \texorpdfstring{$\ast$}{*}/}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00043}{43}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_ac0df3e3beccc91b75cf33e2cec489dc9}\index{slaveo.h@{slaveo.h}!CMD\_DUMMY\_CFG@{CMD\_DUMMY\_CFG}}
+\index{CMD\_DUMMY\_CFG@{CMD\_DUMMY\_CFG}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{CMD\_DUMMY\_CFG}{CMD\_DUMMY\_CFG}}
+{\footnotesize\ttfamily \label{slaveo_8h_ac0df3e3beccc91b75cf33e2cec489dc9} 
+\#define CMD\+\_\+\+DUMMY\+\_\+\+CFG~0b01000000}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00038}{38}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_abac8491ff738e1f90891867c19a927d5}\index{slaveo.h@{slaveo.h}!CMD\_PORT\_DATA@{CMD\_PORT\_DATA}}
+\index{CMD\_PORT\_DATA@{CMD\_PORT\_DATA}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{CMD\_PORT\_DATA}{CMD\_PORT\_DATA}}
+{\footnotesize\ttfamily \label{slaveo_8h_abac8491ff738e1f90891867c19a927d5} 
+\#define CMD\+\_\+\+PORT\+\_\+\+DATA~0b11010000}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00034}{34}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_ab4e70063506972fd8c84e7cf15e92608}\index{slaveo.h@{slaveo.h}!CMD\_PORT\_GET@{CMD\_PORT\_GET}}
+\index{CMD\_PORT\_GET@{CMD\_PORT\_GET}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{CMD\_PORT\_GET}{CMD\_PORT\_GET}}
+{\footnotesize\ttfamily \label{slaveo_8h_ab4e70063506972fd8c84e7cf15e92608} 
+\#define CMD\+\_\+\+PORT\+\_\+\+GET~0b11110000}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00036}{36}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a36e8996b8ed0b54dffcee14919e6da68}\index{slaveo.h@{slaveo.h}!CMD\_PORT\_GO@{CMD\_PORT\_GO}}
+\index{CMD\_PORT\_GO@{CMD\_PORT\_GO}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{CMD\_PORT\_GO}{CMD\_PORT\_GO}}
+{\footnotesize\ttfamily \label{slaveo_8h_a36e8996b8ed0b54dffcee14919e6da68} 
+\#define CMD\+\_\+\+PORT\+\_\+\+GO~0xa0}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00031}{31}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_ac28b77ef3664a272954f66b0ae3ad260}\index{slaveo.h@{slaveo.h}!CMD\_ZERO@{CMD\_ZERO}}
+\index{CMD\_ZERO@{CMD\_ZERO}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{CMD\_ZERO}{CMD\_ZERO}}
+{\footnotesize\ttfamily \label{slaveo_8h_ac28b77ef3664a272954f66b0ae3ad260} 
+\#define CMD\+\_\+\+ZERO~0b00000000}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00028}{28}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_abc3163e76b4da17a036b220673bcbc96}\index{slaveo.h@{slaveo.h}!DAC\_GO\_BYTES@{DAC\_GO\_BYTES}}
+\index{DAC\_GO\_BYTES@{DAC\_GO\_BYTES}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{DAC\_GO\_BYTES}{DAC\_GO\_BYTES}}
+{\footnotesize\ttfamily \label{slaveo_8h_abc3163e76b4da17a036b220673bcbc96} 
+\#define DAC\+\_\+\+GO\+\_\+\+BYTES~7}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00066}{66}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a30d02ae8779276d872f84bfff754cc1f}\index{slaveo.h@{slaveo.h}!HI\_NIBBLE@{HI\_NIBBLE}}
+\index{HI\_NIBBLE@{HI\_NIBBLE}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{HI\_NIBBLE}{HI\_NIBBLE}}
+{\footnotesize\ttfamily \label{slaveo_8h_a30d02ae8779276d872f84bfff754cc1f} 
+\#define HI\+\_\+\+NIBBLE~0xf0}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00055}{55}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a9880da3967c5a23e094be4706f06ce6f}\index{slaveo.h@{slaveo.h}!LO\_NIBBLE@{LO\_NIBBLE}}
+\index{LO\_NIBBLE@{LO\_NIBBLE}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{LO\_NIBBLE}{LO\_NIBBLE}}
+{\footnotesize\ttfamily \label{slaveo_8h_a9880da3967c5a23e094be4706f06ce6f} 
+\#define LO\+\_\+\+NIBBLE~0x0f}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00056}{56}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_aa156aeec442cc1ea624968c52d7239dd}\index{slaveo.h@{slaveo.h}!NUM\_AI\_CHAN@{NUM\_AI\_CHAN}}
+\index{NUM\_AI\_CHAN@{NUM\_AI\_CHAN}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{NUM\_AI\_CHAN}{NUM\_AI\_CHAN}}
+{\footnotesize\ttfamily \label{slaveo_8h_aa156aeec442cc1ea624968c52d7239dd} 
+\#define NUM\+\_\+\+AI\+\_\+\+CHAN~15}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00044}{44}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a5e232965d7bd1a7f601656070693f2d5}\index{slaveo.h@{slaveo.h}!NUM\_AO\_CHAN@{NUM\_AO\_CHAN}}
+\index{NUM\_AO\_CHAN@{NUM\_AO\_CHAN}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{NUM\_AO\_CHAN}{NUM\_AO\_CHAN}}
+{\footnotesize\ttfamily \label{slaveo_8h_a5e232965d7bd1a7f601656070693f2d5} 
+\#define NUM\+\_\+\+AO\+\_\+\+CHAN~1}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00048}{48}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a0264cbb3ae1f347fbaad0f989ce9b89d}\index{slaveo.h@{slaveo.h}!PACKET\_BUF\_SIZ@{PACKET\_BUF\_SIZ}}
+\index{PACKET\_BUF\_SIZ@{PACKET\_BUF\_SIZ}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{PACKET\_BUF\_SIZ}{PACKET\_BUF\_SIZ}}
+{\footnotesize\ttfamily \label{slaveo_8h_a0264cbb3ae1f347fbaad0f989ce9b89d} 
+\#define PACKET\+\_\+\+BUF\+\_\+\+SIZ~16}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00052}{52}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a5a363510c4027e02f852999161302036}\index{slaveo.h@{slaveo.h}!PORT\_GET\_BYTES@{PORT\_GET\_BYTES}}
+\index{PORT\_GET\_BYTES@{PORT\_GET\_BYTES}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{PORT\_GET\_BYTES}{PORT\_GET\_BYTES}}
+{\footnotesize\ttfamily \label{slaveo_8h_a5a363510c4027e02f852999161302036} 
+\#define PORT\+\_\+\+GET\+\_\+\+BYTES~7}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00060}{60}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_aff229b007d289eb4b525b7acb0971f1a}\index{slaveo.h@{slaveo.h}!PORT\_GO\_BYTES@{PORT\_GO\_BYTES}}
+\index{PORT\_GO\_BYTES@{PORT\_GO\_BYTES}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{PORT\_GO\_BYTES}{PORT\_GO\_BYTES}}
+{\footnotesize\ttfamily \label{slaveo_8h_aff229b007d289eb4b525b7acb0971f1a} 
+\#define PORT\+\_\+\+GO\+\_\+\+BYTES~7}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00064}{64}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_ac2bb870098b24b1db60eb1951138dccc}\index{slaveo.h@{slaveo.h}!RSTRING\_BUF\_SIZ@{RSTRING\_BUF\_SIZ}}
+\index{RSTRING\_BUF\_SIZ@{RSTRING\_BUF\_SIZ}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{RSTRING\_BUF\_SIZ}{RSTRING\_BUF\_SIZ}}
+{\footnotesize\ttfamily \label{slaveo_8h_ac2bb870098b24b1db60eb1951138dccc} 
+\#define RSTRING\+\_\+\+BUF\+\_\+\+SIZ~81}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00053}{53}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a82a8421800c146cafebfe4fb027c609a}\index{slaveo.h@{slaveo.h}!SLAVE\_DEBUG@{SLAVE\_DEBUG}}
+\index{SLAVE\_DEBUG@{SLAVE\_DEBUG}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{SLAVE\_DEBUG}{SLAVE\_DEBUG}}
+{\footnotesize\ttfamily \label{slaveo_8h_a82a8421800c146cafebfe4fb027c609a} 
+\#define SLAVE\+\_\+\+DEBUG}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00025}{25}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a536e83422870fe45f45e29ab310b32bb}\index{slaveo.h@{slaveo.h}!SLAVEO\_DRIVER@{SLAVEO\_DRIVER}}
+\index{SLAVEO\_DRIVER@{SLAVEO\_DRIVER}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{SLAVEO\_DRIVER}{SLAVEO\_DRIVER}}
+{\footnotesize\ttfamily \label{slaveo_8h_a536e83422870fe45f45e29ab310b32bb} 
+\#define SLAVEO\+\_\+\+DRIVER~"{}V0.\+8"{}}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00023}{23}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_ac236b5f0aa5adc8f1546509d82fb5cdc}\index{slaveo.h@{slaveo.h}!SPI\_BUFFER\_LEN@{SPI\_BUFFER\_LEN}}
+\index{SPI\_BUFFER\_LEN@{SPI\_BUFFER\_LEN}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{SPI\_BUFFER\_LEN}{SPI\_BUFFER\_LEN}}
+{\footnotesize\ttfamily \label{slaveo_8h_ac236b5f0aa5adc8f1546509d82fb5cdc} 
+\#define SPI\+\_\+\+BUFFER\+\_\+\+LEN~10}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00051}{51}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a1d663fa8e7d7f4c378e172ae31790e37}\index{slaveo.h@{slaveo.h}!UART\_DUMMY\_MASK@{UART\_DUMMY\_MASK}}
+\index{UART\_DUMMY\_MASK@{UART\_DUMMY\_MASK}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{UART\_DUMMY\_MASK}{UART\_DUMMY\_MASK}}
+{\footnotesize\ttfamily \label{slaveo_8h_a1d663fa8e7d7f4c378e172ae31790e37} 
+\#define UART\+\_\+\+DUMMY\+\_\+\+MASK~0b01000000}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00058}{58}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+
+
+\label{doc-enum-members}
+\Hypertarget{slaveo_8h_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{slaveo_8h_a4f2cde57f6245df12305ffb38448eb89}\index{slaveo.h@{slaveo.h}!daqbmc\_packet\_index@{daqbmc\_packet\_index}}
+\index{daqbmc\_packet\_index@{daqbmc\_packet\_index}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{daqbmc\_packet\_index}{daqbmc\_packet\_index}}
+{\footnotesize\ttfamily \label{slaveo_8h_a4f2cde57f6245df12305ffb38448eb89} 
+enum daqbmc\+\_\+packet\+\_\+index}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00094}{94}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{slaveo_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{slaveo_8h_a13d71702fb808c4dca7fafe2f0ade8d8}\index{slaveo.h@{slaveo.h}!check\_slaveo@{check\_slaveo}}
+\index{check\_slaveo@{check\_slaveo}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{check\_slaveo()}{check\_slaveo()}}
+{\footnotesize\ttfamily \label{slaveo_8h_a13d71702fb808c4dca7fafe2f0ade8d8} 
+void check\+\_\+slaveo (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8c_source_l00046}{46}} of file \mbox{\hyperlink{slaveo_8c_source}{slaveo.\+c}}.
+
+\Hypertarget{slaveo_8h_a58608aac44cc70084f48303adf0a5b7e}\index{slaveo.h@{slaveo.h}!init\_slaveo@{init\_slaveo}}
+\index{init\_slaveo@{init\_slaveo}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{init\_slaveo()}{init\_slaveo()}}
+{\footnotesize\ttfamily \label{slaveo_8h_a58608aac44cc70084f48303adf0a5b7e} 
+void init\+\_\+slaveo (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8c_source_l00067}{67}} of file \mbox{\hyperlink{slaveo_8c_source}{slaveo.\+c}}.
+
+\Hypertarget{slaveo_8h_abdd2f912d6ff91601027e43edc419c89}\index{slaveo.h@{slaveo.h}!slaveo\_rx\_isr@{slaveo\_rx\_isr}}
+\index{slaveo\_rx\_isr@{slaveo\_rx\_isr}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{slaveo\_rx\_isr()}{slaveo\_rx\_isr()}}
+{\footnotesize\ttfamily \label{slaveo_8h_abdd2f912d6ff91601027e43edc419c89} 
+void slaveo\+\_\+rx\+\_\+isr (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8c_source_l00084}{84}} of file \mbox{\hyperlink{slaveo_8c_source}{slaveo.\+c}}.
+
+\Hypertarget{slaveo_8h_a38d27b693e0a3eda98599cb01addc31c}\index{slaveo.h@{slaveo.h}!slaveo\_spi\_isr@{slaveo\_spi\_isr}}
+\index{slaveo\_spi\_isr@{slaveo\_spi\_isr}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{slaveo\_spi\_isr()}{slaveo\_spi\_isr()}}
+{\footnotesize\ttfamily \label{slaveo_8h_a38d27b693e0a3eda98599cb01addc31c} 
+void slaveo\+\_\+spi\+\_\+isr (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8c_source_l00411}{411}} of file \mbox{\hyperlink{slaveo_8c_source}{slaveo.\+c}}.
+
+\Hypertarget{slaveo_8h_acb8f9ae744d1bcb20cb6188e44e32ec6}\index{slaveo.h@{slaveo.h}!slaveo\_time\_isr@{slaveo\_time\_isr}}
+\index{slaveo\_time\_isr@{slaveo\_time\_isr}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{slaveo\_time\_isr()}{slaveo\_time\_isr()}}
+{\footnotesize\ttfamily \label{slaveo_8h_acb8f9ae744d1bcb20cb6188e44e32ec6} 
+void slaveo\+\_\+time\+\_\+isr (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8c_source_l00417}{417}} of file \mbox{\hyperlink{slaveo_8c_source}{slaveo.\+c}}.
+
+
+
+\label{doc-var-members}
+\Hypertarget{slaveo_8h_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{slaveo_8h_a8684d19035db1c8da57163a57cd4cd76}\index{slaveo.h@{slaveo.h}!adc\_buffer@{adc\_buffer}}
+\index{adc\_buffer@{adc\_buffer}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{adc\_buffer}{adc\_buffer}}
+{\footnotesize\ttfamily \label{slaveo_8h_a8684d19035db1c8da57163a57cd4cd76} 
+volatile uint16\+\_\+t adc\+\_\+buffer\mbox{[}AI\+\_\+\+BUFFER\+\_\+\+NUM\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00292}{292}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\Hypertarget{slaveo_8h_a409f4f0e050ad7863d2dcf4f6d2e0b77}\index{slaveo.h@{slaveo.h}!adc\_buffer\_ptr@{adc\_buffer\_ptr}}
+\index{adc\_buffer\_ptr@{adc\_buffer\_ptr}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{adc\_buffer\_ptr}{adc\_buffer\_ptr}}
+{\footnotesize\ttfamily \label{slaveo_8h_a409f4f0e050ad7863d2dcf4f6d2e0b77} 
+volatile uint8\+\_\+t adc\+\_\+buffer\+\_\+ptr}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00109}{109}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_af637f42904417bf40f4bdd3b3f59a6e3}\index{slaveo.h@{slaveo.h}!adc\_channel@{adc\_channel}}
+\index{adc\_channel@{adc\_channel}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{adc\_channel}{adc\_channel}}
+{\footnotesize\ttfamily \label{slaveo_8h_af637f42904417bf40f4bdd3b3f59a6e3} 
+volatile uint8\+\_\+t adc\+\_\+channel}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00109}{109}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a328abcaa467b0a3acadc8d456be75a38}\index{slaveo.h@{slaveo.h}!adc\_data\_in@{adc\_data\_in}}
+\index{adc\_data\_in@{adc\_data\_in}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{adc\_data\_in}{adc\_data\_in}}
+{\footnotesize\ttfamily \label{slaveo_8h_a328abcaa467b0a3acadc8d456be75a38} 
+volatile uint16\+\_\+t adc\+\_\+data\+\_\+in}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00110}{110}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a4b613adf1dc9edfbc9951cf9b86ec2e3}\index{slaveo.h@{slaveo.h}!channel@{channel}}
+\index{channel@{channel}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{channel}{channel}}
+{\footnotesize\ttfamily \label{slaveo_8h_a4b613adf1dc9edfbc9951cf9b86ec2e3} 
+volatile uint8\+\_\+t channel}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00109}{109}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a59decdcbfa4747da1d06b5a346ea58e5}\index{slaveo.h@{slaveo.h}!dac\_buffer@{dac\_buffer}}
+\index{dac\_buffer@{dac\_buffer}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{dac\_buffer}{dac\_buffer}}
+{\footnotesize\ttfamily \label{slaveo_8h_a59decdcbfa4747da1d06b5a346ea58e5} 
+volatile uint16\+\_\+t dac\+\_\+buffer\mbox{[}AO\+\_\+\+BUFFER\+\_\+\+NUM\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00110}{110}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_ad7c822363bf92962cc511f719df133fd}\index{slaveo.h@{slaveo.h}!dac\_data\_in@{dac\_data\_in}}
+\index{dac\_data\_in@{dac\_data\_in}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{dac\_data\_in}{dac\_data\_in}}
+{\footnotesize\ttfamily \label{slaveo_8h_ad7c822363bf92962cc511f719df133fd} 
+volatile uint16\+\_\+t dac\+\_\+data\+\_\+in}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00110}{110}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_abf153ed8a2e07afd475e98ee051593ac}\index{slaveo.h@{slaveo.h}!data\_in2@{data\_in2}}
+\index{data\_in2@{data\_in2}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{data\_in2}{data\_in2}}
+{\footnotesize\ttfamily \label{slaveo_8h_abf153ed8a2e07afd475e98ee051593ac} 
+volatile uint8\+\_\+t data\+\_\+in2\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00291}{291}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\Hypertarget{slaveo_8h_a9c80ef79451ebf55ab7f49e5d4d429be}\index{slaveo.h@{slaveo.h}!failure@{failure}}
+\index{failure@{failure}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{failure}{failure}}
+{\footnotesize\ttfamily \label{slaveo_8h_a9c80ef79451ebf55ab7f49e5d4d429be} 
+volatile bool failure}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00112}{112}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a8f56b26d3c2c03e3c004505d45319d97}\index{slaveo.h@{slaveo.h}!in\_buf1@{in\_buf1}}
+\index{in\_buf1@{in\_buf1}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{in\_buf1}{in\_buf1}}
+{\footnotesize\ttfamily \label{slaveo_8h_a8f56b26d3c2c03e3c004505d45319d97} 
+volatile uint8\+\_\+t in\+\_\+buf1\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8c_source_l00040}{40}} of file \mbox{\hyperlink{slaveo_8c_source}{slaveo.\+c}}.
+
+\Hypertarget{slaveo_8h_abdba0bb87d49916ea9e39822647f8a74}\index{slaveo.h@{slaveo.h}!in\_buf2@{in\_buf2}}
+\index{in\_buf2@{in\_buf2}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{in\_buf2}{in\_buf2}}
+{\footnotesize\ttfamily \label{slaveo_8h_abdba0bb87d49916ea9e39822647f8a74} 
+volatile uint8\+\_\+t in\+\_\+buf2}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00113}{113}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a7aab907e5b001af4329672277f7177db}\index{slaveo.h@{slaveo.h}!in\_buf3@{in\_buf3}}
+\index{in\_buf3@{in\_buf3}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{in\_buf3}{in\_buf3}}
+{\footnotesize\ttfamily \label{slaveo_8h_a7aab907e5b001af4329672277f7177db} 
+volatile uint8\+\_\+t in\+\_\+buf3}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00113}{113}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_acef34ed2b8434815f3390436d7c05346}\index{slaveo.h@{slaveo.h}!r\_string\_ready@{r\_string\_ready}}
+\index{r\_string\_ready@{r\_string\_ready}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{r\_string\_ready}{r\_string\_ready}}
+{\footnotesize\ttfamily \label{slaveo_8h_acef34ed2b8434815f3390436d7c05346} 
+volatile bool r\+\_\+string\+\_\+ready\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8c_source_l00042}{42}} of file \mbox{\hyperlink{slaveo_8c_source}{slaveo.\+c}}.
+
+\Hypertarget{slaveo_8h_a4459788a7749e371d8ac2f24c79f781d}\index{slaveo.h@{slaveo.h}!serial\_buffer\_ss@{serial\_buffer\_ss}}
+\index{serial\_buffer\_ss@{serial\_buffer\_ss}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{serial\_buffer\_ss}{serial\_buffer\_ss}}
+{\footnotesize\ttfamily \label{slaveo_8h_a4459788a7749e371d8ac2f24c79f781d} 
+volatile struct \mbox{\hyperlink{structserial__buffer__type__ss}{serial\+\_\+buffer\+\_\+type\+\_\+ss}} serial\+\_\+buffer\+\_\+ss\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00284}{284}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\Hypertarget{slaveo_8h_a661fa5b799a982c5482a7557b81dfe3c}\index{slaveo.h@{slaveo.h}!spi\_comm\_ss@{spi\_comm\_ss}}
+\index{spi\_comm\_ss@{spi\_comm\_ss}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{spi\_comm\_ss}{spi\_comm\_ss}}
+{\footnotesize\ttfamily \label{slaveo_8h_a661fa5b799a982c5482a7557b81dfe3c} 
+volatile struct \mbox{\hyperlink{structspi__link__type__ss}{spi\+\_\+link\+\_\+type\+\_\+ss}} spi\+\_\+comm\+\_\+ss\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00279}{279}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\Hypertarget{slaveo_8h_a10f21e7ac31a5ea2ca838b37ead801e2}\index{slaveo.h@{slaveo.h}!tmp\_buf@{tmp\_buf}}
+\index{tmp\_buf@{tmp\_buf}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{tmp\_buf}{tmp\_buf}}
+{\footnotesize\ttfamily \label{slaveo_8h_a10f21e7ac31a5ea2ca838b37ead801e2} 
+volatile uint8\+\_\+t tmp\+\_\+buf\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8c_source_l00041}{41}} of file \mbox{\hyperlink{slaveo_8c_source}{slaveo.\+c}}.
+
+\Hypertarget{slaveo_8h_abc640bf4a8c9358954135c1fd1b0af4b}\index{slaveo.h@{slaveo.h}!upper@{upper}}
+\index{upper@{upper}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{upper}{upper}}
+{\footnotesize\ttfamily \label{slaveo_8h_abc640bf4a8c9358954135c1fd1b0af4b} 
+volatile uint8\+\_\+t upper}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00109}{109}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a3677a1b059657e0e0bcfa48d64f81cb4}\index{slaveo.h@{slaveo.h}!V@{V}}
+\index{V@{V}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{V}{V}}
+{\footnotesize\ttfamily \label{slaveo_8h_a3677a1b059657e0e0bcfa48d64f81cb4} 
+\mbox{\hyperlink{structV__data}{V\+\_\+data}} V\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00208}{208}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+

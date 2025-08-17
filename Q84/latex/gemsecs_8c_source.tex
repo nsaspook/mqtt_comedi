@@ -1,0 +1,50 @@
+\doxysection{gemsecs.\+c}
+\hypertarget{gemsecs_8c_source}{}\label{gemsecs_8c_source}\index{bmc\_slave.X/gemsecs.c@{bmc\_slave.X/gemsecs.c}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00001}00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00002}00002\ \textcolor{comment}{\ *\ the\ main\ secs/gem\ protocol\ functions}}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00003}00003\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00004}00004\ \textcolor{preprocessor}{\#include\ "{}gemsecs.h"{}}}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00006}00006\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00007}00007\ \textcolor{comment}{\ *\ Checksum\ for\ message\ and\ header\ block\ after\ length\ byte}}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00008}00008\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00009}00009\ uint16\_t\ block\_checksum(uint8\_t\ *byte\_block,\ \textcolor{keyword}{const}\ uint16\_t\ byte\_count)\ \{}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00010}00010\ \ \ \ \ uint16\_t\ sum\ =\ 0,\ i;}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00012}00012\ \ \ \ \ \textcolor{keywordflow}{for}\ (i\ =\ 0;\ i\ <\ byte\_count;\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00013}00013\ \ \ \ \ \ \ \ \ sum\ +=\ byte\_block[i];}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00014}00014\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00017}00017\ \ \ \ \ \textcolor{keywordflow}{return}\ sum;}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00018}00018\ \}}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00019}00019\ }
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00020}00020\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00021}00021\ \textcolor{comment}{\ *\ Checksum\ for\ data\ stream}}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00022}00022\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00023}00023\ uint16\_t\ run\_checksum(\textcolor{keyword}{const}\ uint8\_t\ byte\_block,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ clear)\ \{}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00024}00024\ \ \ \ \ \textcolor{keyword}{static}\ uint16\_t\ sum\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00026}00026\ \ \ \ \ \textcolor{keywordflow}{if}\ (clear)}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00027}00027\ \ \ \ \ \ \ \ \ sum\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00029}00029\ \ \ \ \ sum\ +=\ byte\_block;}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00030}00030\ \ \ \ \ \textcolor{keywordflow}{return}\ sum;}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00031}00031\ \}}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00033}00033\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00034}00034\ \textcolor{comment}{\ *\ logger\ helper}}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00035}00035\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00036}00036\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ee\_logger(\textcolor{keyword}{const}\ uint8\_t\ stream,\ \textcolor{keyword}{const}\ uint8\_t\ function,\ \textcolor{keyword}{const}\ uint16\_t\ dtime,\ uint8\_t\ *msg\_data)\ \{}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00037}00037\ \ \ \ \ uint16\_t\ i\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00039}00039\ \ \ \ \ \textcolor{keywordflow}{do}\ \{}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00040}00040\ \ \ \ \ \ \ \ \ DATAEE\_WriteByte(i,\ msg\_data[254\ +\ 2\ -\/\ i]);}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00041}00041\ \ \ \ \ \}\ \textcolor{keywordflow}{while}\ (++i\ <=\ 255);}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00043}00043\ \ \ \ \ StartTimer(TMR\_INFO,\ dtime);}
+\DoxyCodeLine{\Hypertarget{gemsecs_8c_source_l00044}00044\ \}}
+
+\end{DoxyCode}

@@ -1,0 +1,190 @@
+\doxysection{uart2.\+c}
+\hypertarget{uart2_8c_source}{}\label{uart2_8c_source}\index{bmc\_slave.X/mcc\_generated\_files/uart2.c@{bmc\_slave.X/mcc\_generated\_files/uart2.c}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00024}00024\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00025}00025\ \textcolor{comment}{\ \ \ \ (c)\ 2018\ Microchip\ Technology\ Inc.\ and\ its\ subsidiaries.\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00026}00026\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00027}00027\ \textcolor{comment}{\ \ \ \ Subject\ to\ your\ compliance\ with\ these\ terms,\ you\ may\ use\ Microchip\ software\ and\ any\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00028}00028\ \textcolor{comment}{\ \ \ \ derivatives\ exclusively\ with\ Microchip\ products.\ It\ is\ your\ responsibility\ to\ comply\ with\ third\ party\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00029}00029\ \textcolor{comment}{\ \ \ \ license\ terms\ applicable\ to\ your\ use\ of\ third\ party\ software\ (including\ open\ source\ software)\ that\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00030}00030\ \textcolor{comment}{\ \ \ \ may\ accompany\ Microchip\ software.}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00031}00031\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00032}00032\ \textcolor{comment}{\ \ \ \ THIS\ SOFTWARE\ IS\ SUPPLIED\ BY\ MICROCHIP\ "{}AS\ IS"{}.\ NO\ WARRANTIES,\ WHETHER\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00033}00033\ \textcolor{comment}{\ \ \ \ EXPRESS,\ IMPLIED\ OR\ STATUTORY,\ APPLY\ TO\ THIS\ SOFTWARE,\ INCLUDING\ ANY\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00034}00034\ \textcolor{comment}{\ \ \ \ IMPLIED\ WARRANTIES\ OF\ NON-\/INFRINGEMENT,\ MERCHANTABILITY,\ AND\ FITNESS\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00035}00035\ \textcolor{comment}{\ \ \ \ FOR\ A\ PARTICULAR\ PURPOSE.}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00036}00036\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00037}00037\ \textcolor{comment}{\ \ \ \ IN\ NO\ EVENT\ WILL\ MICROCHIP\ BE\ LIABLE\ FOR\ ANY\ INDIRECT,\ SPECIAL,\ PUNITIVE,\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00038}00038\ \textcolor{comment}{\ \ \ \ INCIDENTAL\ OR\ CONSEQUENTIAL\ LOSS,\ DAMAGE,\ COST\ OR\ EXPENSE\ OF\ ANY\ KIND\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00039}00039\ \textcolor{comment}{\ \ \ \ WHATSOEVER\ RELATED\ TO\ THE\ SOFTWARE,\ HOWEVER\ CAUSED,\ EVEN\ IF\ MICROCHIP\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00040}00040\ \textcolor{comment}{\ \ \ \ HAS\ BEEN\ ADVISED\ OF\ THE\ POSSIBILITY\ OR\ THE\ DAMAGES\ ARE\ FORESEEABLE.\ TO\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00041}00041\ \textcolor{comment}{\ \ \ \ THE\ FULLEST\ EXTENT\ ALLOWED\ BY\ LAW,\ MICROCHIP'S\ TOTAL\ LIABILITY\ ON\ ALL\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00042}00042\ \textcolor{comment}{\ \ \ \ CLAIMS\ IN\ ANY\ WAY\ RELATED\ TO\ THIS\ SOFTWARE\ WILL\ NOT\ EXCEED\ THE\ AMOUNT\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00043}00043\ \textcolor{comment}{\ \ \ \ OF\ FEES,\ IF\ ANY,\ THAT\ YOU\ HAVE\ PAID\ DIRECTLY\ TO\ MICROCHIP\ FOR\ THIS\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00044}00044\ \textcolor{comment}{\ \ \ \ SOFTWARE.}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00045}00045\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00046}00046\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00050}00050\ \textcolor{preprocessor}{\#include\ <xc.h>}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00051}00051\ \textcolor{preprocessor}{\#include\ "{}uart2.h"{}}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00053}00053\ \textcolor{keyword}{static}\ \textcolor{keyword}{volatile}\ \mbox{\hyperlink{unionuart2__status__t}{uart2\_status\_t}}\ uart2RxLastError;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00058}00058\ void\ (*UART2\_FramingErrorHandler)(void);}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00059}00059\ void\ (*UART2\_OverrunErrorHandler)(void);}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00060}00060\ void\ (*UART2\_ErrorHandler)(void);}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00062}00062\ \textcolor{keywordtype}{void}\ UART2\_DefaultFramingErrorHandler(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00063}00063\ \textcolor{keywordtype}{void}\ UART2\_DefaultOverrunErrorHandler(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00064}00064\ \textcolor{keywordtype}{void}\ UART2\_DefaultErrorHandler(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00066}00066\ \textcolor{keywordtype}{void}\ UART2\_Initialize(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00067}00067\ \{}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00068}00068\ \ \ \ \ \textcolor{comment}{//\ Disable\ interrupts\ before\ changing\ states}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00069}00069\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00070}00070\ \ \ \ \ \textcolor{comment}{//\ Set\ the\ UART2\ module\ to\ the\ options\ selected\ in\ the\ user\ interface.}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00072}00072\ \ \ \ \ \textcolor{comment}{//\ P1L\ 0;\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00073}00073\ \ \ \ \ U2P1L\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00075}00075\ \ \ \ \ \textcolor{comment}{//\ P1H\ 0;\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00076}00076\ \ \ \ \ U2P1H\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00078}00078\ \ \ \ \ \textcolor{comment}{//\ P2L\ 0;\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00079}00079\ \ \ \ \ U2P2L\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00081}00081\ \ \ \ \ \textcolor{comment}{//\ P2H\ 0;\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00082}00082\ \ \ \ \ U2P2H\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00083}00083\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00084}00084\ \ \ \ \ \textcolor{comment}{//\ P3L\ 0;\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00085}00085\ \ \ \ \ U2P3L\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00086}00086\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00087}00087\ \ \ \ \ \textcolor{comment}{//\ P3H\ 0;\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00088}00088\ \ \ \ \ U2P3H\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00089}00089\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00090}00090\ \ \ \ \ \textcolor{comment}{//\ BRGS\ high\ speed;\ MODE\ Asynchronous\ 9-\/bit\ mode;\ RXEN\ enabled;\ TXEN\ enabled;\ ABDEN\ disabled;\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00091}00091\ \ \ \ \ U2CON0\ =\ 0xB4;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00092}00092\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00093}00093\ \ \ \ \ \textcolor{comment}{//\ RXBIMD\ Set\ RXBKIF\ on\ rising\ RX\ input;\ BRKOVR\ disabled;\ WUE\ disabled;\ SENDB\ disabled;\ ON\ enabled;\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00094}00094\ \ \ \ \ U2CON1\ =\ 0x80;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00095}00095\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00096}00096\ \ \ \ \ \textcolor{comment}{//\ TXPOL\ not\ inverted;\ FLO\ off;\ C0EN\ Checksum\ Mode\ 0;\ RXPOL\ not\ inverted;\ RUNOVF\ RX\ input\ shifter\ stops\ all\ activity;\ STP\ Transmit\ 1Stop\ bit,\ receiver\ verifies\ first\ Stop\ bit;\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00097}00097\ \ \ \ \ U2CON2\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00099}00099\ \ \ \ \ \textcolor{comment}{//\ BRGL\ 130;\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00100}00100\ \ \ \ \ U2BRGL\ =\ 0x82;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00101}00101\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00102}00102\ \ \ \ \ \textcolor{comment}{//\ BRGH\ 6;\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00103}00103\ \ \ \ \ U2BRGH\ =\ 0x06;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00104}00104\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00105}00105\ \ \ \ \ \textcolor{comment}{//\ STPMD\ in\ middle\ of\ first\ Stop\ bit;\ TXWRE\ No\ error;\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00106}00106\ \ \ \ \ U2FIFO\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00107}00107\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00108}00108\ \ \ \ \ \textcolor{comment}{//\ ABDIF\ Auto-\/baud\ not\ enabled\ or\ not\ complete;\ WUIF\ WUE\ not\ enabled\ by\ software;\ ABDIE\ disabled;\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00109}00109\ \ \ \ \ U2UIR\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00110}00110\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00111}00111\ \ \ \ \ \textcolor{comment}{//\ ABDOVF\ Not\ overflowed;\ TXCIF\ 0;\ RXBKIF\ No\ Break\ detected;\ RXFOIF\ not\ overflowed;\ CERIF\ No\ Checksum\ error;\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00112}00112\ \ \ \ \ U2ERRIR\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00113}00113\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00114}00114\ \ \ \ \ \textcolor{comment}{//\ TXCIE\ disabled;\ FERIE\ disabled;\ TXMTIE\ disabled;\ ABDOVE\ disabled;\ CERIE\ disabled;\ RXFOIE\ disabled;\ PERIE\ disabled;\ RXBKIE\ disabled;\ }}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00115}00115\ \ \ \ \ U2ERRIE\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00116}00116\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00117}00117\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00118}00118\ \ \ \ \ UART2\_SetFramingErrorHandler(UART2\_DefaultFramingErrorHandler);}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00119}00119\ \ \ \ \ UART2\_SetOverrunErrorHandler(UART2\_DefaultOverrunErrorHandler);}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00120}00120\ \ \ \ \ UART2\_SetErrorHandler(UART2\_DefaultErrorHandler);}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00121}00121\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00122}00122\ \ \ \ \ uart2RxLastError.status\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00123}00123\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00124}00124\ \}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00125}00125\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00126}00126\ \textcolor{keywordtype}{bool}\ UART2\_is\_rx\_ready(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00127}00127\ \{}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00128}00128\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{bool})(PIR8bits.U2RXIF);}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00129}00129\ \}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00130}00130\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00131}00131\ \textcolor{keywordtype}{bool}\ UART2\_is\_tx\_ready(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00132}00132\ \{}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00133}00133\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{bool})(PIR8bits.U2TXIF\ \&\&\ U2CON0bits.TXEN);}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00134}00134\ \}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00135}00135\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00136}00136\ \textcolor{keywordtype}{bool}\ UART2\_is\_tx\_done(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00137}00137\ \{}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00138}00138\ \ \ \ \ \textcolor{keywordflow}{return}\ U2ERRIRbits.TXMTIF;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00139}00139\ \}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00140}00140\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00141}00141\ \mbox{\hyperlink{unionuart2__status__t}{uart2\_status\_t}}\ UART2\_get\_last\_status(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00142}00142\ \ \ \ \ \textcolor{keywordflow}{return}\ uart2RxLastError;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00143}00143\ \}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00144}00144\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00145}00145\ uint8\_t\ UART2\_Read(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00146}00146\ \{}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00147}00147\ \ \ \ \ \textcolor{keywordflow}{while}(!PIR8bits.U2RXIF)}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00148}00148\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00149}00149\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00150}00150\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00151}00151\ \ \ \ \ uart2RxLastError.status\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00152}00152\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00153}00153\ \ \ \ \ \textcolor{keywordflow}{if}(U2ERRIRbits.FERIF)\{}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00154}00154\ \ \ \ \ \ \ \ \ uart2RxLastError.ferr\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00155}00155\ \ \ \ \ \ \ \ \ UART2\_FramingErrorHandler();}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00156}00156\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00157}00157\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00158}00158\ \ \ \ \ \textcolor{keywordflow}{if}(U2ERRIRbits.RXFOIF)\{}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00159}00159\ \ \ \ \ \ \ \ \ uart2RxLastError.oerr\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00160}00160\ \ \ \ \ \ \ \ \ UART2\_OverrunErrorHandler();}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00161}00161\ \}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00162}00162\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00163}00163\ \ \ \ \ \textcolor{keywordflow}{if}(uart2RxLastError.status)\{}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00164}00164\ \ \ \ \ \ \ \ \ UART2\_ErrorHandler();}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00165}00165\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00166}00166\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00167}00167\ \ \ \ \ \textcolor{keywordflow}{return}\ U2RXB;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00168}00168\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00169}00169\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00170}00170\ \textcolor{keywordtype}{void}\ UART2\_Write(uint8\_t\ txData)}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00171}00171\ \{}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00172}00172\ \ \ \ \ \textcolor{keywordflow}{while}(0\ ==\ PIR8bits.U2TXIF)}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00173}00173\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00174}00174\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00175}00175\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00176}00176\ \ \ \ \ U2TXB\ =\ txData;\ \ \ \ \textcolor{comment}{//\ Write\ the\ data\ byte\ to\ the\ USART.}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00177}00177\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00178}00178\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00179}00179\ \textcolor{keywordtype}{void}\ UART2\_SetAddresstoTransmit(uint8\_t\ txAddress)}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00180}00180\ \{}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00181}00181\ \ \ \ \ U2P1L\ =\ txAddress;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00182}00182\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00183}00183\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00184}00184\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00185}00185\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00186}00186\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00187}00187\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00188}00188\ \textcolor{keywordtype}{void}\ UART2\_DefaultFramingErrorHandler(\textcolor{keywordtype}{void})\{\}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00189}00189\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00190}00190\ \textcolor{keywordtype}{void}\ UART2\_DefaultOverrunErrorHandler(\textcolor{keywordtype}{void})\{\}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00191}00191\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00192}00192\ \textcolor{keywordtype}{void}\ UART2\_DefaultErrorHandler(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00193}00193\ \}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00194}00194\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00195}00195\ \textcolor{keywordtype}{void}\ UART2\_SetFramingErrorHandler(\textcolor{keywordtype}{void}\ (*\ interruptHandler)(\textcolor{keywordtype}{void}))\{}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00196}00196\ \ \ \ \ UART2\_FramingErrorHandler\ =\ interruptHandler;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00197}00197\ \}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00198}00198\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00199}00199\ \textcolor{keywordtype}{void}\ UART2\_SetOverrunErrorHandler(\textcolor{keywordtype}{void}\ (*\ interruptHandler)(\textcolor{keywordtype}{void}))\{}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00200}00200\ \ \ \ \ UART2\_OverrunErrorHandler\ =\ interruptHandler;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00201}00201\ \}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00202}00202\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00203}00203\ \textcolor{keywordtype}{void}\ UART2\_SetErrorHandler(\textcolor{keywordtype}{void}\ (*\ interruptHandler)(\textcolor{keywordtype}{void}))\{}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00204}00204\ \ \ \ \ UART2\_ErrorHandler\ =\ interruptHandler;}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00205}00205\ \}}
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00206}00206\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00207}00207\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00208}00208\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00209}00209\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00210}00210\ }
+\DoxyCodeLine{\Hypertarget{uart2_8c_source_l00211}00211\ }
+
+\end{DoxyCode}

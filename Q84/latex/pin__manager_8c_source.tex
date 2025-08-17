@@ -1,0 +1,154 @@
+\doxysection{pin\+\_\+manager.\+c}
+\hypertarget{pin__manager_8c_source}{}\label{pin__manager_8c_source}\index{bmc\_slave.X/mcc\_generated\_files/pin\_manager.c@{bmc\_slave.X/mcc\_generated\_files/pin\_manager.c}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00026}00026\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00027}00027\ \textcolor{comment}{\ \ \ \ (c)\ 2018\ Microchip\ Technology\ Inc.\ and\ its\ subsidiaries.\ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00028}00028\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00029}00029\ \textcolor{comment}{\ \ \ \ Subject\ to\ your\ compliance\ with\ these\ terms,\ you\ may\ use\ Microchip\ software\ and\ any\ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00030}00030\ \textcolor{comment}{\ \ \ \ derivatives\ exclusively\ with\ Microchip\ products.\ It\ is\ your\ responsibility\ to\ comply\ with\ third\ party\ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00031}00031\ \textcolor{comment}{\ \ \ \ license\ terms\ applicable\ to\ your\ use\ of\ third\ party\ software\ (including\ open\ source\ software)\ that\ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00032}00032\ \textcolor{comment}{\ \ \ \ may\ accompany\ Microchip\ software.}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00033}00033\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00034}00034\ \textcolor{comment}{\ \ \ \ THIS\ SOFTWARE\ IS\ SUPPLIED\ BY\ MICROCHIP\ "{}AS\ IS"{}.\ NO\ WARRANTIES,\ WHETHER\ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00035}00035\ \textcolor{comment}{\ \ \ \ EXPRESS,\ IMPLIED\ OR\ STATUTORY,\ APPLY\ TO\ THIS\ SOFTWARE,\ INCLUDING\ ANY\ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00036}00036\ \textcolor{comment}{\ \ \ \ IMPLIED\ WARRANTIES\ OF\ NON-\/INFRINGEMENT,\ MERCHANTABILITY,\ AND\ FITNESS\ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00037}00037\ \textcolor{comment}{\ \ \ \ FOR\ A\ PARTICULAR\ PURPOSE.}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00038}00038\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00039}00039\ \textcolor{comment}{\ \ \ \ IN\ NO\ EVENT\ WILL\ MICROCHIP\ BE\ LIABLE\ FOR\ ANY\ INDIRECT,\ SPECIAL,\ PUNITIVE,\ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00040}00040\ \textcolor{comment}{\ \ \ \ INCIDENTAL\ OR\ CONSEQUENTIAL\ LOSS,\ DAMAGE,\ COST\ OR\ EXPENSE\ OF\ ANY\ KIND\ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00041}00041\ \textcolor{comment}{\ \ \ \ WHATSOEVER\ RELATED\ TO\ THE\ SOFTWARE,\ HOWEVER\ CAUSED,\ EVEN\ IF\ MICROCHIP\ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00042}00042\ \textcolor{comment}{\ \ \ \ HAS\ BEEN\ ADVISED\ OF\ THE\ POSSIBILITY\ OR\ THE\ DAMAGES\ ARE\ FORESEEABLE.\ TO\ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00043}00043\ \textcolor{comment}{\ \ \ \ THE\ FULLEST\ EXTENT\ ALLOWED\ BY\ LAW,\ MICROCHIP'S\ TOTAL\ LIABILITY\ ON\ ALL\ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00044}00044\ \textcolor{comment}{\ \ \ \ CLAIMS\ IN\ ANY\ WAY\ RELATED\ TO\ THIS\ SOFTWARE\ WILL\ NOT\ EXCEED\ THE\ AMOUNT\ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00045}00045\ \textcolor{comment}{\ \ \ \ OF\ FEES,\ IF\ ANY,\ THAT\ YOU\ HAVE\ PAID\ DIRECTLY\ TO\ MICROCHIP\ FOR\ THIS\ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00046}00046\ \textcolor{comment}{\ \ \ \ SOFTWARE.}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00047}00047\ \textcolor{comment}{*/}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00048}00048\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00049}00049\ \textcolor{preprocessor}{\#include\ "{}pin\_manager.h"{}}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00050}00050\ \textcolor{preprocessor}{\#include\ "{}interrupt\_manager.h"{}}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00053}00053\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00055}00055\ void\ (*IOCBF6\_InterruptHandler)(void);}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00058}00058\ \textcolor{keywordtype}{void}\ PIN\_MANAGER\_Initialize(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00059}00059\ \{}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00063}00063\ \ \ \ \ LATE\ =\ 0x07;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00064}00064\ \ \ \ \ LATD\ =\ 0xDE;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00065}00065\ \ \ \ \ LATA\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00066}00066\ \ \ \ \ LATF\ =\ 0x02;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00067}00067\ \ \ \ \ LATB\ =\ 0x51;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00068}00068\ \ \ \ \ LATC\ =\ 0x2A;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00069}00069\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00073}00073\ \ \ \ \ TRISE\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00074}00074\ \ \ \ \ TRISF\ =\ 0x01;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00075}00075\ \ \ \ \ TRISA\ =\ 0xFF;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00076}00076\ \ \ \ \ TRISB\ =\ 0xE0;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00077}00077\ \ \ \ \ TRISC\ =\ 0xD1;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00078}00078\ \ \ \ \ TRISD\ =\ 0x27;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00079}00079\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00083}00083\ \ \ \ \ ANSELD\ =\ 0x20;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00084}00084\ \ \ \ \ ANSELC\ =\ 0xC0;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00085}00085\ \ \ \ \ ANSELB\ =\ 0x80;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00086}00086\ \ \ \ \ ANSELE\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00087}00087\ \ \ \ \ ANSELF\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00088}00088\ \ \ \ \ ANSELA\ =\ 0xFF;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00089}00089\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00093}00093\ \ \ \ \ WPUD\ =\ 0x8F;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00094}00094\ \ \ \ \ WPUF\ =\ 0x01;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00095}00095\ \ \ \ \ WPUE\ =\ 0x07;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00096}00096\ \ \ \ \ WPUB\ =\ 0x71;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00097}00097\ \ \ \ \ WPUA\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00098}00098\ \ \ \ \ WPUC\ =\ 0x31;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00099}00099\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00103}00103\ \ \ \ \ ODCONE\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00104}00104\ \ \ \ \ ODCONF\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00105}00105\ \ \ \ \ ODCONA\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00106}00106\ \ \ \ \ ODCONB\ =\ 0x01;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00107}00107\ \ \ \ \ ODCONC\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00108}00108\ \ \ \ \ ODCOND\ =\ 0x80;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00113}00113\ \ \ \ \ SLRCONA\ =\ 0xFF;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00114}00114\ \ \ \ \ SLRCONB\ =\ 0xFF;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00115}00115\ \ \ \ \ SLRCONC\ =\ 0xFF;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00116}00116\ \ \ \ \ SLRCOND\ =\ 0xFF;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00117}00117\ \ \ \ \ SLRCONE\ =\ 0x07;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00118}00118\ \ \ \ \ SLRCONF\ =\ 0xFF;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00119}00119\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00123}00123\ \ \ \ \ INLVLA\ =\ 0xFF;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00124}00124\ \ \ \ \ INLVLB\ =\ 0xFF;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00125}00125\ \ \ \ \ INLVLC\ =\ 0xFF;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00126}00126\ \ \ \ \ INLVLD\ =\ 0xFF;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00127}00127\ \ \ \ \ INLVLE\ =\ 0x0F;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00128}00128\ \ \ \ \ INLVLF\ =\ 0xFF;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00129}00129\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00130}00130\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00134}00134\ \ \ \ \ \textcolor{comment}{//interrupt\ on\ change\ for\ group\ IOCBF\ -\/\ flag}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00135}00135\ \ \ \ \ IOCBFbits.IOCBF6\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00136}00136\ \ \ \ \ \textcolor{comment}{//interrupt\ on\ change\ for\ group\ IOCBN\ -\/\ negative}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00137}00137\ \ \ \ \ IOCBNbits.IOCBN6\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00138}00138\ \ \ \ \ \textcolor{comment}{//interrupt\ on\ change\ for\ group\ IOCBP\ -\/\ positive}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00139}00139\ \ \ \ \ IOCBPbits.IOCBP6\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00140}00140\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00141}00141\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00142}00142\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00143}00143\ \ \ \ \ \textcolor{comment}{//\ register\ default\ IOC\ callback\ functions\ at\ runtime;\ use\ these\ methods\ to\ register\ a\ custom\ function}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00144}00144\ \ \ \ \ IOCBF6\_SetInterruptHandler(IOCBF6\_DefaultInterruptHandler);}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00145}00145\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00146}00146\ \ \ \ \ \textcolor{comment}{//\ Enable\ IOCI\ interrupt\ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00147}00147\ \ \ \ \ PIE0bits.IOCIE\ =\ 1;\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00148}00148\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00149}00149\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00150}00150\ \ \ \ \ U2RXPPS\ =\ 0x18;\ \ \ \textcolor{comment}{//RD0-\/>UART2:RX2;\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00151}00151\ \ \ \ \ SPI2SDIPPS\ =\ 0x0D;\ \ \ \textcolor{comment}{//RB5-\/>SPI2:SDI2;\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00152}00152\ \ \ \ \ RC3PPS\ =\ 0x31;\ \ \ \textcolor{comment}{//RC3-\/>SPI1:SCK1;\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00153}00153\ \ \ \ \ RC1PPS\ =\ 0x20;\ \ \ \textcolor{comment}{//RC1-\/>UART1:TX1;\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00154}00154\ \ \ \ \ RB4PPS\ =\ 0x35;\ \ \ \textcolor{comment}{//RB4-\/>SPI2:SDO2;\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00155}00155\ \ \ \ \ RF1PPS\ =\ 0x26;\ \ \ \textcolor{comment}{//RF1-\/>UART3:TX3;\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00156}00156\ \ \ \ \ U1RXPPS\ =\ 0x10;\ \ \ \textcolor{comment}{//RC0-\/>UART1:RX1;\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00157}00157\ \ \ \ \ U3RXPPS\ =\ 0x28;\ \ \ \textcolor{comment}{//RF0-\/>UART3:RX3;\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00158}00158\ \ \ \ \ RD6PPS\ =\ 0x23;\ \ \ \textcolor{comment}{//RD6-\/>UART2:TX2;\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00159}00159\ \ \ \ \ RF2PPS\ =\ 0x27;\ \ \ \textcolor{comment}{//RF2-\/>UART3:TXDE3;\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00160}00160\ \ \ \ \ SPI2SCKPPS\ =\ 0x1A;\ \ \ \textcolor{comment}{//RD2-\/>SPI2:SCK2;\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00161}00161\ \ \ \ \ SPI1SCKPPS\ =\ 0x13;\ \ \ \textcolor{comment}{//RC3-\/>SPI1:SCK1;\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00162}00162\ \ \ \ \ RC5PPS\ =\ 0x32;\ \ \ \textcolor{comment}{//RC5-\/>SPI1:SDO1;\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00163}00163\ \ \ \ \ SPI1SDIPPS\ =\ 0x14;\ \ \ \textcolor{comment}{//RC4-\/>SPI1:SDI1;\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00164}00164\ \}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00165}00165\ \ \ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00166}00166\ \textcolor{keywordtype}{void}\ \_\_interrupt(irq(IOC),base(8))\ PIN\_MANAGER\_IOC()}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00167}00167\ \{\ \ \ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00168}00168\ \ \ \ \ \textcolor{comment}{//\ interrupt\ on\ change\ for\ pin\ IOCBF6}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00169}00169\ \ \ \ \ \textcolor{keywordflow}{if}(IOCBFbits.IOCBF6\ ==\ 1)}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00170}00170\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00171}00171\ \ \ \ \ \ \ \ \ IOCBF6\_ISR();\ \ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00172}00172\ \ \ \ \ \}\ \ \ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00173}00173\ \}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00174}00174\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00178}00178\ \textcolor{keywordtype}{void}\ IOCBF6\_ISR(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00179}00179\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00180}00180\ \ \ \ \ \textcolor{comment}{//\ Add\ custom\ IOCBF6\ code}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00181}00181\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00182}00182\ \ \ \ \ \textcolor{comment}{//\ Call\ the\ interrupt\ handler\ for\ the\ callback\ registered\ at\ runtime}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00183}00183\ \ \ \ \ \textcolor{keywordflow}{if}(IOCBF6\_InterruptHandler)}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00184}00184\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00185}00185\ \ \ \ \ \ \ \ \ IOCBF6\_InterruptHandler();}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00186}00186\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00187}00187\ \ \ \ \ IOCBFbits.IOCBF6\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00188}00188\ \}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00189}00189\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00193}00193\ \textcolor{keywordtype}{void}\ IOCBF6\_SetInterruptHandler(\textcolor{keywordtype}{void}\ (*\ InterruptHandler)(\textcolor{keywordtype}{void}))\{}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00194}00194\ \ \ \ \ IOCBF6\_InterruptHandler\ =\ InterruptHandler;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00195}00195\ \}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00196}00196\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00200}00200\ \textcolor{keywordtype}{void}\ IOCBF6\_DefaultInterruptHandler(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00201}00201\ \ \ \ \ \textcolor{comment}{//\ add\ your\ IOCBF6\ interrupt\ custom\ code}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00202}00202\ \ \ \ \ \textcolor{comment}{//\ or\ set\ custom\ function\ using\ IOCBF6\_SetInterruptHandler()}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00203}00203\ \}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00204}00204\ }
+
+\end{DoxyCode}

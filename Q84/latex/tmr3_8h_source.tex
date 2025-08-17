@@ -1,0 +1,76 @@
+\doxysection{tmr3.\+h}
+\hypertarget{tmr3_8h_source}{}\label{tmr3_8h_source}\index{bmc\_slave.X/mcc\_generated\_files/tmr3.h@{bmc\_slave.X/mcc\_generated\_files/tmr3.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00024}00024\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00025}00025\ \textcolor{comment}{\ \ \ \ (c)\ 2018\ Microchip\ Technology\ Inc.\ and\ its\ subsidiaries.\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00026}00026\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00027}00027\ \textcolor{comment}{\ \ \ \ Subject\ to\ your\ compliance\ with\ these\ terms,\ you\ may\ use\ Microchip\ software\ and\ any\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00028}00028\ \textcolor{comment}{\ \ \ \ derivatives\ exclusively\ with\ Microchip\ products.\ It\ is\ your\ responsibility\ to\ comply\ with\ third\ party\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00029}00029\ \textcolor{comment}{\ \ \ \ license\ terms\ applicable\ to\ your\ use\ of\ third\ party\ software\ (including\ open\ source\ software)\ that\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00030}00030\ \textcolor{comment}{\ \ \ \ may\ accompany\ Microchip\ software.}}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00031}00031\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00032}00032\ \textcolor{comment}{\ \ \ \ THIS\ SOFTWARE\ IS\ SUPPLIED\ BY\ MICROCHIP\ "{}AS\ IS"{}.\ NO\ WARRANTIES,\ WHETHER\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00033}00033\ \textcolor{comment}{\ \ \ \ EXPRESS,\ IMPLIED\ OR\ STATUTORY,\ APPLY\ TO\ THIS\ SOFTWARE,\ INCLUDING\ ANY\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00034}00034\ \textcolor{comment}{\ \ \ \ IMPLIED\ WARRANTIES\ OF\ NON-\/INFRINGEMENT,\ MERCHANTABILITY,\ AND\ FITNESS\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00035}00035\ \textcolor{comment}{\ \ \ \ FOR\ A\ PARTICULAR\ PURPOSE.}}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00036}00036\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00037}00037\ \textcolor{comment}{\ \ \ \ IN\ NO\ EVENT\ WILL\ MICROCHIP\ BE\ LIABLE\ FOR\ ANY\ INDIRECT,\ SPECIAL,\ PUNITIVE,\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00038}00038\ \textcolor{comment}{\ \ \ \ INCIDENTAL\ OR\ CONSEQUENTIAL\ LOSS,\ DAMAGE,\ COST\ OR\ EXPENSE\ OF\ ANY\ KIND\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00039}00039\ \textcolor{comment}{\ \ \ \ WHATSOEVER\ RELATED\ TO\ THE\ SOFTWARE,\ HOWEVER\ CAUSED,\ EVEN\ IF\ MICROCHIP\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00040}00040\ \textcolor{comment}{\ \ \ \ HAS\ BEEN\ ADVISED\ OF\ THE\ POSSIBILITY\ OR\ THE\ DAMAGES\ ARE\ FORESEEABLE.\ TO\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00041}00041\ \textcolor{comment}{\ \ \ \ THE\ FULLEST\ EXTENT\ ALLOWED\ BY\ LAW,\ MICROCHIP'S\ TOTAL\ LIABILITY\ ON\ ALL\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00042}00042\ \textcolor{comment}{\ \ \ \ CLAIMS\ IN\ ANY\ WAY\ RELATED\ TO\ THIS\ SOFTWARE\ WILL\ NOT\ EXCEED\ THE\ AMOUNT\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00043}00043\ \textcolor{comment}{\ \ \ \ OF\ FEES,\ IF\ ANY,\ THAT\ YOU\ HAVE\ PAID\ DIRECTLY\ TO\ MICROCHIP\ FOR\ THIS\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00044}00044\ \textcolor{comment}{\ \ \ \ SOFTWARE.}}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00045}00045\ \textcolor{comment}{*/}}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00046}00046\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00047}00047\ \textcolor{preprocessor}{\#ifndef\ TMR3\_H}}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00048}00048\ \textcolor{preprocessor}{\#define\ TMR3\_H}}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00053}00053\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00054}00054\ \textcolor{preprocessor}{\#include\ <stdbool.h>}}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00055}00055\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00057}00057\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus\ \ }\textcolor{comment}{//\ Provide\ C++\ Compatibility}}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00059}00059\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00061}00061\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00062}00062\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00063}00063\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00067}00067\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00100}00100\ \textcolor{keywordtype}{void}\ TMR3\_Initialize(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00101}00101\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00129}00129\ \textcolor{keywordtype}{void}\ TMR3\_StartTimer(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00130}00130\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00161}00161\ \textcolor{keywordtype}{void}\ TMR3\_StopTimer(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00162}00162\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00196}00196\ uint16\_t\ TMR3\_ReadTimer(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00197}00197\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00235}00235\ \textcolor{keywordtype}{void}\ TMR3\_WriteTimer(uint16\_t\ timerVal);}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00236}00236\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00271}00271\ \textcolor{keywordtype}{void}\ TMR3\_Reload(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00272}00272\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00310}00310\ \textcolor{keywordtype}{void}\ TMR3\_StartSinglePulseAcquisition(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00311}00311\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00349}00349\ uint8\_t\ TMR3\_CheckGateValueStatus(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00350}00350\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00351}00351\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00368}00368\ \ \textcolor{keywordtype}{void}\ TMR3\_SetInterruptHandler(\textcolor{keywordtype}{void}\ (*\ InterruptHandler)(\textcolor{keywordtype}{void}));}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00369}00369\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00386}00386\ \textcolor{keyword}{extern}\ void\ (*TMR3\_InterruptHandler)(void);}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00387}00387\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00404}00404\ \textcolor{keywordtype}{void}\ TMR3\_DefaultInterruptHandler(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00405}00405\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00406}00406\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus\ \ }\textcolor{comment}{//\ Provide\ C++\ Compatibility}}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00407}00407\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00408}00408\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00409}00409\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00410}00410\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00411}00411\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8h_source_l00412}00412\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ TMR3\_H}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

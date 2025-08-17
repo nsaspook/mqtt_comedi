@@ -1,0 +1,174 @@
+\doxysection{spi2.\+c}
+\hypertarget{spi2_8c_source}{}\label{spi2_8c_source}\index{bmc\_slave.X/mcc\_generated\_files/spi2.c@{bmc\_slave.X/mcc\_generated\_files/spi2.c}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00024}00024\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00025}00025\ \textcolor{comment}{\ \ \ \ (c)\ 2018\ Microchip\ Technology\ Inc.\ and\ its\ subsidiaries.\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00026}00026\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00027}00027\ \textcolor{comment}{\ \ \ \ Subject\ to\ your\ compliance\ with\ these\ terms,\ you\ may\ use\ Microchip\ software\ and\ any\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00028}00028\ \textcolor{comment}{\ \ \ \ derivatives\ exclusively\ with\ Microchip\ products.\ It\ is\ your\ responsibility\ to\ comply\ with\ third\ party\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00029}00029\ \textcolor{comment}{\ \ \ \ license\ terms\ applicable\ to\ your\ use\ of\ third\ party\ software\ (including\ open\ source\ software)\ that\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00030}00030\ \textcolor{comment}{\ \ \ \ may\ accompany\ Microchip\ software.}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00031}00031\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00032}00032\ \textcolor{comment}{\ \ \ \ THIS\ SOFTWARE\ IS\ SUPPLIED\ BY\ MICROCHIP\ "{}AS\ IS"{}.\ NO\ WARRANTIES,\ WHETHER\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00033}00033\ \textcolor{comment}{\ \ \ \ EXPRESS,\ IMPLIED\ OR\ STATUTORY,\ APPLY\ TO\ THIS\ SOFTWARE,\ INCLUDING\ ANY\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00034}00034\ \textcolor{comment}{\ \ \ \ IMPLIED\ WARRANTIES\ OF\ NON-\/INFRINGEMENT,\ MERCHANTABILITY,\ AND\ FITNESS\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00035}00035\ \textcolor{comment}{\ \ \ \ FOR\ A\ PARTICULAR\ PURPOSE.}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00036}00036\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00037}00037\ \textcolor{comment}{\ \ \ \ IN\ NO\ EVENT\ WILL\ MICROCHIP\ BE\ LIABLE\ FOR\ ANY\ INDIRECT,\ SPECIAL,\ PUNITIVE,\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00038}00038\ \textcolor{comment}{\ \ \ \ INCIDENTAL\ OR\ CONSEQUENTIAL\ LOSS,\ DAMAGE,\ COST\ OR\ EXPENSE\ OF\ ANY\ KIND\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00039}00039\ \textcolor{comment}{\ \ \ \ WHATSOEVER\ RELATED\ TO\ THE\ SOFTWARE,\ HOWEVER\ CAUSED,\ EVEN\ IF\ MICROCHIP\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00040}00040\ \textcolor{comment}{\ \ \ \ HAS\ BEEN\ ADVISED\ OF\ THE\ POSSIBILITY\ OR\ THE\ DAMAGES\ ARE\ FORESEEABLE.\ TO\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00041}00041\ \textcolor{comment}{\ \ \ \ THE\ FULLEST\ EXTENT\ ALLOWED\ BY\ LAW,\ MICROCHIP'S\ TOTAL\ LIABILITY\ ON\ ALL\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00042}00042\ \textcolor{comment}{\ \ \ \ CLAIMS\ IN\ ANY\ WAY\ RELATED\ TO\ THIS\ SOFTWARE\ WILL\ NOT\ EXCEED\ THE\ AMOUNT\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00043}00043\ \textcolor{comment}{\ \ \ \ OF\ FEES,\ IF\ ANY,\ THAT\ YOU\ HAVE\ PAID\ DIRECTLY\ TO\ MICROCHIP\ FOR\ THIS\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00044}00044\ \textcolor{comment}{\ \ \ \ SOFTWARE.}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00045}00045\ \textcolor{comment}{*/}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00046}00046\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00047}00047\ \textcolor{preprocessor}{\#include\ "{}spi2.h"{}}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00048}00048\ \textcolor{preprocessor}{\#include\ <xc.h>}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00050}00050\ \textcolor{keywordtype}{void}\ SPI2\_DefaultHandler(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00051}00051\ \textcolor{keywordtype}{void}\ SPI2\_DefaultRxHandler(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00053}\mbox{\hyperlink{structspi2__configuration__t}{00053}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00054}00054\ \ \ \ \ uint8\_t\ con0;\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00055}00055\ \ \ \ \ uint8\_t\ con1;\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00056}00056\ \ \ \ \ uint8\_t\ con2;\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00057}00057\ \ \ \ \ uint8\_t\ baud;\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00058}00058\ \ \ \ \ uint8\_t\ operation;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00059}00059\ \}\ \mbox{\hyperlink{structspi2__configuration__t}{spi2\_configuration\_t}};}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00061}00061\ \textcolor{comment}{//con0\ ==\ SPIxCON0,\ con1\ ==\ SPIxCON1,\ con2\ ==\ SPIxCON2,\ baud\ ==\ SPIxBAUD,\ operation\ ==\ Master/Slave}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00062}00062\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structspi2__configuration__t}{spi2\_configuration\_t}}\ spi2\_configuration[]\ =\ \{\ \ \ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00063}00063\ \ \ \ \ \{\ 0x0,\ 0x24,\ 0x1,\ 0x0,\ 1\ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00064}00064\ \};}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00066}00066\ \textcolor{keywordtype}{void}\ SPI2\_Initialize(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00067}00067\ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00068}00068\ \ \ \ \ \textcolor{comment}{//EN\ disabled;\ LSBF\ MSb\ first;\ MST\ bus\ slave;\ BMODE\ last\ byte;\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00069}00069\ \ \ \ \ SPI2CON0\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00070}00070\ \ \ \ \ \textcolor{comment}{//SMP\ Middle;\ CKE\ Idle\ to\ active;\ CKP\ Idle:High,\ Active:Low;\ FST\ disabled;\ SSP\ active\ low;\ SDIP\ active\ high;\ SDOP\ active\ high;\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00071}00071\ \ \ \ \ SPI2CON1\ =\ 0x24;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00072}00072\ \ \ \ \ \textcolor{comment}{//SSET\ disabled;\ TXR\ not\ required\ for\ a\ transfer;\ RXR\ suspended\ if\ the\ RxFIFO\ is\ full;\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00073}00073\ \ \ \ \ SPI2CON2\ =\ 0x01;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00074}00074\ \ \ \ \ \textcolor{comment}{//CLKSEL\ FOSC;\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00075}00075\ \ \ \ \ SPI2CLK\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00076}00076\ \ \ \ \ \textcolor{comment}{//BAUD\ 0;\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00077}00077\ \ \ \ \ SPI2BAUD\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00078}00078\ \ \ \ \ TRISDbits.TRISD2\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00079}00079\ \ \ \ \ PIE5bits.SPI2IE\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00080}00080\ \ \ \ \ PIE5bits.SPI2RXIE\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00081}00081\ \ \ \ \ SPI2\_SetInterruptHandler(SPI2\_DefaultHandler);}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00082}00082\ \ \ \ \ SPI2\_SetRxInterruptHandler(SPI2\_DefaultRxHandler);}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00083}00083\ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00084}00084\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00085}00085\ \textcolor{keywordtype}{bool}\ SPI2\_Open(spi2\_modes\_t\ spi2UniqueConfiguration)}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00086}00086\ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00087}00087\ \ \ \ \ \textcolor{keywordflow}{if}(!SPI2CON0bits.EN)}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00088}00088\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00089}00089\ \ \ \ \ \ \ \ \ SPI2CON0\ =\ spi2\_configuration[spi2UniqueConfiguration].con0;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00090}00090\ \ \ \ \ \ \ \ \ SPI2CON1\ =\ spi2\_configuration[spi2UniqueConfiguration].con1;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00091}00091\ \ \ \ \ \ \ \ \ SPI2CON2\ =\ spi2\_configuration[spi2UniqueConfiguration].con2\ |\ (\_SPI2CON2\_SPI2RXR\_MASK\ |\ \_SPI2CON2\_SPI2TXR\_MASK);}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00092}00092\ \ \ \ \ \ \ \ \ SPI2BAUD\ =\ spi2\_configuration[spi2UniqueConfiguration].baud;\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00093}00093\ \ \ \ \ \ \ \ \ TRISDbits.TRISD2\ =\ spi2\_configuration[spi2UniqueConfiguration].operation;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00094}00094\ \ \ \ \ \ \ \ \ SPI2CON0bits.EN\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00095}00095\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00096}00096\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00097}00097\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00098}00098\ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00099}00099\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00100}00100\ \textcolor{keywordtype}{void}\ SPI2\_Close(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00101}00101\ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00102}00102\ \ \ \ \ SPI2CON0bits.EN\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00103}00103\ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00104}00104\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00105}00105\ uint8\_t\ SPI2\_ExchangeByte(uint8\_t\ data)}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00106}00106\ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00107}00107\ \ \ \ \ SPI2TCNTL\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00108}00108\ \ \ \ \ SPI2TXB\ =\ data;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00109}00109\ \ \ \ \ \textcolor{keywordflow}{while}(!PIR5bits.SPI2RXIF);}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00110}00110\ \ \ \ \ \textcolor{keywordflow}{return}\ SPI2RXB;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00111}00111\ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00112}00112\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00113}00113\ \textcolor{keywordtype}{void}\ SPI2\_ExchangeBlock(\textcolor{keywordtype}{void}\ *block,\ \textcolor{keywordtype}{size\_t}\ blockSize)}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00114}00114\ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00115}00115\ \ \ \ \ uint8\_t\ *data\ =\ block;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00116}00116\ \ \ \ \ \textcolor{keywordflow}{while}(blockSize-\/-\/)}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00117}00117\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00118}00118\ \ \ \ \ \ \ \ \ SPI2TCNTL\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00119}00119\ \ \ \ \ \ \ \ \ SPI2TXB\ =\ *data;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00120}00120\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}(!PIR5bits.SPI2RXIF);}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00121}00121\ \ \ \ \ \ \ \ \ *data++\ =\ SPI2RXB;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00122}00122\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00123}00123\ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00124}00124\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00125}00125\ \textcolor{comment}{//\ Half\ Duplex\ SPI\ Functions}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00126}00126\ \textcolor{keywordtype}{void}\ SPI2\_WriteBlock(\textcolor{keywordtype}{void}\ *block,\ \textcolor{keywordtype}{size\_t}\ blockSize)}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00127}00127\ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00128}00128\ \ \ \ \ uint8\_t\ *data\ =\ block;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00129}00129\ \ \ \ \ \textcolor{keywordflow}{while}(blockSize-\/-\/)}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00130}00130\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00131}00131\ \ \ \ \ \ \ \ \ SPI2\_ExchangeByte(*data++);}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00132}00132\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00133}00133\ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00134}00134\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00135}00135\ \textcolor{keywordtype}{void}\ SPI2\_ReadBlock(\textcolor{keywordtype}{void}\ *block,\ \textcolor{keywordtype}{size\_t}\ blockSize)}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00136}00136\ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00137}00137\ \ \ \ \ uint8\_t\ *data\ =\ block;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00138}00138\ \ \ \ \ \textcolor{keywordflow}{while}(blockSize-\/-\/)}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00139}00139\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00140}00140\ \ \ \ \ \ \ \ \ *data++\ =\ SPI2\_ExchangeByte(0);}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00141}00141\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00142}00142\ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00143}00143\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00144}00144\ \textcolor{keywordtype}{void}\ SPI2\_WriteByte(uint8\_t\ \textcolor{keywordtype}{byte})}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00145}00145\ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00146}00146\ \ \ \ \ SPI2TXB\ =\ byte;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00147}00147\ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00148}00148\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00149}00149\ uint8\_t\ SPI2\_ReadByte(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00150}00150\ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00151}00151\ \ \ \ \ \textcolor{keywordflow}{return}\ SPI2RXB;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00152}00152\ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00153}00153\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00154}00154\ \textcolor{keywordtype}{void}\ SPI2\_DefaultHandler(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00155}00155\ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00156}00156\ \ \ \ \ \textcolor{comment}{//\ add\ your\ SPI2\ interrupt\ custom\ code}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00157}00157\ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00158}00158\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00159}00159\ \textcolor{keywordtype}{void}\ SPI2\_SetInterruptHandler(spi2InterruptHandler\_t\ handler)}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00160}00160\ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00161}00161\ \ \ \ \ SPI2\_InterruptHandler\ =\ handler;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00162}00162\ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00163}00163\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00164}00164\ \textcolor{keywordtype}{void}\ \_\_interrupt(irq(SPI2),base(8))\ SPI2\_Isr(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00165}00165\ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00166}00166\ \ \ \ \ \textcolor{keywordflow}{if}(SPI2\_InterruptHandler)}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00167}00167\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00168}00168\ \ \ \ \ \ \ \ \ SPI2\_InterruptHandler();}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00169}00169\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00170}00170\ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00171}00171\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00172}00172\ \textcolor{keywordtype}{void}\ SPI2\_DefaultRxHandler(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00173}00173\ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00174}00174\ \ \ \ \ \textcolor{comment}{//\ add\ your\ SPI2RX\ interrupt\ custom\ code}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00175}00175\ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00176}00176\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00177}00177\ \textcolor{keywordtype}{void}\ SPI2\_SetRxInterruptHandler(spi2InterruptHandler\_t\ handler)}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00178}00178\ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00179}00179\ \ \ \ \ SPI2\_RxInterruptHandler\ =\ handler;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00180}00180\ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00181}00181\ }
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00182}00182\ \textcolor{keywordtype}{void}\ \_\_interrupt(irq(SPI2RX),base(8))\ SPI2\_RxIsr(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00183}00183\ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00184}00184\ \ \ \ \ \textcolor{keywordflow}{if}(SPI2\_RxInterruptHandler)}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00185}00185\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00186}00186\ \ \ \ \ \ \ \ \ SPI2\_RxInterruptHandler();}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00187}00187\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00188}00188\ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00189}00189\ }
+
+\end{DoxyCode}
