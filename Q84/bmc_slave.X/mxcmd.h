@@ -21,47 +21,10 @@ extern "C" {
 #include "eadog.h"
 #include "timers.h"
 
-	const char build_version[] = "V2.04 FM80 Q84";
+	const char build_version[] = "V3.00 FM80 interface Q84";
 	/*
 	 * code changes
-	 * 1.55 remove critical section interrupt disables for FM80 serial
-	 * 1.56 add battery voltage to SoC for boot setting of battery energy
-	 * 1.57 fix FM80 memcpy length bug in FM_rx and FM_tx
-	 * 1.58 add filter and masking to the canbus setup function so we can
-	 * properly receive canbus packets
-	 * 1.59 CAN receive packet buffering and display
-	 * 1.60 misc code cleanups
-	 * 1.61 add FIFO for xmit
-	 * 1.62 add modules firmware/ID capture and display
-	 * 1.63 FM80 FW fixes
-	 * 1.65 add FM80 log data reporting for the previous day
-	 * 1.70 add date and time updates via CAN to FM80 from the network server
-	 * 1.71 time server cleanup and display codes
-	 * 1.72 add day log functions from the serial port
-	 * 1.73 add LCD data mirror data via CANBUS
-	 * 1.74 clean up error indicator and data routines
-	 * 1.75 lockout CANBUS during FM80 serial receive functions
-	 * 1.80 fix LCD DMA transfers using SPI, still needs a bit of work during startup
-	 * 1.81 fix scroll buffer junk and add running PV Wh energy total for the day
-	 * 1.82 day/night switching glitches
-	 * 1.85 run time accounting and logging
-	 * 1.86 fix more logging buffer length issues
-	 * 1.87 use CLC for heartbeat timer and I/O signal
-	 * 1.88 XC8 must use V2.41 as V2.45 seems to be buggy
-	 * 1.90 Remote DMA LCD mode fixes
-	 * 1.91 LCD command timing fixes
-	 * 1.92 reorg trace signal names and add LATE status to canbus info packet to sync remotes
-	 * 1.93 send/receive blob binary data can data packets
-	 * 1.94, 1.95 add button functions and debouncing
-	 * 1.96 smooth run-time data point
-	 * 1.97 expand logging buffer for canbus data
-	 * 1.98 main display dimming
-	 * 1.99 Float fixes
-	 * 2.00 add set display to 1 mode canbus command
-	 * 2.01 minor code cleanups
-	 * 2.02 LCD can rx/tx logging display
-	 * 2.03 button causing display switches while dimmed fixed, mxlog_ptr having issues with xc8 3.00
-	 * 2.04 change BCM to BMC on the display, try to find source of json NULL error in ha_energy when FM80 start FLOAT
+	 * 3.00 version for the daq_bmc board
 	 */
 
 #define MAX_B_BUF	512

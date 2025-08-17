@@ -56,7 +56,7 @@ modbus_em_data2[] = {MADDR, READ_HOLDING_REGISTERS, 0x05, 0x00, 0x00, EM_DATA_LE
 modbus_em_serial[] = {MADDR, READ_HOLDING_REGISTERS, 0x50, 0x00, 0x00, SERIAL_DATA_LEN}, // last number is 16-bit words wanted from the start register address 0x5000
 modbus_em_config[] = {MADDR, WRITE_SINGLE_REGISTER, 0x10, 0x02, 0x00, 0x02}, // System configuration, Value 2 = ?2P? (2-phase with neutral)
 modbus_em_passwd[] = {MADDR, WRITE_SINGLE_REGISTER, 0x10, 0x00, 0x00, 0x00}, // Password configuration, set to no password = 0
-modbus_em_light[] = {MADDR, WRITE_SINGLE_REGISTER, 0x16, 0x04, 0x00, 0x01}, // back-light timeout, 1 min
+modbus_em_light[] = {MADDR, WRITE_SINGLE_REGISTER, 0x16, 0x04, 0x00, 0x05}, // back-light timeout, 5 min
 // receive frames prototypes for received data checking
 em_id[] = {MADDR, READ_HOLDING_REGISTERS, 0x00, 0x00, 0x00, 0x00, 0x00},
 em_version[] = {MADDR, READ_HOLDING_REGISTERS, 0x00, 0x00, 0x00, 0x00, 0x00},
@@ -326,7 +326,7 @@ int8_t master_controller_work(C_data * client)
 #else
 		if (get_2hz(false) >= QDELAY) {
 #endif
-			half_dup_tx(false); // no delays here
+//			half_dup_tx(false); // no delays here
 			M.recv_count = 0;
 			client->cstate = SEND;
 			clear_500hz();
@@ -347,8 +347,8 @@ int8_t master_controller_work(C_data * client)
 			if (serial_trmt()) { // check for serial UART transmit shift register and buffer empty
 				clear_500hz(); // clear timer until buffer empty
 			}
-			WaitMs(TMDELAY);
-			DERE_SetLow(); // enable modbus receiver
+//			WaitMs(TMDELAY);
+//			DERE_SetLow(); // enable modbus receiver
 		}
 		break;
 	case RECV:
@@ -356,7 +356,7 @@ int8_t master_controller_work(C_data * client)
 		if (get_500hz(false) >= TEDELAY) { // state machine execute timer test
 
 			client->trace = T_recv_r;
-			half_dup_rx(false); // no delays here
+//			half_dup_rx(false); // no delays here
 
 			/*
 			 * check received response data for size and format for each command sent

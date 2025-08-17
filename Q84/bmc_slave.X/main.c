@@ -726,6 +726,22 @@ void main(void)
 
 				set_vterm(MAIN_VTERM);
 				snprintf(strPtr, MAX_TEXT, "%.2X %s", upd++, serial_buffer_ss.r_string);
+				if (C.serial_ok) {
+					switch (serial_buffer_ss.r_string_chan) {
+					case 2:
+						snprintf(strPtr, MAX_TEXT, "V%ld A%ld                   ", em.vl1l2, em.al1);
+						break;
+					case 3:
+						snprintf(strPtr, MAX_TEXT, "W%ld VA%ld  F%d              ", em.wl1, em.varl1, em.hz);
+						break;
+					case 1:
+						snprintf(strPtr, MAX_TEXT, "FW %d                    ", emv.firmware);
+						break;
+					case 0:
+						snprintf(strPtr, MAX_TEXT, "%s %d                 ", ems.serial, ems.year);
+						break;
+					}
+				}
 				refresh_lcd();
 				serial_buffer_ss.r_string_index = 0;
 				r_string_ready = false;
