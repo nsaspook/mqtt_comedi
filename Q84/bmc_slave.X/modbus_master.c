@@ -248,7 +248,7 @@ int8_t master_controller_work(C_data * client)
 		return T_spacing;
 	}
 
-	TP1_SetHigh();
+	IO_RF7_SetHigh();
 	spacing = 0;
 
 	client->trace = T_begin;
@@ -402,7 +402,7 @@ int8_t master_controller_work(C_data * client)
 	default:
 		break;
 	}
-	TP1_SetLow();
+	IO_RF7_SetLow();
 	return client->trace;
 }
 
