@@ -3,7 +3,7 @@
 #define	ON	1
 #define	OFF	0
 
-volatile uint8_t cc_stream_file, cc_buffer[MAX_DATA], cc_buffer_tx[MAX_DATA]; // RX and TX command buffers
+volatile uint8_t cc_stream_file, *cc_buffer, cc_buffer_0[MAX_DATA], cc_buffer_1[MAX_DATA], cc_buffer_tx[MAX_DATA]; // RX and TX command buffers
 
 volatile M_data M = {
 	.blink_lock = false,
@@ -67,7 +67,7 @@ em_config[] = {MADDR, WRITE_SINGLE_REGISTER, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 em_passwd[] = {MADDR, WRITE_SINGLE_REGISTER, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
 em_light[] = {MADDR, WRITE_SINGLE_REGISTER, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
-EM_data1 em;
+EM_data1 em, *em_ptr;
 EM_data2 emt;
 EM_serial ems;
 EM_version emv;
@@ -168,6 +168,8 @@ uint8_t init_stream_params(void)
  */
 void init_mb_master_timers(void)
 {
+	cc_buffer = cc_buffer_0;
+	em_ptr = (EM_data1*) & cc_buffer[3];
 	TMR4_SetInterruptHandler(timer_500ms_tick);
 	TMR4_StartTimer();
 	TMR3_SetInterruptHandler(timer_2ms_tick);
@@ -245,6 +247,8 @@ int8_t master_controller_work(C_data * client)
 	if (spacing++ <SPACING && !M.rx) {
 		return T_spacing;
 	}
+
+	TP1_SetHigh();
 	spacing = 0;
 
 	client->trace = T_begin;
@@ -326,7 +330,9 @@ int8_t master_controller_work(C_data * client)
 #else
 		if (get_2hz(false) >= QDELAY) {
 #endif
-//			half_dup_tx(false); // no delays here
+#ifndef AUTO_DERE
+			half_dup_tx(false); // no delays here
+#endif
 			M.recv_count = 0;
 			client->cstate = SEND;
 			clear_500hz();
@@ -347,8 +353,9 @@ int8_t master_controller_work(C_data * client)
 			if (serial_trmt()) { // check for serial UART transmit shift register and buffer empty
 				clear_500hz(); // clear timer until buffer empty
 			}
-//			WaitMs(TMDELAY);
-//			DERE_SetLow(); // enable modbus receiver
+#ifndef AUTO_DERE
+			DERE_SetLow(); // enable modbus receiver
+#endif
 		}
 		break;
 	case RECV:
@@ -356,7 +363,9 @@ int8_t master_controller_work(C_data * client)
 		if (get_500hz(false) >= TEDELAY) { // state machine execute timer test
 
 			client->trace = T_recv_r;
-//			half_dup_rx(false); // no delays here
+#ifndef AUTO_DERE
+			half_dup_rx(false); // no delays here
+#endif
 
 			/*
 			 * check received response data for size and format for each command sent
@@ -393,6 +402,7 @@ int8_t master_controller_work(C_data * client)
 	default:
 		break;
 	}
+	TP1_SetLow();
 	return client->trace;
 }
 
@@ -458,6 +468,7 @@ uint32_t get_500hz(const uint8_t mode)
 
 static void half_dup_tx(const bool delay)
 {
+#ifndef AUTO_DERE
 	if (DERE_GetValue()) {
 		return;
 	}
@@ -466,12 +477,14 @@ static void half_dup_tx(const bool delay)
 	if (delay) {
 		WaitMs(DUPL_DELAY); // busy waits
 	}
+#endif
 }
 
 // switch RS transceiver to receive mode and wait if not rx
 
 static void half_dup_rx(const bool delay)
 {
+#ifndef AUTO_DERE
 	if (!DERE_GetValue()) {
 		return;
 	}
@@ -479,6 +492,7 @@ static void half_dup_rx(const bool delay)
 		WaitMs(DUPL_DELAY); // busy waits
 	}
 	DERE_SetLow(); // enable modbus receiver
+#endif
 }
 
 // ISR function for TMR4
@@ -680,26 +694,30 @@ static bool modbus_read_id_check(C_data * client, bool* cstate, const uint16_t r
 static void em_data_handler(void)
 {
 	/*
-	 * move from receive buffer to data structure and munge the data into the correct local formats from MODBUS client
+	 * load EM540 data pointer with receive buffer to data structure
+	 * and munge the data into the correct local formats for client
 	 */
-	memcpy((void*) &em, (void*) &cc_buffer[3], sizeof(em));
-	em.vl1l2 = mb32_swap(em.vl1l2);
-	em.vl2l3 = mb32_swap(em.vl2l3);
-	em.vl3l1 = mb32_swap(em.vl3l1);
-	em.al1 = mb32_swap(em.al1);
-	em.al2 = mb32_swap(em.al2);
-	em.al3 = mb32_swap(em.al3);
-	em.wl1 = mb32_swap(em.wl1);
-	em.wl2 = mb32_swap(em.wl2);
-	em.wl3 = mb32_swap(em.wl3);
-	em.val1 = mb32_swap(em.val1);
-	em.val2 = mb32_swap(em.val2);
-	em.val3 = mb32_swap(em.val3);
-	em.varl1 = mb32_swap(em.varl1);
-	em.varl2 = mb32_swap(em.varl2);
-	em.varl3 = mb32_swap(em.varl3);
-	em.pfl1 = mb16_swap(em.pfl1);
-	em.hz = mb16_swap(em.hz);
+	em_ptr = (EM_data1*) & cc_buffer[3];
+	em.vl1l2 = mb32_swap(em_ptr->vl1l2);
+	em.al1 = mb32_swap(em_ptr->al1);
+	em.wl1 = mb32_swap(em_ptr->wl1);
+	em.val1 = mb32_swap(em_ptr->val1);
+	em.varl1 = mb32_swap(em_ptr->varl1);
+	em.pfl1 = mb16_swap(em_ptr->pfl1);
+	em.pfsys = mb16_swap(em_ptr->pfsys);
+	em.hz = mb16_swap(em_ptr->hz);
+#ifndef MB_EM540_ONE
+	em.vl2l3 = mb32_swap(em_ptr->vl2l3);
+	em.vl3l1 = mb32_swap(em_ptr->vl3l1);
+	em.al2 = mb32_swap(em_ptr->al2);
+	em.al3 = mb32_swap(em_ptr->al3);
+	em.wl2 = mb32_swap(em_ptr->wl2);
+	em.wl3 = mb32_swap(em_ptr->wl3);
+	em.val2 = mb32_swap(em_ptr->val2);
+	em.val3 = mb32_swap(em_ptr->val3);
+	em.varl2 = mb32_swap(em_ptr->varl2);
+	em.varl3 = mb32_swap(em_ptr->varl3);
+#endif
 }
 
 static void emt_data_handler(void)
@@ -707,8 +725,10 @@ static void emt_data_handler(void)
 	/*
 	 * move from receive buffer to data structure and munge the data into the correct local formats from MODBUS client
 	 */
+#ifdef	 MB_EM540_EMT
 	memcpy((void*) &emt, (void*) &cc_buffer[3], sizeof(emt));
 	emt.hz = mb32_swap(emt.hz);
+#endif
 }
 
 static void ems_data_handler(void)

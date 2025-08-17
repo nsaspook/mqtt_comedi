@@ -24,11 +24,13 @@ extern "C" {
 #define MB_EM540
 #define MB_EM540_ID_H	0x06
 #define MB_EM540_ID_L	0xE0
+#define MB_EM540_ONE	// single phase, no inverter power inputs
 #define SWMBMVER	0X0033	// master SW version
 #define MADDR		0x01 // modbus client address
 #define EM_DATA_LEN1	52	// 16-bit words returned
 #define EM_DATA_LEN2	64	// 16-bit words returned
 #define SERIAL_DATA_LEN	8
+#define AUTO_DERE
 	/*
 	 * setup options on the EM540 from the factor defaults
 	 * 115200 baud, measurement mode C for bidirectional values

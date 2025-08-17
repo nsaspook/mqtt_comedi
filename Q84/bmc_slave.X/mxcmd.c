@@ -49,6 +49,7 @@ uint8_t FM_tx(const uint16_t * data, const uint8_t count)
  */
 void FM_io(void)
 {
+	DERE_SetHigh();
 	if (pace++ > BUFFER_SPACING) {
 		if (dcount-- > 0) {
 			if (tbuf[dstart] > 0xff) { // Check for bit-9
@@ -95,6 +96,7 @@ void FM_io(void)
 	}
 
 	timer_ms_tick(0, 0); // software timers update
+	DERE_SetLow();
 }
 
 /*

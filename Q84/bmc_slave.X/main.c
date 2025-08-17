@@ -729,13 +729,13 @@ void main(void)
 				if (C.serial_ok) {
 					switch (serial_buffer_ss.r_string_chan) {
 					case 2:
-						snprintf(strPtr, MAX_TEXT, "V%ld A%ld                   ", em.vl1l2, em.al1);
+						snprintf(strPtr, MAX_TEXT, "V%ld A%ld VAR%ld                  ", em.vl1l2, em.al1, em.varl1);
 						break;
 					case 3:
-						snprintf(strPtr, MAX_TEXT, "W%ld VA%ld  F%d              ", em.wl1, em.varl1, em.hz);
+						snprintf(strPtr, MAX_TEXT, "W%ld VA%ld F%d P%d             ", em.wl1, em.val1, em.hz, em.pfsys);
 						break;
 					case 1:
-						snprintf(strPtr, MAX_TEXT, "FW %d                    ", emv.firmware);
+						snprintf(strPtr, MAX_TEXT, "FW 0X%X                    ", emv.firmware);
 						break;
 					case 0:
 						snprintf(strPtr, MAX_TEXT, "%s %d                 ", ems.serial, ems.year);

@@ -88,7 +88,7 @@ void slaveo_rx_isr(void)
 	/* we only get this when the master wants data, the slave never generates one */
 	// SPI port #2 SLAVE receiver
 
-	TP1_SetHigh();
+	DERE_SetHigh();
 	DLED_SetHigh();
 #ifdef SLAVE_DEBUG
 	if (SPI2INTFbits.RXOIF) {
@@ -405,7 +405,7 @@ void slaveo_rx_isr(void)
 isr_end:
 	spi_stat_ss.slave_int_count++;
 	DLED_SetLow();
-	TP1_SetLow();
+	DERE_SetLow();
 }
 
 void slaveo_spi_isr(void)
