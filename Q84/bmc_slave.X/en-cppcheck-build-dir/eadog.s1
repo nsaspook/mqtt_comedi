@@ -1,0 +1,37 @@
+init_display global:[Sstr,lcd_dma_buf,powerup,spi1_rec_buf,spi_link] call:[DMA1_SetDMAPriority,DMA1_SetORIInterruptHandler,DMA1_SetSCNTIInterruptHandler,DMA1_StopTransfer,DMA2_SetDCNTIInterruptHandler,DMA2_SetDMAPriority,DMA2_SetORIInterruptHandler,DMA2_SetSCNTIInterruptHandler,DMA2_StopTransfer,DMA3_SetDCNTIInterruptHandler,DMA3_SetDMAPriority,DMA3_SetORIInterruptHandler,DMA3_SetSCNTIInterruptHandler,memset,send_lcd_cmd_dma,send_lcd_data_dma,wdtdelay] noreturn:[wdtdelay]
+send_lcd_data call:[SPI1_ExchangeByte,wdtdelay,while] noreturn:[wdtdelay]
+send_lcd_cmd call:[SPI1_ExchangeByte,wdtdelay,while] noreturn:[wdtdelay]
+send_lcd_cmd_long call:[SPI1_ExchangeByte,wdtdelay,while] noreturn:[wdtdelay]
+eaDogM_WriteString global:[spi_link] call:[DMA1_SetDestinationSize,DMA1_SetSourceSize,memcpy,start_lcd,strlen,wait_lcd_done,wait_lcd_set,while] noreturn:[start_lcd]
+send_lcd_cmd_dma call:[send_lcd_data_dma] noreturn:[send_lcd_data_dma]
+send_lcd_data_dma global:[spi_link] call:[DMA1_SetDestinationSize,DMA1_SetSourceSize,start_lcd,wait_lcd_done,wait_lcd_set,while] noreturn:[start_lcd]
+send_spi1_tic12400_dma global:[spi_link,tic_rw] call:[SPI1_ExchangeBlock,memcpy,wait_lcd_done,while] noreturn:[while]
+send_spi1_mc33996_dma global:[mc33996_w_buf,mc_init,spi_link] call:[SPI1_ExchangeBlock,memcpy,wait_lcd_done,while] noreturn:[while]
+send_lcd_pos_dma global:[spi_link] call:[DMA1_SetDestinationSize,DMA1_SetSourceSize,start_lcd,wait_lcd_done,wait_lcd_set,while] noreturn:[start_lcd]
+eaDogM_WriteStringAtPos global:[scroll_lock] call:[eaDogM_WriteString,send_lcd_pos_dma,wdtdelay] noreturn:[eaDogM_WriteString]
+eaDogM_WriteIntAtPos
+eaDogM_SetPos
+eaDogM_ClearRow
+eaDogM_WriteByteToCGRAM
+eaDogM_WriteCommand call:[send_lcd_cmd_dma] noreturn:[send_lcd_cmd_dma]
+eaDogM_WriteChr call:[send_lcd_data_dma] noreturn:[send_lcd_data_dma]
+start_lcd call:[DMA1_StartTransferWithTrigger] noreturn:[DMA1_StartTransferWithTrigger]
+start_spi1_read call:[DMA2_StartTransfer,DMA2_StartTransferWithTrigger] noreturn:[DMA2_StartTransferWithTrigger]
+start_spi1_read1 call:[DMA3_StartTransfer,DMA3_StartTransferWithTrigger] noreturn:[DMA3_StartTransferWithTrigger]
+wait_lcd_set global:[spi_link]
+wait_read_set global:[spi_link]
+wait_lcd_check global:[spi_link]
+wait_lcd_done global:[spi_link] call:[while] noreturn:[while]
+wait_read_done global:[spi_link] call:[while] noreturn:[while]
+clear_lcd_done global:[spi_link]
+spi_lcd_byte
+spi_src_byte global:[inx,spi_link]
+spi_or_byte global:[spi_link]
+spi_des_byte global:[spi_link]
+spi_rec_done
+eaDogM_Scroll_String global:[Sstr,scroll_line_pos,scroll_lock] call:[memcpy]
+eaDogM_Scroll_Task global:[Sstr,scroll_line_pos,scroll_lock] call:[eaDogM_WriteStringAtPos]
+no_dma_set_lcd call:[send_lcd_cmd,send_lcd_data,wdtdelay] noreturn:[wdtdelay]
+check_lcd_dim global:[B] call:[send_lcd_cmd_dma,send_lcd_data_dma] noreturn:[send_lcd_data_dma]
+set_lcd_dim global:[B] call:[send_lcd_cmd_dma,send_lcd_data_dma] noreturn:[send_lcd_data_dma]
+wdtdelay call:[ClrWdt] noreturn:[ClrWdt]

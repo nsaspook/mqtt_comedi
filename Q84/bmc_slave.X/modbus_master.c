@@ -3,14 +3,20 @@
 #define	ON	1
 #define	OFF	0
 
-volatile uint8_t cc_stream_file, *cc_buffer, cc_buffer_0[MAX_DATA], cc_buffer_1[MAX_DATA], cc_buffer_tx[MAX_DATA]; // RX and TX command buffers
+typedef struct M_time_data { // ISR used, mainly for non-atomic mod problems
+	uint32_t clock_500hz;
+	uint32_t clock_500ahz;
+	uint32_t clock_2hz;
+} M_time_data;
 
-volatile M_data M = {
+static volatile uint8_t cc_stream_file, *cc_buffer, cc_buffer_0[MAX_DATA], cc_buffer_1[MAX_DATA], cc_buffer_tx[MAX_DATA]; // RX and TX command buffers
+
+static volatile M_data M = {
 	.blink_lock = false,
 	.power_on = true,
 };
 
-volatile M_time_data MT = {
+static volatile M_time_data MT = {
 	.clock_500ahz = 0,
 	.clock_2hz = 0,
 	.clock_500hz = 0,
@@ -67,24 +73,36 @@ em_config[] = {MADDR, WRITE_SINGLE_REGISTER, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 em_passwd[] = {MADDR, WRITE_SINGLE_REGISTER, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
 em_light[] = {MADDR, WRITE_SINGLE_REGISTER, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
+
 EM_data1 em, *em_ptr;
 EM_data2 emt;
 EM_serial ems;
 EM_version emv;
 
+static void clear_2hz(void);
+static void clear_500ahz(void);
+static void clear_500hz(void);
+static uint32_t get_2hz(const uint8_t);
+static uint32_t get_500ahz(const uint8_t);
+static uint32_t get_500hz(const uint8_t);
+static void timer_500ms_tick(void);
+static void timer_2ms_tick(void);
+
 static void half_dup_tx(const bool);
 static void half_dup_rx(const bool);
 static bool serial_trmt(void);
+static uint16_t modbus_rtu_send_msg(void *, const void *, uint16_t);
 static uint16_t modbus_rtu_send_msg_crc(volatile uint8_t *, uint16_t);
-static uint16_t crc16_receive(C_data *);
+static uint16_t crc16_receive(const C_data *);
 static void log_crc_error(const uint16_t, const uint16_t);
-static void UART1_DefaultFramingErrorHandler_mb(void);
-static void UART1_DefaultOverrunErrorHandler_mb(void);
-static void UART1_DefaultErrorHandler_mb(void);
+static void UART3_DefaultFramingErrorHandler_mb(void);
+static void UART3_DefaultOverrunErrorHandler_mb(void);
+static void UART3_DefaultErrorHandler_mb(void);
 
 static bool modbus_write_check(C_data *, bool*, uint16_t);
 static bool modbus_read_check(C_data *, bool*, uint16_t, void (* DataHandler)(void));
 static bool modbus_read_id_check(C_data *, bool*, uint16_t);
+
 static void em_data_handler(void);
 static void emt_data_handler(void);
 static void ems_data_handler(void);
@@ -180,7 +198,7 @@ void init_mb_master_timers(void)
  * helper functions
  * received CRC16 bytes from client
  */
-static uint16_t crc16_receive(C_data * client)
+static uint16_t crc16_receive(const C_data * client)
 {
 	uint16_t crc16r;
 
@@ -626,8 +644,6 @@ static bool modbus_read_check(C_data * client, bool* cstate, const uint16_t rec_
 			*cstate = false;
 			client->data_ok = false;
 			log_crc_error(c_crc, c_crc_rec);
-			if (client->data_ok) {
-			}
 		}
 		client->cstate = CLEAR;
 	} else {
@@ -637,8 +653,6 @@ static bool modbus_read_check(C_data * client, bool* cstate, const uint16_t rec_
 			client->mcmd = G_ID;
 			M.to_error++;
 			M.error++;
-			if (client->data_ok) {
-			}
 		}
 	}
 #endif

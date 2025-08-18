@@ -1,0 +1,11 @@
+FM_restart global:[BM,data,dcount,dstart,rdstart]
+FM_tx_empty global:[dcount]
+FM_tx global:[BM,dcount,dstart,tbuf] call:[memcpy]
+FM_io global:[dcount,dstart,pace,rbuf,rdstart,tbuf] call:[UART2_Write,timer_ms_tick,while] noreturn:[UART2_Write,while]
+FM_rx global:[rbuf,rdstart] call:[memcpy] noreturn:[memcpy]
+FM_rx_ready global:[rdstart]
+FM_rx_count global:[rdstart]
+FM_onesec_io global:[BM]
+FM_tensec_io global:[BM]
+lp_filter
+calc_checksum

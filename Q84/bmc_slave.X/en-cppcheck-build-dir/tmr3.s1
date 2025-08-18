@@ -1,0 +1,10 @@
+TMR3_Initialize global:[timer3ReloadVal] call:[TMR3_SetInterruptHandler]
+TMR3_StartTimer
+TMR3_StopTimer
+TMR3_ReadTimer
+TMR3_WriteTimer
+TMR3_Reload global:[timer3ReloadVal] call:[TMR3_WriteTimer] noreturn:[TMR3_WriteTimer]
+TMR3_StartSinglePulseAcquisition
+TMR3_CheckGateValueStatus call:[return] noreturn:[return]
+TMR3_SetInterruptHandler global:[TMR3_InterruptHandler]
+TMR3_DefaultInterruptHandler

@@ -52,7 +52,7 @@ void check_help(const bool flipper)
 	 * show help display
 	 */
 	if (V.help) {
-		snprintf(get_vterm_ptr(0, HELP_VTERM), MAX_TEXT, " HELP Screen: %u           ", V.help_id + 1);
+		snprintf(get_vterm_ptr(0, HELP_VTERM), MAX_TEXT, " HELP Screen: %d           ", V.help_id + 1);
 		if (flipper) {
 			snprintf(get_vterm_ptr(3, HELP_VTERM), MAX_TEXT, "HELP %s              ", build_date);
 		} else {
@@ -405,7 +405,7 @@ void set_time(const time_t t)
 }
 
 /**
- * if t > 0, t is set to memory location of current_time variable
+ * if t not NULL, t is set to memory location of current_time variable
  */
 time_t time(time_t * t)
 {

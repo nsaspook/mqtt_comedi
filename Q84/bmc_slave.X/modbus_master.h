@@ -160,12 +160,6 @@ extern "C" {
 		char bytes[8];
 	};
 
-	typedef struct M_time_data { // ISR used, mainly for non-atomic mod problems
-		uint32_t clock_500hz;
-		uint32_t clock_500ahz;
-		uint32_t clock_2hz;
-	} M_time_data;
-
 	typedef struct M_data { // ISR used, mainly for non-atomic mod problems
 		uint8_t blink_lock : 1;
 		uint8_t config : 1;
@@ -320,7 +314,6 @@ extern "C" {
 #define MM_ERROR_C	MLED_SetLow()  // RED LED
 
 	uint16_t crc16(volatile uint8_t *, uint16_t);
-	uint16_t modbus_rtu_send_msg(void *, const void *, uint16_t);
 
 	void my_modbus_rx_32(void);
 	uint8_t init_stream_params(void);
@@ -329,24 +322,12 @@ extern "C" {
 	int32_t mb32_swap(const int32_t);
 	int16_t mb16_swap(const int16_t);
 
-	void clear_2hz(void);
-	void clear_500ahz(void);
-	void clear_500hz(void);
-	uint32_t get_2hz(const uint8_t);
-	uint32_t get_500ahz(const uint8_t);
-	uint32_t get_500hz(const uint8_t);
-
-	void timer_500ms_tick(void);
-	void timer_2ms_tick(void);
-
 	void mb_tx_test(C_data *);
 
 	void mb_setup(void);
 
 	extern volatile struct VM_type VM;
 	extern C_data C; // MODBUS client state data
-	extern volatile M_data M; // MODBUS hardware state data
-	extern volatile M_time_data MT; // MODBUS sequence timers
 	extern EM_data1 em; // converted results data
 	extern EM_data2 emt; // converted results data
 	extern EM_serial ems; // converted results data

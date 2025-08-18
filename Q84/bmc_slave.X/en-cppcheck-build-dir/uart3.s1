@@ -1,0 +1,18 @@
+UART3_Initialize global:[uart3RxCount,uart3RxHead,uart3RxLastError,uart3RxTail,uart3TxBuffer,uart3TxBufferRemaining,uart3TxHead,uart3TxTail] call:[UART3_SetErrorHandler,UART3_SetFramingErrorHandler,UART3_SetOverrunErrorHandler,UART3_SetRxInterruptHandler,UART3_SetTxInterruptHandler,sizeof]
+UART3_is_rx_ready global:[uart3RxCount] call:[return] noreturn:[return]
+UART3_is_tx_ready global:[uart3TxBufferRemaining] call:[return] noreturn:[return]
+UART3_is_tx_done
+UART3_get_last_status global:[uart3RxLastError]
+UART3_Read global:[uart3RxBuffer,uart3RxCount,uart3RxLastError,uart3RxStatusBuffer,uart3RxTail] call:[sizeof]
+UART3_Write global:[uart3TxBuffer,uart3TxBufferRemaining,uart3TxHead] call:[sizeof]
+UART3_Transmit_ISR global:[uart3TxBuffer,uart3TxBufferRemaining,uart3TxTail] call:[sizeof]
+UART3_Receive_ISR global:[UART3_ErrorHandler,UART3_FramingErrorHandler,UART3_OverrunErrorHandler,uart3RxHead,uart3RxStatusBuffer] call:[UART3_ErrorHandler,UART3_FramingErrorHandler,UART3_OverrunErrorHandler,UART3_RxDataHandler] noreturn:[UART3_ErrorHandler,UART3_FramingErrorHandler,UART3_OverrunErrorHandler,UART3_RxDataHandler]
+UART3_RxDataHandler global:[uart3RxBuffer,uart3RxCount,uart3RxHead] call:[sizeof]
+UART3_DefaultFramingErrorHandler
+UART3_DefaultOverrunErrorHandler
+UART3_DefaultErrorHandler call:[UART3_RxDataHandler] noreturn:[UART3_RxDataHandler]
+UART3_SetFramingErrorHandler global:[UART3_FramingErrorHandler]
+UART3_SetOverrunErrorHandler global:[UART3_OverrunErrorHandler]
+UART3_SetErrorHandler global:[UART3_ErrorHandler]
+UART3_SetRxInterruptHandler global:[UART3_RxInterruptHandler]
+UART3_SetTxInterruptHandler global:[UART3_TxInterruptHandler]

@@ -162,7 +162,7 @@ static void send_lcd_cmd_long(const uint8_t cmd)
 /*
  * CAN use DMA channel 1 for transfers
  */
-void eaDogM_WriteString(char *strPtr)
+void eaDogM_WriteString(const char *strPtr)
 {
 	uint8_t len = (uint8_t) strlen(strPtr);
 
@@ -482,7 +482,7 @@ void spi_rec_done(void)
 /*
  * auto scrolls up the string on the display
  */
-char * eaDogM_Scroll_String(char *strPtr)
+char * eaDogM_Scroll_String(const char *strPtr)
 {
 	scroll_lock = true;
 	memcpy((void *) &Sstr[4][0], &Sstr[0][0], MAX_STRLEN); // move top line to old line buffer

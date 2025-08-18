@@ -519,7 +519,7 @@ void main(void)
 			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, " OPI DAQ_BMC %s        ", VER);
 #ifdef DIS_DEBUG
 			if (V.di_fail) {
-				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " TIC %ld 0x%lX 0x%lX         ", tic12400_fail_value, tic12400_id & 0xffff, tic12400_read_status);
+				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " TIC %d 0x%lX 0x%lX         ", tic12400_fail_value, tic12400_id & 0xffff, tic12400_read_status);
 			}
 			if (V.do_fail) {
 				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " MC 0x%X 0x%X 0x%X         ", mc_init.cmd[3], mc_init.cmd[4], mc_init.cmd[5]);
@@ -801,7 +801,7 @@ void main(void)
 
 
 #ifdef DI_DEBUG
-			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "vc%lu fv%ld fc%ld rs%lX                   ",
+			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "vc%u fv%d fc%u rs%X                   ",
 				tic12400_value_counts, tic12400_fail_value, tic12400_fail_count, tic12400_read_status);
 #else
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "0x%.2lx 0x%.2lx %x %lu 0X%.2X                 ",
@@ -968,7 +968,7 @@ device_id_data_t DeviceID_Read(device_id_address_t address)
 /*
  * pack UNIX tm time/date into FM80 compatible 16-bit values
  */
-void update_time(struct tm * ts, EB_data * EB)
+void update_time(const struct tm * ts, EB_data * EB)
 {
 	EB->time = (
 		(uint16_t) ((ts->tm_hour & 0x1F) << 11) |

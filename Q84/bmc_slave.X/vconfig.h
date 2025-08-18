@@ -24,7 +24,7 @@ extern "C" {
 
 	//#define DIS_DEBUG	// active status display, disable during normal operation
 
-#define VER	"V0.30"
+#define VER	"V0.31"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -45,6 +45,7 @@ extern "C" {
 	 * V.020 18f57q84 version
 	 * V.021 fix-up serial data protocol with STX to mark start of string
 	 * V0.30 version for the FM80 MODBUS and FM80 serial
+	 * V0.31 more cleanup of code
 	 */
 	/*
 	 * TIC12400 testing modes
@@ -331,7 +332,7 @@ extern "C" {
 	extern void UART1_Initialize115200(void);
 	extern void UART2_Initialize115200(void);
 
-	void update_time(struct tm *, EB_data *);
+	void update_time(const struct tm *, EB_data *);
 
 #ifdef	__cplusplus
 }
