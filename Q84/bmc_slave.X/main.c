@@ -171,6 +171,7 @@ typedef signed long long int24_t;
 
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 #include "mcc_generated_files/mcc.h"
 #include "mcc_generated_files/uart1.h"
 #include "eadog.h"
@@ -325,8 +326,13 @@ enum state_type {
 static uint16_t abuf[FM_BUFFER], cbuf[FM_BUFFER + 2];
 volatile enum state_type state = state_init;
 volatile uint16_t cc_mode = STATUS_LAST, mx_code = 0x00;
+char buffer[MAX_B_BUF], log_buffer[MAX_B_BUF];
+
+struct tm *bmc_newtime;
+
 static void send_mx_cmd(const uint16_t *);
 static void rec_mx_cmd(void (* DataHandler)(void), const uint8_t);
+void bmc_logger(void);
 
 /** \file main.c
  * Lets get going with the code.
@@ -350,6 +356,10 @@ void main(void)
 
 	// Enable low priority global interrupts.
 	INTERRUPT_GlobalInterruptLowEnable();
+
+	MLED_SetHigh();
+	RLED_SetHigh();
+	DLED_SetHigh();
 
 	SetBMCPriority(); // ISR Priority > Peripheral Priority > Main Priority
 
@@ -743,6 +753,7 @@ void main(void)
 						break;
 					case 0:
 						snprintf(strPtr, MAX_TEXT, "%s %d                 ", ems.serial, ems.year);
+						bmc_logger();
 						break;
 					}
 				}
@@ -1031,7 +1042,14 @@ static void rec_mx_cmd(void (* DataHandler)(void), const uint8_t rec_len)
 		mx_code = 0x0;
 		DataHandler();
 	}
+}
 
+void bmc_logger(void)
+{
+	bmc_newtime = localtime((void *) &V.utc_ticks);
+	snprintf(buffer, 25, "%s", asctime(bmc_newtime)); // the log_buffer uses this string in LOG_VARS
+	buffer[DTG_LEN] = 0; // remove newline
+	snprintf(log_buffer, MAX_B_BUF, log_format, LOG_VARS);
 }
 /**
  End of File

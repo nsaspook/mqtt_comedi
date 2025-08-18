@@ -355,7 +355,6 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.PORT_DATA = true;
 		spi_comm_ss.CHAR_DATA = false;
 		spi_stat_ss.port_count++;
-		channel = data_in2;
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.make_value = true;
 		spi_stat_ss.slave_tx_count++;
@@ -368,6 +367,7 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.PORT_DATA = false;
 		spi_comm_ss.CHAR_DATA = true;
 		spi_stat_ss.char_count++;
+		channel = data_in2 & LO_NIBBLE; // only 16 possible channels
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.cget_value = true;
 		spi_comm_ss.REMOTE_LINK = true;
@@ -379,7 +379,7 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.PORT_DATA = false;
 		spi_comm_ss.CHAR_DATA = true;
 		spi_stat_ss.char_count++;
-		channel = data_in2;
+		channel = data_in2 & LO_NIBBLE; // only 16 possible channels
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.cmake_value = true;
 		spi_stat_ss.slave_tx_count++;
