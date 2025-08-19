@@ -110,8 +110,8 @@ extern "C" {
 
 #define DEF_TIME        1694196350 /* default epoch time */
 
-	const char log_format[] = "^,%f, %f, %f, %f, %f, %f,SN: %s %u FW: 0X%X,%s,~\r\n";
-#define LOG_VARS	((float) em.wl1) / 10.0f, ((float) em.val1) / 10.0f, ((float) em.varl1) / 10.0f, ((float) em.vl1l2) / 10.0f, ((float) em.pfl1) / 10.0f, ((float) em.hz) / 10.0f,ems.serial, ems.year, emv.firmware, buffer
+	const char log_format[] = "^,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,SN: %s %u FW: 0X%X,%s,~\r\n";
+#define LOG_VARS	((float) em.al1) / 1000.0f, ((float) em.wl1) / 10.0f, ((float) em.val1) / 10.0f, ((float) em.varl1) / 10.0f, ((float) em.vl1l2) / 10.0f, ((float) em.pfl1) / 10.0f, ((float) em.hz) / 10.0f,ems.serial, ems.year, emv.firmware, buffer
 
 	const char msg_gemcmds[] = "Host CMDS: M C R P O L S D E H F";
 	const char msg_freecmds[] = "Port baud rate unlocked        ";

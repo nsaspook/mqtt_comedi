@@ -714,9 +714,9 @@ static void em_data_handler(void)
 	em_ptr = (EM_data1*) & cc_buffer[3];
 	em.vl1l2 = mb32_swap(em_ptr->vl1l2);
 	em.al1 = mb32_swap(em_ptr->al1);
-	em.wl1 = mb32_swap(em_ptr->wl1);
-	em.val1 = mb32_swap(em_ptr->val1);
-	em.varl1 = mb32_swap(em_ptr->varl1);
+	em.wl1 = mb32_swap(em_ptr->wsys);
+	em.val1 = mb32_swap(em_ptr->vasys);
+	em.varl1 = mb32_swap(em_ptr->varsys);
 	em.pfl1 = mb16_swap(em_ptr->pfl1);
 	em.pfsys = mb16_swap(em_ptr->pfsys);
 	em.hz = mb16_swap(em_ptr->hz);
