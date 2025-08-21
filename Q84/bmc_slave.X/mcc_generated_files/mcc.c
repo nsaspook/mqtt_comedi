@@ -60,6 +60,7 @@ void SYSTEM_Initialize(void)
     TMR2_Initialize();
     TMR0_Initialize();
     TMR6_Initialize();
+    CLC1_Initialize();
     DMA3_Initialize();
     TMR3_Initialize();
     DAC1_Initialize();

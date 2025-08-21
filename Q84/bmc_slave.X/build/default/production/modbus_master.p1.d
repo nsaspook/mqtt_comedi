@@ -1,0 +1,26 @@
+build/default/production/modbus_master.p1:  \
+modbus_master.c  \
+modbus_master.h  \
+timers.h  \
+mcc_generated_files/mcc.h  \
+mcc_generated_files/device_config.h  \
+mcc_generated_files/pin_manager.h  \
+mcc_generated_files/interrupt_manager.h  \
+mcc_generated_files/adc.h  \
+mcc_generated_files/dma1.h  \
+mcc_generated_files/dma3.h  \
+mcc_generated_files/dma2.h  \
+mcc_generated_files/dac1.h  \
+mcc_generated_files/tmr5.h  \
+mcc_generated_files/tmr6.h  \
+mcc_generated_files/tmr3.h  \
+mcc_generated_files/tmr4.h  \
+mcc_generated_files/tmr2.h  \
+mcc_generated_files/tmr0.h  \
+mcc_generated_files/memory.h  \
+mcc_generated_files/clc1.h  \
+mcc_generated_files/uart3.h  \
+mcc_generated_files/uart2.h  \
+mcc_generated_files/uart1.h  \
+mcc_generated_files/spi1.h  \
+mcc_generated_files/spi2.h 

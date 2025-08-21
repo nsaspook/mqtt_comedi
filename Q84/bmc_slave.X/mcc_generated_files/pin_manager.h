@@ -705,25 +705,17 @@
 #define IO_RF5_SetAnalogMode()      do { ANSELFbits.ANSELF5 = 1; } while(0)
 #define IO_RF5_SetDigitalMode()     do { ANSELFbits.ANSELF5 = 0; } while(0)
 
-// get/set IO_RF6 aliases
-#define IO_RF6_TRIS                 TRISFbits.TRISF6
-#define IO_RF6_LAT                  LATFbits.LATF6
-#define IO_RF6_PORT                 PORTFbits.RF6
-#define IO_RF6_WPU                  WPUFbits.WPUF6
-#define IO_RF6_OD                   ODCONFbits.ODCF6
-#define IO_RF6_ANS                  ANSELFbits.ANSELF6
-#define IO_RF6_SetHigh()            do { LATFbits.LATF6 = 1; } while(0)
-#define IO_RF6_SetLow()             do { LATFbits.LATF6 = 0; } while(0)
-#define IO_RF6_Toggle()             do { LATFbits.LATF6 = ~LATFbits.LATF6; } while(0)
-#define IO_RF6_GetValue()           PORTFbits.RF6
-#define IO_RF6_SetDigitalInput()    do { TRISFbits.TRISF6 = 1; } while(0)
-#define IO_RF6_SetDigitalOutput()   do { TRISFbits.TRISF6 = 0; } while(0)
-#define IO_RF6_SetPullup()          do { WPUFbits.WPUF6 = 1; } while(0)
-#define IO_RF6_ResetPullup()        do { WPUFbits.WPUF6 = 0; } while(0)
-#define IO_RF6_SetPushPull()        do { ODCONFbits.ODCF6 = 0; } while(0)
-#define IO_RF6_SetOpenDrain()       do { ODCONFbits.ODCF6 = 1; } while(0)
-#define IO_RF6_SetAnalogMode()      do { ANSELFbits.ANSELF6 = 1; } while(0)
-#define IO_RF6_SetDigitalMode()     do { ANSELFbits.ANSELF6 = 0; } while(0)
+// get/set RF6 procedures
+#define RF6_SetHigh()            do { LATFbits.LATF6 = 1; } while(0)
+#define RF6_SetLow()             do { LATFbits.LATF6 = 0; } while(0)
+#define RF6_Toggle()             do { LATFbits.LATF6 = ~LATFbits.LATF6; } while(0)
+#define RF6_GetValue()              PORTFbits.RF6
+#define RF6_SetDigitalInput()    do { TRISFbits.TRISF6 = 1; } while(0)
+#define RF6_SetDigitalOutput()   do { TRISFbits.TRISF6 = 0; } while(0)
+#define RF6_SetPullup()             do { WPUFbits.WPUF6 = 1; } while(0)
+#define RF6_ResetPullup()           do { WPUFbits.WPUF6 = 0; } while(0)
+#define RF6_SetAnalogMode()         do { ANSELFbits.ANSELF6 = 1; } while(0)
+#define RF6_SetDigitalMode()        do { ANSELFbits.ANSELF6 = 0; } while(0)
 
 // get/set IO_RF7 aliases
 #define IO_RF7_TRIS                 TRISFbits.TRISF7

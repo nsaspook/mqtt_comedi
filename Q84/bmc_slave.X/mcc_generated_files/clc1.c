@@ -13,12 +13,12 @@
    @Description
      This source file provides implementations for driver APIs for CLC1.
      Generation Information :
-         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.65.2
-         Device            :  PIC18F57K42
-         Driver Version    :  2.11
+         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8
+         Device            :  PIC18F57Q84
+         Driver Version    :  1.0.0
      The generated drivers are tested against the following:
-         Compiler          :  XC8 1.45 or later
-         MPLAB             :  MPLAB X 4.15
+         Compiler          :  XC8 2.36 and above or later
+         MPLAB             :  MPLAB X 6.00
  */ 
 
  /*
@@ -59,33 +59,37 @@ void CLC1_Initialize(void)
 {
     // Set the CLC1 to the options selected in the User Interface
 
-    // LC1G1POL not_inverted; LC1G2POL not_inverted; LC1G3POL not_inverted; LC1G4POL not_inverted; LC1POL not_inverted; 
-    CLC1POL = 0x00;
-    // LC1D1S FOSC; 
-    CLC1SEL0 = 0x04;
-    // LC1D2S FOSC; 
-    CLC1SEL1 = 0x04;
-    // LC1D3S FOSC; 
-    CLC1SEL2 = 0x04;
-    // LC1D4S FOSC; 
-    CLC1SEL3 = 0x04;
-    // LC1G1D3N disabled; LC1G1D2N disabled; LC1G1D4N disabled; LC1G1D1T disabled; LC1G1D3T disabled; LC1G1D2T disabled; LC1G1D4T disabled; LC1G1D1N disabled; 
-    CLC1GLS0 = 0x00;
-    // LC1G2D2N disabled; LC1G2D1N disabled; LC1G2D4N disabled; LC1G2D3N disabled; LC1G2D2T disabled; LC1G2D1T disabled; LC1G2D4T disabled; LC1G2D3T disabled; 
-    CLC1GLS1 = 0x00;
-    // LC1G3D1N disabled; LC1G3D2N disabled; LC1G3D3N disabled; LC1G3D4N disabled; LC1G3D1T disabled; LC1G3D2T disabled; LC1G3D3T disabled; LC1G3D4T disabled; 
-    CLC1GLS2 = 0x00;
-    // LC1G4D1N disabled; LC1G4D2N disabled; LC1G4D3N disabled; LC1G4D4N disabled; LC1G4D1T disabled; LC1G4D2T disabled; LC1G4D3T disabled; LC1G4D4T disabled; 
-    CLC1GLS3 = 0x00;
-    // LC1EN enabled; INTN disabled; INTP disabled; MODE OR-XOR; 
-    CLC1CON = 0x81;
+    // SLCT 0; 
+    CLCSELECT = 0x00;
+    // G1POL not_inverted; G2POL not_inverted; G3POL not_inverted; G4POL not_inverted; POL not_inverted; 
+    CLCnPOL = 0x00;
+    // D1S SPI1 SCK OUT; 
+    CLCnSEL0 = 0x41;
+    // D2S SPI2 SCK OUT; 
+    CLCnSEL1 = 0x44;
+    // D3S UART3 TX OUT; 
+    CLCnSEL2 = 0x3D;
+    // D4S UART1 TX OUT; 
+    CLCnSEL3 = 0x3B;
+    // G1D3N disabled; G1D2N disabled; G1D4N disabled; G1D1T enabled; G1D3T disabled; G1D2T enabled; G1D4T disabled; G1D1N disabled; 
+    CLCnGLS0 = 0x0A;
+    // G2D2N disabled; G2D1N disabled; G2D4N disabled; G2D3N disabled; G2D2T disabled; G2D1T disabled; G2D4T disabled; G2D3T disabled; 
+    CLCnGLS1 = 0x00;
+    // G3D1N disabled; G3D2N disabled; G3D3N disabled; G3D4N disabled; G3D1T disabled; G3D2T disabled; G3D3T disabled; G3D4T disabled; 
+    CLCnGLS2 = 0x00;
+    // G4D1N disabled; G4D2N disabled; G4D3N disabled; G4D4N disabled; G4D1T disabled; G4D2T disabled; G4D3T enabled; G4D4N enabled; 
+    CLCnGLS3 = 0x60;
+    // CLC1OUT 0; 
+    CLCDATA = 0x00;
+    // EN enabled; INTN disabled; INTP disabled; MODE OR-XOR; 
+    CLCnCON = 0x81;
 
 }
 
 
 bool CLC1_OutputStatusGet(void)
 {
-    return(CLC1CONbits.LC1OUT);
+    return(CLCDATAbits.CLC1OUT);
 }
 /**
  End of File

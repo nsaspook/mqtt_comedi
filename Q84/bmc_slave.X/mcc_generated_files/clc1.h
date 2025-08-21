@@ -13,12 +13,12 @@
    @Description
      This header file provides APIs for driver for CLC1.
      Generation Information :
-         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.65.2
-         Device            :  PIC18F57K42
-         Driver Version    :  2.11
+         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8
+         Device            :  PIC18F57Q84
+         Driver Version    :  1.0.0
      The generated drivers are tested against the following:
-         Compiler          :  XC8 1.45 or later
-         MPLAB             :  MPLAB X 4.15
+         Compiler          :  XC8 2.36 and above or later
+         MPLAB             :  MPLAB X 6.00
  */
 
 /*

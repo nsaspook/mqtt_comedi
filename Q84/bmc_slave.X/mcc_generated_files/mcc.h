@@ -65,6 +65,7 @@
 #include "tmr2.h"
 #include "tmr0.h"
 #include "memory.h"
+#include "clc1.h"
 #include "uart3.h"
 #include "uart2.h"
 #include "uart1.h"
