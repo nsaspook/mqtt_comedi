@@ -39,7 +39,9 @@
 volatile bool failure = false;
 volatile uint8_t in_buf1 = 0x19, in_buf2 = 0x57, in_buf3 = 0x07;
 volatile uint8_t tmp_buf = 0;
-volatile bool r_string_ready = false;
+volatile bool r_string_ready = false,
+	bmc_string_ready[8] = {false, false, false, false, false, false, false, false},
+update_bmc_string[8] = {false, false, false, false, false, false, false, false};
 
 static void clear_slaveo_flags(void);
 
@@ -110,22 +112,40 @@ void slaveo_rx_isr(void)
 	// use r_string array to buffer ascii data
 	if (serial_buffer_ss.cmake_value) {
 		if (serial_buffer_ss.raw_index == CHAR_GO_BYTES) {
-			/*
-			 * uart1 only
-			 */
-			UART1_Write(serial_buffer_ss.data[BMC_D0]);
+			if ((serial_buffer_ss.data[BMC_D1] & 0x07) < BMC_EM540_DATA) { // [0..3]
+				/*
+				 * uart1 only
+				 */
+				UART1_Write(serial_buffer_ss.data[BMC_D0]);
 
-			if (!r_string_ready) {
-				if (serial_buffer_ss.data[BMC_D0] == STX) { // character sync
-					serial_buffer_ss.r_string_index = 0;
-					serial_buffer_ss.r_string[serial_buffer_ss.r_string_index] = 0;
-				} else {
-					serial_buffer_ss.r_string[serial_buffer_ss.r_string_index++] = serial_buffer_ss.data[BMC_D0];
-					serial_buffer_ss.r_string_chan = serial_buffer_ss.data[BMC_D1] & 0x03;
-					if (serial_buffer_ss.r_string_index >= MAX_STRLEN) {
-						serial_buffer_ss.r_string[serial_buffer_ss.r_string_index] = 0;
+				if (!r_string_ready) {
+					if (serial_buffer_ss.data[BMC_D0] == STX) { // character sync
 						serial_buffer_ss.r_string_index = 0;
-						r_string_ready = true;
+						serial_buffer_ss.r_string[serial_buffer_ss.r_string_index] = 0;
+					} else {
+						serial_buffer_ss.r_string[serial_buffer_ss.r_string_index++] = serial_buffer_ss.data[BMC_D0];
+						serial_buffer_ss.r_string_chan = serial_buffer_ss.data[BMC_D1] & 0x03;
+						if (serial_buffer_ss.r_string_index >= MAX_STRLEN) {
+							serial_buffer_ss.r_string[serial_buffer_ss.r_string_index] = 0;
+							serial_buffer_ss.r_string_index = 0;
+							r_string_ready = true;
+						}
+					}
+				}
+			} else { // [4..7]
+				if (!bmc_string_ready[(serial_buffer_ss.data[BMC_D1] & 0x07)]) {
+					if (serial_buffer_ss.data[BMC_D0] == STX) { // character sync
+						serial_buffer_ss.r_string_index = 0;
+						serial_buffer_ss.r_string[serial_buffer_ss.r_string_index] = 0;
+						update_bmc_string[(serial_buffer_ss.data[BMC_D1] & 0x07)] = true; // print to log_buffer
+					} else {
+						serial_buffer_ss.r_string_chan = serial_buffer_ss.data[BMC_D1] & 0x07;
+						update_bmc_string[(serial_buffer_ss.data[BMC_D1] & 0x07)] = false;
+						if (serial_buffer_ss.r_string_index >= MAX_STRLEN) {
+							serial_buffer_ss.r_string[serial_buffer_ss.r_string_index] = 0;
+							serial_buffer_ss.r_string_index = 0;
+							bmc_string_ready[(serial_buffer_ss.data[BMC_D1] & 0x07)] = true; // process serial data
+						}
 					}
 				}
 			}
@@ -176,15 +196,26 @@ void slaveo_rx_isr(void)
 	// use r_string array to buffer ascii data
 	if (serial_buffer_ss.cget_value) {
 		if (serial_buffer_ss.raw_index == CHAR_GET_BYTES) {
-			/*
-			 * uart1 only
-			 */
-			if (UART1_is_rx_ready()) {
-				tmp_buf = UART1_Read();
+			if ((serial_buffer_ss.data[BMC_D1] & 0x07) < BMC_EM540_DATA) { // [0..3]
+				/*
+				 * uart1 only
+				 */
+				if (UART1_is_rx_ready()) {
+					tmp_buf = UART1_Read();
+				} else {
+					tmp_buf = 0;
+				}
+				SPI2TXB = tmp_buf;
 			} else {
-				tmp_buf = 0;
+				if (update_bmc_string[BMC_EM540_DATA] == false) { // log_buffer has been updated
+					tmp_buf = log_buffer[BMC4.pos];
+					SPI2TXB = tmp_buf;
+					if (tmp_buf == 0 || BMC4.pos > BMC4.len) {
+						update_bmc_string[BMC_EM540_DATA]=true;
+						BMC4.pos=0;
+					}
+				}
 			}
-			SPI2TXB = tmp_buf;
 			serial_buffer_ss.cget_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets

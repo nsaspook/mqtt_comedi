@@ -447,6 +447,7 @@ int get_data_sample(void)
 			if (daq_text_index > MAX_STRLEN) {
 				serial_buf = STX;
 				comedi_data_write(it, subdev_serial0, 0, range_ao, AREF_GROUND, serial_buf);
+				comedi_data_write(it, subdev_serial0, 4, range_ao, AREF_GROUND, serial_buf);
 				daq_text_index = 0;
 				serial_buf = 0;
 				line_index++;

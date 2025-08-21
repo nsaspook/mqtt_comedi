@@ -327,6 +327,10 @@ static uint16_t abuf[FM_BUFFER], cbuf[FM_BUFFER + 2];
 volatile enum state_type state = state_init;
 volatile uint16_t cc_mode = STATUS_LAST, mx_code = 0x00;
 char buffer[MAX_B_BUF], log_buffer[MAX_B_BUF];
+volatile struct bmc_buffer_type BMC4 = {
+	.log_buffer = log_buffer,
+	.buffer = buffer,
+};
 
 struct tm *bmc_newtime;
 
@@ -752,7 +756,11 @@ void main(void)
 						snprintf(strPtr, MAX_TEXT, "FW 0X%X PL1%d                   ", emv.firmware, em.pfl1);
 						break;
 					case 0:
-						snprintf(strPtr, MAX_TEXT, "%s %d                 ", ems.serial, ems.year);
+						if (!update_bmc_string[BMC_EM540_DATA]) {
+							snprintf(strPtr, MAX_TEXT, "%s %d                 ", ems.serial, ems.year);
+						} else {
+							snprintf(strPtr, 22, "%s                      ", &log_buffer[2]);
+						}
 						bmc_logger();
 						break;
 					}
@@ -1044,12 +1052,23 @@ static void rec_mx_cmd(void (* DataHandler)(void), const uint8_t rec_len)
 	}
 }
 
+/*
+ * send the EM540 measurement data to the OPi
+ */
 void bmc_logger(void)
 {
-	bmc_newtime = localtime((void *) &V.utc_ticks);
-	snprintf(buffer, 25, "%s", asctime(bmc_newtime)); // the log_buffer uses this string in LOG_VARS
-	buffer[DTG_LEN] = 0; // remove newline
-	snprintf(log_buffer, MAX_B_BUF, log_format, LOG_VARS);
+	if (update_bmc_string[BMC_EM540_DATA]) {
+		bmc_newtime = localtime((void *) &V.utc_ticks);
+		snprintf(buffer, 25, "%s", asctime(bmc_newtime)); // the log_buffer uses this string in LOG_VARS
+		buffer[DTG_LEN] = 0; // remove newline
+		snprintf(log_buffer, MAX_B_BUF, log_format, LOG_VARS);
+		BMC4.log_buffer = log_buffer;
+		BMC4.len = strlen(log_buffer);
+		BMC4.pos = 0;
+		BMC4.bmc_flag = true;
+		update_bmc_string[BMC_EM540_DATA] = false; // CHAR_GET_BYTES
+	}
+	bmc_string_ready[BMC_EM540_DATA] = false; // CHAR_GO_BYTES
 }
 /**
  End of File

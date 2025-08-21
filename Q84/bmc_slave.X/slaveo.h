@@ -65,6 +65,8 @@ extern "C" {
 #define CHAR_GO_BYTES	7
 #define DAC_GO_BYTES	7
 
+#define MAX_BMC_BUF	512
+
 	struct spi_link_type_ss { // internal state table
 		uint8_t SPI_DATA : 1;
 		uint8_t ADC_DATA : 1;
@@ -91,6 +93,12 @@ extern "C" {
 		volatile bool make_value, get_value, dac_value, adc_value, cfg_value, cmake_value, cget_value;
 	};
 
+	struct bmc_buffer_type {
+		volatile char *buffer, *log_buffer;
+		volatile uint16_t len, pos;
+		volatile bool bmc_flag;
+	};
+
 	enum daqbmc_packet_index {
 		BMC_CMD = 0,
 		BMC_D0,
@@ -103,6 +111,11 @@ extern "C" {
 		BMC_DUMMY,
 	};
 
+	enum daqbmc_data_index {
+		BMC_EM540_DATA = 4,
+		BMC_DATA_DUMMY,
+	};
+
 	extern volatile struct spi_link_type_ss spi_comm_ss;
 	extern volatile struct serial_buffer_type_ss serial_buffer_ss;
 	extern volatile struct spi_stat_type_ss spi_stat_ss, report_stat_ss;
@@ -112,7 +125,9 @@ extern "C" {
 	volatile bool failure;
 	extern volatile uint8_t in_buf1, in_buf2, in_buf3;
 	extern volatile uint8_t tmp_buf;
-	extern volatile bool r_string_ready;
+	extern volatile bool r_string_ready, bmc_string_ready[8], update_bmc_string[8];
+	extern volatile struct bmc_buffer_type BMC4;
+	extern char buffer[MAX_BMC_BUF], log_buffer[MAX_BMC_BUF];
 
 	void check_slaveo(void);
 	void init_slaveo(void);

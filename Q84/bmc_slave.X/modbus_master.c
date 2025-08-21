@@ -717,6 +717,9 @@ static void em_data_handler(void)
 	em.wl1 = mb32_swap(em_ptr->wsys);
 	em.val1 = mb32_swap(em_ptr->vasys);
 	em.varl1 = mb32_swap(em_ptr->varsys);
+	em.wsys = mb32_swap(em_ptr->wsys);
+	em.vasys = mb32_swap(em_ptr->vasys);
+	em.varsys = mb32_swap(em_ptr->varsys);
 	em.pfl1 = mb16_swap(em_ptr->pfl1);
 	em.pfsys = mb16_swap(em_ptr->pfsys);
 	em.hz = mb16_swap(em_ptr->hz);
