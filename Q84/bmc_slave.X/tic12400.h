@@ -25,17 +25,18 @@ extern "C" {
 	 * 32-bits SPI mode 1, 4MHz SCK
 	 * for onboard device comms
 	 */
-#define TIC12400_DRIVER "V0.7"
+#define TIC12400_DRIVER "V0.8"
 
-#define por_bit_s		0b01100110
+#define por_bit_s           0b01100110
 #define spi_fail_bit_s		0b01000000
-#define ssc_bit_s		0b00001000
+#define ssc_bit_s           0b00001000
 #define spi_fail_bit_v		0b01000000
 #define parity_fail_v		0b00100000
-#define id_mask_d		0b00000000
+#define por_bit_s_v         0b10000000
+#define id_mask_d           0b00000000
 #define switch_mask_d		0x00ffffff
 
-#define write_bit		0b10000000
+#define write_bit           0b10000000
 	/*
 	 * switch bit masks in the raw 32-bit register from the TIC12400
 	 */

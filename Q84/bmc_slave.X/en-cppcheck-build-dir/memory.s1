@@ -1,0 +1,9 @@
+FLASH_ReadByte call:[asm,return] noreturn:[return]
+FLASH_ReadWord call:[asm,return] noreturn:[return]
+FLASH_ReadPage
+FLASH_WritePage
+FLASH_WriteWord call:[FLASH_EraseBlock,FLASH_ReadPage,FLASH_WritePage] noreturn:[FLASH_WritePage]
+FLASH_WriteBlock call:[FLASH_EraseBlock,FLASH_WritePage]
+FLASH_EraseBlock
+DATAEE_WriteByte
+DATAEE_ReadByte

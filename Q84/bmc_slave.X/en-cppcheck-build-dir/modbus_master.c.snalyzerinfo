@@ -1,0 +1,34 @@
+modbus_rtu_send_msg_crc call:[crc16]
+modbus_rtu_send_msg call:[memcpy,modbus_rtu_send_msg_crc] noreturn:[modbus_rtu_send_msg_crc]
+crc16 global:[table_crc_hi,table_crc_lo]
+my_modbus_rx_32 global:[M] call:[INT_TRACE_Toggle]
+init_stream_params global:[M]
+init_mb_master_timers global:[em_ptr] call:[TMR3_SetInterruptHandler,TMR3_StartTimer,TMR4_SetInterruptHandler,TMR4_StartTimer] noreturn:[TMR3_StartTimer]
+crc16_receive
+log_crc_error global:[M]
+mb32_swap
+mb16_swap
+master_controller_work global:[M,em_config,em_data1,em_data2,em_id,em_light,em_passwd,em_serial,em_version,modbus_em_config,modbus_em_data1,modbus_em_data2,modbus_em_id,modbus_em_light,modbus_em_passwd,modbus_em_serial,modbus_em_version] call:[UART3_Write,clear_2hz,clear_500ahz,clear_500hz,get_500ahz,get_500hz,modbus_read_check,modbus_read_id_check,modbus_rtu_send_msg,modbus_write_check,serial_trmt,sizeof,while] noreturn:[UART3_Write,clear_500hz]
+clear_2hz global:[MT]
+clear_500ahz global:[MT]
+clear_500hz global:[MT]
+get_2hz global:[MT]
+get_500ahz global:[MT]
+get_500hz global:[MT]
+half_dup_tx
+half_dup_rx
+timer_500ms_tick global:[MT]
+timer_2ms_tick global:[MT]
+serial_trmt
+mb_tx_test global:[modbus_em_passwd] call:[StartTimer,TimerDone,UART3_Write,UART3_is_tx_ready,modbus_rtu_send_msg,sizeof] noreturn:[UART3_Write]
+UART3_DefaultFramingErrorHandler_mb call:[INT_TRACE_Toggle,while] noreturn:[while]
+UART3_DefaultOverrunErrorHandler_mb call:[INT_TRACE_Toggle,while] noreturn:[while]
+UART3_DefaultErrorHandler_mb call:[INT_TRACE_Toggle,while] noreturn:[while]
+mb_setup call:[UART3_SetErrorHandler,UART3_SetFramingErrorHandler,UART3_SetOverrunErrorHandler] noreturn:[UART3_SetErrorHandler]
+modbus_write_check global:[M] call:[crc16,crc16_receive,get_500hz,log_crc_error,while] noreturn:[log_crc_error,while]
+modbus_read_check global:[M] call:[DataHandler,crc16,crc16_receive,get_500hz,log_crc_error,while] noreturn:[log_crc_error,while]
+modbus_read_id_check global:[M] call:[crc16,crc16_receive,get_500hz,log_crc_error,while] noreturn:[log_crc_error]
+em_data_handler global:[em,em_ptr] call:[mb16_swap,mb32_swap] noreturn:[mb16_swap]
+emt_data_handler
+ems_data_handler global:[ems] call:[mb16_swap,memcpy,sizeof] noreturn:[mb16_swap]
+emv_data_handler global:[emv] call:[mb16_swap,memcpy,sizeof] noreturn:[mb16_swap]

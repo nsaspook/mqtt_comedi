@@ -24,6 +24,10 @@ extern "C" {
 #define BAC_C   10
 
 #define LPCHANC        16
+#define STX		2
+	
+#define SLOW_TEXT	1
+#define MAX_STRLEN      20
 
 #define JUST_BITS false
 	/*
@@ -36,8 +40,8 @@ extern "C" {
 #define HV_SCALE3               83.6f
 #define HV_SCALE4               64.1890f
 #define HV_SCALE5               64.1415f
-#define HV_SCALE4_0             64.1890f
-#define HV_SCALE5_0             64.1415f
+#define HV_SCALE4_0             64.8000f
+#define HV_SCALE5_0             65.0130f
 #define HV_SCALE4_1             64.1890f
 #define HV_SCALE5_1             64.1415f
 #define HV_SCALE4_2             54.1890f
@@ -97,7 +101,6 @@ extern "C" {
 
 	extern volatile struct bmcdata bmc;
 	extern uint32_t datain, serial_buf;
-	extern struct dodata dataout;
 	extern union dio_buf_type obits;
 
 	extern int maxdata_ai, ranges_ai, channels_ai;

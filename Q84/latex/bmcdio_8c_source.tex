@@ -1,0 +1,97 @@
+\doxysection{bmcdio.\+c}
+\hypertarget{bmcdio_8c_source}{}\label{bmcdio_8c_source}\index{bmc\_slave.X/bmcdio.c@{bmc\_slave.X/bmcdio.c}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00003}00003\ \textcolor{preprocessor}{\#include\ "{}bmcdio.h"{}}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00004}00004\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{eadog_8h}{eadog.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00006}00006\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *build\_date\ =\ \_\_DATE\_\_,\ *build\_time\ =\ \_\_TIME\_\_;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00007}00007\ \textcolor{keyword}{static}\ \textcolor{keyword}{volatile}\ uint8\_t\ dummy\_b\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00009}00009\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00010}00010\ \textcolor{comment}{\ *\ SPI1}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00011}00011\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00012}00012\ \textcolor{keywordtype}{void}\ SPI\_EADOG(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00013}00013\ \{}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00014}00014\ \ \ \ \ wait\_lcd\_done();}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00015}00015\ \ \ \ \ MCZ\_CS\_SetHigh();}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00016}00016\ \ \ \ \ TIC\_CS\_SetHigh();}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00017}00017\ \ \ \ \ SPI1CON0bits.EN\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00018}00018\ \ \ \ \ \textcolor{comment}{//SMP\ Middle;\ CKE\ Idle\ to\ active;\ CKP\ Idle:High,\ Active:Low;\ FST\ disabled;\ SSP\ active\ low;\ SDIP\ active\ high;\ SDOP\ active\ high;}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00019}00019\ \ \ \ \ SPI1CON1\ =\ 0x24;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00020}00020\ \ \ \ \ SPI1CON2\ =\ 0x02;\ \textcolor{comment}{//\ \ Received\ data\ is\ not\ stored\ in\ the\ FIFO}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00021}00021\ \ \ \ \ \textcolor{comment}{//CLKSEL\ MFINTOSC;}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00022}00022\ \ \ \ \ SPI1CLK\ =\ 0x02;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00023}00023\ \ \ \ \ \textcolor{comment}{//BAUD\ 4;\ \ 50KHz}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00024}00024\ \ \ \ \ SPI1BAUD\ =\ 0x04;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00025}00025\ \ \ \ \ SPI1CON0\ =\ 0x83;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00026}00026\ \ \ \ \ SPI1CON0bits.EN\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00027}00027\ \}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00029}00029\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00030}00030\ \textcolor{comment}{\ *\ SPI1}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00031}00031\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00032}00032\ \textcolor{keywordtype}{void}\ SPI\_TIC12400(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00033}00033\ \{}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00034}00034\ \ \ \ \ wait\_lcd\_done();}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00035}00035\ \ \ \ \ MCZ\_CS\_SetHigh();}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00036}00036\ \ \ \ \ TIC\_CS\_SetHigh();}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00037}00037\ \ \ \ \ CS\_SetHigh();}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00038}00038\ \ \ \ \ SPI1STATUSbits.CLRBF\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00039}00039\ \ \ \ \ SPI1CON0bits.EN\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00040}00040\ \ \ \ \ \textcolor{comment}{//EN\ enabled;\ LSBF\ MSb\ first;\ MST\ bus\ master;\ BMODE\ every\ byte;}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00041}00041\ \ \ \ \ SPI1CON0\ =\ 0x03;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00042}00042\ \ \ \ \ \textcolor{comment}{//SMP\ Middle;\ CKE\ Idle\ to\ active;\ CKP\ Idle:Low,\ Active:High;\ FST\ disabled;\ SSP\ active\ high;\ SDIP\ active\ high;\ SDOP\ active\ high;}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00043}00043\ \ \ \ \ SPI1CON1bits.CKP\ =\ 0;\ \textcolor{comment}{//\ SCK\ starts\ low}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00044}00044\ \ \ \ \ SPI1CON1bits.CKE\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00045}00045\ \ \ \ \ SPI1CON1bits.SMP\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00046}00046\ \ \ \ \ SPI1CON1bits.FST\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00047}00047\ \ \ \ \ SPI1CON1bits.SDIP\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00048}00048\ \ \ \ \ SPI1CON1bits.SDOP\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00049}00049\ \ \ \ \ SPI1CON2\ =\ 0x03;\ \textcolor{comment}{//\ \ Received\ data\ is\ not\ stored\ in\ the\ FIFO\ for\ DMA\ mode}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00050}00050\ \ \ \ \ \textcolor{comment}{//CLKSEL\ FOSC;}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00051}00051\ \ \ \ \ SPI1CLK\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00052}00052\ \ \ \ \ \textcolor{comment}{//BAUD\ 7;\ \ 4MHz}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00053}00053\ \ \ \ \ SPI1BAUD\ =\ 0x07;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00054}00054\ \ \ \ \ SPI1CON0bits.EN\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00055}00055\ \ \ \ \ SPI1STATUSbits.CLRBF\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00056}00056\ \}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00058}00058\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00059}00059\ \textcolor{comment}{\ *\ SPI1}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00060}00060\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00061}00061\ \textcolor{keywordtype}{void}\ SPI\_MC33996(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00062}00062\ \{}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00063}00063\ \ \ \ \ wait\_lcd\_done();}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00064}00064\ \ \ \ \ MCZ\_CS\_SetHigh();}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00065}00065\ \ \ \ \ TIC\_CS\_SetHigh();}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00066}00066\ \ \ \ \ CS\_SetHigh();}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00067}00067\ \ \ \ \ SPI1STATUSbits.CLRBF\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00068}00068\ \ \ \ \ SPI1CON0bits.EN\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00069}00069\ \ \ \ \ \textcolor{comment}{//EN\ enabled;\ LSBF\ MSb\ first;\ MST\ bus\ master;\ BMODE\ every\ byte;}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00070}00070\ \ \ \ \ SPI1CON0\ =\ 0x03;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00071}00071\ \ \ \ \ \textcolor{comment}{//SMP\ Middle;\ CKE\ Idle\ to\ active;\ CKP\ Idle:Low,\ Active:High;\ FST\ disabled;\ SSP\ active\ high;\ SDIP\ active\ high;\ SDOP\ active\ high;}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00072}00072\ \ \ \ \ SPI1CON1bits.CKP\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00073}00073\ \ \ \ \ SPI1CON1bits.CKE\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00074}00074\ \ \ \ \ SPI1CON1bits.SMP\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00075}00075\ \ \ \ \ SPI1CON1bits.FST\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00076}00076\ \ \ \ \ SPI1CON1bits.SDIP\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00077}00077\ \ \ \ \ SPI1CON1bits.SDOP\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00078}00078\ \ \ \ \ SPI1CON2\ =\ 0x03;\ \textcolor{comment}{//\ \ Received\ data\ is\ not\ stored\ in\ the\ FIFO\ for\ DMA\ mode}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00079}00079\ \ \ \ \ \textcolor{comment}{//CLKSEL\ FOSC;}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00080}00080\ \ \ \ \ SPI1CLK\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00081}00081\ \ \ \ \ \textcolor{comment}{//BAUD\ 7;\ \ 4MHz}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00082}00082\ \ \ \ \ SPI1BAUD\ =\ 0x07;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00083}00083\ \ \ \ \ SPI1CON0bits.EN\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00084}00084\ \ \ \ \ SPI1STATUSbits.CLRBF\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00085}00085\ \}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00086}00086\ }
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00087}00087\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00088}00088\ \textcolor{comment}{\ *\ SPI2}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00089}00089\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00090}00090\ \textcolor{keywordtype}{void}\ SPI\_OPI(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00091}00091\ \{}
+\DoxyCodeLine{\Hypertarget{bmcdio_8c_source_l00092}00092\ \}}
+
+\end{DoxyCode}

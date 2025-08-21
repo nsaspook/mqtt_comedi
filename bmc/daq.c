@@ -58,6 +58,16 @@ union dio_buf_type obits, ibits;
 
 uint32_t datain, serial_buf;
 
+char *daq_text[] = {
+	"daq_bmc text 0           ",
+	"daq_bmc text 1           ",
+	"daq_bmc text 2           ",
+	"daq_bmc text 3           ",
+}, *daq_text_ptr;;
+
+uint8_t daq_text_index = 0, line_index = 0;
+static uint32_t slow_text = 0;
+
 int init_daq(double min_range, double max_range, int range_update)
 {
 	int i = 0;
@@ -122,6 +132,8 @@ int init_daq(double min_range, double max_range, int range_update)
 
 	ADC_OPEN = true;
 	comedi_set_global_oor_behavior(COMEDI_OOR_NUMBER);
+
+	daq_text_ptr = daq_text[0];
 	return 0;
 }
 
@@ -398,24 +410,53 @@ int get_data_sample(void)
 		}
 	}
 
-	usleep(50);
+	//	usleep(50);
 
 	if (DO_OPEN) {
 		// send I/O as a byte mask
-		obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
 		if (bmc.BOARD == bmcboard) {
-			obits.bytes[1] = ~bmc.dataout.bytes[0];
+			if (datain == 0x3fffff) {
+				obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
+				obits.bytes[1] = ~bmc.dataout.bytes[0];
+				obits.bytes[2] = ~bmc.dataout.bytes[0];
+				obits.bytes[3] = ~bmc.dataout.bytes[0];
+			} else {
+				if (datain == 0x3ffffe) {
+					obits.bytes[0] = ~bmc.dataout.bytes[0]; // buffer output
+					obits.bytes[1] = bmc.dataout.bytes[0];
+					obits.bytes[2] = bmc.dataout.bytes[0];
+					obits.bytes[3] = bmc.dataout.bytes[0];
+				} else {
+					obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
+					obits.bytes[1] = bmc.dataout.bytes[0];
+					obits.bytes[2] = bmc.dataout.bytes[0];
+					obits.bytes[3] = bmc.dataout.bytes[0];
+				}
+			}
 			comedi_dio_bitfield2(it, subdev_do, obits.dio_buf, &obits.dio_buf, 0);
 		} else {
+			obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
 			comedi_dio_bitfield2(it, subdev_do, 0xff, &obits.dio_buf, 0);
 		}
 	}
 
 	if (SERIAL_OPEN) {
-		serial_buf = 0x57;
-
-		comedi_data_write(it, subdev_serial0, 0, range_ao, AREF_GROUND, serial_buf);
-		comedi_data_read(it, subdev_serial0, 0, range_ao, AREF_GROUND, &serial_buf);
+		if (++slow_text > SLOW_TEXT) {
+			slow_text = 0;
+			serial_buf = daq_text_ptr[daq_text_index++];
+			if (daq_text_index > MAX_STRLEN) {
+				serial_buf = STX;
+				comedi_data_write(it, subdev_serial0, 0, range_ao, AREF_GROUND, serial_buf);
+				comedi_data_write(it, subdev_serial0, 4, range_ao, AREF_GROUND, serial_buf);
+				daq_text_index = 0;
+				serial_buf = 0;
+				line_index++;
+				daq_text_ptr = daq_text[line_index & 0x03];
+			} else {
+				comedi_data_write(it, subdev_serial0, line_index & 0x03, range_ao, AREF_GROUND, serial_buf);
+				comedi_data_read(it, subdev_serial0, line_index & 0x03, range_ao, AREF_GROUND, &serial_buf);
+			}
+		}
 	}
 	return 0;
 }

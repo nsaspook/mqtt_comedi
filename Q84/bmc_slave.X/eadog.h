@@ -121,14 +121,14 @@ extern "C" {
 	void eaDogM_WriteCommand(const uint8_t);
 	void eaDogM_SetPos(const uint8_t, const uint8_t);
 	void eaDogM_ClearRow(const uint8_t);
-	void eaDogM_WriteString(char *);
+	void eaDogM_WriteString(const char *);
 	void eaDogM_WriteStringAtPos(const uint8_t, const uint8_t, char *);
 	void eaDogM_WriteIntAtPos(const uint8_t, const uint8_t, const uint8_t);
 	void eaDogM_WriteByteToCGRAM(const uint8_t, const uint8_t);
 	void set_lcd_dim(const bool);
 	void check_lcd_dim(const bool);
 
-	char * eaDogM_Scroll_String(char *);
+	char * eaDogM_Scroll_String(const char *);
 	void eaDogM_Scroll_Task(void);
 
 	// DMA complete flag

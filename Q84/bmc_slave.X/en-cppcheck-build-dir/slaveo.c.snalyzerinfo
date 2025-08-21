@@ -1,0 +1,6 @@
+check_slaveo
+clear_slaveo_flags global:[serial_buffer_ss]
+init_slaveo global:[serial_buffer_ss] call:[ADC_SelectContext,SPI2_SetInterruptHandler,SPI2_SetRxInterruptHandler] noreturn:[ADC_SelectContext]
+slaveo_rx_isr global:[V,adc_buffer,channel,data_in2,in_buf1,in_buf2,in_buf3,r_string_ready,serial_buffer_ss,spi_comm_ss,spi_stat_ss,tmp_buf] call:[StartTimer,TMR0_Reload,UART1_Read,UART1_Write,UART1_is_rx_ready,clear_slaveo_flags,while] noreturn:[StartTimer,TMR0_Reload,UART1_Read,UART1_is_rx_ready,while]
+slaveo_spi_isr global:[spi_stat_ss]
+slaveo_time_isr call:[while] noreturn:[while]

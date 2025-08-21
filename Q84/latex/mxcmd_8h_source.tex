@@ -1,0 +1,157 @@
+\doxysection{mxcmd.\+h}
+\hypertarget{mxcmd_8h_source}{}\label{mxcmd_8h_source}\index{bmc\_slave.X/mxcmd.h@{bmc\_slave.X/mxcmd.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00001}00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00002}00002\ \textcolor{comment}{\ *\ File:\ \ \ mxcmd.h}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00003}00003\ \textcolor{comment}{\ *\ Author:\ root}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00004}00004\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00005}00005\ \textcolor{comment}{\ *\ Created\ on\ June\ 2,\ 2023,\ 6:16\ AM}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00006}00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00008}00008\ \textcolor{preprocessor}{\#ifndef\ MXCMD\_H}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00009}00009\ \textcolor{preprocessor}{\#define\ MXCMD\_H}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00011}00011\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00012}00012\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00013}00013\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00014}00014\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00015}00015\ \textcolor{preprocessor}{\#include\ <stddef.h>}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Defines\ NULL}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00016}00016\ \textcolor{preprocessor}{\#include\ <stdbool.h>}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Defines\ true}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00017}00017\ \textcolor{preprocessor}{\#include\ <stdlib.h>}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Defines\ EXIT\_FAILURE}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00018}00018\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00019}00019\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00020}00020\ \textcolor{preprocessor}{\#include\ "{}mcc\_generated\_files/mcc.h"{}}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00021}00021\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{eadog_8h}{eadog.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00022}00022\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{timers_8h}{timers.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00024}00024\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ build\_version[]\ =\ \textcolor{stringliteral}{"{}V3.00\ FM80\ interface\ Q84"{}};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00025}00025\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00026}00026\ \textcolor{comment}{\ \ \ \ \ *\ code\ changes}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00027}00027\ \textcolor{comment}{\ \ \ \ \ *\ 3.00\ version\ for\ the\ daq\_bmc\ board}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00028}00028\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00030}00030\ \textcolor{preprocessor}{\#define\ MAX\_B\_BUF\ \ \ 512}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00031}00031\ \textcolor{preprocessor}{\#define\ MAX\_C\_BUF\ \ \ CANFD\_BYTES*3}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00032}00032\ \textcolor{preprocessor}{\#define\ IO\_TEST}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00034}00034\ \textcolor{preprocessor}{\#define\ FM\_BUFFER\ \ \ 32}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00035}00035\ \textcolor{preprocessor}{\#define\ BUFFER\_SPACING\ \ 4}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00036}00036\ \textcolor{preprocessor}{\#define\ SPINNER\_SPEED\ \ \ 200}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00037}00037\ \textcolor{preprocessor}{\#define\ LP\_BUFFER\_SIZE\ \ 9}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00038}00038\ \textcolor{preprocessor}{\#define\ ONLINE\_TIMEOUT\ \ 30000}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00039}00039\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00040}00040\ \textcolor{preprocessor}{\#define\ FM80\_ID\ \ \ \ \ 0x03}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00041}00041\ \textcolor{preprocessor}{\#define\ FMxx\_STATE\ \ abuf[2]}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00043}00043\ \textcolor{preprocessor}{\#define\ AMP\_WHOLE\_ZERO\ \ 0}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00044}00044\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00045}00045\ \textcolor{preprocessor}{\#define\ CMD\_CRC\_LEN\ 10}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00046}00046\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00047}00047\ \textcolor{preprocessor}{\#define\ DTG\_LEN\ \ \ \ \ 3\ }\textcolor{comment}{//\ normal\ size\ is\ 26\ but\ we\ must\ save\ buffer\ space}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00048}00048\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00049}00049\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ cmd\_id[]\ =\ \{0x100,\ 0x02,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x02\};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00050}00050\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ cmd\_status[]\ =\ \{0x100,\ 0x02,\ 0x01,\ 0xc8,\ 0x00,\ 0x00,\ 0x00,\ 0xcb\};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00051}00051\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ cmd\_mx\_status[]\ =\ \{0x100,\ 0x04,\ 0x00,\ 0x01,\ 0x00,\ 0x00,\ 0x00,\ 0x05\};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00052}00052\ \ \ \ \ uint16\_t\ cmd\_mx\_log[]\ =\ \{0x100,\ 0x16,\ 0x00,\ 0x00,\ 0x00,\ 0x01,\ 0x00,\ 0x17\};\ \textcolor{comment}{//\ get\ logs,\ start\ from\ day\ 1}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00053}00053\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ cmd\_panelv[]\ =\ \{0x100,\ 0x02,\ 0x01,\ 0xc6,\ 0x00,\ 0x00,\ 0x00,\ 0xc9\};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00054}00054\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ cmd\_batteryv[]\ =\ \{0x100,\ 0x02,\ 0x00,\ 0x08,\ 0x00,\ 0x00,\ 0x00,\ 0x0a\};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00055}00055\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ cmd\_batterya[]\ =\ \{0x100,\ 0x02,\ 0x01,\ 0xc7,\ 0x00,\ 0x00,\ 0x00,\ 0xca\};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00056}00056\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ cmd\_watts[]\ =\ \{0x100,\ 0x02,\ 0x01,\ 0x6a,\ 0x00,\ 0x00,\ 0x00,\ 0x6d\};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00057}00057\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ cmd\_misc[]\ =\ \{0x100,\ 0x02,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x02\};\ \textcolor{comment}{//\ example\ FM80\ command\ ID\ request}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00058}00058\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ cmd\_fwreva[]\ =\ \{0x100,\ 0x02,\ 0x00,\ 0x02,\ 0x00,\ 0x00,\ 0x00,\ 0x04\};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00059}00059\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ cmd\_fwrevb[]\ =\ \{0x100,\ 0x02,\ 0x00,\ 0x03,\ 0x00,\ 0x00,\ 0x00,\ 0x05\};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00060}00060\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ cmd\_fwrevc[]\ =\ \{0x100,\ 0x02,\ 0x00,\ 0x04,\ 0x00,\ 0x00,\ 0x00,\ 0x06\};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00061}00061\ \ \ \ \ uint16\_t\ cmd\_time[]\ =\ \{0x100,\ 0x03,\ 0x40,\ 0x04,\ 0x00,\ 0x00,\ 0x00,\ 0x00\};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00062}00062\ \ \ \ \ uint16\_t\ cmd\_date[]\ =\ \{0x100,\ 0x03,\ 0x40,\ 0x05,\ 0x00,\ 0x00,\ 0x00,\ 0x00\};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00063}00063\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00064}00064\ \ \ \ \ \textcolor{keyword}{enum}\ status\_type\ \{}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00065}00065\ \ \ \ \ \ \ \ \ STATUS\_SLEEPING\ =\ 0,}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00066}00066\ \ \ \ \ \ \ \ \ STATUS\_FLOATING\ =\ 1,}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00067}00067\ \ \ \ \ \ \ \ \ STATUS\_BULK\ =\ 2,}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00068}00068\ \ \ \ \ \ \ \ \ STATUS\_ABSORB\ =\ 3,}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00069}00069\ \ \ \ \ \ \ \ \ STATUS\_EQUALIZE\ =\ 4,}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00070}00070\ \ \ \ \ \ \ \ \ STATUS\_LAST,}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00071}00071\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00072}00072\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00073}00073\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ state\_name\ [][12]\ =\ \{}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00074}00074\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Sleeping"{}},}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00075}00075\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Floating"{}},}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00076}00076\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Bulk"{}},}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00077}00077\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Absorb"{}},}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00078}00078\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Equalize"{}},}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00079}00079\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ Last"{}},}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00080}00080\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00081}00081\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00082}00082\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ FM80\_name\ [][12]\ =\ \{}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00083}00083\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ Offline"{}},}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00084}00084\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}FM80\ \ \ \ "{}},}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00085}00085\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00086}00086\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00087}00087\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ canbus\_name\ [][12]\ =\ \{}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00088}00088\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ Offline"{}},}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00089}00089\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}CANBUS\ \ "{}},}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00090}00090\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00092}00092\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ modbus\_name\ [][12]\ =\ \{}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00093}00093\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ Offline"{}},}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00094}00094\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}MODBUS\ \ "{}},}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00095}00095\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00096}00096\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00097}\mbox{\hyperlink{structmx__status__packed__t}{00097}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00098}00098\ \ \ \ \ \ \ \ \ uint8\_t\ a[16];\ \textcolor{comment}{//\ raw\_ah(part2)}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00099}00099\ \ \ \ \ \}\ \mbox{\hyperlink{structmx__status__packed__t}{mx\_status\_packed\_t}};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00100}00100\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00101}\mbox{\hyperlink{structmx__log__packed__t}{00101}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00102}00102\ \ \ \ \ \ \ \ \ uint8\_t\ a[16];}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00103}00103\ \ \ \ \ \}\ \mbox{\hyperlink{structmx__log__packed__t}{mx\_log\_packed\_t}};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00104}00104\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00105}\mbox{\hyperlink{structmx__logpage__t}{00105}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00106}00106\ \ \ \ \ \ \ \ \ uint8\_t\ type;}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00107}00107\ \ \ \ \ \ \ \ \ int16\_t\ day;}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00108}00108\ \ \ \ \ \ \ \ \ int16\_t\ amp\_hours;}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00109}00109\ \ \ \ \ \ \ \ \ int16\_t\ kilowatt\_hours;}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00110}00110\ \ \ \ \ \ \ \ \ int16\_t\ volts\_peak;}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00111}00111\ \ \ \ \ \ \ \ \ int16\_t\ amps\_peak;}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00112}00112\ \ \ \ \ \ \ \ \ int16\_t\ kilowatts\_peak;}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00113}00113\ \ \ \ \ \ \ \ \ int16\_t\ bat\_min;}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00114}00114\ \ \ \ \ \ \ \ \ int16\_t\ bat\_max;}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00115}00115\ \ \ \ \ \ \ \ \ int16\_t\ absorb\_time;}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00116}00116\ \ \ \ \ \ \ \ \ int16\_t\ float\_time;}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00117}00117\ \ \ \ \ \ \ \ \ uint8\_t\ select;}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00118}00118\ \ \ \ \ \}\ \mbox{\hyperlink{structmx__logpage__t}{mx\_logpage\_t}};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00119}00119\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00120}\mbox{\hyperlink{structBM__type}{00120}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structBM__type}{BM\_type}}\ \{}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00121}00121\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ ten\_sec\_flag,\ one\_sec\_flag,\ FM80\_charged,\ pv\_high,\ pv\_update,\ once,\ a\_switch[D\_SW\_COUNT],\ a\_trigger[D\_SW\_COUNT],\ a\_type[D\_SW\_COUNT];}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00122}00122\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint16\_t\ pacing,\ rx\_count,\ flush,\ pv\_prev,\ day\_check,\ node\_id,\ dim\_delay;}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00123}00123\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ FM80\_online,\ FM80\_io,\ LOG,\ display\_dim,\ display\_update,\ display\_on;}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00124}00124\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint8\_t\ canbus\_online,\ modbus\_online,\ alt\_display,\ a\_pin[D\_SW\_COUNT];}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00125}00125\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ run\_time,\ net\_balance;}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00126}00126\ \ \ \ \ \ \ \ \ uint16\_t\ mui[10];}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00127}00127\ \ \ \ \ \ \ \ \ uint16\_t\ fwrev[3];}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00128}00128\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structmx__logpage__t}{mx\_logpage\_t}}\ log;}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00129}00129\ \ \ \ \ \}\ \mbox{\hyperlink{structBM__type}{BM\_type}};}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00130}00130\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00131}00131\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ onesec\_io(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00132}00132\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ tensec\_io(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00133}00133\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ FM\_io(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00134}00134\ \ \ \ \ \textcolor{keyword}{extern}\ uint8\_t\ FM\_tx(\textcolor{keyword}{const}\ uint16\_t\ *,\ \textcolor{keyword}{const}\ uint8\_t);}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00135}00135\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{bool}\ FM\_tx\_empty(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00136}00136\ \ \ \ \ \textcolor{keyword}{extern}\ uint8\_t\ FM\_rx(uint16\_t\ *);}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00137}00137\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{bool}\ FM\_rx\_ready(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00138}00138\ \ \ \ \ \textcolor{keyword}{extern}\ uint8\_t\ FM\_rx\_count(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00139}00139\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ FM\_restart(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00140}00140\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ wdtdelay(\textcolor{keyword}{const}\ uint32\_t);}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00141}00141\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ lp\_filter(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float},\ \textcolor{keyword}{const}\ uint8\_t,\ \textcolor{keyword}{const}\ int8\_t);}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00142}00142\ \ \ \ \ \textcolor{keyword}{extern}\ uint16\_t\ calc\_checksum(uint8\_t*,\ \textcolor{keyword}{const}\ uint8\_t);}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00143}00143\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00144}00144\ \ \ \ \ \textcolor{keyword}{extern}\ \mbox{\hyperlink{structBM__type}{BM\_type}}\ BM;}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00145}00145\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00146}00146\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00147}00147\ \}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00148}00148\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00149}00149\ }
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00150}00150\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{/*\ MXCMD\_H\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{\Hypertarget{mxcmd_8h_source_l00151}00151\ }
+
+\end{DoxyCode}

@@ -44,3 +44,19 @@ void WaitMs(const uint16_t numMilliseconds)
 	}
 }
 
+/*
+ * runs in timer #6 interrupt from FM_io(void)
+ */
+void timer_ms_tick(const uint32_t status, const uintptr_t context)
+{
+	//Decrement each software timer
+	for (uint8_t i = 0; i < TMR_COUNT; i++) {
+		if (tickCount[i] != 0) {
+			tickCount[i]--;
+		}
+	}
+	/*
+	 * check for button presses
+	 */
+//	button_press_check();
+}

@@ -1,0 +1,11 @@
+TMR5_Initialize global:[timer5ReloadVal] call:[TMR5_SetInterruptHandler]
+TMR5_StartTimer
+TMR5_StopTimer
+TMR5_ReadTimer
+TMR5_WriteTimer
+TMR5_Reload global:[timer5ReloadVal] call:[TMR5_WriteTimer] noreturn:[TMR5_WriteTimer]
+TMR5_StartSinglePulseAcquisition
+TMR5_CheckGateValueStatus call:[return] noreturn:[return]
+TMR5_CallBack global:[TMR5_InterruptHandler] call:[TMR5_InterruptHandler] noreturn:[TMR5_InterruptHandler]
+TMR5_SetInterruptHandler global:[TMR5_InterruptHandler]
+TMR5_DefaultInterruptHandler

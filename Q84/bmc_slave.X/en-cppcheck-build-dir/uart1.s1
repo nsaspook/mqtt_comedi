@@ -1,0 +1,21 @@
+UART1_Initialize global:[uart1RxCount,uart1RxHead,uart1RxLastError,uart1RxTail,uart1TxBuffer,uart1TxBufferRemaining,uart1TxHead,uart1TxTail] call:[UART1_SetErrorHandler,UART1_SetFramingErrorHandler,UART1_SetOverrunErrorHandler,UART1_SetRxInterruptHandler,UART1_SetTxInterruptHandler,sizeof]
+UART1_is_rx_ready global:[uart1RxCount] call:[return] noreturn:[return]
+UART1_is_tx_ready global:[uart1TxBufferRemaining] call:[return] noreturn:[return]
+UART1_is_tx_done
+UART1_get_last_status global:[uart1RxLastError]
+UART1_Read global:[uart1RxBuffer,uart1RxCount,uart1RxLastError,uart1RxStatusBuffer,uart1RxTail] call:[sizeof]
+UART1_Write global:[uart1TxBuffer,uart1TxBufferRemaining,uart1TxHead] call:[sizeof]
+UART1_Transmit_ISR global:[uart1TxBuffer,uart1TxBufferRemaining,uart1TxTail] call:[sizeof]
+UART1_Receive_ISR global:[UART1_ErrorHandler,UART1_FramingErrorHandler,UART1_OverrunErrorHandler,uart1RxHead,uart1RxStatusBuffer] call:[UART1_ErrorHandler,UART1_FramingErrorHandler,UART1_OverrunErrorHandler,UART1_RxDataHandler] noreturn:[UART1_ErrorHandler,UART1_FramingErrorHandler,UART1_OverrunErrorHandler,UART1_RxDataHandler]
+UART1_RxDataHandler global:[uart1RxBuffer,uart1RxCount,uart1RxHead] call:[sizeof]
+UART1_DefaultFramingErrorHandler
+UART1_DefaultOverrunErrorHandler
+UART1_DefaultErrorHandler call:[UART1_RxDataHandler] noreturn:[UART1_RxDataHandler]
+UART1_SetFramingErrorHandler global:[UART1_FramingErrorHandler]
+UART1_SetOverrunErrorHandler global:[UART1_OverrunErrorHandler]
+UART1_SetErrorHandler global:[UART1_ErrorHandler]
+UART1_SetRxInterruptHandler global:[UART1_RxInterruptHandler]
+UART1_SetTxInterruptHandler global:[UART1_TxInterruptHandler]
+UART1_put_buffer global:[uart1RxBuffer,uart1RxCount,uart1RxHead] call:[sizeof]
+UART1_Initialize19200 global:[uart1RxCount,uart1RxHead,uart1RxLastError,uart1RxTail,uart1TxBuffer,uart1TxBufferRemaining,uart1TxHead,uart1TxTail] call:[UART1_SetErrorHandler,UART1_SetOverrunErrorHandler,UART1_SetRxInterruptHandler,UART1_SetTxInterruptHandler,sizeof]
+UART1_Initialize115200 global:[uart1RxCount,uart1RxHead,uart1RxLastError,uart1RxTail,uart1TxBuffer,uart1TxBufferRemaining,uart1TxHead,uart1TxTail] call:[UART1_SetErrorHandler,UART1_SetFramingErrorHandler,UART1_SetOverrunErrorHandler,UART1_SetRxInterruptHandler,UART1_SetTxInterruptHandler,sizeof]

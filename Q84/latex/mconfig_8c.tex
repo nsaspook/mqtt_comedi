@@ -1,0 +1,304 @@
+\doxysection{bmc\+\_\+slave.\+X/mconfig.c File Reference}
+\hypertarget{mconfig_8c}{}\label{mconfig_8c}\index{bmc\_slave.X/mconfig.c@{bmc\_slave.X/mconfig.c}}
+{\ttfamily \#include "{}mconfig.\+h"{}}\newline
+{\ttfamily \#include "{}mydisplay.\+h"{}}\newline
+{\ttfamily \#include "{}msg\+\_\+text.\+h"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+Include dependency graph for mconfig.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{mconfig_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structD__data}{D\+\_\+data}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{mconfig_8c_a0035d4f11181599effb542804ddac12e}\label{mconfig_8c_a0035d4f11181599effb542804ddac12e} 
+typedef struct D\+\_\+data {\bfseries D\+\_\+data}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{mconfig_8c_a2ce28e65dfa7d0529cfb474df1dd4903}{mconfig\+\_\+init}} (void)
+\item 
+void \mbox{\hyperlink{mconfig_8c_a5ec8ab067a7ee0d2ed919912fb3f9e0f}{mode\+\_\+lamp\+\_\+dim}} (void)
+\item 
+void \mbox{\hyperlink{mconfig_8c_a86550b1c5a6efeac76b0256d2169f471}{mode\+\_\+lamp\+\_\+bright}} (void)
+\item 
+bool \mbox{\hyperlink{mconfig_8c_adf02dc6be33d8f00886f67223301d4b8}{help\+\_\+button}} (void)
+\item 
+void \mbox{\hyperlink{mconfig_8c_aa5568c60f0168eaffbb6b67d9dfda9a2}{check\+\_\+help}} (const bool flipper)
+\item 
+uint8\+\_\+t \mbox{\hyperlink{mconfig_8c_aae1ae506194750a2d715dafb19bf54ac}{update\+\_\+lcd}} (uint8\+\_\+t vterm)
+\item 
+uint8\+\_\+t \mbox{\hyperlink{mconfig_8c_aa1526056f161ef48503cacdc96f47708}{refresh\+\_\+lcd}} (void)
+\item 
+uint8\+\_\+t \mbox{\hyperlink{mconfig_8c_a2501c7f99288c8a89d559d91a2756b0a}{set\+\_\+vterm}} (const uint8\+\_\+t vterm)
+\item 
+char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{mconfig_8c_a12c19893a8a94a4d2b73b2c9bed81835}{get\+\_\+vterm\+\_\+ptr}} (uint8\+\_\+t line, const uint8\+\_\+t vterm)
+\item 
+void \mbox{\hyperlink{mconfig_8c_a1ef62b35d64d1ab2d1ab551cb358cd6b}{vterm\+\_\+dump}} (void)
+\item 
+void \mbox{\hyperlink{mconfig_8c_a98397bd37d1a20ba83b6fdb32b098a34}{vterm\+\_\+sequence}} (void)
+\item 
+void \mbox{\hyperlink{mconfig_8c_ae2219a03890f3ebd30ce92b5a1478d8d}{Myea\+Dog\+M\+\_\+\+Write\+String\+At\+Pos}} (const uint8\+\_\+t r, const uint8\+\_\+t c, char \texorpdfstring{$\ast$}{*}str\+Ptr)
+\item 
+D\+\_\+\+CODES \mbox{\hyperlink{mconfig_8c_ae1ab0f697e86d45b5cfa3512cf31a61b}{display\+\_\+info}} (void)
+\item 
+D\+\_\+\+CODES \mbox{\hyperlink{mconfig_8c_aad6036d889a9407455025d9c07f8ba72}{display\+\_\+help}} (void)
+\item 
+D\+\_\+\+CODES \mbox{\hyperlink{mconfig_8c_ac421348b3c6ad10de87490fd09245168}{set\+\_\+display\+\_\+info}} (const D\+\_\+\+CODES new\+\_\+response\+\_\+info)
+\item 
+D\+\_\+\+CODES \mbox{\hyperlink{mconfig_8c_a7dd1526b9a4936f175b928e324d88b58}{set\+\_\+temp\+\_\+display\+\_\+help}} (const D\+\_\+\+CODES new\+\_\+response\+\_\+info)
+\item 
+void \mbox{\hyperlink{mconfig_8c_afe1368d539a002d351df6d5338184d6e}{log\+\_\+serial}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, uint16\+\_\+t len)
+\item 
+void \mbox{\hyperlink{mconfig_8c_a914644e400a0b8a58f027b2d57842838}{logging\+\_\+cmds}} (void)
+\item 
+void \mbox{\hyperlink{mconfig_8c_a94bd66e40215d13c8ce141faf8ff5710}{set\+\_\+time}} (const time\+\_\+t t)
+\item 
+time\+\_\+t \mbox{\hyperlink{mconfig_8c_ae7841e681c8c9d59818568d39553642c}{time}} (time\+\_\+t \texorpdfstring{$\ast$}{*}t)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structV__data}{V\+\_\+data}} \mbox{\hyperlink{mconfig_8c_a3677a1b059657e0e0bcfa48d64f81cb4}{V}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This MUST run first to clear the vterm buffers before using any other functions
+
+send to logging serial port, busy wait until port buffer has space 
+
+Definition in file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{mconfig_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{mconfig_8c_aa5568c60f0168eaffbb6b67d9dfda9a2}\index{mconfig.c@{mconfig.c}!check\_help@{check\_help}}
+\index{check\_help@{check\_help}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{check\_help()}{check\_help()}}
+{\footnotesize\ttfamily \label{mconfig_8c_aa5568c60f0168eaffbb6b67d9dfda9a2} 
+void check\+\_\+help (\begin{DoxyParamCaption}\item[{const bool}]{flipper}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00049}{49}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+\Hypertarget{mconfig_8c_aad6036d889a9407455025d9c07f8ba72}\index{mconfig.c@{mconfig.c}!display\_help@{display\_help}}
+\index{display\_help@{display\_help}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{display\_help()}{display\_help()}}
+{\footnotesize\ttfamily \label{mconfig_8c_aad6036d889a9407455025d9c07f8ba72} 
+D\+\_\+\+CODES display\+\_\+help (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00229}{229}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+\Hypertarget{mconfig_8c_ae1ab0f697e86d45b5cfa3512cf31a61b}\index{mconfig.c@{mconfig.c}!display\_info@{display\_info}}
+\index{display\_info@{display\_info}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{display\_info()}{display\_info()}}
+{\footnotesize\ttfamily \label{mconfig_8c_ae1ab0f697e86d45b5cfa3512cf31a61b} 
+D\+\_\+\+CODES display\+\_\+info (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00224}{224}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+\Hypertarget{mconfig_8c_a12c19893a8a94a4d2b73b2c9bed81835}\index{mconfig.c@{mconfig.c}!get\_vterm\_ptr@{get\_vterm\_ptr}}
+\index{get\_vterm\_ptr@{get\_vterm\_ptr}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{get\_vterm\_ptr()}{get\_vterm\_ptr()}}
+{\footnotesize\ttfamily \label{mconfig_8c_a12c19893a8a94a4d2b73b2c9bed81835} 
+char \texorpdfstring{$\ast$}{*} get\+\_\+vterm\+\_\+ptr (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{line}{, }\item[{const uint8\+\_\+t}]{vterm}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00111}{111}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+\Hypertarget{mconfig_8c_adf02dc6be33d8f00886f67223301d4b8}\index{mconfig.c@{mconfig.c}!help\_button@{help\_button}}
+\index{help\_button@{help\_button}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{help\_button()}{help\_button()}}
+{\footnotesize\ttfamily \label{mconfig_8c_adf02dc6be33d8f00886f67223301d4b8} 
+bool help\+\_\+button (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00041}{41}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+\Hypertarget{mconfig_8c_afe1368d539a002d351df6d5338184d6e}\index{mconfig.c@{mconfig.c}!log\_serial@{log\_serial}}
+\index{log\_serial@{log\_serial}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{log\_serial()}{log\_serial()}}
+{\footnotesize\ttfamily \label{mconfig_8c_afe1368d539a002d351df6d5338184d6e} 
+void log\+\_\+serial (\begin{DoxyParamCaption}\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{data}{, }\item[{uint16\+\_\+t}]{len}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00257}{257}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+\Hypertarget{mconfig_8c_a914644e400a0b8a58f027b2d57842838}\index{mconfig.c@{mconfig.c}!logging\_cmds@{logging\_cmds}}
+\index{logging\_cmds@{logging\_cmds}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{logging\_cmds()}{logging\_cmds()}}
+{\footnotesize\ttfamily \label{mconfig_8c_a914644e400a0b8a58f027b2d57842838} 
+void logging\+\_\+cmds (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+check for incoming data on the logging TTL serial connection use UART3
+
+cmd\+\_\+value is the buffer variable 
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00290}{290}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+\Hypertarget{mconfig_8c_a2ce28e65dfa7d0529cfb474df1dd4903}\index{mconfig.c@{mconfig.c}!mconfig\_init@{mconfig\_init}}
+\index{mconfig\_init@{mconfig\_init}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{mconfig\_init()}{mconfig\_init()}}
+{\footnotesize\ttfamily \label{mconfig_8c_a2ce28e65dfa7d0529cfb474df1dd4903} 
+void mconfig\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00019}{19}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+\Hypertarget{mconfig_8c_a86550b1c5a6efeac76b0256d2169f471}\index{mconfig.c@{mconfig.c}!mode\_lamp\_bright@{mode\_lamp\_bright}}
+\index{mode\_lamp\_bright@{mode\_lamp\_bright}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{mode\_lamp\_bright()}{mode\_lamp\_bright()}}
+{\footnotesize\ttfamily \label{mconfig_8c_a86550b1c5a6efeac76b0256d2169f471} 
+void mode\+\_\+lamp\+\_\+bright (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00032}{32}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+\Hypertarget{mconfig_8c_a5ec8ab067a7ee0d2ed919912fb3f9e0f}\index{mconfig.c@{mconfig.c}!mode\_lamp\_dim@{mode\_lamp\_dim}}
+\index{mode\_lamp\_dim@{mode\_lamp\_dim}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{mode\_lamp\_dim()}{mode\_lamp\_dim()}}
+{\footnotesize\ttfamily \label{mconfig_8c_a5ec8ab067a7ee0d2ed919912fb3f9e0f} 
+void mode\+\_\+lamp\+\_\+dim (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00027}{27}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+\Hypertarget{mconfig_8c_ae2219a03890f3ebd30ce92b5a1478d8d}\index{mconfig.c@{mconfig.c}!MyeaDogM\_WriteStringAtPos@{MyeaDogM\_WriteStringAtPos}}
+\index{MyeaDogM\_WriteStringAtPos@{MyeaDogM\_WriteStringAtPos}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{MyeaDogM\_WriteStringAtPos()}{MyeaDogM\_WriteStringAtPos()}}
+{\footnotesize\ttfamily \label{mconfig_8c_ae2219a03890f3ebd30ce92b5a1478d8d} 
+void Myea\+Dog\+M\+\_\+\+Write\+String\+At\+Pos (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t}]{r}{, }\item[{const uint8\+\_\+t}]{c}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{str\+Ptr}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00191}{191}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+\Hypertarget{mconfig_8c_aa1526056f161ef48503cacdc96f47708}\index{mconfig.c@{mconfig.c}!refresh\_lcd@{refresh\_lcd}}
+\index{refresh\_lcd@{refresh\_lcd}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{refresh\_lcd()}{refresh\_lcd()}}
+{\footnotesize\ttfamily \label{mconfig_8c_aa1526056f161ef48503cacdc96f47708} 
+uint8\+\_\+t refresh\+\_\+lcd (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00093}{93}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+\Hypertarget{mconfig_8c_ac421348b3c6ad10de87490fd09245168}\index{mconfig.c@{mconfig.c}!set\_display\_info@{set\_display\_info}}
+\index{set\_display\_info@{set\_display\_info}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{set\_display\_info()}{set\_display\_info()}}
+{\footnotesize\ttfamily \label{mconfig_8c_ac421348b3c6ad10de87490fd09245168} 
+D\+\_\+\+CODES set\+\_\+display\+\_\+info (\begin{DoxyParamCaption}\item[{const D\+\_\+\+CODES}]{new\+\_\+response\+\_\+info}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00234}{234}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+\Hypertarget{mconfig_8c_a7dd1526b9a4936f175b928e324d88b58}\index{mconfig.c@{mconfig.c}!set\_temp\_display\_help@{set\_temp\_display\_help}}
+\index{set\_temp\_display\_help@{set\_temp\_display\_help}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{set\_temp\_display\_help()}{set\_temp\_display\_help()}}
+{\footnotesize\ttfamily \label{mconfig_8c_a7dd1526b9a4936f175b928e324d88b58} 
+D\+\_\+\+CODES set\+\_\+temp\+\_\+display\+\_\+help (\begin{DoxyParamCaption}\item[{const D\+\_\+\+CODES}]{new\+\_\+response\+\_\+info}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00245}{245}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+\Hypertarget{mconfig_8c_a94bd66e40215d13c8ce141faf8ff5710}\index{mconfig.c@{mconfig.c}!set\_time@{set\_time}}
+\index{set\_time@{set\_time}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{set\_time()}{set\_time()}}
+{\footnotesize\ttfamily \label{mconfig_8c_a94bd66e40215d13c8ce141faf8ff5710} 
+void set\+\_\+time (\begin{DoxyParamCaption}\item[{const time\+\_\+t}]{t}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00400}{400}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+\Hypertarget{mconfig_8c_a2501c7f99288c8a89d559d91a2756b0a}\index{mconfig.c@{mconfig.c}!set\_vterm@{set\_vterm}}
+\index{set\_vterm@{set\_vterm}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{set\_vterm()}{set\_vterm()}}
+{\footnotesize\ttfamily \label{mconfig_8c_a2501c7f99288c8a89d559d91a2756b0a} 
+uint8\+\_\+t set\+\_\+vterm (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t}]{vterm}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00101}{101}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+\Hypertarget{mconfig_8c_ae7841e681c8c9d59818568d39553642c}\index{mconfig.c@{mconfig.c}!time@{time}}
+\index{time@{time}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{time()}{time()}}
+{\footnotesize\ttfamily \label{mconfig_8c_ae7841e681c8c9d59818568d39553642c} 
+time\+\_\+t time (\begin{DoxyParamCaption}\item[{time\+\_\+t \texorpdfstring{$\ast$}{*}}]{t}{}\end{DoxyParamCaption})}
+
+if t \texorpdfstring{$>$}{>} 0, t is set to memory location of current\+\_\+time variable 
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00410}{410}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+\Hypertarget{mconfig_8c_aae1ae506194750a2d715dafb19bf54ac}\index{mconfig.c@{mconfig.c}!update\_lcd@{update\_lcd}}
+\index{update\_lcd@{update\_lcd}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{update\_lcd()}{update\_lcd()}}
+{\footnotesize\ttfamily \label{mconfig_8c_aae1ae506194750a2d715dafb19bf54ac} 
+uint8\+\_\+t update\+\_\+lcd (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{vterm}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00071}{71}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+\Hypertarget{mconfig_8c_a1ef62b35d64d1ab2d1ab551cb358cd6b}\index{mconfig.c@{mconfig.c}!vterm\_dump@{vterm\_dump}}
+\index{vterm\_dump@{vterm\_dump}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{vterm\_dump()}{vterm\_dump()}}
+{\footnotesize\ttfamily \label{mconfig_8c_a1ef62b35d64d1ab2d1ab551cb358cd6b} 
+void vterm\+\_\+dump (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00120}{120}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+\Hypertarget{mconfig_8c_a98397bd37d1a20ba83b6fdb32b098a34}\index{mconfig.c@{mconfig.c}!vterm\_sequence@{vterm\_sequence}}
+\index{vterm\_sequence@{vterm\_sequence}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{vterm\_sequence()}{vterm\_sequence()}}
+{\footnotesize\ttfamily \label{mconfig_8c_a98397bd37d1a20ba83b6fdb32b098a34} 
+void vterm\+\_\+sequence (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{mconfig_8c_source_l00137}{137}} of file \mbox{\hyperlink{mconfig_8c_source}{mconfig.\+c}}.
+
+
+
+\label{doc-var-members}
+\Hypertarget{mconfig_8c_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{mconfig_8c_a3677a1b059657e0e0bcfa48d64f81cb4}\index{mconfig.c@{mconfig.c}!V@{V}}
+\index{V@{V}!mconfig.c@{mconfig.c}}
+\doxysubsubsection{\texorpdfstring{V}{V}}
+{\footnotesize\ttfamily \label{mconfig_8c_a3677a1b059657e0e0bcfa48d64f81cb4} 
+\mbox{\hyperlink{structV__data}{V\+\_\+data}} V\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00208}{208}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+

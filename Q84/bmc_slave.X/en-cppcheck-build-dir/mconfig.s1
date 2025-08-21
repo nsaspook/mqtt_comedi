@@ -1,0 +1,20 @@
+mconfig_init global:[D] call:[memset,sizeof] noreturn:[memset]
+mode_lamp_dim call:[set_lcd_dim] noreturn:[set_lcd_dim]
+mode_lamp_bright call:[set_lcd_dim] noreturn:[set_lcd_dim]
+help_button
+check_help global:[T,V,build_date] call:[get_vterm_ptr,snprintf] noreturn:[snprintf]
+update_lcd global:[D] call:[eaDogM_WriteStringAtPos,wait_lcd_done]
+refresh_lcd global:[D] call:[update_lcd] noreturn:[update_lcd]
+set_vterm global:[D]
+get_vterm_ptr global:[D]
+vterm_dump global:[V] call:[WaitMs,eaDogM_WriteStringAtPos,get_vterm_ptr,snprintf,wait_lcd_done] noreturn:[WaitMs]
+vterm_sequence global:[V,build_date,build_time] call:[get_vterm_ptr,snprintf]
+MyeaDogM_WriteStringAtPos global:[D,V] call:[TimerDone,eaDogM_WriteStringAtPos,get_vterm_ptr,snprintf,update_lcd,wait_lcd_done] noreturn:[eaDogM_WriteStringAtPos,update_lcd]
+display_info global:[V]
+display_help global:[V]
+set_display_info global:[V] call:[TimerDone]
+set_temp_display_help global:[V]
+log_serial
+logging_cmds
+set_time global:[V]
+time global:[V]

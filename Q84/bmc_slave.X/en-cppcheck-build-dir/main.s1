@@ -1,0 +1,9 @@
+main global:[BM,C,V,adc_buffer,build_date,em,ems,emv,failure,out_buf,r_string_ready,serial_buffer_ss,spi_link,spi_stat_ss] call:[ADC_DischargeSampleCapacitor,ADC_GetConversionResult,ADC_IsConversionDone,ADC_StartConversion,DeviceID_Read,SPI_EADOG,SPI_MC33996,SPI_OPI,SPI_TIC12400,SYSTEM_Initialize,SetBMCPriority,StartTimer,TMR0_SetInterruptHandler,TMR0_StartTimer,TMR2_StartTimer,TMR5_SetInterruptHandler,TMR5_StartTimer,TMR6_SetInterruptHandler,TMR6_StartTimer,TimerDone,UART1_Initialize115200,UART3_SetRxInterruptHandler,WaitMs,check_help,eaDogM_WriteCommand,get_vterm_ptr,init_display,init_mb_master_timers,init_slaveo,logging_cmds,master_controller_work,mc33996_init,mc33996_update,mconfig_init,refresh_lcd,set_display_info,set_vterm,snprintf,spinners,srand,tic12400_init,tic12400_read_sw,tic12400_reset,while] noreturn:[ADC_GetConversionResult,WaitMs,check_help,mc33996_update,set_display_info,set_vterm,snprintf,tic12400_init,while]
+onesec_io global:[B,BM,V] call:[while]
+spinners global:[spin] call:[strlen]
+test_slave call:[while] noreturn:[while]
+SetBMCPriority
+DeviceID_Read call:[asm]
+update_time
+send_mx_cmd global:[BM] call:[FM_tx,FM_tx_empty]
+rec_mx_cmd global:[BM,abuf,cbuf,cc_mode,mx_code,state] call:[DataHandler,FM_rx,FM_rx_count,FM_rx_ready] noreturn:[DataHandler,FM_rx]

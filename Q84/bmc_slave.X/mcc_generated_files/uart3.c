@@ -110,7 +110,7 @@ void UART3_Initialize(void)
     U3CON1 = 0x80;
 
     // TXPOL not inverted; FLO off; RXPOL not inverted; RUNOVF RX input shifter stops all activity; STP Transmit 1Stop bit, receiver verifies first Stop bit; 
-    U3CON2 = 0x00;
+    U3CON2 = 0x02;
 
     // BRGL 138; 
     U3BRGL = 0x8A;

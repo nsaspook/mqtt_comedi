@@ -15130,7 +15130,7 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <part name="VSS23" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="MISC_IO" library="con-lstb" library_urn="urn:adsk.eagle:library:162" deviceset="MA10-1" device="" package3d_urn="urn:adsk.eagle:package:8346/1" value="misc-io"/>
 <part name="VSS26" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
-<part name="LED1" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIPLED_0805" package3d_urn="urn:adsk.eagle:package:15821/2" value="L1"/>
+<part name="LED1_RED" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIPLED_0805" package3d_urn="urn:adsk.eagle:package:15821/2" value="L1"/>
 <part name="LED2" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIPLED_0805" package3d_urn="urn:adsk.eagle:package:15821/2" value="L2"/>
 <part name="LED3" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIPLED_0805" package3d_urn="urn:adsk.eagle:package:15821/2" value="L3"/>
 <part name="VSS28" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
@@ -15347,7 +15347,7 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <part name="VSS85" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="VSS86" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="VSS87" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
-<part name="JMP1" library="jump-0r-smd" library_urn="urn:adsk.eagle:library:251" deviceset="0R-JUMP" device="A" package3d_urn="urn:adsk.eagle:package:15385/1"/>
+<part name="VDD-TIC" library="jump-0r-smd" library_urn="urn:adsk.eagle:library:251" deviceset="0R-JUMP" device="A" package3d_urn="urn:adsk.eagle:package:15385/1"/>
 <part name="VDD32" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VDD" device=""/>
 <part name="VDD18" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VDD" device=""/>
 <part name="OK1" library="optocoupler" library_urn="urn:adsk.eagle:library:320" deviceset="4N*?M" device="S" package3d_urn="urn:adsk.eagle:package:21970/1" technology="25"/>
@@ -15366,6 +15366,9 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <part name="MATE" library="con-lstb" library_urn="urn:adsk.eagle:library:162" deviceset="MA04-1" device="" package3d_urn="urn:adsk.eagle:package:8337/1" value="MATE"/>
 <part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="0V" device=""/>
 <part name="FM_RS" library="jumper" library_urn="urn:adsk.eagle:library:252" deviceset="SJ" device="" package3d_urn="urn:adsk.eagle:package:15471/1" value="FM_RS"/>
+<part name="LED5" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIP-LED0603" package3d_urn="urn:adsk.eagle:package:15819/3" value="FM80 POWER"/>
+<part name="R38" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
+<part name="GND5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="0V" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -15485,8 +15488,8 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <instance part="VSS26" gate="G$1" x="-5.08" y="20.32" smashed="yes" rot="R90">
 <attribute name="VALUE" x="0" y="22.86" size="1.778" layer="96" rot="R270"/>
 </instance>
-<instance part="LED1" gate="G$1" x="129.54" y="60.96" smashed="yes">
-<attribute name="NAME" x="133.096" y="56.388" size="1.778" layer="95" rot="R90"/>
+<instance part="LED1_RED" gate="G$1" x="129.54" y="60.96" smashed="yes">
+<attribute name="NAME" x="125.476" y="56.388" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="135.255" y="56.388" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="LED2" gate="G$1" x="137.16" y="60.96" smashed="yes">
@@ -16100,7 +16103,7 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <attribute name="VALUE" x="76.2" y="71.12" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="P+3" gate="VCC" x="55.88" y="73.66" smashed="yes" rot="R90">
-<attribute name="VALUE" x="58.42" y="71.12" size="1.778" layer="96" rot="R180"/>
+<attribute name="VALUE" x="53.34" y="73.66" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="FRAME1" gate="G$1" x="-142.24" y="-223.52" smashed="yes"/>
 <instance part="FRAME1" gate="G$2" x="309.88" y="-223.52" smashed="yes">
@@ -16244,10 +16247,10 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <instance part="VSS87" gate="G$1" x="264.16" y="-210.82" smashed="yes">
 <attribute name="VALUE" x="261.62" y="-213.36" size="1.778" layer="96" rot="R270"/>
 </instance>
-<instance part="JMP1" gate="-0R" x="53.34" y="-45.72" smashed="yes">
+<instance part="VDD-TIC" gate="-0R" x="53.34" y="-45.72" smashed="yes">
 <attribute name="NAME" x="53.34" y="-39.37" size="1.778" layer="95"/>
 </instance>
-<instance part="JMP1" gate="G$2" x="58.42" y="-40.64" smashed="yes"/>
+<instance part="VDD-TIC" gate="G$2" x="58.42" y="-40.64" smashed="yes"/>
 <instance part="VDD32" gate="G$1" x="50.8" y="-43.18" smashed="yes" rot="R90">
 <attribute name="VALUE" x="45.72" y="-40.64" size="1.778" layer="96" rot="R270"/>
 </instance>
@@ -16310,6 +16313,17 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <instance part="FM_RS" gate="1" x="287.02" y="66.04" smashed="yes" rot="R270">
 <attribute name="NAME" x="276.86" y="68.58" size="1.778" layer="95"/>
 <attribute name="VALUE" x="276.86" y="64.77" size="1.778" layer="96"/>
+</instance>
+<instance part="LED5" gate="G$1" x="398.78" y="-93.98" smashed="yes">
+<attribute name="NAME" x="390.652" y="-95.504" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="393.192" y="-93.345" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="R38" gate="G$1" x="398.78" y="-86.36" smashed="yes" rot="R270">
+<attribute name="NAME" x="400.2786" y="-82.55" size="1.778" layer="95" rot="R270"/>
+<attribute name="VALUE" x="395.478" y="-82.55" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="GND5" gate="1" x="398.78" y="-101.6" smashed="yes">
+<attribute name="VALUE" x="396.875" y="-104.14" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -16565,7 +16579,7 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <junction x="228.6" y="-185.42"/>
 </segment>
 <segment>
-<pinref part="JMP1" gate="-0R" pin="1"/>
+<pinref part="VDD-TIC" gate="-0R" pin="1"/>
 <pinref part="VDD32" gate="G$1" pin="VDD"/>
 <junction x="53.34" y="-43.18"/>
 </segment>
@@ -16666,7 +16680,7 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <junction x="-7.62" y="20.32"/>
 </segment>
 <segment>
-<pinref part="LED1" gate="G$1" pin="C"/>
+<pinref part="LED1_RED" gate="G$1" pin="C"/>
 <pinref part="VSS28" gate="G$1" pin="VSS"/>
 <junction x="129.54" y="55.88"/>
 </segment>
@@ -18120,7 +18134,7 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 </net>
 <net name="N$4" class="0">
 <segment>
-<pinref part="LED1" gate="G$1" pin="A"/>
+<pinref part="LED1_RED" gate="G$1" pin="A"/>
 <pinref part="R7" gate="G$1" pin="1"/>
 <junction x="129.54" y="63.5"/>
 </segment>
@@ -19074,7 +19088,7 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 </segment>
 <segment>
 <wire x1="45.72" y1="-48.26" x2="53.34" y2="-48.26" width="0.1524" layer="91"/>
-<pinref part="JMP1" gate="-0R" pin="3"/>
+<pinref part="VDD-TIC" gate="-0R" pin="3"/>
 <junction x="45.72" y="-48.26"/>
 <junction x="53.34" y="-48.26"/>
 <label x="43.18" y="-50.8" size="1.778" layer="95"/>
@@ -19526,6 +19540,13 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <pinref part="TXDE3" gate="1" pin="1"/>
 <junction x="203.2" y="-30.48"/>
 </segment>
+<segment>
+<wire x1="279.4" y1="-20.32" x2="279.4" y2="-33.02" width="0.1524" layer="91"/>
+<pinref part="MODBUS" gate="1" pin="6"/>
+<junction x="279.4" y="-33.02"/>
+<junction x="279.4" y="-20.32"/>
+<label x="281.94" y="-27.94" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="MOD_TX" class="0">
 <segment>
@@ -19623,13 +19644,6 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <label x="287.02" y="-106.68" size="1.778" layer="95" rot="R90"/>
 </segment>
 <segment>
-<wire x1="279.4" y1="-33.02" x2="279.4" y2="-20.32" width="0.1524" layer="91"/>
-<pinref part="MODBUS" gate="1" pin="6"/>
-<junction x="279.4" y="-20.32"/>
-<junction x="279.4" y="-33.02"/>
-<label x="281.94" y="-30.48" size="1.778" layer="95" rot="R90"/>
-</segment>
-<segment>
 <wire x1="193.04" y1="-53.34" x2="193.04" y2="-40.64" width="0.1524" layer="91"/>
 <pinref part="DE3" gate="1" pin="2"/>
 <junction x="193.04" y="-53.34"/>
@@ -19709,7 +19723,7 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 </net>
 <net name="VPOWER" class="1">
 <segment>
-<pinref part="JMP1" gate="-0R" pin="2"/>
+<pinref part="VDD-TIC" gate="-0R" pin="2"/>
 <wire x1="55.88" y1="-45.72" x2="58.42" y2="-45.72" width="0.1524" layer="91"/>
 <wire x1="58.42" y1="-45.72" x2="58.42" y2="-66.04" width="0.1524" layer="91"/>
 <junction x="55.88" y="-45.72"/>
@@ -19786,6 +19800,11 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <junction x="327.66" y="-91.44"/>
 <label x="330.2" y="-91.44" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="LED5" gate="G$1" pin="C"/>
+<pinref part="GND5" gate="1" pin="0V"/>
+<junction x="398.78" y="-99.06"/>
+</segment>
 </net>
 <net name="FM80_24" class="0">
 <segment>
@@ -19804,12 +19823,26 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <junction x="327.66" y="-93.98"/>
 <label x="330.2" y="-93.98" size="1.778" layer="95"/>
 </segment>
+<segment>
+<wire x1="398.78" y1="-81.28" x2="398.78" y2="-68.58" width="0.1524" layer="91"/>
+<pinref part="R38" gate="G$1" pin="1"/>
+<junction x="398.78" y="-81.28"/>
+<junction x="398.78" y="-68.58"/>
+<label x="386.08" y="-73.66" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="N$13" class="0">
 <segment>
 <pinref part="IC1" gate="G$1" pin="R2OUT"/>
 <pinref part="FM_RS" gate="1" pin="1"/>
 <junction x="287.02" y="71.12"/>
+</segment>
+</net>
+<net name="N$15" class="0">
+<segment>
+<pinref part="LED5" gate="G$1" pin="A"/>
+<pinref part="R38" gate="G$1" pin="2"/>
+<junction x="398.78" y="-91.44"/>
 </segment>
 </net>
 </nets>

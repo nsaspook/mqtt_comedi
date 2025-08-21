@@ -19,6 +19,10 @@ enum APP_TIMERS {
 	TMR_DISPLAY,
 	TMR_SEQ,
 	TMR_FLIPPER,
+	TMR_MBMASTER,
+	TMR_MBTEST,
+	TMR_SPIN,
+	TMR_DERE,
 	//
 	//(Add timers here as needed)
 	//
@@ -28,5 +32,6 @@ enum APP_TIMERS {
 inline void StartTimer(uint8_t timer, uint16_t count);
 inline bool TimerDone(uint8_t timer);
 void WaitMs(uint16_t numMilliseconds);
+void timer_ms_tick(const uint32_t, const uintptr_t);
 
 #endif //TIMERS_H

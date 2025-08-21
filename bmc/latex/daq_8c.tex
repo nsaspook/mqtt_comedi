@@ -1,0 +1,1098 @@
+\doxysection{daq.\+c File Reference}
+\hypertarget{daq_8c}{}\label{daq_8c}\index{daq.c@{daq.c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$comedilib.\+h$>$}\newline
+{\ttfamily \#include "{}daq.\+h"{}}\newline
+Include dependency graph for daq.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{daq_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{daq_8c_a8dc6237a4f9d916d4ead0af52ad506dd}{init\+\_\+daq}} (double min\+\_\+range, double max\+\_\+range, int range\+\_\+update)
+\item 
+int \mbox{\hyperlink{daq_8c_a14978833383b343310f60d0bc2a055c7}{init\+\_\+dac}} (double min\+\_\+range, double max\+\_\+range, int range\+\_\+update)
+\item 
+int \mbox{\hyperlink{daq_8c_a8ce93c321ac9e0ec43df92e6cd853ea4}{adc\+\_\+range}} (double min\+\_\+range, double max\+\_\+range)
+\item 
+int \mbox{\hyperlink{daq_8c_ace7dd378dfacfe8a2d86af656cedddc6}{dac\+\_\+range}} (double min\+\_\+range, double max\+\_\+range)
+\item 
+int \mbox{\hyperlink{daq_8c_aa2a01d9b5fc9fd91253c56eb4d98655b}{set\+\_\+dac\+\_\+volts}} (int chan, double voltage)
+\item 
+int \mbox{\hyperlink{daq_8c_a372970f0bfc84c894e9628fe38a70f3c}{set\+\_\+dac\+\_\+raw}} (int chan, lsampl\+\_\+t voltage)
+\item 
+double \mbox{\hyperlink{daq_8c_a5f260f1267e110e3f818a23272d97d47}{get\+\_\+adc\+\_\+volts}} (int chan)
+\item 
+int \mbox{\hyperlink{daq_8c_af35cc13f1cda0f78d833b133e65964d0}{set\+\_\+dio\+\_\+output}} (int chan)
+\item 
+int \mbox{\hyperlink{daq_8c_a4d552c2f8bf72df7f32f5d4dba716e36}{set\+\_\+dio\+\_\+input}} (int chan)
+\item 
+int \mbox{\hyperlink{daq_8c_afa0dd8ca96b41e9cde97ab9812741bdc}{get\+\_\+dio\+\_\+bit}} (int chan)
+\item 
+int \mbox{\hyperlink{daq_8c_a559149487eddf555e35e624b4de9a73a}{put\+\_\+dio\+\_\+bit}} (int chan, int bit\+\_\+data)
+\item 
+int \mbox{\hyperlink{daq_8c_a6ecdfd283dc1f3827fb03b15b6d1ab92}{init\+\_\+dio}} (void)
+\item 
+int \mbox{\hyperlink{daq_8c_a5a25216c054758d201b787b5834e4122}{get\+\_\+data\+\_\+sample}} (void)
+\item 
+double \mbox{\hyperlink{daq_8c_a88cf7b0f4f9773686e80c06d1da237bd}{lp\+\_\+filter}} (double new, int bn, int slow)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{daq_8c_a54a3a2f4e5d3332cf923d51e5b7cc594}{subdev\+\_\+ai}} = 0
+\item 
+int \mbox{\hyperlink{daq_8c_a7ec510878e847d471ff8a33deaa9f60a}{chan\+\_\+ai}} = 0
+\item 
+int \mbox{\hyperlink{daq_8c_a8462d502e7a146806c1c13b6478aafc1}{range\+\_\+ai}} = 0
+\item 
+int \mbox{\hyperlink{daq_8c_aaee5c634188ba8ae552d449b5e858bfa}{aref\+\_\+ai}} = AREF\+\_\+\+GROUND
+\item 
+int \mbox{\hyperlink{daq_8c_a44f36250b8311b3fcdad0f1f799547d6}{maxdata\+\_\+ai}}
+\item 
+int \mbox{\hyperlink{daq_8c_ad3f827ab3c511a3d944b1700306256fc}{ranges\+\_\+ai}}
+\item 
+int \mbox{\hyperlink{daq_8c_a91b11437d42e03ee7e17c1eb94c98957}{channels\+\_\+ai}}
+\item 
+int \mbox{\hyperlink{daq_8c_a9e42bb42a292b4cbeb8c8661cd432765}{subdev\+\_\+ao}} = 0
+\item 
+int \mbox{\hyperlink{daq_8c_a0ef943ff89b22fb8e162a2bd2b01d23b}{chan\+\_\+ao}} = 0
+\item 
+int \mbox{\hyperlink{daq_8c_a631d872ec35b29cee5d6980ab31f8a86}{range\+\_\+ao}} = 0
+\item 
+int \mbox{\hyperlink{daq_8c_abe6c029ca7e48107beb550148f449313}{aref\+\_\+ao}} = AREF\+\_\+\+GROUND
+\item 
+int \mbox{\hyperlink{daq_8c_afee531c4f6d8f316036f50d6da8eb51b}{maxdata\+\_\+ao}}
+\item 
+int \mbox{\hyperlink{daq_8c_ab361e547e439c6de2de31ae5f87d4098}{ranges\+\_\+ao}}
+\item 
+int \mbox{\hyperlink{daq_8c_a79943654f7a5176b358c279da740b37d}{channels\+\_\+ao}}
+\item 
+int \mbox{\hyperlink{daq_8c_a910ebf1e17ea82de234804fa421742a9}{subdev\+\_\+di}} = 0
+\item 
+int \mbox{\hyperlink{daq_8c_af3b6a411128c75e5c968ca43ba195971}{chan\+\_\+di}} = 0
+\item 
+int \mbox{\hyperlink{daq_8c_a34ef9537d244016e08a640dac5a4fc96}{range\+\_\+di}} = 0
+\item 
+int \mbox{\hyperlink{daq_8c_a1b3334fef08d67a1fb9955f74c5f44bc}{maxdata\+\_\+di}}
+\item 
+int \mbox{\hyperlink{daq_8c_afd149b0616bc7a794fa4ae712ab0994c}{ranges\+\_\+di}}
+\item 
+int \mbox{\hyperlink{daq_8c_aae2d0a27ebd6bca595f1d5b32ea2bc0f}{channels\+\_\+di}}
+\item 
+int \mbox{\hyperlink{daq_8c_a7de30f181351d74fce7bd729823e736e}{datain\+\_\+di}}
+\item 
+int \mbox{\hyperlink{daq_8c_a0dac65e8cdc8df6f68b6c1c77a1a6611}{subdev\+\_\+do}} = 0
+\item 
+int \mbox{\hyperlink{daq_8c_a2c8ad029569ee150299f7eb9ffa0e1e6}{chan\+\_\+do}} = 0
+\item 
+int \mbox{\hyperlink{daq_8c_ad967f07a42b25b4b2e1c2e61a843b83d}{range\+\_\+do}} = 0
+\item 
+int \mbox{\hyperlink{daq_8c_a239d3d7db250133060bf0d1b89a7031f}{maxdata\+\_\+do}}
+\item 
+int \mbox{\hyperlink{daq_8c_ad93226065d5bc9cd18aad0ef423ff96b}{ranges\+\_\+do}}
+\item 
+int \mbox{\hyperlink{daq_8c_ab902382606872884af143926cd1490e2}{channels\+\_\+do}}
+\item 
+int \mbox{\hyperlink{daq_8c_a780d5713ad62cdd6384e48467e8a9779}{datain\+\_\+do}}
+\item 
+int \mbox{\hyperlink{daq_8c_aee37bce88e47968105cf2d34577a2a82}{subdev\+\_\+dio}}
+\item 
+int \mbox{\hyperlink{daq_8c_aa423504e01e3b8b624e176dbdfc39708}{chan\+\_\+dio}} = 0
+\item 
+int \mbox{\hyperlink{daq_8c_a3819f80fd0a7ac058d5b5a1e72f07910}{range\+\_\+dio}} = 0
+\item 
+int \mbox{\hyperlink{daq_8c_aa93f1b0822d9d001d2f55790b038df52}{maxdata\+\_\+dio}}
+\item 
+int \mbox{\hyperlink{daq_8c_a1cffaafeda216ae4dfc8fa22a9f1d416}{ranges\+\_\+dio}}
+\item 
+int \mbox{\hyperlink{daq_8c_a03eb863c84fb0ecb2a9363a6ca7f5cda}{channels\+\_\+dio}}
+\item 
+int \mbox{\hyperlink{daq_8c_a036cb8c57cd05c6ce901c935d791306b}{datain\+\_\+dio}}
+\item 
+int \mbox{\hyperlink{daq_8c_ac73635d11db7ced40c8419534382ff54}{aref\+\_\+dio}}
+\item 
+int \mbox{\hyperlink{daq_8c_abbaa63d4e528c9303c21092c92ffaee2}{subdev\+\_\+counter}}
+\item 
+int \mbox{\hyperlink{daq_8c_a2ac93d2a7f085419c3115a0595cd6bfd}{chan\+\_\+counter}} = 0
+\item 
+int \mbox{\hyperlink{daq_8c_a96a2feb3009e8009cc78a621e7c4e645}{range\+\_\+counter}} = 0
+\item 
+int \mbox{\hyperlink{daq_8c_a381d3b246b307b68de61a4f04a967556}{maxdata\+\_\+counter}}
+\item 
+int \mbox{\hyperlink{daq_8c_ad1178c3003858515355a7a62994218d4}{ranges\+\_\+counter}}
+\item 
+int \mbox{\hyperlink{daq_8c_a498b83c6a7147321aeeb124f2c7a9c14}{channels\+\_\+counter}}
+\item 
+int \mbox{\hyperlink{daq_8c_a627cb6f37c6ff60ff3b799b39074fd61}{datain\+\_\+counter}}
+\item 
+int \mbox{\hyperlink{daq_8c_a98dec47354ec9869fc454ccae7ecebe7}{subdev\+\_\+serial0}}
+\item 
+int \mbox{\hyperlink{daq_8c_a48f93020dfd7dc66712d4d1ade753d04}{chan\+\_\+serial0}} = 0
+\item 
+int \mbox{\hyperlink{daq_8c_a067cfc15e12f80a3fc5113b8da2a02d2}{range\+\_\+serial0}} = 0
+\item 
+int \mbox{\hyperlink{daq_8c_a621874d914e2ab43105c985566799421}{maxdata\+\_\+serial0}}
+\item 
+int \mbox{\hyperlink{daq_8c_ad38d911033a3cb7895b950118ae382ce}{ranges\+\_\+serial0}}
+\item 
+int \mbox{\hyperlink{daq_8c_aac73b7bab86d0ce55fbb952b45932b72}{channels\+\_\+serial0}}
+\item 
+int \mbox{\hyperlink{daq_8c_a71ca619f0467fd4d433c004b33dd2bda}{datain\+\_\+serial0}}
+\item 
+comedi\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{daq_8c_adf8fa4c551415d1406bd28dea2665c35}{it}}
+\item 
+comedi\+\_\+range \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{daq_8c_adc2eae40c9cc0e12817d7f2e85e5a504}{ad\+\_\+range}}
+\item 
+comedi\+\_\+range \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{daq_8c_a942b029d27c9014c738959f4a38f0e97}{da\+\_\+range}}
+\item 
+bool \mbox{\hyperlink{daq_8c_a279e0713cf4e662b36a07a3044dc1de0}{ADC\+\_\+\+OPEN}} = true
+\item 
+bool \mbox{\hyperlink{daq_8c_a9143e9ecde36cd0dc6748f0411975429}{DIO\+\_\+\+OPEN}} = true
+\item 
+bool \mbox{\hyperlink{daq_8c_a42b134a5184d702c93db457c1209347d}{ADC\+\_\+\+ERROR}} = false
+\item 
+bool \mbox{\hyperlink{daq_8c_a98a315443b3b19e4874927486d9ff4bc}{DEV\+\_\+\+OPEN}} = true
+\item 
+bool \mbox{\hyperlink{daq_8c_ab8955027b494948291cc65c6fb08e39e}{DIO\+\_\+\+ERROR}} = false
+\item 
+bool \mbox{\hyperlink{daq_8c_ab40b1b9c3c102d95611b2c170f057860}{HAS\+\_\+\+AO}} = false
+\item 
+bool \mbox{\hyperlink{daq_8c_a8d5bd51f1bce71dad96e84ac6cd87658}{DAC\+\_\+\+ERROR}} = false
+\item 
+bool \mbox{\hyperlink{daq_8c_ae57f20175a52c0f20768f78af0fb8c97}{PWM\+\_\+\+OPEN}} = true
+\item 
+bool \mbox{\hyperlink{daq_8c_a98239f215c9e565742242a3ff34df7f9}{PWM\+\_\+\+ERROR}} = false
+\item 
+bool \mbox{\hyperlink{daq_8c_a4a621aae8dacec0a500f0ed9d78ff24c}{SERIAL\+\_\+\+OPEN}} = true
+\item 
+bool \mbox{\hyperlink{daq_8c_a598790c0d4144abc383c0cff50f3b6fd}{RX\+\_\+\+OPEN}} = true
+\item 
+bool \mbox{\hyperlink{daq_8c_a594846d8644dfb499724eceefec442a8}{DO\+\_\+\+OPEN}} = true
+\item 
+bool \mbox{\hyperlink{daq_8c_aab0e22b23f9214cc90a9c68f43f95e51}{DI\+\_\+\+OPEN}} = true
+\item 
+bool \mbox{\hyperlink{daq_8c_a9c87cff4b05d87c577682bf2d6b1949d}{DO\+\_\+\+ERROR}} = false
+\item 
+union \mbox{\hyperlink{uniondio__buf__type}{dio\+\_\+buf\+\_\+type}} obits \mbox{\hyperlink{daq_8c_a90773e0754b370b1eeadc64970657228}{ibits}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{daq_8c_a3a32175f74de9c6307ea729b122d9f30}{datain}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{daq_8c_a97400dc9e2e5b8ea61a02ead3dd3d7ff}{serial\+\_\+buf}}
+\item 
+char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{daq_8c_a9226ae5be9e8fa404ecb063cbdcc757e}{daq\+\_\+text}} \mbox{[}$\,$\mbox{]}
+\item 
+char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{daq_8c_a70ef6bd8424963fdb7aecc6c35b66006}{daq\+\_\+text\+\_\+ptr}}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{daq_8c_a9ba379059c8b5d3bb322c61e977bb8f1}{daq\+\_\+text\+\_\+index}} = 0
+\item 
+uint8\+\_\+t \mbox{\hyperlink{daq_8c_a3d8d8e8be21d456b70a2bf316088a6ef}{line\+\_\+index}} = 0
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{daq_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{daq_8c_a8ce93c321ac9e0ec43df92e6cd853ea4}\index{daq.c@{daq.c}!adc\_range@{adc\_range}}
+\index{adc\_range@{adc\_range}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{adc\_range()}{adc\_range()}}
+{\footnotesize\ttfamily \label{daq_8c_a8ce93c321ac9e0ec43df92e6cd853ea4} 
+int adc\+\_\+range (\begin{DoxyParamCaption}\item[{double}]{min\+\_\+range}{, }\item[{double}]{max\+\_\+range}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00179}{179}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_ace7dd378dfacfe8a2d86af656cedddc6}\index{daq.c@{daq.c}!dac\_range@{dac\_range}}
+\index{dac\_range@{dac\_range}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{dac\_range()}{dac\_range()}}
+{\footnotesize\ttfamily \label{daq_8c_ace7dd378dfacfe8a2d86af656cedddc6} 
+int dac\+\_\+range (\begin{DoxyParamCaption}\item[{double}]{min\+\_\+range}{, }\item[{double}]{max\+\_\+range}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00190}{190}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a5f260f1267e110e3f818a23272d97d47}\index{daq.c@{daq.c}!get\_adc\_volts@{get\_adc\_volts}}
+\index{get\_adc\_volts@{get\_adc\_volts}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{get\_adc\_volts()}{get\_adc\_volts()}}
+{\footnotesize\ttfamily \label{daq_8c_a5f260f1267e110e3f818a23272d97d47} 
+double get\+\_\+adc\+\_\+volts (\begin{DoxyParamCaption}\item[{int}]{chan}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00228}{228}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a5a25216c054758d201b787b5834e4122}\index{daq.c@{daq.c}!get\_data\_sample@{get\_data\_sample}}
+\index{get\_data\_sample@{get\_data\_sample}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{get\_data\_sample()}{get\_data\_sample()}}
+{\footnotesize\ttfamily \label{daq_8c_a5a25216c054758d201b787b5834e4122} 
+int get\+\_\+data\+\_\+sample (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00403}{403}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_afa0dd8ca96b41e9cde97ab9812741bdc}\index{daq.c@{daq.c}!get\_dio\_bit@{get\_dio\_bit}}
+\index{get\_dio\_bit@{get\_dio\_bit}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{get\_dio\_bit()}{get\_dio\_bit()}}
+{\footnotesize\ttfamily \label{daq_8c_afa0dd8ca96b41e9cde97ab9812741bdc} 
+int get\+\_\+dio\+\_\+bit (\begin{DoxyParamCaption}\item[{int}]{chan}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00277}{277}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a14978833383b343310f60d0bc2a055c7}\index{daq.c@{daq.c}!init\_dac@{init\_dac}}
+\index{init\_dac@{init\_dac}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{init\_dac()}{init\_dac()}}
+{\footnotesize\ttfamily \label{daq_8c_a14978833383b343310f60d0bc2a055c7} 
+int init\+\_\+dac (\begin{DoxyParamCaption}\item[{double}]{min\+\_\+range}{, }\item[{double}]{max\+\_\+range}{, }\item[{int}]{range\+\_\+update}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00140}{140}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a8dc6237a4f9d916d4ead0af52ad506dd}\index{daq.c@{daq.c}!init\_daq@{init\_daq}}
+\index{init\_daq@{init\_daq}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{init\_daq()}{init\_daq()}}
+{\footnotesize\ttfamily \label{daq_8c_a8dc6237a4f9d916d4ead0af52ad506dd} 
+int init\+\_\+daq (\begin{DoxyParamCaption}\item[{double}]{min\+\_\+range}{, }\item[{double}]{max\+\_\+range}{, }\item[{int}]{range\+\_\+update}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00071}{71}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a6ecdfd283dc1f3827fb03b15b6d1ab92}\index{daq.c@{daq.c}!init\_dio@{init\_dio}}
+\index{init\_dio@{init\_dio}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{init\_dio()}{init\_dio()}}
+{\footnotesize\ttfamily \label{daq_8c_a6ecdfd283dc1f3827fb03b15b6d1ab92} 
+int init\+\_\+dio (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00305}{305}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a88cf7b0f4f9773686e80c06d1da237bd}\index{daq.c@{daq.c}!lp\_filter@{lp\_filter}}
+\index{lp\_filter@{lp\_filter}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{lp\_filter()}{lp\_filter()}}
+{\footnotesize\ttfamily \label{daq_8c_a88cf7b0f4f9773686e80c06d1da237bd} 
+double lp\+\_\+filter (\begin{DoxyParamCaption}\item[{double}]{new}{, }\item[{int}]{bn}{, }\item[{int}]{slow}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00463}{463}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a559149487eddf555e35e624b4de9a73a}\index{daq.c@{daq.c}!put\_dio\_bit@{put\_dio\_bit}}
+\index{put\_dio\_bit@{put\_dio\_bit}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{put\_dio\_bit()}{put\_dio\_bit()}}
+{\footnotesize\ttfamily \label{daq_8c_a559149487eddf555e35e624b4de9a73a} 
+int put\+\_\+dio\+\_\+bit (\begin{DoxyParamCaption}\item[{int}]{chan}{, }\item[{int}]{bit\+\_\+data}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00291}{291}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a372970f0bfc84c894e9628fe38a70f3c}\index{daq.c@{daq.c}!set\_dac\_raw@{set\_dac\_raw}}
+\index{set\_dac\_raw@{set\_dac\_raw}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{set\_dac\_raw()}{set\_dac\_raw()}}
+{\footnotesize\ttfamily \label{daq_8c_a372970f0bfc84c894e9628fe38a70f3c} 
+int set\+\_\+dac\+\_\+raw (\begin{DoxyParamCaption}\item[{int}]{chan}{, }\item[{lsampl\+\_\+t}]{voltage}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00216}{216}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_aa2a01d9b5fc9fd91253c56eb4d98655b}\index{daq.c@{daq.c}!set\_dac\_volts@{set\_dac\_volts}}
+\index{set\_dac\_volts@{set\_dac\_volts}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{set\_dac\_volts()}{set\_dac\_volts()}}
+{\footnotesize\ttfamily \label{daq_8c_aa2a01d9b5fc9fd91253c56eb4d98655b} 
+int set\+\_\+dac\+\_\+volts (\begin{DoxyParamCaption}\item[{int}]{chan}{, }\item[{double}]{voltage}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00201}{201}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a4d552c2f8bf72df7f32f5d4dba716e36}\index{daq.c@{daq.c}!set\_dio\_input@{set\_dio\_input}}
+\index{set\_dio\_input@{set\_dio\_input}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{set\_dio\_input()}{set\_dio\_input()}}
+{\footnotesize\ttfamily \label{daq_8c_a4d552c2f8bf72df7f32f5d4dba716e36} 
+int set\+\_\+dio\+\_\+input (\begin{DoxyParamCaption}\item[{int}]{chan}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00269}{269}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_af35cc13f1cda0f78d833b133e65964d0}\index{daq.c@{daq.c}!set\_dio\_output@{set\_dio\_output}}
+\index{set\_dio\_output@{set\_dio\_output}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{set\_dio\_output()}{set\_dio\_output()}}
+{\footnotesize\ttfamily \label{daq_8c_af35cc13f1cda0f78d833b133e65964d0} 
+int set\+\_\+dio\+\_\+output (\begin{DoxyParamCaption}\item[{int}]{chan}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00261}{261}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+
+
+\label{doc-var-members}
+\Hypertarget{daq_8c_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{daq_8c_adc2eae40c9cc0e12817d7f2e85e5a504}\index{daq.c@{daq.c}!ad\_range@{ad\_range}}
+\index{ad\_range@{ad\_range}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{ad\_range}{ad\_range}}
+{\footnotesize\ttfamily \label{daq_8c_adc2eae40c9cc0e12817d7f2e85e5a504} 
+comedi\+\_\+range\texorpdfstring{$\ast$}{*} ad\+\_\+range}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00051}{51}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a42b134a5184d702c93db457c1209347d}\index{daq.c@{daq.c}!ADC\_ERROR@{ADC\_ERROR}}
+\index{ADC\_ERROR@{ADC\_ERROR}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{ADC\_ERROR}{ADC\_ERROR}}
+{\footnotesize\ttfamily \label{daq_8c_a42b134a5184d702c93db457c1209347d} 
+bool ADC\+\_\+\+ERROR = false}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00052}{52}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a279e0713cf4e662b36a07a3044dc1de0}\index{daq.c@{daq.c}!ADC\_OPEN@{ADC\_OPEN}}
+\index{ADC\_OPEN@{ADC\_OPEN}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{ADC\_OPEN}{ADC\_OPEN}}
+{\footnotesize\ttfamily \label{daq_8c_a279e0713cf4e662b36a07a3044dc1de0} 
+bool ADC\+\_\+\+OPEN = true}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00052}{52}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_aaee5c634188ba8ae552d449b5e858bfa}\index{daq.c@{daq.c}!aref\_ai@{aref\_ai}}
+\index{aref\_ai@{aref\_ai}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{aref\_ai}{aref\_ai}}
+{\footnotesize\ttfamily \label{daq_8c_aaee5c634188ba8ae552d449b5e858bfa} 
+int aref\+\_\+ai = AREF\+\_\+\+GROUND}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00015}{15}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_abe6c029ca7e48107beb550148f449313}\index{daq.c@{daq.c}!aref\_ao@{aref\_ao}}
+\index{aref\_ao@{aref\_ao}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{aref\_ao}{aref\_ao}}
+{\footnotesize\ttfamily \label{daq_8c_abe6c029ca7e48107beb550148f449313} 
+int aref\+\_\+ao = AREF\+\_\+\+GROUND}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00021}{21}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_ac73635d11db7ced40c8419534382ff54}\index{daq.c@{daq.c}!aref\_dio@{aref\_dio}}
+\index{aref\_dio@{aref\_dio}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{aref\_dio}{aref\_dio}}
+{\footnotesize\ttfamily \label{daq_8c_ac73635d11db7ced40c8419534382ff54} 
+int aref\+\_\+dio}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00038}{38}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a7ec510878e847d471ff8a33deaa9f60a}\index{daq.c@{daq.c}!chan\_ai@{chan\_ai}}
+\index{chan\_ai@{chan\_ai}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{chan\_ai}{chan\_ai}}
+{\footnotesize\ttfamily \label{daq_8c_a7ec510878e847d471ff8a33deaa9f60a} 
+int chan\+\_\+ai = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00013}{13}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a0ef943ff89b22fb8e162a2bd2b01d23b}\index{daq.c@{daq.c}!chan\_ao@{chan\_ao}}
+\index{chan\_ao@{chan\_ao}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{chan\_ao}{chan\_ao}}
+{\footnotesize\ttfamily \label{daq_8c_a0ef943ff89b22fb8e162a2bd2b01d23b} 
+int chan\+\_\+ao = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00019}{19}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a2ac93d2a7f085419c3115a0595cd6bfd}\index{daq.c@{daq.c}!chan\_counter@{chan\_counter}}
+\index{chan\_counter@{chan\_counter}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{chan\_counter}{chan\_counter}}
+{\footnotesize\ttfamily \label{daq_8c_a2ac93d2a7f085419c3115a0595cd6bfd} 
+int chan\+\_\+counter = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00041}{41}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_af3b6a411128c75e5c968ca43ba195971}\index{daq.c@{daq.c}!chan\_di@{chan\_di}}
+\index{chan\_di@{chan\_di}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{chan\_di}{chan\_di}}
+{\footnotesize\ttfamily \label{daq_8c_af3b6a411128c75e5c968ca43ba195971} 
+int chan\+\_\+di = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00025}{25}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_aa423504e01e3b8b624e176dbdfc39708}\index{daq.c@{daq.c}!chan\_dio@{chan\_dio}}
+\index{chan\_dio@{chan\_dio}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{chan\_dio}{chan\_dio}}
+{\footnotesize\ttfamily \label{daq_8c_aa423504e01e3b8b624e176dbdfc39708} 
+int chan\+\_\+dio = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00035}{35}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a2c8ad029569ee150299f7eb9ffa0e1e6}\index{daq.c@{daq.c}!chan\_do@{chan\_do}}
+\index{chan\_do@{chan\_do}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{chan\_do}{chan\_do}}
+{\footnotesize\ttfamily \label{daq_8c_a2c8ad029569ee150299f7eb9ffa0e1e6} 
+int chan\+\_\+do = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00030}{30}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a48f93020dfd7dc66712d4d1ade753d04}\index{daq.c@{daq.c}!chan\_serial0@{chan\_serial0}}
+\index{chan\_serial0@{chan\_serial0}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{chan\_serial0}{chan\_serial0}}
+{\footnotesize\ttfamily \label{daq_8c_a48f93020dfd7dc66712d4d1ade753d04} 
+int chan\+\_\+serial0 = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00046}{46}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a91b11437d42e03ee7e17c1eb94c98957}\index{daq.c@{daq.c}!channels\_ai@{channels\_ai}}
+\index{channels\_ai@{channels\_ai}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{channels\_ai}{channels\_ai}}
+{\footnotesize\ttfamily \label{daq_8c_a91b11437d42e03ee7e17c1eb94c98957} 
+int channels\+\_\+ai}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00016}{16}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a79943654f7a5176b358c279da740b37d}\index{daq.c@{daq.c}!channels\_ao@{channels\_ao}}
+\index{channels\_ao@{channels\_ao}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{channels\_ao}{channels\_ao}}
+{\footnotesize\ttfamily \label{daq_8c_a79943654f7a5176b358c279da740b37d} 
+int channels\+\_\+ao}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00022}{22}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a498b83c6a7147321aeeb124f2c7a9c14}\index{daq.c@{daq.c}!channels\_counter@{channels\_counter}}
+\index{channels\_counter@{channels\_counter}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{channels\_counter}{channels\_counter}}
+{\footnotesize\ttfamily \label{daq_8c_a498b83c6a7147321aeeb124f2c7a9c14} 
+int channels\+\_\+counter}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00043}{43}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_aae2d0a27ebd6bca595f1d5b32ea2bc0f}\index{daq.c@{daq.c}!channels\_di@{channels\_di}}
+\index{channels\_di@{channels\_di}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{channels\_di}{channels\_di}}
+{\footnotesize\ttfamily \label{daq_8c_aae2d0a27ebd6bca595f1d5b32ea2bc0f} 
+int channels\+\_\+di}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00027}{27}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a03eb863c84fb0ecb2a9363a6ca7f5cda}\index{daq.c@{daq.c}!channels\_dio@{channels\_dio}}
+\index{channels\_dio@{channels\_dio}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{channels\_dio}{channels\_dio}}
+{\footnotesize\ttfamily \label{daq_8c_a03eb863c84fb0ecb2a9363a6ca7f5cda} 
+int channels\+\_\+dio}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00037}{37}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_ab902382606872884af143926cd1490e2}\index{daq.c@{daq.c}!channels\_do@{channels\_do}}
+\index{channels\_do@{channels\_do}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{channels\_do}{channels\_do}}
+{\footnotesize\ttfamily \label{daq_8c_ab902382606872884af143926cd1490e2} 
+int channels\+\_\+do}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00032}{32}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_aac73b7bab86d0ce55fbb952b45932b72}\index{daq.c@{daq.c}!channels\_serial0@{channels\_serial0}}
+\index{channels\_serial0@{channels\_serial0}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{channels\_serial0}{channels\_serial0}}
+{\footnotesize\ttfamily \label{daq_8c_aac73b7bab86d0ce55fbb952b45932b72} 
+int channels\+\_\+serial0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00048}{48}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a942b029d27c9014c738959f4a38f0e97}\index{daq.c@{daq.c}!da\_range@{da\_range}}
+\index{da\_range@{da\_range}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{da\_range}{da\_range}}
+{\footnotesize\ttfamily \label{daq_8c_a942b029d27c9014c738959f4a38f0e97} 
+comedi\+\_\+range \texorpdfstring{$\ast$}{*} da\+\_\+range}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00051}{51}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a8d5bd51f1bce71dad96e84ac6cd87658}\index{daq.c@{daq.c}!DAC\_ERROR@{DAC\_ERROR}}
+\index{DAC\_ERROR@{DAC\_ERROR}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{DAC\_ERROR}{DAC\_ERROR}}
+{\footnotesize\ttfamily \label{daq_8c_a8d5bd51f1bce71dad96e84ac6cd87658} 
+bool DAC\+\_\+\+ERROR = false}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00053}{53}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a9226ae5be9e8fa404ecb063cbdcc757e}\index{daq.c@{daq.c}!daq\_text@{daq\_text}}
+\index{daq\_text@{daq\_text}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{daq\_text}{daq\_text}}
+{\footnotesize\ttfamily \label{daq_8c_a9226ae5be9e8fa404ecb063cbdcc757e} 
+char\texorpdfstring{$\ast$}{*} daq\+\_\+text\mbox{[}$\,$\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ \textcolor{stringliteral}{"{}daq\_bmc\ text\ 0\ \ \ \ \ \ \ \ \ \ \ "{}},}
+\DoxyCodeLine{\ \ \ \ \textcolor{stringliteral}{"{}daq\_bmc\ text\ 1\ \ \ \ \ \ \ \ \ \ \ "{}},}
+\DoxyCodeLine{\ \ \ \ \textcolor{stringliteral}{"{}daq\_bmc\ text\ 2\ \ \ \ \ \ \ \ \ \ \ "{}},}
+\DoxyCodeLine{\ \ \ \ \textcolor{stringliteral}{"{}daq\_bmc\ text\ 3\ \ \ \ \ \ \ \ \ \ \ "{}},}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00061}{61}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a9ba379059c8b5d3bb322c61e977bb8f1}\index{daq.c@{daq.c}!daq\_text\_index@{daq\_text\_index}}
+\index{daq\_text\_index@{daq\_text\_index}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{daq\_text\_index}{daq\_text\_index}}
+{\footnotesize\ttfamily \label{daq_8c_a9ba379059c8b5d3bb322c61e977bb8f1} 
+uint8\+\_\+t daq\+\_\+text\+\_\+index = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00068}{68}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a70ef6bd8424963fdb7aecc6c35b66006}\index{daq.c@{daq.c}!daq\_text\_ptr@{daq\_text\_ptr}}
+\index{daq\_text\_ptr@{daq\_text\_ptr}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{daq\_text\_ptr}{daq\_text\_ptr}}
+{\footnotesize\ttfamily \label{daq_8c_a70ef6bd8424963fdb7aecc6c35b66006} 
+char \texorpdfstring{$\ast$}{*} daq\+\_\+text\+\_\+ptr}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00066}{66}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a3a32175f74de9c6307ea729b122d9f30}\index{daq.c@{daq.c}!datain@{datain}}
+\index{datain@{datain}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{datain}{datain}}
+{\footnotesize\ttfamily \label{daq_8c_a3a32175f74de9c6307ea729b122d9f30} 
+uint32\+\_\+t datain}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00059}{59}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a627cb6f37c6ff60ff3b799b39074fd61}\index{daq.c@{daq.c}!datain\_counter@{datain\_counter}}
+\index{datain\_counter@{datain\_counter}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{datain\_counter}{datain\_counter}}
+{\footnotesize\ttfamily \label{daq_8c_a627cb6f37c6ff60ff3b799b39074fd61} 
+int datain\+\_\+counter}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00043}{43}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a7de30f181351d74fce7bd729823e736e}\index{daq.c@{daq.c}!datain\_di@{datain\_di}}
+\index{datain\_di@{datain\_di}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{datain\_di}{datain\_di}}
+{\footnotesize\ttfamily \label{daq_8c_a7de30f181351d74fce7bd729823e736e} 
+int datain\+\_\+di}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00027}{27}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a036cb8c57cd05c6ce901c935d791306b}\index{daq.c@{daq.c}!datain\_dio@{datain\_dio}}
+\index{datain\_dio@{datain\_dio}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{datain\_dio}{datain\_dio}}
+{\footnotesize\ttfamily \label{daq_8c_a036cb8c57cd05c6ce901c935d791306b} 
+int datain\+\_\+dio}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00037}{37}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a780d5713ad62cdd6384e48467e8a9779}\index{daq.c@{daq.c}!datain\_do@{datain\_do}}
+\index{datain\_do@{datain\_do}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{datain\_do}{datain\_do}}
+{\footnotesize\ttfamily \label{daq_8c_a780d5713ad62cdd6384e48467e8a9779} 
+int datain\+\_\+do}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00032}{32}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a71ca619f0467fd4d433c004b33dd2bda}\index{daq.c@{daq.c}!datain\_serial0@{datain\_serial0}}
+\index{datain\_serial0@{datain\_serial0}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{datain\_serial0}{datain\_serial0}}
+{\footnotesize\ttfamily \label{daq_8c_a71ca619f0467fd4d433c004b33dd2bda} 
+int datain\+\_\+serial0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00048}{48}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a98a315443b3b19e4874927486d9ff4bc}\index{daq.c@{daq.c}!DEV\_OPEN@{DEV\_OPEN}}
+\index{DEV\_OPEN@{DEV\_OPEN}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{DEV\_OPEN}{DEV\_OPEN}}
+{\footnotesize\ttfamily \label{daq_8c_a98a315443b3b19e4874927486d9ff4bc} 
+bool DEV\+\_\+\+OPEN = true}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00052}{52}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_aab0e22b23f9214cc90a9c68f43f95e51}\index{daq.c@{daq.c}!DI\_OPEN@{DI\_OPEN}}
+\index{DI\_OPEN@{DI\_OPEN}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{DI\_OPEN}{DI\_OPEN}}
+{\footnotesize\ttfamily \label{daq_8c_aab0e22b23f9214cc90a9c68f43f95e51} 
+bool DI\+\_\+\+OPEN = true}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00056}{56}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_ab8955027b494948291cc65c6fb08e39e}\index{daq.c@{daq.c}!DIO\_ERROR@{DIO\_ERROR}}
+\index{DIO\_ERROR@{DIO\_ERROR}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{DIO\_ERROR}{DIO\_ERROR}}
+{\footnotesize\ttfamily \label{daq_8c_ab8955027b494948291cc65c6fb08e39e} 
+bool DIO\+\_\+\+ERROR = false}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00053}{53}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a9143e9ecde36cd0dc6748f0411975429}\index{daq.c@{daq.c}!DIO\_OPEN@{DIO\_OPEN}}
+\index{DIO\_OPEN@{DIO\_OPEN}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{DIO\_OPEN}{DIO\_OPEN}}
+{\footnotesize\ttfamily \label{daq_8c_a9143e9ecde36cd0dc6748f0411975429} 
+bool DIO\+\_\+\+OPEN = true}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00052}{52}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a9c87cff4b05d87c577682bf2d6b1949d}\index{daq.c@{daq.c}!DO\_ERROR@{DO\_ERROR}}
+\index{DO\_ERROR@{DO\_ERROR}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{DO\_ERROR}{DO\_ERROR}}
+{\footnotesize\ttfamily \label{daq_8c_a9c87cff4b05d87c577682bf2d6b1949d} 
+bool DO\+\_\+\+ERROR = false}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00056}{56}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a594846d8644dfb499724eceefec442a8}\index{daq.c@{daq.c}!DO\_OPEN@{DO\_OPEN}}
+\index{DO\_OPEN@{DO\_OPEN}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{DO\_OPEN}{DO\_OPEN}}
+{\footnotesize\ttfamily \label{daq_8c_a594846d8644dfb499724eceefec442a8} 
+bool DO\+\_\+\+OPEN = true}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00056}{56}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_ab40b1b9c3c102d95611b2c170f057860}\index{daq.c@{daq.c}!HAS\_AO@{HAS\_AO}}
+\index{HAS\_AO@{HAS\_AO}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{HAS\_AO}{HAS\_AO}}
+{\footnotesize\ttfamily \label{daq_8c_ab40b1b9c3c102d95611b2c170f057860} 
+bool HAS\+\_\+\+AO = false}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00053}{53}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a90773e0754b370b1eeadc64970657228}\index{daq.c@{daq.c}!ibits@{ibits}}
+\index{ibits@{ibits}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{ibits}{ibits}}
+{\footnotesize\ttfamily \label{daq_8c_a90773e0754b370b1eeadc64970657228} 
+union \mbox{\hyperlink{uniondio__buf__type}{dio\+\_\+buf\+\_\+type}} obits ibits}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00057}{57}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_adf8fa4c551415d1406bd28dea2665c35}\index{daq.c@{daq.c}!it@{it}}
+\index{it@{it}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{it}{it}}
+{\footnotesize\ttfamily \label{daq_8c_adf8fa4c551415d1406bd28dea2665c35} 
+comedi\+\_\+t\texorpdfstring{$\ast$}{*} it}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00050}{50}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a3d8d8e8be21d456b70a2bf316088a6ef}\index{daq.c@{daq.c}!line\_index@{line\_index}}
+\index{line\_index@{line\_index}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{line\_index}{line\_index}}
+{\footnotesize\ttfamily \label{daq_8c_a3d8d8e8be21d456b70a2bf316088a6ef} 
+uint8\+\_\+t line\+\_\+index = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00068}{68}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a44f36250b8311b3fcdad0f1f799547d6}\index{daq.c@{daq.c}!maxdata\_ai@{maxdata\_ai}}
+\index{maxdata\_ai@{maxdata\_ai}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{maxdata\_ai}{maxdata\_ai}}
+{\footnotesize\ttfamily \label{daq_8c_a44f36250b8311b3fcdad0f1f799547d6} 
+int maxdata\+\_\+ai}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00016}{16}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_afee531c4f6d8f316036f50d6da8eb51b}\index{daq.c@{daq.c}!maxdata\_ao@{maxdata\_ao}}
+\index{maxdata\_ao@{maxdata\_ao}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{maxdata\_ao}{maxdata\_ao}}
+{\footnotesize\ttfamily \label{daq_8c_afee531c4f6d8f316036f50d6da8eb51b} 
+int maxdata\+\_\+ao}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00022}{22}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a381d3b246b307b68de61a4f04a967556}\index{daq.c@{daq.c}!maxdata\_counter@{maxdata\_counter}}
+\index{maxdata\_counter@{maxdata\_counter}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{maxdata\_counter}{maxdata\_counter}}
+{\footnotesize\ttfamily \label{daq_8c_a381d3b246b307b68de61a4f04a967556} 
+int maxdata\+\_\+counter}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00043}{43}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a1b3334fef08d67a1fb9955f74c5f44bc}\index{daq.c@{daq.c}!maxdata\_di@{maxdata\_di}}
+\index{maxdata\_di@{maxdata\_di}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{maxdata\_di}{maxdata\_di}}
+{\footnotesize\ttfamily \label{daq_8c_a1b3334fef08d67a1fb9955f74c5f44bc} 
+int maxdata\+\_\+di}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00027}{27}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_aa93f1b0822d9d001d2f55790b038df52}\index{daq.c@{daq.c}!maxdata\_dio@{maxdata\_dio}}
+\index{maxdata\_dio@{maxdata\_dio}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{maxdata\_dio}{maxdata\_dio}}
+{\footnotesize\ttfamily \label{daq_8c_aa93f1b0822d9d001d2f55790b038df52} 
+int maxdata\+\_\+dio}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00037}{37}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a239d3d7db250133060bf0d1b89a7031f}\index{daq.c@{daq.c}!maxdata\_do@{maxdata\_do}}
+\index{maxdata\_do@{maxdata\_do}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{maxdata\_do}{maxdata\_do}}
+{\footnotesize\ttfamily \label{daq_8c_a239d3d7db250133060bf0d1b89a7031f} 
+int maxdata\+\_\+do}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00032}{32}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a621874d914e2ab43105c985566799421}\index{daq.c@{daq.c}!maxdata\_serial0@{maxdata\_serial0}}
+\index{maxdata\_serial0@{maxdata\_serial0}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{maxdata\_serial0}{maxdata\_serial0}}
+{\footnotesize\ttfamily \label{daq_8c_a621874d914e2ab43105c985566799421} 
+int maxdata\+\_\+serial0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00048}{48}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a98239f215c9e565742242a3ff34df7f9}\index{daq.c@{daq.c}!PWM\_ERROR@{PWM\_ERROR}}
+\index{PWM\_ERROR@{PWM\_ERROR}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{PWM\_ERROR}{PWM\_ERROR}}
+{\footnotesize\ttfamily \label{daq_8c_a98239f215c9e565742242a3ff34df7f9} 
+bool PWM\+\_\+\+ERROR = false}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00054}{54}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_ae57f20175a52c0f20768f78af0fb8c97}\index{daq.c@{daq.c}!PWM\_OPEN@{PWM\_OPEN}}
+\index{PWM\_OPEN@{PWM\_OPEN}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{PWM\_OPEN}{PWM\_OPEN}}
+{\footnotesize\ttfamily \label{daq_8c_ae57f20175a52c0f20768f78af0fb8c97} 
+bool PWM\+\_\+\+OPEN = true}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00053}{53}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a8462d502e7a146806c1c13b6478aafc1}\index{daq.c@{daq.c}!range\_ai@{range\_ai}}
+\index{range\_ai@{range\_ai}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{range\_ai}{range\_ai}}
+{\footnotesize\ttfamily \label{daq_8c_a8462d502e7a146806c1c13b6478aafc1} 
+int range\+\_\+ai = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00014}{14}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a631d872ec35b29cee5d6980ab31f8a86}\index{daq.c@{daq.c}!range\_ao@{range\_ao}}
+\index{range\_ao@{range\_ao}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{range\_ao}{range\_ao}}
+{\footnotesize\ttfamily \label{daq_8c_a631d872ec35b29cee5d6980ab31f8a86} 
+int range\+\_\+ao = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00020}{20}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a96a2feb3009e8009cc78a621e7c4e645}\index{daq.c@{daq.c}!range\_counter@{range\_counter}}
+\index{range\_counter@{range\_counter}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{range\_counter}{range\_counter}}
+{\footnotesize\ttfamily \label{daq_8c_a96a2feb3009e8009cc78a621e7c4e645} 
+int range\+\_\+counter = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00042}{42}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a34ef9537d244016e08a640dac5a4fc96}\index{daq.c@{daq.c}!range\_di@{range\_di}}
+\index{range\_di@{range\_di}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{range\_di}{range\_di}}
+{\footnotesize\ttfamily \label{daq_8c_a34ef9537d244016e08a640dac5a4fc96} 
+int range\+\_\+di = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00026}{26}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a3819f80fd0a7ac058d5b5a1e72f07910}\index{daq.c@{daq.c}!range\_dio@{range\_dio}}
+\index{range\_dio@{range\_dio}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{range\_dio}{range\_dio}}
+{\footnotesize\ttfamily \label{daq_8c_a3819f80fd0a7ac058d5b5a1e72f07910} 
+int range\+\_\+dio = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00036}{36}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_ad967f07a42b25b4b2e1c2e61a843b83d}\index{daq.c@{daq.c}!range\_do@{range\_do}}
+\index{range\_do@{range\_do}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{range\_do}{range\_do}}
+{\footnotesize\ttfamily \label{daq_8c_ad967f07a42b25b4b2e1c2e61a843b83d} 
+int range\+\_\+do = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00031}{31}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a067cfc15e12f80a3fc5113b8da2a02d2}\index{daq.c@{daq.c}!range\_serial0@{range\_serial0}}
+\index{range\_serial0@{range\_serial0}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{range\_serial0}{range\_serial0}}
+{\footnotesize\ttfamily \label{daq_8c_a067cfc15e12f80a3fc5113b8da2a02d2} 
+int range\+\_\+serial0 = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00047}{47}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_ad3f827ab3c511a3d944b1700306256fc}\index{daq.c@{daq.c}!ranges\_ai@{ranges\_ai}}
+\index{ranges\_ai@{ranges\_ai}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{ranges\_ai}{ranges\_ai}}
+{\footnotesize\ttfamily \label{daq_8c_ad3f827ab3c511a3d944b1700306256fc} 
+int ranges\+\_\+ai}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00016}{16}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_ab361e547e439c6de2de31ae5f87d4098}\index{daq.c@{daq.c}!ranges\_ao@{ranges\_ao}}
+\index{ranges\_ao@{ranges\_ao}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{ranges\_ao}{ranges\_ao}}
+{\footnotesize\ttfamily \label{daq_8c_ab361e547e439c6de2de31ae5f87d4098} 
+int ranges\+\_\+ao}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00022}{22}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_ad1178c3003858515355a7a62994218d4}\index{daq.c@{daq.c}!ranges\_counter@{ranges\_counter}}
+\index{ranges\_counter@{ranges\_counter}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{ranges\_counter}{ranges\_counter}}
+{\footnotesize\ttfamily \label{daq_8c_ad1178c3003858515355a7a62994218d4} 
+int ranges\+\_\+counter}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00043}{43}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_afd149b0616bc7a794fa4ae712ab0994c}\index{daq.c@{daq.c}!ranges\_di@{ranges\_di}}
+\index{ranges\_di@{ranges\_di}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{ranges\_di}{ranges\_di}}
+{\footnotesize\ttfamily \label{daq_8c_afd149b0616bc7a794fa4ae712ab0994c} 
+int ranges\+\_\+di}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00027}{27}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a1cffaafeda216ae4dfc8fa22a9f1d416}\index{daq.c@{daq.c}!ranges\_dio@{ranges\_dio}}
+\index{ranges\_dio@{ranges\_dio}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{ranges\_dio}{ranges\_dio}}
+{\footnotesize\ttfamily \label{daq_8c_a1cffaafeda216ae4dfc8fa22a9f1d416} 
+int ranges\+\_\+dio}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00037}{37}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_ad93226065d5bc9cd18aad0ef423ff96b}\index{daq.c@{daq.c}!ranges\_do@{ranges\_do}}
+\index{ranges\_do@{ranges\_do}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{ranges\_do}{ranges\_do}}
+{\footnotesize\ttfamily \label{daq_8c_ad93226065d5bc9cd18aad0ef423ff96b} 
+int ranges\+\_\+do}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00032}{32}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_ad38d911033a3cb7895b950118ae382ce}\index{daq.c@{daq.c}!ranges\_serial0@{ranges\_serial0}}
+\index{ranges\_serial0@{ranges\_serial0}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{ranges\_serial0}{ranges\_serial0}}
+{\footnotesize\ttfamily \label{daq_8c_ad38d911033a3cb7895b950118ae382ce} 
+int ranges\+\_\+serial0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00048}{48}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a598790c0d4144abc383c0cff50f3b6fd}\index{daq.c@{daq.c}!RX\_OPEN@{RX\_OPEN}}
+\index{RX\_OPEN@{RX\_OPEN}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{RX\_OPEN}{RX\_OPEN}}
+{\footnotesize\ttfamily \label{daq_8c_a598790c0d4144abc383c0cff50f3b6fd} 
+bool RX\+\_\+\+OPEN = true}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00054}{54}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a97400dc9e2e5b8ea61a02ead3dd3d7ff}\index{daq.c@{daq.c}!serial\_buf@{serial\_buf}}
+\index{serial\_buf@{serial\_buf}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{serial\_buf}{serial\_buf}}
+{\footnotesize\ttfamily \label{daq_8c_a97400dc9e2e5b8ea61a02ead3dd3d7ff} 
+uint32\+\_\+t serial\+\_\+buf}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00059}{59}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a4a621aae8dacec0a500f0ed9d78ff24c}\index{daq.c@{daq.c}!SERIAL\_OPEN@{SERIAL\_OPEN}}
+\index{SERIAL\_OPEN@{SERIAL\_OPEN}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{SERIAL\_OPEN}{SERIAL\_OPEN}}
+{\footnotesize\ttfamily \label{daq_8c_a4a621aae8dacec0a500f0ed9d78ff24c} 
+bool SERIAL\+\_\+\+OPEN = true}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00054}{54}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a54a3a2f4e5d3332cf923d51e5b7cc594}\index{daq.c@{daq.c}!subdev\_ai@{subdev\_ai}}
+\index{subdev\_ai@{subdev\_ai}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{subdev\_ai}{subdev\_ai}}
+{\footnotesize\ttfamily \label{daq_8c_a54a3a2f4e5d3332cf923d51e5b7cc594} 
+int subdev\+\_\+ai = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00012}{12}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a9e42bb42a292b4cbeb8c8661cd432765}\index{daq.c@{daq.c}!subdev\_ao@{subdev\_ao}}
+\index{subdev\_ao@{subdev\_ao}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{subdev\_ao}{subdev\_ao}}
+{\footnotesize\ttfamily \label{daq_8c_a9e42bb42a292b4cbeb8c8661cd432765} 
+int subdev\+\_\+ao = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00018}{18}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_abbaa63d4e528c9303c21092c92ffaee2}\index{daq.c@{daq.c}!subdev\_counter@{subdev\_counter}}
+\index{subdev\_counter@{subdev\_counter}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{subdev\_counter}{subdev\_counter}}
+{\footnotesize\ttfamily \label{daq_8c_abbaa63d4e528c9303c21092c92ffaee2} 
+int subdev\+\_\+counter}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00040}{40}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a910ebf1e17ea82de234804fa421742a9}\index{daq.c@{daq.c}!subdev\_di@{subdev\_di}}
+\index{subdev\_di@{subdev\_di}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{subdev\_di}{subdev\_di}}
+{\footnotesize\ttfamily \label{daq_8c_a910ebf1e17ea82de234804fa421742a9} 
+int subdev\+\_\+di = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00024}{24}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_aee37bce88e47968105cf2d34577a2a82}\index{daq.c@{daq.c}!subdev\_dio@{subdev\_dio}}
+\index{subdev\_dio@{subdev\_dio}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{subdev\_dio}{subdev\_dio}}
+{\footnotesize\ttfamily \label{daq_8c_aee37bce88e47968105cf2d34577a2a82} 
+int subdev\+\_\+dio}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00034}{34}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a0dac65e8cdc8df6f68b6c1c77a1a6611}\index{daq.c@{daq.c}!subdev\_do@{subdev\_do}}
+\index{subdev\_do@{subdev\_do}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{subdev\_do}{subdev\_do}}
+{\footnotesize\ttfamily \label{daq_8c_a0dac65e8cdc8df6f68b6c1c77a1a6611} 
+int subdev\+\_\+do = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00029}{29}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a98dec47354ec9869fc454ccae7ecebe7}\index{daq.c@{daq.c}!subdev\_serial0@{subdev\_serial0}}
+\index{subdev\_serial0@{subdev\_serial0}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{subdev\_serial0}{subdev\_serial0}}
+{\footnotesize\ttfamily \label{daq_8c_a98dec47354ec9869fc454ccae7ecebe7} 
+int subdev\+\_\+serial0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00045}{45}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+

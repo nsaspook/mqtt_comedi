@@ -1,0 +1,98 @@
+\doxysection{tic12400.\+h}
+\hypertarget{tic12400_8h_source}{}\label{tic12400_8h_source}\index{bmc\_slave.X/tic12400.h@{bmc\_slave.X/tic12400.h}}
+\mbox{\hyperlink{tic12400_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00008}00008\ \textcolor{preprocessor}{\#ifndef\ TIC12400\_H}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00009}00009\ \textcolor{preprocessor}{\#define\ TIC12400\_H}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00011}00011\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00012}00012\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00013}00013\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00014}00014\ }
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00015}00015\ \textcolor{preprocessor}{\#include\ <xc.h>}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00016}00016\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00017}00017\ \textcolor{preprocessor}{\#include\ <stdbool.h>}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00018}00018\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00019}00019\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{mconfig_8h}{mconfig.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00020}00020\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{timers_8h}{timers.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00021}00021\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{vconfig_8h}{vconfig.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00022}00022\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{eadog_8h}{eadog.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00024}00024\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00025}00025\ \textcolor{comment}{\ \ \ \ \ *\ 32-\/bits\ SPI\ mode\ 1,\ 4MHz\ SCK}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00026}00026\ \textcolor{comment}{\ \ \ \ \ *\ for\ onboard\ device\ comms}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00027}00027\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00028}00028\ \textcolor{preprocessor}{\#define\ TIC12400\_DRIVER\ "{}V0.8"{}}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00030}00030\ \textcolor{preprocessor}{\#define\ por\_bit\_s\ \ \ \ \ \ \ \ \ \ \ 0b01100110}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00031}00031\ \textcolor{preprocessor}{\#define\ spi\_fail\_bit\_s\ \ \ \ \ \ 0b01000000}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00032}00032\ \textcolor{preprocessor}{\#define\ ssc\_bit\_s\ \ \ \ \ \ \ \ \ \ \ 0b00001000}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00033}00033\ \textcolor{preprocessor}{\#define\ spi\_fail\_bit\_v\ \ \ \ \ \ 0b01000000}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00034}00034\ \textcolor{preprocessor}{\#define\ parity\_fail\_v\ \ \ \ \ \ \ 0b00100000}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00035}00035\ \textcolor{preprocessor}{\#define\ por\_bit\_s\_v\ \ \ \ \ \ \ \ \ 0b10000000}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00036}00036\ \textcolor{preprocessor}{\#define\ id\_mask\_d\ \ \ \ \ \ \ \ \ \ \ 0b00000000}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00037}00037\ \textcolor{preprocessor}{\#define\ switch\_mask\_d\ \ \ \ \ \ \ 0x00ffffff}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00039}00039\ \textcolor{preprocessor}{\#define\ write\_bit\ \ \ \ \ \ \ \ \ \ \ 0b10000000}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00040}00040\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00041}00041\ \textcolor{comment}{\ \ \ \ \ *\ switch\ bit\ masks\ in\ the\ raw\ 32-\/bit\ register\ from\ the\ TIC12400}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00042}00042\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00043}00043\ \textcolor{preprocessor}{\#define\ raw\_mask\_0\ \ \ \ \ \ \ \ \ \ 0b010}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00044}00044\ \textcolor{preprocessor}{\#define\ raw\_mask\_11\ \ \ \ \ \ \ \ \ 0b100000000000000}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00046}00046\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structspi__link__type}{spi\_link\_type}}\ spi\_link;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00047}00047\ }
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00048}00048\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\_\_attribute\_\_((packed))}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00049}00049\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00050}00050\ \ \ \ \ \ \ \ \ uint8\_t\ data3;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00051}00051\ \ \ \ \ \ \ \ \ uint8\_t\ data2;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00052}00052\ \ \ \ \ \ \ \ \ uint8\_t\ data1;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00053}00053\ \ \ \ \ \ \ \ \ uint8\_t\ data0;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00054}00054\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00055}00055\ \ \ \ \ ticbuf\_type;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00057}00057\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00058}00058\ \textcolor{comment}{\ \ \ \ \ *\ TIC12400\ response\ structure}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00059}00059\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00060}00060\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\_\_attribute\_\_((packed))}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00061}00061\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00062}00062\ \ \ \ \ \ \ \ \ uint8\_t\ data3;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00063}00063\ \ \ \ \ \ \ \ \ uint8\_t\ data2;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00064}00064\ \ \ \ \ \ \ \ \ uint8\_t\ data1;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00065}00065\ \ \ \ \ \ \ \ \ uint8\_t\ data0;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00066}00066\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00067}00067\ \ \ \ \ ticread\_type;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00068}00068\ }
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00069}00069\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\_\_attribute\_\_((packed))}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00070}00070\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00071}00071\ \ \ \ \ \ \ \ \ uint8\_t\ cmd[16];}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00072}00072\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00073}00073\ \ \ \ \ ticrw\_type;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00075}00075\ \ \ \ \ \textcolor{keywordtype}{void}\ tic12400\_version(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00076}00076\ \ \ \ \ \textcolor{keywordtype}{void}\ tic12400\_reset(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00077}00077\ \ \ \ \ \textcolor{keywordtype}{bool}\ tic12400\_init(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00078}00078\ \ \ \ \ uint32\_t\ tic12400\_wr(\textcolor{keyword}{const}\ ticbuf\_type\ *,\ uint16\_t);}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00079}00079\ \ \ \ \ uint32\_t\ tic12400\_get\_sw(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00080}00080\ \ \ \ \ \textcolor{keywordtype}{void}\ tic12400\_read\_sw(uint32\_t,\ uintptr\_t);}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00081}00081\ \ \ \ \ \textcolor{keywordtype}{bool}\ tic12400\_parity(uint32\_t);}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00082}00082\ }
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00083}00083\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ uint32\_t\ tic12400\_status,\ tic12400\_counts,\ tic12400\_value\_counts,\ tic12400\_id,\ tic12400\_read\_status;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00084}00084\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ uint32\_t\ tic12400\_value,\ tic12400\_switch,\ tic12400\_fail\_count,\ tic12400\_parity\_count;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00085}00085\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ tic12400\_init\_ok,\ tic12400\_event;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00086}00086\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ tic12400\_parity\_status,\ tic12400\_read\_error;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00087}00087\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ int32\_t\ tic12400\_fail\_value;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00088}00088\ \ \ \ \ \textcolor{keyword}{volatile}\ uint8\_t\ b\_read;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00089}00089\ \ \ \ \ \textcolor{keyword}{extern}\ ticrw\_type\ tic\_rw;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00090}00090\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ uint8\_t\ in\_buf1,\ in\_buf2,\ in\_buf3;}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00092}00092\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00093}00093\ \}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00094}00094\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00095}00095\ }
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00096}00096\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{/*\ TIC12400\_H\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{\Hypertarget{tic12400_8h_source_l00097}00097\ }
+
+\end{DoxyCode}

@@ -38,7 +38,7 @@ extern "C" {
 #define CMD_DUMMY_CFG	0b01000000	// stuff config data in SPI buffer
 #define CMD_DEAD        0b11111111      // This is usually a bad response
 
-#define CHECKBYTE	0x57
+#define CHECKBYTE       0x57
 
 #define CMD_DUMMY       0b01100111	/* 7 channels 4.096 */
 #define NUM_AI_CHAN     15
@@ -50,6 +50,7 @@ extern "C" {
 
 #define SPI_BUFFER_LEN	10
 #define PACKET_BUF_SIZ	16
+#define RSTRING_BUF_SIZ	81
 
 #define	HI_NIBBLE       0xf0
 #define	LO_NIBBLE       0x0f
@@ -63,6 +64,8 @@ extern "C" {
 #define PORT_GO_BYTES	7
 #define CHAR_GO_BYTES	7
 #define DAC_GO_BYTES	7
+
+#define MAX_BMC_BUF	512
 
 	struct spi_link_type_ss { // internal state table
 		uint8_t SPI_DATA : 1;
@@ -85,9 +88,15 @@ extern "C" {
 	};
 
 	struct serial_buffer_type_ss {
-		volatile uint8_t data[PACKET_BUF_SIZ], adcl, adc2, adch, command, raw_index;
+		volatile uint8_t data[PACKET_BUF_SIZ], r_string[RSTRING_BUF_SIZ], adcl, adc2, adch, command, raw_index, r_string_index, r_string_chan;
 		volatile uint32_t place;
 		volatile bool make_value, get_value, dac_value, adc_value, cfg_value, cmake_value, cget_value;
+	};
+
+	struct bmc_buffer_type {
+		volatile char *buffer, *log_buffer;
+		volatile uint16_t len, pos;
+		volatile bool bmc_flag;
 	};
 
 	enum daqbmc_packet_index {
@@ -102,6 +111,11 @@ extern "C" {
 		BMC_DUMMY,
 	};
 
+	enum daqbmc_data_index {
+		BMC_EM540_DATA = 4,
+		BMC_DATA_DUMMY,
+	};
+
 	extern volatile struct spi_link_type_ss spi_comm_ss;
 	extern volatile struct serial_buffer_type_ss serial_buffer_ss;
 	extern volatile struct spi_stat_type_ss spi_stat_ss, report_stat_ss;
@@ -111,6 +125,9 @@ extern "C" {
 	volatile bool failure;
 	extern volatile uint8_t in_buf1, in_buf2, in_buf3;
 	extern volatile uint8_t tmp_buf;
+	extern volatile bool r_string_ready, bmc_string_ready[8], update_bmc_string[8];
+	extern volatile struct bmc_buffer_type BMC4;
+	extern char buffer[MAX_BMC_BUF], log_buffer[MAX_BMC_BUF];
 
 	void check_slaveo(void);
 	void init_slaveo(void);

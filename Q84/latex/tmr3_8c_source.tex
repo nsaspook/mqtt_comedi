@@ -1,0 +1,163 @@
+\doxysection{tmr3.\+c}
+\hypertarget{tmr3_8c_source}{}\label{tmr3_8c_source}\index{bmc\_slave.X/mcc\_generated\_files/tmr3.c@{bmc\_slave.X/mcc\_generated\_files/tmr3.c}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00024}00024\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00025}00025\ \textcolor{comment}{\ \ \ \ (c)\ 2018\ Microchip\ Technology\ Inc.\ and\ its\ subsidiaries.\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00026}00026\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00027}00027\ \textcolor{comment}{\ \ \ \ Subject\ to\ your\ compliance\ with\ these\ terms,\ you\ may\ use\ Microchip\ software\ and\ any\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00028}00028\ \textcolor{comment}{\ \ \ \ derivatives\ exclusively\ with\ Microchip\ products.\ It\ is\ your\ responsibility\ to\ comply\ with\ third\ party\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00029}00029\ \textcolor{comment}{\ \ \ \ license\ terms\ applicable\ to\ your\ use\ of\ third\ party\ software\ (including\ open\ source\ software)\ that\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00030}00030\ \textcolor{comment}{\ \ \ \ may\ accompany\ Microchip\ software.}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00031}00031\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00032}00032\ \textcolor{comment}{\ \ \ \ THIS\ SOFTWARE\ IS\ SUPPLIED\ BY\ MICROCHIP\ "{}AS\ IS"{}.\ NO\ WARRANTIES,\ WHETHER\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00033}00033\ \textcolor{comment}{\ \ \ \ EXPRESS,\ IMPLIED\ OR\ STATUTORY,\ APPLY\ TO\ THIS\ SOFTWARE,\ INCLUDING\ ANY\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00034}00034\ \textcolor{comment}{\ \ \ \ IMPLIED\ WARRANTIES\ OF\ NON-\/INFRINGEMENT,\ MERCHANTABILITY,\ AND\ FITNESS\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00035}00035\ \textcolor{comment}{\ \ \ \ FOR\ A\ PARTICULAR\ PURPOSE.}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00036}00036\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00037}00037\ \textcolor{comment}{\ \ \ \ IN\ NO\ EVENT\ WILL\ MICROCHIP\ BE\ LIABLE\ FOR\ ANY\ INDIRECT,\ SPECIAL,\ PUNITIVE,\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00038}00038\ \textcolor{comment}{\ \ \ \ INCIDENTAL\ OR\ CONSEQUENTIAL\ LOSS,\ DAMAGE,\ COST\ OR\ EXPENSE\ OF\ ANY\ KIND\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00039}00039\ \textcolor{comment}{\ \ \ \ WHATSOEVER\ RELATED\ TO\ THE\ SOFTWARE,\ HOWEVER\ CAUSED,\ EVEN\ IF\ MICROCHIP\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00040}00040\ \textcolor{comment}{\ \ \ \ HAS\ BEEN\ ADVISED\ OF\ THE\ POSSIBILITY\ OR\ THE\ DAMAGES\ ARE\ FORESEEABLE.\ TO\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00041}00041\ \textcolor{comment}{\ \ \ \ THE\ FULLEST\ EXTENT\ ALLOWED\ BY\ LAW,\ MICROCHIP'S\ TOTAL\ LIABILITY\ ON\ ALL\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00042}00042\ \textcolor{comment}{\ \ \ \ CLAIMS\ IN\ ANY\ WAY\ RELATED\ TO\ THIS\ SOFTWARE\ WILL\ NOT\ EXCEED\ THE\ AMOUNT\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00043}00043\ \textcolor{comment}{\ \ \ \ OF\ FEES,\ IF\ ANY,\ THAT\ YOU\ HAVE\ PAID\ DIRECTLY\ TO\ MICROCHIP\ FOR\ THIS\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00044}00044\ \textcolor{comment}{\ \ \ \ SOFTWARE.}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00045}00045\ \textcolor{comment}{*/}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00046}00046\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00051}00051\ \textcolor{preprocessor}{\#include\ <xc.h>}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00052}00052\ \textcolor{preprocessor}{\#include\ "{}tmr3.h"{}}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00053}00053\ \textcolor{preprocessor}{\#include\ "{}interrupt\_manager.h"{}}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00058}00058\ \textcolor{keyword}{volatile}\ uint16\_t\ timer3ReloadVal;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00059}00059\ void\ (*TMR3\_InterruptHandler)(void);}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00064}00064\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00065}00065\ \textcolor{keywordtype}{void}\ TMR3\_Initialize(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00066}00066\ \{}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00067}00067\ \ \ \ \ \textcolor{comment}{//Set\ the\ Timer\ to\ the\ options\ selected\ in\ the\ GUI}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00068}00068\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00069}00069\ \ \ \ \ \textcolor{comment}{//T3GE\ disabled;\ T3GTM\ disabled;\ T3GPOL\ low;\ T3GGO\ done;\ T3GSPM\ disabled;\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00070}00070\ \ \ \ \ T3GCON\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00072}00072\ \ \ \ \ \textcolor{comment}{//GSS\ T3G\_pin;\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00073}00073\ \ \ \ \ T3GATE\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00075}00075\ \ \ \ \ \textcolor{comment}{//CS\ FOSC/4;\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00076}00076\ \ \ \ \ T3CLK\ =\ 0x01;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00078}00078\ \ \ \ \ \textcolor{comment}{//TMR3H\ 240;\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00079}00079\ \ \ \ \ TMR3H\ =\ 0xF0;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00081}00081\ \ \ \ \ \textcolor{comment}{//TMR3L\ 96;\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00082}00082\ \ \ \ \ TMR3L\ =\ 0x60;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00083}00083\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00084}00084\ \ \ \ \ \textcolor{comment}{//\ Clearing\ IF\ flag\ before\ enabling\ the\ interrupt.}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00085}00085\ \ \ \ \ PIR5bits.TMR3IF\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00086}00086\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00087}00087\ \ \ \ \ \textcolor{comment}{//\ Load\ the\ TMR\ value\ to\ reload\ variable}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00088}00088\ \ \ \ \ timer3ReloadVal=(uint16\_t)((TMR3H\ <<\ 8)\ |\ TMR3L);}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00089}00089\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00090}00090\ \ \ \ \ \textcolor{comment}{//\ Enabling\ TMR3\ interrupt.}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00091}00091\ \ \ \ \ PIE5bits.TMR3IE\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00092}00092\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00093}00093\ \ \ \ \ \textcolor{comment}{//\ Set\ Default\ Interrupt\ Handler}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00094}00094\ \ \ \ \ TMR3\_SetInterruptHandler(TMR3\_DefaultInterruptHandler);}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00095}00095\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00096}00096\ \ \ \ \ \textcolor{comment}{//\ CKPS\ 1:8;\ NOT\_SYNC\ synchronize;\ TMR3ON\ enabled;\ T3RD16\ enabled;\ }}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00097}00097\ \ \ \ \ T3CON\ =\ 0x33;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00098}00098\ \}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00099}00099\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00100}00100\ \textcolor{keywordtype}{void}\ TMR3\_StartTimer(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00101}00101\ \{}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00102}00102\ \ \ \ \ \textcolor{comment}{//\ Start\ the\ Timer\ by\ writing\ to\ TMRxON\ bit}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00103}00103\ \ \ \ \ T3CONbits.TMR3ON\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00104}00104\ \}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00106}00106\ \textcolor{keywordtype}{void}\ TMR3\_StopTimer(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00107}00107\ \{}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00108}00108\ \ \ \ \ \textcolor{comment}{//\ Stop\ the\ Timer\ by\ writing\ to\ TMRxON\ bit}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00109}00109\ \ \ \ \ T3CONbits.TMR3ON\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00110}00110\ \}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00111}00111\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00112}00112\ uint16\_t\ TMR3\_ReadTimer(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00113}00113\ \{}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00114}00114\ \ \ \ \ uint16\_t\ readVal;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00115}00115\ \ \ \ \ uint8\_t\ readValHigh;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00116}00116\ \ \ \ \ uint8\_t\ readValLow;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00117}00117\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00118}00118\ \ \ \ \ T3CONbits.T3RD16\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00119}00119\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00120}00120\ \ \ \ \ readValLow\ =\ TMR3L;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00121}00121\ \ \ \ \ readValHigh\ =\ TMR3H;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00122}00122\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00123}00123\ \ \ \ \ readVal\ =\ ((uint16\_t)readValHigh\ <<\ 8)\ |\ readValLow;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00124}00124\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00125}00125\ \ \ \ \ \textcolor{keywordflow}{return}\ readVal;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00126}00126\ \}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00127}00127\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00128}00128\ \textcolor{keywordtype}{void}\ TMR3\_WriteTimer(uint16\_t\ timerVal)}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00129}00129\ \{}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00130}00130\ \ \ \ \ \textcolor{keywordflow}{if}\ (T3CONbits.NOT\_SYNC\ ==\ 1)}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00131}00131\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00132}00132\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Stop\ the\ Timer\ by\ writing\ to\ TMRxON\ bit}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00133}00133\ \ \ \ \ \ \ \ \ T3CONbits.TMR3ON\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00134}00134\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00135}00135\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Write\ to\ the\ Timer3\ register}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00136}00136\ \ \ \ \ \ \ \ \ TMR3H\ =\ (uint8\_t)(timerVal\ >>\ 8);}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00137}00137\ \ \ \ \ \ \ \ \ TMR3L\ =\ (uint8\_t)timerVal;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00138}00138\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00139}00139\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Start\ the\ Timer\ after\ writing\ to\ the\ register}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00140}00140\ \ \ \ \ \ \ \ \ T3CONbits.TMR3ON\ =1;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00141}00141\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00142}00142\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00143}00143\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00144}00144\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Write\ to\ the\ Timer3\ register}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00145}00145\ \ \ \ \ \ \ \ \ TMR3H\ =\ (uint8\_t)(timerVal\ >>\ 8);}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00146}00146\ \ \ \ \ \ \ \ \ TMR3L\ =\ (uint8\_t)timerVal;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00147}00147\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00148}00148\ \}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00149}00149\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00150}00150\ \textcolor{keywordtype}{void}\ TMR3\_Reload(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00151}00151\ \{}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00152}00152\ \ \ \ \ TMR3\_WriteTimer(timer3ReloadVal);}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00153}00153\ \}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00154}00154\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00155}00155\ \textcolor{keywordtype}{void}\ TMR3\_StartSinglePulseAcquisition(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00156}00156\ \{}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00157}00157\ \ \ \ \ T3GCONbits.T3GGO\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00158}00158\ \}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00159}00159\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00160}00160\ uint8\_t\ TMR3\_CheckGateValueStatus(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00161}00161\ \{}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00162}00162\ \ \ \ \ \textcolor{keywordflow}{return}\ (T3GCONbits.T3GVAL);}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00163}00163\ \}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00164}00164\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00165}00165\ \textcolor{keywordtype}{void}\ \_\_interrupt(irq(TMR3),base(8),low\_priority)\ TMR3\_ISR()}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00166}00166\ \{}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00167}00167\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00168}00168\ \ \ \ \ \textcolor{comment}{//\ Clear\ the\ TMR3\ interrupt\ flag}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00169}00169\ \ \ \ \ PIR5bits.TMR3IF\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00170}00170\ \ \ \ \ TMR3\_WriteTimer(timer3ReloadVal);}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00171}00171\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00172}00172\ \ \ \ \ \textcolor{keywordflow}{if}(TMR3\_InterruptHandler)}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00173}00173\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00174}00174\ \ \ \ \ \ \ \ \ TMR3\_InterruptHandler();}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00175}00175\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00176}00176\ \}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00177}00177\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00178}00178\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00179}00179\ \textcolor{keywordtype}{void}\ TMR3\_SetInterruptHandler(\textcolor{keywordtype}{void}\ (*\ InterruptHandler)(\textcolor{keywordtype}{void}))\{}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00180}00180\ \ \ \ \ TMR3\_InterruptHandler\ =\ InterruptHandler;}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00181}00181\ \}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00182}00182\ }
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00183}00183\ \textcolor{keywordtype}{void}\ TMR3\_DefaultInterruptHandler(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00184}00184\ \ \ \ \ \textcolor{comment}{//\ add\ your\ TMR3\ interrupt\ custom\ code}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00185}00185\ \ \ \ \ \textcolor{comment}{//\ or\ set\ custom\ function\ using\ TMR3\_SetInterruptHandler()}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00186}00186\ \}}
+\DoxyCodeLine{\Hypertarget{tmr3_8c_source_l00187}00187\ }
+
+\end{DoxyCode}

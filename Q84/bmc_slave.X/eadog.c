@@ -162,7 +162,7 @@ static void send_lcd_cmd_long(const uint8_t cmd)
 /*
  * CAN use DMA channel 1 for transfers
  */
-void eaDogM_WriteString(char *strPtr)
+void eaDogM_WriteString(const char *strPtr)
 {
 	uint8_t len = (uint8_t) strlen(strPtr);
 
@@ -241,8 +241,9 @@ void send_spi1_mc33996_dma(uint8_t *strPtr, const uint8_t len)
 		MCZ_CS_SetHigh();
 		return;
 	}
-	spi_link.des_bytes++;
-	SPI1_ExchangeBlock(mc_cmd, len);
+	memcpy(mc33996_w_buf, mc_cmd, len);
+	SPI1_ExchangeBlock(mc33996_w_buf, len);
+	memcpy(mc_init.cmd, mc33996_w_buf, len);
 	MCZ_CS_SetHigh();
 }
 
@@ -481,7 +482,7 @@ void spi_rec_done(void)
 /*
  * auto scrolls up the string on the display
  */
-char * eaDogM_Scroll_String(char *strPtr)
+char * eaDogM_Scroll_String(const char *strPtr)
 {
 	scroll_lock = true;
 	memcpy((void *) &Sstr[4][0], &Sstr[0][0], MAX_STRLEN); // move top line to old line buffer

@@ -24,10 +24,10 @@ extern "C" {
 
 	//#define DIS_DEBUG	// active status display, disable during normal operation
 
-#define VER	"V0.17"
+#define VER	"V0.31"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
-	    Version for 47Q84.
+	    Version for 57Q84.
 
 	 * V0.01 OPI daq slave via SPI2
 	 * V0.03 add all ADC channels and clean up for SECS defines and variables
@@ -41,6 +41,11 @@ extern "C" {
 	 * V0.15 update to 9 byte packets for all commands
 	 * V.016 fix TIC12400 I/O bugs
 	 * V.017 code cleanup
+	 * V.018 more code cleanup
+	 * V.020 18f57q84 version
+	 * V.021 fix-up serial data protocol with STX to mark start of string
+	 * V0.30 version for the FM80 MODBUS and FM80 serial
+	 * V0.31 more cleanup of code
 	 */
 	/*
 	 * TIC12400 testing modes
@@ -53,7 +58,7 @@ extern "C" {
 #define DI_MC_CMD
 
 	/* analog testing a calibration mode
-	 * 
+	 *
 	 */
 
 	//#define AIO_TEST
@@ -103,7 +108,10 @@ extern "C" {
 #define HOST_UART       1
 #define EQUIP_UART      2
 
-#define DEF_TIME        0
+#define DEF_TIME        1694196350 /* default epoch time */
+
+	const char log_format[] = "^,%3.1f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,SN: %s %u FW: 0X%X,%s,~\r\n";
+#define LOG_VARS	((float) em.vl1l2) / 10.0f,((float) em.al1) / 1000.0f, ((float) em.wl1) / 10.0f, ((float) em.val1) / 10.0f, ((float) em.varl1) / 10.0f,  ((float) em.pfl1) / 10.0f, ((float) em.hz) / 10.0f,ems.serial, ems.year, emv.firmware, buffer
 
 	const char msg_gemcmds[] = "Host CMDS: M C R P O L S D E H F";
 	const char msg_freecmds[] = "Port baud rate unlocked        ";
@@ -246,6 +254,17 @@ extern "C" {
 		TICKER_HIGH = 40,
 	} TICKER_VAL;
 
+	/*
+	 * switch inputs and flags, uses the IOC interrupt and the software 
+	 * timing ISR for processing
+	 */
+	enum D_SW {
+		D_SW_A = 0, // alternate LCD display
+		D_SW_L, // history logging from FM80
+		D_SW_M,
+		D_SW_COUNT // one extra for number of switches to check
+	};
+
 	typedef struct V_data { // control data structure
 		SEQ_STATES s_state;
 		UI_STATES ui_state;
@@ -292,6 +311,22 @@ extern "C" {
 	};
 #define SPIN_VAL_UPDATE	5
 
+	typedef uint16_t device_id_data_t;
+	typedef uint24_t device_id_address_t;
+	device_id_data_t DeviceID_Read(device_id_address_t);
+
+	typedef struct EB_data {
+		uint8_t checkmark;
+		uint8_t version, alt_display;
+		bool loaded;
+		float FMw, FMpv, FMa, FMbv, ENw, ENva, ENvar, ENac;
+		float volt_whole, bat_amp_whole;
+		float bat_energy;
+		uint16_t cc_mode, bat_cycles, bat_mode, time, date;
+		uint32_t bat_time, fm80_time, q84_sequence;
+		uint16_t crc;
+	} EB_data;
+
 	extern B_type B;
 
 	extern void UART1_Initialize19200(void);
@@ -299,6 +334,8 @@ extern "C" {
 
 	extern void UART1_Initialize115200(void);
 	extern void UART2_Initialize115200(void);
+
+	void update_time(const struct tm *, EB_data *);
 
 #ifdef	__cplusplus
 }

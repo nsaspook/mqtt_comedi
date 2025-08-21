@@ -1,0 +1,8 @@
+tic12400_version global:[build_date,build_time] call:[printf] noreturn:[printf]
+tic12400_reset global:[tic12400_fail_value,ticreset1a] call:[WaitMs,send_spi1_tic12400_dma]
+tic12400_init global:[setup1a_trigger,setup1b,setup1c,setup21,setup22,setup23,setup32,spi_link,tic12400_fail_count,tic12400_fail_value,tic12400_id,tic12400_init_ok,tic12400_read_status,ticdevid01,ticreset1a,ticstat02] call:[IOCBF6_SetInterruptHandler,WaitMs,send_spi1_tic12400_dma,tic12400_wr,while] noreturn:[while]
+tic12400_wr global:[in_buf1,in_buf2,in_buf3,spi_link,tic12400_fail_count,tic12400_parity_count,tic12400_parity_status,tic12400_read_error,ticstat02,ticvalue] call:[WaitMs,return,send_spi1_tic12400_dma] noreturn:[WaitMs,send_spi1_tic12400_dma]
+tic12400_get_sw global:[tic12400_event,tic12400_init_ok,tic12400_switch]
+tic12400_parity call:[return]
+tic12400_read_sw global:[spi_link,tic12400_counts,tic12400_event,tic12400_switch,tic12400_value,tic12400_value_counts,ticread05] call:[tic12400_wr]
+tic_int_handler global:[b_read,tic12400_event,tic12400_init_ok] call:[while] noreturn:[while]

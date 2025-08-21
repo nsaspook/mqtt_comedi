@@ -1,0 +1,411 @@
+\doxysection{mconfig.\+c}
+\hypertarget{mconfig_8c_source}{}\label{mconfig_8c_source}\index{bmc\_slave.X/mconfig.c@{bmc\_slave.X/mconfig.c}}
+\mbox{\hyperlink{mconfig_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00001}00001\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{mconfig_8h}{mconfig.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00002}00002\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{mydisplay_8h}{mydisplay.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00003}00003\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{msg__text_8h}{msg\_text.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00004}00004\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00006}\mbox{\hyperlink{structD__data}{00006}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structD__data}{D\_data}}\ \{\ \textcolor{comment}{//\ control\ data\ structure}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00007}00007\ \ \ \ \ \textcolor{keywordtype}{char}\ lcd[MAX\_VTERM][MAX\_LCD\_LINES][MAX\_BUF\ +\ 1];}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00008}00008\ \ \ \ \ uint8\_t\ vterm\ :\ 2;\ \textcolor{comment}{//\ line\ to\ 4\ possible\ lines}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00009}00009\ \ \ \ \ D\_CODES\ last\_info;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00010}00010\ \}\ \mbox{\hyperlink{structD__data}{D\_data}};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00012}00012\ \textcolor{keyword}{extern}\ \mbox{\hyperlink{structV__data}{V\_data}}\ V;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00013}00013\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structD__data}{D\_data}}\ D\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00014}00014\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *build\_date,\ *build\_time;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00019}00019\ \textcolor{keywordtype}{void}\ mconfig\_init(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00020}00020\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00021}00021\ \ \ \ \ memset(\&D,\ 0,\ \textcolor{keyword}{sizeof}(D));}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00022}00022\ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00024}00024\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00025}00025\ \textcolor{comment}{\ *\ hardware\ specific\ routines}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00026}00026\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00027}00027\ \textcolor{keywordtype}{void}\ mode\_lamp\_dim(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00028}00028\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00029}00029\ \ \ \ \ set\_lcd\_dim(\textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00030}00030\ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00032}00032\ \textcolor{keywordtype}{void}\ mode\_lamp\_bright(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00033}00033\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00034}00034\ \ \ \ \ set\_lcd\_dim(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00035}00035\ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00037}00037\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00038}00038\ \textcolor{comment}{\ *\ mode\ button\ help\ mode\ select}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00039}00039\ \textcolor{comment}{\ *\ Not\ used}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00040}00040\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00041}00041\ \textcolor{keywordtype}{bool}\ help\_button(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00042}00042\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00043}00043\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00044}00044\ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00046}00046\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00047}00047\ \textcolor{comment}{\ *\ Help\ Messages,\ show\ program\ compile\ date\ or\ extra\ message\ with\ flipper\ flag}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00048}00048\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00049}00049\ \textcolor{keywordtype}{void}\ check\_help(\textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ flipper)}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00050}00050\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00051}00051\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00052}00052\ \textcolor{comment}{\ \ \ \ \ *\ show\ help\ display}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00053}00053\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00054}00054\ \ \ \ \ \textcolor{keywordflow}{if}\ (V.help)\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00055}00055\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(0,\ HELP\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ HELP\ Screen:\ \%u\ \ \ \ \ \ \ \ \ \ \ "{}},\ V.help\_id\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00056}00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (flipper)\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00057}00057\ \ \ \ \ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(3,\ HELP\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}HELP\ \%s\ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}},\ build\_date);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00058}00058\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00059}00059\ \ \ \ \ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(3,\ HELP\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\%s\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}},\ T[V.help\_id].extrams);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00060}00060\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00061}00061\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(2,\ HELP\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\%s\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}},\ T[V.help\_id].display);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00062}00062\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(1,\ HELP\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\%s\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}},\ T[V.help\_id].message);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00063}00063\ \ \ \ \ \ \ \ \ V.help\_id++;\ \textcolor{comment}{//\ cycle\ help\ text\ messages\ to\ LCD}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00064}00064\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00065}00065\ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00066}00066\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00067}00067\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00068}00068\ \textcolor{comment}{\ *\ write\ character\ data\ to\ LCD\ from\ the\ selected\ vterm\ buffers}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00069}00069\ \textcolor{comment}{\ *\ 20x4\ lines,\ returns\ the\ current\ default\ terminal\ buffer\ number}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00070}00070\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00071}00071\ uint8\_t\ update\_lcd(uint8\_t\ vterm)}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00072}00072\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00073}00073\ \ \ \ \ vterm\ =\ vterm\ \&\ 0x03;\ \textcolor{comment}{//\ mask\ to\ 2\ bits\ for\ buffer\ array}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00075}00075\ \ \ \ \ D.lcd[vterm][0][MAX\_LINE]\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00076}00076\ \ \ \ \ D.lcd[vterm][1][MAX\_LINE]\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00077}00077\ \ \ \ \ D.lcd[vterm][2][MAX\_LINE]\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00078}00078\ \ \ \ \ D.lcd[vterm][3][MAX\_LINE]\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00079}00079\ \ \ \ \ wait\_lcd\_done();}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00080}00080\ \ \ \ \ eaDogM\_WriteStringAtPos(0,\ 0,\ D.lcd[vterm][0]);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00081}00081\ \ \ \ \ wait\_lcd\_done();}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00082}00082\ \ \ \ \ eaDogM\_WriteStringAtPos(1,\ 0,\ D.lcd[vterm][1]);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00083}00083\ \ \ \ \ wait\_lcd\_done();}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00084}00084\ \ \ \ \ eaDogM\_WriteStringAtPos(2,\ 0,\ D.lcd[vterm][2]);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00085}00085\ \ \ \ \ wait\_lcd\_done();}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00086}00086\ \ \ \ \ eaDogM\_WriteStringAtPos(3,\ 0,\ D.lcd[vterm][3]);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00087}00087\ \ \ \ \ \textcolor{keywordflow}{return}\ D.vterm;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00088}00088\ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00089}00089\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00090}00090\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00091}00091\ \textcolor{comment}{\ *\ update\ the\ LCD\ screen\ with\ the\ current\ vterm\ buffers}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00092}00092\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00093}00093\ uint8\_t\ refresh\_lcd(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00094}00094\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00095}00095\ \ \ \ \ \textcolor{keywordflow}{return}\ update\_lcd(D.vterm);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00096}00096\ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00097}00097\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00098}00098\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00099}00099\ \textcolor{comment}{\ *\ set\ terminal\ window\ to\ 0..3\ to\ internal\ vterm}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00100}00100\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00101}00101\ uint8\_t\ set\_vterm(\textcolor{keyword}{const}\ uint8\_t\ vterm)}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00102}00102\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00103}00103\ \ \ \ \ D.vterm\ =\ vterm\ \&\ 0x03;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00104}00104\ \ \ \ \ \textcolor{keywordflow}{return}\ D.vterm;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00105}00105\ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00106}00106\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00107}00107\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00108}00108\ \textcolor{comment}{\ *\ return\ pointer\ to\ vterm\ line\ buffer}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00109}00109\ \textcolor{comment}{\ *\ Software\ diagnostic\ function,\ get\ address\ of\ pointers}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00110}00110\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00111}00111\ \textcolor{keywordtype}{char}\ *\ get\_vterm\_ptr(uint8\_t\ line,\ \textcolor{keyword}{const}\ uint8\_t\ vterm)}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00112}00112\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00113}00113\ \ \ \ \ \textcolor{keywordflow}{return}\ D.lcd[vterm\ \&\ 0x03][line\ \&\ 0x03];}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00114}00114\ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00116}00116\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00117}00117\ \textcolor{comment}{\ *\ 20x4\ lines}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00118}00118\ \textcolor{comment}{\ *\ Software\ diagnostic\ function,\ print\ address\ of\ pointers}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00119}00119\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00120}00120\ \textcolor{keywordtype}{void}\ vterm\_dump(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00121}00121\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00122}00122\ \ \ \ \ snprintf(V.buf,\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}vterm\ \%x:\%x\ \ \ \ \ \ \ \ \ \ \ \ "{}},\ (uint16\_t)\ get\_vterm\_ptr(0,\ MAIN\_VTERM),\ (uint16\_t)\ get\_vterm\_ptr(0,\ INFO\_VTERM));}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00123}00123\ \ \ \ \ wait\_lcd\_done();}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00124}00124\ \ \ \ \ eaDogM\_WriteStringAtPos(0,\ MAIN\_VTERM,\ V.buf);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00125}00125\ \ \ \ \ snprintf(V.buf,\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}vterm\ \%x:\%x\ \ \ \ \ \ \ \ \ \ \ \ "{}},\ (uint16\_t)\ get\_vterm\_ptr(1,\ MAIN\_VTERM),\ (uint16\_t)\ get\_vterm\_ptr(1,\ INFO\_VTERM));}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00126}00126\ \ \ \ \ wait\_lcd\_done();}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00127}00127\ \ \ \ \ eaDogM\_WriteStringAtPos(1,\ MAIN\_VTERM,\ V.buf);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00128}00128\ \ \ \ \ snprintf(V.buf,\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}vterm\ \%x:\%x\ \ \ \ \ \ \ \ \ \ \ \ "{}},\ (uint16\_t)\ get\_vterm\_ptr(2,\ MAIN\_VTERM),\ (uint16\_t)\ get\_vterm\_ptr(2,\ INFO\_VTERM));}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00129}00129\ \ \ \ \ wait\_lcd\_done();}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00130}00130\ \ \ \ \ eaDogM\_WriteStringAtPos(2,\ MAIN\_VTERM,\ V.buf);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00131}00131\ \ \ \ \ snprintf(V.buf,\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}vterm\ \%x:\%x\ \ \ \ \ \ \ \ \ \ \ \ "{}},\ (uint16\_t)\ get\_vterm\_ptr(3,\ MAIN\_VTERM),\ (uint16\_t)\ get\_vterm\_ptr(3,\ INFO\_VTERM));}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00132}00132\ \ \ \ \ wait\_lcd\_done();}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00133}00133\ \ \ \ \ eaDogM\_WriteStringAtPos(3,\ MAIN\_VTERM,\ V.buf);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00134}00134\ \ \ \ \ WaitMs(TDELAY);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00135}00135\ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00136}00136\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00137}00137\ \textcolor{keywordtype}{void}\ vterm\_sequence(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00138}00138\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00139}00139\ \ \ \ \ snprintf(get\_vterm\_ptr(2,\ INFO\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ Mesg\ \%d\ Stack\ \%d\ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}},\ V.msg\_error,\ V.stack);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00140}00140\ \ \ \ \ \textcolor{keywordflow}{switch}\ (V.response.info)\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00141}00141\ \ \ \ \ \textcolor{keywordflow}{case}\ DIS\_LOG:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00142}00142\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(0,\ INFO\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ S\%dF\%d\ log\ \ \ \ \%d\ \ \ \ \ \ "{}},\ V.stream,\ V.function,\ V.response.log\_seq\ \&\ 0x03);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00143}00143\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(1,\ INFO\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ Stored\ \#\%d\ \ \ \ \ \ \ \ \ \ \ \ "{}},\ V.response.log\_num);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00144}00144\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00145}00145\ \ \ \ \ \textcolor{keywordflow}{case}\ DIS\_FREE:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00146}00146\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(0,\ INFO\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ S\%dF\%d\ log\ \ \ \ \%d\ \ \ \ \ \ "{}},\ V.stream,\ V.function,\ V.response.log\_seq\ \&\ 0x03);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00147}00147\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(1,\ INFO\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ Port\ Lock\ \#\%d\ \ \ \ \ \ \ \ \ \ \ \ "{}},\ V.speed\_spin);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00148}00148\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00149}00149\ \ \ \ \ \textcolor{keywordflow}{case}\ DIS\_LOAD:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00150}00150\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(0,\ INFO\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ Ready\ LL\ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}});}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00151}00151\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(1,\ INFO\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ S2F41\ \#\%c\ \ \ \ \ \ \ \ \ \ \ \ \ "{}},\ V.response.mcode);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00152}00152\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00153}00153\ \ \ \ \ \textcolor{keywordflow}{case}\ DIS\_PUMP:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00154}00154\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(0,\ INFO\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ Pump\ LL\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}});}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00155}00155\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(1,\ INFO\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ S2F41\ \#\%c\ \ \ \ \ \ \ \ \ \ \ \ \ "{}},\ V.response.mcode);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00156}00156\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00157}00157\ \ \ \ \ \textcolor{keywordflow}{case}\ DIS\_UNLOAD:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00158}00158\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(0,\ INFO\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ Open\ LL\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}});}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00159}00159\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(1,\ INFO\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ S2F41\ \#\%c\ \ \ \ \ \ \ \ \ \ \ \ \ "{}},\ V.response.mcode);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00160}00160\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00161}00161\ \ \ \ \ \textcolor{keywordflow}{case}\ DIS\_HELP:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00162}00162\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(0,\ HELP\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}HELP\ \%s\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}},\ build\_date);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00163}00163\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(1,\ HELP\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}DISPLAY\ \%s\ \ \ \ \ \ \ \ \ \ \ \ \ "{}},\ build\_time);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00164}00164\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00165}00165\ \ \ \ \ \textcolor{keywordflow}{case}\ DIS\_SEQUENCE:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00166}00166\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(0,\ INFO\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ Load-\/lock\ num\ \%d\ \ \ \ \ \ "{}},\ V.llid);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00167}00167\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(1,\ INFO\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ SEQUENCE\ \%d\ \ \ \ \ \ \ \ \ \ \ "{}},\ V.sequences);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00168}00168\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00169}00169\ \ \ \ \ \textcolor{keywordflow}{case}\ DIS\_SEQUENCE\_M:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00170}00170\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(0,\ INFO\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ Display\ num\ \%d\ \ \ \ \ \ \ \ "{}},\ V.response.mesgid);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00171}00171\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(1,\ INFO\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ SEQUENCE\ \%d\ \ \ \ \ \ \ \ \ \ \ "{}},\ V.sequences);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00172}00172\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00173}00173\ \ \ \ \ \textcolor{keywordflow}{case}\ DIS\_TERM:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00174}00174\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(0,\ INFO\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ Terminal\ \%d\ \ \ \ \ \ \ \ \ \ \ \ \ "{}},\ V.response.TID);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00175}00175\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(1,\ INFO\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ CMD\ \%c\ \%c\ Len\ \%d\ \ \ \ \ \ \ \ "{}},\ V.response.mcode,\ V.response.mparm,\ V.response.cmdlen);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00176}00176\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00177}00177\ \ \ \ \ \textcolor{keywordflow}{case}\ DIS\_CLEAR:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00178}00178\ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00179}00179\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(0,\ MAIN\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}});}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00180}00180\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(1,\ MAIN\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}});}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00181}00181\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(0,\ INFO\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}});}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00182}00182\ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(1,\ INFO\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}});}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00183}00183\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00184}00184\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00185}00185\ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00186}00186\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00187}00187\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00188}00188\ \textcolor{comment}{\ *\ update\ possible\ command\ messages\ from\ equipment}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00189}00189\ \textcolor{comment}{\ *\ not\ being\ used\ now}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00190}00190\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00191}00191\ \textcolor{keywordtype}{void}\ MyeaDogM\_WriteStringAtPos(\textcolor{keyword}{const}\ uint8\_t\ r,\ \textcolor{keyword}{const}\ uint8\_t\ c,\ \textcolor{keywordtype}{char}\ *strPtr)}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00192}00192\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00193}00193\ \ \ \ \ wait\_lcd\_done();}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00194}00194\ \ \ \ \ \textcolor{keywordflow}{if}\ (V.response.info\ ==\ DIS\_STR)\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00195}00195\ \ \ \ \ \ \ \ \ eaDogM\_WriteStringAtPos(r,\ c,\ strPtr);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00196}00196\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00197}00197\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (V.response.info\ ==\ DIS\_HELP)\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00198}00198\ \ \ \ \ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(2,\ HELP\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\%s"{}},\ V.info);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00199}00199\ \ \ \ \ \ \ \ \ \ \ \ \ update\_lcd(HELP\_VTERM);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00200}00200\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00201}00201\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((V.response.info\ !=\ DIS\_STR))\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00202}00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ update\_lcd(INFO\_VTERM);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00203}00203\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00204}00204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ snprintf(get\_vterm\_ptr(2,\ MAIN\_VTERM),\ MAX\_TEXT,\ \textcolor{stringliteral}{"{}\%s"{}},\ V.info);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00205}00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ update\_lcd(MAIN\_VTERM);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00206}00206\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00207}00207\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00208}00208\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00209}00209\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((V.response.info\ !=\ DIS\_STR)\ \&\&\ TimerDone(TMR\_INFO))\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00210}00210\ \ \ \ \ \ \ \ \ \ \ \ \ V.response.info\ =\ DIS\_STR;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00211}00211\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00212}00212\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00213}00213\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00214}00214\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00215}00215\ \textcolor{comment}{\ \ \ \ \ *\ this\ is\ for\ possible\ message\ flipping\ with\ the\ HELP\ button}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00216}00216\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00217}00217\ \ \ \ \ \textcolor{keywordflow}{if}\ (D.last\_info\ ==\ DIS\_HELP\ \&\&\ V.response.info\ !=\ DIS\_HELP)\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00218}00218\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ show\ some\ stuff,\ maybe}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00219}00219\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00220}00220\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00221}00221\ \ \ \ \ D.last\_info\ =\ V.response.info;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00222}00222\ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00223}00223\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00224}00224\ \textcolor{keyword}{inline}\ D\_CODES\ display\_info(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00225}00225\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00226}00226\ \ \ \ \ \textcolor{keywordflow}{return}\ V.response.info;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00227}00227\ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00228}00228\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00229}00229\ \textcolor{keyword}{inline}\ D\_CODES\ display\_help(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00230}00230\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00231}00231\ \ \ \ \ \textcolor{keywordflow}{return}\ V.response.help\_temp;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00232}00232\ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00233}00233\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00234}00234\ D\_CODES\ set\_display\_info(\textcolor{keyword}{const}\ D\_CODES\ new\_response\_info)}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00235}00235\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00236}00236\ \ \ \ \ \textcolor{keyword}{static}\ D\_CODES\ old\_info\ =\ DIS\_STR;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00237}00237\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00238}00238\ \ \ \ \ \textcolor{keywordflow}{if}\ (TimerDone(TMR\_INFO))\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00239}00239\ \ \ \ \ \ \ \ \ old\_info\ =\ V.response.info;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00240}00240\ \ \ \ \ \ \ \ \ V.response.info\ =\ new\_response\_info;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00241}00241\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00242}00242\ \ \ \ \ \textcolor{keywordflow}{return}\ old\_info;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00243}00243\ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00244}00244\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00245}00245\ D\_CODES\ set\_temp\_display\_help(\textcolor{keyword}{const}\ D\_CODES\ new\_response\_info)}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00246}00246\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00247}00247\ \ \ \ \ \textcolor{keyword}{static}\ D\_CODES\ old\_info;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00248}00248\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00249}00249\ \ \ \ \ old\_info\ =\ V.response.help\_temp;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00250}00250\ \ \ \ \ V.response.help\_temp\ =\ new\_response\_info;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00251}00251\ \ \ \ \ \textcolor{keywordflow}{return}\ old\_info;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00252}00252\ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00253}00253\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00257}00257\ \textcolor{keywordtype}{void}\ log\_serial(uint8\_t\ *\ data,\ uint16\_t\ len)}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00258}00258\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00259}00259\ \textcolor{preprocessor}{\#ifdef\ DDDD}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00260}00260\ \ \ \ \ uint16\_t\ idx\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00261}00261\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00262}00262\ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00263}00263\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00264}00264\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00265}00265\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00266}00266\ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ ==\ 1\ \&\&\ !V.log\_char)\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00267}00267\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00268}00268\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00269}00269\ \ \ \ \ RELAY0\_SetHigh();}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00270}00270\ \ \ \ \ \textcolor{keywordflow}{while}\ (len-\/-\/)\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00271}00271\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (UART3\_is\_tx\_ready())\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00272}00272\ \ \ \ \ \ \ \ \ \ \ \ \ UART3\_Write(data[idx++]);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00273}00273\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00274}00274\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!UART3\_is\_tx\_ready())\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00275}00275\ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00276}00276\ \ \ \ \ \ \ \ \ \ \ \ \ UART3\_Write(data[idx++]);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00277}00277\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00278}00278\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00279}00279\ \ \ \ \ RELAY0\_SetLow();}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00280}00280\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00281}00281\ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00282}00282\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00290}\mbox{\hyperlink{mconfig_8c_a914644e400a0b8a58f027b2d57842838}{00290}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{mconfig_8c_a914644e400a0b8a58f027b2d57842838}{logging\_cmds}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00291}00291\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00292}00292\ \textcolor{preprocessor}{\#ifdef\ DDDD}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00293}00293\ \ \ \ \ \textcolor{keyword}{static}\ uint8\_t\ value[]\ =\ \{0,\ 0,\ 0,\ 0\},\ vi\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00294}00294\ \ \ \ \ \textcolor{keyword}{static}\ uint8\_t\ utc\_value[DEF\_TIME\_SIZE]\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00295}00295\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ utc\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00296}00296\ \ \ \ \ uint8\_t\ vcmd\_size\ =\ \textcolor{keyword}{sizeof}(value),\ rxData\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00297}00297\ \ \ \ \ uint8\_t\ utc\_vcmd\_size\ =\ DEF\_TIME\_SIZE\ -\/\ 1;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00298}00298\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00299}00299\ \ \ \ \ \textcolor{keywordflow}{if}\ (UART3\_is\_rx\_ready())\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00300}00300\ \ \ \ \ \ \ \ \ rxData\ =\ UART3\_Read();}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00301}00301\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00302}00302\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (rxData)\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00303}00303\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'0'}:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00304}00304\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'1'}:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00305}00305\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'2'}:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00306}00306\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'3'}:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00307}00307\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'4'}:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00308}00308\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'5'}:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00309}00309\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'6'}:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00310}00310\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'7'}:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00311}00311\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'8'}:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00312}00312\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'9'}:}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00313}00313\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!utc)\ \{\ \textcolor{comment}{//\ process\ power\ cmds}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00314}00314\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vi\ <\ vcmd\_size)\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00315}00315\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ value[vi++]\ =\ rxData\ -\/\ 48;\ \textcolor{comment}{//\ ascii\ '0'}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00316}00316\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00317}00317\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00318}00318\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{\ \textcolor{comment}{//\ process\ UTC\ time\ from\ host\ cmds}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00319}00319\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vi\ <\ utc\_vcmd\_size)\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00320}00320\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ utc\_value[vi++]\ =\ rxData;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00321}00321\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00322}00322\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00323}00323\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00324}00324\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00325}00325\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'T'}:\ \textcolor{comment}{//\ begin\ UTC\ value}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00326}00326\ \ \ \ \ \ \ \ \ \ \ \ \ utc\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00327}00327\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00328}00328\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'t'}:\ \textcolor{comment}{//\ end\ UTC\ value}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00329}00329\ \ \ \ \ \ \ \ \ \ \ \ \ utc\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00330}00330\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vi\ >=\ utc\_vcmd\_size)\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00331}00331\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ vi\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00332}00332\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ utc\_value[10]\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00333}00333\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ V.utc\_cmd\_value\ =\ (time\_t)\ atol((\textcolor{keywordtype}{char}\ *)\ utc\_value);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00334}00334\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00335}00335\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (V.utc\_cmd\_value\ <\ DEF\_TIME)\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00336}00336\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ V.utc\_cmd\_value\ =\ DEF\_TIME;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00337}00337\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00338}00338\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ set\_time(V.utc\_cmd\_value);}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00339}00339\ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00340}00340\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00341}00341\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'V'}:\ \textcolor{comment}{//\ begin\ number\ value}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00342}00342\ \ \ \ \ \ \ \ \ \ \ \ \ vi\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00343}00343\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00344}00344\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'X'}:\ \textcolor{comment}{//\ end\ number\ value}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00345}00345\ \ \ \ \ \ \ \ \ \ \ \ \ utc\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00346}00346\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vi\ >=\ vcmd\_size)\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00347}00347\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ vi\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00348}00348\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ V.cmd\_value\ =\ value[0]*1000\ +\ value\ [1]*100\ +\ value[2]*10\ +\ value[3];}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00349}00349\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (V.cmd\_value\ >\ SECS\_MAX)\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00350}00350\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ V.cmd\_value\ =\ SECS\_MAX;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00351}00351\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00352}00352\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (V.cmd\_value\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00353}00353\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ V.cmd\_value\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00354}00354\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00355}00355\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ INTERRUPT\_GlobalInterruptLowDisable();\ \textcolor{comment}{//\ 16-\/bit\ atomic\ update}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00356}00356\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ V.secs\_value\ =\ V.cmd\_value;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00357}00357\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ INTERRUPT\_GlobalInterruptLowEnable();}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00358}00358\ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00359}00359\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00360}00360\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'Z'}:\ \textcolor{comment}{//\ zero}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00361}00361\ \ \ \ \ \ \ \ \ \ \ \ \ utc\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00362}00362\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00363}00363\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'A'}:\ \textcolor{comment}{//\ set\ abort\ logging}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00364}00364\ \ \ \ \ \ \ \ \ \ \ \ \ utc\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00365}00365\ \ \ \ \ \ \ \ \ \ \ \ \ V.log\_abort\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00366}00366\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00367}00367\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'C'}:\ \textcolor{comment}{//\ set\ one\ character\ logging}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00368}00368\ \ \ \ \ \ \ \ \ \ \ \ \ utc\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00369}00369\ \ \ \ \ \ \ \ \ \ \ \ \ V.log\_char\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00370}00370\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00371}00371\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'S'}:\ \textcolor{comment}{//\ set\ secs\ logging}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00372}00372\ \ \ \ \ \ \ \ \ \ \ \ \ utc\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00373}00373\ \ \ \ \ \ \ \ \ \ \ \ \ V.log\_s6f11\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00374}00374\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00375}00375\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'O'}:\ \textcolor{comment}{//\ shutdown\ extra\ logging}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00376}00376\ \ \ \ \ \ \ \ \ \ \ \ \ utc\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00377}00377\ \ \ \ \ \ \ \ \ \ \ \ \ V.log\_abort\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00378}00378\ \ \ \ \ \ \ \ \ \ \ \ \ V.log\_s6f11\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00379}00379\ \ \ \ \ \ \ \ \ \ \ \ \ V.log\_char\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00380}00380\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00381}00381\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'\#'}:\ \textcolor{comment}{//\ execute\ command\ symbol}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00382}00382\ \ \ \ \ \ \ \ \ \ \ \ \ utc\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00383}00383\ \ \ \ \ \ \ \ \ \ \ \ \ INTERRUPT\_GlobalInterruptHighDisable();}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00384}00384\ \ \ \ \ \ \ \ \ \ \ \ \ INTERRUPT\_GlobalInterruptLowDisable();\ \textcolor{comment}{//\ 16-\/bit\ atomic\ update}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00385}00385\ \ \ \ \ \ \ \ \ \ \ \ \ V.secs\_value\ =\ V.cmd\_value;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00386}00386\ \ \ \ \ \ \ \ \ \ \ \ \ INTERRUPT\_GlobalInterruptLowEnable();}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00387}00387\ \ \ \ \ \ \ \ \ \ \ \ \ INTERRUPT\_GlobalInterruptHighEnable();}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00388}00388\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00389}00389\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:\ \textcolor{comment}{//\ eat\ extra\ characters}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00390}00390\ \ \ \ \ \ \ \ \ \ \ \ \ utc\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00391}00391\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (UART3\_is\_rx\_ready())\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00392}00392\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rxData\ =\ UART3\_Read();}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00393}00393\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00394}00394\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00395}00395\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00396}00396\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00397}00397\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00398}00398\ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00399}00399\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00400}00400\ \textcolor{keywordtype}{void}\ set\_time(\textcolor{keyword}{const}\ time\_t\ t)}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00401}00401\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00402}00402\ \ \ \ \ PIE8bits.TMR5IE\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00403}00403\ \ \ \ \ V.utc\_ticks\ =\ t;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00404}00404\ \ \ \ \ PIE8bits.TMR5IE\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00405}00405\ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00406}00406\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00410}\mbox{\hyperlink{mconfig_8c_ae7841e681c8c9d59818568d39553642c}{00410}}\ time\_t\ \mbox{\hyperlink{mconfig_8c_ae7841e681c8c9d59818568d39553642c}{time}}(time\_t\ *\ t)}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00411}00411\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00412}00412\ \ \ \ \ \textcolor{keyword}{static}\ time\_t\ current\_time;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00413}00413\ }
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00414}00414\ \ \ \ \ PIE8bits.TMR5IE\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00415}00415\ \ \ \ \ current\_time\ =\ V.utc\_ticks;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00416}00416\ \ \ \ \ PIE8bits.TMR5IE\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00417}00417\ \ \ \ \ \textcolor{keywordflow}{if}\ (t)\ \{}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00418}00418\ \ \ \ \ \ \ \ \ t\ =\ \&current\_time;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00419}00419\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00420}00420\ \ \ \ \ \textcolor{keywordflow}{return}\ current\_time;}
+\DoxyCodeLine{\Hypertarget{mconfig_8c_source_l00421}00421\ \}}
+
+\end{DoxyCode}

@@ -1,7 +1,23 @@
 var annotated_dup =
 [
     [ "B_type", "structB__type.html", null ],
+    [ "BM_type", "structBM__type.html", null ],
+    [ "C_data", "structC__data.html", null ],
     [ "D_data", "structD__data.html", null ],
+    [ "EB_data", "structEB__data.html", null ],
+    [ "EM_data1", "structEM__data1.html", null ],
+    [ "EM_data2", "structEM__data2.html", null ],
+    [ "EM_serial", "structEM__serial.html", null ],
+    [ "EM_version", "structEM__version.html", null ],
+    [ "M_data", "structM__data.html", null ],
+    [ "M_time_data", "structM__time__data.html", null ],
+    [ "MREG", "unionMREG.html", null ],
+    [ "MREG32", "unionMREG32.html", null ],
+    [ "MREG64", "unionMREG64.html", null ],
+    [ "mx_log_packed_t", "structmx__log__packed__t.html", null ],
+    [ "mx_logpage_t", "structmx__logpage__t.html", null ],
+    [ "mx_status_packed_t", "structmx__status__packed__t.html", null ],
+    [ "PWMDC", "unionPWMDC.html", null ],
     [ "ringBufS_t", "structringBufS__t.html", null ],
     [ "serial_buffer_type_ss", "structserial__buffer__type__ss.html", null ],
     [ "spi1_configuration_t", "structspi1__configuration__t.html", null ],
@@ -12,6 +28,8 @@ var annotated_dup =
     [ "terminal_type", "structterminal__type.html", null ],
     [ "uart1_status_t", "unionuart1__status__t.html", null ],
     [ "uart2_status_t", "unionuart2__status__t.html", null ],
+    [ "uart3_status_t", "unionuart3__status__t.html", null ],
     [ "V_data", "structV__data.html", null ],
-    [ "V_help", "structV__help.html", null ]
+    [ "V_help", "structV__help.html", null ],
+    [ "VM_type", "structVM__type.html", null ]
 ];

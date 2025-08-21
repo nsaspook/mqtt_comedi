@@ -6,6 +6,8 @@ var dir_35306a237702b3dcc5b9e62222685f1e =
     [ "main.p1.d", "main_8p1_8d_source.html", null ],
     [ "mc33996.p1.d", "mc33996_8p1_8d_source.html", null ],
     [ "mconfig.p1.d", "mconfig_8p1_8d_source.html", null ],
+    [ "modbus_master.p1.d", "modbus__master_8p1_8d_source.html", null ],
+    [ "mxcmd.p1.d", "mxcmd_8p1_8d_source.html", null ],
     [ "rs232.p1.d", "rs232_8p1_8d_source.html", null ],
     [ "slaveo.p1.d", "slaveo_8p1_8d_source.html", null ],
     [ "tic12400.p1.d", "tic12400_8p1_8d_source.html", null ],

@@ -4,5 +4,6 @@ var vconfig_8h =
     [ "B_type", "structB__type.html", null ],
     [ "terminal_type", "structterminal__type.html", null ],
     [ "V_data", "structV__data.html", null ],
-    [ "V_help", "structV__help.html", null ]
+    [ "V_help", "structV__help.html", null ],
+    [ "EB_data", "structEB__data.html", null ]
 ];
