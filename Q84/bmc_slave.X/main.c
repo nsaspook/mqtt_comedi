@@ -196,6 +196,7 @@ typedef signed long long int24_t;
 
 extern volatile struct spi_link_type spi_link;
 static const char *build_date = __DATE__, *build_time = __TIME__;
+const char text_test[] = {"the quick brown fox jumps over the lazy dogs back"};
 
 const char * BMC_TEXT [] = {
 	"DISABLE",
@@ -291,6 +292,8 @@ volatile struct serial_buffer_type_ss serial_buffer_ss = {
 
 volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0, channel = 0, upper;
 volatile uint16_t adc_buffer[AI_BUFFER_NUM] = {0}, adc_data_in = 0, out_buf = 0;
+uint16_t volt_whole, bat_amp_whole = AMP_WHOLE_ZERO, panel_watts, volt_fract, vf, vw;
+uint8_t fw_state = 0;
 
 volatile uint16_t tickCount[TMR_COUNT] = {0};
 volatile uint8_t mode_sw = false, faker;
@@ -326,7 +329,7 @@ enum state_type {
 static uint16_t abuf[FM_BUFFER], cbuf[FM_BUFFER + 2];
 volatile enum state_type state = state_init;
 volatile uint16_t cc_mode = STATUS_LAST, mx_code = 0x00;
-char buffer[MAX_B_BUF], log_buffer[MAX_B_BUF];
+volatile char buffer[MAX_B_BUF], log_buffer[MAX_B_BUF];
 volatile struct bmc_buffer_type BMC4 = {
 	.log_buffer = log_buffer,
 	.buffer = buffer,
@@ -336,6 +339,22 @@ struct tm *bmc_newtime;
 
 static void send_mx_cmd(const uint16_t *);
 static void rec_mx_cmd(void (* DataHandler)(void), const uint8_t);
+/*
+ * callbacks to handle FM80 register data
+ */
+void state_init_cb(void);
+void state_status_cb(void);
+void state_panelv_cb(void);
+void state_batteryv_cb(void);
+void state_batterya_cb(void);
+void state_watts_cb(void);
+void state_misc_cb(void);
+void state_mx_status_cb(void);
+void state_mx_log_cb(void);
+static void state_fwrev_cb(void);
+static void state_time_cb(void);
+static void state_date_cb(void);
+
 void bmc_logger(void);
 
 /** \file main.c
@@ -402,74 +421,9 @@ void main(void)
 	TMR6_SetInterruptHandler(FM_io);
 	TMR0_SetInterruptHandler(test_slave);
 	TMR0_StartTimer();
+	TMR1_SetInterruptHandler(FM_tensec_io);
+	TMR1_StartTimer();
 
-
-
-#ifdef FLIP_SERIAL
-	/** Speed locking setup code.
-	 * Use a few EEPROM bytes to cycle or lock the serial port baud rate
-	 * during a power-up.
-	 * 9600 and 115200 are the normal speeds for serial communications
-	 */
-	V.speed_spin = DATAEE_ReadByte(UART_SPEED_LOCK_EADR);
-	V.uart_speed_fast = DATAEE_ReadByte(UART_SPEED_EADR);
-	DATAEE_WriteByte(UART_SPEED_LOCK_EADR, temp_lock);
-	DATAEE_WriteByte(UART_SPEED_EADR, V.uart_speed_fast + 1);
-
-	if (V.uart_speed_fast % 2 == 0) { // Even/Odd selection for just two speeds
-		speed_text = "Locked 9600bps";
-	} else {
-		speed_text = "Locked 115200bps";
-	}
-	// as soon as you see all LEDS ON, power down, quickly POWER CYCLE to LOCK baud rate
-	MLED_SetHigh();
-	RLED_SetHigh();
-	DLED_SetHigh();
-	WaitMs(TDELAY);
-	RLED_SetLow(); // start complete power-up serial speed setups, LEDS OFF
-	MLED_SetLow();
-	DLED_SetLow();
-
-	temp_lock = true;
-	if (V.speed_spin) { // update the speed lock status byte
-		DATAEE_WriteByte(UART_SPEED_LOCK_EADR, temp_lock);
-	}
-	DATAEE_WriteByte(UART_SPEED_EADR, V.uart_speed_fast); // update the speed setting byte
-
-	if (V.speed_spin) { // serial speed with alternate with every power cycle
-		/*
-		 * get saved state of serial speed flag
-		 */
-		V.uart_speed_fast = DATAEE_ReadByte(UART_SPEED_EADR);
-		if (V.uart_speed_fast == 0xFF) { // programmer fill number
-			V.uart_speed_fast = 0;
-			DATAEE_WriteByte(UART_SPEED_EADR, V.uart_speed_fast); // start at zero
-		}
-		if (V.uart_speed_fast % 2 == 0) {
-			UART2_Initialize115200();
-			UART1_Initialize115200();
-			speed_text = "115200bps";
-		} else {
-			UART2_Initialize();
-			UART1_Initialize();
-			speed_text = "9600bps";
-		}
-		/*
-		 * ALternate the speed setting with each restart
-		 */
-		DATAEE_WriteByte(UART_SPEED_EADR, ++V.uart_speed_fast);
-		DATAEE_WriteByte(UART_SPEED_LOCK_EADR, V.speed_spin);
-	} else { // serial port speed is locked
-		V.uart_speed_fast = DATAEE_ReadByte(UART_SPEED_EADR); // just read and set the speed setting
-		if (V.uart_speed_fast % 2 == 0) {
-			UART2_Initialize();
-			UART1_Initialize();
-		} else {
-			UART2_Initialize115200();
-			UART1_Initialize115200();
-		}
-	}
-#else
 	speed_text = "Locked 115200bps";
 	//    UART2_Initialize115200();
 	UART1_Initialize115200();
@@ -477,7 +431,6 @@ void main(void)
 	RLED_SetLow(); // start complete power-up serial speed setups, LEDS OFF
 	MLED_SetLow();
 	DLED_SetLow();
-#endif
 
 	/*
 	 * master processing I/O loop
@@ -495,6 +448,77 @@ void main(void)
 		master_controller_work(&C); // master MODBUS processing
 		TP1_SetHigh();
 #endif
+		/*
+		 * FM80 processing state machine
+		 */
+		switch (state) {
+		case state_init:
+			send_mx_cmd(cmd_id);
+			rec_mx_cmd(state_init_cb, REC_LEN);
+			break;
+		case state_status:
+			send_mx_cmd(cmd_status);
+			rec_mx_cmd(state_status_cb, REC_LEN);
+			break;
+		case state_panel:
+			send_mx_cmd(cmd_panelv);
+			rec_mx_cmd(state_panelv_cb, REC_LEN);
+			break;
+		case state_batteryv:
+			send_mx_cmd(cmd_batteryv);
+			rec_mx_cmd(state_batteryv_cb, REC_LEN);
+			break;
+		case state_batterya:
+			send_mx_cmd(cmd_batterya);
+			rec_mx_cmd(state_batterya_cb, REC_LEN);
+			break;
+		case state_watts:
+			send_mx_cmd(cmd_watts);
+			rec_mx_cmd(state_watts_cb, REC_LEN);
+			break;
+		case state_mx_status: // wait for ten second flag in this state for logging
+			send_mx_cmd(cmd_mx_status);
+			rec_mx_cmd(state_mx_status_cb, REC_STATUS_LEN);
+			break;
+		case state_fwrev:
+			switch (fw_state) {
+			case 0:
+				send_mx_cmd(cmd_fwreva);
+				rec_mx_cmd(state_fwrev_cb, REC_LEN);
+				break;
+			case 1:
+				send_mx_cmd(cmd_fwrevb);
+				rec_mx_cmd(state_fwrev_cb, REC_LEN);
+				break;
+			case 2:
+				send_mx_cmd(cmd_fwrevc);
+				rec_mx_cmd(state_fwrev_cb, REC_LEN);
+			default:
+				fw_state = 0;
+				break;
+			}
+			break;
+		case state_mx_log: // FM80 log data
+			send_mx_cmd(cmd_mx_log);
+			rec_mx_cmd(state_mx_log_cb, REC_LOG_LEN);
+			break;
+		case state_time: // FM80 send time data
+			send_mx_cmd(cmd_time);
+			rec_mx_cmd(state_time_cb, REC_LEN);
+			break;
+		case state_date: // FM80 send date data
+			send_mx_cmd(cmd_date);
+			rec_mx_cmd(state_date_cb, REC_LEN);
+			break;
+		case state_misc:
+			send_mx_cmd(cmd_misc);
+			rec_mx_cmd(state_misc_cb, REC_LEN);
+			break;
+		default:
+			send_mx_cmd(cmd_id);
+			rec_mx_cmd(state_init_cb, REC_LEN);
+			break;
+		}
 
 		/*
 		 * protocol state machine
@@ -743,25 +767,27 @@ void main(void)
 				static uint8_t upd = 0;
 
 				set_vterm(MAIN_VTERM);
-				snprintf(strPtr, MAX_TEXT, "%.2X %s", upd++, serial_buffer_ss.r_string);
+				//				snprintf(strPtr, MAX_TEXT, "%.2X %s", upd++, serial_buffer_ss.r_string);
 				if (C.serial_ok) {
 					switch (serial_buffer_ss.r_string_chan) {
-					case 2:
-						snprintf(strPtr, MAX_TEXT, "V%ld A%3.2f VAR%ld                  ", em.vl1l2, ((float) em.al1) / 1000.0f, em.varl1);
-						break;
-					case 3:
-						snprintf(strPtr, MAX_TEXT, "W%ld VA%ld P%d             ", em.wl1, em.val1, em.pfsys);
+					case 0:
+						bmc_logger();
+						if (true || bmc_string_ready) {
+							snprintf(strPtr, 22, "%s                      ", &BMC4.log_buffer[2]);
+						} else {
+							snprintf(strPtr, MAX_TEXT, "%s %d                 ", ems.serial, ems.year);
+						}
 						break;
 					case 1:
 						snprintf(strPtr, MAX_TEXT, "FW 0X%X PL1%d                   ", emv.firmware, em.pfl1);
 						break;
-					case 0:
-						if (!update_bmc_string[BMC_EM540_DATA]) {
-							snprintf(strPtr, MAX_TEXT, "%s %d                 ", ems.serial, ems.year);
-						} else {
-							snprintf(strPtr, 22, "%s                      ", &log_buffer[2]);
-						}
-						bmc_logger();
+					case 2:
+						snprintf(strPtr, MAX_TEXT, "V%ld A%3.2f %d.%01d                 ", em.vl1l2, ((float) em.al1) / 1000.0f, vw, vf);
+						break;
+					case 3:
+						snprintf(strPtr, MAX_TEXT, "W%ld VA%ld P%d             ", em.wl1, em.val1, em.pfsys);
+						break;
+					default:
 						break;
 					}
 				}
@@ -1053,22 +1079,270 @@ static void rec_mx_cmd(void (* DataHandler)(void), const uint8_t rec_len)
 }
 
 /*
- * send the EM540 measurement data to the OPi
+ * format data to CSV format
  */
 void bmc_logger(void)
 {
-	if (update_bmc_string[BMC_EM540_DATA]) {
-		bmc_newtime = localtime((void *) &V.utc_ticks);
-		snprintf(buffer, 25, "%s", asctime(bmc_newtime)); // the log_buffer uses this string in LOG_VARS
-		buffer[DTG_LEN] = 0; // remove newline
-		snprintf(log_buffer, MAX_B_BUF, log_format, LOG_VARS);
-		BMC4.log_buffer = log_buffer;
-		BMC4.len = strlen(log_buffer);
-		BMC4.pos = 0;
-		BMC4.bmc_flag = true;
-		update_bmc_string[BMC_EM540_DATA] = false; // CHAR_GET_BYTES
+	//	if (update_bmc_string) {
+	bmc_newtime = localtime((void *) &V.utc_ticks);
+	snprintf((char*) buffer, 25, "%s", asctime(bmc_newtime)); // the log_buffer uses this string in LOG_VARS
+	buffer[DTG_LEN] = 0; // remove newline
+	snprintf((char*) log_buffer, MAX_B_BUF, log_format, LOG_VARS);
+	log_buffer[20] = 0;
+	BMC4.log_buffer = &log_buffer[0];
+	BMC4.len = 20;
+	BMC4.pos = 0;
+	BMC4.bmc_flag = true;
+	bmc_string_ready = true; // CHAR_GO_BYTES
+}
+//}
+
+/*
+ * display  div 10 integer to fraction without FP
+ * vw  volt_whole, volt_fract
+ */
+static void volt_f(const uint16_t voltage)
+{
+	volt_fract = (uint16_t) abs(voltage % 10);
+	volt_whole = voltage / 10;
+}
+
+void state_init_cb(void)
+{
+	float Soc;
+	static uint8_t off_delay = 0;
+
+	mx_code = abuf[2]&0xf;
+	if (mx_code == FM80_ID) {
+		BM.FM80_online = true;
+		off_delay = 0;
+	} else {
+		if (off_delay++ > 3) {
+			BM.FM80_online = false;
+			cc_mode = STATUS_LAST;
+		}
 	}
-	bmc_string_ready[BMC_EM540_DATA] = false; // CHAR_GO_BYTES
+	state = state_status;
+}
+
+void state_batteryv_cb(void)
+{
+	volt_f((abuf[2] + (abuf[1] << 8)));
+#ifdef debug_data
+	printf("%5d: %3x %3x %3x %3x %3x   DATA: Battery Voltage %d.%01dVDC\r\n", rx_count++, abuf[0], abuf[1], abuf[2], abuf[3], abuf[4], volt_whole, volt_fract);
+#endif
+	state = state_batterya;
+}
+
+void state_batterya_cb(void)
+{
+	volt_f((abuf[2] + (abuf[1] << 8)));
+#ifdef debug_data
+	printf("%5d: %3x %3x %3x %3x %3x   DATA: Battery Amps %dADC\r\n", rx_count++, abuf[0], abuf[1], abuf[2], abuf[3], abuf[4], abuf[2] - 128);
+#endif
+	state = state_watts;
+}
+
+static void state_fwrev_cb(void)
+{
+	BM.fwrev[fw_state++] = abuf[2];
+	if (!C.tm_ok) {
+		state = state_misc;
+	} else {
+		C.tm_ok = false;
+		state = state_time;
+	}
+}
+
+static void state_time_cb(void)
+{
+#ifdef SDEBUG
+	char s_buffer[22];
+	snprintf(s_buffer, 21, "Time CSum %X        ", calc_checksum((uint8_t *) & cmd_time[1], 10));
+	eaDogM_Scroll_String(s_buffer);
+#endif
+	state = state_date;
+}
+
+static void state_date_cb(void)
+{
+#ifdef SDEBUG
+	char s_buffer[22];
+	snprintf(s_buffer, 21, "Date CSum %X        ", calc_checksum((uint8_t *) & cmd_date[1], 10));
+	eaDogM_Scroll_String(s_buffer);
+#endif
+	state = state_misc;
+}
+
+/*
+ * testing online status while waiting for 10 second flag callback
+ */
+void state_misc_cb(void)
+{
+	if (mx_code == FM80_ID) { // only set FM80 offline here
+	} else {
+		BM.FM80_online = false;
+		cc_mode = STATUS_LAST;
+		state = state_init;
+		return;
+	}
+	if (!BM.ten_sec_flag) {
+		state = state_misc;
+	} else {
+		state = state_status;
+	}
+}
+
+void state_mx_log_cb(void)
+{
+	BM.log.volts_peak = (int16_t) cbuf[5];
+	BM.log.day = (int16_t) cbuf[14];
+	BM.log.kilowatt_hours = (int16_t) (((uint16_t) (cbuf[3] & 0xF0) >> 4) | (uint16_t) (cbuf[4] << 4));
+	BM.log.kilowatts_peak = (int16_t) (((uint16_t) (cbuf[13] & 0xFC) >> 2) | (uint16_t) (cbuf[12] << 6));
+	BM.log.bat_max = (int16_t) (((uint16_t) (cbuf[2] & 0xFC) >> 2) | (uint16_t) ((cbuf[3] & 0x0F) << 6));
+	BM.log.bat_min = (int16_t) (((uint16_t) (cbuf[10] & 0xC0) >> 6) | (uint16_t) ((cbuf[11] << 2) | ((cbuf[12] & 0x03) << 10)));
+	BM.log.amps_peak = (int16_t) (cbuf[1] | ((cbuf[2] & 0x03) << 8));
+	BM.log.amp_hours = (int16_t) (cbuf[9] | ((cbuf[10] & 0x3F) << 8));
+	BM.log.absorb_time = (int16_t) (cbuf[6] | ((cbuf[7] & 0x0F) << 8));
+	BM.log.float_time = (int16_t) (((cbuf[7] & 0xF0) >> 4) | (cbuf[8] << 4));
+
+	cmd_mx_log[5] = BM.log.select;
+	cmd_mx_log[7] = 0x16 + BM.log.select; // update the checksum
+
+	state = state_mx_status;
+}
+
+void state_watts_cb(void)
+{
+#ifdef debug_data
+	printf("%5d: %3x %3x %3x %3x %3x   DATA: Panel Watts %iW\r\n", rx_count++, abuf[0], abuf[1], abuf[2], abuf[3], abuf[4], (abuf[2] + (abuf[1] << 8)));
+#endif
+	panel_watts = (abuf[2] + (abuf[1] << 8));
+	if (BM.FM80_online) {
+		state = state_mx_log; // only get log data once state_init_cb has run
+	} else {
+		state = state_mx_status;
+	}
+}
+
+void state_mx_status_cb(void)
+{
+	volt_f((abuf[11] + (abuf[10] << 8))); // set battery voltage here in volt_whole and volt_frac
+	vw = volt_whole;
+	vf = volt_fract;
+	volt_f((abuf[13] + (abuf[12] << 8))); // set panel voltage here in volt_whole and volt_frac
+	if ((abuf[1] &0x0f) > 9) { // check for whole Amp
+		abuf[2]++; // add extra Amp for fractional overflow.
+		abuf[1] = (abuf[1]&0x0f) - 10;
+	}
+	if (BM.FM80_online) { // don't update when offline
+		bat_amp_whole = abuf[3] - 128;
+	}
+#ifdef debug_data
+	printf("%5d: %3x %3x %3x %3x %3x  SDATA: FM80 Data mode %3x %3x %3x %3x %3x %3x %3x %3x %3x\r\n",
+		rx_count++, abuf[0], abuf[1], abuf[2], abuf[3], abuf[4], abuf[5], abuf[6], abuf[7], abuf[8], abuf[9], abuf[10], abuf[11], abuf[12], abuf[13]);
+#endif
+
+	if (BM.ten_sec_flag) {
+		BM.ten_sec_flag = false;
+		if (BM.FM80_online || BM.modbus_online) { // log for MX80 and EM540
+			MM_ERROR_C;
+			/*
+			 * log CSV values to the comm ports for data storage and processing
+			 */
+			BM.run_time = lp_filter(BM.run_time, F_run, false); // smooth run-time
+			//			snprintf(buffer, 25, "%s", asctime(can_newtime)); // the log_buffer uses this string in LOG_VARS
+			//			buffer[DTG_LEN] = 0; // remove newline
+			//			snprintf(log_buffer, MAX_B_BUF, log_format, LOG_VARS);
+			//			printf("%s", log_buffer); // log to USART
+			if (BM.FM80_online) {
+				bat_amp_whole = abuf[3] - 128;
+			}
+
+			switch (BM.alt_display) {
+			case 3:
+
+				break;
+			case 2:
+
+				break;
+			case 1:
+
+				break;
+			case 0:
+			default:
+
+				break;
+			}
+
+			//			snprintf(info_buffer, MAX_B_BUF, " Data OK\r\n");
+		}
+	}
+	state = state_fwrev;
+}
+
+void state_status_cb(void)
+{
+	static uint16_t day_clocks = 0;
+	static uint8_t status_prev = STATUS_SLEEPING;
+
+#ifdef debug_data
+	printf("%5d: %3x %3x %3x %3x %3x STATUS: FM80 %s mode\r\n", rx_count++, abuf[0], abuf[1], abuf[2], abuf[3], abuf[4], state_name[abuf[2]]);
+#endif
+
+	/*
+	 * check for the start and end of a solar production day
+	 * sets update flag if day state changes and has day change charge controllers
+	 * status in pv_prev variable
+	 */
+
+	/*
+	 * once a day/night event has happened wait for a long while until the next change
+	 * clear event counter timer 10s ticks
+	 */
+	if (BM.day_check++ > CHK_DAY_TIME) {
+		BM.day_check = 0;
+		BM.once = false;
+	}
+
+	if (FMxx_STATE != STATUS_SLEEPING) {
+		if (++day_clocks > BAT_DAY_COUNT) {
+			day_clocks = 0;
+			if (!BM.once && (BM.pv_prev == STATUS_SLEEPING)) { // check sun on PV and trigger a daily energy update
+				BM.day_check = 0;
+				BM.pv_update = true;
+				BM.pv_prev = FMxx_STATE;
+				BM.once = true;
+			}
+			BM.pv_high = true;
+		}
+	} else {
+		if (++day_clocks > BAT_NIGHT_COUNT) {
+			day_clocks = 0;
+			if (!BM.once && (BM.pv_prev != STATUS_SLEEPING)) { // check for night and update day totals
+				BM.day_check = 0;
+				BM.pv_update = true;
+				BM.pv_prev = FMxx_STATE;
+				BM.once = true;
+			}
+			BM.pv_high = false;
+		}
+
+	}
+	if (BM.FM80_online) { // don't update when offline
+		cc_mode = FMxx_STATE;
+	} else {
+		cc_mode = STATUS_LAST;
+	}
+	state = state_watts;
+}
+
+void state_panelv_cb(void)
+{
+#ifdef debug_data
+	printf("%5d: %3x %3x %3x %3x %3x   DATA: Panel Voltage %iVDC\r\n", rx_count++, abuf[0], abuf[1], abuf[2], abuf[3], abuf[4], (abuf[2] + (abuf[1] << 8)));
+#endif
+	state = state_batteryv;
 }
 /**
  End of File

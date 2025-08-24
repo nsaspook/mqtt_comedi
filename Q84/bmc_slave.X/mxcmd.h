@@ -128,8 +128,19 @@ extern "C" {
 		mx_logpage_t log;
 	} BM_type;
 
-	extern void onesec_io(void);
-	extern void tensec_io(void);
+	typedef struct BF_type {
+		volatile bool ten_sec_flag, one_sec_flag, FM80_charged, pv_high, pv_update, once, a_switch[D_SW_COUNT], a_trigger[D_SW_COUNT], a_type[D_SW_COUNT];
+		volatile uint16_t pacing, rx_count, flush, pv_prev, day_check, node_id, dim_delay;
+		volatile bool FM80_online, FM80_io, LOG, display_dim, display_update, display_on;
+		volatile uint8_t canbus_online, modbus_online, alt_display, a_pin[D_SW_COUNT];
+		float run_time, net_balance;
+		uint16_t mui[10];
+		uint16_t fwrev[3];
+		mx_logpage_t log;
+	} BF_type;
+
+	extern void FM_onesec_io(void);
+	extern void FM_tensec_io(void);
 	extern void FM_io(void);
 	extern uint8_t FM_tx(const uint16_t *, const uint8_t);
 	extern bool FM_tx_empty(void);

@@ -125,9 +125,9 @@ extern "C" {
 	volatile bool failure;
 	extern volatile uint8_t in_buf1, in_buf2, in_buf3;
 	extern volatile uint8_t tmp_buf;
-	extern volatile bool r_string_ready, bmc_string_ready[8], update_bmc_string[8];
+	extern volatile bool r_string_ready, bmc_string_ready, update_bmc_string;
 	extern volatile struct bmc_buffer_type BMC4;
-	extern char buffer[MAX_BMC_BUF], log_buffer[MAX_BMC_BUF];
+	extern volatile char buffer[MAX_BMC_BUF], log_buffer[MAX_BMC_BUF];
 
 	void check_slaveo(void);
 	void init_slaveo(void);

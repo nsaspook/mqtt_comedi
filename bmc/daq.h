@@ -24,9 +24,10 @@ extern "C" {
 #define BAC_C   10
 
 #define LPCHANC        16
-#define STX		2
-	
-#define SLOW_TEXT	1
+#define STX  2
+
+#define SLOW_TEXT 1
+#define SLOW_DATA 1
 #define MAX_STRLEN      20
 
 #define JUST_BITS false
@@ -99,9 +100,19 @@ extern "C" {
 		char * BNAME;
 	} __attribute__((packed)) bmctype;
 
+	struct bmc_buffer_type {
+		volatile uint32_t *log_buffer;
+		volatile char *buffer;
+		volatile uint16_t len, pos;
+		volatile bool bmc_flag;
+	};
+
 	extern volatile struct bmcdata bmc;
 	extern uint32_t datain, serial_buf;
 	extern union dio_buf_type obits;
+	extern uint32_t daq_bmc_data[SYSLOG_SIZ];
+	extern char daq_bmc_data_text[SYSLOG_SIZ];
+	extern struct bmc_buffer_type BMC4;
 
 	extern int maxdata_ai, ranges_ai, channels_ai;
 	extern int maxdata_ao, ranges_ao, channels_ao;

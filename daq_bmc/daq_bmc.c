@@ -1255,6 +1255,24 @@ static void serialWriteOPi(struct comedi_device *dev,
 		bmc_spi_exchange(dev, packet);
 	}
 
+	kfree(packet);
+}
+
+/*
+ * returns data from the BMC data buffer
+ */
+static int32_t daqbmc_sio_get_sample(struct comedi_device *dev,
+	struct comedi_subdevice *s)
+{
+	struct daqbmc_private *devpriv = dev->private;
+	uint32_t chan = 4;
+	int32_t val = 0;
+
+	struct bmc_packet_type *packet = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC);
+	if (!packet) {
+		return 0;
+	}
+
 	// always check for received data
 	packet->bmc_byte_t[BMC_CMD] = CMD_CHAR_GET;
 	packet->bmc_byte_t[BMC_D0] = BMC_D0;
@@ -1267,13 +1285,12 @@ static void serialWriteOPi(struct comedi_device *dev,
 	packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
 	bmc_spi_exchange(dev, packet);
 
-	val_value = packet->bmc_byte_r[BMC_DUMMY]; // serial data
-	val_value += (packet->bmc_byte_r[BMC_D2] << 8); // serial channel
-	val_value += (packet->bmc_byte_r[BMC_D1] << 16); // serial data is fresh
-
-	value[0] = val_value;
+	val = packet->bmc_byte_r[BMC_DUMMY]; // serial data
+	val += (packet->bmc_byte_r[BMC_D2] << 8); // serial channel
+	val += (packet->bmc_byte_r[BMC_D1] << 16); // serial data is fresh
 
 	kfree(packet);
+	return val;
 }
 
 /*
@@ -1286,17 +1303,38 @@ static int daqbmc_sio_insn_write(struct comedi_device *dev,
 {
 	struct daqbmc_private *devpriv = dev->private;
 	unsigned int chan = CR_CHAN(insn->chanspec);
+	uint32_t val = 0;
 
 	if (unlikely(!devpriv)) {
 		return -EFAULT;
 	}
 
 	if (insn->n > 0) {
-		uint32_t val = data[insn->n - 1];
+		val = data[insn->n - 1];
 
 		serialWriteOPi(dev, chan, &val);
-		s->readback[chan] = val;
+		data[1] = val;
 		serial_count++;
+	}
+	return insn->n;
+}
+
+static int daqbmc_sio_insn_read(struct comedi_device *dev,
+	struct comedi_subdevice *s,
+	struct comedi_insn *insn,
+	uint32_t * data)
+{
+	struct daqbmc_private *devpriv = dev->private;
+	unsigned int chan = CR_CHAN(insn->chanspec);
+	int32_t n;
+
+	if (unlikely(!devpriv)) {
+		return -EFAULT;
+	}
+
+	/* convert n samples */
+	for (n = 0; n < insn->n; n++) {
+		data[n] = daqbmc_sio_get_sample(dev, s);
 	}
 
 	return insn->n;
@@ -1441,11 +1479,6 @@ static int32_t daqbmc_bmc_get_config(struct comedi_device *dev)
 	packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
 	bmc_spi_exchange(dev, packet);
 	val = (packet->bmc_byte_r[BMC_DUMMY]);
-#ifdef DEBUG_CONF
-	dev_info(dev->class_dev, "%x %x %x %x %x %x %x %x %x\n", packet->bmc_byte_r[BMC_CMD], packet->bmc_byte_r[BMC_D0],
-		packet->bmc_byte_r[BMC_D1], packet->bmc_byte_r[BMC_D2], packet->bmc_byte_r[BMC_D3], packet->bmc_byte_r[BMC_D4],
-		packet->bmc_byte_r[BMC_EXT], packet->bmc_byte_r[BMC_CKSUM], packet->bmc_byte_r[BMC_DUMMY]);
-#endif
 	/* use single transfer for all bytes of the complete SPI transaction */
 	packet->bmc_byte_t[BMC_CMD] = CMD_DUMMY_CFG;
 	packet->bmc_byte_t[BMC_D0] = BMC_D0;
@@ -1457,11 +1490,6 @@ static int32_t daqbmc_bmc_get_config(struct comedi_device *dev)
 	packet->bmc_byte_t[BMC_CKSUM] = CHECKBYTE;
 	packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
 	bmc_spi_exchange(dev, packet);
-#ifdef DEBUG_CONF
-	dev_info(dev->class_dev, "%x %x %x %x %x %x %x %x %x\n", packet->bmc_byte_r[BMC_CMD], packet->bmc_byte_r[BMC_D0],
-		packet->bmc_byte_r[BMC_D1], packet->bmc_byte_r[BMC_D2], packet->bmc_byte_r[BMC_D3], packet->bmc_byte_r[BMC_D4],
-		packet->bmc_byte_r[BMC_EXT], packet->bmc_byte_r[BMC_CKSUM], packet->bmc_byte_r[BMC_DUMMY]);
-#endif
 	devpriv->ai_count++;
 	mutex_unlock(&devpriv->drvdata_lock);
 	clear_bit(SPI_AI_RUN, &devpriv->state_bits);
@@ -1715,19 +1743,11 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	if (do_conf) { // add the extra sub-devices
 		s = &dev->subdevices[SUBDEV_MEM];
 		s->type = COMEDI_SUBD_MEMORY;
-		s->subdev_flags = SDF_READABLE | SDF_WRITABLE | SDF_INTERNAL;
+		s->subdev_flags = SDF_READABLE | SDF_WRITABLE;
 		s->n_chan = MEM_BLOCKS;
 		s->maxdata = 0xffff;
 		s->insn_write = daqbmc_sio_insn_write;
-		ret = comedi_alloc_subdev_readback(s);
-		if (ret) {
-			dev_err(dev->class_dev,
-				"alloc MEMORY subdevice readback failed!\n");
-			return ret;
-		}
-		for (int i = 0; i < s->n_chan; i++) {
-			s->readback[i] = CHECKMARK;
-		}
+		s->insn_read = daqbmc_sio_insn_read;
 		dev_info(dev->class_dev,
 			"DISPLAY, RS232/TTL and device serial TX/RX channels %d\n", MEM_BLOCKS);
 

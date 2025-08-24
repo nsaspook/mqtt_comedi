@@ -463,12 +463,13 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 
 	if (pacer++ > ha_daq_host.pacer[ha_daq_host.hindex]) {
 		pacer = 0;
-		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain);
+		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, daq_bmc_data_text);
 		if (bmc.BOARD == bmcboard) {
 			fprintf(fout, "ANA0 %lfV, ANA1 %fV, ANA2 %f, ANA4 %fV, ANA5 %fV, AND5 %fV : Scaler Index %d, Scaler ANA4 %f, Scaler ANA5 %f, Serial 0X%X\n",
 				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2),
 				E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], ha_daq_host.hindex, ha_daq_host.scaler4[ha_daq_host.hindex], ha_daq_host.scaler5[ha_daq_host.hindex],
-				serial_buf);
+				daq_bmc_data[0]);
+			//				serial_buf);
 		} else {
 			fprintf(fout, "ANA0 %lfV, ANA1 %fV : Scaler Index %d, Scaler ANA4 %f, Scaler ANA5 %f\n",
 				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1),

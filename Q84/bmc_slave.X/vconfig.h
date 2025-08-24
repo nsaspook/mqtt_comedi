@@ -24,7 +24,7 @@ extern "C" {
 
 	//#define DIS_DEBUG	// active status display, disable during normal operation
 
-#define VER	"V0.31"
+#define VER	"V0.32"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -46,6 +46,7 @@ extern "C" {
 	 * V.021 fix-up serial data protocol with STX to mark start of string
 	 * V0.30 version for the FM80 MODBUS and FM80 serial
 	 * V0.31 more cleanup of code
+	 * V0.32 add code for FM80 state machine and call-backs
 	 */
 	/*
 	 * TIC12400 testing modes
@@ -109,6 +110,9 @@ extern "C" {
 #define EQUIP_UART      2
 
 #define DEF_TIME        1694196350 /* default epoch time */
+#define CHK_DAY_TIME	1200
+#define BAT_DAY_COUNT	45	// number of reports before updates
+#define BAT_NIGHT_COUNT	90
 
 	const char log_format[] = "^,%3.1f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,SN: %s %u FW: 0X%X,%s,~\r\n";
 #define LOG_VARS	((float) em.vl1l2) / 10.0f,((float) em.al1) / 1000.0f, ((float) em.wl1) / 10.0f, ((float) em.val1) / 10.0f, ((float) em.varl1) / 10.0f,  ((float) em.pfl1) / 10.0f, ((float) em.hz) / 10.0f,ems.serial, ems.year, emv.firmware, buffer
@@ -310,6 +314,8 @@ extern "C" {
 		"..ooOOoo" // ball bouncer
 	};
 #define SPIN_VAL_UPDATE	5
+
+	extern const char text_test[];
 
 	typedef uint16_t device_id_data_t;
 	typedef uint24_t device_id_address_t;

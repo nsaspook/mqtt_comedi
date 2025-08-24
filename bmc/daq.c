@@ -56,17 +56,25 @@ bool ADC_OPEN = true, DIO_OPEN = true, ADC_ERROR = false, DEV_OPEN = true,
 bool DO_OPEN = true, DI_OPEN = true, DO_ERROR = false;
 union dio_buf_type obits, ibits;
 
-uint32_t datain, serial_buf;
+uint32_t datain, serial_buf, daq_bmc_data[SYSLOG_SIZ];
+const char text_test[] = {"the quick brown fox jumps over the lazy dogs back"};
 
 char *daq_text[] = {
 	"daq_bmc text 0           ",
 	"daq_bmc text 1           ",
 	"daq_bmc text 2           ",
 	"daq_bmc text 3           ",
-}, *daq_text_ptr;;
+}, *daq_text_ptr, daq_bmc_data_text[SYSLOG_SIZ];
 
-uint8_t daq_text_index = 0, line_index = 0;
-static uint32_t slow_text = 0;
+uint8_t daq_text_index = 0, line_index = 0,daq_data_index = 0;
+static uint32_t slow_text = 0, slow_data=0;
+
+struct bmc_buffer_type BMC4 = {
+	.log_buffer = daq_bmc_data,
+	.buffer = daq_bmc_data_text,
+	.pos = 0,
+	.len = 0,
+};
 
 int init_daq(double min_range, double max_range, int range_update)
 {
@@ -445,9 +453,7 @@ int get_data_sample(void)
 			slow_text = 0;
 			serial_buf = daq_text_ptr[daq_text_index++];
 			if (daq_text_index > MAX_STRLEN) {
-				serial_buf = STX;
-				comedi_data_write(it, subdev_serial0, 0, range_ao, AREF_GROUND, serial_buf);
-				comedi_data_write(it, subdev_serial0, 4, range_ao, AREF_GROUND, serial_buf);
+				comedi_data_write(it, subdev_serial0, 0, range_ao, AREF_GROUND, STX);
 				daq_text_index = 0;
 				serial_buf = 0;
 				line_index++;
@@ -455,6 +461,23 @@ int get_data_sample(void)
 			} else {
 				comedi_data_write(it, subdev_serial0, line_index & 0x03, range_ao, AREF_GROUND, serial_buf);
 				comedi_data_read(it, subdev_serial0, line_index & 0x03, range_ao, AREF_GROUND, &serial_buf);
+			}
+		}
+		
+		if (++slow_data > SLOW_DATA) {
+			slow_data = 0;
+			
+			if (daq_data_index > MAX_STRLEN) {
+				comedi_data_write(it, subdev_serial0, 4, range_ao, AREF_GROUND, STX); // update daq_bmc data buffer
+				daq_data_index = 0;
+				daq_bmc_data_text[BMC4.pos] = 0;
+				BMC4.pos = 0;
+			} else {
+				comedi_data_read(it, subdev_serial0, 4, range_ao, AREF_GROUND, &daq_bmc_data[BMC4.pos]);
+				daq_bmc_data_text[BMC4.pos] = (char) (daq_bmc_data[BMC4.pos]>>8);
+				daq_bmc_data_text[BMC4.pos+1] = 0;
+				BMC4.pos++;
+				daq_data_index++;
 			}
 		}
 	}
