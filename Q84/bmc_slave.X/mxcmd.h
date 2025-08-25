@@ -40,7 +40,7 @@ extern "C" {
 #define FM80_ID		0x03
 #define FMxx_STATE	abuf[2]
 
-#define AMP_WHOLE_ZERO	0
+#define AMP_WHOLE_ZERO	128
 
 #define CMD_CRC_LEN	10
 
@@ -58,8 +58,11 @@ extern "C" {
 	const uint16_t cmd_fwreva[] = {0x100, 0x02, 0x00, 0x02, 0x00, 0x00, 0x00, 0x04};
 	const uint16_t cmd_fwrevb[] = {0x100, 0x02, 0x00, 0x03, 0x00, 0x00, 0x00, 0x05};
 	const uint16_t cmd_fwrevc[] = {0x100, 0x02, 0x00, 0x04, 0x00, 0x00, 0x00, 0x06};
-	uint16_t cmd_time[] = {0x100, 0x03, 0x40, 0x04, 0x00, 0x00, 0x00, 0x00};
-	uint16_t cmd_date[] = {0x100, 0x03, 0x40, 0x05, 0x00, 0x00, 0x00, 0x00};
+	uint16_t cmd_time[] = {0x100, 0x03, 0x40, 0x04, 0x00, 0x00, 0x00, 0x47};
+	uint16_t cmd_date[] = {0x100, 0x03, 0x40, 0x05, 0x00, 0x00, 0x00, 0x48};  // set to 5
+	const uint16_t cmd_restart_ngit[] = {0x100, 0x03, 0x00, 0xd6, 0x00, 0x00, 0x00, 0xd9}; // using non-GTI mode
+	const uint16_t cmd_restart_gti[] = {0x100, 0x03, 0x00, 0xd6, 0x00, 0x01, 0x00, 0xda}; // using GTI mode
+	const uint16_t cmd_restart[] = {0x100, 0x03, 0x40, 0x02, 0x00, 0x01, 0x00, 0x46}; // restart command
 
 	enum status_type {
 		STATUS_SLEEPING = 0,
@@ -71,8 +74,8 @@ extern "C" {
 	};
 
 	const char state_name [][12] = {
-		"Sleeping",
-		"Floating",
+		"Sleep",
+		"Float",
 		"Bulk",
 		"Absorb",
 		"Equalize",
@@ -80,18 +83,18 @@ extern "C" {
 	};
 
 	const char FM80_name [][12] = {
-		" Offline",
-		"FM80    ",
+		"Offline",
+		"FM80",
 	};
 
 	const char canbus_name [][12] = {
-		" Offline",
-		"CANBUS  ",
+		"Offline",
+		"CANBUS",
 	};
 
 	const char modbus_name [][12] = {
-		" Offline",
-		"MODBUS  ",
+		"Offline",
+		"EM540",
 	};
 
 	typedef struct {
@@ -120,7 +123,7 @@ extern "C" {
 	typedef struct BM_type {
 		volatile bool ten_sec_flag, one_sec_flag, FM80_charged, pv_high, pv_update, once, a_switch[D_SW_COUNT], a_trigger[D_SW_COUNT], a_type[D_SW_COUNT];
 		volatile uint16_t pacing, rx_count, flush, pv_prev, day_check, node_id, dim_delay;
-		volatile bool FM80_online, FM80_io, LOG, display_dim, display_update, display_on;
+		volatile bool FM80_online, FM80_io, LOG, display_dim, display_update, display_on, fm80_restart;
 		volatile uint8_t canbus_online, modbus_online, alt_display, a_pin[D_SW_COUNT];
 		float run_time, net_balance;
 		uint16_t mui[10];
@@ -131,7 +134,7 @@ extern "C" {
 	typedef struct BF_type {
 		volatile bool ten_sec_flag, one_sec_flag, FM80_charged, pv_high, pv_update, once, a_switch[D_SW_COUNT], a_trigger[D_SW_COUNT], a_type[D_SW_COUNT];
 		volatile uint16_t pacing, rx_count, flush, pv_prev, day_check, node_id, dim_delay;
-		volatile bool FM80_online, FM80_io, LOG, display_dim, display_update, display_on;
+		volatile bool FM80_online, FM80_io, LOG, display_dim, display_update, display_on, fm80_restart;
 		volatile uint8_t canbus_online, modbus_online, alt_display, a_pin[D_SW_COUNT];
 		float run_time, net_balance;
 		uint16_t mui[10];

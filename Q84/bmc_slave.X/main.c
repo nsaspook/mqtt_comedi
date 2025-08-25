@@ -276,6 +276,7 @@ BM_type BM = {
 	.display_update = false,
 	.dim_delay = DIM_DELAY,
 	.display_on = true,
+	.fm80_restart = false,
 };
 
 volatile struct spi_link_type_ss spi_comm_ss = {false, false, false, false, false, false, false, false};
@@ -292,7 +293,7 @@ volatile struct serial_buffer_type_ss serial_buffer_ss = {
 
 volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0, channel = 0, upper;
 volatile uint16_t adc_buffer[AI_BUFFER_NUM] = {0}, adc_data_in = 0, out_buf = 0;
-uint16_t volt_whole, bat_amp_whole = AMP_WHOLE_ZERO, panel_watts, volt_fract, vf, vw;
+uint16_t volt_whole, bat_amp_whole = AMP_WHOLE_ZERO, bat_amp_frac = AMP_WHOLE_ZERO, bat_amp_panel = AMP_WHOLE_ZERO, panel_watts, volt_fract, vf, vw, pvf, pvw, af, aw;
 uint8_t fw_state = 0;
 
 volatile uint16_t tickCount[TMR_COUNT] = {0};
@@ -354,6 +355,7 @@ void state_mx_log_cb(void);
 static void state_fwrev_cb(void);
 static void state_time_cb(void);
 static void state_date_cb(void);
+static void state_restart_cb(void);
 
 void bmc_logger(void);
 
@@ -395,6 +397,8 @@ void main(void)
 	init_mb_master_timers(); // pacing, spacing and timeouts
 
 	StartTimer(TMR_MBTEST, 20);
+	StartTimer(TMR_RESTART, 20000);
+
 	//    void mb_setup(); // serial error handlers
 	/*
 	 * read and store the CPU_ID for PCB tracing
@@ -457,8 +461,13 @@ void main(void)
 			rec_mx_cmd(state_init_cb, REC_LEN);
 			break;
 		case state_status:
-			send_mx_cmd(cmd_status);
-			rec_mx_cmd(state_status_cb, REC_LEN);
+			if (!BM.fm80_restart) {
+				send_mx_cmd(cmd_status);
+				rec_mx_cmd(state_status_cb, REC_LEN);
+			} else {
+				send_mx_cmd(cmd_restart);
+				rec_mx_cmd(state_restart_cb, REC_LEN);
+			}
 			break;
 		case state_panel:
 			send_mx_cmd(cmd_panelv);
@@ -518,6 +527,11 @@ void main(void)
 			send_mx_cmd(cmd_id);
 			rec_mx_cmd(state_init_cb, REC_LEN);
 			break;
+		}
+
+		if (TimerDone(TMR_RESTART)) {
+			StartTimer(TMR_RESTART, 30000);
+			BM.fm80_restart = false;
 		}
 
 		/*
@@ -763,34 +777,22 @@ void main(void)
 			 * send ascii data to CLCD
 			 */
 			if (r_string_ready) {
-				char *strPtr = get_vterm_ptr(serial_buffer_ss.r_string_chan, MAIN_VTERM);
-				static uint8_t upd = 0;
+				bmc_logger();
+				snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%s                         ", &BMC4.log_buffer[2]);
+				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s Vac%ld A%3.2f           ", modbus_name[C.id_ok], em.vl1l2 / 10, ((float) em.al1) / 1000.0f);
+				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%s %s A%d A%d              ", FM80_name[BM.FM80_online], state_name[cc_mode], bat_amp_whole - 128, bat_amp_panel - 128);
+				snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "BAT V%d.%01d PV V%d.%01d                 ", vw, vf, pvw, pvf);
 
-				set_vterm(MAIN_VTERM);
-				//				snprintf(strPtr, MAX_TEXT, "%.2X %s", upd++, serial_buffer_ss.r_string);
-				if (C.serial_ok) {
-					switch (serial_buffer_ss.r_string_chan) {
-					case 0:
-						bmc_logger();
-						if (true || bmc_string_ready) {
-							snprintf(strPtr, 22, "%s                      ", &BMC4.log_buffer[2]);
-						} else {
-							snprintf(strPtr, MAX_TEXT, "%s %d                 ", ems.serial, ems.year);
-						}
-						break;
-					case 1:
-						snprintf(strPtr, MAX_TEXT, "FW 0X%X PL1%d                   ", emv.firmware, em.pfl1);
-						break;
-					case 2:
-						snprintf(strPtr, MAX_TEXT, "V%ld A%3.2f %d.%01d                 ", em.vl1l2, ((float) em.al1) / 1000.0f, vw, vf);
-						break;
-					case 3:
-						snprintf(strPtr, MAX_TEXT, "W%ld VA%ld P%d             ", em.wl1, em.val1, em.pfsys);
-						break;
-					default:
-						break;
-					}
-				}
+				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "%s                       ", &BMC4.log_buffer[2]);
+				snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "%s                       ", &BMC4.log_buffer[16]);
+				snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "V%ld A%3.2f                        ", em.vl1l2, ((float) em.al1) / 1000.0f);
+				snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "W%ld VA%ld P%d             ", em.wl1, em.val1, em.pfsys);
+				/*		
+						snprintf(get_vterm_ptr(0, DBUG_VTERM), 
+						snprintf(get_vterm_ptr(1, DBUG_VTERM), 
+						snprintf(get_vterm_ptr(2, DBUG_VTERM), 
+						snprintf(get_vterm_ptr(3, DBUG_VTERM), 
+				 */
 				refresh_lcd();
 				serial_buffer_ss.r_string_index = 0;
 				r_string_ready = false;
@@ -1088,7 +1090,7 @@ void bmc_logger(void)
 	snprintf((char*) buffer, 25, "%s", asctime(bmc_newtime)); // the log_buffer uses this string in LOG_VARS
 	buffer[DTG_LEN] = 0; // remove newline
 	snprintf((char*) log_buffer, MAX_B_BUF, log_format, LOG_VARS);
-	log_buffer[20] = 0;
+//	log_buffer[20] = 0;
 	BMC4.log_buffer = &log_buffer[0];
 	BMC4.len = 20;
 	BMC4.pos = 0;
@@ -1174,6 +1176,16 @@ static void state_date_cb(void)
 	state = state_misc;
 }
 
+static void state_restart_cb(void)
+{
+#ifdef SDEBUG
+	char s_buffer[22];
+	snprintf(s_buffer, 21, "Date CSum %X        ", calc_checksum((uint8_t *) & cmd_date[1], 10));
+	eaDogM_Scroll_String(s_buffer);
+#endif
+	state = state_init;
+}
+
 /*
  * testing online status while waiting for 10 second flag callback
  */
@@ -1231,12 +1243,16 @@ void state_mx_status_cb(void)
 	vw = volt_whole;
 	vf = volt_fract;
 	volt_f((abuf[13] + (abuf[12] << 8))); // set panel voltage here in volt_whole and volt_frac
+	pvw = volt_whole;
+	pvf = volt_fract;
 	if ((abuf[1] &0x0f) > 9) { // check for whole Amp
 		abuf[2]++; // add extra Amp for fractional overflow.
 		abuf[1] = (abuf[1]&0x0f) - 10;
 	}
 	if (BM.FM80_online) { // don't update when offline
-		bat_amp_whole = abuf[3] - 128;
+		bat_amp_whole = abuf[3];
+		bat_amp_panel = abuf[2];
+		bat_amp_frac = abuf[1];
 	}
 #ifdef debug_data
 	printf("%5d: %3x %3x %3x %3x %3x  SDATA: FM80 Data mode %3x %3x %3x %3x %3x %3x %3x %3x %3x\r\n",
@@ -1255,9 +1271,6 @@ void state_mx_status_cb(void)
 			//			buffer[DTG_LEN] = 0; // remove newline
 			//			snprintf(log_buffer, MAX_B_BUF, log_format, LOG_VARS);
 			//			printf("%s", log_buffer); // log to USART
-			if (BM.FM80_online) {
-				bat_amp_whole = abuf[3] - 128;
-			}
 
 			switch (BM.alt_display) {
 			case 3:

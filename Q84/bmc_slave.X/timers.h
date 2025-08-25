@@ -23,6 +23,7 @@ enum APP_TIMERS {
 	TMR_MBTEST,
 	TMR_SPIN,
 	TMR_DERE,
+	TMR_RESTART,
 	//
 	//(Add timers here as needed)
 	//

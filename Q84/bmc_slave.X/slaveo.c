@@ -131,15 +131,12 @@ void slaveo_rx_isr(void)
 						}
 					}
 				}
-			} else { // [4..7]
-				//				if (bmc_string_ready) {
-				//					if (serial_buffer_ss.data[BMC_D0] == STX) { // character sync
+			} else { // [4..7] any char is a sync character
 				serial_buffer_ss.r_string_index = 0;
 				serial_buffer_ss.r_string[serial_buffer_ss.r_string_index] = 0;
 				update_bmc_string = true; // print to log_buffer
 				bmc_string_ready = true; // display bmc data on first line
-				//					}
-				//				}
+				r_string_ready = true;
 			}
 			serial_buffer_ss.cmake_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
