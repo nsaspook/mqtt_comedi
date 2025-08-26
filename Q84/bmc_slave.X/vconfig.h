@@ -24,7 +24,7 @@ extern "C" {
 
 	//#define DIS_DEBUG	// active status display, disable during normal operation
 
-#define VER	"V0.32"
+#define VER	"V0.33"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -47,6 +47,7 @@ extern "C" {
 	 * V0.30 version for the FM80 MODBUS and FM80 serial
 	 * V0.31 more cleanup of code
 	 * V0.32 add code for FM80 state machine and call-backs
+	 * V0.33 finally traced the FM80 restart code, optimize timing for all new code
 	 */
 	/*
 	 * TIC12400 testing modes

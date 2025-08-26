@@ -170,7 +170,7 @@ void __interrupt(irq(TMR1),base(8)) TMR1_ISR()
     PIR3bits.TMR1IF = 0;
     TMR1_WriteTimer(timer1ReloadVal);
 
-    // callback function - called every 10th pass
+    // callback function - called every 2th pass
     if (++CountCallBack >= TMR1_INTERRUPT_TICKER_FACTOR)
     {
         // ticker function call

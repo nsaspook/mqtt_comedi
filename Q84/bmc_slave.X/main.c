@@ -321,7 +321,7 @@ enum state_type {
 	state_last,
 };
 
-#define PACE            31000	// commands delay in count units
+#define PACE            8000	// commands delay in count units
 #define CMD_LEN         8
 #define REC_LEN         5
 #define REC_STATUS_LEN	16
@@ -425,7 +425,7 @@ void main(void)
 	TMR6_SetInterruptHandler(FM_io);
 	TMR0_SetInterruptHandler(test_slave);
 	TMR0_StartTimer();
-	TMR1_SetInterruptHandler(FM_tensec_io);
+	TMR1_SetInterruptHandler(FM_tensec_io); // really TWO seconds
 	TMR1_StartTimer();
 
 	speed_text = "Locked 115200bps";
@@ -452,6 +452,7 @@ void main(void)
 		master_controller_work(&C); // master MODBUS processing
 		TP1_SetHigh();
 #endif
+#ifdef MX_MATE
 		/*
 		 * FM80 processing state machine
 		 */
@@ -533,6 +534,7 @@ void main(void)
 			StartTimer(TMR_RESTART, 30000);
 			BM.fm80_restart = false;
 		}
+#endif
 
 		/*
 		 * protocol state machine
@@ -780,18 +782,18 @@ void main(void)
 				bmc_logger();
 				snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%s                         ", &BMC4.log_buffer[2]);
 				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s Vac%ld A%3.2f           ", modbus_name[C.id_ok], em.vl1l2 / 10, ((float) em.al1) / 1000.0f);
-				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%s %s A%d A%d              ", FM80_name[BM.FM80_online], state_name[cc_mode], bat_amp_whole - 128, bat_amp_panel - 128);
+				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%s %s A%d.%01d A%d              ", FM80_name[BM.FM80_online], state_name[cc_mode], bat_amp_whole - 128, bat_amp_frac - 128, bat_amp_panel - 128);
 				snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "BAT V%d.%01d PV V%d.%01d                 ", vw, vf, pvw, pvf);
 
 				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "%s                       ", &BMC4.log_buffer[2]);
 				snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "%s                       ", &BMC4.log_buffer[16]);
 				snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "V%ld A%3.2f                        ", em.vl1l2, ((float) em.al1) / 1000.0f);
 				snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "W%ld VA%ld P%d             ", em.wl1, em.val1, em.pfsys);
-				/*		
-						snprintf(get_vterm_ptr(0, DBUG_VTERM), 
-						snprintf(get_vterm_ptr(1, DBUG_VTERM), 
-						snprintf(get_vterm_ptr(2, DBUG_VTERM), 
-						snprintf(get_vterm_ptr(3, DBUG_VTERM), 
+				/*
+						snprintf(get_vterm_ptr(0, DBUG_VTERM),
+						snprintf(get_vterm_ptr(1, DBUG_VTERM),
+						snprintf(get_vterm_ptr(2, DBUG_VTERM),
+						snprintf(get_vterm_ptr(3, DBUG_VTERM),
 				 */
 				refresh_lcd();
 				serial_buffer_ss.r_string_index = 0;
@@ -1090,7 +1092,7 @@ void bmc_logger(void)
 	snprintf((char*) buffer, 25, "%s", asctime(bmc_newtime)); // the log_buffer uses this string in LOG_VARS
 	buffer[DTG_LEN] = 0; // remove newline
 	snprintf((char*) log_buffer, MAX_B_BUF, log_format, LOG_VARS);
-//	log_buffer[20] = 0;
+	//	log_buffer[20] = 0;
 	BMC4.log_buffer = &log_buffer[0];
 	BMC4.len = 20;
 	BMC4.pos = 0;
