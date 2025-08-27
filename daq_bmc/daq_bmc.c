@@ -82,7 +82,7 @@ and a analog output subdevice with 1 channel with onboard dac
 #include <linux/list.h>
 #include <linux/completion.h>
 
-#define bmc_version "version 0.95 "
+#define bmc_version "version 0.96 "
 #define spibmc_version "version 1.3 "
 
 static const uint32_t CHECKMARK = 0x1957;
@@ -138,6 +138,7 @@ static const uint32_t SUBDEV_MEM = 4;
 static const uint32_t SMP_CORES = 4;
 static const uint32_t CONF_Q84 = 3;
 static const uint32_t MEM_BLOCKS = 8; // 0..3 CLCD display lines, 4..7 serial comms for FM80, MODBUS, etc ...
+static const uint32_t SPI_GAP = 100000; // time for the Q84 to process each received SPI byte
 
 static const uint32_t I8254_MAX_COUNT = 0x10000;
 
@@ -515,6 +516,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	struct spi_param_type *spi_data = s->private;
 	struct spi_device *spi = spi_data->spi;
 	int32_t ret = 0;
+	ktime_t slower = SPI_GAP;
 
 	if (spi == NULL) {
 		ret = -ESHUTDOWN;
@@ -541,6 +543,8 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	if (ret == 0) {
 		ret = packet->m->actual_length;
 	}
+	__set_current_state(TASK_UNINTERRUPTIBLE);
+	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
 
 	/*
 	 * send the data
@@ -562,6 +566,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, packet->m);
 	spi_bus_unlock(spi->master);
+	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
 
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D2];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D2];
@@ -571,6 +576,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, packet->m);
 	spi_bus_unlock(spi->master);
+	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
 
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D3];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D3];
@@ -580,6 +586,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, packet->m);
 	spi_bus_unlock(spi->master);
+	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
 
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D4];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D4];
@@ -589,6 +596,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, packet->m);
 	spi_bus_unlock(spi->master);
+	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
 
 	/*
 	 * extended channel data
@@ -601,7 +609,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, packet->m);
 	spi_bus_unlock(spi->master);
-
+	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
 	/*
 	 * packet [0..6] 8-bit added checksum
 	 */
@@ -613,6 +621,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, packet->m);
 	spi_bus_unlock(spi->master);
+	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
 
 	/*
 	 * dummy byte to transfer last byte of data
@@ -625,6 +634,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, packet->m);
 	spi_bus_unlock(spi->master);
+	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
 
 	return ret;
 }
@@ -1264,7 +1274,6 @@ static void serialWriteOPi(struct comedi_device *dev,
 static int32_t daqbmc_sio_get_sample(struct comedi_device *dev,
 	struct comedi_subdevice *s)
 {
-	struct daqbmc_private *devpriv = dev->private;
 	uint32_t chan = 4;
 	int32_t val = 0;
 
@@ -1325,7 +1334,6 @@ static int daqbmc_sio_insn_read(struct comedi_device *dev,
 	uint32_t * data)
 {
 	struct daqbmc_private *devpriv = dev->private;
-	unsigned int chan = CR_CHAN(insn->chanspec);
 	int32_t n;
 
 	if (unlikely(!devpriv)) {

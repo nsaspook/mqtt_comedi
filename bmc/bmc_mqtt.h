@@ -9,7 +9,7 @@ extern "C" {
 #include "bmc.h"
 #include "daq.h"
 
-#define MQTT_RETRY	10
+#define MQTT_RETRY 10
 
 #define HA_SW_DELAY     400000  // usecs
 #define TOKEN_DELAY     600
@@ -19,12 +19,12 @@ extern "C" {
 
 #define QOS             2
 
-#define RDEV_SIZE	10
+#define RDEV_SIZE 10
 
 #define SLEEP_CODE      0
 #define FLOAT_CODE      1
 
-#define MBMQTT		1024
+#define MBMQTT  1024
 
 	enum mqtt_id {
 		P8055_ID,
@@ -54,6 +54,7 @@ extern "C" {
 
 	extern struct ha_flag_type ha_flag_vars_ss, ha_daq_hosts_type;
 	extern struct ha_daq_hosts_type ha_daq_host;
+	char * validate_bmc_text(const char *, bool *);
 
 	void mqtt_bmc_data(MQTTClient, const char *);
 	void delivered(void *, MQTTClient_deliveryToken);

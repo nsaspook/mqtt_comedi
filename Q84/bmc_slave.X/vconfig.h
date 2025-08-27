@@ -24,7 +24,7 @@ extern "C" {
 
 	//#define DIS_DEBUG	// active status display, disable during normal operation
 
-#define VER	"V0.33"
+#define VER	"V0.34"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -48,6 +48,7 @@ extern "C" {
 	 * V0.31 more cleanup of code
 	 * V0.32 add code for FM80 state machine and call-backs
 	 * V0.33 finally traced the FM80 restart code, optimize timing for all new code
+	 * V0.34 testing daq_bmc CSV data link to the OPi
 	 */
 	/*
 	 * TIC12400 testing modes
@@ -115,7 +116,7 @@ extern "C" {
 #define BAT_DAY_COUNT	45	// number of reports before updates
 #define BAT_NIGHT_COUNT	90
 
-	const char log_format[] = "^,%3.1f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,~,EOT                                                                                                          \r\n";
+	const char log_format[] = "^,%3.1f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,~EOT                                                                                                          \r\n";
 #define LOG_VARS	((float) em.vl1l2) / 10.0f,((float) em.al1) / 1000.0f, ((float) em.wl1) / 10.0f, ((float) em.val1) / 10.0f, ((float) em.varl1) / 10.0f,  ((float) em.pfl1) / 10.0f, ((float) em.hz) / 10.0f,vw, vf, pvw, pvf, bat_amp_whole - 128, bat_amp_frac - 128, bat_amp_panel - 128,BM.FM80_online,cc_mode
 
 	const char msg_gemcmds[] = "Host CMDS: M C R P O L S D E H F";

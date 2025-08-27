@@ -21,6 +21,11 @@ MQTTClient_message pubmsg = MQTTClient_message_initializer;
 MQTTClient_deliveryToken token;
 char hname[256], *hname_ptr = hname;
 size_t hname_len = 12;
+int32_t validate_failure;
+
+char *jtoken;
+double acvolts, acamps, acwatts, acva, acvar, acpf, achz, bvolts, pvolts, bamps, pamps, fm_online, fm_mode;
+char tmp_test_ptr[512];
 
 struct ha_flag_type ha_flag_vars_ss = {
 	.runner = false,
@@ -462,8 +467,64 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	E.di_16b = datain;
 
 	if (pacer++ > ha_daq_host.pacer[ha_daq_host.hindex]) {
+		bool ok_data = false;
+		static uint32_t goods = 0;
+		char * tmp_ptr;
+
 		pacer = 0;
-		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, daq_bmc_data_buf);
+		strncpy(tmp_test_ptr, daq_bmc_data_buf, 512);
+		tmp_ptr = validate_bmc_text(daq_bmc_data_buf, &ok_data);
+		strncpy(daq_bmc_data_buf, tmp_ptr, 511);
+		if (ok_data) {
+			goods++;
+			jtoken = strtok(daq_bmc_data_buf, ",");
+			if (jtoken != NULL) {
+				/*
+				 * parse the string for variable values
+				 * double acvolts, acamps, acwatts, acva, acvar, acpf, achz, bvolts, pvolts, bamps, pamps, fm_online, fm_mode;
+				 */
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					acvolts = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					acamps = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					acwatts = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					acva = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					acvar = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					acpf = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					achz = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					bvolts = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					pvolts = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					bamps = atoi(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					pamps = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					fm_online = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					fm_mode = atof(jtoken);
+			}
+		}
+		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, goods %d, validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, tmp_test_ptr, ok_data, goods, validate_failure);
 		memset(daq_bmc_data_text, 0, MAX_STRLEN);
 		if (bmc.BOARD == bmcboard) {
 			fprintf(fout, "ANA0 %lfV, ANA1 %fV, ANA2 %f, ANA4 %fV, ANA5 %fV, AND5 %fV : Scaler Index %d, Scaler ANA4 %f, Scaler ANA5 %f, Serial 0X%X\n",
@@ -499,13 +560,45 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA4]);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_adc1", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA5]);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "build_date", 64);
 		} else {
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA0]);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_adc1", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA1]);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "build_date", 64);
 		}
+		/*
+		 * parse the string for variable values
+		 * double acvolts, acamps, acwatts, acva, acvar, acpf, achz, bvolts, pvolts, bamps, pamps, fm_online, fm_mode;
+		 */
+		if (bmc.BOARD == bmcboard) { // EM540 and FM80 data
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acvolts", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], acvolts);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acamps", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], acamps);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwatts", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], acwatts);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acva", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], acva);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acvar", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], acvar);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acpf", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], acpf);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_achz", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], achz);
+
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bvolts", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], bvolts);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_pvolts", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], pvolts);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bamps", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], bamps);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_pamps", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], pamps);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_fm_online", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], fm_online);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_fm_mode", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], fm_online);
+		}
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "build_date", 64);
 		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], FW_Date);
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "build_time", 64);
 		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], FW_Time);
@@ -569,4 +662,57 @@ double ac1_filter(const double raw)
 	static double coef = COEF;
 	accum = accum - accum / coef + raw;
 	return accum / coef;
+}
+
+/*
+ * check the BMC CSV data for proper format and size
+ */
+char * validate_bmc_text(const char * text, bool * valid)
+{
+	char tmp_test_ptr[512], *tmp_p = (char *) text;
+	uint32_t len = 0, starts = 0;
+	bool end_data = false;
+
+	validate_failure = 0;
+	strncpy(tmp_test_ptr, text, 511);
+	valid[0] = true;
+	if (tmp_test_ptr[0] == '^') {
+		if ((len = strlen(tmp_test_ptr)) >= 65) {
+			for (int i = 1; i <= len; i++) {
+				if (tmp_test_ptr[i] == '^') {
+					starts++;
+					end_data = false;
+					tmp_p = (char *) &text[i];
+				}
+				if (tmp_test_ptr[i] == '~') {
+					if (starts) {
+						end_data = true;
+					}
+				}
+			}
+			if (end_data == false) {
+				valid[0] = false;
+				validate_failure = 3;
+			}
+			strncpy(tmp_test_ptr, tmp_p, 511);
+			jtoken = strtok(tmp_test_ptr, ",");
+			if (jtoken != NULL) {
+				for (int i = 0; i < 13; i++) {
+					jtoken = strtok(NULL, ",");
+					if (jtoken == NULL) {
+						valid[0] = false;
+						validate_failure = 4;
+					}
+				}
+			}
+		} else {
+			valid[0] = false;
+			validate_failure = 2;
+		}
+	} else {
+		valid[0] = false;
+		validate_failure = 1;
+	}
+
+	return tmp_p;
 }
