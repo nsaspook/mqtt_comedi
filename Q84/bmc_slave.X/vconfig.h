@@ -115,8 +115,8 @@ extern "C" {
 #define BAT_DAY_COUNT	45	// number of reports before updates
 #define BAT_NIGHT_COUNT	90
 
-	const char log_format[] = "^,%3.1f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,SN: %s %u FW: 0X%X,%s,~\r\n";
-#define LOG_VARS	((float) em.vl1l2) / 10.0f,((float) em.al1) / 1000.0f, ((float) em.wl1) / 10.0f, ((float) em.val1) / 10.0f, ((float) em.varl1) / 10.0f,  ((float) em.pfl1) / 10.0f, ((float) em.hz) / 10.0f,ems.serial, ems.year, emv.firmware, buffer
+	const char log_format[] = "^,%3.1f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,~,EOT                                                                                                          \r\n";
+#define LOG_VARS	((float) em.vl1l2) / 10.0f,((float) em.al1) / 1000.0f, ((float) em.wl1) / 10.0f, ((float) em.val1) / 10.0f, ((float) em.varl1) / 10.0f,  ((float) em.pfl1) / 10.0f, ((float) em.hz) / 10.0f,vw, vf, pvw, pvf, bat_amp_whole - 128, bat_amp_frac - 128, bat_amp_panel - 128,BM.FM80_online,cc_mode
 
 	const char msg_gemcmds[] = "Host CMDS: M C R P O L S D E H F";
 	const char msg_freecmds[] = "Port baud rate unlocked        ";

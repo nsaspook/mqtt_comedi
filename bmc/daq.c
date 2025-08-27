@@ -64,10 +64,10 @@ char *daq_text[] = {
 	"daq_bmc text 1           ",
 	"daq_bmc text 2           ",
 	"daq_bmc text 3           ",
-}, *daq_text_ptr, daq_bmc_data_text[SYSLOG_SIZ];
+}, *daq_text_ptr, daq_bmc_data_text[SYSLOG_SIZ], daq_bmc_data_buf[SYSLOG_SIZ];
 
-uint8_t daq_text_index = 0, line_index = 0,daq_data_index = 0;
-static uint32_t slow_text = 0, slow_data=0;
+uint8_t daq_text_index = 0, line_index = 0, daq_data_index = 0;
+static uint32_t slow_data = 0;
 
 struct bmc_buffer_type BMC4 = {
 	.log_buffer = daq_bmc_data,
@@ -449,6 +449,9 @@ int get_data_sample(void)
 	}
 
 	if (SERIAL_OPEN) {
+#ifdef SEND_TEXT
+		uint32_t slow_text = 0;
+
 		if (++slow_text > SLOW_TEXT) {
 			slow_text = 0;
 			serial_buf = daq_text_ptr[daq_text_index++];
@@ -463,19 +466,19 @@ int get_data_sample(void)
 				comedi_data_read(it, subdev_serial0, line_index & 0x03, range_ao, AREF_GROUND, &serial_buf);
 			}
 		}
-		
+#endif
 		if (++slow_data > SLOW_DATA) {
 			slow_data = 0;
-			
-			if (daq_data_index > MAX_STRLEN) {
+
+			if ((daq_data_index > MAX_STRLEN) || (daq_bmc_data_text[BMC4.pos] == '^')) {
 				comedi_data_write(it, subdev_serial0, 4, range_ao, AREF_GROUND, STX); // update daq_bmc data buffer
 				daq_data_index = 0;
-				daq_bmc_data_text[BMC4.pos] = 0;
+				strncpy(daq_bmc_data_buf, daq_bmc_data_text, SYSLOG_SIZ);
 				BMC4.pos = 0;
 			} else {
 				comedi_data_read(it, subdev_serial0, 4, range_ao, AREF_GROUND, &daq_bmc_data[BMC4.pos]);
-				daq_bmc_data_text[BMC4.pos] = (char) (daq_bmc_data[BMC4.pos]>>8);
-				daq_bmc_data_text[BMC4.pos+1] = 0;
+				daq_bmc_data_text[BMC4.pos] = (char) (daq_bmc_data[BMC4.pos] >> 8);
+				serial_buf = daq_bmc_data_text[BMC4.pos];
 				BMC4.pos++;
 				daq_data_index++;
 			}

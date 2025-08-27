@@ -28,7 +28,7 @@ extern "C" {
 
 #define SLOW_TEXT 1
 #define SLOW_DATA 1
-#define MAX_STRLEN      20
+#define MAX_STRLEN      128
 
 #define JUST_BITS false
 	/*
@@ -112,6 +112,7 @@ extern "C" {
 	extern union dio_buf_type obits;
 	extern uint32_t daq_bmc_data[SYSLOG_SIZ];
 	extern char daq_bmc_data_text[SYSLOG_SIZ];
+	extern char daq_bmc_data_buf[SYSLOG_SIZ];
 	extern struct bmc_buffer_type BMC4;
 
 	extern int maxdata_ai, ranges_ai, channels_ai;

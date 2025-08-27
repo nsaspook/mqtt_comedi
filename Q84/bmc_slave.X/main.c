@@ -1092,9 +1092,8 @@ void bmc_logger(void)
 	snprintf((char*) buffer, 25, "%s", asctime(bmc_newtime)); // the log_buffer uses this string in LOG_VARS
 	buffer[DTG_LEN] = 0; // remove newline
 	snprintf((char*) log_buffer, MAX_B_BUF, log_format, LOG_VARS);
-	//	log_buffer[20] = 0;
 	BMC4.log_buffer = &log_buffer[0];
-	BMC4.len = 20;
+	BMC4.len = 128;
 	BMC4.pos = 0;
 	BMC4.bmc_flag = true;
 	bmc_string_ready = true; // CHAR_GO_BYTES

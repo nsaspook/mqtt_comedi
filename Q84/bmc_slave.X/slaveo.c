@@ -194,18 +194,25 @@ void slaveo_rx_isr(void)
 				} else {
 					tmp_buf = 0;
 				}
+				NOP();
+				NOP();
+				while (SPI2CON2bits.BUSY) {
+					NOP();
+				};
 				SPI2TXB = tmp_buf;
 			} else { // [4..7]
 				tmp_buf = 0x57;
 				if (update_bmc_string == true) { // log_buffer has been updated
-					//					update_bmc_string[BMC_EM540_DATA] = false;
 					tmp_buf = log_buffer[BMC4.pos++];
-					//					tmp_buf = text_test[BMC4.pos++];
 					if (tmp_buf == 0 || BMC4.pos > BMC4.len) {
-						//						update_bmc_string[BMC_EM540_DATA] = false;
-						BMC4.pos = 0;
+//						BMC4.pos = 0;
 					}
 				}
+				NOP();
+				NOP();
+				while (SPI2CON2bits.BUSY) {
+					NOP();
+				};
 				SPI2TXB = tmp_buf;
 			}
 			serial_buffer_ss.cget_value = false;
@@ -223,6 +230,11 @@ void slaveo_rx_isr(void)
 			} else {
 				tmp_buf = log_buffer[BMC4.pos];
 			}
+			NOP();
+			NOP();
+			while (SPI2CON2bits.BUSY) {
+				NOP();
+			};
 			SPI2TXB = tmp_buf;
 			data_in2 = 0;
 		}
@@ -232,6 +244,11 @@ void slaveo_rx_isr(void)
 	if (serial_buffer_ss.get_value) {
 		if (serial_buffer_ss.raw_index == PORT_GET_BYTES) {
 			tmp_buf = (uint8_t) in_buf3;
+			NOP();
+			NOP();
+			while (SPI2CON2bits.BUSY) {
+				NOP();
+			};
 			SPI2TXB = tmp_buf;
 			serial_buffer_ss.get_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
@@ -244,6 +261,11 @@ void slaveo_rx_isr(void)
 			} else {
 				tmp_buf = (uint8_t) in_buf2;
 			}
+			NOP();
+			NOP();
+			while (SPI2CON2bits.BUSY) {
+				NOP();
+			};
 			SPI2TXB = tmp_buf;
 			data_in2 = 0;
 		}
@@ -253,8 +275,18 @@ void slaveo_rx_isr(void)
 	if (serial_buffer_ss.adc_value) {
 		if (serial_buffer_ss.raw_index == ADC_GET_BYTES) {
 			if (V.di_fail || V.do_fail) {
+				NOP();
+				NOP();
+				while (SPI2CON2bits.BUSY) {
+					NOP();
+				};
 				SPI2TXB = (0x24);
 			} else {
+				NOP();
+				NOP();
+				while (SPI2CON2bits.BUSY) {
+					NOP();
+				};
 				SPI2TXB = (0x00);
 			}
 			serial_buffer_ss.adc_value = false;
@@ -264,8 +296,18 @@ void slaveo_rx_isr(void)
 		} else {
 			spi_stat_ss.slave_tx_count++;
 			if (serial_buffer_ss.raw_index == BMC_D0) {
+				NOP();
+				NOP();
+				while (SPI2CON2bits.BUSY) {
+					NOP();
+				};
 				SPI2TXB = (adc_buffer[channel] &0x00ff);
 			} else {
+				NOP();
+				NOP();
+				while (SPI2CON2bits.BUSY) {
+					NOP();
+				};
 				SPI2TXB = ((adc_buffer[channel] >> 8)&0x00ff);
 			}
 			data_in2 = 0;
@@ -275,6 +317,11 @@ void slaveo_rx_isr(void)
 	// GET_CFG_BYTES
 	if (serial_buffer_ss.cfg_value) {
 		if (serial_buffer_ss.raw_index == CFG_GET_BYTES) {
+			NOP();
+			NOP();
+			while (SPI2CON2bits.BUSY) {
+				NOP();
+			};
 			SPI2TXB = CHECKBYTE;
 			serial_buffer_ss.cfg_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
@@ -283,8 +330,18 @@ void slaveo_rx_isr(void)
 		} else {
 			spi_stat_ss.slave_tx_count++;
 			if (serial_buffer_ss.raw_index == BMC_D0) {
+				NOP();
+				NOP();
+				while (SPI2CON2bits.BUSY) {
+					NOP();
+				};
 				SPI2TXB = CHECKBYTE;
 			} else {
+				NOP();
+				NOP();
+				while (SPI2CON2bits.BUSY) {
+					NOP();
+				};
 				SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits
 			}
 			data_in2 = 0;
