@@ -27,7 +27,7 @@ extern "C" {
 #define STX  2
 
 #define SLOW_TEXT 1
-#define SLOW_DATA 3
+#define SLOW_DATA 1
 #define MAX_STRLEN      128
 
 #define JUST_BITS false

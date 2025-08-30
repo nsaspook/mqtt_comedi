@@ -138,7 +138,7 @@ static const uint32_t SUBDEV_MEM = 4;
 static const uint32_t SMP_CORES = 4;
 static const uint32_t CONF_Q84 = 3;
 static const uint32_t MEM_BLOCKS = 8; // 0..3 CLCD display lines, 4..7 serial comms for FM80, MODBUS, etc ...
-static const uint32_t SPI_GAP = 100000; // time for the Q84 to process each received SPI byte
+static const uint32_t SPI_GAP = 20000; // time for the Q84 to process each received SPI byte
 
 static const uint32_t I8254_MAX_COUNT = 0x10000;
 
@@ -557,6 +557,8 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, packet->m);
 	spi_bus_unlock(spi->master);
+	__set_current_state(TASK_UNINTERRUPTIBLE);
+	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
 
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D1];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D1];
@@ -566,6 +568,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, packet->m);
 	spi_bus_unlock(spi->master);
+	__set_current_state(TASK_UNINTERRUPTIBLE);
 	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
 
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D2];
@@ -576,6 +579,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, packet->m);
 	spi_bus_unlock(spi->master);
+	__set_current_state(TASK_UNINTERRUPTIBLE);
 	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
 
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D3];
@@ -586,6 +590,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, packet->m);
 	spi_bus_unlock(spi->master);
+	__set_current_state(TASK_UNINTERRUPTIBLE);
 	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
 
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D4];
@@ -596,6 +601,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, packet->m);
 	spi_bus_unlock(spi->master);
+	__set_current_state(TASK_UNINTERRUPTIBLE);
 	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
 
 	/*
@@ -609,6 +615,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, packet->m);
 	spi_bus_unlock(spi->master);
+	__set_current_state(TASK_UNINTERRUPTIBLE);
 	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
 	/*
 	 * packet [0..6] 8-bit added checksum
@@ -621,6 +628,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, packet->m);
 	spi_bus_unlock(spi->master);
+	__set_current_state(TASK_UNINTERRUPTIBLE);
 	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
 
 	/*
@@ -634,6 +642,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, packet->m);
 	spi_bus_unlock(spi->master);
+	__set_current_state(TASK_UNINTERRUPTIBLE);
 	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
 
 	return ret;

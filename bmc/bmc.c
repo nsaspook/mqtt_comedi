@@ -170,11 +170,11 @@ int main(int argc, char *argv[])
 		fflush(fout);
 		while (true) {
 			usleep(MAIN_DELAY); // sample rate ~1 msec
-			set_dac_raw(0, sine_wave[i++]);
+//			set_dac_raw(0, sine_wave[i++]);
 			get_data_sample();
 
 			if (bmc.BOARD == bmcboard) {
-				led_lightshow(15);
+				led_lightshow(10);
 			} else {
 				led_lightshow(10);
 			}

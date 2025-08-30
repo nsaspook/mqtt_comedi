@@ -512,16 +512,16 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 					pvolts = atof(jtoken);
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
-					bamps = atoi(jtoken);
+					bamps = atof(jtoken);
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
 					pamps = atof(jtoken);
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
-					fm_online = atof(jtoken);
+					fm_online = atoi(jtoken);
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
-					fm_mode = atof(jtoken);
+					fm_mode = atoi(jtoken);
 			}
 		}
 		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, goods %d, validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, tmp_test_ptr, ok_data, goods, validate_failure);
@@ -634,6 +634,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 
 		cJSON_free(json_str);
 		cJSON_Delete(json);
+		BMC4.bmc_flag = true;
 	}
 }
 
@@ -665,24 +666,26 @@ double ac1_filter(const double raw)
 }
 
 /*
- * check the BMC CSV data for proper format and size
+ * check the BMC CSV data string for proper format, size and checkmark
  */
 char * validate_bmc_text(const char * text, bool * valid)
 {
 	char tmp_test_ptr[512], *tmp_p = (char *) text;
-	uint32_t len = 0, starts = 0;
+	uint32_t len = 0, starts = 0, checkmark = 0;
 	bool end_data = false;
 
 	validate_failure = 0;
 	strncpy(tmp_test_ptr, text, 511);
 	valid[0] = true;
 	if (tmp_test_ptr[0] == '^') {
-		if ((len = strlen(tmp_test_ptr)) >= 65) {
+		starts++;
+		tmp_p = (char *) &text[0]; // return pointer to start of possible data
+		if ((len = strlen(tmp_test_ptr)) >= 55) {
 			for (int i = 1; i <= len; i++) {
 				if (tmp_test_ptr[i] == '^') {
 					starts++;
 					end_data = false;
-					tmp_p = (char *) &text[i];
+					tmp_p = (char *) &text[i]; // return pointer to start of possible data
 				}
 				if (tmp_test_ptr[i] == '~') {
 					if (starts) {
@@ -703,6 +706,17 @@ char * validate_bmc_text(const char * text, bool * valid)
 						valid[0] = false;
 						validate_failure = 4;
 					}
+				}
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL) {
+					checkmark = atoi(jtoken);
+					if (checkmark != CHECKMARK) {
+						valid[0] = false;
+						validate_failure = 6;
+					}
+				} else {
+					valid[0] = false;
+					validate_failure = 5;
 				}
 			}
 		} else {

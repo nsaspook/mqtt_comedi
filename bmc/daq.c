@@ -467,20 +467,23 @@ int get_data_sample(void)
 			}
 		}
 #endif
-		if (++slow_data > SLOW_DATA) {
-			slow_data = 0;
+		if (BMC4.bmc_flag) {
+			if (++slow_data > SLOW_DATA) {
+				slow_data = 0;
 
-			if ((daq_data_index > MAX_STRLEN) || (daq_bmc_data_text[BMC4.pos] == '^')) {
-				comedi_data_write(it, subdev_serial0, 4, range_ao, AREF_GROUND, STX); // update daq_bmc data buffer
-				daq_data_index = 0;
-				strncpy(daq_bmc_data_buf, daq_bmc_data_text, SYSLOG_SIZ);
-				BMC4.pos = 0;
-			} else {
-				comedi_data_read(it, subdev_serial0, 4, range_ao, AREF_GROUND, &daq_bmc_data[BMC4.pos]);
-				daq_bmc_data_text[BMC4.pos] = (char) (daq_bmc_data[BMC4.pos] >> 8);
-				serial_buf = daq_bmc_data_text[BMC4.pos];
-				BMC4.pos++;
-				daq_data_index++;
+				if ((daq_data_index > MAX_STRLEN) || (daq_bmc_data_text[BMC4.pos] == '^')) {
+					comedi_data_write(it, subdev_serial0, 4, range_ao, AREF_GROUND, STX); // update daq_bmc data buffer
+					daq_data_index = 0;
+					strncpy(daq_bmc_data_buf, daq_bmc_data_text, SYSLOG_SIZ);
+					BMC4.pos = 0;
+					BMC4.bmc_flag = false;
+				} else {
+					comedi_data_read(it, subdev_serial0, 4, range_ao, AREF_GROUND, &daq_bmc_data[BMC4.pos]);
+					daq_bmc_data_text[BMC4.pos] = (char) (daq_bmc_data[BMC4.pos] >> 8);
+					serial_buf = daq_bmc_data_text[BMC4.pos];
+					BMC4.pos++;
+					daq_data_index++;
+				}
 			}
 		}
 	}
