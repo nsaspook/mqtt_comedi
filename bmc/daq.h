@@ -51,7 +51,7 @@ extern "C" {
 #define HV_SCALE5_3             64.1415f
 #define HV_SCALE_RAW            4.096f
 
-#define A200_0_ZERO  2.5200f
+#define A200_0_ZERO  2.5216f
 #define A200_0_SCALAR  133.05f // BATTERY Amp scalar
 #define BSENSOR0 0
 
