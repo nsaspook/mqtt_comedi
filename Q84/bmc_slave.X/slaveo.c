@@ -89,17 +89,17 @@ void slaveo_rx_isr(void)
 	/* we only get this when the master wants data, the slave never generates one */
 	// SPI port #2 SLAVE receiver
 
-	DERE_SetHigh();
+	IO_RF5_SetHigh();
 	DLED_SetHigh();
 #ifdef SLAVE_DEBUG
 	if (SPI2INTFbits.RXOIF) {
-		spi_stat_ss.rxof_bit++;
+//		spi_stat_ss.rxof_bit++;
 	}
 
 	if (SPI2STATUSbits.SPI2RXRE) {
 	} else {
 		if (spi_comm_ss.PORT_DATA) {
-			spi_stat_ss.spi_noerror_count++;
+//			spi_stat_ss.spi_noerror_count++;
 		}
 	}
 #endif
@@ -140,11 +140,11 @@ void slaveo_rx_isr(void)
 			}
 			serial_buffer_ss.cmake_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
-			spi_stat_ss.txdone_bit++; // number of completed packets
-			spi_stat_ss.slave_tx_count++;
+//			spi_stat_ss.txdone_bit++; // number of completed packets
+//			spi_stat_ss.slave_tx_count++;
 			data_in2 = 0;
 		} else {
-			spi_stat_ss.slave_tx_count++;
+//			spi_stat_ss.slave_tx_count++;
 			data_in2 = 0;
 		}
 	}
@@ -157,11 +157,11 @@ void slaveo_rx_isr(void)
 			data_in2 = 0;
 			serial_buffer_ss.make_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
-			spi_stat_ss.txdone_bit++; // number of completed packets
-			spi_stat_ss.slave_tx_count++;
+//			spi_stat_ss.txdone_bit++; // number of completed packets
+//			spi_stat_ss.slave_tx_count++;
 			data_in2 = 0;
 		} else {
-			spi_stat_ss.slave_tx_count++;
+//			spi_stat_ss.slave_tx_count++;
 			data_in2 = 0;
 		}
 	}
@@ -172,11 +172,11 @@ void slaveo_rx_isr(void)
 			V.bmc_ao = serial_buffer_ss.data[BMC_D0];
 			serial_buffer_ss.dac_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
-			spi_stat_ss.txdone_bit++; // number of completed packets
-			spi_stat_ss.slave_tx_count++;
+//			spi_stat_ss.txdone_bit++; // number of completed packets
+//			spi_stat_ss.slave_tx_count++;
 			data_in2 = 0;
 		} else {
-			spi_stat_ss.slave_tx_count++;
+//			spi_stat_ss.slave_tx_count++;
 			data_in2 = 0;
 		}
 	}
@@ -204,9 +204,6 @@ void slaveo_rx_isr(void)
 				tmp_buf = 0x57;
 				if (update_bmc_string == true) { // log_buffer has been updated
 					tmp_buf = log_buffer[BMC4.pos++];
-					if (tmp_buf == 0 || BMC4.pos > BMC4.len) {
-//						BMC4.pos = 0;
-					}
 				}
 				NOP();
 				NOP();
@@ -217,10 +214,10 @@ void slaveo_rx_isr(void)
 			}
 			serial_buffer_ss.cget_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
-			spi_stat_ss.txdone_bit++; // number of completed packets
+//			spi_stat_ss.txdone_bit++; // number of completed packets
 			data_in2 = 0;
 		} else {
-			spi_stat_ss.slave_tx_count++;
+//			spi_stat_ss.slave_tx_count++;
 			if ((serial_buffer_ss.data[BMC_D1] & 0x07) < BMC_EM540_DATA) { // [0..3]
 				if (serial_buffer_ss.raw_index == BMC_D0) {
 					tmp_buf = 0x00; //
@@ -252,10 +249,10 @@ void slaveo_rx_isr(void)
 			SPI2TXB = tmp_buf;
 			serial_buffer_ss.get_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
-			spi_stat_ss.txdone_bit++; // number of completed packets
+//			spi_stat_ss.txdone_bit++; // number of completed packets
 			data_in2 = 0;
 		} else {
-			spi_stat_ss.slave_tx_count++;
+//			spi_stat_ss.slave_tx_count++;
 			if (serial_buffer_ss.raw_index == BMC_D0) {
 				tmp_buf = (uint8_t) in_buf1 | 0b00000001;
 			} else {
@@ -291,10 +288,10 @@ void slaveo_rx_isr(void)
 			}
 			serial_buffer_ss.adc_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
-			spi_stat_ss.txdone_bit++; // number of completed packets
+//			spi_stat_ss.txdone_bit++; // number of completed packets
 			data_in2 = 0;
 		} else {
-			spi_stat_ss.slave_tx_count++;
+//			spi_stat_ss.slave_tx_count++;
 			if (serial_buffer_ss.raw_index == BMC_D0) {
 				NOP();
 				NOP();
@@ -325,10 +322,10 @@ void slaveo_rx_isr(void)
 			SPI2TXB = CHECKBYTE;
 			serial_buffer_ss.cfg_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
-			spi_stat_ss.txdone_bit++; // number of completed packets
+//			spi_stat_ss.txdone_bit++; // number of completed packets
 			data_in2 = 0;
 		} else {
-			spi_stat_ss.slave_tx_count++;
+//			spi_stat_ss.slave_tx_count++;
 			if (serial_buffer_ss.raw_index == BMC_D0) {
 				NOP();
 				NOP();
@@ -363,10 +360,10 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = false;
 		spi_comm_ss.CHAR_DATA = false;
-		spi_stat_ss.dac_count++;
+//		spi_stat_ss.dac_count++;
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.dac_value = true;
-		spi_stat_ss.slave_tx_count++;
+//		spi_stat_ss.slave_tx_count++;
 		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
 	}
@@ -375,7 +372,7 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = false;
 		spi_comm_ss.CHAR_DATA = false;
-		spi_stat_ss.adc_count++;
+//		spi_stat_ss.adc_count++;
 		channel = data_in2 & LO_NIBBLE; // only 16 possible channels so higher numbers needs to be munged
 		if (channel > AI_CHAN_FIX) {
 			switch (channel) {
@@ -427,7 +424,7 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = true;
 		spi_comm_ss.CHAR_DATA = false;
-		spi_stat_ss.port_count++;
+//		spi_stat_ss.port_count++;
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.get_value = true;
 		spi_comm_ss.REMOTE_LINK = true;
@@ -438,10 +435,10 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = true;
 		spi_comm_ss.CHAR_DATA = false;
-		spi_stat_ss.port_count++;
+//		spi_stat_ss.port_count++;
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.make_value = true;
-		spi_stat_ss.slave_tx_count++;
+//		spi_stat_ss.slave_tx_count++;
 		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
 	}
@@ -450,7 +447,7 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = false;
 		spi_comm_ss.CHAR_DATA = true;
-		spi_stat_ss.char_count++;
+//		spi_stat_ss.char_count++;
 		channel = data_in2 & LO_NIBBLE; // only 16 possible channels
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.cget_value = true;
@@ -462,11 +459,11 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = false;
 		spi_comm_ss.CHAR_DATA = true;
-		spi_stat_ss.char_count++;
+//		spi_stat_ss.char_count++;
 		channel = data_in2 & LO_NIBBLE; // only 16 possible channels
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.cmake_value = true;
-		spi_stat_ss.slave_tx_count++;
+//		spi_stat_ss.slave_tx_count++;
 		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
 	}
@@ -487,14 +484,14 @@ void slaveo_rx_isr(void)
 	}
 
 isr_end:
-	spi_stat_ss.slave_int_count++;
+//	spi_stat_ss.slave_int_count++;
 	DLED_SetLow();
-	DERE_SetLow();
+	IO_RF5_SetLow();
 }
 
 void slaveo_spi_isr(void)
 {
-	spi_stat_ss.spi_error_count++;
+//	spi_stat_ss.spi_error_count++;
 	SPI2INTF = 0;
 }
 

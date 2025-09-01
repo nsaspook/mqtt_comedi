@@ -24,7 +24,7 @@ extern "C" {
 
 	//#define DIS_DEBUG	// active status display, disable during normal operation
 
-#define VER	"V0.34"
+#define VER	"V0.35"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -49,6 +49,7 @@ extern "C" {
 	 * V0.32 add code for FM80 state machine and call-backs
 	 * V0.33 finally traced the FM80 restart code, optimize timing for all new code
 	 * V0.34 testing daq_bmc CSV data link to the OPi
+	 * V0.35 cleanup ISR and other misc code
 	 */
 	/*
 	 * TIC12400 testing modes
