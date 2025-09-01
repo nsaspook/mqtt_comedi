@@ -24,7 +24,7 @@ size_t hname_len = 12;
 int32_t validate_failure;
 
 char *jtoken;
-double acvolts, acamps, acwatts, acva, acvar, acpf, achz, bvolts, pvolts, bamps, pamps, fm_online, fm_mode;
+double acvolts, acamps, acwatts, acva, acvar, acpf, achz, bvolts, pvolts, bamps, pamps, fm_online, fm_mode, bsensor0;
 char tmp_test_ptr[512];
 
 struct ha_flag_type ha_flag_vars_ss = {
@@ -455,6 +455,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 
 	if (bmc.BOARD == bmcboard) {
 		E.adc[channel_ANA0] = get_adc_volts(channel_ANA0);
+		bsensor0 = lp_filter((E.adc[channel_ANA0] - A200_0_ZERO) * A200_0_SCALAR, BSENSOR0, true);
 		E.adc[channel_ANA1] = get_adc_volts(channel_ANA1);
 		E.adc[channel_ANA2] = get_adc_volts(channel_ANA2);
 		E.adc[channel_ANC6] = get_adc_volts(channel_ANC6);
@@ -527,9 +528,9 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, goods %d, validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, tmp_test_ptr, ok_data, goods, validate_failure);
 		memset(daq_bmc_data_text, 0, MAX_STRLEN);
 		if (bmc.BOARD == bmcboard) {
-			fprintf(fout, "ANA0 %lfV, ANA1 %fV, ANA2 %f, ANA4 %fV, ANA5 %fV, AND5 %fV : Scaler Index %d, Scaler ANA4 %f, Scaler ANA5 %f, Serial 0X%X\n",
+			fprintf(fout, "ANA0 %lfV, ANA1 %fV, ANA2 %f, ANA4 %fV, ANA5 %fV, AND5 %fV, Battery Sensor %6.3fA, : Scaler Index %d, Scaler ANA4 %f, Scaler ANA5 %f Serial 0X%X\n",
 				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2),
-				E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], ha_daq_host.hindex, ha_daq_host.scaler4[ha_daq_host.hindex], ha_daq_host.scaler5[ha_daq_host.hindex],
+				E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], bsensor0, ha_daq_host.hindex, ha_daq_host.scaler4[ha_daq_host.hindex], ha_daq_host.scaler5[ha_daq_host.hindex],
 				daq_bmc_data[0]);
 		} else {
 			fprintf(fout, "ANA0 %lfV, ANA1 %fV : Scaler Index %d, Scaler ANA4 %f, Scaler ANA5 %f\n",
@@ -560,6 +561,10 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA4]);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_adc1", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA5]);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bsamps0", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], bsensor0);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bswatts0", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], bsensor0*bvolts);
 		} else {
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA0]);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_adc1", 64);

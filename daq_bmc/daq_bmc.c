@@ -49,8 +49,8 @@ and a analog output subdevice with 1 channel with onboard dac
  * Caveats:
  *
  *
- * 0 = force PIC slave PIC18F47Q84 mode
- * 1 = force PIC slave PIC18F47Q84 mode with NO DI or DO
+ * 0 = force PIC slave PIC18F57Q84 mode
+ * 1 = force PIC slave PIC18F57Q84 mode with NO DI or DO
  * This is normally autodetected
  *
  * Module parameters are found in the /sys/modules/daq_bmc/parameters directory
@@ -138,12 +138,13 @@ static const uint32_t SUBDEV_MEM = 4;
 static const uint32_t SMP_CORES = 4;
 static const uint32_t CONF_Q84 = 3;
 static const uint32_t MEM_BLOCKS = 8; // 0..3 CLCD display lines, 4..7 serial comms for FM80, MODBUS, etc ...
-static const uint32_t SPI_GAP = 20000; // time for the Q84 to process each received SPI byte
+static const uint32_t SPI_GAP = 5000; // time for the Q84 to process each received SPI byte
+static const uint32_t SPI_GAP_LONG = 10000; // time for the Q84 to process each received SPI byte
 
 static const uint32_t I8254_MAX_COUNT = 0x10000;
 
-static const uint32_t PIC18_CONVD_47Q84 = 24;
-static const uint32_t PIC18_CMDD_47Q84 = 4;
+static const uint32_t PIC18_CONVD_57Q84 = 24;
+static const uint32_t PIC18_CMDD_57Q84 = 4;
 static const uint32_t SPI_BUFF_SIZE = 128000; // normally 5000
 static const uint32_t SPI_BUFF_SIZE_NOHUNK = 4096; // normally 64
 static const uint32_t MAX_CHANLIST_LEN = 256;
@@ -516,7 +517,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	struct spi_param_type *spi_data = s->private;
 	struct spi_device *spi = spi_data->spi;
 	int32_t ret = 0;
-	ktime_t slower = SPI_GAP;
+	ktime_t slower = SPI_GAP_LONG;
 
 	if (spi == NULL) {
 		ret = -ESHUTDOWN;
@@ -557,6 +558,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	spi_bus_lock(spi->master);
 	spi_sync_locked(spi, packet->m);
 	spi_bus_unlock(spi->master);
+	slower = SPI_GAP;
 	__set_current_state(TASK_UNINTERRUPTIBLE);
 	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
 
@@ -1630,8 +1632,8 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 
 	/* Board  operation data */
 	dev->board_name = thisboard->name;
-	devpriv->ai_cmd_delay_usecs = PIC18_CMDD_47Q84;
-	devpriv->ai_conv_delay_usecs = PIC18_CONVD_47Q84;
+	devpriv->ai_cmd_delay_usecs = PIC18_CMDD_57Q84;
+	devpriv->ai_conv_delay_usecs = PIC18_CONVD_57Q84;
 	devpriv->ai_neverending = true;
 	devpriv->ai_mix = false;
 	devpriv->ai_conv_delay_10nsecs = CONV_SPEED;
@@ -2083,7 +2085,7 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	 * SPI link data hardware setup
 	 */
 	daqbmc_spi_setup(spi_adc);
-	dev_info(dev->class_dev, "PIC18F47Q84 DAQ device, SPI slave mode\n");
+	dev_info(dev->class_dev, "PIC18F57Q84 DAQ device, SPI slave mode\n");
 	daqbmc_spi_setup(spi_adc);
 	spi_adc->device_type = daqbmc_conf;
 	spi_adc->chan = spi_adc->device_spi->n_chan;
