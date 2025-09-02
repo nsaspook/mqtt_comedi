@@ -252,12 +252,6 @@ V_data V = {
 	.do_fail = false,
 };
 
-B_type B = {
-	.one_sec_flag = false,
-	.display_update = false,
-	.dim_delay = DIM_DELAY,
-};
-
 BM_type BM = {
 	.one_sec_flag = false,
 	.ten_sec_flag = false,
@@ -774,7 +768,7 @@ void main(void)
 			if (TimerDone(TMR_HELPDIS)) {
 				set_display_info(DIS_STR);
 			}
-
+			check_lcd_dim(false);
 			/*
 			 * send ascii data to CLCD
 			 */
@@ -798,6 +792,7 @@ void main(void)
 				refresh_lcd();
 				serial_buffer_ss.r_string_index = 0;
 				r_string_ready = false;
+				set_lcd_dim(false);
 			}
 #ifdef DIS_DEBUG
 
@@ -933,7 +928,6 @@ void onesec_io(void)
 	RLED_Toggle();
 	MLED_SetLow();
 	DLED_SetLow();
-	B.one_sec_flag = true;
 	V.utc_ticks++;
 	BM.one_sec_flag = true;
 }
@@ -1265,31 +1259,10 @@ void state_mx_status_cb(void)
 		if (BM.FM80_online || BM.modbus_online) { // log for MX80 and EM540
 			MM_ERROR_C;
 			/*
+			 * not used
 			 * log CSV values to the comm ports for data storage and processing
 			 */
 			BM.run_time = lp_filter(BM.run_time, F_run, false); // smooth run-time
-			//			snprintf(buffer, 25, "%s", asctime(can_newtime)); // the log_buffer uses this string in LOG_VARS
-			//			buffer[DTG_LEN] = 0; // remove newline
-			//			snprintf(log_buffer, MAX_B_BUF, log_format, LOG_VARS);
-			//			printf("%s", log_buffer); // log to USART
-
-			switch (BM.alt_display) {
-			case 3:
-
-				break;
-			case 2:
-
-				break;
-			case 1:
-
-				break;
-			case 0:
-			default:
-
-				break;
-			}
-
-			//			snprintf(info_buffer, MAX_B_BUF, " Data OK\r\n");
 		}
 	}
 	state = state_fwrev;

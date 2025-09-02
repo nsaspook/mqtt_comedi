@@ -24,7 +24,7 @@ extern "C" {
 
 	//#define DIS_DEBUG	// active status display, disable during normal operation
 
-#define VER	"V0.35"
+#define VER	"V0.36"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -50,6 +50,7 @@ extern "C" {
 	 * V0.33 finally traced the FM80 restart code, optimize timing for all new code
 	 * V0.34 testing daq_bmc CSV data link to the OPi
 	 * V0.35 cleanup ISR and other misc code
+	 * V0.36 LCD dimming, DI changes back to bright
 	 */
 	/*
 	 * TIC12400 testing modes
@@ -137,11 +138,53 @@ extern "C" {
 		volatile int32_t int_count, int_read, des_bytes, src_bytes, or_bytes;
 	};
 
-	typedef struct B_type {
-		volatile bool one_sec_flag;
-		volatile uint16_t dim_delay;
-		volatile bool display_update;
-	} B_type;
+	/*
+	 * switch inputs and flags, uses the IOC interrupt and the software 
+	 * timing ISR for processing
+	 */
+	enum D_SW {
+		D_SW_A = 0, // alternate LCD display
+		D_SW_L, // history logging from FM80
+		D_SW_M,
+		D_SW_COUNT // one extra for number of switches to check
+	};
+
+	typedef struct {
+		uint8_t type;
+		int16_t day;
+		int16_t amp_hours;
+		int16_t kilowatt_hours;
+		int16_t volts_peak;
+		int16_t amps_peak;
+		int16_t kilowatts_peak;
+		int16_t bat_min;
+		int16_t bat_max;
+		int16_t absorb_time;
+		int16_t float_time;
+		uint8_t select;
+	} mx_logpage_t;
+
+	typedef struct BM_type {
+		volatile bool ten_sec_flag, one_sec_flag, FM80_charged, pv_high, pv_update, once, a_switch[D_SW_COUNT], a_trigger[D_SW_COUNT], a_type[D_SW_COUNT];
+		volatile uint16_t pacing, rx_count, flush, pv_prev, day_check, node_id, dim_delay;
+		volatile bool FM80_online, FM80_io, LOG, display_dim, display_update, display_on, fm80_restart;
+		volatile uint8_t canbus_online, modbus_online, alt_display, a_pin[D_SW_COUNT];
+		float run_time, net_balance;
+		uint16_t mui[10];
+		uint16_t fwrev[3];
+		mx_logpage_t log;
+	} BM_type;
+
+	typedef struct BF_type {
+		volatile bool ten_sec_flag, one_sec_flag, FM80_charged, pv_high, pv_update, once, a_switch[D_SW_COUNT], a_trigger[D_SW_COUNT], a_type[D_SW_COUNT];
+		volatile uint16_t pacing, rx_count, flush, pv_prev, day_check, node_id, dim_delay;
+		volatile bool FM80_online, FM80_io, LOG, display_dim, display_update, display_on, fm80_restart;
+		volatile uint8_t canbus_online, modbus_online, alt_display, a_pin[D_SW_COUNT];
+		float run_time, net_balance;
+		uint16_t mui[10];
+		uint16_t fwrev[3];
+		mx_logpage_t log;
+	} BF_type;
 
 	typedef enum {
 		DIS_STR = 0,
@@ -261,17 +304,6 @@ extern "C" {
 		TICKER_HIGH = 40,
 	} TICKER_VAL;
 
-	/*
-	 * switch inputs and flags, uses the IOC interrupt and the software 
-	 * timing ISR for processing
-	 */
-	enum D_SW {
-		D_SW_A = 0, // alternate LCD display
-		D_SW_L, // history logging from FM80
-		D_SW_M,
-		D_SW_COUNT // one extra for number of switches to check
-	};
-
 	typedef struct V_data { // control data structure
 		SEQ_STATES s_state;
 		UI_STATES ui_state;
@@ -336,7 +368,7 @@ extern "C" {
 		uint16_t crc;
 	} EB_data;
 
-	extern B_type B;
+	extern BM_type BM;
 
 	extern void UART1_Initialize19200(void);
 	extern void UART2_Initialize19200(void);

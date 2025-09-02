@@ -106,43 +106,6 @@ extern "C" {
 		uint8_t a[16];
 	} mx_log_packed_t;
 
-	typedef struct {
-		uint8_t type;
-		int16_t day;
-		int16_t amp_hours;
-		int16_t kilowatt_hours;
-		int16_t volts_peak;
-		int16_t amps_peak;
-		int16_t kilowatts_peak;
-		int16_t bat_min;
-		int16_t bat_max;
-		int16_t absorb_time;
-		int16_t float_time;
-		uint8_t select;
-	} mx_logpage_t;
-
-	typedef struct BM_type {
-		volatile bool ten_sec_flag, one_sec_flag, FM80_charged, pv_high, pv_update, once, a_switch[D_SW_COUNT], a_trigger[D_SW_COUNT], a_type[D_SW_COUNT];
-		volatile uint16_t pacing, rx_count, flush, pv_prev, day_check, node_id, dim_delay;
-		volatile bool FM80_online, FM80_io, LOG, display_dim, display_update, display_on, fm80_restart;
-		volatile uint8_t canbus_online, modbus_online, alt_display, a_pin[D_SW_COUNT];
-		float run_time, net_balance;
-		uint16_t mui[10];
-		uint16_t fwrev[3];
-		mx_logpage_t log;
-	} BM_type;
-
-	typedef struct BF_type {
-		volatile bool ten_sec_flag, one_sec_flag, FM80_charged, pv_high, pv_update, once, a_switch[D_SW_COUNT], a_trigger[D_SW_COUNT], a_type[D_SW_COUNT];
-		volatile uint16_t pacing, rx_count, flush, pv_prev, day_check, node_id, dim_delay;
-		volatile bool FM80_online, FM80_io, LOG, display_dim, display_update, display_on, fm80_restart;
-		volatile uint8_t canbus_online, modbus_online, alt_display, a_pin[D_SW_COUNT];
-		float run_time, net_balance;
-		uint16_t mui[10];
-		uint16_t fwrev[3];
-		mx_logpage_t log;
-	} BF_type;
-
 	extern void FM_onesec_io(void);
 	extern void FM_tensec_io(void);
 	extern void FM_io(void);

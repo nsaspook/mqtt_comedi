@@ -510,3 +510,25 @@ double lp_filter(double new, int bn, int slow) // low pass filter, slow rate of 
 	}
 	return lp_x;
 }
+
+/*
+ * cleanup mainly noise values near zero value
+ */
+double calc_fixups(double data, FIX_CODES fixup)
+{
+	if ((fixup & SKIP))
+		return data;
+
+	if (fixup & WIDE_ZERO) {
+		if ((data < 0.05) && (data >-0.05))
+			data = 0.0;
+	}
+	if (fixup & NO_NEG) {
+		if (data < 0.0)
+			data = 0.0;
+	}
+	if (fixup & POS_ONLY) {
+		data = fabs(data);
+	}
+	return data;
+}

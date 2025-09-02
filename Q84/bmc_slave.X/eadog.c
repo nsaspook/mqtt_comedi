@@ -1,6 +1,7 @@
 /** \file eadog.c
  */
 #include <string.h>
+#include "mxcmd.h"
 #include "eadog.h"
 #include "vconfig.h"
 #include "mcc_generated_files/mcc.h"
@@ -40,7 +41,7 @@ static void spi_lcd_byte(void);
 static void spi_src_byte(void);
 static void spi_des_byte(void);
 static void spi_or_byte(void);
-static void wdtdelay(const uint32_t);
+void wdtdelay(const uint32_t);
 
 /*
  * Init the NHD-0420D3Z-NSW-BBW-V3 in 8-bit serial mode
@@ -529,13 +530,13 @@ void no_dma_set_lcd(void)
 
 void check_lcd_dim(const bool dim)
 {
-	if (B.display_update) {
-		B.display_update = false;
-		B.dim_delay = 0;
+	if (BM.display_update) {
+		BM.display_update = false;
+		BM.dim_delay = 0;
 #ifdef USE_LCD_DMA
 		if (dim) {
 			send_lcd_cmd_dma(LCD_CMD_BRI); // set back-light level
-			send_lcd_data_dma(NHD_BL_OFF);
+			send_lcd_data_dma(NHD_BL_LOW);
 		} else {
 			send_lcd_cmd_dma(LCD_CMD_BRI); // set back-light level
 			send_lcd_data_dma(NHD_BL_HIGH);
@@ -554,13 +555,13 @@ void check_lcd_dim(const bool dim)
 
 void set_lcd_dim(const bool dim)
 {
-	if (B.display_update) {
-		B.display_update = false;
-		B.dim_delay = 0;
+	if (BM.display_update) {
+		BM.display_update = false;
+		BM.dim_delay = 0;
 #ifdef USE_LCD_DMA
 		if (dim) {
 			send_lcd_cmd_dma(LCD_CMD_BRI); // set back-light level
-			send_lcd_data_dma(NHD_BL_OFF);
+			send_lcd_data_dma(NHD_BL_LOW);
 		} else {
 			send_lcd_cmd_dma(LCD_CMD_BRI); // set back-light level
 			send_lcd_data_dma(NHD_BL_HIGH);
@@ -576,11 +577,11 @@ void set_lcd_dim(const bool dim)
 #endif
 	}
 
-	if (B.dim_delay++ >= DIM_DELAY) {
-		B.dim_delay = 0;
+	if (BM.dim_delay++ >= DIM_DELAY) {
+		BM.dim_delay = 0;
 #ifdef USE_LCD_DMA
 		send_lcd_cmd_dma(LCD_CMD_BRI); // set back-light level
-		send_lcd_data_dma(NHD_BL_OFF);
+		send_lcd_data_dma(NHD_BL_LOW);
 #else
 		send_lcd_cmd(LCD_CMD_BRI); // set back-light level
 		send_lcd_data(NHD_BL_LOW);
@@ -591,7 +592,7 @@ void set_lcd_dim(const bool dim)
 /*
  * busy loop delay with WDT reset
  */
-static void wdtdelay(const uint32_t delay)
+void wdtdelay(const uint32_t delay)
 {
 	uint32_t dcount;
 

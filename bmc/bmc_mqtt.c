@@ -24,7 +24,7 @@ size_t hname_len = 12;
 int32_t validate_failure;
 
 char *jtoken;
-double acvolts, acamps, acwatts, acva, acvar, acpf, achz, bvolts, pvolts, bamps, pamps, fm_online, fm_mode, bsensor0;
+double acvolts, acamps, acwatts, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, fm_online, fm_mode, bsensor0;
 char tmp_test_ptr[512];
 
 struct ha_flag_type ha_flag_vars_ss = {
@@ -525,6 +525,14 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 					fm_mode = atoi(jtoken);
 			}
 		}
+
+		if (acwatts > 0.0f) {
+			acwout = calc_fixups(acwatts, NO_NEG); // utility power used
+			acwin = 0.0f;
+		} else {
+			acwin = fabs(acwatts); // GTI power used
+			acwout = 0.0f;
+		}
 		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, goods %d, validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, tmp_test_ptr, ok_data, goods, validate_failure);
 		memset(daq_bmc_data_text, 0, MAX_STRLEN);
 		if (bmc.BOARD == bmcboard) {
@@ -564,7 +572,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bsamps0", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], bsensor0);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bswatts0", 64);
-			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], bsensor0*bvolts);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], bsensor0 * bvolts);
 		} else {
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA0]);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_adc1", 64);
@@ -589,6 +597,11 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], acpf);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_achz", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], achz);
+
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwin", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], acwin);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwout", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], acwout);
 
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bvolts", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], bvolts);

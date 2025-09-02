@@ -229,6 +229,8 @@ bool tic12400_init(void)
  */
 uint32_t tic12400_wr(const ticbuf_type * buffer, uint16_t del)
 {
+	static uint32_t last_sw_value = 0;
+
 	send_spi1_tic12400_dma((void*) buffer, 4);
 	ticvalue = (uint32_t) spi_link.rxbuf[3]&0x000000ff;
 	INTERRUPT_GlobalInterruptHighDisable(); // buffer input bits
@@ -239,6 +241,10 @@ uint32_t tic12400_wr(const ticbuf_type * buffer, uint16_t del)
 	ticvalue += (uint32_t) (spi_link.rxbuf[2] << 8) & 0x0000ff00;
 	ticvalue += (uint32_t) ((uint32_t) spi_link.rxbuf[1] << (uint32_t) 16)&0x00ff0000;
 	ticvalue += (uint32_t) ((uint32_t) spi_link.rxbuf[0] << (uint32_t) 24)&0xff000000;
+	if (ticvalue != last_sw_value) { // check for display to BRIGHT
+		BM.display_update = true;
+		last_sw_value = ticvalue;
+	}
 	tic12400_read_error = false;
 
 	if (spi_link.rxbuf[0] & parity_fail_v) { // check for command parity errors

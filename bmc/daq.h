@@ -12,6 +12,7 @@
 extern "C" {
 #endif
 
+#include <math.h>
 #define PVV_C   0
 #define CCV_C   1
 #define SYV_C   2
@@ -68,6 +69,14 @@ extern "C" {
 		bmcboard = 0,
 		usbboard = 1,
 	} board_t;
+
+	typedef enum {
+		WIDE_ZERO = 1,
+		NO_NEG = 2,
+		WIDE_NEG = 4,
+		POS_ONLY = 8,
+		SKIP = 16,
+	} FIX_CODES;
 
 	typedef enum { // need to keep all ADC channels in the 4-bit 0x0f range
 		channel_ANA0 = 0x0,
@@ -138,6 +147,7 @@ extern "C" {
 	int set_dio_output(int);
 	int get_data_sample(void);
 	double lp_filter(double, int, int);
+	double calc_fixups(double data, FIX_CODES fixup);
 #ifdef __cplusplus
 }
 #endif
