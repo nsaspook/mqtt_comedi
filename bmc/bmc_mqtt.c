@@ -24,7 +24,7 @@ size_t hname_len = 12;
 int32_t validate_failure;
 
 char *jtoken;
-double acvolts, acamps, acwatts, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, fm_online, fm_mode, bsensor0;
+double acvolts, acamps, acwatts, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, fm_online, fm_mode, bsensor0, dcwin, dcwout;
 char tmp_test_ptr[512];
 
 struct ha_flag_type ha_flag_vars_ss = {
@@ -533,6 +533,15 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			acwin = fabs(acwatts); // GTI power used
 			acwout = 0.0f;
 		}
+
+		if (bsensor0 * bvolts > 0.0f) {
+			dcwin = calc_fixups(bsensor0 * bvolts, NO_NEG); // charge
+			dcwout = 0.0f;
+		} else {
+			dcwout = fabs(bsensor0 * bvolts); // discharge
+			dcwin = 0.0f;
+		}
+
 		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, goods %d, validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, tmp_test_ptr, ok_data, goods, validate_failure);
 		memset(daq_bmc_data_text, 0, MAX_STRLEN);
 		if (bmc.BOARD == bmcboard) {
@@ -602,6 +611,11 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], acwin);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwout", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], acwout);
+
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_dcwin", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], dcwin);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_dcwout", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], dcwout);
 
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bvolts", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], bvolts);
