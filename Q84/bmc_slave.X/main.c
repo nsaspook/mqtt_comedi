@@ -406,7 +406,7 @@ void main(void)
 #ifdef NO_NODE_ID
 	BM.node_id = 0; // set to zero to only use EMON type number as the CAN packet ID
 #else
-	BM.node_id = BM.node_id & 0xf;
+	BM.node_id = BM.node_id & 0xffff;
 #endif
 
 #endif

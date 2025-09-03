@@ -5,7 +5,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v F24761 `(v ~T0 @X0 0 tf ]
 [v F24817 `(v ~T0 @X0 0 tf ]
 [v F24823 `(v ~T0 @X0 0 tf ]
-"163 ./modbus_master.h
+"164 ./modbus_master.h
 [s S3391 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 `uc 1 `uc 1 `uc 1 `us 1 `us 1 `us 1 `ul 1 `ul 1 `ul 1 `Va 1 ]
 [n S3391 M_data blink_lock config stable boot_code power_on send_count recv_count pwm_volts error crc_data crc_calc crc_error to_error sends rx ]
 "6 modbus_master.c
@@ -16,25 +16,25 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n E24832 comm_type CLEAR INIT SEND RECV  ]
 [c E24838 0 1 2 3 4 5 6 7 8 .. ]
 [n E24838 cmd_type G_ID G_DATA1 G_DATA2 G_CONFIG G_PASSWD G_LIGHT G_VERSION G_SERIAL G_LAST  ]
-"177 ./modbus_master.h
+"178 ./modbus_master.h
 [s S3392 `uc 1 `E24832 1 `E24838 1 `us 1 `c 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `ul 1 `ul 1 `VS3391 1 ]
 [n S3392 C_data mcmd cstate modbus_command req_length trace id_ok passwd_ok config_ok data_ok light_ok serial_ok version_ok tm_ok data_count data_prev M ]
-"136
+"137
 [s S3386 `ul 1 `ul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `l 1 `Va 1 `Va 1 ]
 [n S3386 VM_type StartTime TimeUsed pacing pwm_update pwm_stop fault_count fault_ticks fault_source modbus_rx modbus_tx motor_speed fault_active dmt_sosc_flag ]
-"191
+"192
 [s S3393 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vs 1 `Vs 1 `Vs 1 `Vs 1 `Vs 1 `Vs 1 ]
 [n S3393 EM_data1 vl1n vl2n vl3n vl1l2 vl2l3 vl3l1 al1 al2 al3 wl1 wl2 wl3 val1 val2 val3 varl1 varl2 varl3 vlnsys vllsys wsys vasys varsys pfl1 pfl2 pfl3 pfsys phaseseq hz ]
-"205
+"206
 [s S3394 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 ]
 [n S3394 EM_data2 kwhpt kvarhpt kwhpp kvarhpp kwhpl1 kwhpl2 kwhpl3 kwhnt kvarhnt kwhnp kvarhnp kvaht kvahp rhm rhmk rhmp rhmkp hz rhlc ]
-"216
+"217
 [s S3395 `Vuc -> 14 `i `Vs 1 ]
 [n S3395 EM_serial serial year ]
-"221
+"222
 [s S3396 `Vs 1 ]
 [n S3396 EM_version firmware ]
-"316
+"317
 [v _crc16 `(us ~T0 @X0 0 ef2`*Vuc`us ]
 "27 /ldrv/microchip/xc8/v3.10/pic/include/c99/string.h
 [v _memcpy `(*v ~T0 @X0 0 ef3`*v`*Cv`ui ]
@@ -54,10 +54,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _timer_2ms_tick `(v ~T0 @X0 0 sf ]
 "129 ./mcc_generated_files/tmr3.h
 [v _TMR3_StartTimer `(v ~T0 @X0 0 ef ]
-"153 ./modbus_master.h
+"154 ./modbus_master.h
 [u S3389 `l 1 `uc -> 4 `i ]
 [n S3389 MREG32 value bytes ]
-"148
+"149
 [u S3388 `s 1 `uc -> 2 `i ]
 [n S3388 MREG value bytes ]
 "266 modbus_master.c
@@ -2579,7 +2579,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _SPI2_InterruptHandler `*F24817 ~T0 @X0 1 e ]
 "77
 [v _SPI2_RxInterruptHandler `*F24823 ~T0 @X0 1 e ]
-"240 ./modbus_master.h
+"241 ./modbus_master.h
 [v _table_crc_hi `Cuc ~T0 @X0 -> 256 `i s ]
 [i _table_crc_hi
 :U ..
@@ -2841,7 +2841,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 64 `i `uc
 ..
 ]
-"270
+"271
 [v _table_crc_lo `Cuc ~T0 @X0 -> 256 `i s ]
 [i _table_crc_lo
 :U ..
@@ -4639,6 +4639,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 [e :U _emt_data_handler ]
 [f ]
+"746
+[e ( _memcpy (3 , , -> &U _emt `*v -> -> &U *U + _cc_buffer * -> -> 3 `i `x -> -> # *U _cc_buffer `i `x `*v `*Cv -> # _emt `ui ]
+"747
+[e = . _emt 17 ( _mb32_swap (1 . _emt 17 ]
 "749
 [e :UE 3539 ]
 }

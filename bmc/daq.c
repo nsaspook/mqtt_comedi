@@ -418,8 +418,6 @@ int get_data_sample(void)
 		}
 	}
 
-	//	usleep(50);
-
 	if (DO_OPEN) {
 		// send I/O as a byte mask
 		if (bmc.BOARD == bmcboard) {

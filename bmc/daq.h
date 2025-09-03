@@ -24,8 +24,12 @@ extern "C" {
 #define CCC_C   9
 #define BAC_C   10
 
-#define LPCHANC        16
+#define LPCHANC  16
 #define STX  2
+#define DC1_CMD  17
+#define DC2_CMD  18
+#define DC3_CMD  19
+#define DC4_CMD  20
 
 #define SLOW_TEXT 1
 #define SLOW_DATA 1

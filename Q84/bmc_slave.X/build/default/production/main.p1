@@ -115,9 +115,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v F24810 `(v ~T0 @X0 0 tf ]
 "555 ./mcc_generated_files/uart3.h
 [v _UART3_SetRxInterruptHandler `(v ~T0 @X0 0 ef1`*F24810 ]
-"318 ./modbus_master.h
+"319 ./modbus_master.h
 [v _my_modbus_rx_32 `(v ~T0 @X0 0 ef ]
-"320
+"321
 [v _init_mb_master_timers `(v ~T0 @X0 0 ef ]
 [v F25320 `(v ~T0 @X0 1 tf2`uc`us ]
 "33 ./timers.h
@@ -176,15 +176,15 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n E25664 comm_type CLEAR INIT SEND RECV  ]
 [c E25670 0 1 2 3 4 5 6 7 8 .. ]
 [n E25670 cmd_type G_ID G_DATA1 G_DATA2 G_CONFIG G_PASSWD G_LIGHT G_VERSION G_SERIAL G_LAST  ]
-"163 ./modbus_master.h
+"164 ./modbus_master.h
 [s S3416 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 `uc 1 `uc 1 `uc 1 `us 1 `us 1 `us 1 `ul 1 `ul 1 `ul 1 `Va 1 ]
 [n S3416 M_data blink_lock config stable boot_code power_on send_count recv_count pwm_volts error crc_data crc_calc crc_error to_error sends rx ]
-"177
+"178
 [s S3417 `uc 1 `E25664 1 `E25670 1 `us 1 `c 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `ul 1 `ul 1 `VS3416 1 ]
 [n S3417 C_data mcmd cstate modbus_command req_length trace id_ok passwd_ok config_ok data_ok light_ok serial_ok version_ok tm_ok data_count data_prev M ]
-"321
+"322
 [v _master_controller_work `(c ~T0 @X0 0 ef1`*S3417 ]
-"330
+"331
 [v _C `S3417 ~T0 @X0 0 e ]
 "335 main.c
 [v _send_mx_cmd `(v ~T0 @X0 0 sf1`*Cus ]
@@ -281,10 +281,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _r_string_ready `Va ~T0 @X0 0 e ]
 "354 main.c
 [v _bmc_logger `(v ~T0 @X0 0 ef ]
-"191 ./modbus_master.h
+"192 ./modbus_master.h
 [s S3418 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vs 1 `Vs 1 `Vs 1 `Vs 1 `Vs 1 `Vs 1 ]
 [n S3418 EM_data1 vl1n vl2n vl3n vl1l2 vl2l3 vl3l1 al1 al2 al3 wl1 wl2 wl3 val1 val2 val3 varl1 varl2 varl3 vlnsys vllsys wsys vasys varsys pfl1 pfl2 pfl3 pfsys phaseseq hz ]
-"331
+"332
 [v _em `QS3418 ~T0 @X0 0 e ]
 "128 ./eadog.h
 [v _set_lcd_dim `(v ~T0 @X0 0 ef1`Ca ]
@@ -343,6 +343,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _localtime `(*S5 ~T0 @X0 0 ef1`*Cul ]
 "61
 [v _asctime `(*uc ~T0 @X0 0 ef1`*CS5 ]
+"206 ./modbus_master.h
+[s S3419 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 ]
+[n S3419 EM_data2 kwhpt kvarhpt kwhpp kvarhpp kwhpl1 kwhpl2 kwhpl3 kwhnt kvarhnt kwhnp kvarhnp kvaht kvahp rhm rhmk rhmp rhmkp hz rhlc ]
+"333
+[v _emt `QS3419 ~T0 @X0 0 e ]
 "128 ./slaveo.h
 [v _bmc_string_ready `Va ~T0 @X0 0 e ]
 "78 /ldrv/microchip/xc8/v3.10/pic/include/c99/stdlib.h
@@ -2947,7 +2952,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "77
 [v _SPI2_RxInterruptHandler `*F24947 ~T0 @X0 1 e ]
 "121 ./vconfig.h
-[v _log_format `Cuc ~T0 @X0 -> 195 `i e ]
+[v _log_format `Cuc ~T0 @X0 -> 196 `i e ]
 [i _log_format
 :U ..
 -> 94 `c
@@ -3027,6 +3032,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 37 `c
 -> 100 `c
 -> 44 `c
+-> 37 `c
+-> 117 `c
+-> 44 `c
 -> 49 `c
 -> 57 `c
 -> 53 `c
@@ -3036,8 +3044,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 69 `c
 -> 79 `c
 -> 84 `c
--> 32 `c
--> 32 `c
 -> 32 `c
 -> 32 `c
 -> 32 `c
@@ -3762,7 +3768,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-"240 ./modbus_master.h
+"241 ./modbus_master.h
 [v _table_crc_hi `Cuc ~T0 @X0 -> 256 `i s ]
 [i _table_crc_hi
 :U ..
@@ -4024,7 +4030,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 64 `i `uc
 ..
 ]
-"270
+"271
 [v _table_crc_lo `Cuc ~T0 @X0 -> 256 `i s ]
 [i _table_crc_lo
 :U ..
@@ -5263,7 +5269,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 3433 ]
 }
 "409
-[e = . _BM 14 -> & -> . _BM 14 `ui -> -> 15 `i `ui `us ]
+[e = . _BM 14 -> & -> . _BM 14 `ui -> 65535 `ui `us ]
 "413
 [e ( _TMR2_StartTimer ..  ]
 "416
@@ -6478,7 +6484,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "1087
 [e = *U + &U _buffer * -> -> -> 3 `i `ui `ux -> -> # *U &U _buffer `ui `ux -> -> 0 `i `uc ]
 "1088
-[e ( _snprintf (2 , , , , , , , , , , , , , , , , (. , , &U _log_buffer -> -> 512 `i `ui &U _log_format -> / -> . _em 3 `f -> .10.0 `f `d -> / -> . _em 6 `f -> .1000.0 `f `d -> / -> . _em 9 `f -> .10.0 `f `d -> / -> . _em 12 `f -> .10.0 `f `d -> / -> . _em 15 `f -> .10.0 `f `d -> / -> . _em 23 `f -> .10.0 `f `d -> / -> . _em 28 `f -> .10.0 `f `d -> _vw `ui -> _vf `ui -> _pvw `ui -> _pvf `ui - -> _bat_amp_whole `ui -> -> 128 `i `ui - -> _bat_amp_frac `ui -> -> 128 `i `ui - -> _bat_amp_panel `ui -> -> 128 `i `ui -> . _BM 16 `i -> _cc_mode `ui ]
+[e ( _snprintf (2 , , , , , , , , , , , , , , , , , (. , , &U _log_buffer -> -> 512 `i `ui &U _log_format -> / -> . _em 3 `f -> .10.0 `f `d -> / -> . _em 6 `f -> .1000.0 `f `d -> / -> . _em 9 `f -> .10.0 `f `d -> / -> . _em 12 `f -> .10.0 `f `d -> / -> . _em 15 `f -> .10.0 `f `d -> / -> . _em 26 `f -> .10.0 `f `d -> / -> . _emt 17 `f -> .1000.0 `f `d -> _vw `ui -> _vf `ui -> _pvw `ui -> _pvf `ui - -> _bat_amp_whole `ui -> -> 128 `i `ui - -> _bat_amp_frac `ui -> -> 128 `i `ui - -> _bat_amp_panel `ui -> -> 128 `i `ui -> . _BM 16 `i -> _cc_mode `ui -> . _BM 14 `ui ]
 "1089
 [e = . _BMC4 1 &U *U + &U _log_buffer * -> -> -> 0 `i `ui `ux -> -> # *U &U _log_buffer `ui `ux ]
 "1090
@@ -6937,8 +6943,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [a 27C 86 48 46 51 54 0 ]
 [a 29C 86 48 46 51 54 0 ]
 [a 34C 86 48 46 51 54 0 ]
-[a 1C 83 101 112 32 32 49 32 50 48 50 53 0 ]
-[a 2C 49 55 58 50 57 58 49 51 0 ]
+[a 1C 83 101 112 32 32 50 32 50 48 50 53 0 ]
+[a 2C 49 52 58 48 56 58 48 50 0 ]
 [a 7C 82 69 77 79 84 69 32 0 ]
 [a 6C 79 78 76 73 78 69 32 0 ]
 [a 18C 32 78 83 65 83 80 79 79 75 32 65 110 97 108 111 103 32 68 101 118 32 32 0 ]

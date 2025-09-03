@@ -26,6 +26,7 @@ extern "C" {
 
 #define MBMQTT  1024
 #define CHECKMARK	1957
+#define CSV_COUNT	14
 
 	enum mqtt_id {
 		P8055_ID,
@@ -47,6 +48,7 @@ extern "C" {
 		const char hosts[4][NI_MAXHOST];
 		const char clients[4][NI_MAXHOST];
 		const char topics[4][NI_MAXHOST];
+		const char listen[4][NI_MAXHOST];
 		char hname[4][NI_MAXHOST];
 		double scaler[4], scaler4[4], scaler5[4];
 		uint8_t hindex;

@@ -24,7 +24,7 @@ size_t hname_len = 12;
 int32_t validate_failure;
 
 char *jtoken;
-double acvolts, acamps, acwatts, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, fm_online, fm_mode, bsensor0, dcwin, dcwout;
+double acvolts, acamps, acwatts, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, fm_online, fm_mode, bsensor0, dcwin, dcwout, bmc_id;
 char tmp_test_ptr[512];
 
 struct ha_flag_type ha_flag_vars_ss = {
@@ -45,6 +45,10 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.topics[1] = "comedi/bmc/data/bmc/2",
 	.topics[2] = "comedi/bmc/data/bmc/3",
 	.topics[3] = "comedi/bmc/data/bmc/4",
+	.listen[0] = "comedi/bmc/listen/bmc/1",
+	.listen[1] = "comedi/bmc/listen/bmc/2",
+	.listen[2] = "comedi/bmc/listen/bmc/3",
+	.listen[3] = "comedi/bmc/listen/bmc/4",
 	.hname[0] = "RDAQ1",
 	.hname[1] = "RDAQ2",
 	.hname[2] = "RDAQ3",
@@ -523,9 +527,15 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
 					fm_mode = atoi(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					bmc_id = atoi(jtoken);
 			}
 		}
 
+		/*
+		 * various data fix-ups and sanity checks
+		 */
 		if (acwatts > 0.0f) {
 			acwout = calc_fixups(acwatts, NO_NEG); // utility power used
 			acwin = 0.0f;
@@ -534,12 +544,20 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			acwout = 0.0f;
 		}
 
+		if (bsensor0 < -250.0f) {
+			bsensor0 = 0.0f;
+		}
+
 		if (bsensor0 * bvolts > 0.0f) {
 			dcwin = calc_fixups(bsensor0 * bvolts, NO_NEG); // charge
 			dcwout = 0.0f;
 		} else {
 			dcwout = fabs(bsensor0 * bvolts); // discharge
 			dcwin = 0.0f;
+		}
+
+		if (achz < 45.0f) {
+			achz = 60.0f;
 		}
 
 		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, goods %d, validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, tmp_test_ptr, ok_data, goods, validate_failure);
@@ -629,6 +647,8 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], fm_online);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_fm_mode", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], fm_mode);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bmc_id", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], bmc_id);
 		}
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "build_date", 64);
 		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], FW_Date);
@@ -732,7 +752,7 @@ char * validate_bmc_text(const char * text, bool * valid)
 			strncpy(tmp_test_ptr, tmp_p, 511);
 			jtoken = strtok(tmp_test_ptr, ",");
 			if (jtoken != NULL) {
-				for (int i = 0; i < 13; i++) {
+				for (int i = 0; i < CSV_COUNT; i++) {
 					jtoken = strtok(NULL, ",");
 					if (jtoken == NULL) {
 						valid[0] = false;
