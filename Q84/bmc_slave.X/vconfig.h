@@ -24,7 +24,7 @@ extern "C" {
 
 	//#define DIS_DEBUG	// active status display, disable during normal operation
 
-#define VER	"V0.36"
+#define VER	"V0.37"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -51,6 +51,7 @@ extern "C" {
 	 * V0.34 testing daq_bmc CSV data link to the OPi
 	 * V0.35 cleanup ISR and other misc code
 	 * V0.36 LCD dimming, DI changes back to bright
+	 * V0.37 still working on float restart sequencing
 	 */
 	/*
 	 * TIC12400 testing modes
