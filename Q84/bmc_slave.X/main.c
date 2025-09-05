@@ -277,6 +277,8 @@ volatile struct spi_link_type_ss spi_comm_ss = {false, false, false, false, fals
 volatile struct spi_stat_type_ss spi_stat_ss = {
 	.raw_index = 0,
 	.daq_conf = 0,
+	.deviceid = 0,
+	.devicerev = 0,
 };
 volatile struct serial_buffer_type_ss serial_buffer_ss = {
 	.data[BMC_CMD] = CHECKBYTE,
@@ -386,22 +388,24 @@ void main(void)
 
 	V.ui_state = UI_STATE_INIT;
 
+	/*
+	 * read and store the MUI for PCB tracing
+	 */
+	BM.node_id = 0;
+	for (uint8_t i = 0; i <= 8; i++) {
+		BM.mui[i] = DeviceID_Read(DIA_MUI + (i * 2)); // Read Microchip Unique Identifier from memory and store in array
+		BM.node_id += BM.mui[i];
+	}
+	spi_stat_ss.mui= BM.node_id;
+	spi_stat_ss.deviceid= DeviceID_Read(0x3ffffe);
+	spi_stat_ss.devicerev= DeviceID_Read(0x3ffffc);
+
 #ifdef MB_MASTER
 	UART3_SetRxInterruptHandler(my_modbus_rx_32); // install custom serial receive ISR
 	init_mb_master_timers(); // pacing, spacing and timeouts
 
 	StartTimer(TMR_MBTEST, 20);
 	StartTimer(TMR_RESTART, 20000);
-
-	//    void mb_setup(); // serial error handlers
-	/*
-	 * read and store the CPU_ID for PCB tracing
-	 */
-	BM.node_id = 0;
-	for (uint8_t i = 0; i <= 8; i++) {
-		BM.mui[i] = DeviceID_Read(DIA_MUI + (i * 2)); // Read CPU ID from memory and store in array
-		BM.node_id += BM.mui[i];
-	}
 
 #ifdef NO_NODE_ID
 	BM.node_id = 0; // set to zero to only use EMON type number as the CAN packet ID
@@ -551,11 +555,13 @@ void main(void)
 			if (!tic12400_init()) {
 				V.di_fail = true;
 				failure = true;
+				spi_stat_ss.daq_conf |= 0x01; // fail DI
 			};
 			SPI_MC33996();
 			if (!mc33996_init()) {
 				V.do_fail = true;
 				failure = true;
+				spi_stat_ss.daq_conf |= 0x02; // fail DO
 			};
 			init_slaveo();
 			SPI_EADOG();
@@ -567,7 +573,7 @@ void main(void)
 			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, " OPI DAQ_BMC %s        ", VER);
 #ifdef DIS_DEBUG
 			if (V.di_fail) {
-				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " TIC %d 0x%lX 0x%lX         ", tic12400_fail_value, tic12400_id & 0xffff, tic12400_read_status);
+				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " TIC %ld 0x%lX 0x%lX         ", tic12400_fail_value, tic12400_id & 0xffff, tic12400_read_status);
 			}
 			if (V.do_fail) {
 				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " MC 0x%X 0x%X 0x%X         ", mc_init.cmd[3], mc_init.cmd[4], mc_init.cmd[5]);
@@ -595,7 +601,7 @@ void main(void)
 			snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, " %s                   ", (char *) build_date);
 			refresh_lcd();
 			WaitMs(TDELAY);
-			if (failure) {
+			if (failure) { // DIO not working or missing
 				WaitMs(SEQDELAY);
 			}
 			StartTimer(TMR_DISPLAY, DDELAY);
@@ -796,18 +802,15 @@ void main(void)
 			}
 #ifdef DIS_DEBUG
 
-#ifdef AIO_TEST
+#ifdef AIO_TEST // analog 12-bit values
 			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%u,%u,%u,%u               ",
 				adc_buffer[channel_ANA0], adc_buffer[channel_ANA1], adc_buffer[channel_ANA2], adc_buffer[channel_ANA4]);
-
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%u,%u,%u,%u                ",
 				adc_buffer[channel_ANA5], adc_buffer[channel_ANC6], adc_buffer[channel_ANC7], adc_buffer[channel_AND5]);
-
-			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%u,%u config 0X%.2X                     ",
-				adc_buffer[channel_VSS], adc_buffer[channel_Temp], spi_stat_ss.daq_conf);
-
-			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%2u,%2u,%2u                ",
-				adc_buffer[channel_DAC1], adc_buffer[channel_FVR_Buffer1], adc_buffer[channel_FVR_Buffer2]);
+			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "CFG%.2X D%X R%X                   ", // bmc config, deviceid, devicerev
+				spi_stat_ss.daq_conf,spi_stat_ss.deviceid,spi_stat_ss.devicerev);
+			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "DAC %2u                           ", // 8-bit dax value
+				adc_buffer[channel_DAC1]);
 #else
 #ifdef DIO_TEST
 #ifdef DIO_SHOW_BUF
@@ -874,13 +877,14 @@ void main(void)
 #ifdef DIS_DEBUG
 			snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "RS232 TX %3dV:%c                       ", V.tx_volts, V.tx_rs232);
 			snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "RS232 RX %3dV:%c                       ", V.rx_volts, V.rx_rs232);
-			snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "A1 0x%.2x, A2 0x%.2x                   ", V.v_tx_line, V.v_rx_line);
-			snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "B0 0x%.2X, B1 0x%.2X %x                  ", serial_buffer_ss.data[0], serial_buffer_ss.data[1], b_read);
-			snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "                                       ");
-			snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "                                       ");
-			snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "A1 0x%.2x, A2 0x%.2x                   ", V.v_tx_line, V.v_rx_line);
-			snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "0x%.2lx 0x%.2lx %d %d %d %x                 ",
-				spi_stat_ss.spi_error_count, spi_stat_ss.txuf_bit, spi_comm_ss.CHAR_DATA, spi_comm_ss.PORT_DATA, spi_comm_ss.REMOTE_LINK, b_read);
+			snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "LT 0x%.2x, LR 0x%.2x                   ", V.v_tx_line, V.v_rx_line);
+			snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "B0 0x%.2X, B1 0x%.2X                    ", serial_buffer_ss.data[0], serial_buffer_ss.data[1]);
+			
+			snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %lX                                  ",spi_stat_ss.mui);
+			snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "Dev %X Rev %X                            ",spi_stat_ss.deviceid,spi_stat_ss.devicerev);
+			snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "A1 0x%.2x, A2 0x%.2x                    ", V.v_tx_line, V.v_rx_line);
+			snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "SPI2 errors 0x%.2lx                                 ",
+				spi_stat_ss.spi_error_count);
 #endif
 			/*
 			 * don't default update the LCD when displaying HELP text

@@ -22,9 +22,9 @@ extern "C" {
 
 #define NHD		// SPI 20X4 display, nhd-0420d3z-nsw-bbw
 
-	//#define DIS_DEBUG	// active status display, disable during normal operation
+#define DIS_DEBUG	// active status display, disable during normal operation
 
-#define VER	"V0.37"
+#define VER	"V0.38"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -52,14 +52,15 @@ extern "C" {
 	 * V0.35 cleanup ISR and other misc code
 	 * V0.36 LCD dimming, DI changes back to bright
 	 * V0.37 still working on float restart sequencing
+	 * V0.38 cleanup debugging LCD code
 	 */
 	/*
 	 * TIC12400 testing modes
 	 */
 #define DIO_TEST
 #define DIO_SHOW_BUF
-#define DI_DEBUG
-	//#define SER_DEBUG
+	//#define DI_DEBUG
+#define SER_DEBUG
 
 #define DI_MC_CMD
 
@@ -67,7 +68,7 @@ extern "C" {
 	 *
 	 */
 
-	//#define AIO_TEST
+#define AIO_TEST
 
 #define SLED	MLED_LAT
 #define DLED	DLED_LAT

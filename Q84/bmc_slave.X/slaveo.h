@@ -20,7 +20,11 @@ extern "C" {
 #include "eadog.h"
 #include "timers.h"
 
-#define SLAVEO_DRIVER "V0.8"
+#define SLAVEO_DRIVER "V0.9"
+
+#define F27Q84	0x9903
+#define F47Q84	0x9904	
+#define F57Q84	0x9905
 
 #define SLAVE_DEBUG
 
@@ -79,12 +83,13 @@ extern "C" {
 	};
 
 	struct spi_stat_type_ss {
-		volatile uint32_t adc_count, dac_count,
+		volatile uint32_t adc_count, dac_count, mui,
 		port_count, port_error_count, port_data_count, zombie_count,
 		char_count, char_error_count, rxof_bit, txdone_bit, txuf_bit,
 		slave_int_count, last_slave_int_count, slave_tx_count,
 		comm_count, idle_count, spi_error_count, spi_noerror_count;
 		volatile uint8_t comm_ok, raw_index, daq_conf;
+		uint16_t deviceid, devicerev;
 	};
 
 	struct serial_buffer_type_ss {
