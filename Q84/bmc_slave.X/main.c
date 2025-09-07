@@ -396,9 +396,9 @@ void main(void)
 		BM.mui[i] = DeviceID_Read(DIA_MUI + (i * 2)); // Read Microchip Unique Identifier from memory and store in array
 		BM.node_id += BM.mui[i];
 	}
-	spi_stat_ss.mui= BM.node_id;
-	spi_stat_ss.deviceid= DeviceID_Read(0x3ffffe);
-	spi_stat_ss.devicerev= DeviceID_Read(0x3ffffc);
+	spi_stat_ss.mui = BM.node_id;
+	spi_stat_ss.deviceid = DeviceID_Read(0x3ffffe);
+	spi_stat_ss.devicerev = DeviceID_Read(0x3ffffc);
 
 #ifdef MB_MASTER
 	UART3_SetRxInterruptHandler(my_modbus_rx_32); // install custom serial receive ISR
@@ -410,7 +410,7 @@ void main(void)
 #ifdef NO_NODE_ID
 	BM.node_id = 0; // set to zero to only use EMON type number as the CAN packet ID
 #else
-	BM.node_id = BM.node_id & 0xffff;
+	BM.node_id = BM.node_id & 0xffffffff; // using full number
 #endif
 
 #endif
@@ -595,10 +595,10 @@ void main(void)
 			snprintf(get_vterm_ptr(1, HELP_VTERM), MAX_TEXT, " Version %s           ", VER);
 			snprintf(get_vterm_ptr(2, HELP_VTERM), MAX_TEXT, " VTERM HELP           ");
 			snprintf(get_vterm_ptr(3, HELP_VTERM), MAX_TEXT, " %s                   ", (char *) build_date);
-			snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, " DEBUG                ");
-			snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, " Version %s           ", VER);
-			snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, " VTERM DEBUG          ");
-			snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, " %s                   ", (char *) build_date);
+			snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
+			snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "OF %lu ERR %lu                        ", spi_stat_ss.rxof_bit, spi_stat_ss.spi_error_count);
+			snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu                               ", spi_stat_ss.bmc_counts);
+			snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "%s Ver %s                       ", (char *) build_date, VER);
 			refresh_lcd();
 			WaitMs(TDELAY);
 			if (failure) { // DIO not working or missing
@@ -785,16 +785,16 @@ void main(void)
 				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%s %s A%d.%01d A%d              ", FM80_name[BM.FM80_online], state_name[cc_mode], bat_amp_whole - 128, bat_amp_frac - 128, bat_amp_panel - 128);
 				snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "BAT V%d.%01d PV V%d.%01d                 ", vw, vf, pvw, pvf);
 
-				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "%s                       ", &BMC4.log_buffer[2]);
-				snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "%s                       ", &BMC4.log_buffer[16]);
+				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "kwh %u float %u                       ", BM.log.kilowatt_hours, BM.log.float_time);
+				snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "Bmax %u Bmin %u                      ", BM.log.bat_max, BM.log.bat_min);
 				snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "V%ld A%3.2f                        ", em.vl1l2, ((float) em.al1) / 1000.0f);
 				snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "W%ld VA%ld P%d             ", em.wl1, em.val1, em.pfsys);
-				/*
-						snprintf(get_vterm_ptr(0, DBUG_VTERM),
-						snprintf(get_vterm_ptr(1, DBUG_VTERM),
-						snprintf(get_vterm_ptr(2, DBUG_VTERM),
-						snprintf(get_vterm_ptr(3, DBUG_VTERM),
-				 */
+
+				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
+				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "OF %lu ERR %lu                        ", spi_stat_ss.rxof_bit, spi_stat_ss.spi_error_count);
+				snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu                               ", spi_stat_ss.bmc_counts);
+				snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "%s %s                       ", (char *) build_date, VER);
+
 				refresh_lcd();
 				serial_buffer_ss.r_string_index = 0;
 				r_string_ready = false;
@@ -808,7 +808,7 @@ void main(void)
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%u,%u,%u,%u                ",
 				adc_buffer[channel_ANA5], adc_buffer[channel_ANC6], adc_buffer[channel_ANC7], adc_buffer[channel_AND5]);
 			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "CFG%.2X D%X R%X                   ", // bmc config, deviceid, devicerev
-				spi_stat_ss.daq_conf,spi_stat_ss.deviceid,spi_stat_ss.devicerev);
+				spi_stat_ss.daq_conf, spi_stat_ss.deviceid, spi_stat_ss.devicerev);
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "DAC %2u                           ", // 8-bit dax value
 				adc_buffer[channel_DAC1]);
 #else
@@ -879,9 +879,9 @@ void main(void)
 			snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "RS232 RX %3dV:%c                       ", V.rx_volts, V.rx_rs232);
 			snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "LT 0x%.2x, LR 0x%.2x                   ", V.v_tx_line, V.v_rx_line);
 			snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "B0 0x%.2X, B1 0x%.2X                    ", serial_buffer_ss.data[0], serial_buffer_ss.data[1]);
-			
-			snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %lX                                  ",spi_stat_ss.mui);
-			snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "Dev %X Rev %X                            ",spi_stat_ss.deviceid,spi_stat_ss.devicerev);
+
+			snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX                                  ", spi_stat_ss.mui);
+			snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "Dev %X Rev %X                            ", spi_stat_ss.deviceid, spi_stat_ss.devicerev);
 			snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "A1 0x%.2x, A2 0x%.2x                    ", V.v_tx_line, V.v_rx_line);
 			snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "SPI2 errors 0x%.2lx                                 ",
 				spi_stat_ss.spi_error_count);

@@ -25,8 +25,8 @@ extern "C" {
 #define FLOAT_CODE      1
 
 #define MBMQTT  1024
-#define CHECKMARK	1957
-#define CSV_COUNT	14
+#define CHECKMARK 1957
+#define CSV_COUNT 14
 
 	enum mqtt_id {
 		P8055_ID,
@@ -44,6 +44,14 @@ extern "C" {
 		volatile int32_t var_update, energy_mode;
 	};
 
+	struct ha_daq_calib_type {
+		uint64_t bmc_id[4];
+		double offset4[4];
+		double scaler4[4];
+		double offset5[4];
+		double scaler5[4];
+	};
+
 	struct ha_daq_hosts_type {
 		const char hosts[4][NI_MAXHOST];
 		const char clients[4][NI_MAXHOST];
@@ -51,8 +59,9 @@ extern "C" {
 		const char listen[4][NI_MAXHOST];
 		char hname[4][NI_MAXHOST];
 		double scaler[4], scaler4[4], scaler5[4];
-		uint8_t hindex;
+		uint8_t hindex, bindex;
 		uint32_t pacer[4];
+		struct ha_daq_calib_type calib;
 	};
 
 	extern struct ha_flag_type ha_flag_vars_ss, ha_daq_hosts_type;

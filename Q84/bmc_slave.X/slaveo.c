@@ -97,7 +97,7 @@ void slaveo_rx_isr(void)
 	DLED_SetHigh();
 #ifdef SLAVE_DEBUG
 	if (SPI2INTFbits.RXOIF) {
-		//		spi_stat_ss.rxof_bit++;
+		spi_stat_ss.rxof_bit++;
 	}
 
 	if (SPI2STATUSbits.SPI2RXRE) {
@@ -164,7 +164,7 @@ void slaveo_rx_isr(void)
 			}
 			serial_buffer_ss.cmake_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
-			//			spi_stat_ss.txdone_bit++; // number of completed packets
+			spi_stat_ss.txdone_bit++; // number of completed packets
 			//			spi_stat_ss.slave_tx_count++;
 			data_in2 = 0;
 		} else {
@@ -181,7 +181,7 @@ void slaveo_rx_isr(void)
 			data_in2 = 0;
 			serial_buffer_ss.make_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
-			//			spi_stat_ss.txdone_bit++; // number of completed packets
+			spi_stat_ss.txdone_bit++; // number of completed packets
 			//			spi_stat_ss.slave_tx_count++;
 			data_in2 = 0;
 		} else {
@@ -196,7 +196,7 @@ void slaveo_rx_isr(void)
 			V.bmc_ao = serial_buffer_ss.data[BMC_D0];
 			serial_buffer_ss.dac_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
-			//			spi_stat_ss.txdone_bit++; // number of completed packets
+			spi_stat_ss.txdone_bit++; // number of completed packets
 			//			spi_stat_ss.slave_tx_count++;
 			data_in2 = 0;
 		} else {
@@ -235,10 +235,12 @@ void slaveo_rx_isr(void)
 					NOP();
 				};
 				SPI2TXB = tmp_buf;
+				spi_stat_ss.bmc_counts++;
 			}
 			serial_buffer_ss.cget_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
-			//			spi_stat_ss.txdone_bit++; // number of completed packets
+			spi_stat_ss.txdone_bit++; // number of completed packets
+
 			data_in2 = 0;
 		} else {
 			//			spi_stat_ss.slave_tx_count++;
@@ -273,7 +275,7 @@ void slaveo_rx_isr(void)
 			SPI2TXB = tmp_buf;
 			serial_buffer_ss.get_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
-			//			spi_stat_ss.txdone_bit++; // number of completed packets
+			spi_stat_ss.txdone_bit++; // number of completed packets
 			data_in2 = 0;
 		} else {
 			//			spi_stat_ss.slave_tx_count++;
@@ -312,7 +314,7 @@ void slaveo_rx_isr(void)
 			}
 			serial_buffer_ss.adc_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
-			//			spi_stat_ss.txdone_bit++; // number of completed packets
+			spi_stat_ss.txdone_bit++; // number of completed packets
 			data_in2 = 0;
 		} else {
 			//			spi_stat_ss.slave_tx_count++;
@@ -346,7 +348,7 @@ void slaveo_rx_isr(void)
 			SPI2TXB = CHECKBYTE;
 			serial_buffer_ss.cfg_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
-			//			spi_stat_ss.txdone_bit++; // number of completed packets
+			spi_stat_ss.txdone_bit++; // number of completed packets
 			data_in2 = 0;
 		} else {
 			//			spi_stat_ss.slave_tx_count++;
@@ -515,7 +517,7 @@ isr_end:
 
 void slaveo_spi_isr(void)
 {
-	//	spi_stat_ss.spi_error_count++;
+	spi_stat_ss.spi_error_count++;
 	SPI2INTF = 0;
 }
 

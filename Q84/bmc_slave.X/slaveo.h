@@ -83,13 +83,14 @@ extern "C" {
 	};
 
 	struct spi_stat_type_ss {
-		volatile uint32_t adc_count, dac_count, mui,
+		volatile uint32_t adc_count, dac_count, bmc_counts,
 		port_count, port_error_count, port_data_count, zombie_count,
 		char_count, char_error_count, rxof_bit, txdone_bit, txuf_bit,
 		slave_int_count, last_slave_int_count, slave_tx_count,
 		comm_count, idle_count, spi_error_count, spi_noerror_count;
 		volatile uint8_t comm_ok, raw_index, daq_conf;
 		uint16_t deviceid, devicerev;
+		volatile unsigned long long mui;
 	};
 
 	struct serial_buffer_type_ss {

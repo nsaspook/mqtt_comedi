@@ -74,6 +74,27 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.pacer[2] = 1000, // daq2
 	.pacer[3] = 500,
 	.hindex = 0,
+	.bindex = 0,
+	.calib.bmc_id[0] = 362934, // bmc Q84 MUI
+	.calib.offset4[0] = HV_SCALE_OFFSET,
+	.calib.scaler4[0] = HV_SCALE4_0,
+	.calib.offset5[0] = HV_SCALE_OFFSET,
+	.calib.scaler5[0] = HV_SCALE5_0,
+	.calib.bmc_id[1] = 1, // bmc Q84 MUI
+	.calib.offset4[1] = HV_SCALE_OFFSET,
+	.calib.scaler4[1] = HV_SCALE4_1,
+	.calib.offset5[1] = HV_SCALE_OFFSET,
+	.calib.scaler5[1] = HV_SCALE5_1,
+	.calib.bmc_id[2] = 2, // bmc Q84 MUI
+	.calib.offset4[2] = HV_SCALE_OFFSET,
+	.calib.scaler4[2] = HV_SCALE4_2,
+	.calib.offset5[2] = HV_SCALE_OFFSET,
+	.calib.scaler5[2] = HV_SCALE5_2,
+	.calib.bmc_id[3] = 3, // bmc Q84 MUI
+	.calib.offset4[3] = HV_SCALE_OFFSET,
+	.calib.scaler4[3] = HV_SCALE4_3,
+	.calib.offset5[3] = HV_SCALE_OFFSET,
+	.calib.scaler5[3] = HV_SCALE5_3,
 };
 
 double ac0_filter(const double);
@@ -528,8 +549,21 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				if (jtoken != NULL)
 					fm_mode = atoi(jtoken);
 				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					bmc_id = atoi(jtoken);
+				if (jtoken != NULL) {
+					bmc_id = atoll(jtoken);
+					if (bmc_id == ha_daq_host.calib.bmc_id[0]) {
+						ha_daq_host.bindex = 0;
+					}
+					if (bmc_id == ha_daq_host.calib.bmc_id[1]) {
+						ha_daq_host.bindex = 1;
+					}
+					if (bmc_id == ha_daq_host.calib.bmc_id[2]) {
+						ha_daq_host.bindex = 2;
+					}
+					if (bmc_id == ha_daq_host.calib.bmc_id[3]) {
+						ha_daq_host.bindex = 3;
+					}
+				}
 			}
 		}
 
@@ -563,9 +597,9 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, goods %d, validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, tmp_test_ptr, ok_data, goods, validate_failure);
 		memset(daq_bmc_data_text, 0, MAX_STRLEN);
 		if (bmc.BOARD == bmcboard) {
-			fprintf(fout, "ANA0 %lfV, ANA1 %fV, ANA2 %f, ANA4 %fV, ANA5 %fV, AND5 %fV, Battery Sensor %6.3fA, : Scaler Index %d, Scaler ANA4 %f, Scaler ANA5 %f Serial 0X%X\n",
+			fprintf(fout, "ANA0 %lfV, ANA1 %fV, ANA2 %f, ANA4 %fV, ANA5 %fV, AND5 %fV, Battery Sensor %6.3fA, : Host Index %d, Scaler Index %d, Scaler ANA4 %f, Scaler ANA5 %f Serial 0X%X\n",
 				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2),
-				E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], bsensor0, ha_daq_host.hindex, ha_daq_host.scaler4[ha_daq_host.hindex], ha_daq_host.scaler5[ha_daq_host.hindex],
+				E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], bsensor0, ha_daq_host.hindex, ha_daq_host.bindex, ha_daq_host.calib.scaler4[ha_daq_host.bindex], ha_daq_host.calib.scaler5[ha_daq_host.bindex],
 				daq_bmc_data[0]);
 		} else {
 			fprintf(fout, "ANA0 %lfV, ANA1 %fV : Scaler Index %d, Scaler ANA4 %f, Scaler ANA5 %f\n",

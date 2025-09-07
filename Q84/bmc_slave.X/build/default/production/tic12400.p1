@@ -56,9 +56,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [s S3391 `uc 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `uc 1 ]
 [n S3391 . type day amp_hours kilowatt_hours volts_peak amps_peak kilowatts_peak bat_min bat_max absorb_time float_time select ]
 "169
-[s S3392 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va -> 3 `i `Va -> 3 `i `Va -> 3 `i `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Vuc 1 `Vuc 1 `Vuc 1 `Vuc -> 3 `i `f 1 `f 1 `us -> 10 `i `us -> 3 `i `S3391 1 ]
-[n S3392 BM_type ten_sec_flag one_sec_flag FM80_charged pv_high pv_update once a_switch a_trigger a_type pacing rx_count flush pv_prev day_check node_id dim_delay FM80_online FM80_io LOG display_dim display_update display_on fm80_restart canbus_online modbus_online alt_display a_pin run_time net_balance mui fwrev log ]
-"373
+[s S3392 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va -> 3 `i `Va -> 3 `i `Va -> 3 `i `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Vuc 1 `Vuc 1 `Vuc 1 `Vuc -> 3 `i `f 1 `f 1 `us -> 10 `i `us -> 3 `i `S3391 1 `Vuo 1 ]
+[n S3392 BM_type ten_sec_flag one_sec_flag FM80_charged pv_high pv_update once a_switch a_trigger a_type pacing rx_count flush pv_prev day_check dim_delay FM80_online FM80_io LOG display_dim display_update display_on fm80_restart canbus_online modbus_online alt_display a_pin run_time net_balance mui fwrev log node_id ]
+"374
 [v _BM `S3392 ~T0 @X0 0 e ]
 "70377 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f57q84.h
 [v _PORTB `Vuc ~T0 @X0 0 e@1231 ]
@@ -2509,7 +2509,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "77
 [v _SPI2_RxInterruptHandler `*F24629 ~T0 @X0 1 e ]
 "123 ./vconfig.h
-[v _log_format `Cuc ~T0 @X0 -> 196 `i e ]
+[v _log_format `Cuc ~T0 @X0 -> 198 `i e ]
 [i _log_format
 :U ..
 -> 94 `c
@@ -2590,6 +2590,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 100 `c
 -> 44 `c
 -> 37 `c
+-> 108 `c
+-> 108 `c
 -> 117 `c
 -> 44 `c
 -> 49 `c
@@ -2820,7 +2822,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ]
 [v F25099 `Cuc ~T0 @X0 -> 20 `i t ]
-"345
+"346
 [v _spin `F25099 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
@@ -2899,7 +2901,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-"130 ./slaveo.h
+"131 ./slaveo.h
 [v _failure `Va ~T0 @X0 1 e ]
 "88 ./tic12400.h
 [v _b_read `Vuc ~T0 @X0 1 e ]
@@ -3362,8 +3364,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "231
 [f ]
 "232
-[v F25644 `ul ~T0 @X0 1 s last_sw_value ]
-[i F25644
+[v F25645 `ul ~T0 @X0 1 s last_sw_value ]
+[i F25645
 -> -> -> 0 `i `l `ul
 ]
 "234
@@ -3387,12 +3389,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 "243
 [e =+ _ticvalue -> & << -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul -> -> 24 `i `ul -> 4278190080 `ul `Vul ]
 "244
-[e $ ! != _ticvalue F25644 3427  ]
+[e $ ! != _ticvalue F25645 3427  ]
 {
 "245
-[e = . _BM 20 -> -> 1 `i `a ]
+[e = . _BM 19 -> -> 1 `i `a ]
 "246
-[e = F25644 _ticvalue ]
+[e = F25645 _ticvalue ]
 "247
 }
 [e :U 3427 ]
@@ -3562,6 +3564,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [p f _printf 8650752 ]
 [a 4C 86 48 46 56 0 ]
-[a 1C 83 101 112 32 32 53 32 50 48 50 53 0 ]
-[a 2C 48 57 58 53 53 58 48 51 0 ]
+[a 1C 83 101 112 32 32 54 32 50 48 50 53 0 ]
+[a 2C 48 57 58 50 49 58 51 49 0 ]
 [a 3C 13 45 45 45 32 84 73 67 49 50 52 48 48 32 68 114 105 118 101 114 32 86 101 114 115 105 111 110 32 37 115 32 37 115 32 37 115 32 45 45 45 13 10 0 ]

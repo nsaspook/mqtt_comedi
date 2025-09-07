@@ -38,7 +38,7 @@ extern "C" {
 #define JUST_BITS false
 	/*
 	 * scale adc result into calibrated units
-	 * for USB boards, BMC boards use driver ranges
+	 * for USB boards and BMC boards use MUI_id scales and offsets
 	 */
 #define HV_SCALE0               83.6f
 #define HV_SCALE1               74.4f
@@ -55,6 +55,7 @@ extern "C" {
 #define HV_SCALE4_3             64.1890f
 #define HV_SCALE5_3             64.1415f
 #define HV_SCALE_RAW            4.096f
+#define HV_SCALE_OFFSET         0.0f
 
 #define A200_0_ZERO  2.5216f
 #define A200_0_SCALAR  133.05f // BATTERY Amp scalar

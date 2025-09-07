@@ -188,8 +188,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [s S3391 `uc 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `uc 1 ]
 [n S3391 . type day amp_hours kilowatt_hours volts_peak amps_peak kilowatts_peak bat_min bat_max absorb_time float_time select ]
 "169
-[s S3392 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va -> 3 `i `Va -> 3 `i `Va -> 3 `i `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Vuc 1 `Vuc 1 `Vuc 1 `Vuc -> 3 `i `f 1 `f 1 `us -> 10 `i `us -> 3 `i `S3391 1 ]
-[n S3392 BM_type ten_sec_flag one_sec_flag FM80_charged pv_high pv_update once a_switch a_trigger a_type pacing rx_count flush pv_prev day_check node_id dim_delay FM80_online FM80_io LOG display_dim display_update display_on fm80_restart canbus_online modbus_online alt_display a_pin run_time net_balance mui fwrev log ]
+[s S3392 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va -> 3 `i `Va -> 3 `i `Va -> 3 `i `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Vuc 1 `Vuc 1 `Vuc 1 `Vuc -> 3 `i `f 1 `f 1 `us -> 10 `i `us -> 3 `i `S3391 1 `Vuo 1 ]
+[n S3392 BM_type ten_sec_flag one_sec_flag FM80_charged pv_high pv_update once a_switch a_trigger a_type pacing rx_count flush pv_prev day_check dim_delay FM80_online FM80_io LOG display_dim display_update display_on fm80_restart canbus_online modbus_online alt_display a_pin run_time net_balance mui fwrev log node_id ]
 "122 ./mxcmd.h
 [v _BM `S3392 ~T0 @X0 0 e ]
 "304 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f57q84.h
@@ -2639,7 +2639,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "77
 [v _SPI2_RxInterruptHandler `*F24797 ~T0 @X0 1 e ]
 "123 ./vconfig.h
-[v _log_format `Cuc ~T0 @X0 -> 196 `i e ]
+[v _log_format `Cuc ~T0 @X0 -> 198 `i e ]
 [i _log_format
 :U ..
 -> 94 `c
@@ -2720,6 +2720,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 100 `c
 -> 44 `c
 -> 37 `c
+-> 108 `c
+-> 108 `c
 -> 117 `c
 -> 44 `c
 -> 49 `c
@@ -2950,7 +2952,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ]
 [v F25265 `Cuc ~T0 @X0 -> 20 `i t ]
-"345
+"346
 [v _spin `F25265 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
@@ -3031,7 +3033,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ]
 "88 ./tic12400.h
 [v _b_read `Vuc ~T0 @X0 1 e ]
-"130 ./slaveo.h
+"131 ./slaveo.h
 [v _failure `Va ~T0 @X0 1 e ]
 "24 ./mxcmd.h
 [v _build_version `Cuc ~T0 @X0 -> 25 `i e ]
@@ -3302,9 +3304,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 70 `i `us
 ..
 ]
-[v F25602 `Cuc ~T0 @X0 -> 12 `i t ]
+[v F25603 `Cuc ~T0 @X0 -> 12 `i t ]
 "77
-[v _state_name `F25602 ~T0 @X0 -> 6 `i e ]
+[v _state_name `F25603 ~T0 @X0 -> 6 `i e ]
 [i _state_name
 :U ..
 :U ..
@@ -3360,9 +3362,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-[v F25604 `Cuc ~T0 @X0 -> 12 `i t ]
+[v F25605 `Cuc ~T0 @X0 -> 12 `i t ]
 "86
-[v _FM80_name `F25604 ~T0 @X0 -> 2 `i e ]
+[v _FM80_name `F25605 ~T0 @X0 -> 2 `i e ]
 [i _FM80_name
 :U ..
 :U ..
@@ -3384,9 +3386,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-[v F25606 `Cuc ~T0 @X0 -> 12 `i t ]
+[v F25607 `Cuc ~T0 @X0 -> 12 `i t ]
 "91
-[v _canbus_name `F25606 ~T0 @X0 -> 2 `i e ]
+[v _canbus_name `F25607 ~T0 @X0 -> 2 `i e ]
 [i _canbus_name
 :U ..
 :U ..
@@ -3410,9 +3412,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-[v F25608 `Cuc ~T0 @X0 -> 12 `i t ]
+[v F25609 `Cuc ~T0 @X0 -> 12 `i t ]
 "96
-[v _modbus_name `F25608 ~T0 @X0 -> 2 `i e ]
+[v _modbus_name `F25609 ~T0 @X0 -> 2 `i e ]
 [i _modbus_name
 :U ..
 :U ..
@@ -3465,9 +3467,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _inx
 -> -> 0 `i `uc
 ]
-[v F25641 `uc ~T0 @X0 -> 21 `i t ]
+[v F25642 `uc ~T0 @X0 -> 21 `i t ]
 "31
-[v _Sstr `F25641 ~T0 @X0 -> 5 `i s ]
+[v _Sstr `F25642 ~T0 @X0 -> 5 `i s ]
 "32
 [v _scroll_lock `Va ~T0 @X0 1 s ]
 [i _scroll_lock
@@ -4418,12 +4420,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 "532
 [f ]
 "533
-[e $ ! != -> . _BM 20 `i -> 0 `i 3525  ]
+[e $ ! != -> . _BM 19 `i -> 0 `i 3525  ]
 {
 "534
-[e = . _BM 20 -> -> 0 `i `a ]
+[e = . _BM 19 -> -> 0 `i `a ]
 "535
-[e = . _BM 15 -> -> 0 `i `us ]
+[e = . _BM 14 -> -> 0 `i `us ]
 "537
 [e $ ! != -> _dim `i -> 0 `i 3526  ]
 {
@@ -4459,12 +4461,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 "557
 [f ]
 "558
-[e $ ! != -> . _BM 20 `i -> 0 `i 3529  ]
+[e $ ! != -> . _BM 19 `i -> 0 `i 3529  ]
 {
 "559
-[e = . _BM 20 -> -> 0 `i `a ]
+[e = . _BM 19 -> -> 0 `i `a ]
 "560
-[e = . _BM 15 -> -> 0 `i `us ]
+[e = . _BM 14 -> -> 0 `i `us ]
 "562
 [e $ ! != -> _dim `i -> 0 `i 3530  ]
 {
@@ -4488,10 +4490,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 3529 ]
 "580
-[e $ ! >= -> ++ . _BM 15 -> -> 1 `i `Vus `ui -> -> 4 `i `ui 3532  ]
+[e $ ! >= -> ++ . _BM 14 -> -> 1 `i `Vus `ui -> -> 4 `i `ui 3532  ]
 {
 "581
-[e = . _BM 15 -> -> 0 `i `us ]
+[e = . _BM 14 -> -> 0 `i `us ]
 "583
 [e ( _send_lcd_cmd_dma (1 -> -> 83 `i `uc ]
 "584
