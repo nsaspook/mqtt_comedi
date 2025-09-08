@@ -55,7 +55,7 @@ struct energy_type E = {
 // Comedi I/O device type
 const char *board_name = "NO_BOARD", *driver_name = "NO_DRIVER";
 
-FILE* fout; // logging stream
+FILE *fout, *calfile; // logging stream and calibration data
 
 /* ripped from http://aquaticus.info/pwm-sine-wave */
 
@@ -170,7 +170,7 @@ int main(int argc, char *argv[])
 		fflush(fout);
 		while (true) {
 			usleep(MAIN_DELAY); // sample rate ~1 msec
-//			set_dac_raw(0, sine_wave[i++]);
+			//			set_dac_raw(0, sine_wave[i++]);
 			get_data_sample();
 
 			if (bmc.BOARD == bmcboard) {

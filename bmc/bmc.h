@@ -70,6 +70,8 @@ extern "C" {
 
 #define LOG_TO_FILE         "/var/log/bmc/bmc_comedi.log"
 #define LOG_TO_FILE_ALT     "/tmp/bmc_comedi.log"
+#define CAL_FILE            "/etc/bmc_calfile.bin"
+#define CAL_FILE_ALT        "/tmp/bmc_calfile.bin"
 
 #define MQTT_RECONN     3
 #define KAI             60
@@ -84,7 +86,7 @@ extern "C" {
 	//digital only
 	//#define DIGITAL_ONLY
 
-	extern FILE* fout; // logging stream
+	extern FILE *fout, *calfile; // logging stream
 	extern struct energy_type E;
 
 	struct energy_type {

@@ -75,6 +75,7 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.pacer[3] = 500,
 	.hindex = 0,
 	.bindex = 0,
+	.calib.checkmark = CHECKMARK,
 	.calib.bmc_id[0] = 362934, // bmc Q84 MUI
 	.calib.offset4[0] = HV_SCALE_OFFSET,
 	.calib.scaler4[0] = HV_SCALE4_0,
@@ -292,6 +293,13 @@ void delivered(void *context, MQTTClient_deliveryToken dt)
 	ha_flag->deliveredtoken = dt;
 }
 
+bool use_cal_file(FILE * file, bool write)
+{
+	bool ret = false;
+
+	return ret;
+}
+
 /** \file bmc_mqtt.c
  *
  */
@@ -313,6 +321,23 @@ void bmc_mqtt_init(void)
 	}
 #else
 	fout = stdout;
+#endif
+
+#ifdef CAL_FILE
+	calfile = fopen(CAL_FILE, "r");
+	if (calfile == NULL) {
+		calfile = fopen(CAL_FILE_ALT, "r");
+		if (calfile == NULL) {
+			calfile = fopen(CAL_FILE, "a+"); // create a new file
+			if (calfile != NULL) {
+				ha_daq_host.calib.newfile = true;
+			}
+		} else {
+			ha_daq_host.calib.oldfile = true;
+		}
+	} else {
+		ha_daq_host.calib.oldfile = true;
+	}
 #endif
 	fprintf(fout, "\r\n%s LOG Version %s : MQTT Version %s : Host Name %s", log_time(false), LOG_VERSION, MQTT_VERSION, hname);
 	fflush(fout);

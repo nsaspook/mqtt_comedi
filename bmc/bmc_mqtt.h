@@ -45,6 +45,9 @@ extern "C" {
 	};
 
 	struct ha_daq_calib_type {
+		uint16_t checkmark;
+		bool newfile;
+		bool oldfile, fileok;
 		uint64_t bmc_id[4];
 		double offset4[4];
 		double scaler4[4];
@@ -76,6 +79,7 @@ extern "C" {
 	void skeleton_daemon(void);
 	void bmc_mqtt_init(void);
 	char * log_time(bool);
+	bool use_cal_file(FILE *, bool);
 
 	void timer_callback(int32_t);
 	void comedi_push_mqtt(void);
