@@ -72,6 +72,17 @@ extern "C" {
 
 #define MAX_BMC_BUF	512
 
+	struct ha_daq_calib_type {
+		uint16_t checkmark;
+		bool newfile;
+		bool oldfile, fileok;
+		long long bmc_id;
+		double offset4;
+		double scaler4;
+		double offset5;
+		double scaler5;
+	};
+
 	struct spi_link_type_ss { // internal state table
 		uint8_t SPI_DATA : 1;
 		uint8_t ADC_DATA : 1;
@@ -135,6 +146,7 @@ extern "C" {
 	extern volatile bool r_string_ready, bmc_string_ready, update_bmc_string;
 	extern volatile struct bmc_buffer_type BMC4;
 	extern volatile char buffer[MAX_BMC_BUF], log_buffer[MAX_BMC_BUF];
+	extern const struct ha_daq_calib_type ha_daq_calib;
 
 	void check_slaveo(void);
 	void init_slaveo(void);

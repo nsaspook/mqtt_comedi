@@ -24,7 +24,7 @@ extern "C" {
 
 	//#define DIS_DEBUG	// active status display, disable during normal operation
 
-#define VER	"V0.38"
+#define VER	"V0.39"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -53,6 +53,7 @@ extern "C" {
 	 * V0.36 LCD dimming, DI changes back to bright
 	 * V0.37 still working on float restart sequencing
 	 * V0.38 cleanup debugging LCD code
+	 * V0.39 GET_CFG_BYTES channel 4 or 5 (0 will send CFG byte) will send calibration float (32-bit IEEE 754) for HV channels D0..D4
 	 */
 	/*
 	 * TIC12400 testing modes
@@ -151,17 +152,6 @@ extern "C" {
 		D_SW_L, // history logging from FM80
 		D_SW_M,
 		D_SW_COUNT // one extra for number of switches to check
-	};
-
-	struct ha_daq_calib_type {
-		uint16_t checkmark;
-		bool newfile;
-		bool oldfile, fileok;
-		long long bmc_id;
-		double offset4;
-		double scaler4;
-		double offset5;
-		double scaler5;
 	};
 
 	typedef struct {

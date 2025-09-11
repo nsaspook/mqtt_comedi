@@ -42,7 +42,8 @@
 
 volatile bool failure = false;
 volatile uint8_t in_buf1 = 0x19, in_buf2 = 0x57, in_buf3 = 0x07;
-//volatile uint8_t tmp_buf = 0;
+static uint8_t *tmp_buf4 = (void *) &ha_daq_calib.scaler4;
+static uint8_t *tmp_buf5 = (void *) &ha_daq_calib.scaler5;
 volatile bool r_string_ready = false, bmc_string_ready = false, update_bmc_string = false;
 
 static void clear_slaveo_flags(void);
@@ -352,7 +353,16 @@ void slaveo_rx_isr(void)
 				};
 				switch (serial_buffer_ss.raw_index) {
 				case BMC_D0:
-					SPI2TXB = CHECKBYTE;
+					SPI2TXB = (char) tmp_buf4[0];
+					break;
+				case BMC_D1:
+					SPI2TXB = (char) tmp_buf4[1];
+					break;
+				case BMC_D2:
+					SPI2TXB = (char) tmp_buf4[2];
+					break;
+				case BMC_D3:
+					SPI2TXB = (char) tmp_buf4[3];
 					break;
 				default:
 					SPI2TXB = CHECKBYTE;
@@ -360,6 +370,28 @@ void slaveo_rx_isr(void)
 				}
 				break;
 			case 0x05:
+				NOP();
+				NOP();
+				while (SPI2CON2bits.BUSY) {
+					NOP();
+				};
+				switch (serial_buffer_ss.raw_index) {
+				case BMC_D0:
+					SPI2TXB = (char) tmp_buf5[0];
+					break;
+				case BMC_D1:
+					SPI2TXB = (char) tmp_buf5[1];
+					break;
+				case BMC_D2:
+					SPI2TXB = (char) tmp_buf5[2];
+					break;
+				case BMC_D3:
+					SPI2TXB = (char) tmp_buf5[3];
+					break;
+				default:
+					SPI2TXB = CHECKBYTE;
+					break;
+				}
 				break;
 			case 0x0:
 			default:
@@ -500,6 +532,8 @@ void slaveo_rx_isr(void)
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.cfg_value = true;
 		channel = data_in2 & LO_NIBBLE; // only 16 possible channels so higher numbers needs to be munged
+		tmp_buf4 = (void *) &ha_daq_calib.scaler4;
+		tmp_buf5 = (void *) &ha_daq_calib.scaler5;
 		if (channel == 0x7) {
 			if (!serial_buffer_ss.adc_value && !serial_buffer_ss.dac_value && !serial_buffer_ss.make_value && !serial_buffer_ss.get_value&& !serial_buffer_ss.cmake_value && !serial_buffer_ss.cget_value) {
 				MLED_SetHigh();
