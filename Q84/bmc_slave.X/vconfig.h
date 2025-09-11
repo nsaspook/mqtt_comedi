@@ -22,7 +22,7 @@ extern "C" {
 
 #define NHD		// SPI 20X4 display, nhd-0420d3z-nsw-bbw
 
-//#define DIS_DEBUG	// active status display, disable during normal operation
+	//#define DIS_DEBUG	// active status display, disable during normal operation
 
 #define VER	"V0.38"
 	/** \file vconfig.h
@@ -120,6 +120,8 @@ extern "C" {
 #define BAT_DAY_COUNT	45	// number of reports before updates
 #define BAT_NIGHT_COUNT	90
 
+#define HV_SCALE_OFFSET         0.0f
+
 	const char log_format[] = "^,%3.1f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%llu,1957,~EOT                                                                                                        \r\n";
 #define LOG_VARS	((float) em.vl1l2) / 10.0f,((float) em.al1) / 1000.0f, ((float) em.wl1) / 10.0f, ((float) em.val1) / 10.0f, ((float) em.varl1) / 10.0f,  ((float) em.pfsys) / 10.0f, ((float) emt.hz) / 1000.0f,vw, vf, pvw, pvf, bat_amp_whole - 128, bat_amp_frac - 128, bat_amp_panel - 128,BM.FM80_online,cc_mode, BM.node_id
 
@@ -151,6 +153,17 @@ extern "C" {
 		D_SW_COUNT // one extra for number of switches to check
 	};
 
+	struct ha_daq_calib_type {
+		uint16_t checkmark;
+		bool newfile;
+		bool oldfile, fileok;
+		long long bmc_id;
+		double offset4;
+		double scaler4;
+		double offset5;
+		double scaler5;
+	};
+
 	typedef struct {
 		uint8_t type;
 		int16_t day;
@@ -168,7 +181,7 @@ extern "C" {
 
 	typedef struct BM_type {
 		volatile bool ten_sec_flag, one_sec_flag, FM80_charged, pv_high, pv_update, once, a_switch[D_SW_COUNT], a_trigger[D_SW_COUNT], a_type[D_SW_COUNT];
-		volatile uint16_t pacing, rx_count, flush, pv_prev, day_check,  dim_delay;
+		volatile uint16_t pacing, rx_count, flush, pv_prev, day_check, dim_delay;
 		volatile bool FM80_online, FM80_io, LOG, display_dim, display_update, display_on, fm80_restart;
 		volatile uint8_t canbus_online, modbus_online, alt_display, a_pin[D_SW_COUNT];
 		float run_time, net_balance;

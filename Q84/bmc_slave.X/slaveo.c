@@ -103,7 +103,6 @@ void slaveo_rx_isr(void)
 	if (SPI2STATUSbits.SPI2RXRE) {
 	} else {
 		if (spi_comm_ss.PORT_DATA) {
-			//			spi_stat_ss.spi_noerror_count++;
 		}
 	}
 #endif
@@ -165,10 +164,8 @@ void slaveo_rx_isr(void)
 			serial_buffer_ss.cmake_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
-			//			spi_stat_ss.slave_tx_count++;
 			data_in2 = 0;
 		} else {
-			//			spi_stat_ss.slave_tx_count++;
 			data_in2 = 0;
 		}
 	}
@@ -182,10 +179,8 @@ void slaveo_rx_isr(void)
 			serial_buffer_ss.make_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
-			//			spi_stat_ss.slave_tx_count++;
 			data_in2 = 0;
 		} else {
-			//			spi_stat_ss.slave_tx_count++;
 			data_in2 = 0;
 		}
 	}
@@ -243,7 +238,6 @@ void slaveo_rx_isr(void)
 
 			data_in2 = 0;
 		} else {
-			//			spi_stat_ss.slave_tx_count++;
 			if ((serial_buffer_ss.data[BMC_D1] & 0x07) < BMC_EM540_DATA) { // [0..3]
 				if (serial_buffer_ss.raw_index == BMC_D0) {
 					tmp_buf = 0x00; //
@@ -278,7 +272,6 @@ void slaveo_rx_isr(void)
 			spi_stat_ss.txdone_bit++; // number of completed packets
 			data_in2 = 0;
 		} else {
-			//			spi_stat_ss.slave_tx_count++;
 			if (serial_buffer_ss.raw_index == BMC_D0) {
 				tmp_buf = (uint8_t) in_buf1 | 0b00000001;
 			} else {
@@ -317,7 +310,6 @@ void slaveo_rx_isr(void)
 			spi_stat_ss.txdone_bit++; // number of completed packets
 			data_in2 = 0;
 		} else {
-			//			spi_stat_ss.slave_tx_count++;
 			if (serial_buffer_ss.raw_index == BMC_D0) {
 				NOP();
 				NOP();
@@ -351,21 +343,40 @@ void slaveo_rx_isr(void)
 			spi_stat_ss.txdone_bit++; // number of completed packets
 			data_in2 = 0;
 		} else {
-			//			spi_stat_ss.slave_tx_count++;
-			if (serial_buffer_ss.raw_index == BMC_D0) {
+			switch (channel) {
+			case 0x04:
 				NOP();
 				NOP();
 				while (SPI2CON2bits.BUSY) {
 					NOP();
 				};
-				SPI2TXB = CHECKBYTE;
-			} else {
+				switch (serial_buffer_ss.raw_index) {
+				case BMC_D0:
+					SPI2TXB = CHECKBYTE;
+					break;
+				default:
+					SPI2TXB = CHECKBYTE;
+					break;
+				}
+				break;
+			case 0x05:
+				break;
+			case 0x0:
+			default:
 				NOP();
 				NOP();
 				while (SPI2CON2bits.BUSY) {
 					NOP();
 				};
-				SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits
+				switch (serial_buffer_ss.raw_index) {
+				case BMC_D0:
+					SPI2TXB = CHECKBYTE;
+					break;
+				default:
+					SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits
+					break;
+				}
+				break;
 			}
 			data_in2 = 0;
 		}
@@ -386,10 +397,8 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = false;
 		spi_comm_ss.CHAR_DATA = false;
-		//		spi_stat_ss.dac_count++;
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.dac_value = true;
-		//		spi_stat_ss.slave_tx_count++;
 		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
 	}
@@ -398,7 +407,6 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = false;
 		spi_comm_ss.CHAR_DATA = false;
-		//		spi_stat_ss.adc_count++;
 		channel = data_in2 & LO_NIBBLE; // only 16 possible channels so higher numbers needs to be munged
 		if (channel > AI_CHAN_FIX) {
 			switch (channel) {
@@ -450,7 +458,6 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = true;
 		spi_comm_ss.CHAR_DATA = false;
-		//		spi_stat_ss.port_count++;
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.get_value = true;
 		spi_comm_ss.REMOTE_LINK = true;
@@ -461,10 +468,8 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = true;
 		spi_comm_ss.CHAR_DATA = false;
-		//		spi_stat_ss.port_count++;
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.make_value = true;
-		//		spi_stat_ss.slave_tx_count++;
 		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
 	}
@@ -473,7 +478,6 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = false;
 		spi_comm_ss.CHAR_DATA = true;
-		//		spi_stat_ss.char_count++;
 		channel = data_in2 & LO_NIBBLE; // only 16 possible channels
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.cget_value = true;
@@ -485,11 +489,9 @@ void slaveo_rx_isr(void)
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = false;
 		spi_comm_ss.CHAR_DATA = true;
-		//		spi_stat_ss.char_count++;
 		channel = data_in2 & LO_NIBBLE; // only 16 possible channels
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.cmake_value = true;
-		//		spi_stat_ss.slave_tx_count++;
 		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
 	}
@@ -497,20 +499,21 @@ void slaveo_rx_isr(void)
 	if (command == CMD_DUMMY_CFG) {
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.cfg_value = true;
-		if (!serial_buffer_ss.adc_value && !serial_buffer_ss.dac_value && !serial_buffer_ss.make_value && !serial_buffer_ss.get_value&& !serial_buffer_ss.cmake_value && !serial_buffer_ss.cget_value) {
-			MLED_SetHigh();
-			clear_slaveo_flags();
-			MCZ_PWM_SetLow();
-			MLED_SetLow();
+		channel = data_in2 & LO_NIBBLE; // only 16 possible channels so higher numbers needs to be munged
+		if (channel == 0x7) {
+			if (!serial_buffer_ss.adc_value && !serial_buffer_ss.dac_value && !serial_buffer_ss.make_value && !serial_buffer_ss.get_value&& !serial_buffer_ss.cmake_value && !serial_buffer_ss.cget_value) {
+				MLED_SetHigh();
+				clear_slaveo_flags();
+				MCZ_PWM_SetLow();
+				MLED_SetLow();
+			}
 		}
-
 		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
 		StartTimer(TMR_ADC, ADCDELAY);
 	}
 
 isr_end:
-	//	spi_stat_ss.slave_int_count++;
 	DLED_SetLow();
 	IO_RF5_SetLow();
 }

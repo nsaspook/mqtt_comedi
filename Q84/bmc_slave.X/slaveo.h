@@ -43,6 +43,7 @@ extern "C" {
 #define CMD_DEAD        0b11111111      // This is usually a bad response
 
 #define CHECKBYTE       0x57
+#define CHECKMARK	0x1957
 
 #define CMD_DUMMY       0b01100111	/* 7 channels 4.096 */
 #define NUM_AI_CHAN     15

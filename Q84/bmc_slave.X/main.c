@@ -287,6 +287,14 @@ volatile struct serial_buffer_type_ss serial_buffer_ss = {
 	.r_string_chan = 3,
 };
 
+const struct ha_daq_calib_type ha_daq_calib = {
+	.checkmark = CHECKMARK,
+	.scaler4 = 64.2600f,
+	.scaler5 = 64.2600f,
+	.offset4 = HV_SCALE_OFFSET,
+	.offset5 = HV_SCALE_OFFSET,
+};
+
 volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0, channel = 0, upper;
 volatile uint16_t adc_buffer[AI_BUFFER_NUM] = {0}, adc_data_in = 0, out_buf = 0;
 uint16_t volt_whole, bat_amp_whole = AMP_WHOLE_ZERO, bat_amp_frac = AMP_WHOLE_ZERO, bat_amp_panel = AMP_WHOLE_ZERO, panel_watts, volt_fract, vf, vw, pvf, pvw, af, aw;
