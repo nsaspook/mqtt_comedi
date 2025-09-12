@@ -82,7 +82,7 @@ and a analog output subdevice with 1 channel with onboard dac
 #include <linux/list.h>
 #include <linux/completion.h>
 
-#define bmc_version "version 0.96 "
+#define bmc_version "version 0.97 "
 #define spibmc_version "version 1.3 "
 
 static const uint32_t CHECKMARK = 0x1957;
@@ -470,6 +470,7 @@ struct daqbmc_private {
 	struct timer_list ai_timer;
 	void (*digitalWrite) (struct comedi_device *dev, uint32_t pin, uint32_t * value);
 	int (*digitalRead) (struct comedi_device *dev, uint32_t * data);
+	float *scalar4_ptr, *scalar5_ptr, scalar4, scalar5;
 };
 
 static int32_t daqbmc_spi_setup(struct spi_param_type *);
@@ -883,6 +884,7 @@ static int32_t daqbmc_ao_inttrig(struct comedi_device *dev,
 	}
 
 	mutex_unlock(&devpriv->cmd_lock);
+	smp_mb__after_atomic();
 	return ret;
 }
 
@@ -959,6 +961,7 @@ static int32_t daqbmc_ao_cmd(struct comedi_device *dev,
 
 ao_cmd_exit:
 	mutex_unlock(&devpriv->cmd_lock);
+	smp_mb__after_atomic();
 	return ret;
 }
 
@@ -1416,6 +1419,7 @@ static int32_t daqbmc_ai_rinsn(struct comedi_device *dev,
 	ret = 0;
 ai_read_exit:
 	mutex_unlock(&devpriv->cmd_lock);
+	smp_mb__after_atomic();
 	return ret ? ret : insn->n;
 }
 
@@ -1499,7 +1503,7 @@ static int32_t daqbmc_bmc_get_config(struct comedi_device *dev)
 	bmc_spi_exchange(dev, packet);
 	val = (packet->bmc_byte_r[BMC_DUMMY]);
 	/* use single transfer for all bytes of the complete SPI transaction */
-	packet->bmc_byte_t[BMC_CMD] = CMD_DUMMY_CFG;
+	packet->bmc_byte_t[BMC_CMD] = CMD_DUMMY_CFG + 4;
 	packet->bmc_byte_t[BMC_D0] = BMC_D0;
 	packet->bmc_byte_t[BMC_D1] = BMC_D1;
 	packet->bmc_byte_t[BMC_D2] = BMC_D2;
@@ -1509,7 +1513,24 @@ static int32_t daqbmc_bmc_get_config(struct comedi_device *dev)
 	packet->bmc_byte_t[BMC_CKSUM] = CHECKBYTE;
 	packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
 	bmc_spi_exchange(dev, packet);
+	devpriv->scalar4_ptr = (float*) &packet->bmc_byte_r[BMC_D0];
+	memcpy(&devpriv->scalar4, devpriv->scalar4_ptr, 4); // make a copy for use later
+
+	packet->bmc_byte_t[BMC_CMD] = CMD_DUMMY_CFG + 5;
+	packet->bmc_byte_t[BMC_D0] = BMC_D0;
+	packet->bmc_byte_t[BMC_D1] = BMC_D1;
+	packet->bmc_byte_t[BMC_D2] = BMC_D2;
+	packet->bmc_byte_t[BMC_D3] = BMC_D3;
+	packet->bmc_byte_t[BMC_D4] = BMC_D4;
+	packet->bmc_byte_t[BMC_EXT] = CMD_DUMMY_CFG;
+	packet->bmc_byte_t[BMC_CKSUM] = CHECKBYTE;
+	packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
+	bmc_spi_exchange(dev, packet);
+	devpriv->scalar5_ptr = (float*) &packet->bmc_byte_r[BMC_D0];
+	memcpy(&devpriv->scalar5, devpriv->scalar5_ptr, 4);
+
 	devpriv->ai_count++;
+	dev_info(dev->class_dev, "Calibration Scalars read from board\n");
 	mutex_unlock(&devpriv->drvdata_lock);
 	clear_bit(SPI_AI_RUN, &devpriv->state_bits);
 	smp_mb__after_atomic();
@@ -1611,6 +1632,8 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 				dev_info(dev->class_dev, "BMCBoard chip select : 0x%x\n",
 					thisboard->ai_cs);
 				mutex_unlock(&devpriv->drvdata_lock);
+				smp_mb__after_atomic();
+
 			}
 			clear_bit(CSnA, &spi_device_missing);
 		} else {

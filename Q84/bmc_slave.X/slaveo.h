@@ -19,6 +19,7 @@ extern "C" {
 #include "mcc_generated_files/tmr0.h"
 #include "eadog.h"
 #include "timers.h"
+#include "vconfig.h"
 
 #define SLAVEO_DRIVER "V0.9"
 

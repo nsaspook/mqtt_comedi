@@ -44,25 +44,25 @@ Version 4.0 HI-TECH Software Intermediate Code
 "255 main.c
 [c E25636 0 1 2 3 4 5 .. ]
 [n E25636 status_type STATUS_SLEEPING STATUS_FLOATING STATUS_BULK STATUS_ABSORB STATUS_EQUALIZE STATUS_LAST  ]
-"86 ./slaveo.h
+"87 ./slaveo.h
 [s S3405 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S3405 spi_link_type_ss SPI_DATA ADC_DATA PORT_DATA CHAR_DATA REMOTE_LINK REMOTE_DATA_DONE LOW_BITS ADC_RUN ]
-"97
+"98
 [s S3406 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vuc 1 `Vuc 1 `Vuc 1 `us 1 `us 1 `Vuo 1 ]
 [n S3406 spi_stat_type_ss adc_count dac_count bmc_counts port_count port_error_count port_data_count zombie_count char_count char_error_count rxof_bit txdone_bit txuf_bit slave_int_count last_slave_int_count slave_tx_count comm_count idle_count spi_error_count spi_noerror_count comm_ok raw_index daq_conf deviceid devicerev mui ]
-"108
+"109
 [s S3407 `Vuc -> 16 `i `Vuc -> 81 `i `Vuc 1 `Vuc 1 `Vuc 1 `Vuc 1 `Vuc 1 `Vuc 1 `Vuc 1 `Vul 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 ]
 [n S3407 serial_buffer_type_ss data r_string adcl adc2 adch command raw_index r_string_index r_string_chan place make_value get_value dac_value adc_value cfg_value cmake_value cget_value ]
 "283 main.c
 [c E25479 0 1 2 3 4 5 6 7 8 .. ]
 [n E25479 daqbmc_packet_index BMC_CMD BMC_D0 BMC_D1 BMC_D2 BMC_D3 BMC_D4 BMC_EXT BMC_CKSUM BMC_DUMMY  ]
-"75 ./slaveo.h
+"76 ./slaveo.h
 [s S3404 `us 1 `a 1 `a 1 `a 1 `o 1 `d 1 `d 1 `d 1 `d 1 ]
 [n S3404 ha_daq_calib_type checkmark newfile oldfile fileok bmc_id offset4 scaler4 offset5 scaler5 ]
 "335 main.c
 [c E25909 0 1 2 3 4 5 6 7 8 9 10 11 12 .. ]
 [n E25909 state_type state_init state_status state_panel state_batteryv state_batterya state_watts state_fwrev state_time state_date state_mx_log state_misc state_mx_status state_last  ]
-"114 ./slaveo.h
+"115 ./slaveo.h
 [s S3408 `*Vuc 1 `*Vuc 1 `Vus 1 `Vus 1 `Va 1 ]
 [n S3408 bmc_buffer_type buffer log_buffer len pos bmc_flag ]
 "40 /ldrv/microchip/xc8/v3.10/pic/include/c99/time.h
@@ -245,7 +245,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _SPI_MC33996 `(v ~T0 @X0 0 ef ]
 "69 ./mc33996.h
 [v _mc33996_init `(a ~T0 @X0 0 ef ]
-"152 ./slaveo.h
+"153 ./slaveo.h
 [v _init_slaveo `(v ~T0 @X0 0 ef ]
 "28 ./bmcdio.h
 [v _SPI_EADOG `(v ~T0 @X0 0 ef ]
@@ -280,7 +280,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _spi_link `VS3390 ~T0 @X0 0 e ]
 "129 ./eadog.h
 [v _check_lcd_dim `(v ~T0 @X0 0 ef1`Ca ]
-"146 ./slaveo.h
+"147 ./slaveo.h
 [v _r_string_ready `Va ~T0 @X0 0 e ]
 "364 main.c
 [v _bmc_logger `(v ~T0 @X0 0 ef ]
@@ -351,7 +351,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S3420 EM_data2 kwhpt kvarhpt kwhpp kvarhpp kwhpl1 kwhpl2 kwhpl3 kwhnt kvarhnt kwhnp kvarhnp kvaht kvahp rhm rhmk rhmp rhmkp hz rhlc ]
 "333
 [v _emt `QS3420 ~T0 @X0 0 e ]
-"146 ./slaveo.h
+"147 ./slaveo.h
 [v _bmc_string_ready `Va ~T0 @X0 0 e ]
 "78 /ldrv/microchip/xc8/v3.10/pic/include/c99/stdlib.h
 [v _abs `(i ~T0 @X0 0 ef1`i ]
@@ -2954,8 +2954,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _SPI2_InterruptHandler `*F24941 ~T0 @X0 1 e ]
 "77
 [v _SPI2_RxInterruptHandler `*F24947 ~T0 @X0 1 e ]
-"126 ./vconfig.h
-[v _log_format `Cuc ~T0 @X0 -> 198 `i e ]
+"124 ./vconfig.h
+[v _log_format `Cuc ~T0 @X0 -> 156 `i e ]
 [i _log_format
 :U ..
 -> 94 `c
@@ -3040,6 +3040,18 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 108 `c
 -> 117 `c
 -> 44 `c
+-> 37 `c
+-> 55 `c
+-> 46 `c
+-> 52 `c
+-> 102 `c
+-> 44 `c
+-> 37 `c
+-> 55 `c
+-> 46 `c
+-> 52 `c
+-> 102 `c
+-> 44 `c
 -> 49 `c
 -> 57 `c
 -> 53 `c
@@ -3049,60 +3061,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 69 `c
 -> 79 `c
 -> 84 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
 -> 32 `c
 -> 32 `c
 -> 32 `c
@@ -3349,7 +3307,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ]
 "88 ./tic12400.h
 [v _b_read `Vuc ~T0 @X0 1 e ]
-"143 ./slaveo.h
+"144 ./slaveo.h
 [v _failure `Va ~T0 @X0 1 e ]
 "29 ./rs232.h
 [v _pos_scale `Cs ~T0 @X0 1 e ]
@@ -6526,7 +6484,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "1099
 [e = *U + &U _buffer * -> -> -> 3 `i `ui `ux -> -> # *U &U _buffer `ui `ux -> -> 0 `i `uc ]
 "1100
-[e ( _snprintf (2 , , , , , , , , , , , , , , , , , (. , , &U _log_buffer -> -> 512 `i `ui &U _log_format -> / -> . _em 3 `f -> .10.0 `f `d -> / -> . _em 6 `f -> .1000.0 `f `d -> / -> . _em 9 `f -> .10.0 `f `d -> / -> . _em 12 `f -> .10.0 `f `d -> / -> . _em 15 `f -> .10.0 `f `d -> / -> . _em 26 `f -> .10.0 `f `d -> / -> . _emt 17 `f -> .1000.0 `f `d -> _vw `ui -> _vf `ui -> _pvw `ui -> _pvf `ui - -> _bat_amp_whole `ui -> -> 128 `i `ui - -> _bat_amp_frac `ui -> -> 128 `i `ui - -> _bat_amp_panel `ui -> -> 128 `i `ui -> . _BM 15 `i -> _cc_mode `ui . _BM 31 ]
+[e ( _snprintf (2 , , , , , , , , , , , , , , , , , , , (. , , &U _log_buffer -> -> 512 `i `ui &U _log_format -> / -> . _em 3 `f -> .10.0 `f `d -> / -> . _em 6 `f -> .1000.0 `f `d -> / -> . _em 9 `f -> .10.0 `f `d -> / -> . _em 12 `f -> .10.0 `f `d -> / -> . _em 15 `f -> .10.0 `f `d -> / -> . _em 26 `f -> .10.0 `f `d -> / -> . _emt 17 `f -> .1000.0 `f `d -> _vw `ui -> _vf `ui -> _pvw `ui -> _pvf `ui - -> _bat_amp_whole `ui -> -> 128 `i `ui - -> _bat_amp_frac `ui -> -> 128 `i `ui - -> _bat_amp_panel `ui -> -> 128 `i `ui -> . _BM 15 `i -> _cc_mode `ui . _BM 31 . _ha_daq_calib 6 . _ha_daq_calib 8 ]
 "1101
 [e = . _BMC4 1 &U *U + &U _log_buffer * -> -> -> 0 `i `ui `ux -> -> # *U &U _log_buffer `ui `ux ]
 "1102
@@ -6980,14 +6938,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 [a 50C 37 115 0 ]
 [a 5C 79 70 70 76 73 78 69 0 ]
 [a 3C 68 73 83 65 66 76 69 0 ]
-[a 2C 49 49 58 48 51 58 52 57 0 ]
 [a 16C 86 48 46 51 57 0 ]
 [a 23C 86 48 46 51 57 0 ]
 [a 27C 86 48 46 51 57 0 ]
 [a 29C 86 48 46 51 57 0 ]
 [a 36C 86 48 46 51 57 0 ]
 [a 49C 86 48 46 51 57 0 ]
-[a 1C 83 101 112 32 49 49 32 50 48 50 53 0 ]
+[a 1C 83 101 112 32 49 50 32 50 48 50 53 0 ]
+[a 2C 48 55 58 52 49 58 52 49 0 ]
 [a 7C 82 69 77 79 84 69 32 0 ]
 [a 6C 79 78 76 73 78 69 32 0 ]
 [a 18C 32 78 83 65 83 80 79 79 75 32 65 110 97 108 111 103 32 68 101 118 32 32 0 ]

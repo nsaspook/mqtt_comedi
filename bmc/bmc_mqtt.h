@@ -26,7 +26,7 @@ extern "C" {
 
 #define MBMQTT  1024
 #define CHECKMARK 1957
-#define CSV_COUNT 14
+#define CSV_COUNT 16
 
 	enum mqtt_id {
 		P8055_ID,

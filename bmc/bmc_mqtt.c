@@ -589,6 +589,12 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 						ha_daq_host.bindex = 3;
 					}
 				}
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					ha_daq_host.calib.scaler4[ha_daq_host.bindex] = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					ha_daq_host.calib.scaler5[ha_daq_host.bindex] = atof(jtoken);
 			}
 		}
 
