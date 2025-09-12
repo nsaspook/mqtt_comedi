@@ -57,6 +57,8 @@ const char *board_name = "NO_BOARD", *driver_name = "NO_DRIVER";
 
 FILE *fout, *calfile; // logging stream and calibration data
 
+int usleep(uint32_t); // for C11
+
 /* ripped from http://aquaticus.info/pwm-sine-wave */
 
 const uint8_t sine_wave[256] = {
@@ -159,7 +161,6 @@ int main(int argc, char *argv[])
 		if (init_dio() < 0) {
 			fprintf(fout, "Missing Digital subdevice(s)\n");
 		}
-
 
 		E.dac[0] = 1.23f;
 		E.dac[1] = 3.21f;

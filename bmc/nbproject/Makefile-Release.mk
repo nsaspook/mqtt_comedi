@@ -67,17 +67,17 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bmc: ${OBJECTFILES}
 ${OBJECTDIR}/bmc.o: bmc.c nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -O3 -Wall `pkg-config --cflags comedilib` `pkg-config --cflags libcjson` `pkg-config --cflags libcurl`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bmc.o bmc.c
+	$(COMPILE.c) -O3 -Wall `pkg-config --cflags comedilib` `pkg-config --cflags libcjson` `pkg-config --cflags libcurl` -std=c11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bmc.o bmc.c
 
 ${OBJECTDIR}/bmc_mqtt.o: bmc_mqtt.c nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -O3 -Wall `pkg-config --cflags comedilib` `pkg-config --cflags libcjson` `pkg-config --cflags libcurl`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bmc_mqtt.o bmc_mqtt.c
+	$(COMPILE.c) -O3 -Wall `pkg-config --cflags comedilib` `pkg-config --cflags libcjson` `pkg-config --cflags libcurl` -std=c11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bmc_mqtt.o bmc_mqtt.c
 
 ${OBJECTDIR}/daq.o: daq.c nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -O3 -Wall `pkg-config --cflags comedilib` `pkg-config --cflags libcjson` `pkg-config --cflags libcurl`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/daq.o daq.c
+	$(COMPILE.c) -O3 -Wall `pkg-config --cflags comedilib` `pkg-config --cflags libcjson` `pkg-config --cflags libcurl` -std=c11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/daq.o daq.c
 
 # Subprojects
 .build-subprojects:

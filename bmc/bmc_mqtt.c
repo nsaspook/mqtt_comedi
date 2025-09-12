@@ -116,7 +116,6 @@ void showIP(void)
 		exit(EXIT_FAILURE);
 	}
 
-
 	for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
 		if (ifa->ifa_addr == NULL)
 			continue;
@@ -141,7 +140,6 @@ void showIP(void)
 			}
 		}
 	}
-
 	freeifaddrs(ifaddr);
 }
 
@@ -202,7 +200,6 @@ void skeleton_daemon(void)
 	for (x = sysconf(_SC_OPEN_MAX); x >= 0; x--) {
 		close(x);
 	}
-
 }
 
 /*
@@ -238,7 +235,6 @@ void timer_callback(int32_t signum)
 	ha_flag_vars_ss.runner = true;
 	E.thirty_sec_clock++;
 	E.log_time_reset++;
-
 }
 
 /*
@@ -609,7 +605,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			acwout = 0.0f;
 		}
 
-		if (bsensor0 < -250.0f) {
+		if (bsensor0 < BSENSOR_MAX_NEG) {
 			bsensor0 = 0.0f;
 		}
 
@@ -621,9 +617,17 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			dcwin = 0.0f;
 		}
 
-		if (achz < 45.0f) {
-			achz = 60.0f;
+		if (achz < MAINS_HZ_LOW || achz > MAINS_HZ_HIGH) {
+			achz = MAINS_HZ;
 		}
+
+		if (ha_daq_host.calib.scaler4[ha_daq_host.bindex] > CALIB_HV_HIGH || ha_daq_host.calib.scaler4[ha_daq_host.bindex] < CALIB_HV_LOW) {
+			ha_daq_host.calib.scaler4[ha_daq_host.bindex] = HV_SCALE4_0;
+		}
+		if (ha_daq_host.calib.scaler5[ha_daq_host.bindex] > CALIB_HV_HIGH || ha_daq_host.calib.scaler5[ha_daq_host.bindex] < CALIB_HV_LOW) {
+			ha_daq_host.calib.scaler5[ha_daq_host.bindex] = HV_SCALE5_0;
+		}
+
 
 		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, goods %d, validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, tmp_test_ptr, ok_data, goods, validate_failure);
 		memset(daq_bmc_data_text, 0, MAX_STRLEN);
@@ -760,17 +764,14 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
  */
 void comedi_push_mqtt(void)
 {
-
 	mqtt_bmc_data(E.client_p, ha_daq_host.topics[ha_daq_host.hindex]);
 }
 
 double ac0_filter(const double raw)
 {
 	static double accum = 0.0f;
-	;
 	static double coef = COEF;
 	accum = accum - accum / coef + raw;
-
 	return accum / coef;
 }
 
@@ -797,7 +798,7 @@ char * validate_bmc_text(const char * text, bool * valid)
 	if (tmp_test_ptr[0] == '^') {
 		starts++;
 		tmp_p = (char *) &text[0]; // return pointer to start of possible data
-		if ((len = strlen(tmp_test_ptr)) >= 55) {
+		if ((len = strlen(tmp_test_ptr)) >= VALIDATE_LEN) {
 			for (int i = 1; i <= len; i++) {
 				if (tmp_test_ptr[i] == '^') {
 					starts++;

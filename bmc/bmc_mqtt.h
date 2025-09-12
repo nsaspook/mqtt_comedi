@@ -5,9 +5,16 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+#define _DEFAULT_SOURCE
+	
 #include "bmc.h"
 #include "daq.h"
+
+#define NI_MAXHOST      1025
+#define NI_MAXSERV      32 
+
+#include <sys/socket.h>
+#include <netdb.h>
 
 #define MQTT_RETRY 10
 
@@ -27,6 +34,17 @@ extern "C" {
 #define MBMQTT  1024
 #define CHECKMARK 1957
 #define CSV_COUNT 16
+
+#define MAINS_HZ 60.0f
+#define MAINS_HZ_LOW 45.0f
+#define MAINS_HZ_HIGH 65.0f
+
+#define CALIB_HV_LOW 50.0f
+#define CALIB_HV_HIGH 75.0f
+
+#define BSENSOR_MAX_NEG -250.0f 
+
+#define VALIDATE_LEN 55
 
 	enum mqtt_id {
 		P8055_ID,
