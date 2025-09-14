@@ -25,6 +25,7 @@ mcc_generated_files/spi1.h  \
 mcc_generated_files/spi2.h  \
 eadog.h  \
 vconfig.h  \
+calibr.h  \
 slaveo.h  \
 mconfig.h  \
 bmcdio.h  \

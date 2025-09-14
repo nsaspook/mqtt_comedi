@@ -76,26 +76,34 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.hindex = 0,
 	.bindex = 0,
 	.calib.checkmark = CHECKMARK,
-	.calib.bmc_id[0] = 362934, // bmc Q84 MUI
+	.calib.bmc_id[0] = 362934, // bmc Q84 MUI testing board
 	.calib.offset4[0] = HV_SCALE_OFFSET,
 	.calib.scaler4[0] = HV_SCALE4_0,
 	.calib.offset5[0] = HV_SCALE_OFFSET,
 	.calib.scaler5[0] = HV_SCALE5_0,
+	.calib.A200_Z[0] = A200_0_ZERO,
+	.calib.A200_S[0] = A200_0_SCALAR,
 	.calib.bmc_id[1] = 1, // bmc Q84 MUI
 	.calib.offset4[1] = HV_SCALE_OFFSET,
 	.calib.scaler4[1] = HV_SCALE4_1,
 	.calib.offset5[1] = HV_SCALE_OFFSET,
 	.calib.scaler5[1] = HV_SCALE5_1,
+	.calib.A200_Z[1] = A200_0_ZERO,
+	.calib.A200_S[1] = A200_0_SCALAR,
 	.calib.bmc_id[2] = 2, // bmc Q84 MUI
 	.calib.offset4[2] = HV_SCALE_OFFSET,
 	.calib.scaler4[2] = HV_SCALE4_2,
 	.calib.offset5[2] = HV_SCALE_OFFSET,
 	.calib.scaler5[2] = HV_SCALE5_2,
-	.calib.bmc_id[3] = 3, // bmc Q84 MUI
+	.calib.A200_Z[2] = A200_0_ZERO,
+	.calib.A200_S[2] = A200_0_SCALAR,
+	.calib.bmc_id[3] = 371638, // bmc Q84 MUI enclosure board
 	.calib.offset4[3] = HV_SCALE_OFFSET,
 	.calib.scaler4[3] = HV_SCALE4_3,
 	.calib.offset5[3] = HV_SCALE_OFFSET,
 	.calib.scaler5[3] = HV_SCALE5_3,
+	.calib.A200_Z[3] = A200_0_ZERO,
+	.calib.A200_S[3] = A200_0_SCALAR,
 };
 
 double ac0_filter(const double);
@@ -501,7 +509,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 
 	if (bmc.BOARD == bmcboard) {
 		E.adc[channel_ANA0] = get_adc_volts(channel_ANA0);
-		bsensor0 = lp_filter((E.adc[channel_ANA0] - A200_0_ZERO) * A200_0_SCALAR, BSENSOR0, true);
+		bsensor0 = lp_filter((E.adc[channel_ANA0] - ha_daq_host.calib.A200_Z[ha_daq_host.bindex]) * ha_daq_host.calib.A200_S[ha_daq_host.bindex], BSENSOR0, true);
 		E.adc[channel_ANA1] = get_adc_volts(channel_ANA1);
 		E.adc[channel_ANA2] = get_adc_volts(channel_ANA2);
 		E.adc[channel_ANC6] = get_adc_volts(channel_ANC6);
@@ -591,6 +599,12 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
 					ha_daq_host.calib.scaler5[ha_daq_host.bindex] = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					ha_daq_host.calib.A200_Z[ha_daq_host.bindex] = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					ha_daq_host.calib.A200_S[ha_daq_host.bindex] = atof(jtoken);
 			}
 		}
 
@@ -605,7 +619,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			acwout = 0.0f;
 		}
 
-		if (bsensor0 < BSENSOR_MAX_NEG) {
+		if (bsensor0 < BSENSOR_MAX_NEG || bsensor0 > BSENSOR_MAX_POS) {
 			bsensor0 = 0.0f;
 		}
 

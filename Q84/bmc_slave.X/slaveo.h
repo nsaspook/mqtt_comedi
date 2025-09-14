@@ -20,11 +20,12 @@ extern "C" {
 #include "eadog.h"
 #include "timers.h"
 #include "vconfig.h"
+#include "calibr.h"
 
 #define SLAVEO_DRIVER "V0.9"
 
 #define F27Q84	0x9903
-#define F47Q84	0x9904	
+#define F47Q84	0x9904
 #define F57Q84	0x9905
 
 #define SLAVE_DEBUG
@@ -72,17 +73,6 @@ extern "C" {
 #define DAC_GO_BYTES	7
 
 #define MAX_BMC_BUF	512
-
-	struct ha_daq_calib_type {
-		uint16_t checkmark;
-		bool newfile;
-		bool oldfile, fileok;
-		long long bmc_id;
-		double offset4;
-		double scaler4;
-		double offset5;
-		double scaler5;
-	};
 
 	struct spi_link_type_ss { // internal state table
 		uint8_t SPI_DATA : 1;

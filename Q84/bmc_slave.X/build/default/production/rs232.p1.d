@@ -4,4 +4,5 @@ rs232.h  \
 vconfig.h  \
 mcc_generated_files/adc.h  \
 mcc_generated_files/spi1.h  \
-mcc_generated_files/pin_manager.h 
+mcc_generated_files/pin_manager.h  \
+calibr.h 

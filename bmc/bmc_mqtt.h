@@ -33,7 +33,7 @@ extern "C" {
 
 #define MBMQTT  1024
 #define CHECKMARK 1957
-#define CSV_COUNT 16
+#define CSV_COUNT 18
 
 #define MAINS_HZ 60.0f
 #define MAINS_HZ_LOW 45.0f
@@ -42,7 +42,8 @@ extern "C" {
 #define CALIB_HV_LOW 50.0f
 #define CALIB_HV_HIGH 75.0f
 
-#define BSENSOR_MAX_NEG -250.0f 
+#define BSENSOR_MAX_NEG		-125.0f 
+#define BSENSOR_MAX_POS		125.0f 
 
 #define VALIDATE_LEN 55
 
@@ -71,6 +72,8 @@ extern "C" {
 		double scaler4[4];
 		double offset5[4];
 		double scaler5[4];
+		double A200_Z[4];
+		double A200_S[4];
 	};
 
 	struct ha_daq_hosts_type {

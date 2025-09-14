@@ -183,6 +183,7 @@ typedef signed long long int24_t;
 #include "bmcdio.h"
 #include "mxcmd.h"
 #include "modbus_master.h"
+#include "calibr.h"
 
 #ifdef TRACE
 #define M_TRACE		TP1_Toggle()
@@ -289,10 +290,12 @@ volatile struct serial_buffer_type_ss serial_buffer_ss = {
 
 const struct ha_daq_calib_type ha_daq_calib = {
 	.checkmark = CHECKMARK,
-	.scaler4 = 64.2600f,
-	.scaler5 = 64.2600f,
+	.scaler4 = HV_SCALAR4,
+	.scaler5 = HV_SCALAR5,
 	.offset4 = HV_SCALE_OFFSET,
 	.offset5 = HV_SCALE_OFFSET,
+	.A200_Z = A200_0_ZERO,
+	.A200_S = A200_0_SCALAR,
 };
 
 volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0, channel = 0, upper;
