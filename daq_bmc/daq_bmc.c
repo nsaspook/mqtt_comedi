@@ -1766,6 +1766,12 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	 */
 	ret = daqbmc_bmc_get_config(dev);
 
+	if (ret == 0xff) { // no SPI comms with daq_bmc board
+		dev_err(dev->class_dev,
+			"BMCBoard not detected 0X%X, unloading driver \n", ret);
+		return -EINVAL;
+	}
+
 	dev_info(dev->class_dev,
 		"Analog Out channels %d, Analog In channels %d : Q84 config code 0x%x\n",
 		thisboard->n_aochan, devpriv->ai_spi->chan, ret);
