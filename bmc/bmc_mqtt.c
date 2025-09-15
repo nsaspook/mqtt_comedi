@@ -40,7 +40,7 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.hosts[0] = "10.1.1.30",
 	.hosts[1] = "10.1.1.39",
 	.hosts[2] = "10.1.1.46",
-	.hosts[3] = "10.1.2.39",
+	.hosts[3] = "10.1.1.45",
 	.topics[0] = "comedi/bmc/data/bmc/1",
 	.topics[1] = "comedi/bmc/data/bmc/2",
 	.topics[2] = "comedi/bmc/data/bmc/3",
@@ -145,6 +145,9 @@ void showIP(void)
 			}
 			if (strcmp(host, &ha_daq_host.hosts[2][0]) == 0) {
 				ha_daq_host.hindex = 2;
+			}
+			if (strcmp(host, &ha_daq_host.hosts[3][0]) == 0) {
+				ha_daq_host.hindex = 3;
 			}
 		}
 	}
@@ -360,14 +363,14 @@ void bmc_mqtt_init(void)
 		conn_opts_p.cleansession = 1;
 		hname_ptr = LADDRESS;
 	} else {
-		MQTTClient_create(&E.client_p, ADDRESS, (const char *) &ha_daq_host.clients[ha_daq_host.hindex],
+		MQTTClient_create(&E.client_p, ha_daq_host.hosts[ha_daq_host.hindex], (const char *) &ha_daq_host.clients[ha_daq_host.hindex],
 			MQTTCLIENT_PERSISTENCE_NONE, NULL);
 		conn_opts_p.keepAliveInterval = KAI;
 		conn_opts_p.cleansession = 1;
-		hname_ptr = ADDRESS;
+		hname_ptr = (char *) ha_daq_host.hosts[ha_daq_host.hindex];
 	}
 
-	fprintf(fout, "\r\n%s Connect MQTT server %s, %s\n", log_time(false), hname_ptr, (const char *) &ha_daq_host.clients[ha_daq_host.hindex]);
+	fprintf(fout, "\r\n%s Connect to MQTT server %s with client %s\n", log_time(false), hname_ptr, (const char *) &ha_daq_host.clients[ha_daq_host.hindex]);
 	fflush(fout);
 	MQTTClient_setCallbacks(E.client_p, &ha_flag_vars_ss, connlost, msgarrvd, delivered);
 	if ((E.rc = MQTTClient_connect(E.client_p, &conn_opts_p)) != MQTTCLIENT_SUCCESS) {

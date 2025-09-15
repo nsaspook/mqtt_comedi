@@ -36,7 +36,7 @@ extern "C" {
 #include "MQTTClient.h"
 #include "bmc_mqtt.h"
 
-#define LOG_VERSION     "V0.15"
+#define LOG_VERSION     "V0.16"
 #define MQTT_VERSION    "V3.11"
 #define TNAME  "maint9"
 #define LADDRESS        "tcp://127.0.0.1:1883"
@@ -45,9 +45,6 @@ extern "C" {
 #else
 #define ADDRESS         "tcp://10.1.1.172:1883"
 #endif
-#define CLIENTID1       "Energy_Mqtt_BMC1"
-#define CLIENTID2       "Energy_Mqtt_BMC2"
-#define CLIENTID3       "Energy_Mqtt_BMC3"
 #define TOPIC_P
 #define TOPIC_SPAM      "comedi/bmc/data/spam"
 #define TOPIC_PACA      "home-assistant/comedi/bmc"

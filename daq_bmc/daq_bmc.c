@@ -501,7 +501,6 @@ static int32_t piBoardRev(struct comedi_device *dev)
 {
 	int32_t boardRev = 3; // hardwired for now
 
-	dev_info(dev->class_dev, "BMCboard hardware rev %i\n", boardRev);
 	/*
 	 * set module param
 	 */
@@ -1477,6 +1476,7 @@ static int32_t daqbmc_create_thread(struct comedi_device *dev,
 /*
  * returns slave device configuration data
  * used to set the Analog only mode of the board automatically
+ * a return value of 0xff means no board detected
  */
 static int32_t daqbmc_bmc_get_config(struct comedi_device *dev)
 {
@@ -1629,7 +1629,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			pdata->one_t.rx_buf = pdata->rx_buff;
 			if (daqbmc_conf == PICSL12 || daqbmc_conf == PICSL12_AO) {
 				mutex_lock(&devpriv->drvdata_lock);
-				dev_info(dev->class_dev, "BMCBoard chip select : 0x%x\n",
+				dev_info(dev->class_dev, "BMCBoard using chip select : 0x%2x\n",
 					thisboard->ai_cs);
 				mutex_unlock(&devpriv->drvdata_lock);
 				smp_mb__after_atomic();
@@ -1674,8 +1674,8 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	}
 
 	dev_info(dev->class_dev,
-		"%s board revision detection started, board_rev value 0x%x\n",
-		thisboard->name, devpriv->board_rev);
+		"%s board detection started\n",
+		thisboard->name);
 	devpriv->num_subdev = 0;
 	if (daqbmc_spi_probe(dev, devpriv->ai_spi)) {
 		devpriv->num_subdev += daqbmc_devices[PICSL12].n_subdev;
@@ -1762,7 +1762,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	}
 
 	/*
-	 * Probe the BMCboard for configuration data
+	 * Probe the BMCboard existence and for configuration data
 	 */
 	ret = daqbmc_bmc_get_config(dev);
 
@@ -2114,7 +2114,7 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	 * SPI link data hardware setup
 	 */
 	daqbmc_spi_setup(spi_adc);
-	dev_info(dev->class_dev, "PIC18F57Q84 DAQ device, SPI slave mode\n");
+	dev_info(dev->class_dev, "PIC18F57Q84 DAQ device, probing SPI slave mode\n");
 	daqbmc_spi_setup(spi_adc);
 	spi_adc->device_type = daqbmc_conf;
 	spi_adc->chan = spi_adc->device_spi->n_chan;
@@ -2127,16 +2127,8 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	}
 
 	dev_info(dev->class_dev,
-		"%s device detected, "
-		"%i channels, range code %i, device code %i, "
-		"bits code %i, controller code %i\n",
-		spi_adc->device_spi->name,
-		spi_adc->chan, spi_adc->range, spi_adc->device_type,
-		spi_adc->bits, spi_adc->pic18);
-
-	dev_info(dev->class_dev,
 		"BMCboard SPI setup: spi cs %d: %d Hz: mode 0x%x: "
-		"assigned to controller device %s\n",
+		"probing for controller device %s\n",
 		spi_adc->spi->chip_select,
 		spi_adc->spi->max_speed_hz,
 		spi_adc->spi->mode,
