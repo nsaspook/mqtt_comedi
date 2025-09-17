@@ -27,8 +27,9 @@ mcc_generated_files/spi1.h  \
 mcc_generated_files/spi2.h  \
 vconfig.h  \
 calibr.h  \
-tic12400.h  \
+modbus_master.h  \
 timers.h  \
+tic12400.h  \
 eadog.h  \
 slaveo.h  \
 mc33996.h 

@@ -18,6 +18,7 @@ extern "C" {
 #include "mcc_generated_files/spi1.h"
 #include "mcc_generated_files/pin_manager.h"
 #include "calibr.h"
+#include "modbus_master.h"
 
 #define NHD		// SPI 20X4 display, nhd-0420d3z-nsw-bbw
 
@@ -120,10 +121,10 @@ extern "C" {
 #define BAT_DAY_COUNT	45	// number of reports before updates
 #define BAT_NIGHT_COUNT	90
 
-	const char log_format[] = "^,%3.1f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%llu,%7.4f,%7.4f,%6.4f,%7.4f,1957,~EOT                                                  \r\n";
+	const char log_format[] = "^,%3.1f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%llu,%7.4f,%7.4f,%6.4f,%7.4f,1957,~EOT                                                  \r\n";
 #define LOG_VARS	((float) em.vl1l2) / 10.0f,((float) em.al1) / 1000.0f, ((float) em.wl1) / 10.0f, ((float) em.val1) / 10.0f, \
 	((float) em.varl1) / 10.0f,  ((float) em.pfsys) / 10.0f, ((float) emt.hz) / 1000.0f,vw, vf, pvw, pvf, bat_amp_whole - 128, \
-	bat_amp_frac - 128, bat_amp_panel - 128,BM.FM80_online,cc_mode, BM.node_id, ha_daq_calib.scaler4, ha_daq_calib.scaler5, ha_daq_calib.A200_Z, ha_daq_calib.A200_S
+	bat_amp_frac - 128, bat_amp_panel - 128,BM.FM80_online,cc_mode, C.data_ok,BM.node_id, ha_daq_calib.scaler4, ha_daq_calib.scaler5, ha_daq_calib.A200_Z, ha_daq_calib.A200_S
 
 	const char msg_gemcmds[] = "Host CMDS: M C R P O L S D E H F";
 	const char msg_freecmds[] = "Port baud rate unlocked        ";

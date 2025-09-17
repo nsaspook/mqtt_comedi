@@ -24,7 +24,7 @@ size_t hname_len = 12;
 int32_t validate_failure;
 
 char *jtoken;
-double acvolts, acamps, acwatts, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, fm_online, fm_mode, bsensor0, dcwin, dcwout, bmc_id;
+double acvolts, acamps, acwatts, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
 char tmp_test_ptr[512];
 
 struct ha_flag_type ha_flag_vars_ss = {
@@ -526,7 +526,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 
 	if (pacer++ > ha_daq_host.pacer[ha_daq_host.hindex]) {
 		bool ok_data = false;
-		static uint32_t goods = 0;
+		static uint32_t goods = 0, bads = 0;
 		char * tmp_ptr;
 
 		pacer = 0;
@@ -580,6 +580,9 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
 					fm_mode = atoi(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					em540_online = atoi(jtoken);
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL) {
 					bmc_id = atoll(jtoken);
@@ -646,7 +649,12 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		}
 
 
-		fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, goods %d, validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, tmp_test_ptr, ok_data, goods, validate_failure);
+		if (ok_data) {
+			fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ, OK Data %d, goods %d, bads %d, validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, ok_data, goods, bads, validate_failure);
+		} else {
+			bads++;
+			fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, bads %d, validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, tmp_test_ptr, ok_data, bads, validate_failure);
+		}
 		memset(daq_bmc_data_text, 0, MAX_STRLEN);
 		if (bmc.BOARD == bmcboard) {
 			fprintf(fout, "ANA0 %lfV, ANA1 %fV, ANA2 %f, ANA4 %fV, ANA5 %fV, AND5 %fV, Battery Sensor %6.3fA, : Host Index %d, Scaler Index %d, Scaler ANA4 %f, Scaler ANA5 %f Serial 0X%X\n",
@@ -733,6 +741,8 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], fm_online);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_fm_mode", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], fm_mode);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_em540_online", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], em540_online);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bmc_id", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], bmc_id);
 		}

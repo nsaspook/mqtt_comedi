@@ -7,14 +7,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v F24797 `(v ~T0 @X0 0 tf ]
 "32234 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f57q84.h
 [v _U1RXB `Vuc ~T0 @X0 0 e@673 ]
-"156 ./vconfig.h
-[s S3392 `uc 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `uc 1 ]
-[n S3392 . type day amp_hours kilowatt_hours volts_peak amps_peak kilowatts_peak bat_min bat_max absorb_time float_time select ]
-"171
-[s S3393 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va -> 3 `i `Va -> 3 `i `Va -> 3 `i `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Vuc 1 `Vuc 1 `Vuc 1 `Vuc -> 3 `i `f 1 `f 1 `us -> 10 `i `us -> 3 `i `S3392 1 `Vuo 1 ]
-[n S3393 BM_type ten_sec_flag one_sec_flag FM80_charged pv_high pv_update once a_switch a_trigger a_type pacing rx_count flush pv_prev day_check dim_delay FM80_online FM80_io LOG display_dim display_update display_on fm80_restart canbus_online modbus_online alt_display a_pin run_time net_balance mui fwrev log node_id ]
+"157 ./vconfig.h
+[s S3403 `uc 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `uc 1 ]
+[n S3403 . type day amp_hours kilowatt_hours volts_peak amps_peak kilowatts_peak bat_min bat_max absorb_time float_time select ]
+"172
+[s S3404 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va -> 3 `i `Va -> 3 `i `Va -> 3 `i `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Vuc 1 `Vuc 1 `Vuc 1 `Vuc -> 3 `i `f 1 `f 1 `us -> 10 `i `us -> 3 `i `S3403 1 `Vuo 1 ]
+[n S3404 BM_type ten_sec_flag one_sec_flag FM80_charged pv_high pv_update once a_switch a_trigger a_type pacing rx_count flush pv_prev day_check dim_delay FM80_online FM80_io LOG display_dim display_update display_on fm80_restart canbus_online modbus_online alt_display a_pin run_time net_balance mui fwrev log node_id ]
 "122 ./mxcmd.h
-[v _BM `S3393 ~T0 @X0 0 e ]
+[v _BM `S3404 ~T0 @X0 0 e ]
 "27 /ldrv/microchip/xc8/v3.10/pic/include/c99/string.h
 [v _memcpy `(*v ~T0 @X0 0 ef3`*v`*Cv`ui ]
 "69917 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f57q84.h
@@ -2498,8 +2498,532 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _SPI2_InterruptHandler `*F24791 ~T0 @X0 1 e ]
 "77
 [v _SPI2_RxInterruptHandler `*F24797 ~T0 @X0 1 e ]
-"123 ./vconfig.h
-[v _log_format `Cuc ~T0 @X0 -> 168 `i e ]
+"241 ./modbus_master.h
+[v _table_crc_hi `Cuc ~T0 @X0 -> 256 `i s ]
+[i _table_crc_hi
+:U ..
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 1 `i `uc
+-> -> 192 `i `uc
+-> -> 128 `i `uc
+-> -> 65 `i `uc
+-> -> 0 `i `uc
+-> -> 193 `i `uc
+-> -> 129 `i `uc
+-> -> 64 `i `uc
+..
+]
+"271
+[v _table_crc_lo `Cuc ~T0 @X0 -> 256 `i s ]
+[i _table_crc_lo
+:U ..
+-> -> 0 `i `uc
+-> -> 192 `i `uc
+-> -> 193 `i `uc
+-> -> 1 `i `uc
+-> -> 195 `i `uc
+-> -> 3 `i `uc
+-> -> 2 `i `uc
+-> -> 194 `i `uc
+-> -> 198 `i `uc
+-> -> 6 `i `uc
+-> -> 7 `i `uc
+-> -> 199 `i `uc
+-> -> 5 `i `uc
+-> -> 197 `i `uc
+-> -> 196 `i `uc
+-> -> 4 `i `uc
+-> -> 204 `i `uc
+-> -> 12 `i `uc
+-> -> 13 `i `uc
+-> -> 205 `i `uc
+-> -> 15 `i `uc
+-> -> 207 `i `uc
+-> -> 206 `i `uc
+-> -> 14 `i `uc
+-> -> 10 `i `uc
+-> -> 202 `i `uc
+-> -> 203 `i `uc
+-> -> 11 `i `uc
+-> -> 201 `i `uc
+-> -> 9 `i `uc
+-> -> 8 `i `uc
+-> -> 200 `i `uc
+-> -> 216 `i `uc
+-> -> 24 `i `uc
+-> -> 25 `i `uc
+-> -> 217 `i `uc
+-> -> 27 `i `uc
+-> -> 219 `i `uc
+-> -> 218 `i `uc
+-> -> 26 `i `uc
+-> -> 30 `i `uc
+-> -> 222 `i `uc
+-> -> 223 `i `uc
+-> -> 31 `i `uc
+-> -> 221 `i `uc
+-> -> 29 `i `uc
+-> -> 28 `i `uc
+-> -> 220 `i `uc
+-> -> 20 `i `uc
+-> -> 212 `i `uc
+-> -> 213 `i `uc
+-> -> 21 `i `uc
+-> -> 215 `i `uc
+-> -> 23 `i `uc
+-> -> 22 `i `uc
+-> -> 214 `i `uc
+-> -> 210 `i `uc
+-> -> 18 `i `uc
+-> -> 19 `i `uc
+-> -> 211 `i `uc
+-> -> 17 `i `uc
+-> -> 209 `i `uc
+-> -> 208 `i `uc
+-> -> 16 `i `uc
+-> -> 240 `i `uc
+-> -> 48 `i `uc
+-> -> 49 `i `uc
+-> -> 241 `i `uc
+-> -> 51 `i `uc
+-> -> 243 `i `uc
+-> -> 242 `i `uc
+-> -> 50 `i `uc
+-> -> 54 `i `uc
+-> -> 246 `i `uc
+-> -> 247 `i `uc
+-> -> 55 `i `uc
+-> -> 245 `i `uc
+-> -> 53 `i `uc
+-> -> 52 `i `uc
+-> -> 244 `i `uc
+-> -> 60 `i `uc
+-> -> 252 `i `uc
+-> -> 253 `i `uc
+-> -> 61 `i `uc
+-> -> 255 `i `uc
+-> -> 63 `i `uc
+-> -> 62 `i `uc
+-> -> 254 `i `uc
+-> -> 250 `i `uc
+-> -> 58 `i `uc
+-> -> 59 `i `uc
+-> -> 251 `i `uc
+-> -> 57 `i `uc
+-> -> 249 `i `uc
+-> -> 248 `i `uc
+-> -> 56 `i `uc
+-> -> 40 `i `uc
+-> -> 232 `i `uc
+-> -> 233 `i `uc
+-> -> 41 `i `uc
+-> -> 235 `i `uc
+-> -> 43 `i `uc
+-> -> 42 `i `uc
+-> -> 234 `i `uc
+-> -> 238 `i `uc
+-> -> 46 `i `uc
+-> -> 47 `i `uc
+-> -> 239 `i `uc
+-> -> 45 `i `uc
+-> -> 237 `i `uc
+-> -> 236 `i `uc
+-> -> 44 `i `uc
+-> -> 228 `i `uc
+-> -> 36 `i `uc
+-> -> 37 `i `uc
+-> -> 229 `i `uc
+-> -> 39 `i `uc
+-> -> 231 `i `uc
+-> -> 230 `i `uc
+-> -> 38 `i `uc
+-> -> 34 `i `uc
+-> -> 226 `i `uc
+-> -> 227 `i `uc
+-> -> 35 `i `uc
+-> -> 225 `i `uc
+-> -> 33 `i `uc
+-> -> 32 `i `uc
+-> -> 224 `i `uc
+-> -> 160 `i `uc
+-> -> 96 `i `uc
+-> -> 97 `i `uc
+-> -> 161 `i `uc
+-> -> 99 `i `uc
+-> -> 163 `i `uc
+-> -> 162 `i `uc
+-> -> 98 `i `uc
+-> -> 102 `i `uc
+-> -> 166 `i `uc
+-> -> 167 `i `uc
+-> -> 103 `i `uc
+-> -> 165 `i `uc
+-> -> 101 `i `uc
+-> -> 100 `i `uc
+-> -> 164 `i `uc
+-> -> 108 `i `uc
+-> -> 172 `i `uc
+-> -> 173 `i `uc
+-> -> 109 `i `uc
+-> -> 175 `i `uc
+-> -> 111 `i `uc
+-> -> 110 `i `uc
+-> -> 174 `i `uc
+-> -> 170 `i `uc
+-> -> 106 `i `uc
+-> -> 107 `i `uc
+-> -> 171 `i `uc
+-> -> 105 `i `uc
+-> -> 169 `i `uc
+-> -> 168 `i `uc
+-> -> 104 `i `uc
+-> -> 120 `i `uc
+-> -> 184 `i `uc
+-> -> 185 `i `uc
+-> -> 121 `i `uc
+-> -> 187 `i `uc
+-> -> 123 `i `uc
+-> -> 122 `i `uc
+-> -> 186 `i `uc
+-> -> 190 `i `uc
+-> -> 126 `i `uc
+-> -> 127 `i `uc
+-> -> 191 `i `uc
+-> -> 125 `i `uc
+-> -> 189 `i `uc
+-> -> 188 `i `uc
+-> -> 124 `i `uc
+-> -> 180 `i `uc
+-> -> 116 `i `uc
+-> -> 117 `i `uc
+-> -> 181 `i `uc
+-> -> 119 `i `uc
+-> -> 183 `i `uc
+-> -> 182 `i `uc
+-> -> 118 `i `uc
+-> -> 114 `i `uc
+-> -> 178 `i `uc
+-> -> 179 `i `uc
+-> -> 115 `i `uc
+-> -> 177 `i `uc
+-> -> 113 `i `uc
+-> -> 112 `i `uc
+-> -> 176 `i `uc
+-> -> 80 `i `uc
+-> -> 144 `i `uc
+-> -> 145 `i `uc
+-> -> 81 `i `uc
+-> -> 147 `i `uc
+-> -> 83 `i `uc
+-> -> 82 `i `uc
+-> -> 146 `i `uc
+-> -> 150 `i `uc
+-> -> 86 `i `uc
+-> -> 87 `i `uc
+-> -> 151 `i `uc
+-> -> 85 `i `uc
+-> -> 149 `i `uc
+-> -> 148 `i `uc
+-> -> 84 `i `uc
+-> -> 156 `i `uc
+-> -> 92 `i `uc
+-> -> 93 `i `uc
+-> -> 157 `i `uc
+-> -> 95 `i `uc
+-> -> 159 `i `uc
+-> -> 158 `i `uc
+-> -> 94 `i `uc
+-> -> 90 `i `uc
+-> -> 154 `i `uc
+-> -> 155 `i `uc
+-> -> 91 `i `uc
+-> -> 153 `i `uc
+-> -> 89 `i `uc
+-> -> 88 `i `uc
+-> -> 152 `i `uc
+-> -> 136 `i `uc
+-> -> 72 `i `uc
+-> -> 73 `i `uc
+-> -> 137 `i `uc
+-> -> 75 `i `uc
+-> -> 139 `i `uc
+-> -> 138 `i `uc
+-> -> 74 `i `uc
+-> -> 78 `i `uc
+-> -> 142 `i `uc
+-> -> 143 `i `uc
+-> -> 79 `i `uc
+-> -> 141 `i `uc
+-> -> 77 `i `uc
+-> -> 76 `i `uc
+-> -> 140 `i `uc
+-> -> 68 `i `uc
+-> -> 132 `i `uc
+-> -> 133 `i `uc
+-> -> 69 `i `uc
+-> -> 135 `i `uc
+-> -> 71 `i `uc
+-> -> 70 `i `uc
+-> -> 134 `i `uc
+-> -> 130 `i `uc
+-> -> 66 `i `uc
+-> -> 67 `i `uc
+-> -> 131 `i `uc
+-> -> 65 `i `uc
+-> -> 129 `i `uc
+-> -> 128 `i `uc
+-> -> 64 `i `uc
+..
+]
+"124 ./vconfig.h
+[v _log_format `Cuc ~T0 @X0 -> 171 `i e ]
 [i _log_format
 :U ..
 -> 94 `c
@@ -2568,6 +3092,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 37 `c
 -> 48 `c
 -> 49 `c
+-> 100 `c
+-> 44 `c
+-> 37 `c
 -> 100 `c
 -> 44 `c
 -> 37 `c
@@ -2672,7 +3199,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"128
+"129
 [v _msg_gemcmds `Cuc ~T0 @X0 -> 33 `i e ]
 [i _msg_gemcmds
 :U ..
@@ -2711,7 +3238,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"129
+"130
 [v _msg_freecmds `Cuc ~T0 @X0 -> 32 `i e ]
 [i _msg_freecmds
 :U ..
@@ -2749,7 +3276,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"130
+"131
 [v _msg_gemremote `Cuc ~T0 @X0 -> 26 `i e ]
 [i _msg_gemremote
 :U ..
@@ -2781,9 +3308,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-[v F25274 `Cuc ~T0 @X0 -> 20 `i t ]
-"348
-[v _spin `F25274 ~T0 @X0 -> 6 `i e ]
+[v F25493 `Cuc ~T0 @X0 -> 20 `i t ]
+"349
+[v _spin `F25493 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
 :U ..
@@ -3134,9 +3661,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 70 `i `us
 ..
 ]
-[v F25613 `Cuc ~T0 @X0 -> 12 `i t ]
+[v F25805 `Cuc ~T0 @X0 -> 12 `i t ]
 "77
-[v _state_name `F25613 ~T0 @X0 -> 6 `i e ]
+[v _state_name `F25805 ~T0 @X0 -> 6 `i e ]
 [i _state_name
 :U ..
 :U ..
@@ -3192,9 +3719,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-[v F25615 `Cuc ~T0 @X0 -> 12 `i t ]
+[v F25807 `Cuc ~T0 @X0 -> 12 `i t ]
 "86
-[v _FM80_name `F25615 ~T0 @X0 -> 2 `i e ]
+[v _FM80_name `F25807 ~T0 @X0 -> 2 `i e ]
 [i _FM80_name
 :U ..
 :U ..
@@ -3216,9 +3743,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-[v F25617 `Cuc ~T0 @X0 -> 12 `i t ]
+[v F25809 `Cuc ~T0 @X0 -> 12 `i t ]
 "91
-[v _canbus_name `F25617 ~T0 @X0 -> 2 `i e ]
+[v _canbus_name `F25809 ~T0 @X0 -> 2 `i e ]
 [i _canbus_name
 :U ..
 :U ..
@@ -3242,9 +3769,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-[v F25619 `Cuc ~T0 @X0 -> 12 `i t ]
+[v F25811 `Cuc ~T0 @X0 -> 12 `i t ]
 "96
-[v _modbus_name `F25619 ~T0 @X0 -> 2 `i e ]
+[v _modbus_name `F25811 ~T0 @X0 -> 2 `i e ]
 [i _modbus_name
 :U ..
 :U ..
@@ -3318,7 +3845,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "17
 [e = . _BM 0 -> -> 0 `i `a ]
 "18
-[e :UE 3412 ]
+[e :UE 3423 ]
 }
 "23
 [v _FM_tx_empty `(a ~T0 @X0 1 ef ]
@@ -3327,24 +3854,24 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _FM_tx_empty ]
 [f ]
 "25
-[e $ ! == -> _dcount `i -> 0 `i 3414  ]
+[e $ ! == -> _dcount `i -> 0 `i 3425  ]
 {
 "26
 [e ) -> -> 1 `i `a ]
-[e $UE 3413  ]
+[e $UE 3424  ]
 "27
 }
-[e $U 3415  ]
-[e :U 3414 ]
+[e $U 3426  ]
+[e :U 3425 ]
 {
 "28
 [e ) -> -> 0 `i `a ]
-[e $UE 3413  ]
+[e $UE 3424  ]
 "29
 }
-[e :U 3415 ]
+[e :U 3426 ]
 "30
-[e :UE 3413 ]
+[e :UE 3424 ]
 }
 "35
 [v _FM_tx `(uc ~T0 @X0 1 ef2`*Cus`Cuc ]
@@ -3357,7 +3884,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "36
 [f ]
 "37
-[e $ ! == -> _dcount `i -> 0 `i 3417  ]
+[e $ ! == -> _dcount `i -> 0 `i 3428  ]
 {
 "38
 [e ( _memcpy (3 , , -> &U _tbuf `*v -> _data `*Cv -> << -> _count `i -> 1 `i `ui ]
@@ -3369,12 +3896,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = . _BM 16 -> -> 1 `i `a ]
 "42
 }
-[e :U 3417 ]
+[e :U 3428 ]
 "43
 [e ) _dstart ]
-[e $UE 3416  ]
+[e $UE 3427  ]
 "44
-[e :UE 3416 ]
+[e :UE 3427 ]
 }
 "50
 [v _FM_io `(v ~T0 @X0 1 ef ]
@@ -3383,38 +3910,38 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _FM_io ]
 [f ]
 "52
-[e :U 3421 ]
+[e :U 3432 ]
 {
 [e = . . _LATFbits 0 4 -> -> 1 `i `uc ]
 }
-[e :U 3420 ]
+[e :U 3431 ]
 "53
-[e $ ! > -> ++ _pace -> -> 1 `i `Vuc `i -> 1 `i 3422  ]
+[e $ ! > -> ++ _pace -> -> 1 `i `Vuc `i -> 1 `i 3433  ]
 {
 "54
-[e $ ! > -> -- _dcount -> -> 1 `i `Vuc `i -> 0 `i 3423  ]
+[e $ ! > -> -- _dcount -> -> 1 `i `Vuc `i -> 0 `i 3434  ]
 {
 "55
-[e $ ! > -> *U + &U _tbuf * -> _dstart `ux -> -> # *U &U _tbuf `ui `ux `ui -> -> 255 `i `ui 3424  ]
+[e $ ! > -> *U + &U _tbuf * -> _dstart `ux -> -> # *U &U _tbuf `ui `ux `ui -> -> 255 `i `ui 3435  ]
 {
 "56
 [e = _U2P1L -> *U + &U _tbuf * -> _dstart `ux -> -> # *U &U _tbuf `ui `ux `uc ]
 "57
 }
-[e $U 3425  ]
-[e :U 3424 ]
+[e $U 3436  ]
+[e :U 3435 ]
 {
 "58
 [e ( _UART2_Write (1 -> *U + &U _tbuf * -> _dstart `ux -> -> # *U &U _tbuf `ui `ux `uc ]
 "59
 }
-[e :U 3425 ]
+[e :U 3436 ]
 "60
 [e ++ _dstart -> -> 1 `i `Vuc ]
 "61
 }
-[e $U 3426  ]
-[e :U 3423 ]
+[e $U 3437  ]
+[e :U 3434 ]
 {
 "62
 [e = _dstart -> -> 0 `i `uc ]
@@ -3422,14 +3949,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _dcount -> -> 0 `i `uc ]
 "64
 }
-[e :U 3426 ]
+[e :U 3437 ]
 "65
 [e = _pace -> -> 0 `i `uc ]
 "66
 }
-[e :U 3422 ]
+[e :U 3433 ]
 "71
-[e $ ! != -> . . _U2ERRIRbits 0 1 `i -> 0 `i 3427  ]
+[e $ ! != -> . . _U2ERRIRbits 0 1 `i -> 0 `i 3438  ]
 {
 "72
 [e = *U + &U _rbuf * -> -> -> 0 `i `ui `ux -> -> # *U &U _rbuf `ui `ux -> _U2RXB `us ]
@@ -3439,26 +3966,26 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _rdstart -> -> 0 `i `uc ]
 "75
 }
-[e :U 3427 ]
+[e :U 3438 ]
 "80
-[e $ ! != -> . . _PIR8bits 0 0 `i -> 0 `i 3428  ]
+[e $ ! != -> . . _PIR8bits 0 0 `i -> 0 `i 3439  ]
 {
 "81
-[e $ ! != -> . . _U2ERRIRbits 0 3 `i -> 0 `i 3429  ]
+[e $ ! != -> . . _U2ERRIRbits 0 3 `i -> 0 `i 3440  ]
 {
 "83
 }
-[e :U 3429 ]
+[e :U 3440 ]
 "85
-[e $ ! > -> _rdstart `i - -> 32 `i -> 1 `i 3430  ]
+[e $ ! > -> _rdstart `i - -> 32 `i -> 1 `i 3441  ]
 {
 "86
 [e = _rdstart -> -> 0 `i `uc ]
 "87
 }
-[e :U 3430 ]
+[e :U 3441 ]
 "88
-[e $ ! != -> . . _U2ERRIRbits 0 6 `i -> 0 `i 3431  ]
+[e $ ! != -> . . _U2ERRIRbits 0 6 `i -> 0 `i 3442  ]
 {
 "89
 [e = _rdstart -> -> 0 `i `uc ]
@@ -3466,31 +3993,31 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = *U + &U _rbuf * -> _rdstart `ux -> -> # *U &U _rbuf `ui `ux -> -> 256 `i `us ]
 "91
 }
-[e $U 3432  ]
-[e :U 3431 ]
+[e $U 3443  ]
+[e :U 3442 ]
 {
 "92
 [e = *U + &U _rbuf * -> _rdstart `ux -> -> # *U &U _rbuf `ui `ux -> -> 0 `i `us ]
 "93
 }
-[e :U 3432 ]
+[e :U 3443 ]
 "94
 [e =+ *U + &U _rbuf * -> _rdstart `ux -> -> # *U &U _rbuf `ui `ux -> _U2RXB `us ]
 "95
 [e ++ _rdstart -> -> 1 `i `Vuc ]
 "96
 }
-[e :U 3428 ]
+[e :U 3439 ]
 "98
 [e ( _timer_ms_tick (2 , -> -> -> 0 `i `l `ul -> -> -> 0 `i `m `um ]
 "99
-[e :U 3435 ]
+[e :U 3446 ]
 {
 [e = . . _LATFbits 0 4 -> -> 0 `i `uc ]
 }
-[e :U 3434 ]
+[e :U 3445 ]
 "100
-[e :UE 3418 ]
+[e :UE 3429 ]
 }
 "107
 [v _FM_rx `(uc ~T0 @X0 1 ef1`*us ]
@@ -3506,20 +4033,20 @@ Version 4.0 HI-TECH Software Intermediate Code
 "111
 [e = _count _rdstart ]
 "112
-[e $ ! > -> _count `i -> 0 `i 3437  ]
+[e $ ! > -> _count `i -> 0 `i 3448  ]
 {
 "113
 [e ( _memcpy (3 , , -> _data `*v -> &U _rbuf `*Cv -> << -> _count `i -> 1 `i `ui ]
 "114
 }
-[e :U 3437 ]
+[e :U 3448 ]
 "115
 [e = _rdstart -> -> 0 `i `uc ]
 "116
 [e ) _count ]
-[e $UE 3436  ]
+[e $UE 3447  ]
 "117
-[e :UE 3436 ]
+[e :UE 3447 ]
 }
 "119
 [v _FM_rx_ready `(a ~T0 @X0 1 ef ]
@@ -3528,24 +4055,24 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _FM_rx_ready ]
 [f ]
 "121
-[e $ ! == -> _rdstart `i -> 0 `i 3439  ]
+[e $ ! == -> _rdstart `i -> 0 `i 3450  ]
 {
 "122
 [e ) -> -> 0 `i `a ]
-[e $UE 3438  ]
+[e $UE 3449  ]
 "123
 }
-[e $U 3440  ]
-[e :U 3439 ]
+[e $U 3451  ]
+[e :U 3450 ]
 {
 "124
 [e ) -> -> 1 `i `a ]
-[e $UE 3438  ]
+[e $UE 3449  ]
 "125
 }
-[e :U 3440 ]
+[e :U 3451 ]
 "126
-[e :UE 3438 ]
+[e :UE 3449 ]
 }
 "128
 [v _FM_rx_count `(uc ~T0 @X0 1 ef ]
@@ -3559,9 +4086,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _count _rdstart ]
 "133
 [e ) _count ]
-[e $UE 3441  ]
+[e $UE 3452  ]
 "134
-[e :UE 3441 ]
+[e :UE 3452 ]
 }
 "136
 [v _FM_onesec_io `(v ~T0 @X0 1 ef ]
@@ -3572,7 +4099,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "138
 [e = . _BM 1 -> -> 1 `i `a ]
 "139
-[e :UE 3442 ]
+[e :UE 3453 ]
 }
 "141
 [v _FM_tensec_io `(v ~T0 @X0 1 ef ]
@@ -3583,7 +4110,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "143
 [e = . _BM 0 -> -> 1 `i `a ]
 "144
-[e :UE 3443 ]
+[e :UE 3454 ]
 }
 "150
 [v _lp_filter `(f ~T0 @X0 1 ef3`Cf`Cuc`Cc ]
@@ -3597,46 +4124,46 @@ Version 4.0 HI-TECH Software Intermediate Code
 "151
 [f ]
 "152
-[v F25675 `f ~T0 @X0 -> 9 `i s smooth ]
+[v F25867 `f ~T0 @X0 -> 9 `i s smooth ]
 "153
 [v _lp_speed `f ~T0 @X0 1 a ]
 "155
-[e $ ! >= -> _bn `i -> 9 `i 3445  ]
+[e $ ! >= -> _bn `i -> 9 `i 3456  ]
 "156
 [e ) _new ]
-[e $UE 3444  ]
-[e :U 3445 ]
+[e $UE 3455  ]
+[e :U 3456 ]
 "158
-[e $ ! == -> _slow `i -U -> 1 `i 3446  ]
+[e $ ! == -> _slow `i -U -> 1 `i 3457  ]
 {
 "159
-[e = *U + &U F25675 * -> _bn `ux -> -> # *U &U F25675 `ui `ux -> .0.0 `f ]
+[e = *U + &U F25867 * -> _bn `ux -> -> # *U &U F25867 `ui `ux -> .0.0 `f ]
 "160
 [e ) _new ]
-[e $UE 3444  ]
+[e $UE 3455  ]
 "161
 }
-[e :U 3446 ]
+[e :U 3457 ]
 "163
-[e $ ! != -> _slow `i -> 0 `i 3447  ]
+[e $ ! != -> _slow `i -> 0 `i 3458  ]
 {
 "164
 [e = _lp_speed -> .0.0333 `f ]
 "165
 }
-[e $U 3448  ]
-[e :U 3447 ]
+[e $U 3459  ]
+[e :U 3458 ]
 {
 "166
 [e = _lp_speed -> .0.1 `f ]
 "167
 }
-[e :U 3448 ]
+[e :U 3459 ]
 "169
-[e ) = *U + &U F25675 * -> _bn `ux -> -> # *U &U F25675 `ui `ux + *U + &U F25675 * -> _bn `ux -> -> # *U &U F25675 `ui `ux * - _new *U + &U F25675 * -> _bn `ux -> -> # *U &U F25675 `ui `ux _lp_speed ]
-[e $UE 3444  ]
+[e ) = *U + &U F25867 * -> _bn `ux -> -> # *U &U F25867 `ui `ux + *U + &U F25867 * -> _bn `ux -> -> # *U &U F25867 `ui `ux * - _new *U + &U F25867 * -> _bn `ux -> -> # *U &U F25867 `ui `ux _lp_speed ]
+[e $UE 3455  ]
 "170
-[e :UE 3444 ]
+[e :UE 3455 ]
 }
 "172
 [v _calc_checksum `(us ~T0 @X0 1 ef2`*Cuc`Cuc ]
@@ -3655,21 +4182,21 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 [v _i `i ~T0 @X0 1 a ]
 [e = _i -> 0 `i ]
-[e $ < _i -> _len `i 3450  ]
-[e $U 3451  ]
-[e :U 3450 ]
+[e $ < _i -> _len `i 3461  ]
+[e $U 3462  ]
+[e :U 3461 ]
 {
 "176
 [e =+ _sum -> *U + _data * -> _i `x -> -> # *U _data `i `x `us ]
 "177
 }
 [e ++ _i -> 1 `i ]
-[e $ < _i -> _len `i 3450  ]
-[e :U 3451 ]
+[e $ < _i -> _len `i 3461  ]
+[e :U 3462 ]
 }
 "178
 [e ) _sum ]
-[e $UE 3449  ]
+[e $UE 3460  ]
 "179
-[e :UE 3449 ]
+[e :UE 3460 ]
 }
