@@ -580,7 +580,7 @@ DIS_ERR 9
 DIS_FREE 10
 DIS_CLEAR 11
 ]
-"82 /public/bmc/Q84/bmc_slave.X/slaveo.c
+"77 /public/bmc/Q84/bmc_slave.X/slaveo.c
 [e E25734 daqbmc_packet_index `uc
 BMC_CMD 0
 BMC_D0 1
@@ -592,16 +592,16 @@ BMC_EXT 6
 BMC_CKSUM 7
 BMC_DUMMY 8
 ]
-"86
+"81
 [e E23911 . `uc
 CONTEXT_1 0
 ]
-"118
+"116
 [e E25744 daqbmc_data_index `uc
 BMC_EM540_DATA 4
 BMC_DATA_DUMMY 5
 ]
-"177
+"175
 [e E25318 . `uc
 SEQ_STATE_INIT 0
 SEQ_STATE_RX 1
@@ -655,7 +655,7 @@ DIS_ERR 9
 DIS_FREE 10
 DIS_CLEAR 11
 ]
-"446
+"377
 [e E23896 . `uc
 channel_ANA0 0
 channel_ANA1 1
@@ -671,7 +671,7 @@ channel_DAC1 61
 channel_FVR_Buffer1 62
 channel_FVR_Buffer2 63
 ]
-"547
+"478
 [e E24965 APP_TIMERS `uc
 TMR_INTERNAL 0
 TMR_ADC 1
@@ -1421,13 +1421,13 @@ TMR_COUNT 13
 [v _lp_filter lp_filter `(f  1 e 4 0 ]
 "42 /public/bmc/Q84/bmc_slave.X/rs232.c
 [v _line_status line_status `(uc  1 s 1 line_status ]
-"57 /public/bmc/Q84/bmc_slave.X/slaveo.c
+"52 /public/bmc/Q84/bmc_slave.X/slaveo.c
 [v _clear_slaveo_flags clear_slaveo_flags `(v  1 s 1 clear_slaveo_flags ]
-"72
+"67
 [v _init_slaveo init_slaveo `(v  1 e 1 0 ]
-"89
+"87
 [v _slaveo_rx_isr slaveo_rx_isr `(v  1 e 1 0 ]
-"555
+"486
 [v _slaveo_spi_isr slaveo_spi_isr `(v  1 e 1 0 ]
 "134 /public/bmc/Q84/bmc_slave.X/tic12400.c
 [v _tic12400_reset tic12400_reset `(v  1 e 1 0 ]
@@ -1466,9 +1466,9 @@ TMR_COUNT 13
 "535
 [v _UART3_TxInterruptHandler UART3_TxInterruptHandler `*.38(v  1 e 3 0 ]
 "241 /public/bmc/Q84/bmc_slave.X/modbus_master.h
-[v _table_crc_hi@modbus_master$F9074 table_crc_hi `C[256]uc  1 s 256 table_crc_hi ]
+[v _table_crc_hi@modbus_master$F9073 table_crc_hi `C[256]uc  1 s 256 table_crc_hi ]
 "271
-[v _table_crc_lo@modbus_master$F9075 table_crc_lo `C[256]uc  1 s 256 table_crc_lo ]
+[v _table_crc_lo@modbus_master$F9074 table_crc_lo `C[256]uc  1 s 256 table_crc_lo ]
 [s S7106 V_help 96 `C[32]uc 1 message 32 0 `C[32]uc 1 display 32 32 `C[32]uc 1 extrams 32 64 ]
 "35 /public/bmc/Q84/bmc_slave.X/msg_text.h
 [v _T T `[4]S7106  1 e 384 0 ]
@@ -1576,7 +1576,7 @@ TMR_COUNT 13
 [v _SPI1CON0bits SPI1CON0bits `VES1648  1 e 1 @132 ]
 "3687
 [v _SPI1CON1 SPI1CON1 `VEuc  1 e 1 @133 ]
-[s S8508 . 1 `uc 1 SDOP 1 0 :1:0 
+[s S8507 . 1 `uc 1 SDOP 1 0 :1:0 
 `uc 1 SDIP 1 0 :1:1 
 `uc 1 SSP 1 0 :1:2 
 `uc 1 . 1 0 :1:3 
@@ -1586,7 +1586,7 @@ TMR_COUNT 13
 `uc 1 SMP 1 0 :1:7 
 ]
 "3714
-[s S8517 . 1 `uc 1 SPI1SDOP 1 0 :1:0 
+[s S8516 . 1 `uc 1 SPI1SDOP 1 0 :1:0 
 `uc 1 SPI1SDIP 1 0 :1:1 
 `uc 1 SPI1SSP 1 0 :1:2 
 `uc 1 . 1 0 :1:3 
@@ -1595,8 +1595,8 @@ TMR_COUNT 13
 `uc 1 SPI1CKE 1 0 :1:6 
 `uc 1 SPI1SMP 1 0 :1:7 
 ]
-[u S8526 . 1 `S8508 1 . 1 0 `S8517 1 . 1 0 ]
-[v _SPI1CON1bits SPI1CON1bits `VES8526  1 e 1 @133 ]
+[u S8525 . 1 `S8507 1 . 1 0 `S8516 1 . 1 0 ]
+[v _SPI1CON1bits SPI1CON1bits `VES8525  1 e 1 @133 ]
 "3789
 [v _SPI1CON2 SPI1CON2 `VEuc  1 e 1 @134 ]
 [s S5287 . 1 `uc 1 RXBF 1 0 :1:0 
@@ -3179,17 +3179,17 @@ TMR_COUNT 13
 [s S5275 tm 24 `i 1 tm_sec 2 0 `i 1 tm_min 2 2 `i 1 tm_hour 2 4 `i 1 tm_mday 2 6 `i 1 tm_mon 2 8 `i 1 tm_year 2 10 `i 1 tm_wday 2 12 `i 1 tm_yday 2 14 `i 1 tm_isdst 2 16 `l 1 __tm_gmtoff 4 18 `*.32Cuc 1 __tm_zone 2 22 ]
 "346
 [v _bmc_newtime bmc_newtime `*.39S5275  1 e 2 0 ]
-[s S8382 . 3 `Cuc 1 cmd 1 0 `us 1 out 2 1 ]
+[s S8381 . 3 `Cuc 1 cmd 1 0 `us 1 out 2 1 ]
 "7 /public/bmc/Q84/bmc_slave.X/mc33996.c
-[v _mc_onoff mc_onoff `S8382  1 e 3 0 ]
+[v _mc_onoff mc_onoff `S8381  1 e 3 0 ]
 "12
-[v _mc_pwm mc_pwm `CS8382  1 e 3 0 ]
+[v _mc_pwm mc_pwm `CS8381  1 e 3 0 ]
 "22
-[v _mc_gsrc mc_gsrc `CS8382  1 e 3 0 ]
+[v _mc_gsrc mc_gsrc `CS8381  1 e 3 0 ]
 "27
-[v _mc_sfpd mc_sfpd `CS8382  1 e 3 0 ]
+[v _mc_sfpd mc_sfpd `CS8381  1 e 3 0 ]
 "32
-[v _mc_olce mc_olce `CS8382  1 e 3 0 ]
+[v _mc_olce mc_olce `CS8381  1 e 3 0 ]
 [s S6756 . 16 `[16]uc 1 cmd 16 0 ]
 "37
 [v _mc_init mc_init `S6756  1 e 16 0 ]
@@ -3317,17 +3317,17 @@ TMR_COUNT 13
 [v _cc_buffer_0 cc_buffer_0 `VE[240]uc  1 s 240 cc_buffer_0 ]
 [v _cc_buffer_1 cc_buffer_1 `VE[240]uc  1 s 240 cc_buffer_1 ]
 [v _cc_buffer_tx cc_buffer_tx `VE[240]uc  1 s 240 cc_buffer_tx ]
-[s S8776 M_data 23 `uc 1 blink_lock 1 0 :1:0 
+[s S8775 M_data 23 `uc 1 blink_lock 1 0 :1:0 
 `uc 1 config 1 0 :1:1 
 `uc 1 stable 1 0 :1:2 
 `uc 1 boot_code 1 0 :1:3 
 `uc 1 power_on 1 0 :1:4 
 `uc 1 send_count 1 1 `uc 1 recv_count 1 2 `uc 1 pwm_volts 1 3 `us 1 error 2 4 `us 1 crc_data 2 6 `us 1 crc_calc 2 8 `ul 1 crc_error 4 10 `ul 1 to_error 4 14 `ul 1 sends 4 18 `VEa 1 rx 1 22 ]
 "14
-[v _M M `VES8776  1 s 23 M ]
-[s S8792 M_time_data 12 `ul 1 clock_500hz 4 0 `ul 1 clock_500ahz 4 4 `ul 1 clock_2hz 4 8 ]
+[v _M M `VES8775  1 s 23 M ]
+[s S8791 M_time_data 12 `ul 1 clock_500hz 4 0 `ul 1 clock_500ahz 4 4 `ul 1 clock_2hz 4 8 ]
 "19
-[v _MT MT `VES8792  1 s 12 MT ]
+[v _MT MT `VES8791  1 s 12 MT ]
 [s S5509 M_data 23 `uc 1 blink_lock 1 0 :1:0 
 `uc 1 config 1 0 :1:1 
 `uc 1 stable 1 0 :1:2 
@@ -3337,9 +3337,9 @@ TMR_COUNT 13
 "25
 [s S5525 C_data 45 `uc 1 mcmd 1 0 `E24992 1 cstate 1 1 `E24998 1 modbus_command 1 2 `us 1 req_length 2 3 `c 1 trace 1 5 `a 1 id_ok 1 6 `a 1 passwd_ok 1 7 `a 1 config_ok 1 8 `a 1 data_ok 1 9 `a 1 light_ok 1 10 `a 1 serial_ok 1 11 `a 1 version_ok 1 12 `a 1 tm_ok 1 13 `ul 1 data_count 4 14 `ul 1 data_prev 4 18 `VES5509 1 M 23 22 ]
 [v _C C `VES5525  1 e 45 0 ]
-[s S8828 VM_type 46 `ul 1 StartTime 4 0 `ul 1 TimeUsed 4 4 `VEul 1 pacing 4 8 `VEul 1 pwm_update 4 12 `VEul 1 pwm_stop 4 16 `VEul 1 fault_count 4 20 `VEul 1 fault_ticks 4 24 `VEul 1 fault_source 4 28 `VEul 1 modbus_rx 4 32 `VEul 1 modbus_tx 4 36 `l 1 motor_speed 4 40 `VEa 1 fault_active 1 44 `VEa 1 dmt_sosc_flag 1 45 ]
+[s S8827 VM_type 46 `ul 1 StartTime 4 0 `ul 1 TimeUsed 4 4 `VEul 1 pacing 4 8 `VEul 1 pwm_update 4 12 `VEul 1 pwm_stop 4 16 `VEul 1 fault_count 4 20 `VEul 1 fault_ticks 4 24 `VEul 1 fault_source 4 28 `VEul 1 modbus_rx 4 32 `VEul 1 modbus_tx 4 36 `l 1 motor_speed 4 40 `VEa 1 fault_active 1 44 `VEa 1 dmt_sosc_flag 1 45 ]
 "40
-[v _VM VM `VES8828  1 e 46 0 ]
+[v _VM VM `VES8827  1 e 46 0 ]
 "58
 [v _modbus_em_id modbus_em_id `C[6]uc  1 e 6 0 ]
 "59
@@ -3359,17 +3359,17 @@ TMR_COUNT 13
 [s S5795 EM_data1 104 `VEl 1 vl1n 4 0 `VEl 1 vl2n 4 4 `VEl 1 vl3n 4 8 `VEl 1 vl1l2 4 12 `VEl 1 vl2l3 4 16 `VEl 1 vl3l1 4 20 `VEl 1 al1 4 24 `VEl 1 al2 4 28 `VEl 1 al3 4 32 `VEl 1 wl1 4 36 `VEl 1 wl2 4 40 `VEl 1 wl3 4 44 `VEl 1 val1 4 48 `VEl 1 val2 4 52 `VEl 1 val3 4 56 `VEl 1 varl1 4 60 `VEl 1 varl2 4 64 `VEl 1 varl3 4 68 `VEl 1 vlnsys 4 72 `VEl 1 vllsys 4 76 `VEl 1 wsys 4 80 `VEl 1 vasys 4 84 `VEl 1 varsys 4 88 `VEs 1 pfl1 2 92 `VEs 1 pfl2 2 94 `VEs 1 pfl3 2 96 `VEs 1 pfsys 2 98 `VEs 1 phaseseq 2 100 `VEs 1 hz 2 102 ]
 "77
 [v _em em `VQES5795  1 e 104 0 ]
-[s S8842 EM_data1 104 `VEl 1 vl1n 4 0 `VEl 1 vl2n 4 4 `VEl 1 vl3n 4 8 `VEl 1 vl1l2 4 12 `VEl 1 vl2l3 4 16 `VEl 1 vl3l1 4 20 `VEl 1 al1 4 24 `VEl 1 al2 4 28 `VEl 1 al3 4 32 `VEl 1 wl1 4 36 `VEl 1 wl2 4 40 `VEl 1 wl3 4 44 `VEl 1 val1 4 48 `VEl 1 val2 4 52 `VEl 1 val3 4 56 `VEl 1 varl1 4 60 `VEl 1 varl2 4 64 `VEl 1 varl3 4 68 `VEl 1 vlnsys 4 72 `VEl 1 vllsys 4 76 `VEl 1 wsys 4 80 `VEl 1 vasys 4 84 `VEl 1 varsys 4 88 `VEs 1 pfl1 2 92 `VEs 1 pfl2 2 94 `VEs 1 pfl3 2 96 `VEs 1 pfsys 2 98 `VEs 1 phaseseq 2 100 `VEs 1 hz 2 102 ]
-[v _em_ptr em_ptr `*.39VQES8842  1 e 2 0 ]
+[s S8841 EM_data1 104 `VEl 1 vl1n 4 0 `VEl 1 vl2n 4 4 `VEl 1 vl3n 4 8 `VEl 1 vl1l2 4 12 `VEl 1 vl2l3 4 16 `VEl 1 vl3l1 4 20 `VEl 1 al1 4 24 `VEl 1 al2 4 28 `VEl 1 al3 4 32 `VEl 1 wl1 4 36 `VEl 1 wl2 4 40 `VEl 1 wl3 4 44 `VEl 1 val1 4 48 `VEl 1 val2 4 52 `VEl 1 val3 4 56 `VEl 1 varl1 4 60 `VEl 1 varl2 4 64 `VEl 1 varl3 4 68 `VEl 1 vlnsys 4 72 `VEl 1 vllsys 4 76 `VEl 1 wsys 4 80 `VEl 1 vasys 4 84 `VEl 1 varsys 4 88 `VEs 1 pfl1 2 92 `VEs 1 pfl2 2 94 `VEs 1 pfl3 2 96 `VEs 1 pfsys 2 98 `VEs 1 phaseseq 2 100 `VEs 1 hz 2 102 ]
+[v _em_ptr em_ptr `*.39VQES8841  1 e 2 0 ]
 [s S5964 EM_data2 128 `VEo 1 kwhpt 8 0 `VEo 1 kvarhpt 8 8 `VEo 1 kwhpp 8 16 `VEo 1 kvarhpp 8 24 `VEo 1 kwhpl1 8 32 `VEo 1 kwhpl2 8 40 `VEo 1 kwhpl3 8 48 `VEo 1 kwhnt 8 56 `VEo 1 kvarhnt 8 64 `VEo 1 kwhnp 8 72 `VEo 1 kvarhnp 8 80 `VEo 1 kvaht 8 88 `VEo 1 kvahp 8 96 `VEl 1 rhm 4 104 `VEl 1 rhmk 4 108 `VEl 1 rhmp 4 112 `VEl 1 rhmkp 4 116 `VEl 1 hz 4 120 `VEl 1 rhlc 4 124 ]
 "78
 [v _emt emt `VQES5964  1 e 128 0 ]
-[s S8892 EM_serial 16 `VE[14]uc 1 serial 14 0 `VEs 1 year 2 14 ]
+[s S8891 EM_serial 16 `VE[14]uc 1 serial 14 0 `VEs 1 year 2 14 ]
 "79
-[v _ems ems `VQES8892  1 e 16 0 ]
-[s S8895 EM_version 2 `VEs 1 firmware 2 0 ]
+[v _ems ems `VQES8891  1 e 16 0 ]
+[s S8894 EM_version 2 `VEs 1 firmware 2 0 ]
 "80
-[v _emv emv `VQES8895  1 e 2 0 ]
+[v _emv emv `VQES8894  1 e 2 0 ]
 "6 /public/bmc/Q84/bmc_slave.X/mxcmd.c
 [v _data data `VEuc  1 s 1 data ]
 [v _dcount dcount `VEuc  1 s 1 dcount ]
@@ -3380,41 +3380,41 @@ TMR_COUNT 13
 [v _rbuf rbuf `VE[33]us  1 s 66 rbuf ]
 "9
 [v _pace pace `VEuc  1 s 1 pace ]
-"44 /public/bmc/Q84/bmc_slave.X/slaveo.c
+"39 /public/bmc/Q84/bmc_slave.X/slaveo.c
 [v _in_buf1 in_buf1 `VEuc  1 e 1 0 ]
 [v _in_buf2 in_buf2 `VEuc  1 e 1 0 ]
 [v _in_buf3 in_buf3 `VEuc  1 e 1 0 ]
-"45
+"40
 [v _tmp_buf4 tmp_buf4 `*.32uc  1 s 2 tmp_buf4 ]
-"46
+"41
 [v _tmp_buf5 tmp_buf5 `*.32uc  1 s 2 tmp_buf5 ]
-"47
+"42
 [v _r_string_ready r_string_ready `VEa  1 e 1 0 ]
 [v _bmc_string_ready bmc_string_ready `VEa  1 e 1 0 ]
 [v _update_bmc_string update_bmc_string `VEa  1 e 1 0 ]
-[s S8124 . 4 `uc 1 data3 1 0 `uc 1 data2 1 1 `uc 1 data1 1 2 `uc 1 data0 1 3 ]
+[s S8123 . 4 `uc 1 data3 1 0 `uc 1 data2 1 1 `uc 1 data1 1 2 `uc 1 data0 1 3 ]
 "14 /public/bmc/Q84/bmc_slave.X/tic12400.c
-[v _setup32 setup32 `CS8124  1 e 4 0 ]
+[v _setup32 setup32 `CS8123  1 e 4 0 ]
 "20
-[v _setup21 setup21 `CS8124  1 e 4 0 ]
+[v _setup21 setup21 `CS8123  1 e 4 0 ]
 "26
-[v _setup1c setup1c `CS8124  1 e 4 0 ]
+[v _setup1c setup1c `CS8123  1 e 4 0 ]
 "32
-[v _setup1b setup1b `CS8124  1 e 4 0 ]
+[v _setup1b setup1b `CS8123  1 e 4 0 ]
 "38
-[v _setup1a_trigger setup1a_trigger `CS8124  1 e 4 0 ]
+[v _setup1a_trigger setup1a_trigger `CS8123  1 e 4 0 ]
 "50
-[v _setup22 setup22 `CS8124  1 e 4 0 ]
+[v _setup22 setup22 `CS8123  1 e 4 0 ]
 "56
-[v _setup23 setup23 `CS8124  1 e 4 0 ]
+[v _setup23 setup23 `CS8123  1 e 4 0 ]
 "80
-[v _ticread05 ticread05 `CS8124  1 e 4 0 ]
+[v _ticread05 ticread05 `CS8123  1 e 4 0 ]
 "86
-[v _ticdevid01 ticdevid01 `CS8124  1 e 4 0 ]
+[v _ticdevid01 ticdevid01 `CS8123  1 e 4 0 ]
 "92
-[v _ticstat02 ticstat02 `CS8124  1 e 4 0 ]
+[v _ticstat02 ticstat02 `CS8123  1 e 4 0 ]
 "98
-[v _ticreset1a ticreset1a `CS8124  1 e 4 0 ]
+[v _ticreset1a ticreset1a `CS8123  1 e 4 0 ]
 "108
 [v _tic12400_status tic12400_status `VEul  1 e 4 0 ]
 [v _tic12400_counts tic12400_counts `VEul  1 e 4 0 ]
@@ -3469,8 +3469,8 @@ TMR_COUNT 13
 "230
 [v _tic12400_wr tic12400_wr `(ul  1 e 4 0 ]
 {
-[s S8124 . 4 `uc 1 data3 1 0 `uc 1 data2 1 1 `uc 1 data1 1 2 `uc 1 data0 1 3 ]
-[v tic12400_wr@buffer buffer `*.32CS8124  1 p 2 69 ]
+[s S8123 . 4 `uc 1 data3 1 0 `uc 1 data2 1 1 `uc 1 data1 1 2 `uc 1 data0 1 3 ]
+[v tic12400_wr@buffer buffer `*.32CS8123  1 p 2 69 ]
 [v tic12400_wr@del del `us  1 p 2 71 ]
 "232
 [v tic12400_wr@last_sw_value last_sw_value `ul  1 s 4 last_sw_value ]
@@ -3809,15 +3809,15 @@ TMR_COUNT 13
 {
 "363
 [v master_controller_work@i i `uc  1 a 1 91 ]
-[s S8776 M_data 23 `uc 1 blink_lock 1 0 :1:0 
+[s S8775 M_data 23 `uc 1 blink_lock 1 0 :1:0 
 `uc 1 config 1 0 :1:1 
 `uc 1 stable 1 0 :1:2 
 `uc 1 boot_code 1 0 :1:3 
 `uc 1 power_on 1 0 :1:4 
 `uc 1 send_count 1 1 `uc 1 recv_count 1 2 `uc 1 pwm_volts 1 3 `us 1 error 2 4 `us 1 crc_data 2 6 `us 1 crc_calc 2 8 `ul 1 crc_error 4 10 `ul 1 to_error 4 14 `ul 1 sends 4 18 `VEa 1 rx 1 22 ]
 "261
-[s S8811 C_data 45 `uc 1 mcmd 1 0 `E24832 1 cstate 1 1 `E24838 1 modbus_command 1 2 `us 1 req_length 2 3 `c 1 trace 1 5 `a 1 id_ok 1 6 `a 1 passwd_ok 1 7 `a 1 config_ok 1 8 `a 1 data_ok 1 9 `a 1 light_ok 1 10 `a 1 serial_ok 1 11 `a 1 version_ok 1 12 `a 1 tm_ok 1 13 `ul 1 data_count 4 14 `ul 1 data_prev 4 18 `VES8776 1 M 23 22 ]
-[v master_controller_work@client client `*.39VES8811  1 p 2 85 ]
+[s S8810 C_data 45 `uc 1 mcmd 1 0 `E24832 1 cstate 1 1 `E24838 1 modbus_command 1 2 `us 1 req_length 2 3 `c 1 trace 1 5 `a 1 id_ok 1 6 `a 1 passwd_ok 1 7 `a 1 config_ok 1 8 `a 1 data_ok 1 9 `a 1 light_ok 1 10 `a 1 serial_ok 1 11 `a 1 version_ok 1 12 `a 1 tm_ok 1 13 `ul 1 data_count 4 14 `ul 1 data_prev 4 18 `VES8775 1 M 23 22 ]
+[v master_controller_work@client client `*.39VES8810  1 p 2 85 ]
 "263
 [v master_controller_work@spacing spacing `ul  1 s 4 spacing ]
 "425
@@ -3833,15 +3833,15 @@ TMR_COUNT 13
 "592
 [v modbus_write_check@c_crc_rec c_crc_rec `us  1 a 2 80 ]
 [v modbus_write_check@c_crc c_crc `us  1 a 2 78 ]
-[s S8776 M_data 23 `uc 1 blink_lock 1 0 :1:0 
+[s S8775 M_data 23 `uc 1 blink_lock 1 0 :1:0 
 `uc 1 config 1 0 :1:1 
 `uc 1 stable 1 0 :1:2 
 `uc 1 boot_code 1 0 :1:3 
 `uc 1 power_on 1 0 :1:4 
 `uc 1 send_count 1 1 `uc 1 recv_count 1 2 `uc 1 pwm_volts 1 3 `us 1 error 2 4 `us 1 crc_data 2 6 `us 1 crc_calc 2 8 `ul 1 crc_error 4 10 `ul 1 to_error 4 14 `ul 1 sends 4 18 `VEa 1 rx 1 22 ]
 "590
-[s S8811 C_data 45 `uc 1 mcmd 1 0 `E24832 1 cstate 1 1 `E24838 1 modbus_command 1 2 `us 1 req_length 2 3 `c 1 trace 1 5 `a 1 id_ok 1 6 `a 1 passwd_ok 1 7 `a 1 config_ok 1 8 `a 1 data_ok 1 9 `a 1 light_ok 1 10 `a 1 serial_ok 1 11 `a 1 version_ok 1 12 `a 1 tm_ok 1 13 `ul 1 data_count 4 14 `ul 1 data_prev 4 18 `VES8776 1 M 23 22 ]
-[v modbus_write_check@client client `*.39VES8811  1 p 2 68 ]
+[s S8810 C_data 45 `uc 1 mcmd 1 0 `E24832 1 cstate 1 1 `E24838 1 modbus_command 1 2 `us 1 req_length 2 3 `c 1 trace 1 5 `a 1 id_ok 1 6 `a 1 passwd_ok 1 7 `a 1 config_ok 1 8 `a 1 data_ok 1 9 `a 1 light_ok 1 10 `a 1 serial_ok 1 11 `a 1 version_ok 1 12 `a 1 tm_ok 1 13 `ul 1 data_count 4 14 `ul 1 data_prev 4 18 `VES8775 1 M 23 22 ]
+[v modbus_write_check@client client `*.39VES8810  1 p 2 68 ]
 [v modbus_write_check@cstate cstate `*.39a  1 p 2 70 ]
 [v modbus_write_check@rec_length rec_length `Cus  1 p 2 72 ]
 "621
@@ -3870,15 +3870,15 @@ TMR_COUNT 13
 "664
 [v modbus_read_id_check@c_crc_rec c_crc_rec `us  1 a 2 80 ]
 [v modbus_read_id_check@c_crc c_crc `us  1 a 2 78 ]
-[s S8776 M_data 23 `uc 1 blink_lock 1 0 :1:0 
+[s S8775 M_data 23 `uc 1 blink_lock 1 0 :1:0 
 `uc 1 config 1 0 :1:1 
 `uc 1 stable 1 0 :1:2 
 `uc 1 boot_code 1 0 :1:3 
 `uc 1 power_on 1 0 :1:4 
 `uc 1 send_count 1 1 `uc 1 recv_count 1 2 `uc 1 pwm_volts 1 3 `us 1 error 2 4 `us 1 crc_data 2 6 `us 1 crc_calc 2 8 `ul 1 crc_error 4 10 `ul 1 to_error 4 14 `ul 1 sends 4 18 `VEa 1 rx 1 22 ]
 "662
-[s S8811 C_data 45 `uc 1 mcmd 1 0 `E24832 1 cstate 1 1 `E24838 1 modbus_command 1 2 `us 1 req_length 2 3 `c 1 trace 1 5 `a 1 id_ok 1 6 `a 1 passwd_ok 1 7 `a 1 config_ok 1 8 `a 1 data_ok 1 9 `a 1 light_ok 1 10 `a 1 serial_ok 1 11 `a 1 version_ok 1 12 `a 1 tm_ok 1 13 `ul 1 data_count 4 14 `ul 1 data_prev 4 18 `VES8776 1 M 23 22 ]
-[v modbus_read_id_check@client client `*.39VES8811  1 p 2 68 ]
+[s S8810 C_data 45 `uc 1 mcmd 1 0 `E24832 1 cstate 1 1 `E24838 1 modbus_command 1 2 `us 1 req_length 2 3 `c 1 trace 1 5 `a 1 id_ok 1 6 `a 1 passwd_ok 1 7 `a 1 config_ok 1 8 `a 1 data_ok 1 9 `a 1 light_ok 1 10 `a 1 serial_ok 1 11 `a 1 version_ok 1 12 `a 1 tm_ok 1 13 `ul 1 data_count 4 14 `ul 1 data_prev 4 18 `VES8775 1 M 23 22 ]
+[v modbus_read_id_check@client client `*.39VES8810  1 p 2 68 ]
 [v modbus_read_id_check@cstate cstate `*.39a  1 p 2 70 ]
 [v modbus_read_id_check@rec_length rec_length `Cus  1 p 2 72 ]
 "706
@@ -3889,15 +3889,15 @@ TMR_COUNT 13
 "625
 [v modbus_read_check@c_crc_rec c_crc_rec `us  1 a 2 83 ]
 [v modbus_read_check@c_crc c_crc `us  1 a 2 81 ]
-[s S8776 M_data 23 `uc 1 blink_lock 1 0 :1:0 
+[s S8775 M_data 23 `uc 1 blink_lock 1 0 :1:0 
 `uc 1 config 1 0 :1:1 
 `uc 1 stable 1 0 :1:2 
 `uc 1 boot_code 1 0 :1:3 
 `uc 1 power_on 1 0 :1:4 
 `uc 1 send_count 1 1 `uc 1 recv_count 1 2 `uc 1 pwm_volts 1 3 `us 1 error 2 4 `us 1 crc_data 2 6 `us 1 crc_calc 2 8 `ul 1 crc_error 4 10 `ul 1 to_error 4 14 `ul 1 sends 4 18 `VEa 1 rx 1 22 ]
 "623
-[s S8811 C_data 45 `uc 1 mcmd 1 0 `E24832 1 cstate 1 1 `E24838 1 modbus_command 1 2 `us 1 req_length 2 3 `c 1 trace 1 5 `a 1 id_ok 1 6 `a 1 passwd_ok 1 7 `a 1 config_ok 1 8 `a 1 data_ok 1 9 `a 1 light_ok 1 10 `a 1 serial_ok 1 11 `a 1 version_ok 1 12 `a 1 tm_ok 1 13 `ul 1 data_count 4 14 `ul 1 data_prev 4 18 `VES8776 1 M 23 22 ]
-[v modbus_read_check@client client `*.39VES8811  1 p 2 68 ]
+[s S8810 C_data 45 `uc 1 mcmd 1 0 `E24832 1 cstate 1 1 `E24838 1 modbus_command 1 2 `us 1 req_length 2 3 `c 1 trace 1 5 `a 1 id_ok 1 6 `a 1 passwd_ok 1 7 `a 1 config_ok 1 8 `a 1 data_ok 1 9 `a 1 light_ok 1 10 `a 1 serial_ok 1 11 `a 1 version_ok 1 12 `a 1 tm_ok 1 13 `ul 1 data_count 4 14 `ul 1 data_prev 4 18 `VES8775 1 M 23 22 ]
+[v modbus_read_check@client client `*.39VES8810  1 p 2 68 ]
 [v modbus_read_check@cstate cstate `*.39a  1 p 2 70 ]
 [v modbus_read_check@rec_length rec_length `Cus  1 p 2 72 ]
 [v modbus_read_check@DataHandler DataHandler `*.38(v  1 p 3 74 ]
@@ -3944,9 +3944,9 @@ TMR_COUNT 13
 "227
 [v _mb32_swap mb32_swap `(l  1 e 4 0 ]
 {
-[u S8919 MREG32 4 `l 1 value 4 0 `[4]uc 1 bytes 4 0 ]
+[u S8918 MREG32 4 `l 1 value 4 0 `[4]uc 1 bytes 4 0 ]
 "230
-[v mb32_swap@dvalue dvalue `S8919  1 a 4 58 ]
+[v mb32_swap@dvalue dvalue `S8918  1 a 4 58 ]
 "229
 [v mb32_swap@i i `uc  1 a 1 57 ]
 "227
@@ -3956,9 +3956,9 @@ TMR_COUNT 13
 "243
 [v _mb16_swap mb16_swap `(s  1 e 2 0 ]
 {
-[u S8922 MREG 2 `s 1 value 2 0 `[2]uc 1 bytes 2 0 ]
+[u S8921 MREG 2 `s 1 value 2 0 `[2]uc 1 bytes 2 0 ]
 "246
-[v mb16_swap@dvalue dvalue `S8922  1 a 2 56 ]
+[v mb16_swap@dvalue dvalue `S8921  1 a 2 56 ]
 "245
 [v mb16_swap@i i `uc  1 a 1 55 ]
 "243
@@ -3970,15 +3970,15 @@ TMR_COUNT 13
 {
 "203
 [v crc16_receive@crc16r crc16r `us  1 a 2 66 ]
-[s S8776 M_data 23 `uc 1 blink_lock 1 0 :1:0 
+[s S8775 M_data 23 `uc 1 blink_lock 1 0 :1:0 
 `uc 1 config 1 0 :1:1 
 `uc 1 stable 1 0 :1:2 
 `uc 1 boot_code 1 0 :1:3 
 `uc 1 power_on 1 0 :1:4 
 `uc 1 send_count 1 1 `uc 1 recv_count 1 2 `uc 1 pwm_volts 1 3 `us 1 error 2 4 `us 1 crc_data 2 6 `us 1 crc_calc 2 8 `ul 1 crc_error 4 10 `ul 1 to_error 4 14 `ul 1 sends 4 18 `VEa 1 rx 1 22 ]
 "201
-[s S8811 C_data 45 `uc 1 mcmd 1 0 `E24832 1 cstate 1 1 `E24838 1 modbus_command 1 2 `us 1 req_length 2 3 `c 1 trace 1 5 `a 1 id_ok 1 6 `a 1 passwd_ok 1 7 `a 1 config_ok 1 8 `a 1 data_ok 1 9 `a 1 light_ok 1 10 `a 1 serial_ok 1 11 `a 1 version_ok 1 12 `a 1 tm_ok 1 13 `ul 1 data_count 4 14 `ul 1 data_prev 4 18 `VES8776 1 M 23 22 ]
-[v crc16_receive@client client `*.39CVES8811  1 p 2 53 ]
+[s S8810 C_data 45 `uc 1 mcmd 1 0 `E24832 1 cstate 1 1 `E24838 1 modbus_command 1 2 `us 1 req_length 2 3 `c 1 trace 1 5 `a 1 id_ok 1 6 `a 1 passwd_ok 1 7 `a 1 config_ok 1 8 `a 1 data_ok 1 9 `a 1 light_ok 1 10 `a 1 serial_ok 1 11 `a 1 version_ok 1 12 `a 1 tm_ok 1 13 `ul 1 data_count 4 14 `ul 1 data_prev 4 18 `VES8775 1 M 23 22 ]
+[v crc16_receive@client client `*.39CVES8810  1 p 2 53 ]
 "207
 } 0
 "140
@@ -4036,12 +4036,12 @@ TMR_COUNT 13
 {
 "398
 } 0
-"72 /public/bmc/Q84/bmc_slave.X/slaveo.c
+"67 /public/bmc/Q84/bmc_slave.X/slaveo.c
 [v _init_slaveo init_slaveo `(v  1 e 1 0 ]
 {
-"74
+"69
 [v init_slaveo@val val `uc  1 a 1 56 ]
-"87
+"82
 } 0
 "194 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/adc.c
 [v _ADC_SelectContext ADC_SelectContext `T(v  1 e 1 0 ]
@@ -4224,10 +4224,10 @@ TMR_COUNT 13
 "13 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/nf_snprintf.c
 [v _snprintf snprintf `(i  1 e 2 0 ]
 {
-[u S10229 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
+[u S10228 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
 "17
-[s S10232 _IO_FILE 11 `S10229 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
-[v snprintf@f f `S10232  1 a 11 196 ]
+[s S10231 _IO_FILE 11 `S10228 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
+[v snprintf@f f `S10231  1 a 11 196 ]
 "16
 [v snprintf@ap ap `[1]*.39v  1 a 2 207 ]
 "15
@@ -4243,9 +4243,9 @@ TMR_COUNT 13
 {
 "1820
 [v vfprintf@cfmt cfmt `*.32uc  1 a 2 109 ]
-[s S10267 _IO_FILE 0 ]
+[s S10266 _IO_FILE 0 ]
 "1817
-[v vfprintf@fp fp `*.39S10267  1 p 2 103 ]
+[v vfprintf@fp fp `*.39S10266  1 p 2 103 ]
 [v vfprintf@fmt fmt `*.32Cuc  1 p 2 105 ]
 [v vfprintf@ap ap `*.39*.39v  1 p 2 107 ]
 "1840
@@ -4253,17 +4253,17 @@ TMR_COUNT 13
 "1177
 [v _vfpfcnvrt vfpfcnvrt `(i  1 s 2 vfpfcnvrt ]
 {
-[u S10313 . 8 `o 1 sint 8 0 `uo 1 uint 8 0 `d 1 f 4 0 ]
+[u S10312 . 8 `o 1 sint 8 0 `uo 1 uint 8 0 `d 1 f 4 0 ]
 "1188
-[v vfpfcnvrt@convarg convarg `S10313  1 a 8 93 ]
+[v vfpfcnvrt@convarg convarg `S10312  1 a 8 93 ]
 "1179
 [v vfpfcnvrt@cp cp `*.32uc  1 a 2 101 ]
 [v vfpfcnvrt@c c `uc  1 a 1 92 ]
 "1180
 [v vfpfcnvrt@done done `a  1 a 1 91 ]
-[s S10267 _IO_FILE 0 ]
+[s S10266 _IO_FILE 0 ]
 "1177
-[v vfpfcnvrt@fp fp `*.39S10267  1 p 2 71 ]
+[v vfpfcnvrt@fp fp `*.39S10266  1 p 2 71 ]
 [v vfpfcnvrt@fmt fmt `*.39*.32uc  1 p 2 73 ]
 [v vfpfcnvrt@ap ap `*.39*.39v  1 p 2 75 ]
 "1814
@@ -4282,9 +4282,9 @@ TMR_COUNT 13
 [v xtoa@d_nonzero d_nonzero `a  1 a 1 7 ]
 "1061
 [v xtoa@a a `uc  1 a 1 2 ]
-[s S10267 _IO_FILE 0 ]
+[s S10266 _IO_FILE 0 ]
 "1052
-[v xtoa@fp fp `*.39S10267  1 p 2 78 ]
+[v xtoa@fp fp `*.39S10266  1 p 2 78 ]
 [v xtoa@d d `uo  1 p 8 80 ]
 [v xtoa@x x `uc  1 p 1 88 ]
 "1153
@@ -4297,9 +4297,9 @@ TMR_COUNT 13
 [v utoa@w w `i  1 a 2 98 ]
 "1005
 [v utoa@p p `i  1 a 2 96 ]
-[s S10267 _IO_FILE 0 ]
+[s S10266 _IO_FILE 0 ]
 "1001
-[v utoa@fp fp `*.39S10267  1 p 2 78 ]
+[v utoa@fp fp `*.39S10266  1 p 2 78 ]
 [v utoa@d d `uo  1 p 8 80 ]
 "1047
 } 0
@@ -4336,9 +4336,9 @@ TMR_COUNT 13
 [v stoa@w w `i  1 a 2 70 ]
 "945
 [v stoa@p p `i  1 a 2 68 ]
-[s S10267 _IO_FILE 0 ]
+[s S10266 _IO_FILE 0 ]
 "942
-[v stoa@fp fp `*.39S10267  1 p 2 62 ]
+[v stoa@fp fp `*.39S10266  1 p 2 62 ]
 [v stoa@s s `*.34uc  1 p 2 64 ]
 "997
 } 0
@@ -4364,24 +4364,24 @@ TMR_COUNT 13
 [v otoa@p p `i  1 a 2 96 ]
 "875
 [v otoa@t t `uc  1 a 1 100 ]
-[s S10267 _IO_FILE 0 ]
+[s S10266 _IO_FILE 0 ]
 "872
-[v otoa@fp fp `*.39S10267  1 p 2 78 ]
+[v otoa@fp fp `*.39S10266  1 p 2 78 ]
 [v otoa@d d `uo  1 p 8 80 ]
 "938
 } 0
 "587
 [v _efgtoa efgtoa `(i  1 s 2 efgtoa ]
 {
-[u S10299 flui 4 `d 1 f 4 0 `l 1 u 4 0 ]
+[u S10298 flui 4 `d 1 f 4 0 `l 1 u 4 0 ]
 "592
-[v efgtoa@u u `S10299  1 a 4 65 ]
-[v efgtoa@g g `S10299  1 a 4 59 ]
+[v efgtoa@u u `S10298  1 a 4 65 ]
+[v efgtoa@g g `S10298  1 a 4 59 ]
 "591
 [v efgtoa@l l `d  1 a 4 52 ]
 [v efgtoa@h h `d  1 a 4 48 ]
 "592
-[v efgtoa@ou ou `S10299  1 a 4 42 ]
+[v efgtoa@ou ou `S10298  1 a 4 42 ]
 "590
 [v efgtoa@n n `i  1 a 2 69 ]
 [v efgtoa@i i `i  1 a 2 63 ]
@@ -4398,9 +4398,9 @@ TMR_COUNT 13
 [v efgtoa@nmode nmode `uc  1 a 1 40 ]
 [v efgtoa@pp pp `uc  1 a 1 33 ]
 [v efgtoa@esign esign `uc  1 a 1 30 ]
-[s S10267 _IO_FILE 0 ]
+[s S10266 _IO_FILE 0 ]
 "587
-[v efgtoa@fp fp `*.39S10267  1 p 2 10 ]
+[v efgtoa@fp fp `*.39S10266  1 p 2 10 ]
 [v efgtoa@f f `d  1 p 4 12 ]
 [v efgtoa@c c `uc  1 p 1 16 ]
 "868
@@ -4421,9 +4421,9 @@ TMR_COUNT 13
 [v dtoa@p p `i  1 a 2 99 ]
 "515
 [v dtoa@s s `uc  1 a 1 103 ]
-[s S10267 _IO_FILE 0 ]
+[s S10266 _IO_FILE 0 ]
 "513
-[v dtoa@fp fp `*.39S10267  1 p 2 79 ]
+[v dtoa@fp fp `*.39S10266  1 p 2 79 ]
 [v dtoa@d d `o  1 p 8 81 ]
 "583
 } 0
@@ -4463,9 +4463,9 @@ TMR_COUNT 13
 "478
 [v ctoa@w w `i  1 a 2 68 ]
 [v ctoa@l l `i  1 a 2 66 ]
-[s S10267 _IO_FILE 0 ]
+[s S10266 _IO_FILE 0 ]
 "476
-[v ctoa@fp fp `*.39S10267  1 p 2 62 ]
+[v ctoa@fp fp `*.39S10266  1 p 2 62 ]
 [v ctoa@c c `uc  1 p 1 64 ]
 "509
 } 0
@@ -4492,9 +4492,9 @@ TMR_COUNT 13
 [v atoa@sign sign `uc  1 a 1 59 ]
 [v atoa@pp pp `uc  1 a 1 40 ]
 [v atoa@esign esign `uc  1 a 1 31 ]
-[s S10267 _IO_FILE 0 ]
+[s S10266 _IO_FILE 0 ]
 "231
-[v atoa@fp fp `*.39S10267  1 p 2 10 ]
+[v atoa@fp fp `*.39S10266  1 p 2 10 ]
 [v atoa@f f `d  1 p 4 12 ]
 [v atoa@c c `uc  1 p 1 16 ]
 "472
@@ -4514,9 +4514,9 @@ TMR_COUNT 13
 {
 "195
 [v pad@i i `i  1 a 2 76 ]
-[s S10267 _IO_FILE 0 ]
+[s S10266 _IO_FILE 0 ]
 "193
-[v pad@fp fp `*.39S10267  1 p 2 69 ]
+[v pad@fp fp `*.39S10266  1 p 2 69 ]
 [v pad@buf buf `*.39uc  1 p 2 71 ]
 [v pad@p p `i  1 p 2 73 ]
 "226
@@ -4539,18 +4539,18 @@ TMR_COUNT 13
 [v fputs@c c `uc  1 a 1 66 ]
 "8
 [v fputs@s s `*.39Cuc  1 p 2 62 ]
-[u S10229 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
-[s S10232 _IO_FILE 11 `S10229 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
-[v fputs@fp fp `*.39S10232  1 p 2 64 ]
+[u S10228 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
+[s S10231 _IO_FILE 11 `S10228 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
+[v fputs@fp fp `*.39S10231  1 p 2 64 ]
 "19
 } 0
 "8 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/nf_fputc.c
 [v _fputc fputc `(i  1 e 2 0 ]
 {
 [v fputc@c c `i  1 p 2 53 ]
-[u S10229 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
-[s S10232 _IO_FILE 11 `S10229 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
-[v fputc@fp fp `*.39S10232  1 p 2 55 ]
+[u S10228 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
+[s S10231 _IO_FILE 11 `S10228 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
+[v fputc@fp fp `*.39S10231  1 p 2 55 ]
 "24
 } 0
 "7 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/putch.c
@@ -4576,9 +4576,9 @@ TMR_COUNT 13
 "3 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/floorf.c
 [v _floorf floorf `(f  1 e 4 0 ]
 {
-[u S10481 . 4 `f 1 f 4 0 `ul 1 i 4 0 ]
+[u S10480 . 4 `f 1 f 4 0 `ul 1 i 4 0 ]
 "5
-[v floorf@u u `S10481  1 a 4 6 ]
+[v floorf@u u `S10480  1 a 4 6 ]
 "7
 [v floorf@m m `ul  1 a 4 0 ]
 "6
@@ -4586,21 +4586,21 @@ TMR_COUNT 13
 "3
 [v floorf@x x `f  1 p 4 92 ]
 "4
-[v floorf@F521 F521 `S10481  1 s 4 F521 ]
+[v floorf@F521 F521 `S10480  1 s 4 F521 ]
 "27
 } 0
 "4 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/__fpclassifyf.c
 [v ___fpclassifyf __fpclassifyf `(i  1 e 2 0 ]
 {
-[u S10481 . 4 `f 1 f 4 0 `ul 1 i 4 0 ]
+[u S10480 . 4 `f 1 f 4 0 `ul 1 i 4 0 ]
 "6
-[v ___fpclassifyf@u u `S10481  1 a 4 63 ]
+[v ___fpclassifyf@u u `S10480  1 a 4 63 ]
 "7
 [v ___fpclassifyf@e e `i  1 a 2 61 ]
 "4
 [v ___fpclassifyf@x x `f  1 p 4 53 ]
 "5
-[v ___fpclassifyf@F465 F465 `S10481  1 s 4 F465 ]
+[v ___fpclassifyf@F465 F465 `S10480  1 s 4 F465 ]
 "11
 } 0
 "43 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/fltol.c
@@ -4645,17 +4645,17 @@ TMR_COUNT 13
 "8 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/sprcmul.c
 [v ___flmul __flmul `(d  1 e 4 0 ]
 {
-[s S9912 . 4 `uc 1 a 1 0 `uc 1 b 1 1 `uc 1 c 1 2 `uc 1 d 1 3 ]
+[s S9911 . 4 `uc 1 a 1 0 `uc 1 b 1 1 `uc 1 c 1 2 `uc 1 d 1 3 ]
 "13
-[s S9917 . 4 `s 1 wordA 2 0 `s 1 wordB 2 2 ]
-[u S9920 . 4 `l 1 i 4 0 `d 1 f 4 0 `S9912 1 fAsBytes 4 0 `S9917 1 fAsWords 4 0 ]
-[v ___flmul@prod prod `S9920  1 a 4 96 ]
+[s S9916 . 4 `s 1 wordA 2 0 `s 1 wordB 2 2 ]
+[u S9919 . 4 `l 1 i 4 0 `d 1 f 4 0 `S9911 1 fAsBytes 4 0 `S9916 1 fAsWords 4 0 ]
+[v ___flmul@prod prod `S9919  1 a 4 96 ]
 "12
 [v ___flmul@grs grs `ul  1 a 4 91 ]
-[s S9988 . 2 `uc 1 a 1 0 `uc 1 b 1 1 ]
+[s S9987 . 2 `uc 1 a 1 0 `uc 1 b 1 1 ]
 "14
-[u S9991 . 2 `s 1 i 2 0 `us 1 n 2 0 `S9988 1 nAsBytes 2 0 ]
-[v ___flmul@temp temp `S9991  1 a 2 100 ]
+[u S9990 . 2 `s 1 i 2 0 `us 1 n 2 0 `S9987 1 nAsBytes 2 0 ]
+[v ___flmul@temp temp `S9990  1 a 2 100 ]
 "10
 [v ___flmul@bexp bexp `uc  1 a 1 95 ]
 "11
@@ -5550,10 +5550,10 @@ TMR_COUNT 13
 {
 "157
 } 0
-"555 /public/bmc/Q84/bmc_slave.X/slaveo.c
+"486 /public/bmc/Q84/bmc_slave.X/slaveo.c
 [v _slaveo_spi_isr slaveo_spi_isr `(v  1 e 1 0 ]
 {
-"559
+"490
 } 0
 "182 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/spi2.c
 [v _SPI2_RxIsr SPI2_RxIsr `IIH(v  1 e 1 0 ]
@@ -5565,19 +5565,19 @@ TMR_COUNT 13
 {
 "175
 } 0
-"89 /public/bmc/Q84/bmc_slave.X/slaveo.c
+"87 /public/bmc/Q84/bmc_slave.X/slaveo.c
 [v _slaveo_rx_isr slaveo_rx_isr `(v  1 e 1 0 ]
 {
-"92
+"90
 [v slaveo_rx_isr@tmp_buf tmp_buf `uc  1 a 1 16 ]
-"91
+"89
 [v slaveo_rx_isr@command command `uc  1 a 1 15 ]
-"553
+"484
 } 0
-"57
+"52
 [v _clear_slaveo_flags clear_slaveo_flags `(v  1 s 1 clear_slaveo_flags ]
 {
-"66
+"61
 } 0
 "161 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/uart1.c
 [v _UART1_is_rx_ready UART1_is_rx_ready `(a  1 e 1 0 ]

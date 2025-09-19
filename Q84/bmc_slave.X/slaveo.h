@@ -22,7 +22,7 @@ extern "C" {
 #include "vconfig.h"
 #include "calibr.h"
 
-#define SLAVEO_DRIVER "V0.9"
+#define SLAVEO_DRIVER "V0.91"
 
 #define F27Q84	0x9903
 #define F47Q84	0x9904

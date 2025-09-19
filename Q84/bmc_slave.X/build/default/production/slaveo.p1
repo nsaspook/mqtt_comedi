@@ -49,7 +49,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _slaveo_spi_isr `(v ~T0 @X0 0 ef ]
 "4335 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f57q84.h
 [v _SPI2RXB `Vuc ~T0 @X0 0 e@141 ]
-"82 slaveo.c
+"77 slaveo.c
 [c E25734 0 1 2 3 4 5 6 7 8 .. ]
 [n E25734 daqbmc_packet_index BMC_CMD BMC_D0 BMC_D1 BMC_D2 BMC_D3 BMC_D4 BMC_EXT BMC_CKSUM BMC_DUMMY  ]
 "4696 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f57q84.h
@@ -63,7 +63,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S212 . . . ]
 "4713
 [v _SPI2CON2bits `VS212 ~T0 @X0 0 e@147 ]
-"86 slaveo.c
+"81 slaveo.c
 [c E23911 0 .. ]
 [n E23911 . CONTEXT_1  ]
 [v F23922 `(v ~T0 @X0 1 tf1`E23911 ]
@@ -108,12 +108,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _spi_comm_ss `VS3417 ~T0 @X0 0 e ]
 "131
 [v _data_in2 `Vuc ~T0 @X0 0 e ]
-"118 slaveo.c
+"116 slaveo.c
 [c E25744 4 5 .. ]
 [n E25744 daqbmc_data_index BMC_EM540_DATA BMC_DATA_DUMMY  ]
 "380 ./mcc_generated_files/uart1.h
 [v _UART1_Write `(v ~T0 @X0 0 ef1`uc ]
-"177 slaveo.c
+"175 slaveo.c
 [c E25318 0 1 2 3 4 5 6 .. ]
 [n E25318 . SEQ_STATE_INIT SEQ_STATE_RX SEQ_STATE_TX SEQ_STATE_TRIGGER SEQ_STATE_QUEUE SEQ_STATE_DONE SEQ_STATE_ERROR  ]
 [c E25327 0 1 2 3 4 .. ]
@@ -138,9 +138,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _UART1_is_rx_ready `(a ~T0 @X0 0 ef ]
 "355
 [v _UART1_Read `(uc ~T0 @X0 0 ef ]
-"8 /ldrv/microchip/xc8/v3.10/pic/include/builtins.h
-[v ___nop `(v ~T0 @X0 0 ef ]
-[p i ___nop ]
 "4405 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f57q84.h
 [v _SPI2TXB `Vuc ~T0 @X0 0 e@142 ]
 "139 ./slaveo.h
@@ -156,7 +153,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _channel `Vuc ~T0 @X0 0 e ]
 "278 ./mcc_generated_files/tmr0.h
 [v _TMR0_Reload `(v ~T0 @X0 0 ef ]
-"446 slaveo.c
+"377 slaveo.c
 [c E23896 0 1 2 4 5 22 23 29 59 60 61 62 63 .. ]
 [n E23896 . channel_ANA0 channel_ANA1 channel_ANA2 channel_ANA4 channel_ANA5 channel_ANC6 channel_ANC7 channel_AND5 channel_VSS channel_Temp channel_DAC1 channel_FVR_Buffer1 channel_FVR_Buffer2  ]
 "3627 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f57q84.h
@@ -181,7 +178,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v F24981 `(v ~T0 @X0 1 tf2`uc`us ]
 "33 ./timers.h
 [v _StartTimer `TF24981 ~T0 @X0 0 e ]
-"547 slaveo.c
+"478 slaveo.c
 [c E24965 0 1 2 3 4 5 6 7 8 9 10 11 12 13 .. ]
 [n E24965 APP_TIMERS TMR_INTERNAL TMR_ADC TMR_INFO TMR_HELP TMR_HELPDIS TMR_DISPLAY TMR_SEQ TMR_FLIPPER TMR_MBMASTER TMR_MBTEST TMR_SPIN TMR_DERE TMR_RESTART TMR_COUNT  ]
 "4960 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f57q84.h
@@ -3526,12 +3523,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _b_read `Vuc ~T0 @X0 1 e ]
 "134 ./slaveo.h
 [v _failure `Va ~T0 @X0 1 e ]
-"43 slaveo.c
+"38 slaveo.c
 [v _failure `Va ~T0 @X0 1 e ]
 [i _failure
 -> -> 0 `i `a
 ]
-"44
+"39
 [v _in_buf1 `Vuc ~T0 @X0 1 e ]
 [i _in_buf1
 -> -> 25 `i `uc
@@ -3544,17 +3541,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _in_buf3
 -> -> 7 `i `uc
 ]
-"45
+"40
 [v _tmp_buf4 `*uc ~T0 @X0 1 s ]
 [i _tmp_buf4
 -> -> &U . _ha_daq_calib 3 `*v `*uc
 ]
-"46
+"41
 [v _tmp_buf5 `*uc ~T0 @X0 1 s ]
 [i _tmp_buf5
 -> -> &U . _ha_daq_calib 5 `*v `*uc
 ]
-"47
+"42
 [v _r_string_ready `Va ~T0 @X0 1 e ]
 [i _r_string_ready
 -> -> 0 `i `a
@@ -3567,240 +3564,240 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _update_bmc_string
 -> -> 0 `i `a
 ]
-"51
+"46
 [v _check_slaveo `(v ~T0 @X0 1 ef ]
-"52
+"47
 {
 [e :U _check_slaveo ]
 [f ]
-"53
+"48
 [e $ ! != -> . . _SPI2STATUSbits 0 7 `i -> 0 `i 3422  ]
 {
-"54
+"49
 }
 [e :U 3422 ]
-"55
+"50
 [e :UE 3421 ]
 }
-"57
+"52
 [v _clear_slaveo_flags `(v ~T0 @X0 1 sf ]
-"58
+"53
 {
 [e :U _clear_slaveo_flags ]
 [f ]
-"59
+"54
 [e = . _serial_buffer_ss 13 -> -> 0 `i `a ]
-"60
+"55
 [e = . _serial_buffer_ss 10 -> -> 0 `i `a ]
-"61
+"56
 [e = . _serial_buffer_ss 12 -> -> 0 `i `a ]
-"62
+"57
 [e = . _serial_buffer_ss 11 -> -> 0 `i `a ]
-"63
+"58
 [e = . _serial_buffer_ss 14 -> -> 0 `i `a ]
-"64
+"59
 [e = . _serial_buffer_ss 15 -> -> 0 `i `a ]
-"65
+"60
 [e = . _serial_buffer_ss 16 -> -> 0 `i `a ]
-"66
+"61
 [e :UE 3423 ]
 }
-"72
+"67
 [v _init_slaveo `(v ~T0 @X0 1 ef ]
-"73
+"68
 {
 [e :U _init_slaveo ]
 [f ]
-"74
+"69
 [v _val `uc ~T0 @X0 1 a ]
 [e = _val -> -> 87 `i `uc ]
-"76
+"71
 [e = . . _SPI2CON0bits 0 4 -> -> 0 `i `uc ]
-"77
+"72
 [e ( _SPI2_SetRxInterruptHandler (1 &U _slaveo_rx_isr ]
-"78
+"73
 [e ( _SPI2_SetInterruptHandler (1 &U _slaveo_spi_isr ]
-"79
+"74
 [e $U 3425  ]
 [e :U 3426 ]
 {
-"80
+"75
 [e = _val _SPI2RXB ]
-"81
+"76
 }
 [e :U 3425 ]
-"79
+"74
 [e $ ! != -> . . _SPI2STATUSbits 0 3 `i -> 0 `i 3426  ]
 [e :U 3427 ]
-"82
+"77
 [e = *U + &U . _serial_buffer_ss 0 * -> . `E25734 2 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux _val ]
-"83
+"78
 [e = . . _SPI2STATUSbits 0 3 -> -> 0 `i `uc ]
-"84
+"79
 [e = . . _SPI2CON2bits 0 1 -> -> 1 `i `uc ]
-"85
+"80
 [e = . . _SPI2CON0bits 0 4 -> -> 1 `i `uc ]
-"86
+"81
 [e ( _ADC_SelectContext (1 . `E23911 0 ]
-"87
+"82
 [e :UE 3424 ]
 }
-"89
+"87
 [v _slaveo_rx_isr `(v ~T0 @X0 1 ef ]
-"90
+"88
 {
 [e :U _slaveo_rx_isr ]
 [f ]
-"91
+"89
 [v _command `uc ~T0 @X0 1 a ]
-"92
+"90
 [v _tmp_buf `uc ~T0 @X0 1 a ]
-"97
+"95
 [e :U 3431 ]
 {
 [e = . . _LATFbits 0 5 -> -> 1 `i `uc ]
 }
 [e :U 3430 ]
-"98
+"96
 [e :U 3434 ]
 {
 [e = . . _LATBbits 0 3 -> -> 1 `i `uc ]
 }
 [e :U 3433 ]
-"100
+"98
 [e $ ! != -> . . _SPI2INTFbits 0 2 `i -> 0 `i 3435  ]
 {
-"101
+"99
 [e ++ . _spi_stat_ss 9 -> -> 1 `i `Vul ]
-"102
+"100
 }
 [e :U 3435 ]
-"104
+"102
 [e $ ! != -> . . _SPI2STATUSbits 1 3 `i -> 0 `i 3436  ]
 {
-"105
+"103
 }
 [e $U 3437  ]
 [e :U 3436 ]
 {
-"106
+"104
 [e $ ! != -> . _spi_comm_ss 2 `i -> 0 `i 3438  ]
 {
-"107
+"105
 }
 [e :U 3438 ]
-"108
+"106
 }
 [e :U 3437 ]
-"111
+"109
 [e = _data_in2 _SPI2RXB ]
-"112
+"110
 [e = *U + &U . _serial_buffer_ss 0 * -> . _serial_buffer_ss 6 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux _data_in2 ]
-"116
+"114
 [e $ ! != -> . _serial_buffer_ss 15 `i -> 0 `i 3439  ]
 {
-"117
+"115
 [e $ ! == -> . _serial_buffer_ss 6 `i -> 7 `i 3440  ]
 {
-"118
+"116
 [e $ ! < & -> *U + &U . _serial_buffer_ss 0 * -> . `E25734 2 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 7 `i -> . `E25744 0 `i 3441  ]
 {
-"122
+"120
 [e ( _UART1_Write (1 *U + &U . _serial_buffer_ss 0 * -> . `E25734 1 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux ]
-"124
+"122
 [e $ ! ! != -> _r_string_ready `i -> 0 `i 3442  ]
 {
-"125
+"123
 [e $ ! == -> *U + &U . _serial_buffer_ss 0 * -> . `E25734 1 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 2 `i 3443  ]
 {
-"126
+"124
 [e = . _serial_buffer_ss 7 -> -> 0 `i `uc ]
-"127
+"125
 [e = *U + &U . _serial_buffer_ss 1 * -> . _serial_buffer_ss 7 `ux -> -> # *U &U . _serial_buffer_ss 1 `ui `ux -> -> 0 `i `uc ]
-"128
+"126
 }
 [e $U 3444  ]
 [e :U 3443 ]
 {
-"129
+"127
 [e = *U + &U . _serial_buffer_ss 1 * -> ++ . _serial_buffer_ss 7 -> -> 1 `i `Vuc `ux -> -> # *U &U . _serial_buffer_ss 1 `ui `ux *U + &U . _serial_buffer_ss 0 * -> . `E25734 1 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux ]
-"130
+"128
 [e = . _serial_buffer_ss 8 -> & -> *U + &U . _serial_buffer_ss 0 * -> . `E25734 2 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 3 `i `uc ]
-"131
+"129
 [e $ ! >= -> . _serial_buffer_ss 7 `i -> 20 `i 3445  ]
 {
-"132
+"130
 [e = *U + &U . _serial_buffer_ss 1 * -> . _serial_buffer_ss 7 `ux -> -> # *U &U . _serial_buffer_ss 1 `ui `ux -> -> 0 `i `uc ]
-"133
+"131
 [e = . _serial_buffer_ss 7 -> -> 0 `i `uc ]
-"134
+"132
 [e = _r_string_ready -> -> 1 `i `a ]
-"135
+"133
 }
 [e :U 3445 ]
-"136
+"134
 }
 [e :U 3444 ]
-"137
+"135
 }
 [e :U 3442 ]
-"138
+"136
 }
 [e $U 3446  ]
 [e :U 3441 ]
 {
-"139
+"137
 [e $ ! == -> *U + &U . _serial_buffer_ss 0 * -> . `E25734 1 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 2 `i 3447  ]
 {
-"140
+"138
 [e = . _serial_buffer_ss 7 -> -> 0 `i `uc ]
-"141
+"139
 [e = *U + &U . _serial_buffer_ss 1 * -> . _serial_buffer_ss 7 `ux -> -> # *U &U . _serial_buffer_ss 1 `ui `ux -> -> 0 `i `uc ]
-"142
+"140
 [e = _update_bmc_string -> -> 1 `i `a ]
-"143
+"141
 [e = _bmc_string_ready -> -> 1 `i `a ]
-"144
+"142
 [e = _r_string_ready -> -> 1 `i `a ]
-"145
+"143
 }
 [e $U 3448  ]
 [e :U 3447 ]
 {
-"146
+"144
 [e $U 3450  ]
 {
-"147
+"145
 [e :U 3451 ]
+"146
+[e $U 3449  ]
+"147
+[e :U 3452 ]
 "148
 [e $U 3449  ]
 "149
-[e :U 3452 ]
+[e :U 3453 ]
 "150
 [e $U 3449  ]
 "151
-[e :U 3453 ]
+[e :U 3454 ]
 "152
 [e $U 3449  ]
 "153
-[e :U 3454 ]
-"154
-[e $U 3449  ]
-"155
 [e :U 3455 ]
-"156
+"154
 [e = . _serial_buffer_ss 7 -> -> 0 `i `uc ]
-"157
+"155
 [e = *U + &U . _serial_buffer_ss 1 * -> . _serial_buffer_ss 7 `ux -> -> # *U &U . _serial_buffer_ss 1 `ui `ux -> -> 0 `i `uc ]
-"158
+"156
 [e = _update_bmc_string -> -> 1 `i `a ]
-"159
+"157
 [e = _bmc_string_ready -> -> 1 `i `a ]
-"160
+"158
 [e = _r_string_ready -> -> 1 `i `a ]
-"161
+"159
 [e $U 3449  ]
-"162
+"160
 }
 [e $U 3449  ]
 [e :U 3450 ]
@@ -3810,1026 +3807,818 @@ Version 4.0 HI-TECH Software Intermediate Code
  , $ -> 20 `i 3454
  3455 ]
 [e :U 3449 ]
-"163
+"161
 }
 [e :U 3448 ]
-"164
+"162
 }
 [e :U 3446 ]
-"165
+"163
 [e = . _serial_buffer_ss 15 -> -> 0 `i `a ]
-"166
+"164
 [e = . _serial_buffer_ss 6 -> . `E25734 0 `uc ]
-"167
+"165
 [e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
-"168
+"166
 [e = _data_in2 -> -> 0 `i `uc ]
-"169
+"167
 }
 [e $U 3456  ]
 [e :U 3440 ]
 {
-"170
+"168
 [e = _data_in2 -> -> 0 `i `uc ]
-"171
+"169
 }
 [e :U 3456 ]
-"172
+"170
 }
 [e :U 3439 ]
-"175
+"173
 [e $ ! != -> . _serial_buffer_ss 10 `i -> 0 `i 3457  ]
 {
-"176
+"174
 [e $ ! == -> . _serial_buffer_ss 6 `i -> 7 `i 3458  ]
 {
-"177
+"175
 [e = . _V 18 -> *U + &U . _serial_buffer_ss 0 * -> . `E25734 1 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `ul ]
-"178
+"176
 [e =+ . _V 18 -> & -> << -> *U + &U . _serial_buffer_ss 0 * -> . `E25734 2 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 8 `ui `ul -> -> 65280 `ui `ul `Vul ]
-"179
+"177
 [e = _data_in2 -> -> 0 `i `uc ]
-"180
+"178
 [e = . _serial_buffer_ss 10 -> -> 0 `i `a ]
-"181
+"179
 [e = . _serial_buffer_ss 6 -> . `E25734 0 `uc ]
-"182
+"180
 [e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
-"183
+"181
 [e = _data_in2 -> -> 0 `i `uc ]
-"184
+"182
 }
 [e $U 3459  ]
 [e :U 3458 ]
 {
-"185
+"183
 [e = _data_in2 -> -> 0 `i `uc ]
-"186
+"184
 }
 [e :U 3459 ]
-"187
+"185
 }
 [e :U 3457 ]
-"190
+"188
 [e $ ! != -> . _serial_buffer_ss 12 `i -> 0 `i 3460  ]
 {
-"191
+"189
 [e $ ! == -> . _serial_buffer_ss 6 `i -> 7 `i 3461  ]
 {
-"192
+"190
 [e = . _V 41 -> *U + &U . _serial_buffer_ss 0 * -> . `E25734 1 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `us ]
-"193
+"191
 [e = . _serial_buffer_ss 12 -> -> 0 `i `a ]
-"194
+"192
 [e = . _serial_buffer_ss 6 -> . `E25734 0 `uc ]
-"195
+"193
 [e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
-"197
+"194
 [e = _data_in2 -> -> 0 `i `uc ]
-"198
+"195
 }
 [e $U 3462  ]
 [e :U 3461 ]
 {
-"200
+"196
 [e = _data_in2 -> -> 0 `i `uc ]
-"201
+"197
 }
 [e :U 3462 ]
-"202
+"198
 }
 [e :U 3460 ]
-"206
+"202
 [e $ ! != -> . _serial_buffer_ss 16 `i -> 0 `i 3463  ]
 {
-"207
+"203
 [e $ ! == -> . _serial_buffer_ss 6 `i -> 7 `i 3464  ]
 {
-"208
+"204
 [e $ ! < & -> *U + &U . _serial_buffer_ss 0 * -> . `E25734 2 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 7 `i -> . `E25744 0 `i 3465  ]
 {
-"212
+"208
 [e $ ! != -> ( _UART1_is_rx_ready ..  `i -> 0 `i 3466  ]
 {
-"213
+"209
 [e = _tmp_buf ( _UART1_Read ..  ]
-"214
+"210
 }
 [e $U 3467  ]
 [e :U 3466 ]
 {
-"215
+"211
 [e = _tmp_buf -> -> 0 `i `uc ]
-"216
+"212
 }
 [e :U 3467 ]
-"217
-[e ( ___nop ..  ]
-"218
-[e ( ___nop ..  ]
-"219
+"213
+[e = _SPI2TXB _tmp_buf ]
+"214
+}
 [e $U 3468  ]
-[e :U 3469 ]
+[e :U 3465 ]
 {
+"215
+[e = _tmp_buf -> -> 87 `i `uc ]
+"216
+[e $ ! == -> _update_bmc_string `i -> 1 `i 3469  ]
+{
+"217
+[e = _tmp_buf -> *U + &U _log_buffer * -> ++ . _BMC4 3 -> -> 1 `i `Vus `ux -> -> # *U &U _log_buffer `ui `ux `uc ]
+"218
+}
+[e :U 3469 ]
+"219
+[e = _SPI2TXB _tmp_buf ]
 "220
-[e ( ___nop ..  ]
+[e ++ . _spi_stat_ss 2 -> -> 1 `i `Vul ]
 "221
 }
 [e :U 3468 ]
-"219
-[e $ != -> . . _SPI2CON2bits 0 5 `i -> 0 `i 3469  ]
-[e :U 3470 ]
 "222
-[e = _SPI2TXB _tmp_buf ]
+[e = . _serial_buffer_ss 16 -> -> 0 `i `a ]
 "223
-}
-[e $U 3471  ]
-[e :U 3465 ]
-{
+[e = . _serial_buffer_ss 6 -> . `E25734 0 `uc ]
 "224
-[e = _tmp_buf -> -> 87 `i `uc ]
-"225
-[e $ ! == -> _update_bmc_string `i -> 1 `i 3472  ]
-{
+[e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
 "226
-[e = _tmp_buf -> *U + &U _log_buffer * -> ++ . _BMC4 3 -> -> 1 `i `Vus `ux -> -> # *U &U _log_buffer `ui `ux `uc ]
+[e = _data_in2 -> -> 0 `i `uc ]
 "227
 }
-[e :U 3472 ]
-"228
-[e ( ___nop ..  ]
-"229
-[e ( ___nop ..  ]
-"230
-[e $U 3473  ]
-[e :U 3474 ]
-{
-"231
-[e ( ___nop ..  ]
-"232
-}
-[e :U 3473 ]
-"230
-[e $ != -> . . _SPI2CON2bits 0 5 `i -> 0 `i 3474  ]
-[e :U 3475 ]
-"233
-[e = _SPI2TXB _tmp_buf ]
-"234
-[e ++ . _spi_stat_ss 2 -> -> 1 `i `Vul ]
-"235
-}
-[e :U 3471 ]
-"236
-[e = . _serial_buffer_ss 16 -> -> 0 `i `a ]
-"237
-[e = . _serial_buffer_ss 6 -> . `E25734 0 `uc ]
-"238
-[e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
-"240
-[e = _data_in2 -> -> 0 `i `uc ]
-"241
-}
-[e $U 3476  ]
+[e $U 3470  ]
 [e :U 3464 ]
 {
-"242
-[e $ ! < & -> *U + &U . _serial_buffer_ss 0 * -> . `E25734 2 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 7 `i -> . `E25744 0 `i 3477  ]
+"228
+[e $ ! < & -> *U + &U . _serial_buffer_ss 0 * -> . `E25734 2 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 7 `i -> . `E25744 0 `i 3471  ]
 {
+"229
+[e $ ! == -> . _serial_buffer_ss 6 `i -> . `E25734 1 `i 3472  ]
+{
+"230
+[e = _tmp_buf -> -> 0 `i `uc ]
+"231
+}
+[e $U 3473  ]
+[e :U 3472 ]
+{
+"232
+[e = _tmp_buf -> ( _UART1_is_rx_ready ..  `uc ]
+"233
+}
+[e :U 3473 ]
+"234
+}
+[e $U 3474  ]
+[e :U 3471 ]
+{
+"235
+[e = _tmp_buf -> *U + &U _log_buffer * -> . _BMC4 3 `ux -> -> # *U &U _log_buffer `ui `ux `uc ]
+"236
+}
+[e :U 3474 ]
+"237
+[e = _SPI2TXB _tmp_buf ]
+"238
+[e = _data_in2 -> -> 0 `i `uc ]
+"239
+}
+[e :U 3470 ]
+"240
+}
+[e :U 3463 ]
 "243
-[e $ ! == -> . _serial_buffer_ss 6 `i -> . `E25734 1 `i 3478  ]
+[e $ ! != -> . _serial_buffer_ss 11 `i -> 0 `i 3475  ]
 {
 "244
-[e = _tmp_buf -> -> 0 `i `uc ]
+[e $ ! == -> . _serial_buffer_ss 6 `i -> 7 `i 3476  ]
+{
 "245
+[e = _tmp_buf _in_buf3 ]
+"246
+[e = _SPI2TXB _tmp_buf ]
+"247
+[e = . _serial_buffer_ss 11 -> -> 0 `i `a ]
+"248
+[e = . _serial_buffer_ss 6 -> . `E25734 0 `uc ]
+"249
+[e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
+"250
+[e = _data_in2 -> -> 0 `i `uc ]
+"251
+}
+[e $U 3477  ]
+[e :U 3476 ]
+{
+"252
+[e $ ! == -> . _serial_buffer_ss 6 `i -> . `E25734 1 `i 3478  ]
+{
+"253
+[e = _tmp_buf -> | -> _in_buf1 `i -> 1 `i `uc ]
+"254
 }
 [e $U 3479  ]
 [e :U 3478 ]
 {
-"246
-[e = _tmp_buf -> ( _UART1_is_rx_ready ..  `uc ]
-"247
+"255
+[e = _tmp_buf _in_buf2 ]
+"256
 }
 [e :U 3479 ]
-"248
-}
-[e $U 3480  ]
-[e :U 3477 ]
-{
-"249
-[e = _tmp_buf -> *U + &U _log_buffer * -> . _BMC4 3 `ux -> -> # *U &U _log_buffer `ui `ux `uc ]
-"250
-}
-[e :U 3480 ]
-"251
-[e ( ___nop ..  ]
-"252
-[e ( ___nop ..  ]
-"253
-[e $U 3481  ]
-[e :U 3482 ]
-{
-"254
-[e ( ___nop ..  ]
-"255
-}
-[e :U 3481 ]
-"253
-[e $ != -> . . _SPI2CON2bits 0 5 `i -> 0 `i 3482  ]
-[e :U 3483 ]
-"256
-[e = _SPI2TXB _tmp_buf ]
 "257
-[e = _data_in2 -> -> 0 `i `uc ]
+[e = _SPI2TXB _tmp_buf ]
 "258
-}
-[e :U 3476 ]
+[e = _data_in2 -> -> 0 `i `uc ]
 "259
 }
-[e :U 3463 ]
-"262
-[e $ ! != -> . _serial_buffer_ss 11 `i -> 0 `i 3484  ]
-{
+[e :U 3477 ]
+"260
+}
+[e :U 3475 ]
 "263
-[e $ ! == -> . _serial_buffer_ss 6 `i -> 7 `i 3485  ]
+[e $ ! != -> . _serial_buffer_ss 13 `i -> 0 `i 3480  ]
 {
 "264
-[e = _tmp_buf _in_buf3 ]
+[e $ ! == -> . _serial_buffer_ss 6 `i -> 7 `i 3481  ]
+{
 "265
-[e ( ___nop ..  ]
+[e $ ! || != . _V 78 -> -> -> 0 `i `l `ul != . _V 79 -> -> -> 0 `i `l `ul 3482  ]
+{
 "266
-[e ( ___nop ..  ]
+[e = _SPI2TXB -> -> 36 `i `uc ]
 "267
-[e $U 3486  ]
-[e :U 3487 ]
+}
+[e $U 3483  ]
+[e :U 3482 ]
 {
 "268
-[e ( ___nop ..  ]
+[e = _SPI2TXB -> -> 0 `i `uc ]
 "269
 }
-[e :U 3486 ]
-"267
-[e $ != -> . . _SPI2CON2bits 0 5 `i -> 0 `i 3487  ]
-[e :U 3488 ]
+[e :U 3483 ]
 "270
-[e = _SPI2TXB _tmp_buf ]
+[e = . _serial_buffer_ss 13 -> -> 0 `i `a ]
 "271
-[e = . _serial_buffer_ss 11 -> -> 0 `i `a ]
-"272
 [e = . _serial_buffer_ss 6 -> . `E25734 0 `uc ]
-"273
+"272
 [e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
-"274
+"273
 [e = _data_in2 -> -> 0 `i `uc ]
-"275
+"274
 }
-[e $U 3489  ]
-[e :U 3485 ]
+[e $U 3484  ]
+[e :U 3481 ]
+{
+"275
+[e $ ! == -> . _serial_buffer_ss 6 `i -> . `E25734 1 `i 3485  ]
 {
 "276
-[e $ ! == -> . _serial_buffer_ss 6 `i -> . `E25734 1 `i 3490  ]
-{
+[e = _SPI2TXB -> & -> *U + &U _adc_buffer * -> _channel `ux -> -> # *U &U _adc_buffer `ui `ux `ui -> -> 255 `i `ui `uc ]
 "277
-[e = _tmp_buf -> | -> _in_buf1 `i -> 1 `i `uc ]
+}
+[e $U 3486  ]
+[e :U 3485 ]
+{
 "278
-}
-[e $U 3491  ]
-[e :U 3490 ]
-{
+[e = _SPI2TXB -> & >> -> *U + &U _adc_buffer * -> _channel `ux -> -> # *U &U _adc_buffer `ui `ux `ui -> 8 `i -> -> 255 `i `ui `uc ]
 "279
-[e = _tmp_buf _in_buf2 ]
+}
+[e :U 3486 ]
 "280
-}
-[e :U 3491 ]
-"281
-[e ( ___nop ..  ]
-"282
-[e ( ___nop ..  ]
-"283
-[e $U 3492  ]
-[e :U 3493 ]
-{
-"284
-[e ( ___nop ..  ]
-"285
-}
-[e :U 3492 ]
-"283
-[e $ != -> . . _SPI2CON2bits 0 5 `i -> 0 `i 3493  ]
-[e :U 3494 ]
-"286
-[e = _SPI2TXB _tmp_buf ]
-"287
 [e = _data_in2 -> -> 0 `i `uc ]
-"288
-}
-[e :U 3489 ]
-"289
+"281
 }
 [e :U 3484 ]
+"282
+}
+[e :U 3480 ]
+"285
+[e $ ! != -> . _serial_buffer_ss 14 `i -> 0 `i 3487  ]
+{
+"286
+[e $ ! == -> . _serial_buffer_ss 6 `i -> 7 `i 3488  ]
+{
+"287
+[e = _SPI2TXB -> -> 87 `i `uc ]
+"288
+[e = . _serial_buffer_ss 14 -> -> 0 `i `a ]
+"289
+[e = . _serial_buffer_ss 6 -> . `E25734 0 `uc ]
+"290
+[e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
+"291
+[e = _data_in2 -> -> 0 `i `uc ]
 "292
-[e $ ! != -> . _serial_buffer_ss 13 `i -> 0 `i 3495  ]
+}
+[e $U 3489  ]
+[e :U 3488 ]
 {
 "293
-[e $ ! == -> . _serial_buffer_ss 6 `i -> 7 `i 3496  ]
+[e $U 3491  ]
 {
 "294
-[e $ ! || != . _V 78 -> -> -> 0 `i `l `ul != . _V 79 -> -> -> 0 `i `l `ul 3497  ]
-{
+[e :U 3492 ]
 "295
-[e ( ___nop ..  ]
+[e $U 3494  ]
+{
 "296
-[e ( ___nop ..  ]
+[e :U 3495 ]
 "297
-[e $U 3498  ]
-[e :U 3499 ]
-{
+[e = _SPI2TXB -> -> *U + _tmp_buf4 * -> -> 0 `i `x -> -> # *U _tmp_buf4 `i `x `uc `uc ]
 "298
-[e ( ___nop ..  ]
+[e $U 3493  ]
 "299
-}
-[e :U 3498 ]
-"297
-[e $ != -> . . _SPI2CON2bits 0 5 `i -> 0 `i 3499  ]
-[e :U 3500 ]
-"300
-[e = _SPI2TXB -> -> 36 `i `uc ]
-"301
-}
-[e $U 3501  ]
-[e :U 3497 ]
-{
-"302
-[e ( ___nop ..  ]
-"303
-[e ( ___nop ..  ]
-"304
-[e $U 3502  ]
-[e :U 3503 ]
-{
-"305
-[e ( ___nop ..  ]
-"306
-}
-[e :U 3502 ]
-"304
-[e $ != -> . . _SPI2CON2bits 0 5 `i -> 0 `i 3503  ]
-[e :U 3504 ]
-"307
-[e = _SPI2TXB -> -> 0 `i `uc ]
-"308
-}
-[e :U 3501 ]
-"309
-[e = . _serial_buffer_ss 13 -> -> 0 `i `a ]
-"310
-[e = . _serial_buffer_ss 6 -> . `E25734 0 `uc ]
-"311
-[e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
-"312
-[e = _data_in2 -> -> 0 `i `uc ]
-"313
-}
-[e $U 3505  ]
 [e :U 3496 ]
-{
+"300
+[e = _SPI2TXB -> -> *U + _tmp_buf4 * -> -> 1 `i `x -> -> # *U _tmp_buf4 `i `x `uc `uc ]
+"301
+[e $U 3493  ]
+"302
+[e :U 3497 ]
+"303
+[e = _SPI2TXB -> -> *U + _tmp_buf4 * -> -> 2 `i `x -> -> # *U _tmp_buf4 `i `x `uc `uc ]
+"304
+[e $U 3493  ]
+"305
+[e :U 3498 ]
+"306
+[e = _SPI2TXB -> -> *U + _tmp_buf4 * -> -> 3 `i `x -> -> # *U _tmp_buf4 `i `x `uc `uc ]
+"307
+[e $U 3493  ]
+"308
+[e :U 3499 ]
+"309
+[e = _SPI2TXB -> -> 87 `i `uc ]
+"310
+[e $U 3493  ]
+"311
+}
+[e $U 3493  ]
+[e :U 3494 ]
+[e [\ . _serial_buffer_ss 6 , $ . `E25734 1 3495
+ , $ . `E25734 2 3496
+ , $ . `E25734 3 3497
+ , $ . `E25734 4 3498
+ 3499 ]
+[e :U 3493 ]
+"312
+[e $U 3490  ]
+"313
+[e :U 3500 ]
 "314
-[e $ ! == -> . _serial_buffer_ss 6 `i -> . `E25734 1 `i 3506  ]
+[e $U 3502  ]
 {
 "315
-[e ( ___nop ..  ]
+[e :U 3503 ]
 "316
-[e ( ___nop ..  ]
+[e = _SPI2TXB -> -> *U + _tmp_buf5 * -> -> 0 `i `x -> -> # *U _tmp_buf5 `i `x `uc `uc ]
 "317
-[e $U 3507  ]
-[e :U 3508 ]
-{
+[e $U 3501  ]
 "318
-[e ( ___nop ..  ]
+[e :U 3504 ]
 "319
-}
-[e :U 3507 ]
-"317
-[e $ != -> . . _SPI2CON2bits 0 5 `i -> 0 `i 3508  ]
-[e :U 3509 ]
+[e = _SPI2TXB -> -> *U + _tmp_buf5 * -> -> 1 `i `x -> -> # *U _tmp_buf5 `i `x `uc `uc ]
 "320
-[e = _SPI2TXB -> & -> *U + &U _adc_buffer * -> _channel `ux -> -> # *U &U _adc_buffer `ui `ux `ui -> -> 255 `i `ui `uc ]
+[e $U 3501  ]
 "321
-}
-[e $U 3510  ]
-[e :U 3506 ]
-{
+[e :U 3505 ]
 "322
-[e ( ___nop ..  ]
+[e = _SPI2TXB -> -> *U + _tmp_buf5 * -> -> 2 `i `x -> -> # *U _tmp_buf5 `i `x `uc `uc ]
 "323
-[e ( ___nop ..  ]
+[e $U 3501  ]
 "324
-[e $U 3511  ]
-[e :U 3512 ]
-{
+[e :U 3506 ]
 "325
-[e ( ___nop ..  ]
+[e = _SPI2TXB -> -> *U + _tmp_buf5 * -> -> 3 `i `x -> -> # *U _tmp_buf5 `i `x `uc `uc ]
 "326
-}
-[e :U 3511 ]
-"324
-[e $ != -> . . _SPI2CON2bits 0 5 `i -> 0 `i 3512  ]
-[e :U 3513 ]
+[e $U 3501  ]
 "327
-[e = _SPI2TXB -> & >> -> *U + &U _adc_buffer * -> _channel `ux -> -> # *U &U _adc_buffer `ui `ux `ui -> 8 `i -> -> 255 `i `ui `uc ]
+[e :U 3507 ]
 "328
-}
-[e :U 3510 ]
+[e = _SPI2TXB -> -> 87 `i `uc ]
 "329
-[e = _data_in2 -> -> 0 `i `uc ]
+[e $U 3501  ]
 "330
 }
-[e :U 3505 ]
+[e $U 3501  ]
+[e :U 3502 ]
+[e [\ . _serial_buffer_ss 6 , $ . `E25734 1 3503
+ , $ . `E25734 2 3504
+ , $ . `E25734 3 3505
+ , $ . `E25734 4 3506
+ 3507 ]
+[e :U 3501 ]
 "331
-}
-[e :U 3495 ]
+[e $U 3490  ]
+"332
+[e :U 3508 ]
+"333
+[e :U 3509 ]
 "334
-[e $ ! != -> . _serial_buffer_ss 14 `i -> 0 `i 3514  ]
+[e $U 3511  ]
 {
 "335
-[e $ ! == -> . _serial_buffer_ss 6 `i -> 7 `i 3515  ]
-{
+[e :U 3512 ]
 "336
-[e ( ___nop ..  ]
-"337
-[e ( ___nop ..  ]
-"338
-[e $U 3516  ]
-[e :U 3517 ]
-{
-"339
-[e ( ___nop ..  ]
-"340
-}
-[e :U 3516 ]
-"338
-[e $ != -> . . _SPI2CON2bits 0 5 `i -> 0 `i 3517  ]
-[e :U 3518 ]
-"341
 [e = _SPI2TXB -> -> 87 `i `uc ]
+"337
+[e $U 3510  ]
+"338
+[e :U 3513 ]
+"339
+[e = _SPI2TXB . _spi_stat_ss 21 ]
+"340
+[e $U 3510  ]
+"341
+}
+[e $U 3510  ]
+[e :U 3511 ]
+[e [\ . _serial_buffer_ss 6 , $ . `E25734 1 3512
+ 3513 ]
+[e :U 3510 ]
 "342
-[e = . _serial_buffer_ss 14 -> -> 0 `i `a ]
+[e $U 3490  ]
 "343
-[e = . _serial_buffer_ss 6 -> . `E25734 0 `uc ]
+}
+[e $U 3490  ]
+[e :U 3491 ]
+[e [\ _channel , $ -> 4 `i 3492
+ , $ -> 5 `i 3500
+ , $ -> 0 `i 3508
+ 3509 ]
+[e :U 3490 ]
 "344
-[e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
-"345
 [e = _data_in2 -> -> 0 `i `uc ]
+"345
+}
+[e :U 3489 ]
 "346
 }
-[e $U 3519  ]
-[e :U 3515 ]
+[e :U 3487 ]
+"348
+[e $ ! > -> =+ . _serial_buffer_ss 6 -> -> 1 `i `Vuc `i - -> 10 `i -> 1 `i 3514  ]
 {
-"347
+"349
+[e = . _serial_buffer_ss 6 -> . `E25734 0 `uc ]
+"350
+[e ++ . _spi_stat_ss 11 -> -> 1 `i `Vul ]
+"351
+}
+[e :U 3514 ]
+"353
+[e = _command -> & -> _data_in2 `i -> 240 `i `uc ]
+"355
+[e $ ! || || || || || || != -> . _serial_buffer_ss 12 `i -> 0 `i != -> . _serial_buffer_ss 11 `i -> 0 `i != -> . _serial_buffer_ss 10 `i -> 0 `i != -> . _serial_buffer_ss 12 `i -> 0 `i != -> . _serial_buffer_ss 14 `i -> 0 `i != -> . _serial_buffer_ss 16 `i -> 0 `i != -> . _serial_buffer_ss 15 `i -> 0 `i 3515  ]
+{
+"356
+[e $U 3516  ]
+"357
+}
+[e :U 3515 ]
+"359
+[e $ ! == -> _command `i -> 144 `i 3517  ]
+{
+"360
+[e = . _spi_comm_ss 7 -> -> 0 `i `uc ]
+"361
+[e = . _spi_comm_ss 2 -> -> 0 `i `uc ]
+"362
+[e = . _spi_comm_ss 3 -> -> 0 `i `uc ]
+"363
+[e = . _serial_buffer_ss 6 -> . `E25734 1 `uc ]
+"364
+[e = . _serial_buffer_ss 12 -> -> 1 `i `a ]
+"365
+[e = . _spi_comm_ss 4 -> -> 1 `i `uc ]
+"366
+[e ( _TMR0_Reload ..  ]
+"367
+}
+[e :U 3517 ]
+"369
+[e $ ! == -> _command `i -> 128 `i 3518  ]
+{
+"370
+[e = . _spi_comm_ss 7 -> -> 0 `i `uc ]
+"371
+[e = . _spi_comm_ss 2 -> -> 0 `i `uc ]
+"372
+[e = . _spi_comm_ss 3 -> -> 0 `i `uc ]
+"373
+[e = _channel -> & -> _data_in2 `i -> 15 `i `uc ]
+"374
+[e $ ! > -> _channel `i -> 5 `i 3519  ]
+{
+"375
 [e $U 3521  ]
 {
-"348
-[e :U 3522 ]
-"349
-[e ( ___nop ..  ]
-"350
-[e ( ___nop ..  ]
-"351
-[e $U 3523  ]
-[e :U 3524 ]
-{
-"352
-[e ( ___nop ..  ]
-"353
-}
-[e :U 3523 ]
-"351
-[e $ != -> . . _SPI2CON2bits 0 5 `i -> 0 `i 3524  ]
-[e :U 3525 ]
-"354
-[e $U 3527  ]
-{
-"355
-[e :U 3528 ]
-"356
-[e = _SPI2TXB -> -> *U + _tmp_buf4 * -> -> 0 `i `x -> -> # *U _tmp_buf4 `i `x `uc `uc ]
-"357
-[e $U 3526  ]
-"358
-[e :U 3529 ]
-"359
-[e = _SPI2TXB -> -> *U + _tmp_buf4 * -> -> 1 `i `x -> -> # *U _tmp_buf4 `i `x `uc `uc ]
-"360
-[e $U 3526  ]
-"361
-[e :U 3530 ]
-"362
-[e = _SPI2TXB -> -> *U + _tmp_buf4 * -> -> 2 `i `x -> -> # *U _tmp_buf4 `i `x `uc `uc ]
-"363
-[e $U 3526  ]
-"364
-[e :U 3531 ]
-"365
-[e = _SPI2TXB -> -> *U + _tmp_buf4 * -> -> 3 `i `x -> -> # *U _tmp_buf4 `i `x `uc `uc ]
-"366
-[e $U 3526  ]
-"367
-[e :U 3532 ]
-"368
-[e = _SPI2TXB -> -> 87 `i `uc ]
-"369
-[e $U 3526  ]
-"370
-}
-[e $U 3526  ]
-[e :U 3527 ]
-[e [\ . _serial_buffer_ss 6 , $ . `E25734 1 3528
- , $ . `E25734 2 3529
- , $ . `E25734 3 3530
- , $ . `E25734 4 3531
- 3532 ]
-[e :U 3526 ]
-"371
-[e $U 3520  ]
-"372
-[e :U 3533 ]
-"373
-[e ( ___nop ..  ]
-"374
-[e ( ___nop ..  ]
-"375
-[e $U 3534  ]
-[e :U 3535 ]
-{
 "376
-[e ( ___nop ..  ]
+[e :U 3522 ]
 "377
-}
-[e :U 3534 ]
-"375
-[e $ != -> . . _SPI2CON2bits 0 5 `i -> 0 `i 3535  ]
-[e :U 3536 ]
+[e = _channel -> . `E23896 5 `uc ]
 "378
-[e $U 3538  ]
-{
-"379
-[e :U 3539 ]
-"380
-[e = _SPI2TXB -> -> *U + _tmp_buf5 * -> -> 0 `i `x -> -> # *U _tmp_buf5 `i `x `uc `uc ]
-"381
-[e $U 3537  ]
-"382
-[e :U 3540 ]
-"383
-[e = _SPI2TXB -> -> *U + _tmp_buf5 * -> -> 1 `i `x -> -> # *U _tmp_buf5 `i `x `uc `uc ]
-"384
-[e $U 3537  ]
-"385
-[e :U 3541 ]
-"386
-[e = _SPI2TXB -> -> *U + _tmp_buf5 * -> -> 2 `i `x -> -> # *U _tmp_buf5 `i `x `uc `uc ]
-"387
-[e $U 3537  ]
-"388
-[e :U 3542 ]
-"389
-[e = _SPI2TXB -> -> *U + _tmp_buf5 * -> -> 3 `i `x -> -> # *U _tmp_buf5 `i `x `uc `uc ]
-"390
-[e $U 3537  ]
-"391
-[e :U 3543 ]
-"392
-[e = _SPI2TXB -> -> 87 `i `uc ]
-"393
-[e $U 3537  ]
-"394
-}
-[e $U 3537  ]
-[e :U 3538 ]
-[e [\ . _serial_buffer_ss 6 , $ . `E25734 1 3539
- , $ . `E25734 2 3540
- , $ . `E25734 3 3541
- , $ . `E25734 4 3542
- 3543 ]
-[e :U 3537 ]
-"395
 [e $U 3520  ]
+"379
+[e :U 3523 ]
+"380
+[e = _channel -> . `E23896 6 `uc ]
+"381
+[e $U 3520  ]
+"382
+[e :U 3524 ]
+"383
+[e = _channel -> . `E23896 7 `uc ]
+"384
+[e $U 3520  ]
+"385
+[e :U 3525 ]
+"386
+[e = _channel -> . `E23896 8 `uc ]
+"387
+[e $U 3520  ]
+"388
+[e :U 3526 ]
+"389
+[e = _channel -> . `E23896 9 `uc ]
+"390
+[e $U 3520  ]
+"391
+[e :U 3527 ]
+"392
+[e = _channel -> . `E23896 10 `uc ]
+"393
+[e $U 3520  ]
+"394
+[e :U 3528 ]
+"395
+[e = _channel -> . `E23896 11 `uc ]
 "396
-[e :U 3544 ]
+[e $U 3520  ]
 "397
-[e :U 3545 ]
+[e :U 3529 ]
 "398
-[e ( ___nop ..  ]
+[e = _channel -> . `E23896 12 `uc ]
 "399
-[e ( ___nop ..  ]
+[e $U 3520  ]
 "400
-[e $U 3546  ]
-[e :U 3547 ]
-{
+[e :U 3530 ]
 "401
-[e ( ___nop ..  ]
+[e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
 "402
-}
-[e :U 3546 ]
-"400
-[e $ != -> . . _SPI2CON2bits 0 5 `i -> 0 `i 3547  ]
-[e :U 3548 ]
-"403
-[e $U 3550  ]
+[e :U 3533 ]
 {
-"404
-[e :U 3551 ]
-"405
-[e = _SPI2TXB -> -> 87 `i `uc ]
-"406
-[e $U 3549  ]
-"407
-[e :U 3552 ]
-"408
-[e = _SPI2TXB . _spi_stat_ss 21 ]
-"409
-[e $U 3549  ]
-"410
+[e = . . _LATBbits 0 1 -> -> 1 `i `uc ]
 }
-[e $U 3549  ]
-[e :U 3550 ]
-[e [\ . _serial_buffer_ss 6 , $ . `E25734 1 3551
- 3552 ]
-[e :U 3549 ]
+[e :U 3532 ]
+"403
+[e = . _serial_buffer_ss 6 -> . `E25734 0 `uc ]
+"404
+[e ( _clear_slaveo_flags ..  ]
+"405
+[e :U 3536 ]
+{
+[e = . . _LATBbits 0 1 -> -> 0 `i `uc ]
+}
+[e :U 3535 ]
+"406
+[e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
+"407
+[e = _channel -> . `E23896 0 `uc ]
+"408
+[e $U 3520  ]
+"409
+[e :U 3537 ]
+"410
+[e = _channel -> . `E23896 0 `uc ]
 "411
 [e $U 3520  ]
 "412
 }
 [e $U 3520  ]
 [e :U 3521 ]
-[e [\ _channel , $ -> 4 `i 3522
- , $ -> 5 `i 3533
- , $ -> 0 `i 3544
- 3545 ]
+[e [\ _channel , $ -> 6 `i 3522
+ , $ -> 7 `i 3523
+ , $ -> 8 `i 3524
+ , $ -> 9 `i 3525
+ , $ -> 10 `i 3526
+ , $ -> 11 `i 3527
+ , $ -> 12 `i 3528
+ , $ -> 13 `i 3529
+ , $ -> 15 `i 3530
+ 3537 ]
 [e :U 3520 ]
 "413
-[e = _data_in2 -> -> 0 `i `uc ]
-"414
 }
 [e :U 3519 ]
+"414
+[e = . _serial_buffer_ss 6 -> . `E25734 1 `uc ]
 "415
-}
-[e :U 3514 ]
-"417
-[e $ ! > -> =+ . _serial_buffer_ss 6 -> -> 1 `i `Vuc `i - -> 10 `i -> 1 `i 3553  ]
-{
-"418
-[e = . _serial_buffer_ss 6 -> . `E25734 0 `uc ]
-"419
-[e ++ . _spi_stat_ss 11 -> -> 1 `i `Vul ]
-"420
-}
-[e :U 3553 ]
-"422
-[e = _command -> & -> _data_in2 `i -> 240 `i `uc ]
-"424
-[e $ ! || || || || || || != -> . _serial_buffer_ss 12 `i -> 0 `i != -> . _serial_buffer_ss 11 `i -> 0 `i != -> . _serial_buffer_ss 10 `i -> 0 `i != -> . _serial_buffer_ss 12 `i -> 0 `i != -> . _serial_buffer_ss 14 `i -> 0 `i != -> . _serial_buffer_ss 16 `i -> 0 `i != -> . _serial_buffer_ss 15 `i -> 0 `i 3554  ]
-{
-"425
-[e $U 3555  ]
-"426
-}
-[e :U 3554 ]
-"428
-[e $ ! == -> _command `i -> 144 `i 3556  ]
-{
-"429
-[e = . _spi_comm_ss 7 -> -> 0 `i `uc ]
-"430
-[e = . _spi_comm_ss 2 -> -> 0 `i `uc ]
-"431
-[e = . _spi_comm_ss 3 -> -> 0 `i `uc ]
-"432
-[e = . _serial_buffer_ss 6 -> . `E25734 1 `uc ]
-"433
-[e = . _serial_buffer_ss 12 -> -> 1 `i `a ]
-"434
-[e = . _spi_comm_ss 4 -> -> 1 `i `uc ]
-"435
-[e ( _TMR0_Reload ..  ]
-"436
-}
-[e :U 3556 ]
-"438
-[e $ ! == -> _command `i -> 128 `i 3557  ]
-{
-"439
-[e = . _spi_comm_ss 7 -> -> 0 `i `uc ]
-"440
-[e = . _spi_comm_ss 2 -> -> 0 `i `uc ]
-"441
-[e = . _spi_comm_ss 3 -> -> 0 `i `uc ]
-"442
-[e = _channel -> & -> _data_in2 `i -> 15 `i `uc ]
-"443
-[e $ ! > -> _channel `i -> 5 `i 3558  ]
-{
-"444
-[e $U 3560  ]
-{
-"445
-[e :U 3561 ]
-"446
-[e = _channel -> . `E23896 5 `uc ]
-"447
-[e $U 3559  ]
-"448
-[e :U 3562 ]
-"449
-[e = _channel -> . `E23896 6 `uc ]
-"450
-[e $U 3559  ]
-"451
-[e :U 3563 ]
-"452
-[e = _channel -> . `E23896 7 `uc ]
-"453
-[e $U 3559  ]
-"454
-[e :U 3564 ]
-"455
-[e = _channel -> . `E23896 8 `uc ]
-"456
-[e $U 3559  ]
-"457
-[e :U 3565 ]
-"458
-[e = _channel -> . `E23896 9 `uc ]
-"459
-[e $U 3559  ]
-"460
-[e :U 3566 ]
-"461
-[e = _channel -> . `E23896 10 `uc ]
-"462
-[e $U 3559  ]
-"463
-[e :U 3567 ]
-"464
-[e = _channel -> . `E23896 11 `uc ]
-"465
-[e $U 3559  ]
-"466
-[e :U 3568 ]
-"467
-[e = _channel -> . `E23896 12 `uc ]
-"468
-[e $U 3559  ]
-"469
-[e :U 3569 ]
-"470
-[e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
-"471
-[e :U 3572 ]
-{
-[e = . . _LATBbits 0 1 -> -> 1 `i `uc ]
-}
-[e :U 3571 ]
-"472
-[e = . _serial_buffer_ss 6 -> . `E25734 0 `uc ]
-"473
-[e ( _clear_slaveo_flags ..  ]
-"474
-[e :U 3575 ]
-{
-[e = . . _LATBbits 0 1 -> -> 0 `i `uc ]
-}
-[e :U 3574 ]
-"475
-[e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
-"476
-[e = _channel -> . `E23896 0 `uc ]
-"477
-[e $U 3559  ]
-"478
-[e :U 3576 ]
-"479
-[e = _channel -> . `E23896 0 `uc ]
-"480
-[e $U 3559  ]
-"481
-}
-[e $U 3559  ]
-[e :U 3560 ]
-[e [\ _channel , $ -> 6 `i 3561
- , $ -> 7 `i 3562
- , $ -> 8 `i 3563
- , $ -> 9 `i 3564
- , $ -> 10 `i 3565
- , $ -> 11 `i 3566
- , $ -> 12 `i 3567
- , $ -> 13 `i 3568
- , $ -> 15 `i 3569
- 3576 ]
-[e :U 3559 ]
-"482
-}
-[e :U 3558 ]
-"483
-[e = . _serial_buffer_ss 6 -> . `E25734 1 `uc ]
-"484
 [e = . _serial_buffer_ss 13 -> -> 1 `i `a ]
-"485
+"416
 [e = . _spi_comm_ss 4 -> -> 1 `i `uc ]
-"486
+"417
 [e ( _TMR0_Reload ..  ]
-"487
+"418
 }
-[e :U 3557 ]
-"489
-[e $ ! && ! != . _V 78 -> -> -> 0 `i `l `ul == -> _command `i -> 240 `i 3577  ]
+[e :U 3518 ]
+"420
+[e $ ! && ! != . _V 78 -> -> -> 0 `i `l `ul == -> _command `i -> 240 `i 3538  ]
 {
-"490
+"421
 [e = . _spi_comm_ss 7 -> -> 0 `i `uc ]
-"491
+"422
 [e = . _spi_comm_ss 2 -> -> 1 `i `uc ]
-"492
+"423
 [e = . _spi_comm_ss 3 -> -> 0 `i `uc ]
-"493
+"424
 [e = . _serial_buffer_ss 6 -> . `E25734 1 `uc ]
-"494
+"425
 [e = . _serial_buffer_ss 11 -> -> 1 `i `a ]
-"495
+"426
 [e = . _spi_comm_ss 4 -> -> 1 `i `uc ]
-"496
+"427
 [e ( _TMR0_Reload ..  ]
-"497
+"428
 }
-[e :U 3577 ]
-"499
-[e $ ! && ! != . _V 79 -> -> -> 0 `i `l `ul == -> _command `i -> 160 `i 3578  ]
+[e :U 3538 ]
+"430
+[e $ ! && ! != . _V 79 -> -> -> 0 `i `l `ul == -> _command `i -> 160 `i 3539  ]
 {
-"500
+"431
 [e = . _spi_comm_ss 7 -> -> 0 `i `uc ]
-"501
+"432
 [e = . _spi_comm_ss 2 -> -> 1 `i `uc ]
-"502
+"433
 [e = . _spi_comm_ss 3 -> -> 0 `i `uc ]
-"503
+"434
 [e = . _serial_buffer_ss 6 -> . `E25734 1 `uc ]
-"504
+"435
 [e = . _serial_buffer_ss 10 -> -> 1 `i `a ]
-"505
+"436
 [e = . _spi_comm_ss 4 -> -> 1 `i `uc ]
-"506
+"437
 [e ( _TMR0_Reload ..  ]
-"507
+"438
 }
-[e :U 3578 ]
-"509
-[e $ ! && ! != . _V 79 -> -> -> 0 `i `l `ul == -> _command `i -> 16 `i 3579  ]
+[e :U 3539 ]
+"440
+[e $ ! && ! != . _V 79 -> -> -> 0 `i `l `ul == -> _command `i -> 16 `i 3540  ]
 {
-"510
+"441
 [e = . _spi_comm_ss 7 -> -> 0 `i `uc ]
-"511
+"442
 [e = . _spi_comm_ss 2 -> -> 0 `i `uc ]
-"512
+"443
 [e = . _spi_comm_ss 3 -> -> 1 `i `uc ]
-"513
+"444
 [e = _channel -> & -> _data_in2 `i -> 15 `i `uc ]
-"514
+"445
 [e = . _serial_buffer_ss 6 -> . `E25734 1 `uc ]
-"515
+"446
 [e = . _serial_buffer_ss 16 -> -> 1 `i `a ]
-"516
+"447
 [e = . _spi_comm_ss 4 -> -> 1 `i `uc ]
-"517
+"448
 [e ( _TMR0_Reload ..  ]
-"518
+"449
 }
-[e :U 3579 ]
-"520
-[e $ ! && ! != . _V 79 -> -> -> 0 `i `l `ul == -> _command `i -> 176 `i 3580  ]
+[e :U 3540 ]
+"451
+[e $ ! && ! != . _V 79 -> -> -> 0 `i `l `ul == -> _command `i -> 176 `i 3541  ]
 {
-"521
+"452
 [e = . _spi_comm_ss 7 -> -> 0 `i `uc ]
-"522
+"453
 [e = . _spi_comm_ss 2 -> -> 0 `i `uc ]
-"523
+"454
 [e = . _spi_comm_ss 3 -> -> 1 `i `uc ]
-"524
+"455
 [e = _channel -> & -> _data_in2 `i -> 15 `i `uc ]
-"525
+"456
 [e = . _serial_buffer_ss 6 -> . `E25734 1 `uc ]
-"526
+"457
 [e = . _serial_buffer_ss 15 -> -> 1 `i `a ]
-"527
+"458
 [e = . _spi_comm_ss 4 -> -> 1 `i `uc ]
-"528
+"459
 [e ( _TMR0_Reload ..  ]
-"529
+"460
 }
-[e :U 3580 ]
-"531
-[e $ ! == -> _command `i -> 64 `i 3581  ]
+[e :U 3541 ]
+"462
+[e $ ! == -> _command `i -> 64 `i 3542  ]
 {
-"532
+"463
 [e = . _serial_buffer_ss 6 -> . `E25734 1 `uc ]
-"533
+"464
 [e = . _serial_buffer_ss 14 -> -> 1 `i `a ]
-"534
+"465
 [e = _channel -> & -> _data_in2 `i -> 15 `i `uc ]
-"535
+"466
 [e = _tmp_buf4 -> -> &U . _ha_daq_calib 3 `*v `*uc ]
-"536
+"467
 [e = _tmp_buf5 -> -> &U . _ha_daq_calib 5 `*v `*uc ]
-"537
-[e $ ! == -> _channel `i -> 7 `i 3582  ]
+"468
+[e $ ! == -> _channel `i -> 7 `i 3543  ]
 {
-"538
-[e $ ! && && && && && ! != -> . _serial_buffer_ss 13 `i -> 0 `i ! != -> . _serial_buffer_ss 12 `i -> 0 `i ! != -> . _serial_buffer_ss 10 `i -> 0 `i ! != -> . _serial_buffer_ss 11 `i -> 0 `i ! != -> . _serial_buffer_ss 15 `i -> 0 `i ! != -> . _serial_buffer_ss 16 `i -> 0 `i 3583  ]
+"469
+[e $ ! && && && && && ! != -> . _serial_buffer_ss 13 `i -> 0 `i ! != -> . _serial_buffer_ss 12 `i -> 0 `i ! != -> . _serial_buffer_ss 10 `i -> 0 `i ! != -> . _serial_buffer_ss 11 `i -> 0 `i ! != -> . _serial_buffer_ss 15 `i -> 0 `i ! != -> . _serial_buffer_ss 16 `i -> 0 `i 3544  ]
 {
-"539
-[e :U 3586 ]
+"470
+[e :U 3547 ]
 {
 [e = . . _LATBbits 0 1 -> -> 1 `i `uc ]
 }
-[e :U 3585 ]
-"540
+[e :U 3546 ]
+"471
 [e ( _clear_slaveo_flags ..  ]
-"541
-[e :U 3589 ]
+"472
+[e :U 3550 ]
 {
 [e = . . _LATDbits 0 7 -> -> 0 `i `uc ]
 }
-[e :U 3588 ]
-"542
-[e :U 3592 ]
+[e :U 3549 ]
+"473
+[e :U 3553 ]
 {
 [e = . . _LATBbits 0 1 -> -> 0 `i `uc ]
 }
-[e :U 3591 ]
-"543
+[e :U 3552 ]
+"474
 }
-[e :U 3583 ]
-"544
+[e :U 3544 ]
+"475
 }
-[e :U 3582 ]
-"545
+[e :U 3543 ]
+"476
 [e = . _spi_comm_ss 4 -> -> 1 `i `uc ]
-"546
+"477
 [e ( _TMR0_Reload ..  ]
-"547
+"478
 [e ( _StartTimer (2 , -> . `E24965 1 `uc -> -> 1 `i `us ]
-"548
+"479
 }
-[e :U 3581 ]
-"550
-[e :U 3555 ]
-"551
-[e :U 3595 ]
+[e :U 3542 ]
+"481
+[e :U 3516 ]
+"482
+[e :U 3556 ]
 {
 [e = . . _LATBbits 0 3 -> -> 0 `i `uc ]
 }
-[e :U 3594 ]
-"552
-[e :U 3598 ]
+[e :U 3555 ]
+"483
+[e :U 3559 ]
 {
 [e = . . _LATFbits 0 5 -> -> 0 `i `uc ]
 }
-[e :U 3597 ]
-"553
+[e :U 3558 ]
+"484
 [e :UE 3428 ]
 }
-"555
+"486
 [v _slaveo_spi_isr `(v ~T0 @X0 1 ef ]
-"556
+"487
 {
 [e :U _slaveo_spi_isr ]
 [f ]
-"557
+"488
 [e ++ . _spi_stat_ss 17 -> -> 1 `i `Vul ]
-"558
+"489
 [e = _SPI2INTF -> -> 0 `i `uc ]
-"559
-[e :UE 3599 ]
+"490
+[e :UE 3560 ]
 }
-"561
+"492
 [v _slaveo_time_isr `(v ~T0 @X0 1 ef ]
-"562
+"493
 {
 [e :U _slaveo_time_isr ]
 [f ]
-"563
+"494
 [e = . . _SPI2CON0bits 0 4 -> -> 0 `i `uc ]
-"564
+"495
 [e = . . _SPI2CON0bits 0 4 -> -> 1 `i `uc ]
-"565
-[e $ ! || != -> . . _SPI2STATUSbits 0 7 `i -> 0 `i != -> . . _SPI2STATUSbits 0 3 `i -> 0 `i 3601  ]
+"496
+[e $ ! || != -> . . _SPI2STATUSbits 0 7 `i -> 0 `i != -> . . _SPI2STATUSbits 0 3 `i -> 0 `i 3562  ]
 {
-"566
+"497
 }
-[e :U 3601 ]
-"567
-[e :U 3604 ]
+[e :U 3562 ]
+"498
+[e :U 3565 ]
 {
 [e = . . _LATBbits 0 3 -> -> 0 `i `uc ]
 }
-[e :U 3603 ]
-"568
-[e :UE 3600 ]
+[e :U 3564 ]
+"499
+[e :UE 3561 ]
 }

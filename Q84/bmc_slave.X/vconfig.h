@@ -144,7 +144,7 @@ extern "C" {
 	};
 
 	/*
-	 * switch inputs and flags, uses the IOC interrupt and the software 
+	 * switch inputs and flags, uses the IOC interrupt and the software
 	 * timing ISR for processing
 	 */
 	enum D_SW {

@@ -25,7 +25,7 @@
  * TODO: get some SoC board rev and other info from the OPi zero 3
  *
 Driver: "experimental" daq_bmc in progress ...
- * for 6.1.33+ kernels with device-tree enabled for Orange PI Zero 3
+ * for 6.1.31+ kernels with device-tree enabled for Orange PI Zero 3
  * see README.md for install instructions
  *
 Description: BMCBOARD daq_bmc spibmc
@@ -34,7 +34,7 @@ Author: nsaspook <nsaspooksma2@gmail.com>
 
 Devices: [] BMCBOARD (daq_bmc)
 Status: inprogress
-Updated: Jul 20 12:07:20 +0000
+Updated: Sep 18 12:07:20 +0000
 
 The DAQ-BMC appears in Comedi as a digital I/O subdevices with
 16 DO and 24 DI,
@@ -82,8 +82,8 @@ and a analog output subdevice with 1 channel with onboard dac
 #include <linux/list.h>
 #include <linux/completion.h>
 
-#define bmc_version "version 0.97 "
-#define spibmc_version "version 1.3 "
+#define bmc_version "version 0.98 "
+#define spibmc_version "version 1.4 "
 
 static const uint32_t CHECKMARK = 0x1957;
 static const uint32_t CHECKBYTE = 0x57;
@@ -282,14 +282,14 @@ struct daqbmc_device {
 
 /*
  * Use only MODE 3 for Orange PI SPI connections, MODE 0 seems to have issues on this board
- * Max SCK 12MHz, normally runs at 8MHz
+ * Max SCK 12MHz, normally runs at 10MHz
  */
 static const struct daqbmc_device daqbmc_devices[] = {
 	{
 		.name = "PICSL12",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
-		.max_speed_hz = 8000000,
+		.max_speed_hz = 10000000,
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
 		.spi_mode = 3,
@@ -303,7 +303,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.name = "PICSL12_AO",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
-		.max_speed_hz = 8000000,
+		.max_speed_hz = 10000000,
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
 		.spi_mode = 3,
@@ -500,10 +500,12 @@ static int32_t bmc_spi_exchange(struct comedi_device *, struct bmc_packet_type *
 static int32_t piBoardRev(struct comedi_device *dev)
 {
 	int32_t boardRev = 3; // hardwired for now
+//	uint32_t *efuse = (uint32_t *) 0x01c14200;
 
 	/*
 	 * set module param
 	 */
+//	dev_info(dev->class_dev, "board SID 0X%X\n", *efuse);
 	bmc_rev = boardRev;
 	return boardRev;
 }
@@ -1559,7 +1561,8 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	 */
 	devpriv = comedi_alloc_devpriv(dev, sizeof(*devpriv));
 	if (!devpriv) {
-		return -ENOMEM;
+		ret = -ENOMEM;
+		goto daqbmc_kfree_exit;
 	}
 
 	dev_info(dev->class_dev, "bmc protocol %s\n", bmc_version);
@@ -1593,7 +1596,8 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	 * loop the spi device queue for needed devices
 	 */
 	if (list_empty(&device_list)) {
-		return -ENODEV;
+		ret = -ENODEV;
+		goto daqbmc_kfree_exit;
 	}
 
 	/*
@@ -1646,7 +1650,8 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	 */
 	if (spi_device_missing) {
 		dev_info(dev->class_dev, "spi_device_missing\n");
-		return -ENODEV;
+		ret = -ENODEV;
+		goto daqbmc_kfree_rx_exit;
 	}
 
 	/* multi user locking */
@@ -1670,7 +1675,8 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	if (devpriv->board_rev < 3) {
 		dev_err(dev->class_dev, "invalid OPi board revision! %u\n",
 			devpriv->board_rev);
-		return -EINVAL;
+		ret = -EINVAL;
+		goto daqbmc_kfree_rx_exit;
 	}
 
 	dev_info(dev->class_dev,
@@ -1681,7 +1687,8 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		devpriv->num_subdev += daqbmc_devices[PICSL12].n_subdev;
 	} else {
 		dev_err(dev->class_dev, "board revision detection failed!\n");
-		return -EINVAL;
+		ret = -EINVAL;
+		goto daqbmc_kfree_rx_exit;
 	}
 
 	/*
@@ -1691,7 +1698,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	ret = comedi_alloc_subdevices(dev, devpriv->num_subdev);
 	if (ret) {
 		dev_err(dev->class_dev, "alloc subdevice(s) failed!\n");
-		return ret;
+		goto daqbmc_kfree_rx_exit;
 	}
 
 	if (devpriv->num_subdev > 0) { /* setup comedi for on-board devices */
@@ -1757,7 +1764,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		if (ret) {
 			dev_err(dev->class_dev,
 				"alloc AO subdevice readback failed!\n");
-			return ret;
+			goto daqbmc_kfree_rx_exit;
 		}
 	}
 
@@ -1769,7 +1776,8 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	if (ret == 0xff) { // no SPI comms with daq_bmc board
 		dev_err(dev->class_dev,
 			"BMCBoard not detected 0X%X, unloading driver \n", ret);
-		return -EINVAL;
+		ret = -EINVAL;
+		goto daqbmc_kfree_rx_exit;
 	}
 
 	dev_info(dev->class_dev,
@@ -1837,11 +1845,16 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		ret = daqbmc_create_thread(dev, devpriv);
 		if (ret) {
 			dev_err(dev->class_dev, "cpu thread creation failed\n");
-			return ret;
+			goto daqbmc_kfree_rx_exit;
 		}
 	}
-	return 0;
+	return 0; // complete without errors
 
+	/*
+	 * memory cleanups
+	 */
+daqbmc_kfree_rx_exit:
+	kfree(pdata->rx_buff);
 daqbmc_kfree_tx_exit:
 	kfree(pdata->tx_buff);
 daqbmc_kfree_exit:
