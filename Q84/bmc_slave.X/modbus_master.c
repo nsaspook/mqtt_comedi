@@ -60,7 +60,7 @@ modbus_em_version[] = {MADDR, READ_HOLDING_REGISTERS, 0x03, 0x02, 0x00, 0x01}, /
 modbus_em_data1[] = {MADDR, READ_HOLDING_REGISTERS, 0x00, 0x00, 0x00, EM_DATA_LEN1}, // last number is 16-bit words wanted from the start register address 0x0000
 modbus_em_data2[] = {MADDR, READ_HOLDING_REGISTERS, 0x05, 0x00, 0x00, EM_DATA_LEN2}, // last number is 16-bit words wanted from the start register address 0x0500
 modbus_em_serial[] = {MADDR, READ_HOLDING_REGISTERS, 0x50, 0x00, 0x00, SERIAL_DATA_LEN}, // last number is 16-bit words wanted from the start register address 0x5000
-modbus_em_config[] = {MADDR, WRITE_SINGLE_REGISTER, 0x10, 0x02, 0x00, 0x02}, // System configuration, Value 2 = ?2P? (2-phase with neutral)
+modbus_em_config[] = {MADDR, WRITE_SINGLE_REGISTER, 0x10, 0x02, 0x00, 0x00}, // System configuration, Value 0 = ?3P? (3-phase with neutral)
 modbus_em_passwd[] = {MADDR, WRITE_SINGLE_REGISTER, 0x10, 0x00, 0x00, 0x00}, // Password configuration, set to no password = 0
 modbus_em_light[] = {MADDR, WRITE_SINGLE_REGISTER, 0x16, 0x04, 0x00, 0x05}, // back-light timeout, 5 min
 // receive frames prototypes for received data checking
@@ -723,6 +723,9 @@ static void em_data_handler(void)
 	em.pfl1 = mb16_swap(em_ptr->pfl1);
 	em.pfsys = mb16_swap(em_ptr->pfsys);
 	em.hz = mb16_swap(em_ptr->hz);
+	em.vl2l3 = mb32_swap(em_ptr->vl2l3);
+	em.vl3l1 = mb32_swap(em_ptr->vl3l1);
+	em.wl2 = mb32_swap(em_ptr->wl2);
 #ifndef MB_EM540_ONE
 	em.vl2l3 = mb32_swap(em_ptr->vl2l3);
 	em.vl3l1 = mb32_swap(em_ptr->vl3l1);

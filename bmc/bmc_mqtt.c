@@ -24,7 +24,7 @@ size_t hname_len = 12;
 int32_t validate_failure;
 
 char *jtoken;
-double acvolts, acamps, acwatts, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
+double acvolts, acamps, acwatts, acwatts_gti, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
 char tmp_test_ptr[512];
 
 struct ha_flag_type ha_flag_vars_ss = {
@@ -552,6 +552,9 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 					acwatts = atof(jtoken);
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
+					acwatts_gti = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
 					acva = atof(jtoken);
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
@@ -617,11 +620,10 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		/*
 		 * various data fix-ups and sanity checks
 		 */
+		acwin = acwatts_gti;
 		if (acwatts > 0.0f) {
 			acwout = calc_fixups(acwatts, NO_NEG); // utility power used
-			acwin = 0.0f;
 		} else {
-			acwin = fabs(acwatts); // GTI power used
 			acwout = 0.0f;
 		}
 
@@ -710,6 +712,8 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], acamps);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwatts", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], acwatts);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwatts_gti", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], acwatts_gti);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acva", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], acva);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acvar", 64);
