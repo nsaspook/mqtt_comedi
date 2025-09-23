@@ -13,16 +13,9 @@ extern "C" {
 #endif
 
 #include <math.h>
-#define PVV_C   0
-#define CCV_C   1
-#define SYV_C   2
-#define B1V_C   3
-#define B2V_C   4
-#define INV_C   5
-#define VD5_C   7
-#define PVC_C   8
-#define CCC_C   9
-#define BAC_C   10
+#include <stdint.h>
+#include <comedilib.h>
+#include "bmc.h"
 
 #define LPCHANC  16
 #define STX  2
@@ -62,10 +55,6 @@ extern "C" {
 #define BSENSOR0 0
 
 #define OVER_SAMP       4
-
-#include <stdint.h>
-#include <comedilib.h>
-#include "bmc.h"
 
 #define BMCBoard        "BMCboard (Q84)"
 #define USBBoard        "K8055 (VM110)"

@@ -36,7 +36,7 @@ extern "C" {
 #include "MQTTClient.h"
 #include "bmc_mqtt.h"
 
-#define LOG_VERSION     "V0.16"
+#define LOG_VERSION     "V0.17"
 #define MQTT_VERSION    "V3.11"
 #define TNAME  "maint9"
 #define LADDRESS        "tcp://127.0.0.1:1883"
@@ -53,15 +53,11 @@ extern "C" {
 #define TOPIC_DI        "comedi/bmc/data/di"
 #define TOPIC_DO        "comedi/bmc/data/do"
 
-#define TIMEOUT         10000L
-#define SPACING_USEC    500 * 1000
-#define USEC_SEC        1000000L
-
-#define CMD_SEC         0
+#define CMD_SEC         0		// pacing time ticks in 0.01 seconds
 #define CMD_USEC        10000
+	
 #define TIME_SYNC_SEC   30
 
-#define SBUF_SIZ        16  // short buffer string size
 #define RBUF_SIZ        82
 #define SYSLOG_SIZ      512
 
