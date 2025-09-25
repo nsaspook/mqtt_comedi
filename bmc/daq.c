@@ -419,15 +419,17 @@ int get_data_sample(void)
 	}
 
 	if (DO_OPEN) {
+		uint32_t tmp_data = (~datain & 0x3fffff);
+
 		// send I/O as a byte mask
 		if (bmc.BOARD == bmcboard) {
-			if ((~datain & 0x3fffff) == B_NONE) {
+			if (tmp_data == B_NONE) {
 				obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
 				obits.bytes[1] = ~bmc.dataout.bytes[0];
 				obits.bytes[2] = ~bmc.dataout.bytes[0];
 				obits.bytes[3] = ~bmc.dataout.bytes[0];
 			} else {
-				if (((~datain & 0x3fffff) == B_0) || ((~datain & 0x3fffff) == B_15)) {
+				if ((tmp_data == B_0) || (tmp_data == B_15)) {
 					obits.bytes[0] = ~bmc.dataout.bytes[0]; // buffer output
 					obits.bytes[1] = bmc.dataout.bytes[0];
 					obits.bytes[2] = bmc.dataout.bytes[0];

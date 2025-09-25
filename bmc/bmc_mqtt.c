@@ -85,7 +85,7 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.scaler5[0] = HV_SCALE5_0,
 	.calib.A200_Z[0] = A200_0_ZERO,
 	.calib.A200_S[0] = A200_0_SCALAR,
-	.calib.bmc_id[1] = 1, // bmc Q84 MUI
+	.calib.bmc_id[1] = 1, // K8055 (VM110) modified for two HV inputs
 	.calib.offset4[1] = HV_SCALE_OFFSET,
 	.calib.scaler4[1] = HV_SCALE4_1,
 	.calib.offset5[1] = HV_SCALE_OFFSET,
@@ -621,6 +621,10 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				if (jtoken != NULL)
 					ha_daq_host.calib.A200_S[ha_daq_host.bindex] = atof(jtoken);
 			}
+		} else {
+			if (bmc.BOARD != bmcboard) {
+				ha_daq_host.bindex = 1; // default to K8055 (VM110) device on USB
+			}
 		}
 
 		/*
@@ -660,8 +664,12 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		if (ok_data) {
 			fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ, OK Data %d, goods %d, bads %d, validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, ok_data, goods, bads, validate_failure);
 		} else {
-			bads++;
-			fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, bads %d, validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, tmp_test_ptr, ok_data, bads, validate_failure);
+			if (bmc.BOARD == bmcboard) {
+				bads++;
+				fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, bads %d, validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, tmp_test_ptr, ok_data, bads, validate_failure);
+			} else {
+				fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain);
+			}
 		}
 		memset(daq_bmc_data_text, 0, MAX_STRLEN);
 		if (bmc.BOARD == bmcboard) {
