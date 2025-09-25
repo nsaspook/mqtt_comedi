@@ -23,12 +23,9 @@ char hname[256], *hname_ptr = hname;
 size_t hname_len = 12;
 int32_t validate_failure;
 
-char *jtoken;
-
 struct ha_csv_type {
-	double acvolts, acamps, acwatts, acwatts_gti, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
+	double acvolts, acamps, acwatts, acwatts_gti, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, panel_watts, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
 };
-static struct ha_csv_type R; // results from Q84 board
 
 char tmp_test_ptr[512];
 
@@ -481,6 +478,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	MQTTClient_message pubmsg = MQTTClient_message_initializer;
 	MQTTClient_deliveryToken token;
 	ha_flag_vars_ss.deliveredtoken = 0;
+	static struct ha_csv_type R; // results from Q84 board
 
 	//#define DIGITAL_ONLY
 
@@ -532,7 +530,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	if (pacer++ > ha_daq_host.pacer[ha_daq_host.hindex]) {
 		bool ok_data = false;
 		static uint32_t goods = 0, bads = 0;
-		char * tmp_ptr;
+		char *tmp_ptr, *jtoken;
 
 		pacer = 0;
 		strncpy(tmp_test_ptr, daq_bmc_data_buf, 512);
@@ -582,6 +580,9 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
 					R.pamps = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.panel_watts = atof(jtoken);
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
 					R.fm_online = atoi(jtoken);
@@ -746,6 +747,8 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.bamps);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_pamps", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.pamps);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_panel_watts", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.panel_watts);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_fm_online", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.fm_online);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_fm_mode", 64);
@@ -827,6 +830,7 @@ char * validate_bmc_text(const char * text, bool * valid)
 	char tmp_test_ptr[512], *tmp_p = (char *) text;
 	uint32_t len = 0, starts = 0, checkmark = 0;
 	bool end_data = false;
+	char *jtoken;
 
 	validate_failure = 0;
 	strncpy(tmp_test_ptr, text, 511);

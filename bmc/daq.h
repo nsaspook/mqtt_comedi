@@ -72,6 +72,15 @@ extern "C" {
 		SKIP = 16,
 	} FIX_CODES;
 
+	typedef enum {
+		B_NONE = 0x0,
+		B_0 = 0x01,
+		B_1 = 0x02,
+		B_2 = 0x04,
+		B_3 = 0x08,
+		B_15 = 0x8000,
+	} B_CODES;
+
 	typedef enum { // need to keep all ADC channels in the 4-bit 0x0f range
 		channel_ANA0 = 0x0,
 		channel_ANA1 = 0x1,

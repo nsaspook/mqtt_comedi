@@ -138,8 +138,8 @@ static const uint32_t SUBDEV_MEM = 4;
 static const uint32_t SMP_CORES = 4;
 static const uint32_t CONF_Q84 = 3;
 static const uint32_t MEM_BLOCKS = 8; // 0..3 CLCD display lines, 4..7 serial comms for FM80, MODBUS, etc ...
-static const uint32_t SPI_GAP = 5000; // time for the Q84 to process each received SPI byte
-static const uint32_t SPI_GAP_LONG = 10000; // time for the Q84 to process each received SPI byte
+static const uint32_t SPI_GAP = 8000; // time for the Q84 to process each received SPI byte
+static const uint32_t SPI_GAP_LONG = 13000; // time for the Q84 to process each received SPI byte
 
 static const uint32_t I8254_MAX_COUNT = 0x10000;
 
@@ -500,12 +500,12 @@ static int32_t bmc_spi_exchange(struct comedi_device *, struct bmc_packet_type *
 static int32_t piBoardRev(struct comedi_device *dev)
 {
 	int32_t boardRev = 3; // hardwired for now
-//	uint32_t *efuse = (uint32_t *) 0x01c14200;
+	//	uint32_t *efuse = (uint32_t *) 0x01c14200;
 
 	/*
 	 * set module param
 	 */
-//	dev_info(dev->class_dev, "board SID 0X%X\n", *efuse);
+	//	dev_info(dev->class_dev, "board SID 0X%X\n", *efuse);
 	bmc_rev = boardRev;
 	return boardRev;
 }
@@ -1701,71 +1701,69 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		goto daqbmc_kfree_rx_exit;
 	}
 
-	if (devpriv->num_subdev > 0) { /* setup comedi for on-board devices */
-		/* daq_bmc ai */
-		if (devpriv->use_hunking) {
-			dev_info(dev->class_dev,
-				"hunk ai transfers enabled, length: %i\n",
-				hunk_len);
-		}
-		s = &dev->subdevices[SUBDEV_AI]; // AI setup
-		s->private = devpriv->ai_spi;
-		s->type = COMEDI_SUBD_AI;
-		/* default setups, we support single-ended (ground)  */
+	/* daq_bmc ai */
+	if (devpriv->use_hunking) {
+		dev_info(dev->class_dev,
+			"hunk ai transfers enabled, length: %i\n",
+			hunk_len);
+	}
+	s = &dev->subdevices[SUBDEV_AI]; // AI setup
+	s->private = devpriv->ai_spi;
+	s->type = COMEDI_SUBD_AI;
+	/* default setups, we support single-ended (ground)  */
+	s->n_chan = devpriv->ai_spi->chan;
+	s->len_chanlist = devpriv->ai_spi->chan;
+	s->maxdata = (1 << (thisboard->n_aichan_bits - devpriv->ai_spi->device_spi->n_chan_bits)) - 1;
+	if (devpriv->ai_spi->range) {
+		s->range_table = &daqbmc_ai_range2_048;
+	} else {
+		s->range_table = &daqbmc_ai_range3_300;
+	}
+	s->insn_read = daqbmc_ai_rinsn;
+	s->subdev_flags = devpriv->ai_spi->device_spi->ai_subdev_flags;
+
+	if (devpriv->ai_spi->device_type == PICSL12 || devpriv->ai_spi->device_type == PICSL12_AO) { // no async
+		s->maxdata = (1 << devpriv->ai_spi->device_spi->n_chan_bits) - 1;
+		s->range_table = &daqbmc_ai_rangeq84;
 		s->n_chan = devpriv->ai_spi->chan;
 		s->len_chanlist = devpriv->ai_spi->chan;
-		s->maxdata = (1 << (thisboard->n_aichan_bits - devpriv->ai_spi->device_spi->n_chan_bits)) - 1;
-		if (devpriv->ai_spi->range) {
-			s->range_table = &daqbmc_ai_range2_048;
-		} else {
-			s->range_table = &daqbmc_ai_range3_300;
-		}
-		s->insn_read = daqbmc_ai_rinsn;
 		s->subdev_flags = devpriv->ai_spi->device_spi->ai_subdev_flags;
+	}
 
-		if (devpriv->ai_spi->device_type == PICSL12 || devpriv->ai_spi->device_type == PICSL12_AO) { // no async
-			s->maxdata = (1 << devpriv->ai_spi->device_spi->n_chan_bits) - 1;
-			s->range_table = &daqbmc_ai_rangeq84;
-			s->n_chan = devpriv->ai_spi->chan;
-			s->len_chanlist = devpriv->ai_spi->chan;
-			s->subdev_flags = devpriv->ai_spi->device_spi->ai_subdev_flags;
-		}
+	if (lsamp_size != SDF_LSAMPL) {
+		lsamp_size = 0;
+		dev_info(dev->class_dev, "16 bit and less device buffers set to 16 bits\n");
+	}
+	dev->read_subdev = s;
 
-		if (lsamp_size != SDF_LSAMPL) {
-			lsamp_size = 0;
-			dev_info(dev->class_dev, "16 bit and less device buffers set to 16 bits\n");
-		}
-		dev->read_subdev = s;
+	/* daq-bmc ao */
+	s = &dev->subdevices[SUBDEV_AO];
+	s->private = devpriv->ao_spi;
+	s->type = COMEDI_SUBD_AO;
+	/* we support single-ended (ground)  */
+	s->n_chan = thisboard->n_aochan;
+	s->len_chanlist = thisboard->n_aochan;
+	/* analog resolution depends on the DAC chip 8,10,12 bits */
+	s->maxdata = (1 << thisboard->n_aochan_bits) - 1;
+	s->range_table = &daqbmc_ao_range;
+	s->insn_write = daqbmc_ao_winsn;
+	s->insn_read = comedi_readback_insn_read;
 
-		/* daq-bmc ao */
-		s = &dev->subdevices[SUBDEV_AO];
-		s->private = devpriv->ao_spi;
-		s->type = COMEDI_SUBD_AO;
-		/* we support single-ended (ground)  */
-		s->n_chan = thisboard->n_aochan;
-		s->len_chanlist = thisboard->n_aochan;
-		/* analog resolution depends on the DAC chip 8,10,12 bits */
-		s->maxdata = (1 << thisboard->n_aochan_bits) - 1;
-		s->range_table = &daqbmc_ao_range;
-		s->insn_write = daqbmc_ao_winsn;
-		s->insn_read = comedi_readback_insn_read;
+	if (devpriv->smp) {
+		s->subdev_flags = devpriv->ao_spi->device_spi->ao_subdev_flags;
+		s->do_cmdtest = daqbmc_ao_cmdtest;
+		s->do_cmd = daqbmc_ao_cmd;
+		s->cancel = daqbmc_ao_cancel;
+	} else {
+		s->subdev_flags = devpriv->ao_spi->device_spi->ao_subdev_flags - SDF_CMD_WRITE;
+	}
+	dev->write_subdev = s;
 
-		if (devpriv->smp) {
-			s->subdev_flags = devpriv->ao_spi->device_spi->ao_subdev_flags;
-			s->do_cmdtest = daqbmc_ao_cmdtest;
-			s->do_cmd = daqbmc_ao_cmd;
-			s->cancel = daqbmc_ao_cancel;
-		} else {
-			s->subdev_flags = devpriv->ao_spi->device_spi->ao_subdev_flags - SDF_CMD_WRITE;
-		}
-		dev->write_subdev = s;
-
-		ret = comedi_alloc_subdev_readback(s);
-		if (ret) {
-			dev_err(dev->class_dev,
-				"alloc AO subdevice readback failed!\n");
-			goto daqbmc_kfree_rx_exit;
-		}
+	ret = comedi_alloc_subdev_readback(s);
+	if (ret) {
+		dev_err(dev->class_dev,
+			"alloc AO subdevice readback failed!\n");
+		goto daqbmc_kfree_rx_exit;
 	}
 
 	/*
@@ -1796,17 +1794,17 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			"BMCBoard Digital DI DO Disabled, controller device %s \n", daqbmc_devices[daqbmc_conf].name);
 	}
 
-	if (do_conf) { // add the extra sub-devices
-		s = &dev->subdevices[SUBDEV_MEM];
-		s->type = COMEDI_SUBD_MEMORY;
-		s->subdev_flags = SDF_READABLE | SDF_WRITABLE;
-		s->n_chan = MEM_BLOCKS;
-		s->maxdata = 0xffff;
-		s->insn_write = daqbmc_sio_insn_write;
-		s->insn_read = daqbmc_sio_insn_read;
-		dev_info(dev->class_dev,
-			"DISPLAY, RS232/TTL and device serial TX/RX channels %d\n", MEM_BLOCKS);
+	s = &dev->subdevices[SUBDEV_MEM];
+	s->type = COMEDI_SUBD_MEMORY;
+	s->subdev_flags = SDF_READABLE | SDF_WRITABLE;
+	s->n_chan = MEM_BLOCKS;
+	s->maxdata = 0xffff;
+	s->insn_write = daqbmc_sio_insn_write;
+	s->insn_read = daqbmc_sio_insn_read;
+	dev_info(dev->class_dev,
+		"DISPLAY, RS232/TTL and device serial TX/RX channels %d\n", MEM_BLOCKS);
 
+	if (do_conf) { // add the extra sub-devices
 		s = &dev->subdevices[SUBDEV_DO];
 		s->type = COMEDI_SUBD_DO;
 		s->subdev_flags = SDF_WRITABLE;
