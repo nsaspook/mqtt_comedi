@@ -24,10 +24,10 @@ size_t hname_len = 12;
 int32_t validate_failure;
 
 struct ha_csv_type {
-	double acvolts, acamps, acwatts, acwatts_gti, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, panel_watts, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
+	double acvolts, acamps, acwatts, acwatts_gti, acwatts_aux, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, panel_watts, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
 };
 
-char tmp_test_ptr[512];
+char tmp_test_ptr[SYSLOG_SIZ];
 
 struct ha_flag_type ha_flag_vars_ss = {
 	.runner = false,
@@ -533,9 +533,9 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		char *tmp_ptr, *jtoken;
 
 		pacer = 0;
-		strncpy(tmp_test_ptr, daq_bmc_data_buf, 512);
+		strncpy(tmp_test_ptr, daq_bmc_data_buf, SYSLOG_SIZ);
 		tmp_ptr = validate_bmc_text(daq_bmc_data_buf, &ok_data);
-		strncpy(daq_bmc_data_buf, tmp_ptr, 511);
+		strncpy(daq_bmc_data_buf, tmp_ptr, SYSLOG_SIZ-1);
 		if (ok_data) {
 			goods++;
 			jtoken = strtok(daq_bmc_data_buf, ",");
@@ -556,6 +556,9 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
 					R.acwatts_gti = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.acwatts_aux = atof(jtoken);
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
 					R.acva = atof(jtoken);
@@ -632,7 +635,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		 */
 		R.acwin = R.acwatts_gti;
 		if (R.acwatts > 0.0f) {
-			R.acwout = calc_fixups(R.acwatts, NO_NEG); // utility power used
+			R.acwout = R.acwatts; // utility power used
 		} else {
 			R.acwout = 0.0f;
 		}
@@ -728,6 +731,8 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwatts);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwatts_gti", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwatts_gti);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwatts_aux", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwatts_aux);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acva", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acva);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acvar", 64);
@@ -835,13 +840,13 @@ double ac1_filter(const double raw)
  */
 char * validate_bmc_text(const char * text, bool * valid)
 {
-	char tmp_test_ptr[512], *tmp_p = (char *) text;
+	char tmp_test_ptr[SYSLOG_SIZ], *tmp_p = (char *) text;
 	uint32_t len = 0, starts = 0, checkmark = 0;
 	bool end_data = false;
 	char *jtoken;
 
 	validate_failure = 0;
-	strncpy(tmp_test_ptr, text, 511);
+	strncpy(tmp_test_ptr, text, SYSLOG_SIZ-1);
 	valid[0] = true;
 	if (tmp_test_ptr[0] == '^') {
 		starts++;
@@ -863,7 +868,7 @@ char * validate_bmc_text(const char * text, bool * valid)
 				valid[0] = false;
 				validate_failure = 3;
 			}
-			strncpy(tmp_test_ptr, tmp_p, 511);
+			strncpy(tmp_test_ptr, tmp_p, SYSLOG_SIZ-1);
 			jtoken = strtok(tmp_test_ptr, ",");
 			if (jtoken != NULL) {
 				for (int i = 0; i < CSV_COUNT; i++) {

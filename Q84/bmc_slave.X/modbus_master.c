@@ -713,30 +713,27 @@ static void em_data_handler(void)
 	 */
 	em_ptr = (EM_data1*) & cc_buffer[3];
 	em.vl1l2 = mb32_swap(em_ptr->vl1l2);
+	em.vl2l3 = mb32_swap(em_ptr->vl2l3);
+	em.vl3l1 = mb32_swap(em_ptr->vl3l1);
 	em.al1 = mb32_swap(em_ptr->al1);
-	em.wl1 = mb32_swap(em_ptr->wsys);
-	em.val1 = mb32_swap(em_ptr->vasys);
-	em.varl1 = mb32_swap(em_ptr->varsys);
+	em.al2 = mb32_swap(em_ptr->al2);
+	em.al3 = mb32_swap(em_ptr->al3);
+	em.wl1 = mb32_swap(em_ptr->wl1);
+	em.wl2 = mb32_swap(em_ptr->wl2);
+	em.wl3 = mb32_swap(em_ptr->wl3);
+	em.val1 = mb32_swap(em_ptr->val1);
+	em.val2 = mb32_swap(em_ptr->val2);
+	em.val3 = mb32_swap(em_ptr->val3);
+	em.varl1 = mb32_swap(em_ptr->varl1);
+	em.varl2 = mb32_swap(em_ptr->varl2);
+	em.varl3 = mb32_swap(em_ptr->varl3);
 	em.wsys = mb32_swap(em_ptr->wsys);
 	em.vasys = mb32_swap(em_ptr->vasys);
 	em.varsys = mb32_swap(em_ptr->varsys);
 	em.pfl1 = mb16_swap(em_ptr->pfl1);
 	em.pfsys = mb16_swap(em_ptr->pfsys);
 	em.hz = mb16_swap(em_ptr->hz);
-	em.vl2l3 = mb32_swap(em_ptr->vl2l3);
-	em.vl3l1 = mb32_swap(em_ptr->vl3l1);
-	em.wl2 = mb32_swap(em_ptr->wl2);
 #ifndef MB_EM540_ONE
-	em.vl2l3 = mb32_swap(em_ptr->vl2l3);
-	em.vl3l1 = mb32_swap(em_ptr->vl3l1);
-	em.al2 = mb32_swap(em_ptr->al2);
-	em.al3 = mb32_swap(em_ptr->al3);
-	em.wl2 = mb32_swap(em_ptr->wl2);
-	em.wl3 = mb32_swap(em_ptr->wl3);
-	em.val2 = mb32_swap(em_ptr->val2);
-	em.val3 = mb32_swap(em_ptr->val3);
-	em.varl2 = mb32_swap(em_ptr->varl2);
-	em.varl3 = mb32_swap(em_ptr->varl3);
 #endif
 }
 

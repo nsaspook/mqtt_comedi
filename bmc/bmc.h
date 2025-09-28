@@ -59,7 +59,7 @@ extern "C" {
 #define TIME_SYNC_SEC   30
 
 #define RBUF_SIZ        82
-#define SYSLOG_SIZ      512
+#define SYSLOG_SIZ      1024
 
 #define LOG_TO_FILE         "/var/log/bmc/bmc_comedi.log"
 #define LOG_TO_FILE_ALT     "/tmp/bmc_comedi.log"

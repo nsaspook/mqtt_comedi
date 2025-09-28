@@ -33,7 +33,7 @@ extern "C" {
 
 #define MBMQTT  1024
 #define CHECKMARK 1957
-#define CSV_COUNT 21
+#define CSV_COUNT 22
 
 #define MAINS_HZ 60.0f
 #define MAINS_HZ_LOW 45.0f

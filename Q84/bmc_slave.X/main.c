@@ -792,7 +792,7 @@ void main(void)
 			if (r_string_ready) {
 				bmc_logger();
 				snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%s                         ", &BMC4.log_buffer[2]);
-				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s Vac%ld A%3.2f           ", modbus_name[C.id_ok], em.vl1l2 / 10, ((float) em.al1) / 1000.0f);
+				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s Vac%ld A%3.2f           ", modbus_name[C.id_ok], em.vl3l1 / 10, ((float) em.al1) / 1000.0f);
 				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%s %s A%d.%01d A%d              ", FM80_name[BM.FM80_online], state_name[cc_mode], bat_amp_whole - 128, bat_amp_frac - 128, bat_amp_panel - 128);
 				snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "BAT V%d.%01d PV V%d.%01d                 ", vw, vf, pvw, pvf);
 
@@ -1102,7 +1102,7 @@ void bmc_logger(void)
 	buffer[DTG_LEN] = 0; // remove newline
 	snprintf((char*) log_buffer, MAX_B_BUF, log_format, LOG_VARS);
 	BMC4.log_buffer = &log_buffer[0];
-	BMC4.len = 128;
+	BMC4.len = 256;
 	BMC4.pos = 0;
 	BMC4.bmc_flag = true;
 	bmc_string_ready = true; // CHAR_GO_BYTES
