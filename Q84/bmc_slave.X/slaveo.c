@@ -133,8 +133,8 @@ void slaveo_rx_isr(void)
 						}
 					}
 				}
-			} else { // [4..7] any char is a sync character
-				if (serial_buffer_ss.data[BMC_D0] == STX) { // data sync character
+			} else { // [4..7] sync character for type of data requested
+				if (serial_buffer_ss.data[BMC_D0] == STX || serial_buffer_ss.data[BMC_D0] == DC1_CMD) { // data sync character
 					serial_buffer_ss.r_string_index = 0;
 					serial_buffer_ss.r_string[serial_buffer_ss.r_string_index] = 0;
 					update_bmc_string = true; // print to log_buffer
@@ -142,15 +142,13 @@ void slaveo_rx_isr(void)
 					r_string_ready = true;
 				} else {
 					switch (serial_buffer_ss.data[BMC_D0]) {
-					case DC1_CMD:
-						break;
 					case DC2_CMD:
 						break;
 					case DC3_CMD:
 						break;
 					case DC4_CMD:
 						break;
-					default:
+					default: // use DC1_CMD
 						serial_buffer_ss.r_string_index = 0;
 						serial_buffer_ss.r_string[serial_buffer_ss.r_string_index] = 0;
 						update_bmc_string = true; // print to log_buffer

@@ -25,6 +25,7 @@ int32_t validate_failure;
 
 struct ha_csv_type {
 	double acvolts, acamps, acwatts, acwatts_gti, acwatts_aux, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, panel_watts, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
+	uint32_t d_id;
 };
 
 char tmp_test_ptr[SYSLOG_SIZ];
@@ -546,6 +547,9 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				 */
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
+					R.d_id = atoi(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
 					R.acvolts = atof(jtoken);
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
@@ -556,9 +560,6 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
 					R.acwatts_gti = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.acwatts_aux = atof(jtoken);
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
 					R.acva = atof(jtoken);
@@ -695,6 +696,8 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (const char *) bmc.BNAME);
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "sequence", 64);
 		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.sequence);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "d_id", 64);
+		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.d_id);
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "mqtt_do_16b", 64);
 		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (double) E.do_16b);
 		if (bmc.BOARD == bmcboard) {
