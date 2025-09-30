@@ -734,6 +734,7 @@ static void em_data_handler(void)
 	em.vasys = mb32_swap(em_ptr->vasys);
 	em.varsys = mb32_swap(em_ptr->varsys);
 	em.pfl1 = mb16_swap(em_ptr->pfl1);
+	em.pfl2 = mb16_swap(em_ptr->pfl2);
 	em.pfsys = mb16_swap(em_ptr->pfsys);
 	em.hz = mb16_swap(em_ptr->hz);
 #ifndef MB_EM540_ONE

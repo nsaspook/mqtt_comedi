@@ -139,27 +139,21 @@ extern "C" {
 
 	const char log_format2[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%7.4f,%7.4f,%6.4f,%7.4f,1957,~EOT                                                  \r\n";
 #define LOG_VARS2	BMC4.d_id,((float) em.vl1n) / 10.0f,((float) em.vl2n) / 10.0f, ((float) em.vl3n) / 10.0f, ((float) em.al2) / 1000.0f, \
-	((float) em.wl3) / 10.0f, ((float) em.wsys) / 10.0f,  ((float) em.pfsys) / 10.0f, ((float) emt.hz) / 1000.0f,vw, vf, pvw, pvf, bat_amp_whole - 128, \
+	((float) em.wl3) / 10.0f, ((float) em.wsys) / 10.0f,  ((float) em.pfl1) / 10.0f, ((float) em.pfl2) / 10.0f,vw, vf, pvw, pvf, bat_amp_whole - 128, \
 	bat_amp_frac - 128, bat_amp_panel - 128, panel_watts, BM.FM80_online, cc_mode, C.data_ok,BM.node_id, ha_daq_calib.scaler4, \
 	ha_daq_calib.scaler5, ha_daq_calib.A200_Z, ha_daq_calib.A200_S	
 
 	const char log_format3[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%7.4f,%7.4f,%6.4f,%7.4f,1957,~EOT                                                  \r\n";
 #define LOG_VARS3	BMC4.d_id,((float) em.vl3l1) / 10.0f,((float) em.al1) / 1000.0f, ((float) em.wl1) / 10.0f, ((float) em.wl2) / 10.0f, \
-((float) em.val1) / 10.0f, \
-	((float) em.varl1) / 10.0f,  ((float) em.pfsys) / 10.0f, ((float) emt.hz) / 1000.0f,vw, vf, pvw, pvf, bat_amp_whole - 128, \
+	((float) em.val1) / 10.0f, ((float) em.varl1) / 10.0f,  ((float) em.pfsys) / 10.0f, ((float) emt.hz) / 1000.0f,vw, vf, pvw, pvf, bat_amp_whole - 128, \
 	bat_amp_frac - 128, bat_amp_panel - 128, panel_watts, BM.FM80_online, cc_mode, C.data_ok,BM.node_id, ha_daq_calib.scaler4, \
 	ha_daq_calib.scaler5, ha_daq_calib.A200_Z, ha_daq_calib.A200_S
 
 	const char log_format4[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%7.4f,%7.4f,%6.4f,%7.4f,1957,~EOT                                                  \r\n";
 #define LOG_VARS4	BMC4.d_id,((float) em.vl3l1) / 10.0f,((float) em.al1) / 1000.0f, ((float) em.wl1) / 10.0f, ((float) em.wl2) / 10.0f, \
-((float) em.val1) / 10.0f, \
-	((float) em.varl1) / 10.0f,  ((float) em.pfsys) / 10.0f, ((float) emt.hz) / 1000.0f,vw, vf, pvw, pvf, bat_amp_whole - 128, \
+	((float) em.val1) / 10.0f, ((float) em.varl1) / 10.0f,  ((float) em.pfsys) / 10.0f, ((float) emt.hz) / 1000.0f,vw, vf, pvw, pvf, bat_amp_whole - 128, \
 	bat_amp_frac - 128, bat_amp_panel - 128, panel_watts, BM.FM80_online, cc_mode, C.data_ok,BM.node_id, ha_daq_calib.scaler4, \
 	ha_daq_calib.scaler5, ha_daq_calib.A200_Z, ha_daq_calib.A200_S
-
-	const char msg_gemcmds[] = "Host CMDS: M C R P O L S D E H F";
-	const char msg_freecmds[] = "Port baud rate unlocked        ";
-	const char msg_gemremote[] = "Host CMDS: ENABLED REMOTE";
 
 	struct spi_link_type { // internal SPI state table
 		uint8_t SPI_LCD : 1;
@@ -276,79 +270,9 @@ extern "C" {
 
 	extern const char * BMC_TEXT [];
 
-	typedef enum {
-		BMC_GENERIC = 0,
-		BMC_VII80,
-		BMC_E220,
-		BMC_ERROR = 9
-	} BMC_EQUIP;
-
-	typedef enum {
-		LINK_STATE_IDLE = 0,
-		LINK_STATE_ENQ,
-		LINK_STATE_EOT,
-		LINK_STATE_ACK,
-		LINK_STATE_DONE,
-		LINK_STATE_NAK,
-		LINK_STATE_ERROR
-	} LINK_STATES;
-
-	typedef enum {
-		LINK_ERROR_NONE = 10,
-		LINK_ERROR_T1,
-		LINK_ERROR_T2,
-		LINK_ERROR_T3,
-		LINK_ERROR_T4,
-		LINK_ERROR_CHECKSUM,
-		LINK_ERROR_NAK,
-		LINK_ERROR_ABORT,
-		LINK_ERROR_SEND
-	} LINK_ERRORS;
-
-	typedef enum {
-		MSG_ERROR_NONE = 0,
-		MSG_ERROR_ID = 1,
-		MSG_ERROR_STREAM = 3,
-		MSG_ERROR_FUNCTION = 5,
-		MSG_ERROR_DATA = 7,
-		MSG_ERROR_TIMEOUT = 9,
-		MSG_ERROR_DATASIZE = 11,
-		MSG_ERROR_RESET = 20
-	} MSG_ERRORS;
-
-	typedef enum {
-		SEND_ERROR_NONE = 0,
-		SEND_ERROR_ABORT,
-		SEND_ERROR_EOT,
-		SEND_ERROR_T2,
-		SEND_ERROR_T3,
-		SEND_ERROR_DATA,
-	} SEND_ERRORS;
-
-	typedef enum {
-		RECV_ERROR_NONE = 0,
-		RECV_ERROR_NAK,
-		RECV_ERROR_EOT,
-		RECV_ERROR_T2,
-		RECV_ERROR_T3,
-		RECV_ERROR_CKSUM,
-		RECV_ERROR_DATA,
-	} RECV_ERRORS;
-
-	typedef enum {
-		TICKER_ZERO = 0,
-		TICKER_LOW = 20,
-		TICKER_HIGH = 40,
-	} TICKER_VAL;
-
 	typedef struct V_data { // control data structure
 		SEQ_STATES s_state;
 		UI_STATES ui_state;
-		BMC_STATES g_state;
-		BMC_EQUIP e_types;
-		LINK_STATES m_l_state;
-		LINK_STATES r_l_state;
-		LINK_STATES t_l_state;
 		char buf[MAX_BUF + 1], terminal[MAX_TERM + 1], info[MAX_INFO + 1];
 		volatile uint32_t ticks, systemb, tx_total, rx_total, bt_total, br_total, brn_total, btn_total, bmc_do, bmc_di;
 		volatile uint32_t utc_ticks;

@@ -108,6 +108,7 @@ extern "C" {
 
 	struct ha_daq_hosts_type {
 		const char hosts[4][NI_MAXHOST];
+		const char mqtt[4][NI_MAXHOST];
 		const char clients[4][NI_MAXHOST];
 		const char topics[4][NI_MAXHOST];
 		const char listen[4][NI_MAXHOST];

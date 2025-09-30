@@ -2,7 +2,7 @@
  * File:   daq.h
  * Author: root
  *
- * Created on September 21, 2012, 6:49 PM
+ *
  */
 
 #ifndef DAQ_H

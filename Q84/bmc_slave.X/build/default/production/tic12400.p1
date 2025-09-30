@@ -17,7 +17,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _send_spi1_tic12400_dma `(v ~T0 @X0 0 ef2`*uc`Cuc ]
 "35 ./timers.h
 [v _WaitMs `(v ~T0 @X0 0 ef1`us ]
-"164 ./vconfig.h
+"158 ./vconfig.h
 [s S3402 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 `us 1 `uc 1 `*uc 1 `*uc 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 ]
 [n S3402 spi_link_type SPI_LCD SPI_AUX LCD_TIMER LCD_DATA READ_DATA delay config txbuf rxbuf int_count int_read des_bytes src_bytes or_bytes ]
 "46 ./tic12400.h
@@ -52,13 +52,13 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _in_buf1 `Vuc ~T0 @X0 0 e ]
 [v _in_buf2 `Vuc ~T0 @X0 0 e ]
 [v _in_buf3 `Vuc ~T0 @X0 0 e ]
-"188 ./vconfig.h
+"182 ./vconfig.h
 [s S3403 `uc 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `uc 1 ]
 [n S3403 . type day amp_hours kilowatt_hours volts_peak amps_peak kilowatts_peak bat_min bat_max absorb_time float_time select ]
-"203
+"197
 [s S3404 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va -> 3 `i `Va -> 3 `i `Va -> 3 `i `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Vuc 1 `Vuc 1 `Vuc 1 `Vuc -> 3 `i `f 1 `f 1 `us -> 10 `i `us -> 3 `i `S3403 1 `Vuo 1 ]
 [n S3404 BM_type ten_sec_flag one_sec_flag FM80_charged pv_high pv_update once a_switch a_trigger a_type pacing rx_count flush pv_prev day_check dim_delay FM80_online FM80_io LOG display_dim display_update display_on fm80_restart canbus_online modbus_online alt_display a_pin run_time net_balance mui fwrev log node_id ]
-"408
+"332
 [v _BM `S3404 ~T0 @X0 0 e ]
 "70377 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f57q84.h
 [v _PORTB `Vuc ~T0 @X0 0 e@1231 ]
@@ -3599,7 +3599,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"153
+"152
 [v _log_format4 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format4
 :U ..
@@ -3788,118 +3788,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"160
-[v _msg_gemcmds `Cuc ~T0 @X0 -> 33 `i e ]
-[i _msg_gemcmds
-:U ..
--> 72 `c
--> 111 `c
--> 115 `c
--> 116 `c
--> 32 `c
--> 67 `c
--> 77 `c
--> 68 `c
--> 83 `c
--> 58 `c
--> 32 `c
--> 77 `c
--> 32 `c
--> 67 `c
--> 32 `c
--> 82 `c
--> 32 `c
--> 80 `c
--> 32 `c
--> 79 `c
--> 32 `c
--> 76 `c
--> 32 `c
--> 83 `c
--> 32 `c
--> 68 `c
--> 32 `c
--> 69 `c
--> 32 `c
--> 72 `c
--> 32 `c
--> 70 `c
--> 0 `c
-..
-]
-"161
-[v _msg_freecmds `Cuc ~T0 @X0 -> 32 `i e ]
-[i _msg_freecmds
-:U ..
--> 80 `c
--> 111 `c
--> 114 `c
--> 116 `c
--> 32 `c
--> 98 `c
--> 97 `c
--> 117 `c
--> 100 `c
--> 32 `c
--> 114 `c
--> 97 `c
--> 116 `c
--> 101 `c
--> 32 `c
--> 117 `c
--> 110 `c
--> 108 `c
--> 111 `c
--> 99 `c
--> 107 `c
--> 101 `c
--> 100 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 0 `c
-..
-]
-"162
-[v _msg_gemremote `Cuc ~T0 @X0 -> 26 `i e ]
-[i _msg_gemremote
-:U ..
--> 72 `c
--> 111 `c
--> 115 `c
--> 116 `c
--> 32 `c
--> 67 `c
--> 77 `c
--> 68 `c
--> 83 `c
--> 58 `c
--> 32 `c
--> 69 `c
--> 78 `c
--> 65 `c
--> 66 `c
--> 76 `c
--> 69 `c
--> 68 `c
--> 32 `c
--> 82 `c
--> 69 `c
--> 77 `c
--> 79 `c
--> 84 `c
--> 69 `c
--> 0 `c
-..
-]
-[v F25495 `Cuc ~T0 @X0 -> 20 `i t ]
-"380
-[v _spin `F25495 ~T0 @X0 -> 6 `i e ]
+[v F25429 `Cuc ~T0 @X0 -> 20 `i t ]
+"304
+[v _spin `F25429 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
 :U ..
@@ -4440,8 +4331,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "231
 [f ]
 "232
-[v F25852 `ul ~T0 @X0 1 s last_sw_value ]
-[i F25852
+[v F25786 `ul ~T0 @X0 1 s last_sw_value ]
+[i F25786
 -> -> -> 0 `i `l `ul
 ]
 "234
@@ -4465,12 +4356,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 "243
 [e =+ _ticvalue -> & << -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul -> -> 24 `i `ul -> 4278190080 `ul `Vul ]
 "244
-[e $ ! != _ticvalue F25852 3439  ]
+[e $ ! != _ticvalue F25786 3439  ]
 {
 "245
 [e = . _BM 19 -> -> 1 `i `a ]
 "246
-[e = F25852 _ticvalue ]
+[e = F25786 _ticvalue ]
 "247
 }
 [e :U 3439 ]
@@ -4640,6 +4531,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [p f _printf 8650752 ]
 [a 4C 86 48 46 56 0 ]
-[a 1C 83 101 112 32 50 57 32 50 48 50 53 0 ]
-[a 2C 50 48 58 49 53 58 50 52 0 ]
+[a 2C 48 55 58 53 50 58 51 54 0 ]
+[a 1C 83 101 112 32 51 48 32 50 48 50 53 0 ]
 [a 3C 13 45 45 45 32 84 73 67 49 50 52 48 48 32 68 114 105 118 101 114 32 86 101 114 115 105 111 110 32 37 115 32 37 115 32 37 115 32 45 45 45 13 10 0 ]

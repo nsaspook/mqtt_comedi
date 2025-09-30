@@ -41,9 +41,13 @@ struct ha_flag_type ha_flag_vars_ss = {
 
 struct ha_daq_hosts_type ha_daq_host = {
 	.hosts[0] = "10.1.1.30",
-	.hosts[1] = "10.1.1.39",
+	.hosts[1] = "10.1.1.39", // no HA server
 	.hosts[2] = "10.1.1.46",
 	.hosts[3] = "10.1.1.45",
+	.mqtt[0] = "10.1.1.30",
+	.mqtt[1] = "10.1.1.172", // no HA server
+	.mqtt[2] = "10.1.1.172",
+	.mqtt[3] = "10.1.1.45",
 	.topics[0] = "comedi/bmc/data/bmc/1",
 	.topics[1] = "comedi/bmc/data/bmc/2",
 	.topics[2] = "comedi/bmc/data/bmc/3",
@@ -140,6 +144,9 @@ void showIP(void)
 			printf("\tInterface : <%s>\n", ifa->ifa_name);
 			printf("\t  Address : <%s>\n", host);
 
+			/*
+			 * match IP address to clients and topics
+			 */
 			if (strcmp(host, &ha_daq_host.hosts[0][0]) == 0) {
 				ha_daq_host.hindex = 0;
 			}
@@ -366,11 +373,11 @@ void bmc_mqtt_init(void)
 		conn_opts_p.cleansession = 1;
 		hname_ptr = LADDRESS;
 	} else {
-		MQTTClient_create(&E.client_p, ha_daq_host.hosts[ha_daq_host.hindex], (const char *) &ha_daq_host.clients[ha_daq_host.hindex],
+		MQTTClient_create(&E.client_p, ha_daq_host.mqtt[ha_daq_host.hindex], (const char *) &ha_daq_host.clients[ha_daq_host.hindex],
 			MQTTCLIENT_PERSISTENCE_NONE, NULL);
 		conn_opts_p.keepAliveInterval = KAI;
 		conn_opts_p.cleansession = 1;
-		hname_ptr = (char *) ha_daq_host.hosts[ha_daq_host.hindex];
+		hname_ptr = (char *) ha_daq_host.mqtt[ha_daq_host.hindex];
 	}
 
 	fprintf(fout, "\r\n%s Connect to MQTT server %s with client %s\n", log_time(false), hname_ptr, (const char *) &ha_daq_host.clients[ha_daq_host.hindex]);
@@ -741,9 +748,9 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acva);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_wsys", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acvar);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acpf", 64);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_pfl1", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acpf);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_achz", 64);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_pfl2", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.achz);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwin", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwin);

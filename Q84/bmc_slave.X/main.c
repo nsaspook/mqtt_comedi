@@ -209,13 +209,6 @@ const char * BMC_TEXT [] = {
 };
 
 V_data V = {
-	.error = LINK_ERROR_NONE,
-	.abort = LINK_ERROR_NONE,
-	.msg_error = MSG_ERROR_RESET,
-	.uart = HOST_UART,
-	.g_state = BMC_STATE_DISABLE,
-	.e_types = BMC_GENERIC,
-	.ticker = TICKER_ZERO,
 	.checksum_error = 0,
 	.all_errors = 0,
 	.timer_error = 0,
@@ -233,8 +226,6 @@ V_data V = {
 	.euart = EQUIP_UART,
 	.tx_total = 0,
 	.rx_total = 0,
-	.failed_receive = RECV_ERROR_NONE,
-	.failed_send = SEND_ERROR_NONE,
 	.vterm = MAIN_VTERM,
 	.tx_rs232 = 'O',
 	.rx_rs232 = 'O',

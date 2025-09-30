@@ -2,7 +2,7 @@
  * File:   bmc.h
  * Author: root
  *
- * Created on September 21, 2012, 12:54 PM
+ * 
  */
 
 #ifndef BMC_H
@@ -36,7 +36,7 @@ extern "C" {
 #include "MQTTClient.h"
 #include "bmc_mqtt.h"
 
-#define LOG_VERSION     "V0.19"
+#define LOG_VERSION     "V0.20"
 #define MQTT_VERSION    "V3.11"
 #define TNAME  "maint9"
 #define LADDRESS        "tcp://127.0.0.1:1883"
@@ -53,9 +53,9 @@ extern "C" {
 #define TOPIC_DI        "comedi/bmc/data/di"
 #define TOPIC_DO        "comedi/bmc/data/do"
 
-#define CMD_SEC         0		// pacing time ticks in 0.01 seconds
+#define CMD_SEC         0  // pacing time ticks in 0.01 seconds
 #define CMD_USEC        10000
-	
+
 #define TIME_SYNC_SEC   30
 
 #define RBUF_SIZ        82
