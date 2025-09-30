@@ -742,8 +742,6 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwatts);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_al2", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwatts_gti);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwatts_aux", 64);
-				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwatts_aux);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_wl3", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acva);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_wsys", 64);
@@ -752,14 +750,6 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acpf);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_pfl2", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.achz);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwin", 64);
-				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwin);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwout", 64);
-				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwout);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_dcwin", 64);
-				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.dcwin);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_dcwout", 64);
-				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.dcwout);
 				break;
 			case DC1_CMD:
 			default:
