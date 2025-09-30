@@ -106,6 +106,7 @@ extern "C" {
 		volatile char *buffer, *log_buffer;
 		volatile uint16_t len, pos;
 		volatile bool bmc_flag;
+		volatile uint8_t d_id;
 	};
 
 	enum daqbmc_packet_index {
@@ -138,6 +139,7 @@ extern "C" {
 	extern volatile struct bmc_buffer_type BMC4;
 	extern volatile char buffer[MAX_BMC_BUF], log_buffer[MAX_BMC_BUF];
 	extern const struct ha_daq_calib_type ha_daq_calib;
+	extern volatile struct bmc_buffer_type BMC4;
 
 	void check_slaveo(void);
 	void init_slaveo(void);

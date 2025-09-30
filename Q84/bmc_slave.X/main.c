@@ -341,6 +341,7 @@ volatile char buffer[MAX_B_BUF], log_buffer[MAX_B_BUF];
 volatile struct bmc_buffer_type BMC4 = {
 	.log_buffer = log_buffer,
 	.buffer = buffer,
+	.d_id = DC1_CMD,
 };
 
 struct tm *bmc_newtime;
@@ -1096,18 +1097,46 @@ static void rec_mx_cmd(void (* DataHandler)(void), const uint8_t rec_len)
  */
 void bmc_logger(void)
 {
-	//	if (update_bmc_string) {
+	static uint8_t d_id = DC1_CMD;
+
 	bmc_newtime = localtime((void *) &V.utc_ticks);
 	snprintf((char*) buffer, 25, "%s", asctime(bmc_newtime)); // the log_buffer uses this string in LOG_VARS
 	buffer[DTG_LEN] = 0; // remove newline
-	snprintf((char*) log_buffer, MAX_B_BUF, log_format, LOG_VARS);
+	switch (d_id) {
+	case STX:
+	case DC1_CMD:
+		BMC4.d_id = d_id;
+		snprintf((char*) log_buffer, MAX_B_BUF, log_format1, LOG_VARS1);
+		d_id = DC2_CMD;
+		break;
+	case DC2_CMD:
+		BMC4.d_id = d_id;
+		snprintf((char*) log_buffer, MAX_B_BUF, log_format2, LOG_VARS2);
+		d_id = DC3_CMD;
+		break;
+	case DC3_CMD:
+		BMC4.d_id = d_id;
+		snprintf((char*) log_buffer, MAX_B_BUF, log_format3, LOG_VARS3);
+		d_id = DC4_CMD;
+		break;
+	case DC4_CMD:
+		BMC4.d_id = d_id;
+		snprintf((char*) log_buffer, MAX_B_BUF, log_format4, LOG_VARS4);
+		d_id = DC1_CMD;
+		break;
+	default:
+		d_id = DC1_CMD;
+		BMC4.d_id = d_id;
+		snprintf((char*) log_buffer, MAX_B_BUF, log_format1, LOG_VARS1);
+		break;
+	}
+
 	BMC4.log_buffer = &log_buffer[0];
-	BMC4.len = 256;
+	BMC4.len = 512;
 	BMC4.pos = 0;
 	BMC4.bmc_flag = true;
 	bmc_string_ready = true; // CHAR_GO_BYTES
 }
-//}
 
 /*
  * display  div 10 integer to fraction without FP
