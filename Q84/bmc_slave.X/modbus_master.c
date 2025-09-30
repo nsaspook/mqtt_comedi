@@ -712,6 +712,9 @@ static void em_data_handler(void)
 	 * and munge the data into the correct local formats for client
 	 */
 	em_ptr = (EM_data1*) & cc_buffer[3];
+	em.vl1n = mb32_swap(em_ptr->vl1n);
+	em.vl2n = mb32_swap(em_ptr->vl2n);
+	em.vl3n = mb32_swap(em_ptr->vl3n);
 	em.vl1l2 = mb32_swap(em_ptr->vl1l2);
 	em.vl2l3 = mb32_swap(em_ptr->vl2l3);
 	em.vl3l1 = mb32_swap(em_ptr->vl3l1);

@@ -6,7 +6,7 @@
 extern "C" {
 #endif
 #define _DEFAULT_SOURCE
-	
+
 #include "bmc.h"
 #include "daq.h"
 
@@ -42,12 +42,40 @@ extern "C" {
 #define CALIB_HV_LOW 50.0f
 #define CALIB_HV_HIGH 75.0f
 
-#define BSENSOR_MAX_NEG		-125.0f 
-#define BSENSOR_MAX_POS		125.0f 
-	
-#define UPDATE_PACER		500 // MQTT and logging frequency to 0.01 seconds.
+#define BSENSOR_MAX_NEG  -125.0f 
+#define BSENSOR_MAX_POS  125.0f 
+
+#define UPDATE_PACER  500 // MQTT and logging frequency to 0.01 seconds.
 
 #define VALIDATE_LEN 55
+
+	/*
+	 * maps the EM540 modbus registers to int32_t and uint16_t values
+	 */
+	typedef struct EM_data1 {
+		volatile int32_t
+		vl1n, vl2n, vl3n,
+		vl1l2, vl2l3, vl3l1,
+		al1, al2, al3,
+		wl1, wl2, wl3,
+		val1, val2, val3,
+		varl1, varl2, varl3, // extra stuff
+		vlnsys, vllsys, wsys, vasys, varsys;
+		volatile int16_t
+		pfl1, pfl2, pfl3, pfsys,
+		phaseseq, hz;
+	} EM_data1;
+
+	typedef struct EM_data2 {
+		volatile int64_t
+		kwhpt, kvarhpt, kwhpp, kvarhpp,
+		kwhpl1, kwhpl2, kwhpl3,
+		kwhnt, kvarhnt, kwhnp, kvarhnp,
+		kvaht, kvahp;
+		volatile int32_t
+		rhm, rhmk, rhmp, rhmkp,
+		hz, rhlc;
+	} EM_data2;
 
 	enum mqtt_id {
 		P8055_ID,
