@@ -135,6 +135,7 @@ extern "C" {
 	extern int maxdata_di, ranges_di, channels_di, datain_di;
 	extern int maxdata_do, ranges_do, channels_do, datain_do;
 	extern int maxdata_counter, ranges_counter, channels_counter, datain_counter;
+	extern bool SERIAL_OPEN;
 
 	int init_daq(double, double, int);
 	int init_dac(double, double, int);

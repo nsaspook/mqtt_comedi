@@ -401,6 +401,9 @@ void main(void)
 	}
 	spi_stat_ss.mui = BM.node_id;
 	spi_stat_ss.deviceid = DeviceID_Read(0x3ffffe);
+	if (spi_stat_ss.deviceid != F57Q84) {
+		spi_stat_ss.daq_conf |= 0x04; // Not a 57Q84 controller, 47Q84 likely
+	}
 	spi_stat_ss.devicerev = DeviceID_Read(0x3ffffc);
 
 #ifdef MB_MASTER
@@ -448,95 +451,96 @@ void main(void)
 		 */
 		logging_cmds();
 
+		if ((spi_stat_ss.daq_conf & 0x04) == 0x00) { // the 47Q84 board has no EM540 or FM80 support
 #ifdef MB_MASTER
-		TP1_SetLow();
-		master_controller_work(&C); // master MODBUS processing
-		TP1_SetHigh();
+			TP1_SetLow();
+			master_controller_work(&C); // master MODBUS processing
+			TP1_SetHigh();
 #endif
 #ifdef MX_MATE
-		/*
-		 * FM80 processing state machine
-		 */
-		switch (state) {
-		case state_init:
-			send_mx_cmd(cmd_id);
-			rec_mx_cmd(state_init_cb, REC_LEN);
-			break;
-		case state_status:
-			if (!BM.fm80_restart) {
-				send_mx_cmd(cmd_status);
-				rec_mx_cmd(state_status_cb, REC_LEN);
-			} else {
-				send_mx_cmd(cmd_restart);
-				rec_mx_cmd(state_restart_cb, REC_LEN);
-			}
-			break;
-		case state_panel:
-			send_mx_cmd(cmd_panelv);
-			rec_mx_cmd(state_panelv_cb, REC_LEN);
-			break;
-		case state_batteryv:
-			send_mx_cmd(cmd_batteryv);
-			rec_mx_cmd(state_batteryv_cb, REC_LEN);
-			break;
-		case state_batterya:
-			send_mx_cmd(cmd_batterya);
-			rec_mx_cmd(state_batterya_cb, REC_LEN);
-			break;
-		case state_watts:
-			send_mx_cmd(cmd_watts);
-			rec_mx_cmd(state_watts_cb, REC_LEN);
-			break;
-		case state_mx_status: // wait for ten second flag in this state for logging
-			send_mx_cmd(cmd_mx_status);
-			rec_mx_cmd(state_mx_status_cb, REC_STATUS_LEN);
-			break;
-		case state_fwrev:
-			switch (fw_state) {
-			case 0:
-				send_mx_cmd(cmd_fwreva);
-				rec_mx_cmd(state_fwrev_cb, REC_LEN);
+			/*
+			 * FM80 processing state machine
+			 */
+			switch (state) {
+			case state_init:
+				send_mx_cmd(cmd_id);
+				rec_mx_cmd(state_init_cb, REC_LEN);
 				break;
-			case 1:
-				send_mx_cmd(cmd_fwrevb);
-				rec_mx_cmd(state_fwrev_cb, REC_LEN);
+			case state_status:
+				if (!BM.fm80_restart) {
+					send_mx_cmd(cmd_status);
+					rec_mx_cmd(state_status_cb, REC_LEN);
+				} else {
+					send_mx_cmd(cmd_restart);
+					rec_mx_cmd(state_restart_cb, REC_LEN);
+				}
 				break;
-			case 2:
-				send_mx_cmd(cmd_fwrevc);
-				rec_mx_cmd(state_fwrev_cb, REC_LEN);
+			case state_panel:
+				send_mx_cmd(cmd_panelv);
+				rec_mx_cmd(state_panelv_cb, REC_LEN);
+				break;
+			case state_batteryv:
+				send_mx_cmd(cmd_batteryv);
+				rec_mx_cmd(state_batteryv_cb, REC_LEN);
+				break;
+			case state_batterya:
+				send_mx_cmd(cmd_batterya);
+				rec_mx_cmd(state_batterya_cb, REC_LEN);
+				break;
+			case state_watts:
+				send_mx_cmd(cmd_watts);
+				rec_mx_cmd(state_watts_cb, REC_LEN);
+				break;
+			case state_mx_status: // wait for ten second flag in this state for logging
+				send_mx_cmd(cmd_mx_status);
+				rec_mx_cmd(state_mx_status_cb, REC_STATUS_LEN);
+				break;
+			case state_fwrev:
+				switch (fw_state) {
+				case 0:
+					send_mx_cmd(cmd_fwreva);
+					rec_mx_cmd(state_fwrev_cb, REC_LEN);
+					break;
+				case 1:
+					send_mx_cmd(cmd_fwrevb);
+					rec_mx_cmd(state_fwrev_cb, REC_LEN);
+					break;
+				case 2:
+					send_mx_cmd(cmd_fwrevc);
+					rec_mx_cmd(state_fwrev_cb, REC_LEN);
+				default:
+					fw_state = 0;
+					break;
+				}
+				break;
+			case state_mx_log: // FM80 log data
+				send_mx_cmd(cmd_mx_log);
+				rec_mx_cmd(state_mx_log_cb, REC_LOG_LEN);
+				break;
+			case state_time: // FM80 send time data
+				send_mx_cmd(cmd_time);
+				rec_mx_cmd(state_time_cb, REC_LEN);
+				break;
+			case state_date: // FM80 send date data
+				send_mx_cmd(cmd_date);
+				rec_mx_cmd(state_date_cb, REC_LEN);
+				break;
+			case state_misc:
+				send_mx_cmd(cmd_misc);
+				rec_mx_cmd(state_misc_cb, REC_LEN);
+				break;
 			default:
-				fw_state = 0;
+				send_mx_cmd(cmd_id);
+				rec_mx_cmd(state_init_cb, REC_LEN);
 				break;
 			}
-			break;
-		case state_mx_log: // FM80 log data
-			send_mx_cmd(cmd_mx_log);
-			rec_mx_cmd(state_mx_log_cb, REC_LOG_LEN);
-			break;
-		case state_time: // FM80 send time data
-			send_mx_cmd(cmd_time);
-			rec_mx_cmd(state_time_cb, REC_LEN);
-			break;
-		case state_date: // FM80 send date data
-			send_mx_cmd(cmd_date);
-			rec_mx_cmd(state_date_cb, REC_LEN);
-			break;
-		case state_misc:
-			send_mx_cmd(cmd_misc);
-			rec_mx_cmd(state_misc_cb, REC_LEN);
-			break;
-		default:
-			send_mx_cmd(cmd_id);
-			rec_mx_cmd(state_init_cb, REC_LEN);
-			break;
-		}
 
-		if (TimerDone(TMR_RESTART)) {
-			StartTimer(TMR_RESTART, 30000);
-			BM.fm80_restart = false;
-		}
+			if (TimerDone(TMR_RESTART)) {
+				StartTimer(TMR_RESTART, 30000);
+				BM.fm80_restart = false;
+			}
 #endif
-
+		}
 		/*
 		 * protocol state machine
 		 */

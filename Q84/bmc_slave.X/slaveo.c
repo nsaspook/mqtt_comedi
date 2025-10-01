@@ -252,11 +252,7 @@ void slaveo_rx_isr(void)
 	// ADC_GET_BYTES
 	if (serial_buffer_ss.adc_value) {
 		if (serial_buffer_ss.raw_index == ADC_GET_BYTES) {
-			if (V.di_fail || V.do_fail) {
-				SPI2TXB = (0x24);
-			} else {
-				SPI2TXB = (0x00);
-			}
+			SPI2TXB = spi_stat_ss.daq_conf; // send PCB configuration code
 			serial_buffer_ss.adc_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets

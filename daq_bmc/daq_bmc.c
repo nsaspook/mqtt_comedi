@@ -126,6 +126,7 @@ static const uint32_t BMCBOARD = 0;
 /* analog chip types  index to daqbmc_device array */
 static const uint32_t PICSL12 = 0; // index into chip config array
 static const uint32_t PICSL12_AO = 1;
+static const uint32_t PICSL12_47 = 1;
 
 static const uint32_t SUBDEV = 5; // with all sub-devices
 static const uint32_t SUBDEV_OAO = 2; // only analog sub-devices
@@ -215,6 +216,8 @@ static DECLARE_COMPLETION(done);
 static int32_t daqbmc_conf = PICSL12; // value 0
 module_param(daqbmc_conf, int, S_IRUGO);
 MODULE_PARM_DESC(daqbmc_conf, "hardware configuration: default 0=BMCboard standard, 1=BMCboard without DI or DO");
+static int32_t daqbmc_cpu = PICSL12; // value 0
+module_param(daqbmc_cpu, int, S_IRUGO);
 static int32_t di_conf = 1; // default true
 module_param(di_conf, int, S_IRUGO);
 MODULE_PARM_DESC(di_conf, "make digital input subdevice");
@@ -1785,7 +1788,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	/*
 	 * check Q84 board returned config codes for digital channels
 	 */
-	if (ret != 0) { // sub-device codes from the Q84
+	if ((ret & 0x3) != 0x00) { // sub-device codes from the Q84
 		di_conf = false;
 		do_conf = false;
 		daqbmc_conf = PICSL12_AO;
@@ -1794,15 +1797,24 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			"BMCBoard Digital DI DO Disabled, controller device %s \n", daqbmc_devices[daqbmc_conf].name);
 	}
 
-	s = &dev->subdevices[SUBDEV_MEM];
-	s->type = COMEDI_SUBD_MEMORY;
-	s->subdev_flags = SDF_READABLE | SDF_WRITABLE;
-	s->n_chan = MEM_BLOCKS;
-	s->maxdata = 0xffff;
-	s->insn_write = daqbmc_sio_insn_write;
-	s->insn_read = daqbmc_sio_insn_read;
-	dev_info(dev->class_dev,
-		"DISPLAY, RS232/TTL and device serial TX/RX channels %d\n", MEM_BLOCKS);
+	if ((ret & 0x4) == 0x04) { // 47Q84 processor
+		daqbmc_cpu = PICSL12_47;
+		dev_info(dev->class_dev, "PIC18F47Q84 DAQ device detected\n");
+	} else {
+		dev_info(dev->class_dev, "PIC18F57Q84 DAQ device detected\n");
+	}
+
+	if (daqbmc_cpu != PICSL12_47) {
+		s = &dev->subdevices[SUBDEV_MEM];
+		s->type = COMEDI_SUBD_MEMORY;
+		s->subdev_flags = SDF_READABLE | SDF_WRITABLE;
+		s->n_chan = MEM_BLOCKS;
+		s->maxdata = 0xffff;
+		s->insn_write = daqbmc_sio_insn_write;
+		s->insn_read = daqbmc_sio_insn_read;
+		dev_info(dev->class_dev,
+			"DISPLAY, RS232/TTL and device serial TX/RX channels %d\n", MEM_BLOCKS);
+	}
 
 	if (do_conf) { // add the extra sub-devices
 		s = &dev->subdevices[SUBDEV_DO];
@@ -2125,7 +2137,7 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	 * SPI link data hardware setup
 	 */
 	daqbmc_spi_setup(spi_adc);
-	dev_info(dev->class_dev, "PIC18F57Q84 DAQ device, probing SPI slave mode\n");
+	dev_info(dev->class_dev, "Probing for PIC18Fx7Q84 DAQ device, SPI slave mode\n");
 	daqbmc_spi_setup(spi_adc);
 	spi_adc->device_type = daqbmc_conf;
 	spi_adc->chan = spi_adc->device_spi->n_chan;

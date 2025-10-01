@@ -674,7 +674,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		if (ok_data) {
 			fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ, OK Data %d, goods %d, bads %d, validate failure code %d d_id %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, ok_data, goods, bads, validate_failure, R.d_id);
 		} else {
-			if (bmc.BOARD == bmcboard) {
+			if ((bmc.BOARD == bmcboard) && SERIAL_OPEN) {
 				bads++;
 				fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, bads %d, validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, tmp_test_ptr, ok_data, bads, validate_failure);
 			} else {
