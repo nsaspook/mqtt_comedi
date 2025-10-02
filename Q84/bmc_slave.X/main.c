@@ -279,7 +279,7 @@ volatile struct serial_buffer_type_ss serial_buffer_ss = {
 	.r_string_chan = 3,
 };
 
-const struct ha_daq_calib_type ha_daq_calib = {
+struct ha_daq_calib_type ha_daq_calib = {
 	.checkmark = CHECKMARK,
 	.scaler4 = HV_SCALAR4,
 	.scaler5 = HV_SCALAR5,
@@ -405,6 +405,31 @@ void main(void)
 		spi_stat_ss.daq_conf |= 0x04; // Not a 57Q84 controller, 47Q84 likely
 	}
 	spi_stat_ss.devicerev = DeviceID_Read(0x3ffffc);
+
+	/*
+	 * calibration scalar selection using MUI from controller
+	 */
+	switch (spi_stat_ss.mui) {
+	case 0x589B6:
+		ha_daq_calib.scaler4 = HV_SCALE4_0;
+		ha_daq_calib.scaler5 = HV_SCALE5_0;
+		break;
+	case 0: // USBBoard
+		ha_daq_calib.scaler4 = HV_SCALE4_1;
+		ha_daq_calib.scaler5 = HV_SCALE5_1;
+		break;
+	case 0x598F3:
+	case 0x55AF3:
+		ha_daq_calib.scaler4 = HV_SCALE4_2;
+		ha_daq_calib.scaler5 = HV_SCALE5_2;
+		break;
+	case 0x5ABB6:
+		ha_daq_calib.scaler4 = HV_SCALE4_3;
+		ha_daq_calib.scaler5 = HV_SCALE5_3;
+		break;
+	default:
+		break;
+	}
 
 #ifdef MB_MASTER
 	UART3_SetRxInterruptHandler(my_modbus_rx_32); // install custom serial receive ISR
@@ -586,7 +611,7 @@ void main(void)
 				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " MC 0x%X 0x%X 0x%X         ", mc_init.cmd[3], mc_init.cmd[4], mc_init.cmd[5]);
 			}
 #else
-			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " RUN Static Display             ");
+			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " %llx Run Display             ", spi_stat_ss.mui);
 #endif
 			if (failure) {
 				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " NSASPOOK Analog Dev  ");

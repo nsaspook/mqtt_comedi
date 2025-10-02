@@ -42,11 +42,11 @@ struct ha_flag_type ha_flag_vars_ss = {
 struct ha_daq_hosts_type ha_daq_host = {
 	.hosts[0] = "10.1.1.30",
 	.hosts[1] = "10.1.1.39", // no HA server
-	.hosts[2] = "10.1.1.46",
+	.hosts[2] = "10.1.1.46", //
 	.hosts[3] = "10.1.1.45",
 	.mqtt[0] = "10.1.1.30",
 	.mqtt[1] = "10.1.1.172", // no HA server
-	.mqtt[2] = "10.1.1.172",
+	.mqtt[2] = "10.1.1.172", //
 	.mqtt[3] = "10.1.1.45",
 	.topics[0] = "comedi/bmc/data/bmc/1",
 	.topics[1] = "comedi/bmc/data/bmc/2",
@@ -83,28 +83,28 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.hindex = 0,
 	.bindex = 0,
 	.calib.checkmark = CHECKMARK,
-	.calib.bmc_id[0] = 362934, // bmc Q84 MUI testing board
+	.calib.bmc_id[0] = 0x589B6, // bmc Q84 MUI testing board
 	.calib.offset4[0] = HV_SCALE_OFFSET,
 	.calib.scaler4[0] = HV_SCALE4_0,
 	.calib.offset5[0] = HV_SCALE_OFFSET,
 	.calib.scaler5[0] = HV_SCALE5_0,
 	.calib.A200_Z[0] = A200_0_ZERO,
 	.calib.A200_S[0] = A200_0_SCALAR,
-	.calib.bmc_id[1] = 1, // K8055 (VM110) modified for two HV inputs
+	.calib.bmc_id[1] = 0, // K8055 (VM110) modified for two HV inputs
 	.calib.offset4[1] = HV_SCALE_OFFSET,
 	.calib.scaler4[1] = HV_SCALE4_1,
 	.calib.offset5[1] = HV_SCALE_OFFSET,
 	.calib.scaler5[1] = HV_SCALE5_1,
 	.calib.A200_Z[1] = A200_0_ZERO,
 	.calib.A200_S[1] = A200_0_SCALAR,
-	.calib.bmc_id[2] = 2, // bmc Q84 MUI
+	.calib.bmc_id[2] = 0x55AF3, // bmc Q84 MUI
 	.calib.offset4[2] = HV_SCALE_OFFSET,
 	.calib.scaler4[2] = HV_SCALE4_2,
 	.calib.offset5[2] = HV_SCALE_OFFSET,
 	.calib.scaler5[2] = HV_SCALE5_2,
 	.calib.A200_Z[2] = A200_0_ZERO,
 	.calib.A200_S[2] = A200_0_SCALAR,
-	.calib.bmc_id[3] = 371638, // bmc Q84 MUI enclosure board
+	.calib.bmc_id[3] = 0x5ABB6, // bmc Q84 MUI enclosure board
 	.calib.offset4[3] = HV_SCALE_OFFSET,
 	.calib.scaler4[3] = HV_SCALE4_3,
 	.calib.offset5[3] = HV_SCALE_OFFSET,
@@ -159,6 +159,7 @@ void showIP(void)
 			if (strcmp(host, &ha_daq_host.hosts[3][0]) == 0) {
 				ha_daq_host.hindex = 3;
 			}
+			ha_daq_host.bindex = ha_daq_host.hindex;
 		}
 	}
 	freeifaddrs(ifaddr);
@@ -604,22 +605,10 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				if (jtoken != NULL)
 					R.em540_online = atoi(jtoken);
 				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL) {
+				if (jtoken != NULL) { // get the Q84 MUI
 					R.bmc_id = atoll(jtoken);
-					if (R.bmc_id == ha_daq_host.calib.bmc_id[0]) {
-						ha_daq_host.bindex = 0;
-					}
-					if (R.bmc_id == ha_daq_host.calib.bmc_id[1]) {
-						ha_daq_host.bindex = 1;
-					}
-					if (R.bmc_id == ha_daq_host.calib.bmc_id[2]) {
-						ha_daq_host.bindex = 2;
-					}
-					if (R.bmc_id == ha_daq_host.calib.bmc_id[3]) {
-						ha_daq_host.bindex = 3;
-					}
 				}
-				jtoken = strtok(NULL, ",");
+				jtoken = strtok(NULL, ","); // set the calibration data from the Q84
 				if (jtoken != NULL)
 					ha_daq_host.calib.scaler4[ha_daq_host.bindex] = atof(jtoken);
 				jtoken = strtok(NULL, ",");

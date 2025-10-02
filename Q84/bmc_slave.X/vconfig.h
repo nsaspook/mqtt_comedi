@@ -24,7 +24,7 @@ extern "C" {
 
 	//#define DIS_DEBUG	// active status display, disable during normal operation
 
-#define VER	"V0.44"
+#define VER	"V0.45"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -59,6 +59,7 @@ extern "C" {
 	 * V0.42 fix a few display bugs
 	 * V0.43 four possible data transfers using DCx_CMD
 	 * V0.44 57Q84 and 47Q84 detection and daq configuration
+	 * V0.45 MUI keying to calibration download data
 	 */
 	/*
 	 * TIC12400 testing modes

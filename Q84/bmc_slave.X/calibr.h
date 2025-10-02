@@ -14,6 +14,16 @@ extern "C" {
 #define HV_SCALE_OFFSET         0.0f
 #define HV_SCALAR4		64.2600f
 #define HV_SCALAR5		64.2600f
+	
+#define HV_SCALE4_0             64.2600f
+#define HV_SCALE5_0             64.2600f
+#define HV_SCALE4_1             64.1890f
+#define HV_SCALE5_1             64.1415f
+#define HV_SCALE4_2             54.1890f
+#define HV_SCALE5_2             54.1415f
+#define HV_SCALE4_3             64.1890f
+#define HV_SCALE5_3             64.1415f
+	
 #define A200_0_ZERO		2.5216f // Battery sensor zero ADC value
 #define A200_0_SCALAR		133.05f // Battery Amp scalar to +- 200A
 

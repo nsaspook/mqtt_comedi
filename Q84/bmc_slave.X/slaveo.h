@@ -138,7 +138,7 @@ extern "C" {
 	extern volatile bool r_string_ready, bmc_string_ready, update_bmc_string;
 	extern volatile struct bmc_buffer_type BMC4;
 	extern volatile char buffer[MAX_BMC_BUF], log_buffer[MAX_BMC_BUF];
-	extern const struct ha_daq_calib_type ha_daq_calib;
+	extern struct ha_daq_calib_type ha_daq_calib;
 	extern volatile struct bmc_buffer_type BMC4;
 
 	void check_slaveo(void);
