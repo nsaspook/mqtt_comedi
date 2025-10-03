@@ -1,4 +1,4 @@
-/** \file bcmdio.c
+/** \file bmcdio.c
  */
 #include "bmcdio.h"
 #include "eadog.h"

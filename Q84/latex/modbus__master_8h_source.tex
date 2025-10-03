@@ -1,13 +1,8 @@
 \doxysection{modbus\+\_\+master.\+h}
 \hypertarget{modbus__master_8h_source}{}\label{modbus__master_8h_source}\index{bmc\_slave.X/modbus\_master.h@{bmc\_slave.X/modbus\_master.h}}
-
+\mbox{\hyperlink{modbus__master_8h}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00001}00001\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00002}00002\ \textcolor{comment}{\ *\ File:\ \ \ modbus\_master.h}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00003}00003\ \textcolor{comment}{\ *\ Author:\ root}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00004}00004\ \textcolor{comment}{\ *}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00005}00005\ \textcolor{comment}{\ *\ Created\ on\ April\ 27,\ 2022,\ 4:02\ PM}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00006}00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00001}00001\ }
 \DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00007}00007\ }
 \DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00008}00008\ \textcolor{comment}{/*}}
 \DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00009}00009\ \textcolor{comment}{\ *\ Simple\ MODBUS\ data\ polling\ master\ for\ using\ MCC}}
@@ -29,338 +24,320 @@
 \DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00025}00025\ \textcolor{preprocessor}{\#define\ MB\_EM540\_ID\_H\ \ \ 0x06}}
 \DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00026}00026\ \textcolor{preprocessor}{\#define\ MB\_EM540\_ID\_L\ \ \ 0xE0}}
 \DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00027}00027\ \textcolor{preprocessor}{\#define\ MB\_EM540\_ONE\ \ \ \ }\textcolor{comment}{//\ single\ phase,\ no\ inverter\ power\ inputs}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00028}00028\ \textcolor{preprocessor}{\#define\ SWMBMVER\ \ \ \ 0X0033\ \ }\textcolor{comment}{//\ master\ SW\ version}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00029}00029\ \textcolor{preprocessor}{\#define\ MADDR\ \ \ \ \ \ \ 0x01\ }\textcolor{comment}{//\ modbus\ client\ address}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00030}00030\ \textcolor{preprocessor}{\#define\ EM\_DATA\_LEN1\ \ \ \ 52\ \ }\textcolor{comment}{//\ 16-\/bit\ words\ returned}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00031}00031\ \textcolor{preprocessor}{\#define\ EM\_DATA\_LEN2\ \ \ \ 64\ \ }\textcolor{comment}{//\ 16-\/bit\ words\ returned}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00032}00032\ \textcolor{preprocessor}{\#define\ SERIAL\_DATA\_LEN\ 8}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00033}00033\ \textcolor{preprocessor}{\#define\ AUTO\_DERE}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00034}00034\ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00035}00035\ \textcolor{comment}{\ \ \ \ \ *\ setup\ options\ on\ the\ EM540\ from\ the\ factor\ defaults}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00036}00036\ \textcolor{comment}{\ \ \ \ \ *\ 115200\ baud,\ measurement\ mode\ C\ for\ bidirectional\ values}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00037}00037\ \textcolor{comment}{\ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00038}00038\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00039}00039\ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00040}00040\ \textcolor{comment}{\ \ \ \ \ *\ fake\ good\ received\ bytes\ from\ client}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00041}00041\ \textcolor{comment}{\ \ \ \ \ *\ a\ null\ string\ when\ not\ debugging}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00042}00042\ \textcolor{comment}{\ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00043}00043\ \textcolor{preprocessor}{\#define\ DBUG\_R\ \ }\textcolor{comment}{//\ \ true\ ||}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00044}00044\ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00045}00045\ \textcolor{comment}{\ \ \ \ \ *\ Display\ MODBUS\ debugging\ info\ screen}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00046}00046\ \textcolor{comment}{\ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00047}00047\ \ \ \ \ \textcolor{comment}{//\#define\ SHOW\_MODBUS\_DEBUG}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00048}00048\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00049}00049\ \textcolor{preprocessor}{\#include\ <xc.h>}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00050}00050\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00051}00051\ \textcolor{preprocessor}{\#include\ <stdbool.h>}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00052}00052\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00053}00053\ \textcolor{preprocessor}{\#include\ <string.h>}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00054}00054\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{timers_8h}{timers.h}}"{}}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00055}00055\ \textcolor{preprocessor}{\#include\ "{}mcc\_generated\_files/mcc.h"{}}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00056}00056\ \textcolor{preprocessor}{\#include\ "{}mcc\_generated\_files/uart3.h"{}}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00057}00057\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00058}00058\ \textcolor{preprocessor}{\#ifdef\ TRACE}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00059}00059\ \textcolor{preprocessor}{\#define\ INT\_TRACE\ \ \ INT\_TRACE\_Toggle()\ }\textcolor{comment}{//\ EXT\_IO\ pin\ 5}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00060}00060\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00061}00061\ \textcolor{preprocessor}{\#define\ INT\_TRACE\ \ \ "{}"{}}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00062}00062\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00063}00063\ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00064}00064\ \textcolor{comment}{\ \ \ \ \ *\ 5Hz\ data\ updates\ in\ FASTQ\ mode}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00065}00065\ \textcolor{comment}{\ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00066}00066\ \textcolor{preprocessor}{\#define\ MAX\_DATA\ \ \ \ \ \ \ \ 240}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00067}00067\ \ \ \ \ \textcolor{comment}{//\#define\ LOCAL\_ECHO\ \ \ \ 1}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00068}00068\ \textcolor{preprocessor}{\#define\ FASTQ\ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ MODBUS\ query\ speed,\ define\ for\ faster\ sampling\ rates}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00069}00069\ \textcolor{preprocessor}{\#define\ TMDELAY\ \ \ \ \ 2\ \ \ }\textcolor{comment}{//\ half-\/duplex\ delay}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00070}00070\ \textcolor{preprocessor}{\#define\ TEDELAY\ \ \ \ \ 1\ \ \ }\textcolor{comment}{//\ half-\/duplex\ delay}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00071}00071\ \textcolor{preprocessor}{\#define\ RDELAY\ \ \ \ \ \ 200\ }\textcolor{comment}{//\ receive\ timeout}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00072}00072\ \textcolor{preprocessor}{\#define\ CDELAY\ \ \ \ \ \ 40\ \ }\textcolor{comment}{//\ fast\ query\ delay\ 100ms}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00073}00073\ \textcolor{preprocessor}{\#define\ QDELAY\ \ \ \ \ \ 2\ \ \ }\textcolor{comment}{//\ slow\ query\ delay\ 1s}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00074}00074\ \textcolor{preprocessor}{\#define\ TODELAY\ \ \ \ \ 4\ \ \ }\textcolor{comment}{//\ misc\ delay}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00075}00075\ \textcolor{preprocessor}{\#define\ SPACING\ \ \ \ \ 40\ \ }\textcolor{comment}{//\ control\ loop\ cpu\ usage\ factor}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00076}00076\ \textcolor{preprocessor}{\#define\ DUPL\_DELAY\ \ 2\ \ \ }\textcolor{comment}{//\ extra\ duplex\ delay\ mode}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00077}00077\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00078}00078\ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00079}00079\ \textcolor{comment}{\ \ \ \ \ *\ RS485\ port\ defines}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00080}00080\ \textcolor{comment}{\ \ \ \ \ *\ port}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00081}00081\ \textcolor{comment}{\ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00082}00082\ \textcolor{preprocessor}{\#define\ Swrite\ \ \ \ \ \ UART3\_Write}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00083}00083\ \textcolor{preprocessor}{\#define\ Strmt\ \ \ \ \ \ \ UART3\_is\_tx\_done}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00084}00084\ \textcolor{preprocessor}{\#define\ Strdy\ \ \ \ \ \ \ UART3\_is\_tx\_ready}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00085}00085\ \textcolor{preprocessor}{\#define\ Serror\ \ \ \ \ \ UART3\_get\_last\_status}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00086}00086\ \textcolor{preprocessor}{\#define\ Sread\ \ \ \ \ \ \ UART3\_Read}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00087}00087\ \textcolor{preprocessor}{\#define\ Srbuffer\ \ \ \ U3RXB}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00088}00088\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00089}00089\ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00090}00090\ \textcolor{comment}{\ \ \ \ \ *\ serial\ communications\ states}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00091}00091\ \textcolor{comment}{\ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00092}00092\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ comm\_type\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00093}00093\ \ \ \ \ \ \ \ \ CLEAR\ =\ 0,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00094}00094\ \ \ \ \ \ \ \ \ INIT,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00095}00095\ \ \ \ \ \ \ \ \ SEND,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00096}00096\ \ \ \ \ \ \ \ \ RECV,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00097}00097\ \ \ \ \ \}\ comm\_type;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00098}00098\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00099}00099\ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00100}00100\ \textcolor{comment}{\ \ \ \ \ *\ EM540\ command\ states}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00101}00101\ \textcolor{comment}{\ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00102}00102\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ cmd\_type\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00103}00103\ \ \ \ \ \ \ \ \ G\_ID\ =\ 0,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00104}00104\ \ \ \ \ \ \ \ \ G\_DATA1,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00105}00105\ \ \ \ \ \ \ \ \ G\_DATA2,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00106}00106\ \ \ \ \ \ \ \ \ G\_CONFIG,\ \textcolor{comment}{//\ keep\ sequence}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00107}00107\ \ \ \ \ \ \ \ \ G\_PASSWD,\ \textcolor{comment}{//\ keep\ sequence}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00108}00108\ \ \ \ \ \ \ \ \ G\_LIGHT,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00109}00109\ \ \ \ \ \ \ \ \ G\_VERSION,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00110}00110\ \ \ \ \ \ \ \ \ G\_SERIAL,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00111}00111\ \ \ \ \ \ \ \ \ G\_LAST,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00112}00112\ \ \ \ \ \}\ cmd\_type;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00113}00113\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00114}00114\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ trace\_type\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00115}00115\ \ \ \ \ \ \ \ \ T\_begin\ =\ 1,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00116}00116\ \ \ \ \ \ \ \ \ T\_clear,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00117}00117\ \ \ \ \ \ \ \ \ T\_passwd,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00118}00118\ \ \ \ \ \ \ \ \ T\_config,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00119}00119\ \ \ \ \ \ \ \ \ T\_data,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00120}00120\ \ \ \ \ \ \ \ \ T\_id,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00121}00121\ \ \ \ \ \ \ \ \ T\_serial,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00122}00122\ \ \ \ \ \ \ \ \ T\_version,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00123}00123\ \ \ \ \ \ \ \ \ T\_init,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00124}00124\ \ \ \ \ \ \ \ \ T\_init\_d,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00125}00125\ \ \ \ \ \ \ \ \ T\_send,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00126}00126\ \ \ \ \ \ \ \ \ T\_send\_d,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00127}00127\ \ \ \ \ \ \ \ \ T\_recv,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00128}00128\ \ \ \ \ \ \ \ \ T\_recv\_r,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00129}00129\ \ \ \ \ \ \ \ \ T\_misc1,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00130}00130\ \ \ \ \ \ \ \ \ T\_misc2,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00131}00131\ \ \ \ \ \ \ \ \ T\_misc3,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00132}00132\ \ \ \ \ \ \ \ \ T\_spacing,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00133}00133\ \ \ \ \ \ \ \ \ T\_light,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00134}00134\ \ \ \ \ \}\ trace\_type;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00135}00135\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00136}\mbox{\hyperlink{structVM__type}{00136}}\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structVM__type}{VM\_type}}\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00137}00137\ \ \ \ \ \ \ \ \ uint32\_t\ StartTime,\ TimeUsed;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00138}00138\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ pacing,\ pwm\_update,\ pwm\_stop,\ fault\_count,\ fault\_ticks,\ fault\_source,\ modbus\_rx,\ modbus\_tx;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00139}00139\ \ \ \ \ \ \ \ \ int32\_t\ motor\_speed;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00140}00140\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ fault\_active,\ dmt\_sosc\_flag;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00141}00141\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00142}00142\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00143}\mbox{\hyperlink{unionPWMDC}{00143}}\ \ \ \ \ \textcolor{keyword}{union\ }\mbox{\hyperlink{unionPWMDC}{PWMDC}}\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00144}00144\ \ \ \ \ \ \ \ \ uint16\_t\ lpwm;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00145}00145\ \ \ \ \ \ \ \ \ uint8\_t\ bpwm[2];}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00146}00146\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00147}00147\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00148}\mbox{\hyperlink{unionMREG}{00148}}\ \ \ \ \ \textcolor{keyword}{union\ }\mbox{\hyperlink{unionMREG}{MREG}}\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00149}00149\ \ \ \ \ \ \ \ \ int16\_t\ value;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00150}00150\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ bytes[2];}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00151}00151\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00152}00152\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00153}\mbox{\hyperlink{unionMREG32}{00153}}\ \ \ \ \ \textcolor{keyword}{union\ }\mbox{\hyperlink{unionMREG32}{MREG32}}\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00154}00154\ \ \ \ \ \ \ \ \ int32\_t\ value;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00155}00155\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ bytes[4];}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00156}00156\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00157}00157\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00158}\mbox{\hyperlink{unionMREG64}{00158}}\ \ \ \ \ \textcolor{keyword}{union\ }\mbox{\hyperlink{unionMREG64}{MREG64}}\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00159}00159\ \ \ \ \ \ \ \ \ int64\_t\ value;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00160}00160\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ bytes[8];}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00161}00161\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00162}00162\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00163}\mbox{\hyperlink{structM__time__data}{00163}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structM__time__data}{M\_time\_data}}\ \{\ \textcolor{comment}{//\ ISR\ used,\ mainly\ for\ non-\/atomic\ mod\ problems}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00164}00164\ \ \ \ \ \ \ \ \ uint32\_t\ clock\_500hz;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00165}00165\ \ \ \ \ \ \ \ \ uint32\_t\ clock\_500ahz;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00166}00166\ \ \ \ \ \ \ \ \ uint32\_t\ clock\_2hz;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00167}00167\ \ \ \ \ \}\ \mbox{\hyperlink{structM__time__data}{M\_time\_data}};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00168}00168\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00169}\mbox{\hyperlink{structM__data}{00169}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structM__data}{M\_data}}\ \{\ \textcolor{comment}{//\ ISR\ used,\ mainly\ for\ non-\/atomic\ mod\ problems}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00170}00170\ \ \ \ \ \ \ \ \ uint8\_t\ blink\_lock\ :\ 1;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00171}00171\ \ \ \ \ \ \ \ \ uint8\_t\ config\ :\ 1;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00172}00172\ \ \ \ \ \ \ \ \ uint8\_t\ stable\ :\ 1;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00173}00173\ \ \ \ \ \ \ \ \ uint8\_t\ boot\_code\ :\ 1;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00174}00174\ \ \ \ \ \ \ \ \ uint8\_t\ power\_on\ :\ 1;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00175}00175\ \ \ \ \ \ \ \ \ uint8\_t\ send\_count,\ recv\_count,\ pwm\_volts;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00176}00176\ \ \ \ \ \ \ \ \ uint16\_t\ error,\ crc\_data,\ crc\_calc;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00177}00177\ \ \ \ \ \ \ \ \ uint32\_t\ crc\_error;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00178}00178\ \ \ \ \ \ \ \ \ uint32\_t\ to\_error;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00179}00179\ \ \ \ \ \ \ \ \ uint32\_t\ sends;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00180}00180\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ rx;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00181}00181\ \ \ \ \ \}\ \mbox{\hyperlink{structM__data}{M\_data}};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00182}00182\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00183}\mbox{\hyperlink{structC__data}{00183}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structC__data}{C\_data}}\ \{\ \textcolor{comment}{//\ client\ state\ machine\ data}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00184}00184\ \ \ \ \ \ \ \ \ uint8\_t\ mcmd;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00185}00185\ \ \ \ \ \ \ \ \ comm\_type\ cstate;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00186}00186\ \ \ \ \ \ \ \ \ cmd\_type\ modbus\_command;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00187}00187\ \ \ \ \ \ \ \ \ uint16\_t\ req\_length;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00188}00188\ \ \ \ \ \ \ \ \ int8\_t\ trace;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00189}00189\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ id\_ok,\ passwd\_ok,\ config\_ok,\ data\_ok,\ light\_ok,\ serial\_ok,\ version\_ok,\ tm\_ok;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00190}00190\ \ \ \ \ \ \ \ \ uint32\_t\ data\_count,\ data\_prev;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00191}00191\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \mbox{\hyperlink{structM__data}{M\_data}}\ M;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00192}00192\ \ \ \ \ \}\ \mbox{\hyperlink{structC__data}{C\_data}};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00193}00193\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00194}00194\ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00195}00195\ \textcolor{comment}{\ \ \ \ \ *\ maps\ the\ EM540\ modbus\ registers\ to\ int32\_t\ and\ uint16\_t\ values}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00196}00196\ \textcolor{comment}{\ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00197}\mbox{\hyperlink{structEM__data1}{00197}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \_\_pack\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structEM__data1}{EM\_data1}}\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00198}00198\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int32\_t}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00199}00199\ \ \ \ \ \ \ \ \ vl1n,\ vl2n,\ vl3n,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00200}00200\ \ \ \ \ \ \ \ \ vl1l2,\ vl2l3,\ vl3l1,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00201}00201\ \ \ \ \ \ \ \ \ al1,\ al2,\ al3,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00202}00202\ \ \ \ \ \ \ \ \ wl1,\ wl2,\ wl3,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00203}00203\ \ \ \ \ \ \ \ \ val1,\ val2,\ val3,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00204}00204\ \ \ \ \ \ \ \ \ varl1,\ varl2,\ varl3,\ \textcolor{comment}{//\ extra\ stuff}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00205}00205\ \ \ \ \ \ \ \ \ vlnsys,\ vllsys,\ wsys,\ vasys,\ varsys;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00206}00206\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int16\_t}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00207}00207\ \ \ \ \ \ \ \ \ pfl1,\ pfl2,\ pfl3,\ pfsys,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00208}00208\ \ \ \ \ \ \ \ \ phaseseq,\ hz;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00209}00209\ \ \ \ \ \}\ \mbox{\hyperlink{structEM__data1}{EM\_data1}};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00210}00210\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00211}\mbox{\hyperlink{structEM__data2}{00211}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \_\_pack\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structEM__data2}{EM\_data2}}\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00212}00212\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int64\_t}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00213}00213\ \ \ \ \ \ \ \ \ kwhpt,\ kvarhpt,\ kwhpp,\ kvarhpp,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00214}00214\ \ \ \ \ \ \ \ \ kwhpl1,\ kwhpl2,\ kwhpl3,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00215}00215\ \ \ \ \ \ \ \ \ kwhnt,\ kvarhnt,\ kwhnp,\ kvarhnp,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00216}00216\ \ \ \ \ \ \ \ \ kvaht,\ kvahp;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00217}00217\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int32\_t}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00218}00218\ \ \ \ \ \ \ \ \ rhm,\ rhmk,\ rhmp,\ rhmkp,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00219}00219\ \ \ \ \ \ \ \ \ hz,\ rhlc;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00220}00220\ \ \ \ \ \}\ \mbox{\hyperlink{structEM__data2}{EM\_data2}};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00028}00028\ \textcolor{preprocessor}{\#define\ MB\_EM540\_EMT}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00029}00029\ \textcolor{preprocessor}{\#define\ SWMBMVER\ \ \ \ 0X0033\ \ }\textcolor{comment}{//\ master\ SW\ version}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00030}00030\ \textcolor{preprocessor}{\#define\ MADDR\ \ \ \ \ \ \ 0x01\ }\textcolor{comment}{//\ modbus\ client\ address}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00031}00031\ \textcolor{preprocessor}{\#define\ EM\_DATA\_LEN1\ \ \ \ 52\ \ }\textcolor{comment}{//\ 16-\/bit\ words\ returned}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00032}00032\ \textcolor{preprocessor}{\#define\ EM\_DATA\_LEN2\ \ \ \ 64\ \ }\textcolor{comment}{//\ 16-\/bit\ words\ returned}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00033}00033\ \textcolor{preprocessor}{\#define\ SERIAL\_DATA\_LEN\ 8}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00034}00034\ \textcolor{preprocessor}{\#define\ AUTO\_DERE}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00035}00035\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00036}00036\ \textcolor{comment}{\ \ \ \ \ *\ setup\ options\ on\ the\ EM540\ from\ the\ factor\ defaults}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00037}00037\ \textcolor{comment}{\ \ \ \ \ *\ 115200\ baud,\ measurement\ mode\ C\ for\ bidirectional\ values}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00038}00038\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00039}00039\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00040}00040\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00041}00041\ \textcolor{comment}{\ \ \ \ \ *\ fake\ good\ received\ bytes\ from\ client}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00042}00042\ \textcolor{comment}{\ \ \ \ \ *\ a\ null\ string\ when\ not\ debugging}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00043}00043\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00044}00044\ \textcolor{preprocessor}{\#define\ DBUG\_R\ \ }\textcolor{comment}{//\ \ true\ ||}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00045}00045\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00046}00046\ \textcolor{comment}{\ \ \ \ \ *\ Display\ MODBUS\ debugging\ info\ screen}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00047}00047\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00048}00048\ \ \ \ \ \textcolor{comment}{//\#define\ SHOW\_MODBUS\_DEBUG}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00050}00050\ \textcolor{preprocessor}{\#include\ <xc.h>}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00051}00051\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00052}00052\ \textcolor{preprocessor}{\#include\ <stdbool.h>}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00053}00053\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00054}00054\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00055}00055\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{timers_8h}{timers.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00056}00056\ \textcolor{preprocessor}{\#include\ "{}mcc\_generated\_files/mcc.h"{}}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00057}00057\ \textcolor{preprocessor}{\#include\ "{}mcc\_generated\_files/uart3.h"{}}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00059}00059\ \textcolor{preprocessor}{\#ifdef\ TRACE}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00060}00060\ \textcolor{preprocessor}{\#define\ INT\_TRACE\ \ \ INT\_TRACE\_Toggle()\ }\textcolor{comment}{//\ EXT\_IO\ pin\ 5}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00061}00061\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00062}00062\ \textcolor{preprocessor}{\#define\ INT\_TRACE\ \ \ "{}"{}}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00063}00063\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00064}00064\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00065}00065\ \textcolor{comment}{\ \ \ \ \ *\ 5Hz\ data\ updates\ in\ FASTQ\ mode}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00066}00066\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00067}00067\ \textcolor{preprocessor}{\#define\ MAX\_DATA\ \ \ \ \ \ \ \ 240}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00068}00068\ \ \ \ \ \textcolor{comment}{//\#define\ LOCAL\_ECHO\ \ \ \ 1}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00069}00069\ \textcolor{preprocessor}{\#define\ FASTQ\ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ MODBUS\ query\ speed,\ define\ for\ faster\ sampling\ rates}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00070}00070\ \textcolor{preprocessor}{\#define\ TMDELAY\ \ \ \ \ 2\ \ \ }\textcolor{comment}{//\ half-\/duplex\ delay}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00071}00071\ \textcolor{preprocessor}{\#define\ TEDELAY\ \ \ \ \ 1\ \ \ }\textcolor{comment}{//\ half-\/duplex\ delay}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00072}00072\ \textcolor{preprocessor}{\#define\ RDELAY\ \ \ \ \ \ 200\ }\textcolor{comment}{//\ receive\ timeout}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00073}00073\ \textcolor{preprocessor}{\#define\ CDELAY\ \ \ \ \ \ 40\ \ }\textcolor{comment}{//\ fast\ query\ delay\ 100ms}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00074}00074\ \textcolor{preprocessor}{\#define\ QDELAY\ \ \ \ \ \ 2\ \ \ }\textcolor{comment}{//\ slow\ query\ delay\ 1s}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00075}00075\ \textcolor{preprocessor}{\#define\ TODELAY\ \ \ \ \ 4\ \ \ }\textcolor{comment}{//\ misc\ delay}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00076}00076\ \textcolor{preprocessor}{\#define\ SPACING\ \ \ \ \ 40\ \ }\textcolor{comment}{//\ control\ loop\ cpu\ usage\ factor}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00077}00077\ \textcolor{preprocessor}{\#define\ DUPL\_DELAY\ \ 2\ \ \ }\textcolor{comment}{//\ extra\ duplex\ delay\ mode}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00078}00078\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00079}00079\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00080}00080\ \textcolor{comment}{\ \ \ \ \ *\ RS485\ port\ defines}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00081}00081\ \textcolor{comment}{\ \ \ \ \ *\ port}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00082}00082\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00083}00083\ \textcolor{preprocessor}{\#define\ Swrite\ \ \ \ \ \ UART3\_Write}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00084}00084\ \textcolor{preprocessor}{\#define\ Strmt\ \ \ \ \ \ \ UART3\_is\_tx\_done}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00085}00085\ \textcolor{preprocessor}{\#define\ Strdy\ \ \ \ \ \ \ UART3\_is\_tx\_ready}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00086}00086\ \textcolor{preprocessor}{\#define\ Serror\ \ \ \ \ \ UART3\_get\_last\_status}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00087}00087\ \textcolor{preprocessor}{\#define\ Sread\ \ \ \ \ \ \ UART3\_Read}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00088}00088\ \textcolor{preprocessor}{\#define\ Srbuffer\ \ \ \ U3RXB}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00089}00089\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00090}00090\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00091}00091\ \textcolor{comment}{\ \ \ \ \ *\ serial\ communications\ states}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00092}00092\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00093}00093\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ comm\_type\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00094}00094\ \ \ \ \ \ \ \ \ CLEAR\ =\ 0,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00095}00095\ \ \ \ \ \ \ \ \ INIT,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00096}00096\ \ \ \ \ \ \ \ \ SEND,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00097}00097\ \ \ \ \ \ \ \ \ RECV,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00098}00098\ \ \ \ \ \}\ comm\_type;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00099}00099\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00100}00100\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00101}00101\ \textcolor{comment}{\ \ \ \ \ *\ EM540\ command\ states}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00102}00102\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00103}00103\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ cmd\_type\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00104}00104\ \ \ \ \ \ \ \ \ G\_ID\ =\ 0,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00105}00105\ \ \ \ \ \ \ \ \ G\_DATA1,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00106}00106\ \ \ \ \ \ \ \ \ G\_DATA2,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00107}00107\ \ \ \ \ \ \ \ \ G\_CONFIG,\ \textcolor{comment}{//\ keep\ sequence}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00108}00108\ \ \ \ \ \ \ \ \ G\_PASSWD,\ \textcolor{comment}{//\ keep\ sequence}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00109}00109\ \ \ \ \ \ \ \ \ G\_LIGHT,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00110}00110\ \ \ \ \ \ \ \ \ G\_VERSION,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00111}00111\ \ \ \ \ \ \ \ \ G\_SERIAL,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00112}00112\ \ \ \ \ \ \ \ \ G\_LAST,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00113}00113\ \ \ \ \ \}\ cmd\_type;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00114}00114\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00115}00115\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ trace\_type\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00116}00116\ \ \ \ \ \ \ \ \ T\_begin\ =\ 1,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00117}00117\ \ \ \ \ \ \ \ \ T\_clear,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00118}00118\ \ \ \ \ \ \ \ \ T\_passwd,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00119}00119\ \ \ \ \ \ \ \ \ T\_config,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00120}00120\ \ \ \ \ \ \ \ \ T\_data,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00121}00121\ \ \ \ \ \ \ \ \ T\_id,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00122}00122\ \ \ \ \ \ \ \ \ T\_serial,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00123}00123\ \ \ \ \ \ \ \ \ T\_version,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00124}00124\ \ \ \ \ \ \ \ \ T\_init,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00125}00125\ \ \ \ \ \ \ \ \ T\_init\_d,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00126}00126\ \ \ \ \ \ \ \ \ T\_send,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00127}00127\ \ \ \ \ \ \ \ \ T\_send\_d,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00128}00128\ \ \ \ \ \ \ \ \ T\_recv,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00129}00129\ \ \ \ \ \ \ \ \ T\_recv\_r,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00130}00130\ \ \ \ \ \ \ \ \ T\_misc1,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00131}00131\ \ \ \ \ \ \ \ \ T\_misc2,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00132}00132\ \ \ \ \ \ \ \ \ T\_misc3,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00133}00133\ \ \ \ \ \ \ \ \ T\_spacing,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00134}00134\ \ \ \ \ \ \ \ \ T\_light,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00135}00135\ \ \ \ \ \}\ trace\_type;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00136}00136\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00137}\mbox{\hyperlink{structVM__type}{00137}}\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structVM__type}{VM\_type}}\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00138}00138\ \ \ \ \ \ \ \ \ uint32\_t\ StartTime,\ TimeUsed;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00139}00139\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ pacing,\ pwm\_update,\ pwm\_stop,\ fault\_count,\ fault\_ticks,\ fault\_source,\ modbus\_rx,\ modbus\_tx;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00140}00140\ \ \ \ \ \ \ \ \ int32\_t\ motor\_speed;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00141}00141\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ fault\_active,\ dmt\_sosc\_flag;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00142}00142\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00143}00143\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00144}\mbox{\hyperlink{unionPWMDC}{00144}}\ \ \ \ \ \textcolor{keyword}{union\ }\mbox{\hyperlink{unionPWMDC}{PWMDC}}\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00145}00145\ \ \ \ \ \ \ \ \ uint16\_t\ lpwm;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00146}00146\ \ \ \ \ \ \ \ \ uint8\_t\ bpwm[2];}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00147}00147\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00148}00148\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00149}\mbox{\hyperlink{unionMREG}{00149}}\ \ \ \ \ \textcolor{keyword}{union\ }\mbox{\hyperlink{unionMREG}{MREG}}\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00150}00150\ \ \ \ \ \ \ \ \ int16\_t\ value;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00151}00151\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ bytes[2];}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00152}00152\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00153}00153\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00154}\mbox{\hyperlink{unionMREG32}{00154}}\ \ \ \ \ \textcolor{keyword}{union\ }\mbox{\hyperlink{unionMREG32}{MREG32}}\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00155}00155\ \ \ \ \ \ \ \ \ int32\_t\ value;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00156}00156\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ bytes[4];}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00157}00157\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00158}00158\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00159}\mbox{\hyperlink{unionMREG64}{00159}}\ \ \ \ \ \textcolor{keyword}{union\ }\mbox{\hyperlink{unionMREG64}{MREG64}}\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00160}00160\ \ \ \ \ \ \ \ \ int64\_t\ value;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00161}00161\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ bytes[8];}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00162}00162\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00163}00163\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00164}\mbox{\hyperlink{structM__data}{00164}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structM__data}{M\_data}}\ \{\ \textcolor{comment}{//\ ISR\ used,\ mainly\ for\ non-\/atomic\ mod\ problems}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00165}00165\ \ \ \ \ \ \ \ \ uint8\_t\ blink\_lock\ :\ 1;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00166}00166\ \ \ \ \ \ \ \ \ uint8\_t\ config\ :\ 1;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00167}00167\ \ \ \ \ \ \ \ \ uint8\_t\ stable\ :\ 1;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00168}00168\ \ \ \ \ \ \ \ \ uint8\_t\ boot\_code\ :\ 1;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00169}00169\ \ \ \ \ \ \ \ \ uint8\_t\ power\_on\ :\ 1;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00170}00170\ \ \ \ \ \ \ \ \ uint8\_t\ send\_count,\ recv\_count,\ pwm\_volts;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00171}00171\ \ \ \ \ \ \ \ \ uint16\_t\ error,\ crc\_data,\ crc\_calc;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00172}00172\ \ \ \ \ \ \ \ \ uint32\_t\ crc\_error;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00173}00173\ \ \ \ \ \ \ \ \ uint32\_t\ to\_error;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00174}00174\ \ \ \ \ \ \ \ \ uint32\_t\ sends;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00175}00175\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ rx;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00176}00176\ \ \ \ \ \}\ \mbox{\hyperlink{structM__data}{M\_data}};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00177}00177\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00178}\mbox{\hyperlink{structC__data}{00178}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structC__data}{C\_data}}\ \{\ \textcolor{comment}{//\ client\ state\ machine\ data}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00179}00179\ \ \ \ \ \ \ \ \ uint8\_t\ mcmd;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00180}00180\ \ \ \ \ \ \ \ \ comm\_type\ cstate;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00181}00181\ \ \ \ \ \ \ \ \ cmd\_type\ modbus\_command;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00182}00182\ \ \ \ \ \ \ \ \ uint16\_t\ req\_length;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00183}00183\ \ \ \ \ \ \ \ \ int8\_t\ trace;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00184}00184\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ id\_ok,\ passwd\_ok,\ config\_ok,\ data\_ok,\ light\_ok,\ serial\_ok,\ version\_ok,\ tm\_ok;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00185}00185\ \ \ \ \ \ \ \ \ uint32\_t\ data\_count,\ data\_prev;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00186}00186\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \mbox{\hyperlink{structM__data}{M\_data}}\ M;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00187}00187\ \ \ \ \ \}\ \mbox{\hyperlink{structC__data}{C\_data}};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00188}00188\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00189}00189\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00190}00190\ \textcolor{comment}{\ \ \ \ \ *\ maps\ the\ EM540\ modbus\ registers\ to\ int32\_t\ and\ uint16\_t\ values}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00191}00191\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00192}\mbox{\hyperlink{structEM__data1}{00192}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \_\_pack\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structEM__data1}{EM\_data1}}\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00193}00193\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int32\_t}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00194}00194\ \ \ \ \ \ \ \ \ vl1n,\ vl2n,\ vl3n,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00195}00195\ \ \ \ \ \ \ \ \ vl1l2,\ vl2l3,\ vl3l1,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00196}00196\ \ \ \ \ \ \ \ \ al1,\ al2,\ al3,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00197}00197\ \ \ \ \ \ \ \ \ wl1,\ wl2,\ wl3,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00198}00198\ \ \ \ \ \ \ \ \ val1,\ val2,\ val3,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00199}00199\ \ \ \ \ \ \ \ \ varl1,\ varl2,\ varl3,\ \textcolor{comment}{//\ extra\ stuff}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00200}00200\ \ \ \ \ \ \ \ \ vlnsys,\ vllsys,\ wsys,\ vasys,\ varsys;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00201}00201\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int16\_t}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00202}00202\ \ \ \ \ \ \ \ \ pfl1,\ pfl2,\ pfl3,\ pfsys,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00203}00203\ \ \ \ \ \ \ \ \ phaseseq,\ hz;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00204}00204\ \ \ \ \ \}\ \mbox{\hyperlink{structEM__data1}{EM\_data1}};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00205}00205\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00206}\mbox{\hyperlink{structEM__data2}{00206}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \_\_pack\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structEM__data2}{EM\_data2}}\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00207}00207\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int64\_t}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00208}00208\ \ \ \ \ \ \ \ \ kwhpt,\ kvarhpt,\ kwhpp,\ kvarhpp,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00209}00209\ \ \ \ \ \ \ \ \ kwhpl1,\ kwhpl2,\ kwhpl3,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00210}00210\ \ \ \ \ \ \ \ \ kwhnt,\ kvarhnt,\ kwhnp,\ kvarhnp,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00211}00211\ \ \ \ \ \ \ \ \ kvaht,\ kvahp;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00212}00212\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int32\_t}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00213}00213\ \ \ \ \ \ \ \ \ rhm,\ rhmk,\ rhmp,\ rhmkp,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00214}00214\ \ \ \ \ \ \ \ \ hz,\ rhlc;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00215}00215\ \ \ \ \ \}\ \mbox{\hyperlink{structEM__data2}{EM\_data2}};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00216}00216\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00217}\mbox{\hyperlink{structEM__serial}{00217}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \_\_pack\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structEM__serial}{EM\_serial}}\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00218}00218\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{char}\ serial[14];}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00219}00219\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int16\_t\ year;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00220}00220\ \ \ \ \ \}\ \mbox{\hyperlink{structEM__serial}{EM\_serial}};}
 \DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00221}00221\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00222}\mbox{\hyperlink{structEM__serial}{00222}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \_\_pack\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structEM__serial}{EM\_serial}}\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00223}00223\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{char}\ serial[14];}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00224}00224\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int16\_t\ year;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00225}00225\ \ \ \ \ \}\ \mbox{\hyperlink{structEM__serial}{EM\_serial}};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00226}00226\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00227}\mbox{\hyperlink{structEM__version}{00227}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \_\_pack\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structEM__version}{EM\_version}}\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00228}00228\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int16\_t\ firmware;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00229}00229\ \ \ \ \ \}\ \mbox{\hyperlink{structEM__version}{EM\_version}};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00230}00230\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00231}00231\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ filter\_type\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00232}00232\ \ \ \ \ \ \ \ \ F\_ac\ =\ 0,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00233}00233\ \ \ \ \ \ \ \ \ F\_wac\ =\ 1,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00234}00234\ \ \ \ \ \ \ \ \ F\_wva\ =\ 2,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00235}00235\ \ \ \ \ \ \ \ \ F\_var\ =\ 3,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00236}00236\ \ \ \ \ \ \ \ \ F\_run\ =\ 4,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00237}00237\ \ \ \ \ \ \ \ \ F\_5\ =\ 5,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00238}00238\ \ \ \ \ \ \ \ \ F\_6\ =\ 6,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00239}00239\ \ \ \ \ \ \ \ \ F\_7\ =\ 7,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00240}00240\ \ \ \ \ \ \ \ \ F\_8\ =\ 8,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00241}00241\ \ \ \ \ \}\ filter\_type;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00242}00242\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00243}00243\ \ \ \ \ \textcolor{comment}{//\ code\ from\ libmodbus:\ https://raw.githubusercontent.com/stephane/libmodbus/master/src/modbus-\/rtu.c}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00244}00244\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00245}00245\ \ \ \ \ \textcolor{comment}{/*\ Table\ of\ CRC\ values\ for\ high-\/order\ byte\ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00246}00246\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ uint8\_t\ table\_crc\_hi[]\ =\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00247}00247\ \ \ \ \ \ \ \ \ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x01,\ 0xC0,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00248}00248\ \ \ \ \ \ \ \ \ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00249}00249\ \ \ \ \ \ \ \ \ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00250}00250\ \ \ \ \ \ \ \ \ 0x80,\ 0x41,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00251}00251\ \ \ \ \ \ \ \ \ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x00,\ 0xC1,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00252}00252\ \ \ \ \ \ \ \ \ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00253}00253\ \ \ \ \ \ \ \ \ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x00,\ 0xC1,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00254}00254\ \ \ \ \ \ \ \ \ 0x81,\ 0x40,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00255}00255\ \ \ \ \ \ \ \ \ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x01,\ 0xC0,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00256}00256\ \ \ \ \ \ \ \ \ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00257}00257\ \ \ \ \ \ \ \ \ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x00,\ 0xC1,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00258}00258\ \ \ \ \ \ \ \ \ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00259}00259\ \ \ \ \ \ \ \ \ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x01,\ 0xC0,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00260}00260\ \ \ \ \ \ \ \ \ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00261}00261\ \ \ \ \ \ \ \ \ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00262}00262\ \ \ \ \ \ \ \ \ 0x80,\ 0x41,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00263}00263\ \ \ \ \ \ \ \ \ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x01,\ 0xC0,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00264}00264\ \ \ \ \ \ \ \ \ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00265}00265\ \ \ \ \ \ \ \ \ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00266}00266\ \ \ \ \ \ \ \ \ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00267}00267\ \ \ \ \ \ \ \ \ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00268}00268\ \ \ \ \ \ \ \ \ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00269}00269\ \ \ \ \ \ \ \ \ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x00,\ 0xC1,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00270}00270\ \ \ \ \ \ \ \ \ 0x81,\ 0x40,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00271}00271\ \ \ \ \ \ \ \ \ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x01,\ 0xC0,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00272}00272\ \ \ \ \ \ \ \ \ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00273}00273\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00274}00274\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00275}00275\ \ \ \ \ \textcolor{comment}{/*\ Table\ of\ CRC\ values\ for\ low-\/order\ byte\ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00276}00276\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ uint8\_t\ table\_crc\_lo[]\ =\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00277}00277\ \ \ \ \ \ \ \ \ 0x00,\ 0xC0,\ 0xC1,\ 0x01,\ 0xC3,\ 0x03,\ 0x02,\ 0xC2,\ 0xC6,\ 0x06,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00278}00278\ \ \ \ \ \ \ \ \ 0x07,\ 0xC7,\ 0x05,\ 0xC5,\ 0xC4,\ 0x04,\ 0xCC,\ 0x0C,\ 0x0D,\ 0xCD,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00279}00279\ \ \ \ \ \ \ \ \ 0x0F,\ 0xCF,\ 0xCE,\ 0x0E,\ 0x0A,\ 0xCA,\ 0xCB,\ 0x0B,\ 0xC9,\ 0x09,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00280}00280\ \ \ \ \ \ \ \ \ 0x08,\ 0xC8,\ 0xD8,\ 0x18,\ 0x19,\ 0xD9,\ 0x1B,\ 0xDB,\ 0xDA,\ 0x1A,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00281}00281\ \ \ \ \ \ \ \ \ 0x1E,\ 0xDE,\ 0xDF,\ 0x1F,\ 0xDD,\ 0x1D,\ 0x1C,\ 0xDC,\ 0x14,\ 0xD4,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00282}00282\ \ \ \ \ \ \ \ \ 0xD5,\ 0x15,\ 0xD7,\ 0x17,\ 0x16,\ 0xD6,\ 0xD2,\ 0x12,\ 0x13,\ 0xD3,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00283}00283\ \ \ \ \ \ \ \ \ 0x11,\ 0xD1,\ 0xD0,\ 0x10,\ 0xF0,\ 0x30,\ 0x31,\ 0xF1,\ 0x33,\ 0xF3,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00284}00284\ \ \ \ \ \ \ \ \ 0xF2,\ 0x32,\ 0x36,\ 0xF6,\ 0xF7,\ 0x37,\ 0xF5,\ 0x35,\ 0x34,\ 0xF4,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00285}00285\ \ \ \ \ \ \ \ \ 0x3C,\ 0xFC,\ 0xFD,\ 0x3D,\ 0xFF,\ 0x3F,\ 0x3E,\ 0xFE,\ 0xFA,\ 0x3A,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00286}00286\ \ \ \ \ \ \ \ \ 0x3B,\ 0xFB,\ 0x39,\ 0xF9,\ 0xF8,\ 0x38,\ 0x28,\ 0xE8,\ 0xE9,\ 0x29,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00287}00287\ \ \ \ \ \ \ \ \ 0xEB,\ 0x2B,\ 0x2A,\ 0xEA,\ 0xEE,\ 0x2E,\ 0x2F,\ 0xEF,\ 0x2D,\ 0xED,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00288}00288\ \ \ \ \ \ \ \ \ 0xEC,\ 0x2C,\ 0xE4,\ 0x24,\ 0x25,\ 0xE5,\ 0x27,\ 0xE7,\ 0xE6,\ 0x26,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00289}00289\ \ \ \ \ \ \ \ \ 0x22,\ 0xE2,\ 0xE3,\ 0x23,\ 0xE1,\ 0x21,\ 0x20,\ 0xE0,\ 0xA0,\ 0x60,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00290}00290\ \ \ \ \ \ \ \ \ 0x61,\ 0xA1,\ 0x63,\ 0xA3,\ 0xA2,\ 0x62,\ 0x66,\ 0xA6,\ 0xA7,\ 0x67,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00291}00291\ \ \ \ \ \ \ \ \ 0xA5,\ 0x65,\ 0x64,\ 0xA4,\ 0x6C,\ 0xAC,\ 0xAD,\ 0x6D,\ 0xAF,\ 0x6F,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00292}00292\ \ \ \ \ \ \ \ \ 0x6E,\ 0xAE,\ 0xAA,\ 0x6A,\ 0x6B,\ 0xAB,\ 0x69,\ 0xA9,\ 0xA8,\ 0x68,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00293}00293\ \ \ \ \ \ \ \ \ 0x78,\ 0xB8,\ 0xB9,\ 0x79,\ 0xBB,\ 0x7B,\ 0x7A,\ 0xBA,\ 0xBE,\ 0x7E,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00294}00294\ \ \ \ \ \ \ \ \ 0x7F,\ 0xBF,\ 0x7D,\ 0xBD,\ 0xBC,\ 0x7C,\ 0xB4,\ 0x74,\ 0x75,\ 0xB5,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00295}00295\ \ \ \ \ \ \ \ \ 0x77,\ 0xB7,\ 0xB6,\ 0x76,\ 0x72,\ 0xB2,\ 0xB3,\ 0x73,\ 0xB1,\ 0x71,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00296}00296\ \ \ \ \ \ \ \ \ 0x70,\ 0xB0,\ 0x50,\ 0x90,\ 0x91,\ 0x51,\ 0x93,\ 0x53,\ 0x52,\ 0x92,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00297}00297\ \ \ \ \ \ \ \ \ 0x96,\ 0x56,\ 0x57,\ 0x97,\ 0x55,\ 0x95,\ 0x94,\ 0x54,\ 0x9C,\ 0x5C,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00298}00298\ \ \ \ \ \ \ \ \ 0x5D,\ 0x9D,\ 0x5F,\ 0x9F,\ 0x9E,\ 0x5E,\ 0x5A,\ 0x9A,\ 0x9B,\ 0x5B,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00299}00299\ \ \ \ \ \ \ \ \ 0x99,\ 0x59,\ 0x58,\ 0x98,\ 0x88,\ 0x48,\ 0x49,\ 0x89,\ 0x4B,\ 0x8B,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00300}00300\ \ \ \ \ \ \ \ \ 0x8A,\ 0x4A,\ 0x4E,\ 0x8E,\ 0x8F,\ 0x4F,\ 0x8D,\ 0x4D,\ 0x4C,\ 0x8C,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00301}00301\ \ \ \ \ \ \ \ \ 0x44,\ 0x84,\ 0x85,\ 0x45,\ 0x87,\ 0x47,\ 0x46,\ 0x86,\ 0x82,\ 0x42,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00302}00302\ \ \ \ \ \ \ \ \ 0x43,\ 0x83,\ 0x41,\ 0x81,\ 0x80,\ 0x40}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00303}00303\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00304}00304\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00305}00305\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00306}00306\ \textcolor{comment}{\ \ \ \ /*******************************ModBus\ Functions*******************************/}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00307}00307\ \textcolor{preprocessor}{\#define\ READ\_COILS\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 1}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00308}00308\ \textcolor{preprocessor}{\#define\ READ\_DISCRETE\_INPUTS\ \ \ \ \ \ \ \ 2}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00309}00309\ \textcolor{preprocessor}{\#define\ READ\_HOLDING\_REGISTERS\ \ \ \ \ \ 3}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00310}00310\ \textcolor{preprocessor}{\#define\ READ\_INPUT\_REGISTERS\ \ \ \ \ \ \ \ 4}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00311}00311\ \textcolor{preprocessor}{\#define\ WRITE\_SINGLE\_COIL\ \ \ \ \ \ \ \ \ \ \ 5}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00312}00312\ \textcolor{preprocessor}{\#define\ WRITE\_SINGLE\_REGISTER\ \ \ \ \ \ \ 6}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00313}00313\ \textcolor{preprocessor}{\#define\ WRITE\_MULTIPLE\_COILS\ \ \ \ \ \ \ \ 15}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00314}00314\ \textcolor{preprocessor}{\#define\ WRITE\_MULTIPLE\_REGISTERS\ \ \ \ 16}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00315}00315\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00316}00316\ \textcolor{preprocessor}{\#define\ BOFF\ \ \ \ 0}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00317}00317\ \textcolor{preprocessor}{\#define\ BON\ 255}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00222}\mbox{\hyperlink{structEM__version}{00222}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \_\_pack\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structEM__version}{EM\_version}}\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00223}00223\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int16\_t\ firmware;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00224}00224\ \ \ \ \ \}\ \mbox{\hyperlink{structEM__version}{EM\_version}};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00225}00225\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00226}00226\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ filter\_type\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00227}00227\ \ \ \ \ \ \ \ \ F\_ac\ =\ 0,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00228}00228\ \ \ \ \ \ \ \ \ F\_wac\ =\ 1,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00229}00229\ \ \ \ \ \ \ \ \ F\_wva\ =\ 2,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00230}00230\ \ \ \ \ \ \ \ \ F\_var\ =\ 3,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00231}00231\ \ \ \ \ \ \ \ \ F\_run\ =\ 4,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00232}00232\ \ \ \ \ \ \ \ \ F\_5\ =\ 5,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00233}00233\ \ \ \ \ \ \ \ \ F\_6\ =\ 6,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00234}00234\ \ \ \ \ \ \ \ \ F\_7\ =\ 7,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00235}00235\ \ \ \ \ \ \ \ \ F\_8\ =\ 8,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00236}00236\ \ \ \ \ \}\ filter\_type;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00237}00237\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00238}00238\ \ \ \ \ \textcolor{comment}{//\ code\ from\ libmodbus:\ https://raw.githubusercontent.com/stephane/libmodbus/master/src/modbus-\/rtu.c}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00239}00239\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00240}00240\ \ \ \ \ \textcolor{comment}{/*\ Table\ of\ CRC\ values\ for\ high-\/order\ byte\ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00241}00241\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ uint8\_t\ table\_crc\_hi[]\ =\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00242}00242\ \ \ \ \ \ \ \ \ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x01,\ 0xC0,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00243}00243\ \ \ \ \ \ \ \ \ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00244}00244\ \ \ \ \ \ \ \ \ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00245}00245\ \ \ \ \ \ \ \ \ 0x80,\ 0x41,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00246}00246\ \ \ \ \ \ \ \ \ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x00,\ 0xC1,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00247}00247\ \ \ \ \ \ \ \ \ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00248}00248\ \ \ \ \ \ \ \ \ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x00,\ 0xC1,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00249}00249\ \ \ \ \ \ \ \ \ 0x81,\ 0x40,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00250}00250\ \ \ \ \ \ \ \ \ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x01,\ 0xC0,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00251}00251\ \ \ \ \ \ \ \ \ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00252}00252\ \ \ \ \ \ \ \ \ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x00,\ 0xC1,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00253}00253\ \ \ \ \ \ \ \ \ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00254}00254\ \ \ \ \ \ \ \ \ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x01,\ 0xC0,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00255}00255\ \ \ \ \ \ \ \ \ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00256}00256\ \ \ \ \ \ \ \ \ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00257}00257\ \ \ \ \ \ \ \ \ 0x80,\ 0x41,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00258}00258\ \ \ \ \ \ \ \ \ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x01,\ 0xC0,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00259}00259\ \ \ \ \ \ \ \ \ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00260}00260\ \ \ \ \ \ \ \ \ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00261}00261\ \ \ \ \ \ \ \ \ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00262}00262\ \ \ \ \ \ \ \ \ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00263}00263\ \ \ \ \ \ \ \ \ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00264}00264\ \ \ \ \ \ \ \ \ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x00,\ 0xC1,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00265}00265\ \ \ \ \ \ \ \ \ 0x81,\ 0x40,\ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00266}00266\ \ \ \ \ \ \ \ \ 0x00,\ 0xC1,\ 0x81,\ 0x40,\ 0x01,\ 0xC0,\ 0x80,\ 0x41,\ 0x01,\ 0xC0,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00267}00267\ \ \ \ \ \ \ \ \ 0x80,\ 0x41,\ 0x00,\ 0xC1,\ 0x81,\ 0x40}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00268}00268\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00269}00269\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00270}00270\ \ \ \ \ \textcolor{comment}{/*\ Table\ of\ CRC\ values\ for\ low-\/order\ byte\ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00271}00271\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ uint8\_t\ table\_crc\_lo[]\ =\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00272}00272\ \ \ \ \ \ \ \ \ 0x00,\ 0xC0,\ 0xC1,\ 0x01,\ 0xC3,\ 0x03,\ 0x02,\ 0xC2,\ 0xC6,\ 0x06,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00273}00273\ \ \ \ \ \ \ \ \ 0x07,\ 0xC7,\ 0x05,\ 0xC5,\ 0xC4,\ 0x04,\ 0xCC,\ 0x0C,\ 0x0D,\ 0xCD,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00274}00274\ \ \ \ \ \ \ \ \ 0x0F,\ 0xCF,\ 0xCE,\ 0x0E,\ 0x0A,\ 0xCA,\ 0xCB,\ 0x0B,\ 0xC9,\ 0x09,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00275}00275\ \ \ \ \ \ \ \ \ 0x08,\ 0xC8,\ 0xD8,\ 0x18,\ 0x19,\ 0xD9,\ 0x1B,\ 0xDB,\ 0xDA,\ 0x1A,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00276}00276\ \ \ \ \ \ \ \ \ 0x1E,\ 0xDE,\ 0xDF,\ 0x1F,\ 0xDD,\ 0x1D,\ 0x1C,\ 0xDC,\ 0x14,\ 0xD4,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00277}00277\ \ \ \ \ \ \ \ \ 0xD5,\ 0x15,\ 0xD7,\ 0x17,\ 0x16,\ 0xD6,\ 0xD2,\ 0x12,\ 0x13,\ 0xD3,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00278}00278\ \ \ \ \ \ \ \ \ 0x11,\ 0xD1,\ 0xD0,\ 0x10,\ 0xF0,\ 0x30,\ 0x31,\ 0xF1,\ 0x33,\ 0xF3,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00279}00279\ \ \ \ \ \ \ \ \ 0xF2,\ 0x32,\ 0x36,\ 0xF6,\ 0xF7,\ 0x37,\ 0xF5,\ 0x35,\ 0x34,\ 0xF4,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00280}00280\ \ \ \ \ \ \ \ \ 0x3C,\ 0xFC,\ 0xFD,\ 0x3D,\ 0xFF,\ 0x3F,\ 0x3E,\ 0xFE,\ 0xFA,\ 0x3A,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00281}00281\ \ \ \ \ \ \ \ \ 0x3B,\ 0xFB,\ 0x39,\ 0xF9,\ 0xF8,\ 0x38,\ 0x28,\ 0xE8,\ 0xE9,\ 0x29,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00282}00282\ \ \ \ \ \ \ \ \ 0xEB,\ 0x2B,\ 0x2A,\ 0xEA,\ 0xEE,\ 0x2E,\ 0x2F,\ 0xEF,\ 0x2D,\ 0xED,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00283}00283\ \ \ \ \ \ \ \ \ 0xEC,\ 0x2C,\ 0xE4,\ 0x24,\ 0x25,\ 0xE5,\ 0x27,\ 0xE7,\ 0xE6,\ 0x26,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00284}00284\ \ \ \ \ \ \ \ \ 0x22,\ 0xE2,\ 0xE3,\ 0x23,\ 0xE1,\ 0x21,\ 0x20,\ 0xE0,\ 0xA0,\ 0x60,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00285}00285\ \ \ \ \ \ \ \ \ 0x61,\ 0xA1,\ 0x63,\ 0xA3,\ 0xA2,\ 0x62,\ 0x66,\ 0xA6,\ 0xA7,\ 0x67,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00286}00286\ \ \ \ \ \ \ \ \ 0xA5,\ 0x65,\ 0x64,\ 0xA4,\ 0x6C,\ 0xAC,\ 0xAD,\ 0x6D,\ 0xAF,\ 0x6F,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00287}00287\ \ \ \ \ \ \ \ \ 0x6E,\ 0xAE,\ 0xAA,\ 0x6A,\ 0x6B,\ 0xAB,\ 0x69,\ 0xA9,\ 0xA8,\ 0x68,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00288}00288\ \ \ \ \ \ \ \ \ 0x78,\ 0xB8,\ 0xB9,\ 0x79,\ 0xBB,\ 0x7B,\ 0x7A,\ 0xBA,\ 0xBE,\ 0x7E,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00289}00289\ \ \ \ \ \ \ \ \ 0x7F,\ 0xBF,\ 0x7D,\ 0xBD,\ 0xBC,\ 0x7C,\ 0xB4,\ 0x74,\ 0x75,\ 0xB5,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00290}00290\ \ \ \ \ \ \ \ \ 0x77,\ 0xB7,\ 0xB6,\ 0x76,\ 0x72,\ 0xB2,\ 0xB3,\ 0x73,\ 0xB1,\ 0x71,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00291}00291\ \ \ \ \ \ \ \ \ 0x70,\ 0xB0,\ 0x50,\ 0x90,\ 0x91,\ 0x51,\ 0x93,\ 0x53,\ 0x52,\ 0x92,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00292}00292\ \ \ \ \ \ \ \ \ 0x96,\ 0x56,\ 0x57,\ 0x97,\ 0x55,\ 0x95,\ 0x94,\ 0x54,\ 0x9C,\ 0x5C,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00293}00293\ \ \ \ \ \ \ \ \ 0x5D,\ 0x9D,\ 0x5F,\ 0x9F,\ 0x9E,\ 0x5E,\ 0x5A,\ 0x9A,\ 0x9B,\ 0x5B,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00294}00294\ \ \ \ \ \ \ \ \ 0x99,\ 0x59,\ 0x58,\ 0x98,\ 0x88,\ 0x48,\ 0x49,\ 0x89,\ 0x4B,\ 0x8B,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00295}00295\ \ \ \ \ \ \ \ \ 0x8A,\ 0x4A,\ 0x4E,\ 0x8E,\ 0x8F,\ 0x4F,\ 0x8D,\ 0x4D,\ 0x4C,\ 0x8C,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00296}00296\ \ \ \ \ \ \ \ \ 0x44,\ 0x84,\ 0x85,\ 0x45,\ 0x87,\ 0x47,\ 0x46,\ 0x86,\ 0x82,\ 0x42,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00297}00297\ \ \ \ \ \ \ \ \ 0x43,\ 0x83,\ 0x41,\ 0x81,\ 0x80,\ 0x40}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00298}00298\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00299}00299\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00300}00300\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00301}00301\ \textcolor{comment}{\ \ \ \ /*******************************ModBus\ Functions*******************************/}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00302}00302\ \textcolor{preprocessor}{\#define\ READ\_COILS\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 1}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00303}00303\ \textcolor{preprocessor}{\#define\ READ\_DISCRETE\_INPUTS\ \ \ \ \ \ \ \ 2}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00304}00304\ \textcolor{preprocessor}{\#define\ READ\_HOLDING\_REGISTERS\ \ \ \ \ \ 3}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00305}00305\ \textcolor{preprocessor}{\#define\ READ\_INPUT\_REGISTERS\ \ \ \ \ \ \ \ 4}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00306}00306\ \textcolor{preprocessor}{\#define\ WRITE\_SINGLE\_COIL\ \ \ \ \ \ \ \ \ \ \ 5}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00307}00307\ \textcolor{preprocessor}{\#define\ WRITE\_SINGLE\_REGISTER\ \ \ \ \ \ \ 6}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00308}00308\ \textcolor{preprocessor}{\#define\ WRITE\_MULTIPLE\_COILS\ \ \ \ \ \ \ \ 15}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00309}00309\ \textcolor{preprocessor}{\#define\ WRITE\_MULTIPLE\_REGISTERS\ \ \ \ 16}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00310}00310\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00311}00311\ \textcolor{preprocessor}{\#define\ BOFF\ \ \ \ 0}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00312}00312\ \textcolor{preprocessor}{\#define\ BON\ 255}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00313}00313\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00314}00314\ \textcolor{preprocessor}{\#define\ MM\_ERROR\_S\ \ MLED\_SetHigh()\ }\textcolor{comment}{//\ RED\ LED}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00315}00315\ \textcolor{preprocessor}{\#define\ MM\_ERROR\_C\ \ MLED\_SetLow()\ \ }\textcolor{comment}{//\ RED\ LED}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00316}00316\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00317}00317\ \ \ \ \ uint16\_t\ crc16(\textcolor{keyword}{volatile}\ uint8\_t\ *,\ uint16\_t);}
 \DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00318}00318\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00319}00319\ \textcolor{preprocessor}{\#define\ MM\_ERROR\_S\ \ MLED\_SetHigh()\ }\textcolor{comment}{//\ RED\ LED}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00320}00320\ \textcolor{preprocessor}{\#define\ MM\_ERROR\_C\ \ MLED\_SetLow()\ \ }\textcolor{comment}{//\ RED\ LED}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00321}00321\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00322}00322\ \ \ \ \ uint16\_t\ crc16(\textcolor{keyword}{volatile}\ uint8\_t\ *,\ uint16\_t);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00323}00323\ \ \ \ \ uint16\_t\ modbus\_rtu\_send\_msg(\textcolor{keywordtype}{void}\ *,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *,\ uint16\_t);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00324}00324\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00325}00325\ \ \ \ \ \textcolor{keywordtype}{void}\ my\_modbus\_rx\_32(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00326}00326\ \ \ \ \ uint8\_t\ init\_stream\_params(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00327}00327\ \ \ \ \ \textcolor{keywordtype}{void}\ init\_mb\_master\_timers(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00328}00328\ \ \ \ \ int8\_t\ master\_controller\_work(\mbox{\hyperlink{structC__data}{C\_data}}\ *);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00329}00329\ \ \ \ \ int32\_t\ mb32\_swap(\textcolor{keyword}{const}\ int32\_t);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00330}00330\ \ \ \ \ int16\_t\ mb16\_swap(\textcolor{keyword}{const}\ int16\_t);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00331}00331\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00332}00332\ \ \ \ \ \textcolor{keywordtype}{void}\ clear\_2hz(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00333}00333\ \ \ \ \ \textcolor{keywordtype}{void}\ clear\_500ahz(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00334}00334\ \ \ \ \ \textcolor{keywordtype}{void}\ clear\_500hz(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00335}00335\ \ \ \ \ uint32\_t\ get\_2hz(\textcolor{keyword}{const}\ uint8\_t);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00336}00336\ \ \ \ \ uint32\_t\ get\_500ahz(\textcolor{keyword}{const}\ uint8\_t);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00337}00337\ \ \ \ \ uint32\_t\ get\_500hz(\textcolor{keyword}{const}\ uint8\_t);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00338}00338\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00339}00339\ \ \ \ \ \textcolor{keywordtype}{void}\ timer\_500ms\_tick(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00340}00340\ \ \ \ \ \textcolor{keywordtype}{void}\ timer\_2ms\_tick(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00341}00341\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00342}00342\ \ \ \ \ \textcolor{keywordtype}{void}\ mb\_tx\_test(\mbox{\hyperlink{structC__data}{C\_data}}\ *);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00343}00343\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00344}00344\ \ \ \ \ \textcolor{keywordtype}{void}\ mb\_setup(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00345}00345\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00346}00346\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structVM__type}{VM\_type}}\ VM;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00347}00347\ \ \ \ \ \textcolor{keyword}{extern}\ \mbox{\hyperlink{structC__data}{C\_data}}\ C;\ \textcolor{comment}{//\ MODBUS\ client\ state\ data}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00348}00348\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \mbox{\hyperlink{structM__data}{M\_data}}\ M;\ \textcolor{comment}{//\ MODBUS\ hardware\ state\ data}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00349}00349\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \mbox{\hyperlink{structM__time__data}{M\_time\_data}}\ MT;\ \textcolor{comment}{//\ MODBUS\ sequence\ timers}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00350}00350\ \ \ \ \ \textcolor{keyword}{extern}\ \mbox{\hyperlink{structEM__data1}{EM\_data1}}\ em;\ \textcolor{comment}{//\ converted\ results\ data}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00351}00351\ \ \ \ \ \textcolor{keyword}{extern}\ \mbox{\hyperlink{structEM__data2}{EM\_data2}}\ emt;\ \textcolor{comment}{//\ converted\ results\ data}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00352}00352\ \ \ \ \ \textcolor{keyword}{extern}\ \mbox{\hyperlink{structEM__serial}{EM\_serial}}\ ems;\ \textcolor{comment}{//\ converted\ results\ data}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00353}00353\ \ \ \ \ \textcolor{keyword}{extern}\ \mbox{\hyperlink{structEM__version}{EM\_version}}\ emv;\ \textcolor{comment}{//\ converted\ results\ data}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00354}00354\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00355}00355\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00356}00356\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00357}00357\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00358}00358\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00359}00359\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{/*\ MODBUS\_MASTER\_H\ */}\textcolor{preprocessor}{}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00360}00360\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00319}00319\ \ \ \ \ \textcolor{keywordtype}{void}\ my\_modbus\_rx\_32(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00320}00320\ \ \ \ \ uint8\_t\ init\_stream\_params(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00321}00321\ \ \ \ \ \textcolor{keywordtype}{void}\ init\_mb\_master\_timers(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00322}00322\ \ \ \ \ int8\_t\ master\_controller\_work(\mbox{\hyperlink{structC__data}{C\_data}}\ *);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00323}00323\ \ \ \ \ int32\_t\ mb32\_swap(\textcolor{keyword}{const}\ int32\_t);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00324}00324\ \ \ \ \ int16\_t\ mb16\_swap(\textcolor{keyword}{const}\ int16\_t);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00325}00325\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00326}00326\ \ \ \ \ \textcolor{keywordtype}{void}\ mb\_tx\_test(\mbox{\hyperlink{structC__data}{C\_data}}\ *);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00327}00327\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00328}00328\ \ \ \ \ \textcolor{keywordtype}{void}\ mb\_setup(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00329}00329\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00330}00330\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structVM__type}{VM\_type}}\ VM;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00331}00331\ \ \ \ \ \textcolor{keyword}{extern}\ \mbox{\hyperlink{structC__data}{C\_data}}\ C;\ \textcolor{comment}{//\ MODBUS\ client\ state\ data}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00332}00332\ \ \ \ \ \textcolor{keyword}{extern}\ \mbox{\hyperlink{structEM__data1}{EM\_data1}}\ em;\ \textcolor{comment}{//\ converted\ results\ data}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00333}00333\ \ \ \ \ \textcolor{keyword}{extern}\ \mbox{\hyperlink{structEM__data2}{EM\_data2}}\ emt;\ \textcolor{comment}{//\ converted\ results\ data}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00334}00334\ \ \ \ \ \textcolor{keyword}{extern}\ \mbox{\hyperlink{structEM__serial}{EM\_serial}}\ ems;\ \textcolor{comment}{//\ converted\ results\ data}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00335}00335\ \ \ \ \ \textcolor{keyword}{extern}\ \mbox{\hyperlink{structEM__version}{EM\_version}}\ emv;\ \textcolor{comment}{//\ converted\ results\ data}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00336}00336\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00337}00337\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00338}00338\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00339}00339\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00340}00340\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00341}00341\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{/*\ MODBUS\_MASTER\_H\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8h_source_l00342}00342\ }
 
 \end{DoxyCode}

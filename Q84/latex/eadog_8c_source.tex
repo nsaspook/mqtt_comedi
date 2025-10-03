@@ -4,603 +4,604 @@
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\Hypertarget{eadog_8c_source_l00001}00001\ }
 \DoxyCodeLine{\Hypertarget{eadog_8c_source_l00003}00003\ \textcolor{preprocessor}{\#include\ <string.h>}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00004}00004\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{eadog_8h}{eadog.h}}"{}}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00005}00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{vconfig_8h}{vconfig.h}}"{}}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00006}00006\ \textcolor{preprocessor}{\#include\ "{}mcc\_generated\_files/mcc.h"{}}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00004}00004\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{mxcmd_8h}{mxcmd.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00005}00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{eadog_8h}{eadog.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00006}00006\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{vconfig_8h}{vconfig.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00007}00007\ \textcolor{preprocessor}{\#include\ "{}mcc\_generated\_files/mcc.h"{}}}
 \DoxyCodeLine{\Hypertarget{eadog_8c_source_l00008}00008\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00009}00009\ \textcolor{preprocessor}{\#ifdef\ TRACE}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00010}00010\ \textcolor{preprocessor}{\#define\ E\_TRACE\ DEBUG1\_Toggle()}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00011}00011\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00012}00012\ \textcolor{preprocessor}{\#define\ E\_TRACE\ "{}"{}}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00013}00013\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00014}00014\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00015}00015\ \textcolor{preprocessor}{\#ifdef\ CAN\_REMOTE\ }\textcolor{comment}{//\ SPI\ DMA\ wait\ timeout\ counts}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00016}00016\ \textcolor{preprocessor}{\#define\ DONE\_DELAY\ \ 99999}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00017}00017\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00018}00018\ \textcolor{preprocessor}{\#define\ DONE\_DELAY\ \ 9999}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00019}00019\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00020}00020\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00021}00021\ \textcolor{keyword}{volatile}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structspi__link__type}{spi\_link\_type}}\ spi\_link\ =\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00022}00022\ \ \ \ \ .LCD\_DATA\ =\ \textcolor{keyword}{false},}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00023}00023\ \};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00024}00024\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00025}00025\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structspi1__configuration__t}{spi1\_configuration\_t}}\ spi1\_configuration[]\ =\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00026}00026\ \ \ \ \ \{0x83,\ 0x20,\ 0x3,\ 0x4,\ 0\}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00027}00027\ \};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00028}00028\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00029}00029\ \textcolor{keyword}{static}\ \textcolor{keyword}{volatile}\ uint8\_t\ inx\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00030}00030\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{char}\ Sstr[NSB][LSB];}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00031}00031\ \textcolor{keyword}{static}\ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ scroll\_lock\ =\ \textcolor{keyword}{false},\ powerup\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00032}00032\ \textcolor{keyword}{static}\ \textcolor{keyword}{volatile}\ uint8\_t\ scroll\_line\_pos\ =\ 4;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00033}00033\ \textcolor{keyword}{volatile}\ uint8\_t\ c0,\ c1,\ c2;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00034}00034\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00035}00035\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ send\_lcd\_cmd\_long(\textcolor{keyword}{const}\ uint8\_t);\ \textcolor{comment}{//\ for\ display\ init\ only}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00036}00036\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ send\_lcd\_data(\textcolor{keyword}{const}\ uint8\_t);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00037}00037\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ send\_lcd\_cmd(\textcolor{keyword}{const}\ uint8\_t);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00038}00038\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ spi\_lcd\_byte(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00039}00039\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00040}00040\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ spi\_src\_byte(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00041}00041\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ spi\_des\_byte(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00042}00042\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ spi\_or\_byte(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00043}00043\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ wdtdelay(\textcolor{keyword}{const}\ uint32\_t);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00044}00044\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00045}00045\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00046}00046\ \textcolor{comment}{\ *\ Init\ the\ NHD-\/0420D3Z-\/NSW-\/BBW-\/V3\ in\ 8-\/bit\ serial\ mode}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00047}00047\ \textcolor{comment}{\ *\ channel\ 1\ DMA\ if\ configured}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00048}00048\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00049}00049\ \textcolor{keywordtype}{bool}\ init\_display(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00050}00050\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00051}00051\ \ \ \ \ spi\_link.txbuf\ =\ lcd\_dma\_buf;\ \textcolor{comment}{//\ use\ MCC\ DMA\ buffer\ variable}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00052}00052\ \ \ \ \ spi\_link.rxbuf\ =\ (\textcolor{keywordtype}{void}\ *)\ spi1\_rec\_buf;\ \textcolor{comment}{//\ setup\ receive\ buffer\ for\ other\ devices\ on\ the\ buss}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00053}00053\ \ \ \ \ memset(Sstr,\ \textcolor{charliteral}{'\ '},\ NSB\ *\ LSB);\ \textcolor{comment}{//\ clear\ scroll\ buffer\ of\ junk}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00054}00054\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00055}00055\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00056}00056\ \ \ \ \ DMA1\_SetSCNTIInterruptHandler(clear\_lcd\_done);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00057}00057\ \ \ \ \ DMA1\_SetORIInterruptHandler(spi\_lcd\_byte);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00058}00058\ \ \ \ \ DMA1\_SetDMAPriority(2);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00059}00059\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00060}00060\ \ \ \ \ DMA2\_SetSCNTIInterruptHandler(spi\_src\_byte);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00061}00061\ \ \ \ \ DMA2\_SetORIInterruptHandler(spi\_or\_byte);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00062}00062\ \ \ \ \ DMA2\_SetDCNTIInterruptHandler(spi\_des\_byte);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00063}00063\ \ \ \ \ DMA2\_SetDMAPriority(3);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00064}00064\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00065}00065\ \ \ \ \ DMA3\_SetSCNTIInterruptHandler(spi\_src\_byte);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00066}00066\ \ \ \ \ DMA3\_SetORIInterruptHandler(spi\_or\_byte);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00067}00067\ \ \ \ \ DMA3\_SetDCNTIInterruptHandler(spi\_des\_byte);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00068}00068\ \ \ \ \ DMA3\_SetDMAPriority(3);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00069}00069\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00070}00070\ \textcolor{preprocessor}{\#ifdef\ NHD\ \ }\textcolor{comment}{//\ uses\ MODE\ 3\ on\ the\ Q84,\ https://newhavendisplay.com/content/specs/NHD-\/0420D3Z-\/NSW-\/BBW-\/V3.pdf}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00071}00071\ \textcolor{preprocessor}{\#ifdef\ USEMCC\_SPI}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00072}00072\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00073}00073\ \ \ \ \ SPI1CON0bits.EN\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00074}00074\ \ \ \ \ \textcolor{comment}{//\ mode\ 3}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00075}00075\ \ \ \ \ SPI1CON1\ =\ 0x20;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00076}00076\ \ \ \ \ \textcolor{comment}{//\ SSET\ disabled;\ RXR\ suspended\ if\ the\ RxFIFO\ is\ full;\ TXR\ required\ for\ a\ transfer;}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00077}00077\ \ \ \ \ SPI1CON2\ =\ 0x03;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00078}00078\ \ \ \ \ \textcolor{comment}{//\ BAUD\ 0;}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00079}00079\ \ \ \ \ SPI1BAUD\ =\ 0x04;\ \textcolor{comment}{//\ 50kHz\ SCK}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00080}00080\ \ \ \ \ \textcolor{comment}{//\ CLKSEL\ MFINTOSC;}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00081}00081\ \ \ \ \ SPI1CLK\ =\ 0x02;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00082}00082\ \ \ \ \ \textcolor{comment}{//\ BMODE\ every\ byte;\ LSBF\ MSb\ first;\ EN\ enabled;\ MST\ bus\ master;}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00083}00083\ \ \ \ \ SPI1CON0\ =\ 0x83;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00084}00084\ \ \ \ \ SPI1CON0bits.EN\ =\ 1;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00085}00085\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00086}00086\ \ \ \ \ \textcolor{keywordflow}{if}\ (powerup)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00087}00087\ \ \ \ \ \ \ \ \ wdtdelay(LCD\_PWR\_DELAY);\ \textcolor{comment}{//\ >\ 400ms\ power\ up\ delay}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00088}00088\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00089}00089\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00090}00090\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00091}00091\ \ \ \ \ SPI1INTFbits.SPI1TXUIF\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00092}00092\ \ \ \ \ DMASELECT\ =\ 0;\ \textcolor{comment}{//\ use\ DMA1\ TX}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00093}00093\ \ \ \ \ DMAnCON0bits.EN\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00094}00094\ \ \ \ \ SPI1CON0bits.EN\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00095}00095\ \ \ \ \ SPI1CON2\ =\ 0x02;\ \textcolor{comment}{//\ \ Received\ data\ is\ not\ stored\ in\ the\ FIFO}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00096}00096\ \ \ \ \ SPI1CON0bits.EN\ =\ 1;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00097}00097\ \ \ \ \ DMAnCON1bits.DMODE\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00098}00098\ \ \ \ \ DMAnCON1bits.DSTP\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00099}00099\ \ \ \ \ DMAnCON1bits.SMODE\ =\ 1;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00100}00100\ \ \ \ \ DMAnCON1bits.SMR\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00101}00101\ \ \ \ \ DMAnCON1bits.SSTP\ =\ 1;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00102}00102\ \ \ \ \ DMAnSSA\ =\ (uint24\_t)\ spi\_link.txbuf;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00103}00103\ \ \ \ \ DMAnCON0bits.DGO\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00104}00104\ \ \ \ \ DMAnCON0bits.EN\ =\ 1;\ \textcolor{comment}{/*\ enable\ DMA\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00105}00105\ \ \ \ \ SPI1INTFbits.SPI1TXUIF\ =\ 1;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00106}00106\ \ \ \ \ send\_lcd\_cmd\_dma(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00107}00107\ \ \ \ \ send\_lcd\_data\_dma(NHD\_BL\_MED);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00108}00108\ \ \ \ \ send\_lcd\_cmd\_dma(LCD\_CMD\_CONT);\ \textcolor{comment}{//\ set\ display\ contrast}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00109}00109\ \ \ \ \ send\_lcd\_data\_dma(NHD\_CONT);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00110}00110\ \ \ \ \ send\_lcd\_cmd\_dma(LCD\_CMD\_ON);\ \textcolor{comment}{//\ display\ on}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00111}00111\ \ \ \ \ send\_lcd\_cmd\_dma(LCD\_CMD\_CLR);\ \textcolor{comment}{//\ clear\ screen}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00112}00112\ \ \ \ \ wdtdelay(NHD\_L\_DELAY);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00113}00113\ \ \ \ \ DMA1\_StopTransfer();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00114}00114\ \ \ \ \ DMA2\_StopTransfer();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00115}00115\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00116}00116\ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00117}00117\ \ \ \ \ send\_lcd\_data(NHD\_BL\_LOW);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00118}00118\ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_CONT);\ \textcolor{comment}{//\ set\ display\ contrast}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00119}00119\ \ \ \ \ send\_lcd\_data(NHD\_CONT);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00120}00120\ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_OFF);\ \textcolor{comment}{//\ display\ on}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00121}00121\ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_CLR);\ \textcolor{comment}{//\ clear\ screen}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00122}00122\ \ \ \ \ wdtdelay(NHD\_L\_DELAY);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00123}00123\ \ \ \ \ DMA1\_StopTransfer();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00124}00124\ \ \ \ \ DMA2\_StopTransfer();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00125}00125\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00010}00010\ \textcolor{preprocessor}{\#ifdef\ TRACE}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00011}00011\ \textcolor{preprocessor}{\#define\ E\_TRACE\ DEBUG1\_Toggle()}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00012}00012\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00013}00013\ \textcolor{preprocessor}{\#define\ E\_TRACE\ "{}"{}}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00014}00014\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00016}00016\ \textcolor{preprocessor}{\#ifdef\ CAN\_REMOTE\ }\textcolor{comment}{//\ SPI\ DMA\ wait\ timeout\ counts}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00017}00017\ \textcolor{preprocessor}{\#define\ DONE\_DELAY\ \ 99999}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00018}00018\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00019}00019\ \textcolor{preprocessor}{\#define\ DONE\_DELAY\ \ 9999}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00020}00020\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00022}00022\ \textcolor{keyword}{volatile}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structspi__link__type}{spi\_link\_type}}\ spi\_link\ =\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00023}00023\ \ \ \ \ .LCD\_DATA\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00024}00024\ \};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00026}00026\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structspi1__configuration__t}{spi1\_configuration\_t}}\ spi1\_configuration[]\ =\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00027}00027\ \ \ \ \ \{0x83,\ 0x20,\ 0x3,\ 0x4,\ 0\}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00028}00028\ \};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00030}00030\ \textcolor{keyword}{static}\ \textcolor{keyword}{volatile}\ uint8\_t\ inx\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00031}00031\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{char}\ Sstr[NSB][LSB];}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00032}00032\ \textcolor{keyword}{static}\ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ scroll\_lock\ =\ \textcolor{keyword}{false},\ powerup\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00033}00033\ \textcolor{keyword}{static}\ \textcolor{keyword}{volatile}\ uint8\_t\ scroll\_line\_pos\ =\ 4;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00034}00034\ \textcolor{keyword}{volatile}\ uint8\_t\ c0,\ c1,\ c2;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00036}00036\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ send\_lcd\_cmd\_long(\textcolor{keyword}{const}\ uint8\_t);\ \textcolor{comment}{//\ for\ display\ init\ only}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00037}00037\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ send\_lcd\_data(\textcolor{keyword}{const}\ uint8\_t);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00038}00038\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ send\_lcd\_cmd(\textcolor{keyword}{const}\ uint8\_t);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00039}00039\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ spi\_lcd\_byte(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00041}00041\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ spi\_src\_byte(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00042}00042\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ spi\_des\_byte(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00043}00043\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ spi\_or\_byte(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00044}00044\ \textcolor{keywordtype}{void}\ wdtdelay(\textcolor{keyword}{const}\ uint32\_t);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00046}00046\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00047}00047\ \textcolor{comment}{\ *\ Init\ the\ NHD-\/0420D3Z-\/NSW-\/BBW-\/V3\ in\ 8-\/bit\ serial\ mode}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00048}00048\ \textcolor{comment}{\ *\ channel\ 1\ DMA\ if\ configured}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00049}00049\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00050}00050\ \textcolor{keywordtype}{bool}\ init\_display(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00051}00051\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00052}00052\ \ \ \ \ spi\_link.txbuf\ =\ lcd\_dma\_buf;\ \textcolor{comment}{//\ use\ MCC\ DMA\ buffer\ variable}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00053}00053\ \ \ \ \ spi\_link.rxbuf\ =\ (\textcolor{keywordtype}{void}\ *)\ spi1\_rec\_buf;\ \textcolor{comment}{//\ setup\ receive\ buffer\ for\ other\ devices\ on\ the\ buss}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00054}00054\ \ \ \ \ memset(Sstr,\ \textcolor{charliteral}{'\ '},\ NSB\ *\ LSB);\ \textcolor{comment}{//\ clear\ scroll\ buffer\ of\ junk}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00055}00055\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00056}00056\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00057}00057\ \ \ \ \ DMA1\_SetSCNTIInterruptHandler(clear\_lcd\_done);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00058}00058\ \ \ \ \ DMA1\_SetORIInterruptHandler(spi\_lcd\_byte);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00059}00059\ \ \ \ \ DMA1\_SetDMAPriority(2);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00061}00061\ \ \ \ \ DMA2\_SetSCNTIInterruptHandler(spi\_src\_byte);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00062}00062\ \ \ \ \ DMA2\_SetORIInterruptHandler(spi\_or\_byte);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00063}00063\ \ \ \ \ DMA2\_SetDCNTIInterruptHandler(spi\_des\_byte);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00064}00064\ \ \ \ \ DMA2\_SetDMAPriority(3);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00066}00066\ \ \ \ \ DMA3\_SetSCNTIInterruptHandler(spi\_src\_byte);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00067}00067\ \ \ \ \ DMA3\_SetORIInterruptHandler(spi\_or\_byte);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00068}00068\ \ \ \ \ DMA3\_SetDCNTIInterruptHandler(spi\_des\_byte);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00069}00069\ \ \ \ \ DMA3\_SetDMAPriority(3);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00070}00070\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00071}00071\ \textcolor{preprocessor}{\#ifdef\ NHD\ \ }\textcolor{comment}{//\ uses\ MODE\ 3\ on\ the\ Q84,\ https://newhavendisplay.com/content/specs/NHD-\/0420D3Z-\/NSW-\/BBW-\/V3.pdf}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00072}00072\ \textcolor{preprocessor}{\#ifdef\ USEMCC\_SPI}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00073}00073\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00074}00074\ \ \ \ \ SPI1CON0bits.EN\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00075}00075\ \ \ \ \ \textcolor{comment}{//\ mode\ 3}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00076}00076\ \ \ \ \ SPI1CON1\ =\ 0x20;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00077}00077\ \ \ \ \ \textcolor{comment}{//\ SSET\ disabled;\ RXR\ suspended\ if\ the\ RxFIFO\ is\ full;\ TXR\ required\ for\ a\ transfer;}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00078}00078\ \ \ \ \ SPI1CON2\ =\ 0x03;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00079}00079\ \ \ \ \ \textcolor{comment}{//\ BAUD\ 0;}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00080}00080\ \ \ \ \ SPI1BAUD\ =\ 0x04;\ \textcolor{comment}{//\ 50kHz\ SCK}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00081}00081\ \ \ \ \ \textcolor{comment}{//\ CLKSEL\ MFINTOSC;}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00082}00082\ \ \ \ \ SPI1CLK\ =\ 0x02;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00083}00083\ \ \ \ \ \textcolor{comment}{//\ BMODE\ every\ byte;\ LSBF\ MSb\ first;\ EN\ enabled;\ MST\ bus\ master;}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00084}00084\ \ \ \ \ SPI1CON0\ =\ 0x83;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00085}00085\ \ \ \ \ SPI1CON0bits.EN\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00086}00086\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00087}00087\ \ \ \ \ \textcolor{keywordflow}{if}\ (powerup)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00088}00088\ \ \ \ \ \ \ \ \ wdtdelay(LCD\_PWR\_DELAY);\ \textcolor{comment}{//\ >\ 400ms\ power\ up\ delay}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00089}00089\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00090}00090\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00091}00091\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00092}00092\ \ \ \ \ SPI1INTFbits.SPI1TXUIF\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00093}00093\ \ \ \ \ DMASELECT\ =\ 0;\ \textcolor{comment}{//\ use\ DMA1\ TX}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00094}00094\ \ \ \ \ DMAnCON0bits.EN\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00095}00095\ \ \ \ \ SPI1CON0bits.EN\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00096}00096\ \ \ \ \ SPI1CON2\ =\ 0x02;\ \textcolor{comment}{//\ \ Received\ data\ is\ not\ stored\ in\ the\ FIFO}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00097}00097\ \ \ \ \ SPI1CON0bits.EN\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00098}00098\ \ \ \ \ DMAnCON1bits.DMODE\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00099}00099\ \ \ \ \ DMAnCON1bits.DSTP\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00100}00100\ \ \ \ \ DMAnCON1bits.SMODE\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00101}00101\ \ \ \ \ DMAnCON1bits.SMR\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00102}00102\ \ \ \ \ DMAnCON1bits.SSTP\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00103}00103\ \ \ \ \ DMAnSSA\ =\ (uint24\_t)\ spi\_link.txbuf;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00104}00104\ \ \ \ \ DMAnCON0bits.DGO\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00105}00105\ \ \ \ \ DMAnCON0bits.EN\ =\ 1;\ \textcolor{comment}{/*\ enable\ DMA\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00106}00106\ \ \ \ \ SPI1INTFbits.SPI1TXUIF\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00107}00107\ \ \ \ \ send\_lcd\_cmd\_dma(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00108}00108\ \ \ \ \ send\_lcd\_data\_dma(NHD\_BL\_MED);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00109}00109\ \ \ \ \ send\_lcd\_cmd\_dma(LCD\_CMD\_CONT);\ \textcolor{comment}{//\ set\ display\ contrast}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00110}00110\ \ \ \ \ send\_lcd\_data\_dma(NHD\_CONT);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00111}00111\ \ \ \ \ send\_lcd\_cmd\_dma(LCD\_CMD\_ON);\ \textcolor{comment}{//\ display\ on}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00112}00112\ \ \ \ \ send\_lcd\_cmd\_dma(LCD\_CMD\_CLR);\ \textcolor{comment}{//\ clear\ screen}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00113}00113\ \ \ \ \ wdtdelay(NHD\_L\_DELAY);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00114}00114\ \ \ \ \ DMA1\_StopTransfer();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00115}00115\ \ \ \ \ DMA2\_StopTransfer();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00116}00116\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00117}00117\ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00118}00118\ \ \ \ \ send\_lcd\_data(NHD\_BL\_LOW);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00119}00119\ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_CONT);\ \textcolor{comment}{//\ set\ display\ contrast}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00120}00120\ \ \ \ \ send\_lcd\_data(NHD\_CONT);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00121}00121\ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_OFF);\ \textcolor{comment}{//\ display\ on}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00122}00122\ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_CLR);\ \textcolor{comment}{//\ clear\ screen}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00123}00123\ \ \ \ \ wdtdelay(NHD\_L\_DELAY);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00124}00124\ \ \ \ \ DMA1\_StopTransfer();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00125}00125\ \ \ \ \ DMA2\_StopTransfer();}
 \DoxyCodeLine{\Hypertarget{eadog_8c_source_l00126}00126\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00127}00127\ \ \ \ \ powerup\ =\ \textcolor{keyword}{false};\ \textcolor{comment}{//\ only\ of\ the\ first\ display\ init\ call}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00128}00128\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00129}00129\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00130}00130\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00131}00131\ \textcolor{preprocessor}{\#ifdef\ NHD}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00132}00132\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00133}00133\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00134}00134\ \textcolor{comment}{\ *\ R2\ short\ on\ LCD\ NHD-\/0420D3Z-\/NSW-\/BBW-\/V3\ board}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00135}00135\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00136}00136\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00137}00137\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ send\_lcd\_data(\textcolor{keyword}{const}\ uint8\_t\ data)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00138}00138\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00139}00139\ \ \ \ \ CS\_SetLow();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00140}00140\ \ \ \ \ SPI1\_ExchangeByte(data);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00141}00141\ \ \ \ \ wdtdelay(NHD\_T\_DELAY);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00142}00142\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00143}00143\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00144}00144\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ send\_lcd\_cmd(\textcolor{keyword}{const}\ uint8\_t\ cmd)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00145}00145\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00146}00146\ \ \ \ \ CS\_SetLow();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00147}00147\ \ \ \ \ SPI1\_ExchangeByte(NHD\_CMD);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00148}00148\ \ \ \ \ wdtdelay(NHD\_T\_DELAY);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00149}00149\ \ \ \ \ SPI1\_ExchangeByte(cmd);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00150}00150\ \ \ \ \ wdtdelay(NHD\_T\_DELAY);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00151}00151\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00152}00152\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00153}00153\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ send\_lcd\_cmd\_long(\textcolor{keyword}{const}\ uint8\_t\ cmd)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00154}00154\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00155}00155\ \ \ \ \ CS\_SetLow();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00156}00156\ \ \ \ \ SPI1\_ExchangeByte(NHD\_CMD);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00157}00157\ \ \ \ \ wdtdelay(NHD\_T\_DELAY);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00158}00158\ \ \ \ \ SPI1\_ExchangeByte(cmd);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00159}00159\ \ \ \ \ wdtdelay(NHD\_L\_DELAY);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00160}00160\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00161}00161\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00162}00162\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00163}00163\ \textcolor{comment}{\ *\ CAN\ use\ DMA\ channel\ 1\ for\ transfers}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00164}00164\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00165}00165\ \textcolor{keywordtype}{void}\ eaDogM\_WriteString(\textcolor{keywordtype}{char}\ *strPtr)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00166}00166\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00167}00167\ \ \ \ \ uint8\_t\ len\ =\ (uint8\_t)\ strlen(strPtr);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00168}00168\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00169}00169\ \ \ \ \ wait\_lcd\_done();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00170}00170\ \ \ \ \ wait\_lcd\_set();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00171}00171\ \ \ \ \ CS\_SetLow();\ \textcolor{comment}{/*\ SPI\ select\ display\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00172}00172\ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ >\ (uint8\_t)\ MAX\_STRLEN)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00173}00173\ \ \ \ \ \ \ \ \ len\ =\ MAX\_STRLEN;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00174}00174\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00175}00175\ \ \ \ \ memcpy(spi\_link.txbuf,\ strPtr,\ len);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00176}00176\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00177}00177\ \ \ \ \ DMASELECT\ =\ 0x00;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00178}00178\ \ \ \ \ DMAnCON0bits.EN\ =\ 0;\ \textcolor{comment}{/*\ disable\ TX\ DMA\ to\ change\ source\ count\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00179}00179\ \ \ \ \ DMA1\_SetSourceSize(len);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00180}00180\ \ \ \ \ DMA1\_SetDestinationSize(1);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00181}00181\ \ \ \ \ DMAnCON0bits.EN\ =\ 1;\ \textcolor{comment}{/*\ enable\ DMA\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00182}00182\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00183}00183\ \ \ \ \ SPI1\_ExchangeBlock(spi\_link.txbuf,\ len);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00184}00184\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00185}00185\ \ \ \ \ start\_lcd();\ \textcolor{comment}{//\ start\ DMA\ transfer}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00186}00186\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00187}00187\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00188}00188\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00189}00189\ \textcolor{comment}{\ *\ uses\ DMA\ channel\ 1\ for\ transfers}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00190}00190\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00191}00191\ \textcolor{keywordtype}{void}\ send\_lcd\_cmd\_dma(\textcolor{keyword}{const}\ uint8\_t\ strPtr)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00192}00192\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00193}00193\ \ \ \ \ send\_lcd\_data\_dma(NHD\_CMD);\ \textcolor{comment}{//prefix}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00194}00194\ \ \ \ \ send\_lcd\_data\_dma(strPtr);\ \textcolor{comment}{//\ cmd\ code}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00195}00195\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00196}00196\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00197}00197\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00198}00198\ \textcolor{comment}{\ *\ uses\ DMA\ channel\ 1\ for\ transfers}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00199}00199\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00200}00200\ \textcolor{keywordtype}{void}\ send\_lcd\_data\_dma(\textcolor{keyword}{const}\ uint8\_t\ strPtr)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00201}00201\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00202}00202\ \ \ \ \ wait\_lcd\_done();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00203}00203\ \ \ \ \ wait\_lcd\_set();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00204}00204\ \ \ \ \ CS\_SetLow();\ \textcolor{comment}{/*\ SPI\ select\ display\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00205}00205\ \ \ \ \ spi\_link.txbuf[0]\ =\ strPtr;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00206}00206\ \ \ \ \ DMASELECT\ =\ 0x00;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00207}00207\ \ \ \ \ DMAnCON0bits.EN\ =\ 0;\ \textcolor{comment}{/*\ disable\ TX\ DMA\ to\ change\ source\ count\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00208}00208\ \ \ \ \ DMA1\_SetSourceSize(1);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00209}00209\ \ \ \ \ DMA1\_SetDestinationSize(1);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00210}00210\ \ \ \ \ DMAnCON0bits.EN\ =\ 1;\ \textcolor{comment}{/*\ enable\ DMA\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00211}00211\ \ \ \ \ start\_lcd();\ \textcolor{comment}{//\ start\ DMA\ transfer}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00212}00212\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00213}00213\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00214}00214\ \textcolor{keywordtype}{void}\ send\_spi1\_tic12400\_dma(uint8\_t\ *strPtr,\ \textcolor{keyword}{const}\ uint8\_t\ len)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00215}00215\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00216}00216\ \ \ \ \ uint8\_t\ *mc\_cmd\ =\ strPtr;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00217}00217\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00218}00218\ \ \ \ \ wait\_lcd\_done();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00219}00219\ \ \ \ \ CS\_SetHigh();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00220}00220\ \ \ \ \ TIC\_CS\_SetLow();\ \textcolor{comment}{/*\ SPI\ select\ display\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00221}00221\ \ \ \ \ spi\_link.des\_bytes++;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00222}00222\ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ >\ 8)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00223}00223\ \ \ \ \ \ \ \ \ TIC\_CS\_SetHigh();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00224}00224\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00225}00225\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00226}00226\ \ \ \ \ memcpy(tic\_rw.cmd,\ mc\_cmd,\ len);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00227}00227\ \ \ \ \ SPI1\_ExchangeBlock(tic\_rw.cmd,\ len);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00228}00228\ \ \ \ \ memcpy(spi\_link.rxbuf,\ tic\_rw.cmd,\ len);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00229}00229\ \ \ \ \ TIC\_CS\_SetHigh();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00230}00230\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00231}00231\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00232}00232\ \textcolor{keywordtype}{void}\ send\_spi1\_mc33996\_dma(uint8\_t\ *strPtr,\ \textcolor{keyword}{const}\ uint8\_t\ len)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00233}00233\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00234}00234\ \ \ \ \ uint8\_t\ *mc\_cmd\ =\ strPtr;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00235}00235\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00236}00236\ \ \ \ \ wait\_lcd\_done();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00237}00237\ \ \ \ \ CS\_SetHigh();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00238}00238\ \ \ \ \ MCZ\_CS\_SetLow();\ \textcolor{comment}{/*\ SPI\ select\ display\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00239}00239\ \ \ \ \ spi\_link.des\_bytes++;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00240}00240\ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ >\ 8)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00241}00241\ \ \ \ \ \ \ \ \ MCZ\_CS\_SetHigh();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00242}00242\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00243}00243\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00244}00244\ \ \ \ \ memcpy(mc33996\_w\_buf,\ mc\_cmd,\ len);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00245}00245\ \ \ \ \ SPI1\_ExchangeBlock(mc33996\_w\_buf,\ len);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00246}00246\ \ \ \ \ memcpy(mc\_init.cmd,\ mc33996\_w\_buf,\ len);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00247}00247\ \ \ \ \ MCZ\_CS\_SetHigh();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00248}00248\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00249}00249\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00250}00250\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00251}00251\ \textcolor{comment}{\ *\ send\ three\ byte\ command\ string\ via\ DMA}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00252}00252\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00253}00253\ \textcolor{keywordtype}{void}\ send\_lcd\_pos\_dma(\textcolor{keyword}{const}\ uint8\_t\ strPtr)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00254}00254\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00255}00255\ \ \ \ \ wait\_lcd\_done();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00256}00256\ \ \ \ \ wait\_lcd\_set();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00257}00257\ \ \ \ \ CS\_SetLow();\ \textcolor{comment}{/*\ SPI\ select\ display\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00258}00258\ \ \ \ \ spi\_link.txbuf[0]\ =\ NHD\_CMD;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00259}00259\ \ \ \ \ spi\_link.txbuf[1]\ =\ NHD\_POS;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00260}00260\ \ \ \ \ spi\_link.txbuf[2]\ =\ strPtr;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00261}00261\ \ \ \ \ DMASELECT\ =\ 0x00;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00262}00262\ \ \ \ \ DMAnCON0bits.EN\ =\ 0;\ \textcolor{comment}{/*\ disable\ TX\ DMA\ to\ change\ source\ count\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00263}00263\ \ \ \ \ DMA1\_SetSourceSize(3);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00264}00264\ \ \ \ \ DMA1\_SetDestinationSize(1);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00265}00265\ \ \ \ \ DMAnCON0bits.EN\ =\ 1;\ \textcolor{comment}{/*\ enable\ DMA\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00266}00266\ \ \ \ \ start\_lcd();\ \textcolor{comment}{//\ start\ DMA\ transfer}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00267}00267\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00268}00268\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00269}00269\ \textcolor{keywordtype}{void}\ eaDogM\_WriteStringAtPos(\textcolor{keyword}{const}\ uint8\_t\ r,\ \textcolor{keyword}{const}\ uint8\_t\ c,\ \textcolor{keywordtype}{char}\ *strPtr)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00270}00270\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00271}00271\ \ \ \ \ uint8\_t\ row;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00272}00272\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00273}00273\ \textcolor{preprocessor}{\#ifndef\ CAN\_REMOTE}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00274}00274\ \ \ \ \ \textcolor{keywordflow}{if}\ (scroll\_lock)\ \{\ \textcolor{comment}{//\ don't\ update\ LCD\ text\ when\ in\ scroll\ mode}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00275}00275\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00276}00276\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00277}00277\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00278}00278\ \ \ \ \ \textcolor{keywordflow}{switch}\ (r)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00279}00279\ \ \ \ \ \textcolor{keywordflow}{case}\ LCD1:}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00280}00280\ \ \ \ \ \ \ \ \ row\ =\ 0x40;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00281}00281\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00282}00282\ \ \ \ \ \textcolor{keywordflow}{case}\ LCD2:}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00283}00283\ \ \ \ \ \ \ \ \ row\ =\ 0x14;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00284}00284\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00285}00285\ \ \ \ \ \textcolor{keywordflow}{case}\ LCD3:}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00286}00286\ \ \ \ \ \ \ \ \ row\ =\ 0x54;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00287}00287\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00288}00288\ \ \ \ \ \textcolor{keywordflow}{case}\ LCD0:}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00289}00289\ \ \ \ \ \ \ \ \ row\ =\ 0x00;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00290}00290\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00291}00291\ \ \ \ \ \textcolor{keywordflow}{default}:}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00292}00292\ \ \ \ \ \ \ \ \ row\ =\ 0x00;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00293}00293\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00294}00294\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00295}00295\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00296}00296\ \ \ \ \ send\_lcd\_pos\_dma(row\ +\ c);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00297}00297\ \ \ \ \ wdtdelay(NHD\_S\_DELAY);\ \textcolor{comment}{//\ display\ command\ processing\ delay}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00298}00298\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00299}00299\ \ \ \ \ send\_lcd\_cmd(0x45);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00300}00300\ \ \ \ \ send\_lcd\_data(row\ +\ c);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00301}00301\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00302}00302\ \textcolor{preprocessor}{\#ifdef\ USE\_CAN}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00303}00303\ \ \ \ \ can\_fd\_lcd\_mirror(r,\ strPtr);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00304}00304\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00305}00305\ \ \ \ \ eaDogM\_WriteString(strPtr);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00306}00306\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00307}00307\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00308}00308\ \textcolor{keywordtype}{void}\ eaDogM\_WriteIntAtPos(\textcolor{keyword}{const}\ uint8\_t\ r,\ \textcolor{keyword}{const}\ uint8\_t\ c,\ \textcolor{keyword}{const}\ uint8\_t\ i)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00309}00309\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00310}00310\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00311}00311\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00312}00312\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00313}00313\ \textcolor{keywordtype}{void}\ eaDogM\_SetPos(\textcolor{keyword}{const}\ uint8\_t\ r,\ \textcolor{keyword}{const}\ uint8\_t\ c)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00314}00314\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00315}00315\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00316}00316\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00317}00317\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00318}00318\ \textcolor{keywordtype}{void}\ eaDogM\_ClearRow(\textcolor{keyword}{const}\ uint8\_t\ r)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00319}00319\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00320}00320\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00321}00321\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00322}00322\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00323}00323\ \textcolor{keywordtype}{void}\ eaDogM\_WriteByteToCGRAM(\textcolor{keyword}{const}\ uint8\_t\ ndx,\ \textcolor{keyword}{const}\ uint8\_t\ data)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00324}00324\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00325}00325\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00326}00326\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00327}00327\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00328}00328\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00329}00329\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00330}00330\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00331}00331\ \textcolor{keywordtype}{void}\ eaDogM\_WriteCommand(\textcolor{keyword}{const}\ uint8\_t\ cmd)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00332}00332\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00333}00333\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00334}00334\ \ \ \ \ send\_lcd\_cmd\_dma(cmd);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00335}00335\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00336}00336\ \ \ \ \ send\_lcd\_cmd(cmd);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00337}00337\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00338}00338\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00339}00339\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00340}00340\ \textcolor{keywordtype}{void}\ eaDogM\_WriteChr(\textcolor{keyword}{const}\ int8\_t\ value)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00341}00341\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00342}00342\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00343}00343\ \ \ \ \ send\_lcd\_data\_dma((uint8\_t)\ value);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00344}00344\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00345}00345\ \ \ \ \ send\_lcd\_data((uint8\_t)\ value);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00346}00346\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00347}00347\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00348}00348\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00349}00349\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00350}00350\ \textcolor{comment}{\ *\ Trigger\ the\ SPI\ DMA\ transfer\ to\ the\ LCD\ display}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00351}00351\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00352}00352\ \textcolor{keywordtype}{void}\ start\_lcd(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00353}00353\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00354}00354\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00355}00355\ \ \ \ \ DMA1\_StartTransferWithTrigger();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00356}00356\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00357}00357\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00358}00358\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00359}00359\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00360}00360\ \textcolor{comment}{\ *\ Trigger\ the\ SPI\ DMA\ transfer\ from\ SPI\ devices}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00361}00361\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00362}00362\ \textcolor{keywordtype}{void}\ start\_spi1\_read(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00363}00363\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00364}00364\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00365}00365\ \ \ \ \ DMA2\_StartTransfer();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00366}00366\ \ \ \ \ DMA2\_StartTransferWithTrigger();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00367}00367\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00368}00368\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00369}00369\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00370}00370\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00371}00371\ \textcolor{comment}{\ *\ Trigger\ the\ SPI\ DMA\ transfer\ from\ SPI\ devices}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00372}00372\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00373}00373\ \textcolor{keywordtype}{void}\ start\_spi1\_read1(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00374}00374\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00375}00375\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00376}00376\ \ \ \ \ DMA3\_StartTransfer();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00377}00377\ \ \ \ \ DMA3\_StartTransferWithTrigger();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00378}00378\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00379}00379\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00380}00380\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00381}00381\ \textcolor{keywordtype}{void}\ wait\_lcd\_set(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00382}00382\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00383}00383\ \ \ \ \ spi\_link.LCD\_DATA\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00384}00384\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00385}00385\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00386}00386\ \textcolor{keywordtype}{void}\ wait\_read\_set(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00387}00387\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00388}00388\ \ \ \ \ spi\_link.READ\_DATA\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00389}00389\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00390}00390\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00391}00391\ \textcolor{keywordtype}{bool}\ wait\_lcd\_check(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00392}00392\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00393}00393\ \ \ \ \ \textcolor{keywordflow}{return}\ spi\_link.LCD\_DATA;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00394}00394\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00395}00395\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00396}00396\ \textcolor{keywordtype}{void}\ wait\_lcd\_done(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00397}00397\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00398}00398\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00399}00399\ \ \ \ \ uint32\_t\ delay\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00400}00400\ \ \ \ \ \textcolor{keywordflow}{while}\ (spi\_link.LCD\_DATA)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00401}00401\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (delay++\ >\ DONE\_DELAY)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00402}00402\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00403}00403\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00404}00404\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00405}00405\ \ \ \ \ delay\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00406}00406\ \ \ \ \ \textcolor{keywordflow}{while}\ (!SPI1STATUSbits.TXBE)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00407}00407\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (delay++\ >\ DONE\_DELAY)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00408}00408\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00409}00409\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00410}00410\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00411}00411\ \ \ \ \ DLED\_SetLow();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00412}00412\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00413}00413\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00414}00414\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00415}00415\ \textcolor{keywordtype}{void}\ wait\_read\_done(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00416}00416\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00417}00417\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00418}00418\ \ \ \ \ uint32\_t\ delay\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00419}00419\ \ \ \ \ \textcolor{keywordflow}{while}\ (spi\_link.READ\_DATA)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00420}00420\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (delay++\ >\ DONE\_DELAY)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00421}00421\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00422}00422\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00423}00423\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00424}00424\ \ \ \ \ delay\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00425}00425\ \ \ \ \ \textcolor{keywordflow}{while}\ (!SPI1STATUSbits.TXBE)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00426}00426\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (delay++\ >\ DONE\_DELAY)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00427}00427\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00428}00428\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00429}00429\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00430}00430\ \ \ \ \ DLED\_SetLow();}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00431}00431\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00432}00432\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00433}00433\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00434}00434\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00435}00435\ \textcolor{comment}{\ *\ in\ DMA\ mode\ this\ is\ a\ ISR\ that\ runs\ when\ the\ TX\ source\ count\ is\ complete}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00436}00436\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00437}00437\ \textcolor{keywordtype}{void}\ clear\_lcd\_done(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00438}00438\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00439}00439\ \ \ \ \ spi\_link.LCD\_DATA\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00440}00440\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00441}00441\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00442}00442\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00443}00443\ \textcolor{comment}{\ *\ SPI\ buffer\ LCD\ ISR}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00444}00444\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00445}00445\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ spi\_lcd\_byte(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00446}00446\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00447}00447\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00448}00448\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00449}00449\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00450}00450\ \textcolor{comment}{\ *\ in\ DMA\ mode\ this\ is\ a\ ISR\ that\ runs\ when\ the\ RX\ source\ count\ is\ complete}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00451}00451\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00452}00452\ \textcolor{keywordtype}{void}\ spi\_src\_byte(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00453}00453\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00454}00454\ \ \ \ \ spi\_link.rxbuf[inx++]\ =\ SPI1RXB;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00455}00455\ \ \ \ \ \textcolor{keywordflow}{if}\ (inx\ >\ 3)\ inx\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00456}00456\ \ \ \ \ spi\_link.src\_bytes++;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00457}00457\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00458}00458\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00459}00459\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00460}00460\ \textcolor{comment}{\ *\ SPI\ buffer\ LCD\ ISR}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00461}00461\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00462}00462\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ spi\_or\_byte(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00463}00463\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00464}00464\ \ \ \ \ spi\_link.or\_bytes++;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00465}00465\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00466}00466\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00467}00467\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00468}00468\ \textcolor{comment}{\ *\ SPI\ buffer\ destination\ complete\ ISR}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00469}00469\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00470}00470\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ spi\_des\_byte(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00471}00471\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00472}00472\ \ \ \ \ spi\_link.des\_bytes++;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00473}00473\ \ \ \ \ spi\_link.READ\_DATA\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00474}00474\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00475}00475\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00476}00476\ \textcolor{keywordtype}{void}\ spi\_rec\_done(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00477}00477\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00478}00478\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00479}00479\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00480}00480\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00481}00481\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00482}00482\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00483}00483\ \textcolor{comment}{\ *\ auto\ scrolls\ up\ the\ string\ on\ the\ display}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00484}00484\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00485}00485\ \textcolor{keywordtype}{char}\ *\ eaDogM\_Scroll\_String(\textcolor{keywordtype}{char}\ *strPtr)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00486}00486\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00487}00487\ \ \ \ \ scroll\_lock\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00488}00488\ \ \ \ \ memcpy((\textcolor{keywordtype}{void}\ *)\ \&Sstr[4][0],\ \&Sstr[0][0],\ MAX\_STRLEN);\ \textcolor{comment}{//\ move\ top\ line\ to\ old\ line\ buffer}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00489}00489\ \ \ \ \ memcpy((\textcolor{keywordtype}{void}\ *)\ \&Sstr[0][0],\ \&Sstr[1][0],\ MAX\_STRLEN);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00490}00490\ \ \ \ \ memcpy((\textcolor{keywordtype}{void}\ *)\ \&Sstr[1][0],\ \&Sstr[2][0],\ MAX\_STRLEN);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00491}00491\ \ \ \ \ memcpy((\textcolor{keywordtype}{void}\ *)\ \&Sstr[2][0],\ \&Sstr[3][0],\ MAX\_STRLEN);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00492}00492\ \ \ \ \ memcpy((\textcolor{keywordtype}{void}\ *)\ \&Sstr[3][0],\ strPtr,\ MAX\_STRLEN);\ \textcolor{comment}{//\ place\ new\ text\ on\ the\ bottom\ line}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00493}00493\ \ \ \ \ scroll\_line\_pos\ =\ 4;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00494}00494\ \ \ \ \ \textcolor{keywordflow}{return}\ \&Sstr[4][0];}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00495}00495\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00496}00496\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00497}00497\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00498}00498\ \textcolor{comment}{\ *\ mainline\ info\ scroll\ updater,\ should\ run\ a\ \string~1\ second\ ticks}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00499}00499\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00500}00500\ \textcolor{keywordtype}{void}\ eaDogM\_Scroll\_Task(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00501}00501\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00502}00502\ \ \ \ \ \textcolor{keywordflow}{if}\ (!scroll\_lock)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00503}00503\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00504}00504\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00505}00505\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00506}00506\ \ \ \ \ \textcolor{keywordflow}{if}\ (scroll\_line\_pos\ ==\ 0)\ \{\ \textcolor{comment}{//\ wait\ for\ last\ line\ display\ time\ period}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00507}00507\ \ \ \ \ \ \ \ \ scroll\_lock\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00508}00508\ \ \ \ \ \ \ \ \ scroll\_line\_pos\ =\ 4;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00509}00509\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00510}00510\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00511}00511\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00512}00512\ \ \ \ \ scroll\_lock\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00513}00513\ \ \ \ \ -\/-\/scroll\_line\_pos;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00514}00514\ \ \ \ \ eaDogM\_WriteStringAtPos(scroll\_line\_pos,\ 0,\ \&Sstr[scroll\_line\_pos][0]);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00515}00515\ \ \ \ \ scroll\_lock\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00516}00516\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00517}00517\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00518}00518\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00519}00519\ \textcolor{keywordtype}{void}\ no\_dma\_set\_lcd(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00520}00520\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00521}00521\ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00522}00522\ \ \ \ \ send\_lcd\_data(NHD\_BL\_HIGH);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00523}00523\ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_CONT);\ \textcolor{comment}{//\ set\ display\ contrast}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00524}00524\ \ \ \ \ send\_lcd\_data(NHD\_CONT);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00525}00525\ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_ON);\ \textcolor{comment}{//\ display\ on}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00526}00526\ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_CLR);\ \textcolor{comment}{//\ clear\ screen}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00527}00527\ \ \ \ \ wdtdelay(NHD\_L\_DELAY);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00528}00528\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00529}00529\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00530}00530\ \textcolor{keywordtype}{void}\ check\_lcd\_dim(\textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ dim)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00531}00531\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00532}00532\ \ \ \ \ \textcolor{keywordflow}{if}\ (B.display\_update)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00533}00533\ \ \ \ \ \ \ \ \ B.display\_update\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00534}00534\ \ \ \ \ \ \ \ \ B.dim\_delay\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00535}00535\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00536}00536\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dim)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00537}00537\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_cmd\_dma(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00538}00538\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_data\_dma(NHD\_BL\_OFF);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00539}00539\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00540}00540\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_cmd\_dma(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00541}00541\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_data\_dma(NHD\_BL\_HIGH);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00542}00542\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00543}00543\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00544}00544\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dim)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00545}00545\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00546}00546\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_data(NHD\_BL\_LOW);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00547}00547\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00548}00548\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00549}00549\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_data(NHD\_BL\_HIGH);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00550}00550\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00551}00551\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00552}00552\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00553}00553\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00554}00554\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00555}00555\ \textcolor{keywordtype}{void}\ set\_lcd\_dim(\textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ dim)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00556}00556\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00557}00557\ \ \ \ \ \textcolor{keywordflow}{if}\ (B.display\_update)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00558}00558\ \ \ \ \ \ \ \ \ B.display\_update\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00559}00559\ \ \ \ \ \ \ \ \ B.dim\_delay\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00560}00560\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00561}00561\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dim)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00562}00562\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_cmd\_dma(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00563}00563\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_data\_dma(NHD\_BL\_OFF);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00564}00564\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00565}00565\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_cmd\_dma(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00566}00566\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_data\_dma(NHD\_BL\_HIGH);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00567}00567\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00568}00568\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00569}00569\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dim)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00570}00570\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00571}00571\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_data(NHD\_BL\_LOW);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00572}00572\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00573}00573\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00574}00574\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_data(NHD\_BL\_HIGH);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00575}00575\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00576}00576\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00577}00577\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00578}00578\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00579}00579\ \ \ \ \ \textcolor{keywordflow}{if}\ (B.dim\_delay++\ >=\ DIM\_DELAY)\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00580}00580\ \ \ \ \ \ \ \ \ B.dim\_delay\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00581}00581\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00582}00582\ \ \ \ \ \ \ \ \ send\_lcd\_cmd\_dma(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00583}00583\ \ \ \ \ \ \ \ \ send\_lcd\_data\_dma(NHD\_BL\_OFF);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00584}00584\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00585}00585\ \ \ \ \ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00586}00586\ \ \ \ \ \ \ \ \ send\_lcd\_data(NHD\_BL\_LOW);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00587}00587\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00588}00588\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00589}00589\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00590}00590\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00591}00591\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00592}00592\ \textcolor{comment}{\ *\ busy\ loop\ delay\ with\ WDT\ reset}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00593}00593\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00594}00594\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ wdtdelay(\textcolor{keyword}{const}\ uint32\_t\ delay)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00595}00595\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00596}00596\ \ \ \ \ uint32\_t\ dcount;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00597}00597\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00598}00598\ \ \ \ \ \textcolor{keywordflow}{for}\ (dcount\ =\ 0;\ dcount\ <=\ delay;\ dcount++)\ \{\ \textcolor{comment}{//\ delay\ a\ bit}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00599}00599\ \ \ \ \ \ \ \ \ ClrWdt();\ \textcolor{comment}{//\ reset\ the\ WDT\ timer}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00600}00600\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00601}00601\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00127}00127\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00128}00128\ \ \ \ \ powerup\ =\ \textcolor{keyword}{false};\ \textcolor{comment}{//\ only\ of\ the\ first\ display\ init\ call}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00129}00129\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00130}00130\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00131}00131\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00132}00132\ \textcolor{preprocessor}{\#ifdef\ NHD}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00133}00133\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00134}00134\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00135}00135\ \textcolor{comment}{\ *\ R2\ short\ on\ LCD\ NHD-\/0420D3Z-\/NSW-\/BBW-\/V3\ board}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00136}00136\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00137}00137\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00138}00138\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ send\_lcd\_data(\textcolor{keyword}{const}\ uint8\_t\ data)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00139}00139\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00140}00140\ \ \ \ \ CS\_SetLow();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00141}00141\ \ \ \ \ SPI1\_ExchangeByte(data);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00142}00142\ \ \ \ \ wdtdelay(NHD\_T\_DELAY);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00143}00143\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00144}00144\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00145}00145\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ send\_lcd\_cmd(\textcolor{keyword}{const}\ uint8\_t\ cmd)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00146}00146\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00147}00147\ \ \ \ \ CS\_SetLow();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00148}00148\ \ \ \ \ SPI1\_ExchangeByte(NHD\_CMD);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00149}00149\ \ \ \ \ wdtdelay(NHD\_T\_DELAY);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00150}00150\ \ \ \ \ SPI1\_ExchangeByte(cmd);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00151}00151\ \ \ \ \ wdtdelay(NHD\_T\_DELAY);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00152}00152\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00153}00153\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00154}00154\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ send\_lcd\_cmd\_long(\textcolor{keyword}{const}\ uint8\_t\ cmd)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00155}00155\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00156}00156\ \ \ \ \ CS\_SetLow();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00157}00157\ \ \ \ \ SPI1\_ExchangeByte(NHD\_CMD);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00158}00158\ \ \ \ \ wdtdelay(NHD\_T\_DELAY);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00159}00159\ \ \ \ \ SPI1\_ExchangeByte(cmd);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00160}00160\ \ \ \ \ wdtdelay(NHD\_L\_DELAY);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00161}00161\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00162}00162\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00163}00163\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00164}00164\ \textcolor{comment}{\ *\ CAN\ use\ DMA\ channel\ 1\ for\ transfers}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00165}00165\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00166}00166\ \textcolor{keywordtype}{void}\ eaDogM\_WriteString(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *strPtr)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00167}00167\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00168}00168\ \ \ \ \ uint8\_t\ len\ =\ (uint8\_t)\ strlen(strPtr);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00169}00169\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00170}00170\ \ \ \ \ wait\_lcd\_done();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00171}00171\ \ \ \ \ wait\_lcd\_set();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00172}00172\ \ \ \ \ CS\_SetLow();\ \textcolor{comment}{/*\ SPI\ select\ display\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00173}00173\ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ >\ (uint8\_t)\ MAX\_STRLEN)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00174}00174\ \ \ \ \ \ \ \ \ len\ =\ MAX\_STRLEN;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00175}00175\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00176}00176\ \ \ \ \ memcpy(spi\_link.txbuf,\ strPtr,\ len);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00177}00177\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00178}00178\ \ \ \ \ DMASELECT\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00179}00179\ \ \ \ \ DMAnCON0bits.EN\ =\ 0;\ \textcolor{comment}{/*\ disable\ TX\ DMA\ to\ change\ source\ count\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00180}00180\ \ \ \ \ DMA1\_SetSourceSize(len);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00181}00181\ \ \ \ \ DMA1\_SetDestinationSize(1);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00182}00182\ \ \ \ \ DMAnCON0bits.EN\ =\ 1;\ \textcolor{comment}{/*\ enable\ DMA\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00183}00183\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00184}00184\ \ \ \ \ SPI1\_ExchangeBlock(spi\_link.txbuf,\ len);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00185}00185\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00186}00186\ \ \ \ \ start\_lcd();\ \textcolor{comment}{//\ start\ DMA\ transfer}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00187}00187\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00188}00188\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00189}00189\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00190}00190\ \textcolor{comment}{\ *\ uses\ DMA\ channel\ 1\ for\ transfers}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00191}00191\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00192}00192\ \textcolor{keywordtype}{void}\ send\_lcd\_cmd\_dma(\textcolor{keyword}{const}\ uint8\_t\ strPtr)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00193}00193\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00194}00194\ \ \ \ \ send\_lcd\_data\_dma(NHD\_CMD);\ \textcolor{comment}{//prefix}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00195}00195\ \ \ \ \ send\_lcd\_data\_dma(strPtr);\ \textcolor{comment}{//\ cmd\ code}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00196}00196\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00197}00197\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00198}00198\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00199}00199\ \textcolor{comment}{\ *\ uses\ DMA\ channel\ 1\ for\ transfers}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00200}00200\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00201}00201\ \textcolor{keywordtype}{void}\ send\_lcd\_data\_dma(\textcolor{keyword}{const}\ uint8\_t\ strPtr)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00202}00202\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00203}00203\ \ \ \ \ wait\_lcd\_done();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00204}00204\ \ \ \ \ wait\_lcd\_set();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00205}00205\ \ \ \ \ CS\_SetLow();\ \textcolor{comment}{/*\ SPI\ select\ display\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00206}00206\ \ \ \ \ spi\_link.txbuf[0]\ =\ strPtr;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00207}00207\ \ \ \ \ DMASELECT\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00208}00208\ \ \ \ \ DMAnCON0bits.EN\ =\ 0;\ \textcolor{comment}{/*\ disable\ TX\ DMA\ to\ change\ source\ count\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00209}00209\ \ \ \ \ DMA1\_SetSourceSize(1);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00210}00210\ \ \ \ \ DMA1\_SetDestinationSize(1);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00211}00211\ \ \ \ \ DMAnCON0bits.EN\ =\ 1;\ \textcolor{comment}{/*\ enable\ DMA\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00212}00212\ \ \ \ \ start\_lcd();\ \textcolor{comment}{//\ start\ DMA\ transfer}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00213}00213\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00214}00214\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00215}00215\ \textcolor{keywordtype}{void}\ send\_spi1\_tic12400\_dma(uint8\_t\ *strPtr,\ \textcolor{keyword}{const}\ uint8\_t\ len)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00216}00216\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00217}00217\ \ \ \ \ uint8\_t\ *mc\_cmd\ =\ strPtr;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00218}00218\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00219}00219\ \ \ \ \ wait\_lcd\_done();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00220}00220\ \ \ \ \ CS\_SetHigh();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00221}00221\ \ \ \ \ TIC\_CS\_SetLow();\ \textcolor{comment}{/*\ SPI\ select\ display\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00222}00222\ \ \ \ \ spi\_link.des\_bytes++;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00223}00223\ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ >\ 8)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00224}00224\ \ \ \ \ \ \ \ \ TIC\_CS\_SetHigh();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00225}00225\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00226}00226\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00227}00227\ \ \ \ \ memcpy(tic\_rw.cmd,\ mc\_cmd,\ len);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00228}00228\ \ \ \ \ SPI1\_ExchangeBlock(tic\_rw.cmd,\ len);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00229}00229\ \ \ \ \ memcpy(spi\_link.rxbuf,\ tic\_rw.cmd,\ len);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00230}00230\ \ \ \ \ TIC\_CS\_SetHigh();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00231}00231\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00232}00232\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00233}00233\ \textcolor{keywordtype}{void}\ send\_spi1\_mc33996\_dma(uint8\_t\ *strPtr,\ \textcolor{keyword}{const}\ uint8\_t\ len)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00234}00234\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00235}00235\ \ \ \ \ uint8\_t\ *mc\_cmd\ =\ strPtr;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00236}00236\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00237}00237\ \ \ \ \ wait\_lcd\_done();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00238}00238\ \ \ \ \ CS\_SetHigh();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00239}00239\ \ \ \ \ MCZ\_CS\_SetLow();\ \textcolor{comment}{/*\ SPI\ select\ display\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00240}00240\ \ \ \ \ spi\_link.des\_bytes++;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00241}00241\ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ >\ 8)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00242}00242\ \ \ \ \ \ \ \ \ MCZ\_CS\_SetHigh();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00243}00243\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00244}00244\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00245}00245\ \ \ \ \ memcpy(mc33996\_w\_buf,\ mc\_cmd,\ len);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00246}00246\ \ \ \ \ SPI1\_ExchangeBlock(mc33996\_w\_buf,\ len);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00247}00247\ \ \ \ \ memcpy(mc\_init.cmd,\ mc33996\_w\_buf,\ len);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00248}00248\ \ \ \ \ MCZ\_CS\_SetHigh();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00249}00249\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00250}00250\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00251}00251\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00252}00252\ \textcolor{comment}{\ *\ send\ three\ byte\ command\ string\ via\ DMA}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00253}00253\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00254}00254\ \textcolor{keywordtype}{void}\ send\_lcd\_pos\_dma(\textcolor{keyword}{const}\ uint8\_t\ strPtr)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00255}00255\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00256}00256\ \ \ \ \ wait\_lcd\_done();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00257}00257\ \ \ \ \ wait\_lcd\_set();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00258}00258\ \ \ \ \ CS\_SetLow();\ \textcolor{comment}{/*\ SPI\ select\ display\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00259}00259\ \ \ \ \ spi\_link.txbuf[0]\ =\ NHD\_CMD;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00260}00260\ \ \ \ \ spi\_link.txbuf[1]\ =\ NHD\_POS;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00261}00261\ \ \ \ \ spi\_link.txbuf[2]\ =\ strPtr;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00262}00262\ \ \ \ \ DMASELECT\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00263}00263\ \ \ \ \ DMAnCON0bits.EN\ =\ 0;\ \textcolor{comment}{/*\ disable\ TX\ DMA\ to\ change\ source\ count\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00264}00264\ \ \ \ \ DMA1\_SetSourceSize(3);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00265}00265\ \ \ \ \ DMA1\_SetDestinationSize(1);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00266}00266\ \ \ \ \ DMAnCON0bits.EN\ =\ 1;\ \textcolor{comment}{/*\ enable\ DMA\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00267}00267\ \ \ \ \ start\_lcd();\ \textcolor{comment}{//\ start\ DMA\ transfer}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00268}00268\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00269}00269\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00270}00270\ \textcolor{keywordtype}{void}\ eaDogM\_WriteStringAtPos(\textcolor{keyword}{const}\ uint8\_t\ r,\ \textcolor{keyword}{const}\ uint8\_t\ c,\ \textcolor{keywordtype}{char}\ *strPtr)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00271}00271\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00272}00272\ \ \ \ \ uint8\_t\ row;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00273}00273\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00274}00274\ \textcolor{preprocessor}{\#ifndef\ CAN\_REMOTE}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00275}00275\ \ \ \ \ \textcolor{keywordflow}{if}\ (scroll\_lock)\ \{\ \textcolor{comment}{//\ don't\ update\ LCD\ text\ when\ in\ scroll\ mode}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00276}00276\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00277}00277\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00278}00278\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00279}00279\ \ \ \ \ \textcolor{keywordflow}{switch}\ (r)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00280}00280\ \ \ \ \ \textcolor{keywordflow}{case}\ LCD1:}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00281}00281\ \ \ \ \ \ \ \ \ row\ =\ 0x40;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00282}00282\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00283}00283\ \ \ \ \ \textcolor{keywordflow}{case}\ LCD2:}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00284}00284\ \ \ \ \ \ \ \ \ row\ =\ 0x14;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00285}00285\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00286}00286\ \ \ \ \ \textcolor{keywordflow}{case}\ LCD3:}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00287}00287\ \ \ \ \ \ \ \ \ row\ =\ 0x54;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00288}00288\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00289}00289\ \ \ \ \ \textcolor{keywordflow}{case}\ LCD0:}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00290}00290\ \ \ \ \ \ \ \ \ row\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00291}00291\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00292}00292\ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00293}00293\ \ \ \ \ \ \ \ \ row\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00294}00294\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00295}00295\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00296}00296\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00297}00297\ \ \ \ \ send\_lcd\_pos\_dma(row\ +\ c);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00298}00298\ \ \ \ \ wdtdelay(NHD\_S\_DELAY);\ \textcolor{comment}{//\ display\ command\ processing\ delay}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00299}00299\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00300}00300\ \ \ \ \ send\_lcd\_cmd(0x45);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00301}00301\ \ \ \ \ send\_lcd\_data(row\ +\ c);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00302}00302\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00303}00303\ \textcolor{preprocessor}{\#ifdef\ USE\_CAN}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00304}00304\ \ \ \ \ can\_fd\_lcd\_mirror(r,\ strPtr);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00305}00305\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00306}00306\ \ \ \ \ eaDogM\_WriteString(strPtr);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00307}00307\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00308}00308\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00309}00309\ \textcolor{keywordtype}{void}\ eaDogM\_WriteIntAtPos(\textcolor{keyword}{const}\ uint8\_t\ r,\ \textcolor{keyword}{const}\ uint8\_t\ c,\ \textcolor{keyword}{const}\ uint8\_t\ i)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00310}00310\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00311}00311\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00312}00312\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00313}00313\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00314}00314\ \textcolor{keywordtype}{void}\ eaDogM\_SetPos(\textcolor{keyword}{const}\ uint8\_t\ r,\ \textcolor{keyword}{const}\ uint8\_t\ c)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00315}00315\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00316}00316\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00317}00317\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00318}00318\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00319}00319\ \textcolor{keywordtype}{void}\ eaDogM\_ClearRow(\textcolor{keyword}{const}\ uint8\_t\ r)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00320}00320\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00321}00321\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00322}00322\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00323}00323\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00324}00324\ \textcolor{keywordtype}{void}\ eaDogM\_WriteByteToCGRAM(\textcolor{keyword}{const}\ uint8\_t\ ndx,\ \textcolor{keyword}{const}\ uint8\_t\ data)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00325}00325\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00326}00326\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00327}00327\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00328}00328\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00329}00329\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00330}00330\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00331}00331\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00332}00332\ \textcolor{keywordtype}{void}\ eaDogM\_WriteCommand(\textcolor{keyword}{const}\ uint8\_t\ cmd)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00333}00333\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00334}00334\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00335}00335\ \ \ \ \ send\_lcd\_cmd\_dma(cmd);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00336}00336\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00337}00337\ \ \ \ \ send\_lcd\_cmd(cmd);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00338}00338\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00339}00339\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00340}00340\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00341}00341\ \textcolor{keywordtype}{void}\ eaDogM\_WriteChr(\textcolor{keyword}{const}\ int8\_t\ value)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00342}00342\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00343}00343\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00344}00344\ \ \ \ \ send\_lcd\_data\_dma((uint8\_t)\ value);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00345}00345\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00346}00346\ \ \ \ \ send\_lcd\_data((uint8\_t)\ value);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00347}00347\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00348}00348\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00349}00349\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00350}00350\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00351}00351\ \textcolor{comment}{\ *\ Trigger\ the\ SPI\ DMA\ transfer\ to\ the\ LCD\ display}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00352}00352\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00353}00353\ \textcolor{keywordtype}{void}\ start\_lcd(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00354}00354\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00355}00355\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00356}00356\ \ \ \ \ DMA1\_StartTransferWithTrigger();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00357}00357\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00358}00358\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00359}00359\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00360}00360\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00361}00361\ \textcolor{comment}{\ *\ Trigger\ the\ SPI\ DMA\ transfer\ from\ SPI\ devices}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00362}00362\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00363}00363\ \textcolor{keywordtype}{void}\ start\_spi1\_read(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00364}00364\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00365}00365\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00366}00366\ \ \ \ \ DMA2\_StartTransfer();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00367}00367\ \ \ \ \ DMA2\_StartTransferWithTrigger();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00368}00368\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00369}00369\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00370}00370\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00371}00371\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00372}00372\ \textcolor{comment}{\ *\ Trigger\ the\ SPI\ DMA\ transfer\ from\ SPI\ devices}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00373}00373\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00374}00374\ \textcolor{keywordtype}{void}\ start\_spi1\_read1(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00375}00375\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00376}00376\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00377}00377\ \ \ \ \ DMA3\_StartTransfer();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00378}00378\ \ \ \ \ DMA3\_StartTransferWithTrigger();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00379}00379\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00380}00380\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00381}00381\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00382}00382\ \textcolor{keywordtype}{void}\ wait\_lcd\_set(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00383}00383\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00384}00384\ \ \ \ \ spi\_link.LCD\_DATA\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00385}00385\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00386}00386\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00387}00387\ \textcolor{keywordtype}{void}\ wait\_read\_set(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00388}00388\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00389}00389\ \ \ \ \ spi\_link.READ\_DATA\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00390}00390\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00391}00391\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00392}00392\ \textcolor{keywordtype}{bool}\ wait\_lcd\_check(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00393}00393\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00394}00394\ \ \ \ \ \textcolor{keywordflow}{return}\ spi\_link.LCD\_DATA;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00395}00395\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00396}00396\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00397}00397\ \textcolor{keywordtype}{void}\ wait\_lcd\_done(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00398}00398\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00399}00399\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00400}00400\ \ \ \ \ uint32\_t\ delay\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00401}00401\ \ \ \ \ \textcolor{keywordflow}{while}\ (spi\_link.LCD\_DATA)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00402}00402\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (delay++\ >\ DONE\_DELAY)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00403}00403\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00404}00404\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00405}00405\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00406}00406\ \ \ \ \ delay\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00407}00407\ \ \ \ \ \textcolor{keywordflow}{while}\ (!SPI1STATUSbits.TXBE)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00408}00408\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (delay++\ >\ DONE\_DELAY)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00409}00409\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00410}00410\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00411}00411\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00412}00412\ \ \ \ \ DLED\_SetLow();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00413}00413\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00414}00414\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00415}00415\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00416}00416\ \textcolor{keywordtype}{void}\ wait\_read\_done(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00417}00417\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00418}00418\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00419}00419\ \ \ \ \ uint32\_t\ delay\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00420}00420\ \ \ \ \ \textcolor{keywordflow}{while}\ (spi\_link.READ\_DATA)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00421}00421\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (delay++\ >\ DONE\_DELAY)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00422}00422\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00423}00423\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00424}00424\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00425}00425\ \ \ \ \ delay\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00426}00426\ \ \ \ \ \textcolor{keywordflow}{while}\ (!SPI1STATUSbits.TXBE)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00427}00427\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (delay++\ >\ DONE\_DELAY)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00428}00428\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00429}00429\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00430}00430\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00431}00431\ \ \ \ \ DLED\_SetLow();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00432}00432\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00433}00433\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00434}00434\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00435}00435\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00436}00436\ \textcolor{comment}{\ *\ in\ DMA\ mode\ this\ is\ a\ ISR\ that\ runs\ when\ the\ TX\ source\ count\ is\ complete}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00437}00437\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00438}00438\ \textcolor{keywordtype}{void}\ clear\_lcd\_done(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00439}00439\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00440}00440\ \ \ \ \ spi\_link.LCD\_DATA\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00441}00441\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00442}00442\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00443}00443\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00444}00444\ \textcolor{comment}{\ *\ SPI\ buffer\ LCD\ ISR}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00445}00445\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00446}00446\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ spi\_lcd\_byte(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00447}00447\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00448}00448\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00449}00449\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00450}00450\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00451}00451\ \textcolor{comment}{\ *\ in\ DMA\ mode\ this\ is\ a\ ISR\ that\ runs\ when\ the\ RX\ source\ count\ is\ complete}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00452}00452\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00453}00453\ \textcolor{keywordtype}{void}\ spi\_src\_byte(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00454}00454\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00455}00455\ \ \ \ \ spi\_link.rxbuf[inx++]\ =\ SPI1RXB;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00456}00456\ \ \ \ \ \textcolor{keywordflow}{if}\ (inx\ >\ 3)\ inx\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00457}00457\ \ \ \ \ spi\_link.src\_bytes++;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00458}00458\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00459}00459\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00460}00460\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00461}00461\ \textcolor{comment}{\ *\ SPI\ buffer\ LCD\ ISR}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00462}00462\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00463}00463\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ spi\_or\_byte(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00464}00464\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00465}00465\ \ \ \ \ spi\_link.or\_bytes++;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00466}00466\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00467}00467\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00468}00468\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00469}00469\ \textcolor{comment}{\ *\ SPI\ buffer\ destination\ complete\ ISR}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00470}00470\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00471}00471\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ spi\_des\_byte(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00472}00472\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00473}00473\ \ \ \ \ spi\_link.des\_bytes++;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00474}00474\ \ \ \ \ spi\_link.READ\_DATA\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00475}00475\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00476}00476\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00477}00477\ \textcolor{keywordtype}{void}\ spi\_rec\_done(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00478}00478\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00479}00479\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00480}00480\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00481}00481\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00482}00482\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00483}00483\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00484}00484\ \textcolor{comment}{\ *\ auto\ scrolls\ up\ the\ string\ on\ the\ display}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00485}00485\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00486}00486\ \textcolor{keywordtype}{char}\ *\ eaDogM\_Scroll\_String(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *strPtr)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00487}00487\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00488}00488\ \ \ \ \ scroll\_lock\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00489}00489\ \ \ \ \ memcpy((\textcolor{keywordtype}{void}\ *)\ \&Sstr[4][0],\ \&Sstr[0][0],\ MAX\_STRLEN);\ \textcolor{comment}{//\ move\ top\ line\ to\ old\ line\ buffer}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00490}00490\ \ \ \ \ memcpy((\textcolor{keywordtype}{void}\ *)\ \&Sstr[0][0],\ \&Sstr[1][0],\ MAX\_STRLEN);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00491}00491\ \ \ \ \ memcpy((\textcolor{keywordtype}{void}\ *)\ \&Sstr[1][0],\ \&Sstr[2][0],\ MAX\_STRLEN);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00492}00492\ \ \ \ \ memcpy((\textcolor{keywordtype}{void}\ *)\ \&Sstr[2][0],\ \&Sstr[3][0],\ MAX\_STRLEN);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00493}00493\ \ \ \ \ memcpy((\textcolor{keywordtype}{void}\ *)\ \&Sstr[3][0],\ strPtr,\ MAX\_STRLEN);\ \textcolor{comment}{//\ place\ new\ text\ on\ the\ bottom\ line}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00494}00494\ \ \ \ \ scroll\_line\_pos\ =\ 4;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00495}00495\ \ \ \ \ \textcolor{keywordflow}{return}\ \&Sstr[4][0];}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00496}00496\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00497}00497\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00498}00498\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00499}00499\ \textcolor{comment}{\ *\ mainline\ info\ scroll\ updater,\ should\ run\ a\ \string~1\ second\ ticks}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00500}00500\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00501}00501\ \textcolor{keywordtype}{void}\ eaDogM\_Scroll\_Task(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00502}00502\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00503}00503\ \ \ \ \ \textcolor{keywordflow}{if}\ (!scroll\_lock)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00504}00504\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00505}00505\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00506}00506\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00507}00507\ \ \ \ \ \textcolor{keywordflow}{if}\ (scroll\_line\_pos\ ==\ 0)\ \{\ \textcolor{comment}{//\ wait\ for\ last\ line\ display\ time\ period}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00508}00508\ \ \ \ \ \ \ \ \ scroll\_lock\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00509}00509\ \ \ \ \ \ \ \ \ scroll\_line\_pos\ =\ 4;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00510}00510\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00511}00511\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00512}00512\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00513}00513\ \ \ \ \ scroll\_lock\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00514}00514\ \ \ \ \ -\/-\/scroll\_line\_pos;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00515}00515\ \ \ \ \ eaDogM\_WriteStringAtPos(scroll\_line\_pos,\ 0,\ \&Sstr[scroll\_line\_pos][0]);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00516}00516\ \ \ \ \ scroll\_lock\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00517}00517\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00518}00518\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00519}00519\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00520}00520\ \textcolor{keywordtype}{void}\ no\_dma\_set\_lcd(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00521}00521\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00522}00522\ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00523}00523\ \ \ \ \ send\_lcd\_data(NHD\_BL\_HIGH);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00524}00524\ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_CONT);\ \textcolor{comment}{//\ set\ display\ contrast}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00525}00525\ \ \ \ \ send\_lcd\_data(NHD\_CONT);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00526}00526\ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_ON);\ \textcolor{comment}{//\ display\ on}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00527}00527\ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_CLR);\ \textcolor{comment}{//\ clear\ screen}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00528}00528\ \ \ \ \ wdtdelay(NHD\_L\_DELAY);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00529}00529\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00530}00530\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00531}00531\ \textcolor{keywordtype}{void}\ check\_lcd\_dim(\textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ dim)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00532}00532\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00533}00533\ \ \ \ \ \textcolor{keywordflow}{if}\ (BM.display\_update)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00534}00534\ \ \ \ \ \ \ \ \ BM.display\_update\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00535}00535\ \ \ \ \ \ \ \ \ BM.dim\_delay\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00536}00536\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00537}00537\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dim)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00538}00538\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_cmd\_dma(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00539}00539\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_data\_dma(NHD\_BL\_LOW);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00540}00540\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00541}00541\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_cmd\_dma(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00542}00542\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_data\_dma(NHD\_BL\_HIGH);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00543}00543\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00544}00544\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00545}00545\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dim)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00546}00546\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00547}00547\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_data(NHD\_BL\_LOW);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00548}00548\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00549}00549\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00550}00550\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_data(NHD\_BL\_HIGH);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00551}00551\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00552}00552\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00553}00553\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00554}00554\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00555}00555\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00556}00556\ \textcolor{keywordtype}{void}\ set\_lcd\_dim(\textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ dim)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00557}00557\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00558}00558\ \ \ \ \ \textcolor{keywordflow}{if}\ (BM.display\_update)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00559}00559\ \ \ \ \ \ \ \ \ BM.display\_update\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00560}00560\ \ \ \ \ \ \ \ \ BM.dim\_delay\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00561}00561\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00562}00562\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dim)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00563}00563\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_cmd\_dma(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00564}00564\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_data\_dma(NHD\_BL\_LOW);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00565}00565\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00566}00566\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_cmd\_dma(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00567}00567\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_data\_dma(NHD\_BL\_HIGH);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00568}00568\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00569}00569\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00570}00570\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dim)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00571}00571\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00572}00572\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_data(NHD\_BL\_LOW);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00573}00573\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00574}00574\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00575}00575\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_data(NHD\_BL\_HIGH);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00576}00576\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00577}00577\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00578}00578\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00579}00579\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00580}00580\ \ \ \ \ \textcolor{keywordflow}{if}\ (BM.dim\_delay++\ >=\ DIM\_DELAY)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00581}00581\ \ \ \ \ \ \ \ \ BM.dim\_delay\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00582}00582\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00583}00583\ \ \ \ \ \ \ \ \ send\_lcd\_cmd\_dma(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00584}00584\ \ \ \ \ \ \ \ \ send\_lcd\_data\_dma(NHD\_BL\_LOW);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00585}00585\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00586}00586\ \ \ \ \ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00587}00587\ \ \ \ \ \ \ \ \ send\_lcd\_data(NHD\_BL\_LOW);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00588}00588\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00589}00589\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00590}00590\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00591}00591\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00592}00592\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00593}00593\ \textcolor{comment}{\ *\ busy\ loop\ delay\ with\ WDT\ reset}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00594}00594\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00595}00595\ \textcolor{keywordtype}{void}\ wdtdelay(\textcolor{keyword}{const}\ uint32\_t\ delay)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00596}00596\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00597}00597\ \ \ \ \ uint32\_t\ dcount;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00598}00598\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00599}00599\ \ \ \ \ \textcolor{keywordflow}{for}\ (dcount\ =\ 0;\ dcount\ <=\ delay;\ dcount++)\ \{\ \textcolor{comment}{//\ delay\ a\ bit}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00600}00600\ \ \ \ \ \ \ \ \ ClrWdt();\ \textcolor{comment}{//\ reset\ the\ WDT\ timer}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00601}00601\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00602}00602\ \}}
 
 \end{DoxyCode}

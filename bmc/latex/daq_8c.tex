@@ -6,8 +6,7 @@
 {\ttfamily \#include $<$stdint.\+h$>$}\newline
 {\ttfamily \#include $<$comedilib.\+h$>$}\newline
 {\ttfamily \#include "{}daq.\+h"{}}\newline
-Include dependency graph for daq.\+c\+:
-\nopagebreak
+Include dependency graph for daq.\+c\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -44,6 +43,8 @@ int \mbox{\hyperlink{daq_8c_a6ecdfd283dc1f3827fb03b15b6d1ab92}{init\+\_\+dio}} (
 int \mbox{\hyperlink{daq_8c_a5a25216c054758d201b787b5834e4122}{get\+\_\+data\+\_\+sample}} (void)
 \item 
 double \mbox{\hyperlink{daq_8c_a88cf7b0f4f9773686e80c06d1da237bd}{lp\+\_\+filter}} (double new, int bn, int slow)
+\item 
+double \mbox{\hyperlink{daq_8c_a9c985523e24a58948d62f0e09866bea7}{calc\+\_\+fixups}} (double data, FIX\+\_\+\+CODES fixup)
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Variables}
 \begin{DoxyCompactItemize}
@@ -188,13 +189,25 @@ uint32\+\_\+t \mbox{\hyperlink{daq_8c_a3a32175f74de9c6307ea729b122d9f30}{datain}
 \item 
 uint32\+\_\+t \mbox{\hyperlink{daq_8c_a97400dc9e2e5b8ea61a02ead3dd3d7ff}{serial\+\_\+buf}}
 \item 
+uint32\+\_\+t \mbox{\hyperlink{daq_8c_a1c3384f57725647fa4679717ea566da7}{daq\+\_\+bmc\+\_\+data}} \mbox{[}SYSLOG\+\_\+\+SIZ\mbox{]}
+\item 
+const char \mbox{\hyperlink{daq_8c_a976fe65f45bb47e4211ddac864240dbf}{text\+\_\+test}} \mbox{[}$\,$\mbox{]} = \{"{}the quick brown fox jumps over the lazy dogs back"{}\}
+\item 
 char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{daq_8c_a9226ae5be9e8fa404ecb063cbdcc757e}{daq\+\_\+text}} \mbox{[}$\,$\mbox{]}
 \item 
 char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{daq_8c_a70ef6bd8424963fdb7aecc6c35b66006}{daq\+\_\+text\+\_\+ptr}}
 \item 
+char \mbox{\hyperlink{daq_8c_a9ebfeeed6eb48535cfa8bca291f3f6a6}{daq\+\_\+bmc\+\_\+data\+\_\+text}} \mbox{[}SYSLOG\+\_\+\+SIZ\mbox{]}
+\item 
+char \mbox{\hyperlink{daq_8c_abf1e7c8276b30cba0732984d8874cb00}{daq\+\_\+bmc\+\_\+data\+\_\+buf}} \mbox{[}SYSLOG\+\_\+\+SIZ\mbox{]}
+\item 
 uint8\+\_\+t \mbox{\hyperlink{daq_8c_a9ba379059c8b5d3bb322c61e977bb8f1}{daq\+\_\+text\+\_\+index}} = 0
 \item 
 uint8\+\_\+t \mbox{\hyperlink{daq_8c_a3d8d8e8be21d456b70a2bf316088a6ef}{line\+\_\+index}} = 0
+\item 
+uint8\+\_\+t \mbox{\hyperlink{daq_8c_a59be8dcc53b5448f53c266afaf283a92}{daq\+\_\+data\+\_\+index}} = 0
+\item 
+struct \mbox{\hyperlink{structbmc__buffer__type}{bmc\+\_\+buffer\+\_\+type}} \mbox{\hyperlink{daq_8c_ab7f9edb958efaa5ee5bfddd0136977f7}{BMC4}}
 \end{DoxyCompactItemize}
 
 
@@ -209,7 +222,17 @@ int adc\+\_\+range (\begin{DoxyParamCaption}\item[{double}]{min\+\_\+range}{, }\
 
 
 
-Definition at line \mbox{\hyperlink{daq_8c_source_l00179}{179}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+Definition at line \mbox{\hyperlink{daq_8c_source_l00187}{187}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a9c985523e24a58948d62f0e09866bea7}\index{daq.c@{daq.c}!calc\_fixups@{calc\_fixups}}
+\index{calc\_fixups@{calc\_fixups}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{calc\_fixups()}{calc\_fixups()}}
+{\footnotesize\ttfamily \label{daq_8c_a9c985523e24a58948d62f0e09866bea7} 
+double calc\+\_\+fixups (\begin{DoxyParamCaption}\item[{double}]{data}{, }\item[{FIX\+\_\+\+CODES}]{fixup}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00517}{517}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
 \Hypertarget{daq_8c_ace7dd378dfacfe8a2d86af656cedddc6}\index{daq.c@{daq.c}!dac\_range@{dac\_range}}
 \index{dac\_range@{dac\_range}!daq.c@{daq.c}}
@@ -219,7 +242,7 @@ int dac\+\_\+range (\begin{DoxyParamCaption}\item[{double}]{min\+\_\+range}{, }\
 
 
 
-Definition at line \mbox{\hyperlink{daq_8c_source_l00190}{190}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+Definition at line \mbox{\hyperlink{daq_8c_source_l00198}{198}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
 \Hypertarget{daq_8c_a5f260f1267e110e3f818a23272d97d47}\index{daq.c@{daq.c}!get\_adc\_volts@{get\_adc\_volts}}
 \index{get\_adc\_volts@{get\_adc\_volts}!daq.c@{daq.c}}
@@ -229,7 +252,7 @@ double get\+\_\+adc\+\_\+volts (\begin{DoxyParamCaption}\item[{int}]{chan}{}\end
 
 
 
-Definition at line \mbox{\hyperlink{daq_8c_source_l00228}{228}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+Definition at line \mbox{\hyperlink{daq_8c_source_l00236}{236}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
 \Hypertarget{daq_8c_a5a25216c054758d201b787b5834e4122}\index{daq.c@{daq.c}!get\_data\_sample@{get\_data\_sample}}
 \index{get\_data\_sample@{get\_data\_sample}!daq.c@{daq.c}}
@@ -239,7 +262,7 @@ int get\+\_\+data\+\_\+sample (\begin{DoxyParamCaption}\item[{void}]{}{}\end{Dox
 
 
 
-Definition at line \mbox{\hyperlink{daq_8c_source_l00403}{403}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+Definition at line \mbox{\hyperlink{daq_8c_source_l00411}{411}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
 \Hypertarget{daq_8c_afa0dd8ca96b41e9cde97ab9812741bdc}\index{daq.c@{daq.c}!get\_dio\_bit@{get\_dio\_bit}}
 \index{get\_dio\_bit@{get\_dio\_bit}!daq.c@{daq.c}}
@@ -249,7 +272,7 @@ int get\+\_\+dio\+\_\+bit (\begin{DoxyParamCaption}\item[{int}]{chan}{}\end{Doxy
 
 
 
-Definition at line \mbox{\hyperlink{daq_8c_source_l00277}{277}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+Definition at line \mbox{\hyperlink{daq_8c_source_l00285}{285}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
 \Hypertarget{daq_8c_a14978833383b343310f60d0bc2a055c7}\index{daq.c@{daq.c}!init\_dac@{init\_dac}}
 \index{init\_dac@{init\_dac}!daq.c@{daq.c}}
@@ -259,7 +282,7 @@ int init\+\_\+dac (\begin{DoxyParamCaption}\item[{double}]{min\+\_\+range}{, }\i
 
 
 
-Definition at line \mbox{\hyperlink{daq_8c_source_l00140}{140}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+Definition at line \mbox{\hyperlink{daq_8c_source_l00148}{148}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
 \Hypertarget{daq_8c_a8dc6237a4f9d916d4ead0af52ad506dd}\index{daq.c@{daq.c}!init\_daq@{init\_daq}}
 \index{init\_daq@{init\_daq}!daq.c@{daq.c}}
@@ -269,7 +292,7 @@ int init\+\_\+daq (\begin{DoxyParamCaption}\item[{double}]{min\+\_\+range}{, }\i
 
 
 
-Definition at line \mbox{\hyperlink{daq_8c_source_l00071}{71}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+Definition at line \mbox{\hyperlink{daq_8c_source_l00079}{79}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
 \Hypertarget{daq_8c_a6ecdfd283dc1f3827fb03b15b6d1ab92}\index{daq.c@{daq.c}!init\_dio@{init\_dio}}
 \index{init\_dio@{init\_dio}!daq.c@{daq.c}}
@@ -279,7 +302,7 @@ int init\+\_\+dio (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaptio
 
 
 
-Definition at line \mbox{\hyperlink{daq_8c_source_l00305}{305}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+Definition at line \mbox{\hyperlink{daq_8c_source_l00313}{313}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
 \Hypertarget{daq_8c_a88cf7b0f4f9773686e80c06d1da237bd}\index{daq.c@{daq.c}!lp\_filter@{lp\_filter}}
 \index{lp\_filter@{lp\_filter}!daq.c@{daq.c}}
@@ -289,7 +312,7 @@ double lp\+\_\+filter (\begin{DoxyParamCaption}\item[{double}]{new}{, }\item[{in
 
 
 
-Definition at line \mbox{\hyperlink{daq_8c_source_l00463}{463}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+Definition at line \mbox{\hyperlink{daq_8c_source_l00493}{493}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
 \Hypertarget{daq_8c_a559149487eddf555e35e624b4de9a73a}\index{daq.c@{daq.c}!put\_dio\_bit@{put\_dio\_bit}}
 \index{put\_dio\_bit@{put\_dio\_bit}!daq.c@{daq.c}}
@@ -299,7 +322,7 @@ int put\+\_\+dio\+\_\+bit (\begin{DoxyParamCaption}\item[{int}]{chan}{, }\item[{
 
 
 
-Definition at line \mbox{\hyperlink{daq_8c_source_l00291}{291}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+Definition at line \mbox{\hyperlink{daq_8c_source_l00299}{299}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
 \Hypertarget{daq_8c_a372970f0bfc84c894e9628fe38a70f3c}\index{daq.c@{daq.c}!set\_dac\_raw@{set\_dac\_raw}}
 \index{set\_dac\_raw@{set\_dac\_raw}!daq.c@{daq.c}}
@@ -309,7 +332,7 @@ int set\+\_\+dac\+\_\+raw (\begin{DoxyParamCaption}\item[{int}]{chan}{, }\item[{
 
 
 
-Definition at line \mbox{\hyperlink{daq_8c_source_l00216}{216}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+Definition at line \mbox{\hyperlink{daq_8c_source_l00224}{224}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
 \Hypertarget{daq_8c_aa2a01d9b5fc9fd91253c56eb4d98655b}\index{daq.c@{daq.c}!set\_dac\_volts@{set\_dac\_volts}}
 \index{set\_dac\_volts@{set\_dac\_volts}!daq.c@{daq.c}}
@@ -319,7 +342,7 @@ int set\+\_\+dac\+\_\+volts (\begin{DoxyParamCaption}\item[{int}]{chan}{, }\item
 
 
 
-Definition at line \mbox{\hyperlink{daq_8c_source_l00201}{201}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+Definition at line \mbox{\hyperlink{daq_8c_source_l00209}{209}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
 \Hypertarget{daq_8c_a4d552c2f8bf72df7f32f5d4dba716e36}\index{daq.c@{daq.c}!set\_dio\_input@{set\_dio\_input}}
 \index{set\_dio\_input@{set\_dio\_input}!daq.c@{daq.c}}
@@ -329,7 +352,7 @@ int set\+\_\+dio\+\_\+input (\begin{DoxyParamCaption}\item[{int}]{chan}{}\end{Do
 
 
 
-Definition at line \mbox{\hyperlink{daq_8c_source_l00269}{269}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+Definition at line \mbox{\hyperlink{daq_8c_source_l00277}{277}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
 \Hypertarget{daq_8c_af35cc13f1cda0f78d833b133e65964d0}\index{daq.c@{daq.c}!set\_dio\_output@{set\_dio\_output}}
 \index{set\_dio\_output@{set\_dio\_output}!daq.c@{daq.c}}
@@ -339,7 +362,7 @@ int set\+\_\+dio\+\_\+output (\begin{DoxyParamCaption}\item[{int}]{chan}{}\end{D
 
 
 
-Definition at line \mbox{\hyperlink{daq_8c_source_l00261}{261}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+Definition at line \mbox{\hyperlink{daq_8c_source_l00269}{269}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
 
 
@@ -405,6 +428,26 @@ int aref\+\_\+dio}
 
 
 Definition at line \mbox{\hyperlink{daq_8c_source_l00038}{38}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_ab7f9edb958efaa5ee5bfddd0136977f7}\index{daq.c@{daq.c}!BMC4@{BMC4}}
+\index{BMC4@{BMC4}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{BMC4}{BMC4}}
+{\footnotesize\ttfamily \label{daq_8c_ab7f9edb958efaa5ee5bfddd0136977f7} 
+struct \mbox{\hyperlink{structbmc__buffer__type}{bmc\+\_\+buffer\+\_\+type}} BMC4}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .log\_buffer\ =\ daq\_bmc\_data,}
+\DoxyCodeLine{\ \ \ \ .buffer\ =\ daq\_bmc\_data\_text,}
+\DoxyCodeLine{\ \ \ \ .pos\ =\ 0,}
+\DoxyCodeLine{\ \ \ \ .len\ =\ 0,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00072}{72}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
 \Hypertarget{daq_8c_a7ec510878e847d471ff8a33deaa9f60a}\index{daq.c@{daq.c}!chan\_ai@{chan\_ai}}
 \index{chan\_ai@{chan\_ai}!daq.c@{daq.c}}
@@ -566,6 +609,46 @@ bool DAC\+\_\+\+ERROR = false}
 
 Definition at line \mbox{\hyperlink{daq_8c_source_l00053}{53}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
+\Hypertarget{daq_8c_a1c3384f57725647fa4679717ea566da7}\index{daq.c@{daq.c}!daq\_bmc\_data@{daq\_bmc\_data}}
+\index{daq\_bmc\_data@{daq\_bmc\_data}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{daq\_bmc\_data}{daq\_bmc\_data}}
+{\footnotesize\ttfamily \label{daq_8c_a1c3384f57725647fa4679717ea566da7} 
+uint32\+\_\+t daq\+\_\+bmc\+\_\+data\mbox{[}SYSLOG\+\_\+\+SIZ\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00059}{59}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_abf1e7c8276b30cba0732984d8874cb00}\index{daq.c@{daq.c}!daq\_bmc\_data\_buf@{daq\_bmc\_data\_buf}}
+\index{daq\_bmc\_data\_buf@{daq\_bmc\_data\_buf}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{daq\_bmc\_data\_buf}{daq\_bmc\_data\_buf}}
+{\footnotesize\ttfamily \label{daq_8c_abf1e7c8276b30cba0732984d8874cb00} 
+char daq\+\_\+bmc\+\_\+data\+\_\+buf\mbox{[}SYSLOG\+\_\+\+SIZ\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00067}{67}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a9ebfeeed6eb48535cfa8bca291f3f6a6}\index{daq.c@{daq.c}!daq\_bmc\_data\_text@{daq\_bmc\_data\_text}}
+\index{daq\_bmc\_data\_text@{daq\_bmc\_data\_text}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{daq\_bmc\_data\_text}{daq\_bmc\_data\_text}}
+{\footnotesize\ttfamily \label{daq_8c_a9ebfeeed6eb48535cfa8bca291f3f6a6} 
+char daq\+\_\+bmc\+\_\+data\+\_\+text\mbox{[}SYSLOG\+\_\+\+SIZ\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00067}{67}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a59be8dcc53b5448f53c266afaf283a92}\index{daq.c@{daq.c}!daq\_data\_index@{daq\_data\_index}}
+\index{daq\_data\_index@{daq\_data\_index}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{daq\_data\_index}{daq\_data\_index}}
+{\footnotesize\ttfamily \label{daq_8c_a59be8dcc53b5448f53c266afaf283a92} 
+uint8\+\_\+t daq\+\_\+data\+\_\+index = 0}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00069}{69}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
 \Hypertarget{daq_8c_a9226ae5be9e8fa404ecb063cbdcc757e}\index{daq.c@{daq.c}!daq\_text@{daq\_text}}
 \index{daq\_text@{daq\_text}!daq.c@{daq.c}}
 \doxysubsubsection{\texorpdfstring{daq\_text}{daq\_text}}
@@ -584,7 +667,7 @@ char\texorpdfstring{$\ast$}{*} daq\+\_\+text\mbox{[}$\,$\mbox{]}}
 \end{DoxyCode}
 
 
-Definition at line \mbox{\hyperlink{daq_8c_source_l00061}{61}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+Definition at line \mbox{\hyperlink{daq_8c_source_l00062}{62}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
 \Hypertarget{daq_8c_a9ba379059c8b5d3bb322c61e977bb8f1}\index{daq.c@{daq.c}!daq\_text\_index@{daq\_text\_index}}
 \index{daq\_text\_index@{daq\_text\_index}!daq.c@{daq.c}}
@@ -594,7 +677,7 @@ uint8\+\_\+t daq\+\_\+text\+\_\+index = 0}
 
 
 
-Definition at line \mbox{\hyperlink{daq_8c_source_l00068}{68}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+Definition at line \mbox{\hyperlink{daq_8c_source_l00069}{69}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
 \Hypertarget{daq_8c_a70ef6bd8424963fdb7aecc6c35b66006}\index{daq.c@{daq.c}!daq\_text\_ptr@{daq\_text\_ptr}}
 \index{daq\_text\_ptr@{daq\_text\_ptr}!daq.c@{daq.c}}
@@ -604,7 +687,7 @@ char \texorpdfstring{$\ast$}{*} daq\+\_\+text\+\_\+ptr}
 
 
 
-Definition at line \mbox{\hyperlink{daq_8c_source_l00066}{66}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+Definition at line \mbox{\hyperlink{daq_8c_source_l00067}{67}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
 \Hypertarget{daq_8c_a3a32175f74de9c6307ea729b122d9f30}\index{daq.c@{daq.c}!datain@{datain}}
 \index{datain@{datain}!daq.c@{daq.c}}
@@ -764,7 +847,7 @@ uint8\+\_\+t line\+\_\+index = 0}
 
 
 
-Definition at line \mbox{\hyperlink{daq_8c_source_l00068}{68}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+Definition at line \mbox{\hyperlink{daq_8c_source_l00069}{69}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 
 \Hypertarget{daq_8c_a44f36250b8311b3fcdad0f1f799547d6}\index{daq.c@{daq.c}!maxdata\_ai@{maxdata\_ai}}
 \index{maxdata\_ai@{maxdata\_ai}!daq.c@{daq.c}}
@@ -1095,4 +1178,14 @@ int subdev\+\_\+serial0}
 
 
 Definition at line \mbox{\hyperlink{daq_8c_source_l00045}{45}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
+
+\Hypertarget{daq_8c_a976fe65f45bb47e4211ddac864240dbf}\index{daq.c@{daq.c}!text\_test@{text\_test}}
+\index{text\_test@{text\_test}!daq.c@{daq.c}}
+\doxysubsubsection{\texorpdfstring{text\_test}{text\_test}}
+{\footnotesize\ttfamily \label{daq_8c_a976fe65f45bb47e4211ddac864240dbf} 
+const char text\+\_\+test\mbox{[}$\,$\mbox{]} = \{"{}the quick brown fox jumps over the lazy dogs back"{}\}}
+
+
+
+Definition at line \mbox{\hyperlink{daq_8c_source_l00060}{60}} of file \mbox{\hyperlink{daq_8c_source}{daq.\+c}}.
 

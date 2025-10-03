@@ -8,6 +8,8 @@
 {\ttfamily \#include "{}mcc\+\_\+generated\+\_\+files/tmr0.\+h"{}}\newline
 {\ttfamily \#include "{}eadog.\+h"{}}\newline
 {\ttfamily \#include "{}timers.\+h"{}}\newline
+{\ttfamily \#include "{}vconfig.\+h"{}}\newline
+{\ttfamily \#include "{}calibr.\+h"{}}\newline
 Include dependency graph for slaveo.\+h\+:
 \nopagebreak
 \begin{figure}[H]
@@ -32,11 +34,19 @@ struct \mbox{\hyperlink{structspi__link__type__ss}{spi\+\_\+link\+\_\+type\+\_\+
 struct \mbox{\hyperlink{structspi__stat__type__ss}{spi\+\_\+stat\+\_\+type\+\_\+ss}}
 \item 
 struct \mbox{\hyperlink{structserial__buffer__type__ss}{serial\+\_\+buffer\+\_\+type\+\_\+ss}}
+\item 
+struct \mbox{\hyperlink{structbmc__buffer__type}{bmc\+\_\+buffer\+\_\+type}}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
-\#define \mbox{\hyperlink{slaveo_8h_a536e83422870fe45f45e29ab310b32bb}{SLAVEO\+\_\+\+DRIVER}}~"{}V0.\+8"{}
+\#define \mbox{\hyperlink{slaveo_8h_a536e83422870fe45f45e29ab310b32bb}{SLAVEO\+\_\+\+DRIVER}}~"{}V0.\+91"{}
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_aa2be630c1edca3bda0a6d1e7170e2871}{F27\+Q84}}~0x9903
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a43012c274deec45b7215135de79e1a89}{F47\+Q84}}~0x9904
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a471864c330bf01fe4d06f7f3ddc6a683}{F57\+Q84}}~0x9905
 \item 
 \#define \mbox{\hyperlink{slaveo_8h_a82a8421800c146cafebfe4fb027c609a}{SLAVE\+\_\+\+DEBUG}}
 \item 
@@ -65,6 +75,8 @@ struct \mbox{\hyperlink{structserial__buffer__type__ss}{serial\+\_\+buffer\+\_\+
 \#define \mbox{\hyperlink{slaveo_8h_a0ed9ccd23e9bd8de60c718cbdf8672d4}{CMD\+\_\+\+DEAD}}~0b11111111
 \item 
 \#define \mbox{\hyperlink{slaveo_8h_aee323f92dec304514358bb75c5737d58}{CHECKBYTE}}~0x57
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a4c12a15f2a66a14c71bc4d4723d0ec21}{CHECKMARK}}~0x1957
 \item 
 \#define \mbox{\hyperlink{slaveo_8h_ac36bd94752cfcd76289723ed08b19809}{CMD\+\_\+\+DUMMY}}~0b01100111 /\texorpdfstring{$\ast$}{*} 7 channels 4.\+096 \texorpdfstring{$\ast$}{*}/
 \item 
@@ -105,6 +117,8 @@ struct \mbox{\hyperlink{structserial__buffer__type__ss}{serial\+\_\+buffer\+\_\+
 \#define \mbox{\hyperlink{slaveo_8h_a2c8d3a20377cd083ce44c796dd57755e}{CHAR\+\_\+\+GO\+\_\+\+BYTES}}~7
 \item 
 \#define \mbox{\hyperlink{slaveo_8h_abc3163e76b4da17a036b220673bcbc96}{DAC\+\_\+\+GO\+\_\+\+BYTES}}~7
+\item 
+\#define \mbox{\hyperlink{slaveo_8h_a9188ba4aa24594526cdf1190221a0d16}{MAX\+\_\+\+BMC\+\_\+\+BUF}}~512
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Enumerations}
 \begin{DoxyCompactItemize}
@@ -121,6 +135,10 @@ enum {\bfseries daqbmc\+\_\+packet\+\_\+index} \{ \newline
 , {\bfseries BMC\+\_\+\+CKSUM} = 7
 , \newline
 {\bfseries BMC\+\_\+\+DUMMY}
+ \}
+\item 
+enum {\bfseries daqbmc\+\_\+data\+\_\+index} \{ {\bfseries BMC\+\_\+\+EM540\+\_\+\+DATA} = 4
+, {\bfseries BMC\+\_\+\+DATA\+\_\+\+DUMMY}
  \}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
@@ -174,9 +192,22 @@ volatile uint8\+\_\+t \mbox{\hyperlink{slaveo_8h_abdba0bb87d49916ea9e39822647f8a
 \item 
 volatile uint8\+\_\+t \mbox{\hyperlink{slaveo_8h_a7aab907e5b001af4329672277f7177db}{in\+\_\+buf3}}
 \item 
-volatile uint8\+\_\+t \mbox{\hyperlink{slaveo_8h_a10f21e7ac31a5ea2ca838b37ead801e2}{tmp\+\_\+buf}}
+\Hypertarget{slaveo_8h_a10f21e7ac31a5ea2ca838b37ead801e2}\label{slaveo_8h_a10f21e7ac31a5ea2ca838b37ead801e2} 
+volatile uint8\+\_\+t {\bfseries tmp\+\_\+buf}
 \item 
 volatile bool \mbox{\hyperlink{slaveo_8h_acef34ed2b8434815f3390436d7c05346}{r\+\_\+string\+\_\+ready}}
+\item 
+volatile bool \mbox{\hyperlink{slaveo_8h_af20641ae6e9cd5e235841cf94fd2cc44}{bmc\+\_\+string\+\_\+ready}}
+\item 
+volatile bool \mbox{\hyperlink{slaveo_8h_abbba2e14a1eb0be0d3cdd603196f753b}{update\+\_\+bmc\+\_\+string}}
+\item 
+volatile struct \mbox{\hyperlink{structbmc__buffer__type}{bmc\+\_\+buffer\+\_\+type}} \mbox{\hyperlink{slaveo_8h_a69ba5b18020483850687dfe837484f9c}{BMC4}}
+\item 
+volatile char \mbox{\hyperlink{slaveo_8h_a736a40b91319d11d96998c2ce0006f55}{buffer}} \mbox{[}MAX\+\_\+\+BMC\+\_\+\+BUF\mbox{]}
+\item 
+volatile char \mbox{\hyperlink{slaveo_8h_a8d6c6d7f0dccf6d805755846444064a4}{log\+\_\+buffer}} \mbox{[}MAX\+\_\+\+BMC\+\_\+\+BUF\mbox{]}
+\item 
+struct \mbox{\hyperlink{structha__daq__calib__type}{ha\+\_\+daq\+\_\+calib\+\_\+type}} \mbox{\hyperlink{slaveo_8h_a5b53aad72b2f4887a37100b31dfb9962}{ha\+\_\+daq\+\_\+calib}}
 \end{DoxyCompactItemize}
 
 
@@ -200,7 +231,7 @@ Definition in file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00063}{63}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00070}{70}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a11100cd5ae4a03cda680e0473f35183b}\index{slaveo.h@{slaveo.h}!ADC\_SWAP\_MASK@{ADC\_SWAP\_MASK}}
 \index{ADC\_SWAP\_MASK@{ADC\_SWAP\_MASK}!slaveo.h@{slaveo.h}}
@@ -210,7 +241,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00063}{63}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00057}{57}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00064}{64}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_afec7806f24d486d23e49cfa6b6f9563a}\index{slaveo.h@{slaveo.h}!AI\_BUFFER\_NUM@{AI\_BUFFER\_NUM}}
 \index{AI\_BUFFER\_NUM@{AI\_BUFFER\_NUM}!slaveo.h@{slaveo.h}}
@@ -220,7 +251,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00057}{57}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00045}{45}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00052}{52}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a15de5d2972b7a20c5583182a3b30b581}\index{slaveo.h@{slaveo.h}!AI\_CHAN\_FIX@{AI\_CHAN\_FIX}}
 \index{AI\_CHAN\_FIX@{AI\_CHAN\_FIX}!slaveo.h@{slaveo.h}}
@@ -230,7 +261,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00045}{45}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00046}{46}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00053}{53}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a8891e251d251e17f8a7d8affb3e2ae04}\index{slaveo.h@{slaveo.h}!AO\_BUFFER\_NUM@{AO\_BUFFER\_NUM}}
 \index{AO\_BUFFER\_NUM@{AO\_BUFFER\_NUM}!slaveo.h@{slaveo.h}}
@@ -240,7 +271,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00046}{46}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00049}{49}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00056}{56}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_ab974ed07000c1bdf41a5807184a41c7d}\index{slaveo.h@{slaveo.h}!CFG\_GET\_BYTES@{CFG\_GET\_BYTES}}
 \index{CFG\_GET\_BYTES@{CFG\_GET\_BYTES}!slaveo.h@{slaveo.h}}
@@ -250,7 +281,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00049}{49}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00062}{62}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00069}{69}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a0b5256490c35a087895fb008003791d2}\index{slaveo.h@{slaveo.h}!CHAR\_GET\_BYTES@{CHAR\_GET\_BYTES}}
 \index{CHAR\_GET\_BYTES@{CHAR\_GET\_BYTES}!slaveo.h@{slaveo.h}}
@@ -260,7 +291,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00062}{62}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00061}{61}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00068}{68}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a2c8d3a20377cd083ce44c796dd57755e}\index{slaveo.h@{slaveo.h}!CHAR\_GO\_BYTES@{CHAR\_GO\_BYTES}}
 \index{CHAR\_GO\_BYTES@{CHAR\_GO\_BYTES}!slaveo.h@{slaveo.h}}
@@ -270,7 +301,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00061}{61}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00065}{65}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00072}{72}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_aee323f92dec304514358bb75c5737d58}\index{slaveo.h@{slaveo.h}!CHECKBYTE@{CHECKBYTE}}
 \index{CHECKBYTE@{CHECKBYTE}!slaveo.h@{slaveo.h}}
@@ -280,7 +311,17 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00065}{65}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00041}{41}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00047}{47}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a4c12a15f2a66a14c71bc4d4723d0ec21}\index{slaveo.h@{slaveo.h}!CHECKMARK@{CHECKMARK}}
+\index{CHECKMARK@{CHECKMARK}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{CHECKMARK}{CHECKMARK}}
+{\footnotesize\ttfamily \label{slaveo_8h_a4c12a15f2a66a14c71bc4d4723d0ec21} 
+\#define CHECKMARK~0x1957}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00048}{48}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a53d07a2daf72dd117c84a6d94a902518}\index{slaveo.h@{slaveo.h}!CMD\_ADC\_DATA@{CMD\_ADC\_DATA}}
 \index{CMD\_ADC\_DATA@{CMD\_ADC\_DATA}!slaveo.h@{slaveo.h}}
@@ -290,7 +331,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00041}{41}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00033}{33}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00039}{39}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_aabf17afb5dadda22c0f1dff8f64316a1}\index{slaveo.h@{slaveo.h}!CMD\_ADC\_GO@{CMD\_ADC\_GO}}
 \index{CMD\_ADC\_GO@{CMD\_ADC\_GO}!slaveo.h@{slaveo.h}}
@@ -300,7 +341,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00033}{33}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00029}{29}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00035}{35}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_aff5f45c2fed24a9b7a69d7854abedfad}\index{slaveo.h@{slaveo.h}!CMD\_CHAR\_DATA@{CMD\_CHAR\_DATA}}
 \index{CMD\_CHAR\_DATA@{CMD\_CHAR\_DATA}!slaveo.h@{slaveo.h}}
@@ -310,7 +351,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00029}{29}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00035}{35}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00041}{41}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a0a437a59afa27dce712883a246cf5c48}\index{slaveo.h@{slaveo.h}!CMD\_CHAR\_GET@{CMD\_CHAR\_GET}}
 \index{CMD\_CHAR\_GET@{CMD\_CHAR\_GET}!slaveo.h@{slaveo.h}}
@@ -320,7 +361,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00035}{35}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00037}{37}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00043}{43}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_ab0a458610e06ccb7513072b8ab18fc6d}\index{slaveo.h@{slaveo.h}!CMD\_CHAR\_GO@{CMD\_CHAR\_GO}}
 \index{CMD\_CHAR\_GO@{CMD\_CHAR\_GO}!slaveo.h@{slaveo.h}}
@@ -330,7 +371,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00037}{37}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00032}{32}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00038}{38}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a79c4d95f36b11dfc52ae61ac2093814d}\index{slaveo.h@{slaveo.h}!CMD\_DAC\_GO@{CMD\_DAC\_GO}}
 \index{CMD\_DAC\_GO@{CMD\_DAC\_GO}!slaveo.h@{slaveo.h}}
@@ -340,7 +381,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00032}{32}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00030}{30}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00036}{36}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a0ed9ccd23e9bd8de60c718cbdf8672d4}\index{slaveo.h@{slaveo.h}!CMD\_DEAD@{CMD\_DEAD}}
 \index{CMD\_DEAD@{CMD\_DEAD}!slaveo.h@{slaveo.h}}
@@ -350,7 +391,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00030}{30}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00039}{39}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00045}{45}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_ac36bd94752cfcd76289723ed08b19809}\index{slaveo.h@{slaveo.h}!CMD\_DUMMY@{CMD\_DUMMY}}
 \index{CMD\_DUMMY@{CMD\_DUMMY}!slaveo.h@{slaveo.h}}
@@ -360,7 +401,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00039}{39}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00043}{43}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00050}{50}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_ac0df3e3beccc91b75cf33e2cec489dc9}\index{slaveo.h@{slaveo.h}!CMD\_DUMMY\_CFG@{CMD\_DUMMY\_CFG}}
 \index{CMD\_DUMMY\_CFG@{CMD\_DUMMY\_CFG}!slaveo.h@{slaveo.h}}
@@ -370,7 +411,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00043}{43}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00038}{38}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00044}{44}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_abac8491ff738e1f90891867c19a927d5}\index{slaveo.h@{slaveo.h}!CMD\_PORT\_DATA@{CMD\_PORT\_DATA}}
 \index{CMD\_PORT\_DATA@{CMD\_PORT\_DATA}!slaveo.h@{slaveo.h}}
@@ -380,7 +421,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00038}{38}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00034}{34}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00040}{40}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_ab4e70063506972fd8c84e7cf15e92608}\index{slaveo.h@{slaveo.h}!CMD\_PORT\_GET@{CMD\_PORT\_GET}}
 \index{CMD\_PORT\_GET@{CMD\_PORT\_GET}!slaveo.h@{slaveo.h}}
@@ -390,7 +431,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00034}{34}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00036}{36}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00042}{42}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a36e8996b8ed0b54dffcee14919e6da68}\index{slaveo.h@{slaveo.h}!CMD\_PORT\_GO@{CMD\_PORT\_GO}}
 \index{CMD\_PORT\_GO@{CMD\_PORT\_GO}!slaveo.h@{slaveo.h}}
@@ -400,7 +441,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00036}{36}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00031}{31}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00037}{37}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_ac28b77ef3664a272954f66b0ae3ad260}\index{slaveo.h@{slaveo.h}!CMD\_ZERO@{CMD\_ZERO}}
 \index{CMD\_ZERO@{CMD\_ZERO}!slaveo.h@{slaveo.h}}
@@ -410,7 +451,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00031}{31}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00028}{28}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00034}{34}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_abc3163e76b4da17a036b220673bcbc96}\index{slaveo.h@{slaveo.h}!DAC\_GO\_BYTES@{DAC\_GO\_BYTES}}
 \index{DAC\_GO\_BYTES@{DAC\_GO\_BYTES}!slaveo.h@{slaveo.h}}
@@ -420,7 +461,37 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00028}{28}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00066}{66}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00073}{73}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_aa2be630c1edca3bda0a6d1e7170e2871}\index{slaveo.h@{slaveo.h}!F27Q84@{F27Q84}}
+\index{F27Q84@{F27Q84}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{F27Q84}{F27Q84}}
+{\footnotesize\ttfamily \label{slaveo_8h_aa2be630c1edca3bda0a6d1e7170e2871} 
+\#define F27\+Q84~0x9903}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00027}{27}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a43012c274deec45b7215135de79e1a89}\index{slaveo.h@{slaveo.h}!F47Q84@{F47Q84}}
+\index{F47Q84@{F47Q84}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{F47Q84}{F47Q84}}
+{\footnotesize\ttfamily \label{slaveo_8h_a43012c274deec45b7215135de79e1a89} 
+\#define F47\+Q84~0x9904}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00028}{28}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a471864c330bf01fe4d06f7f3ddc6a683}\index{slaveo.h@{slaveo.h}!F57Q84@{F57Q84}}
+\index{F57Q84@{F57Q84}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{F57Q84}{F57Q84}}
+{\footnotesize\ttfamily \label{slaveo_8h_a471864c330bf01fe4d06f7f3ddc6a683} 
+\#define F57\+Q84~0x9905}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00029}{29}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a30d02ae8779276d872f84bfff754cc1f}\index{slaveo.h@{slaveo.h}!HI\_NIBBLE@{HI\_NIBBLE}}
 \index{HI\_NIBBLE@{HI\_NIBBLE}!slaveo.h@{slaveo.h}}
@@ -430,7 +501,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00066}{66}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00055}{55}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00062}{62}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a9880da3967c5a23e094be4706f06ce6f}\index{slaveo.h@{slaveo.h}!LO\_NIBBLE@{LO\_NIBBLE}}
 \index{LO\_NIBBLE@{LO\_NIBBLE}!slaveo.h@{slaveo.h}}
@@ -440,7 +511,17 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00055}{55}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00056}{56}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00063}{63}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a9188ba4aa24594526cdf1190221a0d16}\index{slaveo.h@{slaveo.h}!MAX\_BMC\_BUF@{MAX\_BMC\_BUF}}
+\index{MAX\_BMC\_BUF@{MAX\_BMC\_BUF}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{MAX\_BMC\_BUF}{MAX\_BMC\_BUF}}
+{\footnotesize\ttfamily \label{slaveo_8h_a9188ba4aa24594526cdf1190221a0d16} 
+\#define MAX\+\_\+\+BMC\+\_\+\+BUF~512}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00075}{75}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_aa156aeec442cc1ea624968c52d7239dd}\index{slaveo.h@{slaveo.h}!NUM\_AI\_CHAN@{NUM\_AI\_CHAN}}
 \index{NUM\_AI\_CHAN@{NUM\_AI\_CHAN}!slaveo.h@{slaveo.h}}
@@ -450,7 +531,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00056}{56}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00044}{44}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00051}{51}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a5e232965d7bd1a7f601656070693f2d5}\index{slaveo.h@{slaveo.h}!NUM\_AO\_CHAN@{NUM\_AO\_CHAN}}
 \index{NUM\_AO\_CHAN@{NUM\_AO\_CHAN}!slaveo.h@{slaveo.h}}
@@ -460,7 +541,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00044}{44}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00048}{48}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00055}{55}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a0264cbb3ae1f347fbaad0f989ce9b89d}\index{slaveo.h@{slaveo.h}!PACKET\_BUF\_SIZ@{PACKET\_BUF\_SIZ}}
 \index{PACKET\_BUF\_SIZ@{PACKET\_BUF\_SIZ}!slaveo.h@{slaveo.h}}
@@ -470,7 +551,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00048}{48}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00052}{52}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00059}{59}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a5a363510c4027e02f852999161302036}\index{slaveo.h@{slaveo.h}!PORT\_GET\_BYTES@{PORT\_GET\_BYTES}}
 \index{PORT\_GET\_BYTES@{PORT\_GET\_BYTES}!slaveo.h@{slaveo.h}}
@@ -480,7 +561,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00052}{52}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00060}{60}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00067}{67}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_aff229b007d289eb4b525b7acb0971f1a}\index{slaveo.h@{slaveo.h}!PORT\_GO\_BYTES@{PORT\_GO\_BYTES}}
 \index{PORT\_GO\_BYTES@{PORT\_GO\_BYTES}!slaveo.h@{slaveo.h}}
@@ -490,7 +571,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00060}{60}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00064}{64}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00071}{71}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_ac2bb870098b24b1db60eb1951138dccc}\index{slaveo.h@{slaveo.h}!RSTRING\_BUF\_SIZ@{RSTRING\_BUF\_SIZ}}
 \index{RSTRING\_BUF\_SIZ@{RSTRING\_BUF\_SIZ}!slaveo.h@{slaveo.h}}
@@ -500,7 +581,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00064}{64}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00053}{53}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00060}{60}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a82a8421800c146cafebfe4fb027c609a}\index{slaveo.h@{slaveo.h}!SLAVE\_DEBUG@{SLAVE\_DEBUG}}
 \index{SLAVE\_DEBUG@{SLAVE\_DEBUG}!slaveo.h@{slaveo.h}}
@@ -510,17 +591,17 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00053}{53}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00025}{25}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00031}{31}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a536e83422870fe45f45e29ab310b32bb}\index{slaveo.h@{slaveo.h}!SLAVEO\_DRIVER@{SLAVEO\_DRIVER}}
 \index{SLAVEO\_DRIVER@{SLAVEO\_DRIVER}!slaveo.h@{slaveo.h}}
 \doxysubsubsection{\texorpdfstring{SLAVEO\_DRIVER}{SLAVEO\_DRIVER}}
 {\footnotesize\ttfamily \label{slaveo_8h_a536e83422870fe45f45e29ab310b32bb} 
-\#define SLAVEO\+\_\+\+DRIVER~"{}V0.\+8"{}}
+\#define SLAVEO\+\_\+\+DRIVER~"{}V0.\+91"{}}
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00023}{23}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00025}{25}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_ac236b5f0aa5adc8f1546509d82fb5cdc}\index{slaveo.h@{slaveo.h}!SPI\_BUFFER\_LEN@{SPI\_BUFFER\_LEN}}
 \index{SPI\_BUFFER\_LEN@{SPI\_BUFFER\_LEN}!slaveo.h@{slaveo.h}}
@@ -530,7 +611,7 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00023}{23}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00051}{51}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00058}{58}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a1d663fa8e7d7f4c378e172ae31790e37}\index{slaveo.h@{slaveo.h}!UART\_DUMMY\_MASK@{UART\_DUMMY\_MASK}}
 \index{UART\_DUMMY\_MASK@{UART\_DUMMY\_MASK}!slaveo.h@{slaveo.h}}
@@ -540,13 +621,23 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00051}{51}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00058}{58}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00065}{65}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 
 
 \label{doc-enum-members}
 \Hypertarget{slaveo_8h_doc-enum-members}
 \doxysubsection{Enumeration Type Documentation}
+\Hypertarget{slaveo_8h_a9a1525b31723df6ed8bdedd4cb401154}\index{slaveo.h@{slaveo.h}!daqbmc\_data\_index@{daqbmc\_data\_index}}
+\index{daqbmc\_data\_index@{daqbmc\_data\_index}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{daqbmc\_data\_index}{daqbmc\_data\_index}}
+{\footnotesize\ttfamily \label{slaveo_8h_a9a1525b31723df6ed8bdedd4cb401154} 
+enum daqbmc\+\_\+data\+\_\+index}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00124}{124}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
 \Hypertarget{slaveo_8h_a4f2cde57f6245df12305ffb38448eb89}\index{slaveo.h@{slaveo.h}!daqbmc\_packet\_index@{daqbmc\_packet\_index}}
 \index{daqbmc\_packet\_index@{daqbmc\_packet\_index}!slaveo.h@{slaveo.h}}
 \doxysubsubsection{\texorpdfstring{daqbmc\_packet\_index}{daqbmc\_packet\_index}}
@@ -555,7 +646,7 @@ enum daqbmc\+\_\+packet\+\_\+index}
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00094}{94}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00112}{112}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 
 
@@ -590,7 +681,7 @@ void slaveo\+\_\+rx\+\_\+isr (\begin{DoxyParamCaption}\item[{void}]{}{}\end{Doxy
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8c_source_l00084}{84}} of file \mbox{\hyperlink{slaveo_8c_source}{slaveo.\+c}}.
+Definition at line \mbox{\hyperlink{slaveo_8c_source_l00087}{87}} of file \mbox{\hyperlink{slaveo_8c_source}{slaveo.\+c}}.
 
 \Hypertarget{slaveo_8h_a38d27b693e0a3eda98599cb01addc31c}\index{slaveo.h@{slaveo.h}!slaveo\_spi\_isr@{slaveo\_spi\_isr}}
 \index{slaveo\_spi\_isr@{slaveo\_spi\_isr}!slaveo.h@{slaveo.h}}
@@ -600,7 +691,7 @@ void slaveo\+\_\+spi\+\_\+isr (\begin{DoxyParamCaption}\item[{void}]{}{}\end{Dox
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8c_source_l00411}{411}} of file \mbox{\hyperlink{slaveo_8c_source}{slaveo.\+c}}.
+Definition at line \mbox{\hyperlink{slaveo_8c_source_l00472}{472}} of file \mbox{\hyperlink{slaveo_8c_source}{slaveo.\+c}}.
 
 \Hypertarget{slaveo_8h_acb8f9ae744d1bcb20cb6188e44e32ec6}\index{slaveo.h@{slaveo.h}!slaveo\_time\_isr@{slaveo\_time\_isr}}
 \index{slaveo\_time\_isr@{slaveo\_time\_isr}!slaveo.h@{slaveo.h}}
@@ -610,7 +701,7 @@ void slaveo\+\_\+time\+\_\+isr (\begin{DoxyParamCaption}\item[{void}]{}{}\end{Do
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8c_source_l00417}{417}} of file \mbox{\hyperlink{slaveo_8c_source}{slaveo.\+c}}.
+Definition at line \mbox{\hyperlink{slaveo_8c_source_l00478}{478}} of file \mbox{\hyperlink{slaveo_8c_source}{slaveo.\+c}}.
 
 
 
@@ -625,7 +716,7 @@ volatile uint16\+\_\+t adc\+\_\+buffer\mbox{[}AI\+\_\+\+BUFFER\+\_\+\+NUM\mbox{]
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00292}{292}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l00293}{293}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
 \Hypertarget{slaveo_8h_a409f4f0e050ad7863d2dcf4f6d2e0b77}\index{slaveo.h@{slaveo.h}!adc\_buffer\_ptr@{adc\_buffer\_ptr}}
 \index{adc\_buffer\_ptr@{adc\_buffer\_ptr}!slaveo.h@{slaveo.h}}
@@ -635,7 +726,7 @@ volatile uint8\+\_\+t adc\+\_\+buffer\+\_\+ptr}
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00109}{109}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00132}{132}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_af637f42904417bf40f4bdd3b3f59a6e3}\index{slaveo.h@{slaveo.h}!adc\_channel@{adc\_channel}}
 \index{adc\_channel@{adc\_channel}!slaveo.h@{slaveo.h}}
@@ -645,7 +736,7 @@ volatile uint8\+\_\+t adc\+\_\+channel}
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00109}{109}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00132}{132}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a328abcaa467b0a3acadc8d456be75a38}\index{slaveo.h@{slaveo.h}!adc\_data\_in@{adc\_data\_in}}
 \index{adc\_data\_in@{adc\_data\_in}!slaveo.h@{slaveo.h}}
@@ -655,7 +746,37 @@ volatile uint16\+\_\+t adc\+\_\+data\+\_\+in}
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00110}{110}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00133}{133}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a69ba5b18020483850687dfe837484f9c}\index{slaveo.h@{slaveo.h}!BMC4@{BMC4}}
+\index{BMC4@{BMC4}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{BMC4}{BMC4}}
+{\footnotesize\ttfamily \label{slaveo_8h_a69ba5b18020483850687dfe837484f9c} 
+volatile struct \mbox{\hyperlink{structbmc__buffer__type}{bmc\+\_\+buffer\+\_\+type}} BMC4\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00142}{142}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_af20641ae6e9cd5e235841cf94fd2cc44}\index{slaveo.h@{slaveo.h}!bmc\_string\_ready@{bmc\_string\_ready}}
+\index{bmc\_string\_ready@{bmc\_string\_ready}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{bmc\_string\_ready}{bmc\_string\_ready}}
+{\footnotesize\ttfamily \label{slaveo_8h_af20641ae6e9cd5e235841cf94fd2cc44} 
+volatile bool bmc\+\_\+string\+\_\+ready}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00138}{138}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a736a40b91319d11d96998c2ce0006f55}\index{slaveo.h@{slaveo.h}!buffer@{buffer}}
+\index{buffer@{buffer}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{buffer}{buffer}}
+{\footnotesize\ttfamily \label{slaveo_8h_a736a40b91319d11d96998c2ce0006f55} 
+volatile char buffer\mbox{[}MAX\+\_\+\+BMC\+\_\+\+BUF\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00331}{331}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
 \Hypertarget{slaveo_8h_a4b613adf1dc9edfbc9951cf9b86ec2e3}\index{slaveo.h@{slaveo.h}!channel@{channel}}
 \index{channel@{channel}!slaveo.h@{slaveo.h}}
@@ -665,7 +786,7 @@ volatile uint8\+\_\+t channel}
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00109}{109}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00132}{132}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a59decdcbfa4747da1d06b5a346ea58e5}\index{slaveo.h@{slaveo.h}!dac\_buffer@{dac\_buffer}}
 \index{dac\_buffer@{dac\_buffer}!slaveo.h@{slaveo.h}}
@@ -675,7 +796,7 @@ volatile uint16\+\_\+t dac\+\_\+buffer\mbox{[}AO\+\_\+\+BUFFER\+\_\+\+NUM\mbox{]
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00110}{110}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00133}{133}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_ad7c822363bf92962cc511f719df133fd}\index{slaveo.h@{slaveo.h}!dac\_data\_in@{dac\_data\_in}}
 \index{dac\_data\_in@{dac\_data\_in}!slaveo.h@{slaveo.h}}
@@ -685,7 +806,7 @@ volatile uint16\+\_\+t dac\+\_\+data\+\_\+in}
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00110}{110}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00133}{133}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_abf153ed8a2e07afd475e98ee051593ac}\index{slaveo.h@{slaveo.h}!data\_in2@{data\_in2}}
 \index{data\_in2@{data\_in2}!slaveo.h@{slaveo.h}}
@@ -695,7 +816,7 @@ volatile uint8\+\_\+t data\+\_\+in2\hspace{0.3cm}{\ttfamily [extern]}}
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00291}{291}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l00292}{292}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
 \Hypertarget{slaveo_8h_a9c80ef79451ebf55ab7f49e5d4d429be}\index{slaveo.h@{slaveo.h}!failure@{failure}}
 \index{failure@{failure}!slaveo.h@{slaveo.h}}
@@ -705,7 +826,17 @@ volatile bool failure}
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00112}{112}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00135}{135}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a5b53aad72b2f4887a37100b31dfb9962}\index{slaveo.h@{slaveo.h}!ha\_daq\_calib@{ha\_daq\_calib}}
+\index{ha\_daq\_calib@{ha\_daq\_calib}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{ha\_daq\_calib}{ha\_daq\_calib}}
+{\footnotesize\ttfamily \label{slaveo_8h_a5b53aad72b2f4887a37100b31dfb9962} 
+struct \mbox{\hyperlink{structha__daq__calib__type}{ha\+\_\+daq\+\_\+calib\+\_\+type}} ha\+\_\+daq\+\_\+calib\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00282}{282}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
 \Hypertarget{slaveo_8h_a8f56b26d3c2c03e3c004505d45319d97}\index{slaveo.h@{slaveo.h}!in\_buf1@{in\_buf1}}
 \index{in\_buf1@{in\_buf1}!slaveo.h@{slaveo.h}}
@@ -715,7 +846,7 @@ volatile uint8\+\_\+t in\+\_\+buf1\hspace{0.3cm}{\ttfamily [extern]}}
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8c_source_l00040}{40}} of file \mbox{\hyperlink{slaveo_8c_source}{slaveo.\+c}}.
+Definition at line \mbox{\hyperlink{slaveo_8c_source_l00039}{39}} of file \mbox{\hyperlink{slaveo_8c_source}{slaveo.\+c}}.
 
 \Hypertarget{slaveo_8h_abdba0bb87d49916ea9e39822647f8a74}\index{slaveo.h@{slaveo.h}!in\_buf2@{in\_buf2}}
 \index{in\_buf2@{in\_buf2}!slaveo.h@{slaveo.h}}
@@ -725,7 +856,7 @@ volatile uint8\+\_\+t in\+\_\+buf2}
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00113}{113}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00136}{136}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a7aab907e5b001af4329672277f7177db}\index{slaveo.h@{slaveo.h}!in\_buf3@{in\_buf3}}
 \index{in\_buf3@{in\_buf3}!slaveo.h@{slaveo.h}}
@@ -735,7 +866,17 @@ volatile uint8\+\_\+t in\+\_\+buf3}
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00113}{113}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00136}{136}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+
+\Hypertarget{slaveo_8h_a8d6c6d7f0dccf6d805755846444064a4}\index{slaveo.h@{slaveo.h}!log\_buffer@{log\_buffer}}
+\index{log\_buffer@{log\_buffer}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{log\_buffer}{log\_buffer}}
+{\footnotesize\ttfamily \label{slaveo_8h_a8d6c6d7f0dccf6d805755846444064a4} 
+volatile char log\+\_\+buffer\mbox{[}MAX\+\_\+\+BMC\+\_\+\+BUF\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00140}{140}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_acef34ed2b8434815f3390436d7c05346}\index{slaveo.h@{slaveo.h}!r\_string\_ready@{r\_string\_ready}}
 \index{r\_string\_ready@{r\_string\_ready}!slaveo.h@{slaveo.h}}
@@ -755,7 +896,7 @@ volatile struct \mbox{\hyperlink{structserial__buffer__type__ss}{serial\+\_\+buf
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00284}{284}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l00275}{275}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
 \Hypertarget{slaveo_8h_a661fa5b799a982c5482a7557b81dfe3c}\index{slaveo.h@{slaveo.h}!spi\_comm\_ss@{spi\_comm\_ss}}
 \index{spi\_comm\_ss@{spi\_comm\_ss}!slaveo.h@{slaveo.h}}
@@ -765,17 +906,17 @@ volatile struct \mbox{\hyperlink{structspi__link__type__ss}{spi\+\_\+link\+\_\+t
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00279}{279}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l00268}{268}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
-\Hypertarget{slaveo_8h_a10f21e7ac31a5ea2ca838b37ead801e2}\index{slaveo.h@{slaveo.h}!tmp\_buf@{tmp\_buf}}
-\index{tmp\_buf@{tmp\_buf}!slaveo.h@{slaveo.h}}
-\doxysubsubsection{\texorpdfstring{tmp\_buf}{tmp\_buf}}
-{\footnotesize\ttfamily \label{slaveo_8h_a10f21e7ac31a5ea2ca838b37ead801e2} 
-volatile uint8\+\_\+t tmp\+\_\+buf\hspace{0.3cm}{\ttfamily [extern]}}
+\Hypertarget{slaveo_8h_abbba2e14a1eb0be0d3cdd603196f753b}\index{slaveo.h@{slaveo.h}!update\_bmc\_string@{update\_bmc\_string}}
+\index{update\_bmc\_string@{update\_bmc\_string}!slaveo.h@{slaveo.h}}
+\doxysubsubsection{\texorpdfstring{update\_bmc\_string}{update\_bmc\_string}}
+{\footnotesize\ttfamily \label{slaveo_8h_abbba2e14a1eb0be0d3cdd603196f753b} 
+volatile bool update\+\_\+bmc\+\_\+string}
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8c_source_l00041}{41}} of file \mbox{\hyperlink{slaveo_8c_source}{slaveo.\+c}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00138}{138}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_abc640bf4a8c9358954135c1fd1b0af4b}\index{slaveo.h@{slaveo.h}!upper@{upper}}
 \index{upper@{upper}!slaveo.h@{slaveo.h}}
@@ -785,7 +926,7 @@ volatile uint8\+\_\+t upper}
 
 
 
-Definition at line \mbox{\hyperlink{slaveo_8h_source_l00109}{109}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
+Definition at line \mbox{\hyperlink{slaveo_8h_source_l00132}{132}} of file \mbox{\hyperlink{slaveo_8h_source}{slaveo.\+h}}.
 
 \Hypertarget{slaveo_8h_a3677a1b059657e0e0bcfa48d64f81cb4}\index{slaveo.h@{slaveo.h}!V@{V}}
 \index{V@{V}!slaveo.h@{slaveo.h}}
@@ -795,5 +936,5 @@ Definition at line \mbox{\hyperlink{slaveo_8h_source_l00109}{109}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00208}{208}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l00211}{211}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 

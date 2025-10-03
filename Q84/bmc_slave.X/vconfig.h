@@ -1,4 +1,4 @@
-/*
+/** \file vconfig.h
  * File:   vconfig.h
  * Author: root
  *

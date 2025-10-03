@@ -1,4 +1,4 @@
-/*
+/** \file mxcmd.h
  * File:   mxcmd.h
  * Author: root
  *

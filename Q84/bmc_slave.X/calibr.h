@@ -1,4 +1,4 @@
-/*
+/** \file calibr.h
  * Calibration values for host for HV inputs and 200A current sensor
  */
 
@@ -12,7 +12,7 @@ extern "C" {
 #include <xc.h>
 
 #define HV_SCALE_OFFSET         0.0f
-#define HV_SCALAR4		64.2600f
+#define HV_SCALAR4		64.2600f // defaults
 #define HV_SCALAR5		64.2600f
 	
 #define HV_SCALE4_0             64.2600f

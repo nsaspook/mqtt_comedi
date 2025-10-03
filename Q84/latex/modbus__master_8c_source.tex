@@ -1,757 +1,779 @@
 \doxysection{modbus\+\_\+master.\+c}
 \hypertarget{modbus__master_8c_source}{}\label{modbus__master_8c_source}\index{bmc\_slave.X/modbus\_master.c@{bmc\_slave.X/modbus\_master.c}}
-
+\mbox{\hyperlink{modbus__master_8c}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00001}00001\ \textcolor{preprocessor}{\#include\ "{}modbus\_master.h"{}}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00002}00002\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00003}00003\ \textcolor{preprocessor}{\#define\ ON\ \ 1}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00004}00004\ \textcolor{preprocessor}{\#define\ OFF\ 0}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00005}00005\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00006}00006\ \textcolor{keyword}{volatile}\ uint8\_t\ cc\_stream\_file,\ *cc\_buffer,\ cc\_buffer\_0[MAX\_DATA],\ cc\_buffer\_1[MAX\_DATA],\ cc\_buffer\_tx[MAX\_DATA];\ \textcolor{comment}{//\ RX\ and\ TX\ command\ buffers}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00007}00007\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00008}00008\ \textcolor{keyword}{volatile}\ \mbox{\hyperlink{structM__data}{M\_data}}\ M\ =\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00009}00009\ \ \ \ \ .blink\_lock\ =\ \textcolor{keyword}{false},}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00010}00010\ \ \ \ \ .power\_on\ =\ \textcolor{keyword}{true},}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00011}00011\ \};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00012}00012\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00013}00013\ \textcolor{keyword}{volatile}\ \mbox{\hyperlink{structM__time__data}{M\_time\_data}}\ MT\ =\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00014}00014\ \ \ \ \ .clock\_500ahz\ =\ 0,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00015}00015\ \ \ \ \ .clock\_2hz\ =\ 0,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00016}00016\ \ \ \ \ .clock\_500hz\ =\ 0,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00017}00017\ \};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00018}00018\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00019}00019\ \mbox{\hyperlink{structC__data}{C\_data}}\ C\ =\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00020}00020\ \ \ \ \ .mcmd\ =\ G\_ID,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00021}00021\ \ \ \ \ .cstate\ =\ CLEAR,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00022}00022\ \ \ \ \ .modbus\_command\ =\ G\_ID,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00023}00023\ \ \ \ \ .req\_length\ =\ 0,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00024}00024\ \ \ \ \ .trace\ =\ 0,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00025}00025\ \ \ \ \ .config\_ok\ =\ \textcolor{keyword}{false},}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00026}00026\ \ \ \ \ .id\_ok\ =\ \textcolor{keyword}{false},}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00027}00027\ \ \ \ \ .passwd\_ok\ =\ \textcolor{keyword}{false},}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00028}00028\ \ \ \ \ .light\_ok\ =\ \textcolor{keyword}{false},}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00029}00029\ \ \ \ \ .M.blink\_lock\ =\ \textcolor{keyword}{false},}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00030}00030\ \ \ \ \ .M.power\_on\ =\ \textcolor{keyword}{true},}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00031}00031\ \ \ \ \ .tm\_ok\ =\ \textcolor{keyword}{false},}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00032}00032\ \};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00033}00033\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00034}00034\ \textcolor{keyword}{volatile}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structVM__type}{VM\_type}}\ VM\ =\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00035}00035\ \ \ \ \ .StartTime\ =\ 1,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00036}00036\ \ \ \ \ .TimeUsed\ =\ 1,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00037}00037\ \ \ \ \ .pacing\ =\ 1,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00038}00038\ \ \ \ \ .pwm\_update\ =\ \textcolor{keyword}{true},}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00039}00039\ \ \ \ \ .pwm\_stop\ =\ \textcolor{keyword}{true},}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00040}00040\ \ \ \ \ .fault\_active\ =\ \textcolor{keyword}{false},}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00041}00041\ \ \ \ \ .fault\_count\ =\ 0,}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00042}00042\ \ \ \ \ .dmt\_sosc\_flag\ =\ \textcolor{keyword}{false},}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00043}00043\ \};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00044}00044\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00045}00045\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00046}00046\ \textcolor{comment}{\ *\ send\ and\ receive\ MODBUS\ templates\ for\ 3-\/phase\ energy\ monitor\ EM540}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00047}00047\ \textcolor{comment}{\ *\ https://www.gavazzionline.com/pdf/EM540\_DS\_ENG.pdf}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00048}00048\ \textcolor{comment}{\ *\ https://gavazzi.se/app/uploads/2022/03/em500-\/cp-\/v1r3-\/eng.pdf}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00049}00049\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00050}00050\ \textcolor{keyword}{const}\ uint8\_t}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00051}00051\ \textcolor{comment}{//\ transmit\ frames\ for\ commands}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00052}00052\ modbus\_em\_id[]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x00,\ 0x0b,\ 0x00,\ 0x01\},\ \textcolor{comment}{//\ Carlo\ Gavazzi\ Controls\ identification\ code}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00053}00053\ modbus\_em\_version[]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x03,\ 0x02,\ 0x00,\ 0x01\},\ \textcolor{comment}{//\ Firmware\ version\ and\ revision\ code}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00054}00054\ modbus\_em\_data1[]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x00,\ 0x00,\ 0x00,\ EM\_DATA\_LEN1\},\ \textcolor{comment}{//\ last\ number\ is\ 16-\/bit\ words\ wanted\ from\ the\ start\ register\ address\ 0x0000}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00055}00055\ modbus\_em\_data2[]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x05,\ 0x00,\ 0x00,\ EM\_DATA\_LEN2\},\ \textcolor{comment}{//\ last\ number\ is\ 16-\/bit\ words\ wanted\ from\ the\ start\ register\ address\ 0x0500}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00056}00056\ modbus\_em\_serial[]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x50,\ 0x00,\ 0x00,\ SERIAL\_DATA\_LEN\},\ \textcolor{comment}{//\ last\ number\ is\ 16-\/bit\ words\ wanted\ from\ the\ start\ register\ address\ 0x5000}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00057}00057\ modbus\_em\_config[]\ =\ \{MADDR,\ WRITE\_SINGLE\_REGISTER,\ 0x10,\ 0x02,\ 0x00,\ 0x02\},\ \textcolor{comment}{//\ System\ configuration,\ Value\ 2\ =\ ?2P?\ (2-\/phase\ with\ neutral)}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00058}00058\ modbus\_em\_passwd[]\ =\ \{MADDR,\ WRITE\_SINGLE\_REGISTER,\ 0x10,\ 0x00,\ 0x00,\ 0x00\},\ \textcolor{comment}{//\ Password\ configuration,\ set\ to\ no\ password\ =\ 0}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00059}00059\ modbus\_em\_light[]\ =\ \{MADDR,\ WRITE\_SINGLE\_REGISTER,\ 0x16,\ 0x04,\ 0x00,\ 0x05\},\ \textcolor{comment}{//\ back-\/light\ timeout,\ 5\ min}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00060}00060\ \textcolor{comment}{//\ receive\ frames\ prototypes\ for\ received\ data\ checking}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00061}00061\ em\_id[]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x00\},}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00062}00062\ em\_version[]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x00\},}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00063}00063\ em\_data1[(EM\_DATA\_LEN1\ *\ 2)\ +\ 5]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x00\},\ \textcolor{comment}{//\ number\ of\ 16-\/bit\ words\ returned,\ IN\ BYTES}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00064}00064\ em\_data2[(EM\_DATA\_LEN2\ *\ 2)\ +\ 5]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x00\},\ \textcolor{comment}{//\ number\ of\ 16-\/bit\ words\ returned,\ IN\ BYTES}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00065}00065\ em\_serial[(SERIAL\_DATA\_LEN\ *\ 2)\ +\ 5]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x00\},\ \textcolor{comment}{//\ number\ of\ 16-\/bit\ words\ returned,\ IN\ BYTES}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00066}00066\ em\_config[]\ =\ \{MADDR,\ WRITE\_SINGLE\_REGISTER,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x00\},}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00067}00067\ em\_passwd[]\ =\ \{MADDR,\ WRITE\_SINGLE\_REGISTER,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x00\},}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00068}00068\ em\_light[]\ =\ \{MADDR,\ WRITE\_SINGLE\_REGISTER,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x00\};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00069}00069\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00070}00070\ \mbox{\hyperlink{structEM__data1}{EM\_data1}}\ em,\ *em\_ptr;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00071}00071\ \mbox{\hyperlink{structEM__data2}{EM\_data2}}\ emt;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00072}00072\ \mbox{\hyperlink{structEM__serial}{EM\_serial}}\ ems;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00073}00073\ \mbox{\hyperlink{structEM__version}{EM\_version}}\ emv;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00074}00074\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00075}00075\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ half\_dup\_tx(\textcolor{keyword}{const}\ \textcolor{keywordtype}{bool});}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00076}00076\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ half\_dup\_rx(\textcolor{keyword}{const}\ \textcolor{keywordtype}{bool});}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00077}00077\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ serial\_trmt(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00078}00078\ \textcolor{keyword}{static}\ uint16\_t\ modbus\_rtu\_send\_msg\_crc(\textcolor{keyword}{volatile}\ uint8\_t\ *,\ uint16\_t);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00079}00079\ \textcolor{keyword}{static}\ uint16\_t\ crc16\_receive(\mbox{\hyperlink{structC__data}{C\_data}}\ *);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00080}00080\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ log\_crc\_error(\textcolor{keyword}{const}\ uint16\_t,\ \textcolor{keyword}{const}\ uint16\_t);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00081}00081\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ UART1\_DefaultFramingErrorHandler\_mb(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00082}00082\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ UART1\_DefaultOverrunErrorHandler\_mb(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00083}00083\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ UART1\_DefaultErrorHandler\_mb(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00084}00084\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00085}00085\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ modbus\_write\_check(\mbox{\hyperlink{structC__data}{C\_data}}\ *,\ \textcolor{keywordtype}{bool}*,\ uint16\_t);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00086}00086\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ modbus\_read\_check(\mbox{\hyperlink{structC__data}{C\_data}}\ *,\ \textcolor{keywordtype}{bool}*,\ uint16\_t,\ \textcolor{keywordtype}{void}\ (*\ DataHandler)(\textcolor{keywordtype}{void}));}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00087}00087\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ modbus\_read\_id\_check(\mbox{\hyperlink{structC__data}{C\_data}}\ *,\ \textcolor{keywordtype}{bool}*,\ uint16\_t);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00088}00088\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ em\_data\_handler(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00089}00089\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ emt\_data\_handler(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00090}00090\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ems\_data\_handler(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00091}00091\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ emv\_data\_handler(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00092}00092\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00093}00093\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00094}00094\ \textcolor{comment}{\ *\ add\ the\ required\ CRC\ bytes\ to\ a\ MODBUS\ message}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00095}00095\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00096}00096\ \textcolor{keyword}{static}\ uint16\_t\ modbus\_rtu\_send\_msg\_crc(\textcolor{keyword}{volatile}\ uint8\_t\ *req,\ uint16\_t\ req\_length)}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00097}00097\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00098}00098\ \ \ \ \ uint16\_t\ crc;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00099}00099\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00100}00100\ \ \ \ \ crc\ =\ crc16(req,\ req\_length);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00101}00101\ \ \ \ \ req[req\_length++]\ =\ crc\ >>\ (uint16\_t)\ 8;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00102}00102\ \ \ \ \ req[req\_length++]\ =\ crc\ \&\ 0x00FF;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00103}00103\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00104}00104\ \ \ \ \ \textcolor{keywordflow}{return}\ req\_length;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00105}00105\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00106}00106\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00107}00107\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00108}00108\ \textcolor{comment}{\ *\ constructs\ a\ properly\ formatted\ RTU\ message\ with\ CRC\ from\ a\ program\ memory\ array\ to\ the\ data\ memory\ array\ buffer}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00109}00109\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00110}00110\ uint16\_t\ modbus\_rtu\_send\_msg(\textcolor{keywordtype}{void}\ *cc\_buffer,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *modbus\_cc\_mode,\ uint16\_t\ req\_length)}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00111}00111\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00112}00112\ \ \ \ \ memcpy((\textcolor{keywordtype}{void}*)\ cc\_buffer,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_cc\_mode,\ req\_length);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00113}00113\ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00114}00114\ \textcolor{comment}{\ \ \ \ \ *\ add\ the\ CRC\ and\ increase\ message\ size\ by\ two\ bytes\ for\ the\ CRC16}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00115}00115\ \textcolor{comment}{\ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00116}00116\ \ \ \ \ \textcolor{keywordflow}{return}\ modbus\_rtu\_send\_msg\_crc((\textcolor{keyword}{volatile}\ uint8\_t\ *)\ cc\_buffer,\ req\_length);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00117}00117\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00118}00118\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00119}00119\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00120}00120\ \textcolor{comment}{\ *\ calculate\ a\ CRC16\ from\ the\ data\ buffer}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00121}00121\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00122}00122\ uint16\_t\ crc16(\textcolor{keyword}{volatile}\ uint8\_t\ *buffer,\ uint16\_t\ buffer\_length)}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00123}00123\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00124}00124\ \ \ \ \ uint8\_t\ crc\_hi\ =\ 0xFF;\ \textcolor{comment}{/*\ high\ CRC\ byte\ initialized\ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00125}00125\ \ \ \ \ uint8\_t\ crc\_lo\ =\ 0xFF;\ \textcolor{comment}{/*\ low\ CRC\ byte\ initialized\ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00126}00126\ \ \ \ \ uint8\_t\ i;\ \textcolor{comment}{/*\ will\ index\ into\ CRC\ lookup\ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00127}00127\ \ \ \ \ uint16\_t\ crc16t;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00005}00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{modbus__master_8h}{modbus\_master.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00007}00007\ \textcolor{preprocessor}{\#define\ ON\ \ 1}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00008}00008\ \textcolor{preprocessor}{\#define\ OFF\ 0}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00010}\mbox{\hyperlink{structM__time__data}{00010}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structM__time__data}{M\_time\_data}}\ \{\ \textcolor{comment}{//\ ISR\ used,\ mainly\ for\ non-\/atomic\ mod\ problems}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00011}00011\ \ \ \ \ uint32\_t\ clock\_500hz;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00012}00012\ \ \ \ \ uint32\_t\ clock\_500ahz;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00013}00013\ \ \ \ \ uint32\_t\ clock\_2hz;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00014}00014\ \}\ \mbox{\hyperlink{structM__time__data}{M\_time\_data}};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00016}00016\ \textcolor{keyword}{static}\ \textcolor{keyword}{volatile}\ uint8\_t\ cc\_stream\_file,\ *cc\_buffer,\ cc\_buffer\_0[MAX\_DATA],\ cc\_buffer\_1[MAX\_DATA],\ cc\_buffer\_tx[MAX\_DATA];\ \textcolor{comment}{//\ RX\ and\ TX\ command\ buffers}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00017}00017\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00018}00018\ \textcolor{keyword}{static}\ \textcolor{keyword}{volatile}\ \mbox{\hyperlink{structM__data}{M\_data}}\ M\ =\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00019}00019\ \ \ \ \ .blink\_lock\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00020}00020\ \ \ \ \ .power\_on\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00021}00021\ \};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00023}00023\ \textcolor{keyword}{static}\ \textcolor{keyword}{volatile}\ \mbox{\hyperlink{structM__time__data}{M\_time\_data}}\ MT\ =\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00024}00024\ \ \ \ \ .clock\_500ahz\ =\ 0,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00025}00025\ \ \ \ \ .clock\_2hz\ =\ 0,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00026}00026\ \ \ \ \ .clock\_500hz\ =\ 0,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00027}00027\ \};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00029}00029\ \mbox{\hyperlink{structC__data}{C\_data}}\ C\ =\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00030}00030\ \ \ \ \ .mcmd\ =\ G\_ID,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00031}00031\ \ \ \ \ .cstate\ =\ CLEAR,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00032}00032\ \ \ \ \ .modbus\_command\ =\ G\_ID,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00033}00033\ \ \ \ \ .req\_length\ =\ 0,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00034}00034\ \ \ \ \ .trace\ =\ 0,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00035}00035\ \ \ \ \ .config\_ok\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00036}00036\ \ \ \ \ .id\_ok\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00037}00037\ \ \ \ \ .passwd\_ok\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00038}00038\ \ \ \ \ .light\_ok\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00039}00039\ \ \ \ \ .M.blink\_lock\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00040}00040\ \ \ \ \ .M.power\_on\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00041}00041\ \ \ \ \ .tm\_ok\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00042}00042\ \};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00043}00043\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00044}00044\ \textcolor{keyword}{volatile}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structVM__type}{VM\_type}}\ VM\ =\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00045}00045\ \ \ \ \ .StartTime\ =\ 1,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00046}00046\ \ \ \ \ .TimeUsed\ =\ 1,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00047}00047\ \ \ \ \ .pacing\ =\ 1,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00048}00048\ \ \ \ \ .pwm\_update\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00049}00049\ \ \ \ \ .pwm\_stop\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00050}00050\ \ \ \ \ .fault\_active\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00051}00051\ \ \ \ \ .fault\_count\ =\ 0,}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00052}00052\ \ \ \ \ .dmt\_sosc\_flag\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00053}00053\ \};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00055}00055\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00056}00056\ \textcolor{comment}{\ *\ send\ and\ receive\ MODBUS\ templates\ for\ 3-\/phase\ energy\ monitor\ EM540}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00057}00057\ \textcolor{comment}{\ *\ https://www.gavazzionline.com/pdf/EM540\_DS\_ENG.pdf}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00058}00058\ \textcolor{comment}{\ *\ https://gavazzi.se/app/uploads/2022/03/em500-\/cp-\/v1r3-\/eng.pdf}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00059}00059\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00060}00060\ \textcolor{keyword}{const}\ uint8\_t}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00061}00061\ \textcolor{comment}{//\ transmit\ frames\ for\ commands}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00062}00062\ modbus\_em\_id[]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x00,\ 0x0b,\ 0x00,\ 0x01\},\ \textcolor{comment}{//\ Carlo\ Gavazzi\ Controls\ identification\ code}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00063}00063\ modbus\_em\_version[]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x03,\ 0x02,\ 0x00,\ 0x01\},\ \textcolor{comment}{//\ Firmware\ version\ and\ revision\ code}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00064}00064\ modbus\_em\_data1[]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x00,\ 0x00,\ 0x00,\ EM\_DATA\_LEN1\},\ \textcolor{comment}{//\ last\ number\ is\ 16-\/bit\ words\ wanted\ from\ the\ start\ register\ address\ 0x0000}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00065}00065\ modbus\_em\_data2[]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x05,\ 0x00,\ 0x00,\ EM\_DATA\_LEN2\},\ \textcolor{comment}{//\ last\ number\ is\ 16-\/bit\ words\ wanted\ from\ the\ start\ register\ address\ 0x0500}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00066}00066\ modbus\_em\_serial[]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x50,\ 0x00,\ 0x00,\ SERIAL\_DATA\_LEN\},\ \textcolor{comment}{//\ last\ number\ is\ 16-\/bit\ words\ wanted\ from\ the\ start\ register\ address\ 0x5000}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00067}00067\ modbus\_em\_config[]\ =\ \{MADDR,\ WRITE\_SINGLE\_REGISTER,\ 0x10,\ 0x02,\ 0x00,\ 0x00\},\ \textcolor{comment}{//\ System\ configuration,\ Value\ 0\ =\ ?3P?\ (3-\/phase\ with\ neutral)}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00068}00068\ modbus\_em\_passwd[]\ =\ \{MADDR,\ WRITE\_SINGLE\_REGISTER,\ 0x10,\ 0x00,\ 0x00,\ 0x00\},\ \textcolor{comment}{//\ Password\ configuration,\ set\ to\ no\ password\ =\ 0}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00069}00069\ modbus\_em\_light[]\ =\ \{MADDR,\ WRITE\_SINGLE\_REGISTER,\ 0x16,\ 0x04,\ 0x00,\ 0x05\},\ \textcolor{comment}{//\ back-\/light\ timeout,\ 5\ min}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00070}00070\ \textcolor{comment}{//\ receive\ frames\ prototypes\ for\ received\ data\ checking}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00071}00071\ em\_id[]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x00\},}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00072}00072\ em\_version[]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x00\},}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00073}00073\ em\_data1[(EM\_DATA\_LEN1\ *\ 2)\ +\ 5]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x00\},\ \textcolor{comment}{//\ number\ of\ 16-\/bit\ words\ returned,\ IN\ BYTES}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00074}00074\ em\_data2[(EM\_DATA\_LEN2\ *\ 2)\ +\ 5]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x00\},\ \textcolor{comment}{//\ number\ of\ 16-\/bit\ words\ returned,\ IN\ BYTES}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00075}00075\ em\_serial[(SERIAL\_DATA\_LEN\ *\ 2)\ +\ 5]\ =\ \{MADDR,\ READ\_HOLDING\_REGISTERS,\ 0x00\},\ \textcolor{comment}{//\ number\ of\ 16-\/bit\ words\ returned,\ IN\ BYTES}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00076}00076\ em\_config[]\ =\ \{MADDR,\ WRITE\_SINGLE\_REGISTER,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x00\},}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00077}00077\ em\_passwd[]\ =\ \{MADDR,\ WRITE\_SINGLE\_REGISTER,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x00\},}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00078}00078\ em\_light[]\ =\ \{MADDR,\ WRITE\_SINGLE\_REGISTER,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x00,\ 0x00\};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00079}00079\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00081}00081\ \mbox{\hyperlink{structEM__data1}{EM\_data1}}\ em,\ *em\_ptr;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00082}00082\ \mbox{\hyperlink{structEM__data2}{EM\_data2}}\ emt;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00083}00083\ \mbox{\hyperlink{structEM__serial}{EM\_serial}}\ ems;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00084}00084\ \mbox{\hyperlink{structEM__version}{EM\_version}}\ emv;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00086}00086\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ clear\_2hz(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00087}00087\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ clear\_500ahz(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00088}00088\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ clear\_500hz(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00089}00089\ \textcolor{keyword}{static}\ uint32\_t\ get\_2hz(\textcolor{keyword}{const}\ uint8\_t);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00090}00090\ \textcolor{keyword}{static}\ uint32\_t\ get\_500ahz(\textcolor{keyword}{const}\ uint8\_t);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00091}00091\ \textcolor{keyword}{static}\ uint32\_t\ get\_500hz(\textcolor{keyword}{const}\ uint8\_t);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00092}00092\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ timer\_500ms\_tick(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00093}00093\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ timer\_2ms\_tick(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00095}00095\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ half\_dup\_tx(\textcolor{keyword}{const}\ \textcolor{keywordtype}{bool});}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00096}00096\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ half\_dup\_rx(\textcolor{keyword}{const}\ \textcolor{keywordtype}{bool});}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00097}00097\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ serial\_trmt(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00098}00098\ \textcolor{keyword}{static}\ uint16\_t\ modbus\_rtu\_send\_msg(\textcolor{keywordtype}{void}\ *,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *,\ uint16\_t);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00099}00099\ \textcolor{keyword}{static}\ uint16\_t\ modbus\_rtu\_send\_msg\_crc(\textcolor{keyword}{volatile}\ uint8\_t\ *,\ uint16\_t);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00100}00100\ \textcolor{keyword}{static}\ uint16\_t\ crc16\_receive(\textcolor{keyword}{const}\ \mbox{\hyperlink{structC__data}{C\_data}}\ *);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00101}00101\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ log\_crc\_error(\textcolor{keyword}{const}\ uint16\_t,\ \textcolor{keyword}{const}\ uint16\_t);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00102}00102\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ UART3\_DefaultFramingErrorHandler\_mb(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00103}00103\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ UART3\_DefaultOverrunErrorHandler\_mb(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00104}00104\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ UART3\_DefaultErrorHandler\_mb(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00106}00106\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ modbus\_write\_check(\mbox{\hyperlink{structC__data}{C\_data}}\ *,\ \textcolor{keywordtype}{bool}*,\ uint16\_t);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00107}00107\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ modbus\_read\_check(\mbox{\hyperlink{structC__data}{C\_data}}\ *,\ \textcolor{keywordtype}{bool}*,\ uint16\_t,\ \textcolor{keywordtype}{void}\ (*\ DataHandler)(\textcolor{keywordtype}{void}));}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00108}00108\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ modbus\_read\_id\_check(\mbox{\hyperlink{structC__data}{C\_data}}\ *,\ \textcolor{keywordtype}{bool}*,\ uint16\_t);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00110}00110\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ em\_data\_handler(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00111}00111\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ emt\_data\_handler(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00112}00112\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ems\_data\_handler(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00113}00113\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ emv\_data\_handler(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00114}00114\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00115}00115\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00116}00116\ \textcolor{comment}{\ *\ add\ the\ required\ CRC\ bytes\ to\ a\ MODBUS\ message}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00117}00117\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00118}00118\ \textcolor{keyword}{static}\ uint16\_t\ modbus\_rtu\_send\_msg\_crc(\textcolor{keyword}{volatile}\ uint8\_t\ *req,\ uint16\_t\ req\_length)}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00119}00119\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00120}00120\ \ \ \ \ uint16\_t\ crc;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00121}00121\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00122}00122\ \ \ \ \ crc\ =\ crc16(req,\ req\_length);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00123}00123\ \ \ \ \ req[req\_length++]\ =\ crc\ >>\ (uint16\_t)\ 8;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00124}00124\ \ \ \ \ req[req\_length++]\ =\ crc\ \&\ 0x00FF;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00125}00125\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00126}00126\ \ \ \ \ \textcolor{keywordflow}{return}\ req\_length;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00127}00127\ \}}
 \DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00128}00128\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00129}00129\ \ \ \ \ \textcolor{comment}{/*\ pass\ through\ message\ buffer\ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00130}00130\ \ \ \ \ \textcolor{keywordflow}{while}\ (buffer\_length-\/-\/)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00131}00131\ \ \ \ \ \ \ \ \ i\ =\ crc\_hi\ \string^\ *buffer++;\ \textcolor{comment}{/*\ calculate\ the\ CRC\ \ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00132}00132\ \ \ \ \ \ \ \ \ crc\_hi\ =\ crc\_lo\ \string^\ table\_crc\_hi[i];}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00133}00133\ \ \ \ \ \ \ \ \ crc\_lo\ =\ table\_crc\_lo[i];}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00134}00134\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00135}00135\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00136}00136\ \ \ \ \ crc16t\ =\ (uint16\_t)\ crc\_hi\ <<\ (uint16\_t)\ 8\ |\ (uint16\_t)\ crc\_lo;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00137}00137\ \ \ \ \ \textcolor{keywordflow}{return}\ crc16t;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00138}00138\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00139}00139\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00140}00140\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00141}00141\ \textcolor{comment}{\ *\ callback\ for\ UART\ received\ character\ from\ MODBUS\ client}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00142}00142\ \textcolor{comment}{\ *\ for\ each\ RX\ byte\ received\ on\ the\ RS485\ serial\ port}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00129}00129\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00130}00130\ \textcolor{comment}{\ *\ constructs\ a\ properly\ formatted\ RTU\ message\ with\ CRC\ from\ a\ program\ memory\ array\ to\ the\ data\ memory\ array\ buffer}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00131}00131\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00132}00132\ uint16\_t\ modbus\_rtu\_send\_msg(\textcolor{keywordtype}{void}\ *cc\_buffer,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *modbus\_cc\_mode,\ uint16\_t\ req\_length)}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00133}00133\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00134}00134\ \ \ \ \ memcpy((\textcolor{keywordtype}{void}*)\ cc\_buffer,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_cc\_mode,\ req\_length);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00135}00135\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00136}00136\ \textcolor{comment}{\ \ \ \ \ *\ add\ the\ CRC\ and\ increase\ message\ size\ by\ two\ bytes\ for\ the\ CRC16}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00137}00137\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00138}00138\ \ \ \ \ \textcolor{keywordflow}{return}\ modbus\_rtu\_send\_msg\_crc((\textcolor{keyword}{volatile}\ uint8\_t\ *)\ cc\_buffer,\ req\_length);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00139}00139\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00140}00140\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00141}00141\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00142}00142\ \textcolor{comment}{\ *\ calculate\ a\ CRC16\ from\ the\ data\ buffer}}
 \DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00143}00143\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00144}00144\ \textcolor{keywordtype}{void}\ my\_modbus\_rx\_32(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00144}00144\ uint16\_t\ crc16(\textcolor{keyword}{volatile}\ uint8\_t\ *buffer,\ uint16\_t\ buffer\_length)}
 \DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00145}00145\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00146}00146\ \ \ \ \ \textcolor{keyword}{static}\ uint8\_t\ m\_data\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00147}00147\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00148}00148\ \ \ \ \ INT\_TRACE;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00149}00149\ \ \ \ \ M.rx\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00150}00150\ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00151}00151\ \textcolor{comment}{\ \ \ \ \ *\ process\ received\ controller\ data\ stream}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00152}00152\ \textcolor{comment}{\ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00153}00153\ \ \ \ \ m\_data\ =\ Srbuffer;\ \textcolor{comment}{//\ receiver\ data\ buffer}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00154}00154\ \ \ \ \ cc\_buffer[M.recv\_count]\ =\ m\_data;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00155}00155\ \ \ \ \ \textcolor{keywordflow}{if}\ (++M.recv\_count\ >=\ MAX\_DATA)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00156}00156\ \ \ \ \ \ \ \ \ M.recv\_count\ =\ 0;\ \textcolor{comment}{//\ reset\ buffer\ position}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00157}00157\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00158}00158\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00159}00159\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00160}00160\ uint8\_t\ init\_stream\_params(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00161}00161\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00162}00162\ \ \ \ \ M.config\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00163}00163\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00164}00164\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00165}00165\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00166}00166\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00167}00167\ \textcolor{comment}{\ *\ state\ machine\ hardware\ timers\ interrupt\ ISR\ functions\ setup}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00168}00168\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00169}00169\ \textcolor{keywordtype}{void}\ init\_mb\_master\_timers(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00170}00170\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00171}00171\ \ \ \ \ cc\_buffer\ =\ cc\_buffer\_0;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00172}00172\ \ \ \ \ em\_ptr\ =\ (\mbox{\hyperlink{structEM__data1}{EM\_data1}}*)\ \&\ cc\_buffer[3];}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00173}00173\ \ \ \ \ TMR4\_SetInterruptHandler(timer\_500ms\_tick);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00174}00174\ \ \ \ \ TMR4\_StartTimer();}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00175}00175\ \ \ \ \ TMR3\_SetInterruptHandler(timer\_2ms\_tick);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00176}00176\ \ \ \ \ TMR3\_StartTimer();}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00177}00177\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00178}00178\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00179}00179\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00180}00180\ \textcolor{comment}{\ *\ helper\ functions}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00181}00181\ \textcolor{comment}{\ *\ received\ CRC16\ bytes\ from\ client}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00182}00182\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00183}00183\ \textcolor{keyword}{static}\ uint16\_t\ crc16\_receive(\mbox{\hyperlink{structC__data}{C\_data}}\ *\ client)}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00184}00184\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00185}00185\ \ \ \ \ uint16\_t\ crc16r;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00186}00186\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00187}00187\ \ \ \ \ crc16r\ =\ ((uint16\_t)\ cc\_buffer[client-\/>req\_length\ -\/\ 2]\ <<\ (uint16\_t)\ 8)\ |\ ((uint16\_t)\ cc\_buffer[client-\/>req\_length\ -\/\ 1]\ \&\ 0x00ff);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00188}00188\ \ \ \ \ \textcolor{keywordflow}{return}\ crc16r;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00189}00189\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00190}00190\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00191}00191\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ log\_crc\_error(\textcolor{keyword}{const}\ uint16\_t\ c\_crc,\ \textcolor{keyword}{const}\ uint16\_t\ c\_crc\_rec)}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00146}00146\ \ \ \ \ uint8\_t\ crc\_hi\ =\ 0xFF;\ \textcolor{comment}{/*\ high\ CRC\ byte\ initialized\ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00147}00147\ \ \ \ \ uint8\_t\ crc\_lo\ =\ 0xFF;\ \textcolor{comment}{/*\ low\ CRC\ byte\ initialized\ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00148}00148\ \ \ \ \ uint8\_t\ i;\ \textcolor{comment}{/*\ will\ index\ into\ CRC\ lookup\ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00149}00149\ \ \ \ \ uint16\_t\ crc16t;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00150}00150\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00151}00151\ \ \ \ \ \textcolor{comment}{/*\ pass\ through\ message\ buffer\ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00152}00152\ \ \ \ \ \textcolor{keywordflow}{while}\ (buffer\_length-\/-\/)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00153}00153\ \ \ \ \ \ \ \ \ i\ =\ crc\_hi\ \string^\ *buffer++;\ \textcolor{comment}{/*\ calculate\ the\ CRC\ \ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00154}00154\ \ \ \ \ \ \ \ \ crc\_hi\ =\ crc\_lo\ \string^\ table\_crc\_hi[i];}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00155}00155\ \ \ \ \ \ \ \ \ crc\_lo\ =\ table\_crc\_lo[i];}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00156}00156\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00157}00157\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00158}00158\ \ \ \ \ crc16t\ =\ (uint16\_t)\ crc\_hi\ <<\ (uint16\_t)\ 8\ |\ (uint16\_t)\ crc\_lo;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00159}00159\ \ \ \ \ \textcolor{keywordflow}{return}\ crc16t;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00160}00160\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00161}00161\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00162}00162\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00163}00163\ \textcolor{comment}{\ *\ callback\ for\ UART\ received\ character\ from\ MODBUS\ client}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00164}00164\ \textcolor{comment}{\ *\ for\ each\ RX\ byte\ received\ on\ the\ RS485\ serial\ port}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00165}00165\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00166}00166\ \textcolor{keywordtype}{void}\ my\_modbus\_rx\_32(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00167}00167\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00168}00168\ \ \ \ \ \textcolor{keyword}{static}\ uint8\_t\ m\_data\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00169}00169\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00170}00170\ \ \ \ \ INT\_TRACE;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00171}00171\ \ \ \ \ M.rx\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00172}00172\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00173}00173\ \textcolor{comment}{\ \ \ \ \ *\ process\ received\ controller\ data\ stream}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00174}00174\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00175}00175\ \ \ \ \ m\_data\ =\ Srbuffer;\ \textcolor{comment}{//\ receiver\ data\ buffer}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00176}00176\ \ \ \ \ cc\_buffer[M.recv\_count]\ =\ m\_data;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00177}00177\ \ \ \ \ \textcolor{keywordflow}{if}\ (++M.recv\_count\ >=\ MAX\_DATA)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00178}00178\ \ \ \ \ \ \ \ \ M.recv\_count\ =\ 0;\ \textcolor{comment}{//\ reset\ buffer\ position}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00179}00179\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00180}00180\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00181}00181\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00182}00182\ uint8\_t\ init\_stream\_params(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00183}00183\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00184}00184\ \ \ \ \ M.config\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00185}00185\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00186}00186\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00187}00187\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00188}00188\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00189}00189\ \textcolor{comment}{\ *\ state\ machine\ hardware\ timers\ interrupt\ ISR\ functions\ setup}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00190}00190\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00191}00191\ \textcolor{keywordtype}{void}\ init\_mb\_master\_timers(\textcolor{keywordtype}{void})}
 \DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00192}00192\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00193}00193\ \ \ \ \ M.crc\_calc\ =\ c\_crc;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00194}00194\ \ \ \ \ M.crc\_data\ =\ c\_crc\_rec;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00195}00195\ \ \ \ \ M.crc\_error++;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00196}00196\ \ \ \ \ M.error++;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00197}00197\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00198}00198\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00199}00199\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00200}00200\ \textcolor{comment}{\ *\ reorder\ 16-\/bit\ word\ bytes\ for\ int32\_t}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00201}00201\ \textcolor{comment}{\ *\ https://control.com/forums/threads/endianness-\/for-\/32-\/bit-\/data.48584/}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00202}00202\ \textcolor{comment}{\ *\ https://ctlsys.com/support/common\_modbus\_protocol\_misconceptions/}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00203}00203\ \textcolor{comment}{\ *\ https://iotech.force.com/edgexpert/s/article/Byte-\/and-\/Word-\/Swapping-\/in-\/Modbus}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00204}00204\ \textcolor{comment}{\ *}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00205}00205\ \textcolor{comment}{\ *\ "{}Little\ Endian"{}\ slaves\ or\ "{}Big\ Endian"{}\ slaves}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00206}00206\ \textcolor{comment}{\ *\ Byte\ endianness\ with\ Word\ endianness?}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00207}00207\ \textcolor{comment}{\ *\ Lions\ and\ Tigers\ and\ Bears!}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00208}00208\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00209}00209\ int32\_t\ mb32\_swap(\textcolor{keyword}{const}\ int32\_t\ value)}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00210}00210\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00211}00211\ \ \ \ \ uint8\_t\ i;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00212}00212\ \ \ \ \ \textcolor{keyword}{union\ }\mbox{\hyperlink{unionMREG32}{MREG32}}\ dvalue;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00213}00213\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00214}00214\ \ \ \ \ \textcolor{comment}{//\ program\ it\ simple\ and\ easy\ to\ understand\ way,\ let\ the\ compiler\ optimize\ the\ expressions}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00215}00215\ \ \ \ \ dvalue.value\ =\ value;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00216}00216\ \ \ \ \ i\ =\ dvalue.bytes[0];}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00217}00217\ \ \ \ \ dvalue.bytes[0]\ =\ dvalue.bytes[1];}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00218}00218\ \ \ \ \ dvalue.bytes[1]\ =\ i;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00219}00219\ \ \ \ \ i\ =\ dvalue.bytes[2];}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00220}00220\ \ \ \ \ dvalue.bytes[2]\ =\ dvalue.bytes[3];}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00221}00221\ \ \ \ \ dvalue.bytes[3]\ =\ i;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00222}00222\ \ \ \ \ \textcolor{keywordflow}{return}\ dvalue.value;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00223}00223\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00224}00224\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00225}00225\ int16\_t\ mb16\_swap(\textcolor{keyword}{const}\ int16\_t\ value)}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00226}00226\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00227}00227\ \ \ \ \ uint8\_t\ i;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00228}00228\ \ \ \ \ \textcolor{keyword}{union\ }\mbox{\hyperlink{unionMREG}{MREG}}\ dvalue;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00229}00229\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00230}00230\ \ \ \ \ \textcolor{comment}{//\ program\ it\ simple\ and\ easy\ to\ understand\ way,\ let\ the\ compiler\ optimize\ the\ expressions}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00231}00231\ \ \ \ \ dvalue.value\ =\ value;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00232}00232\ \ \ \ \ i\ =\ dvalue.bytes[0];}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00233}00233\ \ \ \ \ dvalue.bytes[0]\ =\ dvalue.bytes[1];}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00234}00234\ \ \ \ \ dvalue.bytes[1]\ =\ i;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00235}00235\ \ \ \ \ \textcolor{keywordflow}{return}\ dvalue.value;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00236}00236\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00237}00237\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00238}00238\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00239}00239\ \textcolor{comment}{\ *\ Simple\ MODBUS\ master\ state\ machine}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00240}00240\ \textcolor{comment}{\ *\ this\ needs\ to\ run\ in\ the\ main\ programming\ loop}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00241}00241\ \textcolor{comment}{\ *\ to\ handle\ RS485\ serial\ I/O\ exchanges}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00242}00242\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00243}00243\ int8\_t\ master\_controller\_work(\mbox{\hyperlink{structC__data}{C\_data}}\ *\ client)}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00244}00244\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00245}00245\ \ \ \ \ \textcolor{keyword}{static}\ uint32\_t\ spacing\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00193}00193\ \ \ \ \ cc\_buffer\ =\ cc\_buffer\_0;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00194}00194\ \ \ \ \ em\_ptr\ =\ (\mbox{\hyperlink{structEM__data1}{EM\_data1}}*)\ \&\ cc\_buffer[3];}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00195}00195\ \ \ \ \ TMR4\_SetInterruptHandler(timer\_500ms\_tick);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00196}00196\ \ \ \ \ TMR4\_StartTimer();}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00197}00197\ \ \ \ \ TMR3\_SetInterruptHandler(timer\_2ms\_tick);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00198}00198\ \ \ \ \ TMR3\_StartTimer();}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00199}00199\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00200}00200\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00201}00201\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00202}00202\ \textcolor{comment}{\ *\ helper\ functions}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00203}00203\ \textcolor{comment}{\ *\ received\ CRC16\ bytes\ from\ client}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00204}00204\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00205}00205\ \textcolor{keyword}{static}\ uint16\_t\ crc16\_receive(\textcolor{keyword}{const}\ \mbox{\hyperlink{structC__data}{C\_data}}\ *\ client)}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00206}00206\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00207}00207\ \ \ \ \ uint16\_t\ crc16r;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00208}00208\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00209}00209\ \ \ \ \ crc16r\ =\ ((uint16\_t)\ cc\_buffer[client-\/>req\_length\ -\/\ 2]\ <<\ (uint16\_t)\ 8)\ |\ ((uint16\_t)\ cc\_buffer[client-\/>req\_length\ -\/\ 1]\ \&\ 0x00ff);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00210}00210\ \ \ \ \ \textcolor{keywordflow}{return}\ crc16r;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00211}00211\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00212}00212\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00213}00213\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ log\_crc\_error(\textcolor{keyword}{const}\ uint16\_t\ c\_crc,\ \textcolor{keyword}{const}\ uint16\_t\ c\_crc\_rec)}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00214}00214\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00215}00215\ \ \ \ \ M.crc\_calc\ =\ c\_crc;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00216}00216\ \ \ \ \ M.crc\_data\ =\ c\_crc\_rec;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00217}00217\ \ \ \ \ M.crc\_error++;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00218}00218\ \ \ \ \ M.error++;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00219}00219\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00220}00220\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00221}00221\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00222}00222\ \textcolor{comment}{\ *\ reorder\ 16-\/bit\ word\ bytes\ for\ int32\_t}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00223}00223\ \textcolor{comment}{\ *\ https://control.com/forums/threads/endianness-\/for-\/32-\/bit-\/data.48584/}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00224}00224\ \textcolor{comment}{\ *\ https://ctlsys.com/support/common\_modbus\_protocol\_misconceptions/}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00225}00225\ \textcolor{comment}{\ *\ https://iotech.force.com/edgexpert/s/article/Byte-\/and-\/Word-\/Swapping-\/in-\/Modbus}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00226}00226\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00227}00227\ \textcolor{comment}{\ *\ "{}Little\ Endian"{}\ slaves\ or\ "{}Big\ Endian"{}\ slaves}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00228}00228\ \textcolor{comment}{\ *\ Byte\ endianness\ with\ Word\ endianness?}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00229}00229\ \textcolor{comment}{\ *\ Lions\ and\ Tigers\ and\ Bears!}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00230}00230\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00231}00231\ int32\_t\ mb32\_swap(\textcolor{keyword}{const}\ int32\_t\ value)}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00232}00232\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00233}00233\ \ \ \ \ uint8\_t\ i;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00234}00234\ \ \ \ \ \textcolor{keyword}{union\ }\mbox{\hyperlink{unionMREG32}{MREG32}}\ dvalue;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00235}00235\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00236}00236\ \ \ \ \ \textcolor{comment}{//\ program\ it\ simple\ and\ easy\ to\ understand\ way,\ let\ the\ compiler\ optimize\ the\ expressions}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00237}00237\ \ \ \ \ dvalue.value\ =\ value;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00238}00238\ \ \ \ \ i\ =\ dvalue.bytes[0];}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00239}00239\ \ \ \ \ dvalue.bytes[0]\ =\ dvalue.bytes[1];}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00240}00240\ \ \ \ \ dvalue.bytes[1]\ =\ i;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00241}00241\ \ \ \ \ i\ =\ dvalue.bytes[2];}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00242}00242\ \ \ \ \ dvalue.bytes[2]\ =\ dvalue.bytes[3];}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00243}00243\ \ \ \ \ dvalue.bytes[3]\ =\ i;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00244}00244\ \ \ \ \ \textcolor{keywordflow}{return}\ dvalue.value;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00245}00245\ \}}
 \DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00246}00246\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00247}00247\ \ \ \ \ \textcolor{keywordflow}{if}\ (spacing++\ <SPACING\ \&\&\ !M.rx)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00248}00248\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ T\_spacing;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00249}00249\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00250}00250\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00251}00251\ \ \ \ \ IO\_RF7\_SetHigh();}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00252}00252\ \ \ \ \ spacing\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00253}00253\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00254}00254\ \ \ \ \ client-\/>trace\ =\ T\_begin;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00255}00255\ \ \ \ \ \textcolor{keywordflow}{switch}\ (client-\/>cstate)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00256}00256\ \ \ \ \ \textcolor{keywordflow}{case}\ CLEAR:}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00257}00257\ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_clear;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00258}00258\ \ \ \ \ \ \ \ \ clear\_2hz();}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00259}00259\ \ \ \ \ \ \ \ \ clear\_500ahz();}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00260}00260\ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ INIT;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00261}00261\ \ \ \ \ \ \ \ \ client-\/>modbus\_command\ =\ client-\/>mcmd++;\ \textcolor{comment}{//\ sequence\ modbus\ commands\ to\ client}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00262}00262\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (client-\/>modbus\_command\ ==\ G\_CONFIG\ \&\&\ client-\/>config\_ok)\ \{\ \textcolor{comment}{//\ skip\ if\ we\ have\ valid\ data\ from\ client}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00263}00263\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>modbus\_command\ =\ client-\/>mcmd++;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00264}00264\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00265}00265\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (client-\/>modbus\_command\ ==\ G\_PASSWD\ \&\&\ client-\/>passwd\_ok)\ \{\ \textcolor{comment}{//\ skip\ if\ we\ have\ valid\ data\ from\ client}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00266}00266\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>modbus\_command\ =\ client-\/>mcmd++;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00267}00267\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00268}00268\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (client-\/>modbus\_command\ ==\ G\_LIGHT\ \&\&\ client-\/>light\_ok)\ \{\ \textcolor{comment}{//\ skip\ if\ we\ have\ valid\ data\ from\ client}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00269}00269\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>modbus\_command\ =\ client-\/>mcmd++;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00270}00270\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00271}00271\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (client-\/>modbus\_command\ ==\ G\_VERSION\ \&\&\ client-\/>version\_ok)\ \{\ \textcolor{comment}{//\ skip\ if\ we\ have\ valid\ data\ from\ client}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00272}00272\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>modbus\_command\ =\ client-\/>mcmd++;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00273}00273\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00274}00274\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (client-\/>modbus\_command\ ==\ G\_SERIAL\ \&\&\ client-\/>serial\_ok)\ \{\ \textcolor{comment}{//\ skip\ if\ we\ have\ valid\ data\ from\ client}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00275}00275\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>modbus\_command\ =\ client-\/>mcmd++;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00276}00276\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00277}00277\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (client-\/>mcmd\ >\ G\_LAST)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00278}00278\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>mcmd\ =\ G\_ID;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00279}00279\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00280}00280\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00281}00281\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ command\ specific\ tx\ buffer\ setup}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00282}00282\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00283}00283\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (client-\/>modbus\_command)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00284}00284\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_VERSION:\ \textcolor{comment}{//\ write\ code\ request}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00285}00285\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_version;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00286}00286\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>req\_length\ =\ modbus\_rtu\_send\_msg((\textcolor{keywordtype}{void}*)\ cc\_buffer\_tx,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_em\_version,\ \textcolor{keyword}{sizeof}(modbus\_em\_version));}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00287}00287\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00288}00288\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_SERIAL:\ \textcolor{comment}{//\ write\ code\ request}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00289}00289\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_serial;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00290}00290\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>req\_length\ =\ modbus\_rtu\_send\_msg((\textcolor{keywordtype}{void}*)\ cc\_buffer\_tx,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_em\_serial,\ \textcolor{keyword}{sizeof}(modbus\_em\_serial));}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00291}00291\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00292}00292\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_LIGHT:\ \textcolor{comment}{//\ write\ code\ request}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00293}00293\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_light;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00294}00294\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>req\_length\ =\ modbus\_rtu\_send\_msg((\textcolor{keywordtype}{void}*)\ cc\_buffer\_tx,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_em\_light,\ \textcolor{keyword}{sizeof}(modbus\_em\_light));}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00295}00295\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00296}00296\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_PASSWD:\ \textcolor{comment}{//\ write\ code\ request}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00297}00297\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_passwd;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00298}00298\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>req\_length\ =\ modbus\_rtu\_send\_msg((\textcolor{keywordtype}{void}*)\ cc\_buffer\_tx,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_em\_passwd,\ \textcolor{keyword}{sizeof}(modbus\_em\_passwd));}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00299}00299\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00300}00300\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_CONFIG:\ \textcolor{comment}{//\ write\ code\ request}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00301}00301\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_config;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00302}00302\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>req\_length\ =\ modbus\_rtu\_send\_msg((\textcolor{keywordtype}{void}*)\ cc\_buffer\_tx,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_em\_config,\ \textcolor{keyword}{sizeof}(modbus\_em\_config));}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00303}00303\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00304}00304\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_DATA1:\ \textcolor{comment}{//\ read\ code\ request}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00305}00305\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_data;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00306}00306\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>req\_length\ =\ modbus\_rtu\_send\_msg((\textcolor{keywordtype}{void}*)\ cc\_buffer\_tx,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_em\_data1,\ \textcolor{keyword}{sizeof}(modbus\_em\_data1));}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00307}00307\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00308}00308\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_DATA2:\ \textcolor{comment}{//\ read\ code\ request}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00309}00309\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_data;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00310}00310\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>req\_length\ =\ modbus\_rtu\_send\_msg((\textcolor{keywordtype}{void}*)\ cc\_buffer\_tx,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_em\_data2,\ \textcolor{keyword}{sizeof}(modbus\_em\_data2));}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00311}00311\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00312}00312\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_LAST:\ \textcolor{comment}{//\ end\ of\ command\ sequences}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00313}00313\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ CLEAR;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00314}00314\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>mcmd\ =\ G\_ID;\ \textcolor{comment}{//\ what\ do\ we\ run\ next}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00315}00315\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00316}00316\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_ID:\ \textcolor{comment}{//\ operating\ mode\ request}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00317}00317\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_id;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00318}00318\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00319}00319\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>req\_length\ =\ modbus\_rtu\_send\_msg((\textcolor{keywordtype}{void}*)\ cc\_buffer\_tx,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_em\_id,\ \textcolor{keyword}{sizeof}(modbus\_em\_id));}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00320}00320\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00321}00321\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00322}00322\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00323}00323\ \ \ \ \ \textcolor{keywordflow}{case}\ INIT:}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00324}00324\ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_init;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00325}00325\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00326}00326\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ MODBUS\ master\ query\ speed}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00327}00327\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00328}00328\ \textcolor{preprocessor}{\#ifdef\ \ FASTQ}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00329}00329\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get\_500ahz(\textcolor{keyword}{false})\ >=\ CDELAY)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00330}00330\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00331}00331\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get\_2hz(\textcolor{keyword}{false})\ >=\ QDELAY)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00332}00332\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00333}00333\ \textcolor{preprocessor}{\#ifndef\ AUTO\_DERE}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00334}00334\ \ \ \ \ \ \ \ \ \ \ \ \ half\_dup\_tx(\textcolor{keyword}{false});\ \textcolor{comment}{//\ no\ delays\ here}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00335}00335\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00336}00336\ \ \ \ \ \ \ \ \ \ \ \ \ M.recv\_count\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00337}00337\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ SEND;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00338}00338\ \ \ \ \ \ \ \ \ \ \ \ \ clear\_500hz();}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00339}00339\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_init\_d;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00340}00340\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00341}00341\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00342}00342\ \ \ \ \ \textcolor{keywordflow}{case}\ SEND:}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00343}00343\ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_send;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00344}00344\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get\_500hz(\textcolor{keyword}{false})\ >=\ TEDELAY)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00345}00345\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint8\_t\ i\ =\ 0;\ i\ <\ client-\/>req\_length;\ i++)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00346}00346\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Swrite(cc\_buffer\_tx[i]);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00347}00347\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00348}00348\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ RECV;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00349}00349\ \ \ \ \ \ \ \ \ \ \ \ \ clear\_500hz();\ \textcolor{comment}{//\ state\ machine\ execute\ background\ timer\ clear}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00350}00350\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_send\_d;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00351}00351\ \ \ \ \ \ \ \ \ \ \ \ \ M.sends++;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00352}00352\ \ \ \ \ \ \ \ \ \ \ \ \ M.rx\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00353}00353\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (serial\_trmt())\ \{\ \textcolor{comment}{//\ check\ for\ serial\ UART\ transmit\ shift\ register\ and\ buffer\ empty}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00354}00354\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ clear\_500hz();\ \textcolor{comment}{//\ clear\ timer\ until\ buffer\ empty}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00355}00355\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00356}00356\ \textcolor{preprocessor}{\#ifndef\ AUTO\_DERE}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00357}00357\ \ \ \ \ \ \ \ \ \ \ \ \ DERE\_SetLow();\ \textcolor{comment}{//\ enable\ modbus\ receiver}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00358}00358\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00359}00359\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00360}00360\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00361}00361\ \ \ \ \ \textcolor{keywordflow}{case}\ RECV:}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00362}00362\ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_recv;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00363}00363\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get\_500hz(\textcolor{keyword}{false})\ >=\ TEDELAY)\ \{\ \textcolor{comment}{//\ state\ machine\ execute\ timer\ test}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00364}00364\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00365}00365\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_recv\_r;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00366}00366\ \textcolor{preprocessor}{\#ifndef\ AUTO\_DERE}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00367}00367\ \ \ \ \ \ \ \ \ \ \ \ \ half\_dup\_rx(\textcolor{keyword}{false});\ \textcolor{comment}{//\ no\ delays\ here}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00368}00368\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00369}00369\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00370}00370\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00371}00371\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ check\ received\ response\ data\ for\ size\ and\ format\ for\ each\ command\ sent}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00372}00372\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00373}00373\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (client-\/>modbus\_command)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00374}00374\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_LIGHT:\ \textcolor{comment}{//\ check\ for\ controller\ back-\/light\ codes}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00375}00375\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ modbus\_write\_check(client,\ \&client-\/>light\_ok,\ \textcolor{keyword}{sizeof}(em\_light));}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00376}00376\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00377}00377\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_PASSWD:\ \textcolor{comment}{//\ check\ for\ controller\ password\ codes}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00378}00378\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ modbus\_write\_check(client,\ \&client-\/>passwd\_ok,\ \textcolor{keyword}{sizeof}(em\_passwd));}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00379}00379\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00380}00380\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_CONFIG:\ \textcolor{comment}{//\ check\ for\ controller\ configuration\ codes}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00381}00381\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ modbus\_write\_check(client,\ \&client-\/>config\_ok,\ \textcolor{keyword}{sizeof}(em\_config));}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00382}00382\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00383}00383\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_DATA1:\ \textcolor{comment}{//\ check\ for\ controller\ data1\ codes}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00384}00384\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ modbus\_read\_check(client,\ \&client-\/>data\_ok,\ \textcolor{keyword}{sizeof}(em\_data1),\ em\_data\_handler);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00385}00385\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00386}00386\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_DATA2:\ \textcolor{comment}{//\ check\ for\ controller\ data2\ codes}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00387}00387\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ modbus\_read\_check(client,\ \&client-\/>data\_ok,\ \textcolor{keyword}{sizeof}(em\_data2),\ emt\_data\_handler);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00388}00388\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00389}00389\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_VERSION:\ \textcolor{comment}{//\ check\ for\ controller\ EM540\ firmware\ codes}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00390}00390\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ modbus\_read\_check(client,\ \&client-\/>version\_ok,\ \textcolor{keyword}{sizeof}(em\_version),\ emv\_data\_handler);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00391}00391\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00392}00392\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_SERIAL:\ \textcolor{comment}{//\ check\ for\ controller\ EM540\ serial\ codes}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00393}00393\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ modbus\_read\_check(client,\ \&client-\/>serial\_ok,\ \textcolor{keyword}{sizeof}(em\_serial),\ ems\_data\_handler);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00394}00394\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00395}00395\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_ID:\ \textcolor{comment}{//\ check\ for\ client\ module\ type}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00396}00396\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00397}00397\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ modbus\_read\_id\_check(client,\ \&client-\/>id\_ok,\ \textcolor{keyword}{sizeof}(em\_id));}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00247}00247\ int16\_t\ mb16\_swap(\textcolor{keyword}{const}\ int16\_t\ value)}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00248}00248\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00249}00249\ \ \ \ \ uint8\_t\ i;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00250}00250\ \ \ \ \ \textcolor{keyword}{union\ }\mbox{\hyperlink{unionMREG}{MREG}}\ dvalue;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00251}00251\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00252}00252\ \ \ \ \ \textcolor{comment}{//\ program\ it\ simple\ and\ easy\ to\ understand\ way,\ let\ the\ compiler\ optimize\ the\ expressions}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00253}00253\ \ \ \ \ dvalue.value\ =\ value;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00254}00254\ \ \ \ \ i\ =\ dvalue.bytes[0];}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00255}00255\ \ \ \ \ dvalue.bytes[0]\ =\ dvalue.bytes[1];}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00256}00256\ \ \ \ \ dvalue.bytes[1]\ =\ i;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00257}00257\ \ \ \ \ \textcolor{keywordflow}{return}\ dvalue.value;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00258}00258\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00259}00259\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00260}00260\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00261}00261\ \textcolor{comment}{\ *\ Simple\ MODBUS\ master\ state\ machine}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00262}00262\ \textcolor{comment}{\ *\ this\ needs\ to\ run\ in\ the\ main\ programming\ loop}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00263}00263\ \textcolor{comment}{\ *\ to\ handle\ RS485\ serial\ I/O\ exchanges}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00264}00264\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00265}00265\ int8\_t\ master\_controller\_work(\mbox{\hyperlink{structC__data}{C\_data}}\ *\ client)}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00266}00266\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00267}00267\ \ \ \ \ \textcolor{keyword}{static}\ uint32\_t\ spacing\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00268}00268\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00269}00269\ \ \ \ \ \textcolor{keywordflow}{if}\ (spacing++\ <SPACING\ \&\&\ !M.rx)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00270}00270\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ T\_spacing;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00271}00271\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00272}00272\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00273}00273\ \ \ \ \ IO\_RF7\_SetHigh();}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00274}00274\ \ \ \ \ spacing\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00275}00275\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00276}00276\ \ \ \ \ client-\/>trace\ =\ T\_begin;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00277}00277\ \ \ \ \ \textcolor{keywordflow}{switch}\ (client-\/>cstate)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00278}00278\ \ \ \ \ \textcolor{keywordflow}{case}\ CLEAR:}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00279}00279\ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_clear;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00280}00280\ \ \ \ \ \ \ \ \ clear\_2hz();}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00281}00281\ \ \ \ \ \ \ \ \ clear\_500ahz();}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00282}00282\ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ INIT;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00283}00283\ \ \ \ \ \ \ \ \ client-\/>modbus\_command\ =\ client-\/>mcmd++;\ \textcolor{comment}{//\ sequence\ modbus\ commands\ to\ client}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00284}00284\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (client-\/>modbus\_command\ ==\ G\_CONFIG\ \&\&\ client-\/>config\_ok)\ \{\ \textcolor{comment}{//\ skip\ if\ we\ have\ valid\ data\ from\ client}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00285}00285\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>modbus\_command\ =\ client-\/>mcmd++;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00286}00286\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00287}00287\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (client-\/>modbus\_command\ ==\ G\_PASSWD\ \&\&\ client-\/>passwd\_ok)\ \{\ \textcolor{comment}{//\ skip\ if\ we\ have\ valid\ data\ from\ client}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00288}00288\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>modbus\_command\ =\ client-\/>mcmd++;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00289}00289\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00290}00290\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (client-\/>modbus\_command\ ==\ G\_LIGHT\ \&\&\ client-\/>light\_ok)\ \{\ \textcolor{comment}{//\ skip\ if\ we\ have\ valid\ data\ from\ client}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00291}00291\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>modbus\_command\ =\ client-\/>mcmd++;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00292}00292\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00293}00293\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (client-\/>modbus\_command\ ==\ G\_VERSION\ \&\&\ client-\/>version\_ok)\ \{\ \textcolor{comment}{//\ skip\ if\ we\ have\ valid\ data\ from\ client}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00294}00294\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>modbus\_command\ =\ client-\/>mcmd++;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00295}00295\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00296}00296\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (client-\/>modbus\_command\ ==\ G\_SERIAL\ \&\&\ client-\/>serial\_ok)\ \{\ \textcolor{comment}{//\ skip\ if\ we\ have\ valid\ data\ from\ client}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00297}00297\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>modbus\_command\ =\ client-\/>mcmd++;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00298}00298\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00299}00299\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (client-\/>mcmd\ >\ G\_LAST)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00300}00300\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>mcmd\ =\ G\_ID;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00301}00301\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00302}00302\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00303}00303\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ command\ specific\ tx\ buffer\ setup}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00304}00304\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00305}00305\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (client-\/>modbus\_command)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00306}00306\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_VERSION:\ \textcolor{comment}{//\ write\ code\ request}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00307}00307\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_version;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00308}00308\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>req\_length\ =\ modbus\_rtu\_send\_msg((\textcolor{keywordtype}{void}*)\ cc\_buffer\_tx,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_em\_version,\ \textcolor{keyword}{sizeof}(modbus\_em\_version));}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00309}00309\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00310}00310\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_SERIAL:\ \textcolor{comment}{//\ write\ code\ request}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00311}00311\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_serial;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00312}00312\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>req\_length\ =\ modbus\_rtu\_send\_msg((\textcolor{keywordtype}{void}*)\ cc\_buffer\_tx,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_em\_serial,\ \textcolor{keyword}{sizeof}(modbus\_em\_serial));}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00313}00313\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00314}00314\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_LIGHT:\ \textcolor{comment}{//\ write\ code\ request}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00315}00315\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_light;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00316}00316\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>req\_length\ =\ modbus\_rtu\_send\_msg((\textcolor{keywordtype}{void}*)\ cc\_buffer\_tx,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_em\_light,\ \textcolor{keyword}{sizeof}(modbus\_em\_light));}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00317}00317\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00318}00318\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_PASSWD:\ \textcolor{comment}{//\ write\ code\ request}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00319}00319\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_passwd;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00320}00320\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>req\_length\ =\ modbus\_rtu\_send\_msg((\textcolor{keywordtype}{void}*)\ cc\_buffer\_tx,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_em\_passwd,\ \textcolor{keyword}{sizeof}(modbus\_em\_passwd));}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00321}00321\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00322}00322\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_CONFIG:\ \textcolor{comment}{//\ write\ code\ request}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00323}00323\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_config;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00324}00324\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>req\_length\ =\ modbus\_rtu\_send\_msg((\textcolor{keywordtype}{void}*)\ cc\_buffer\_tx,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_em\_config,\ \textcolor{keyword}{sizeof}(modbus\_em\_config));}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00325}00325\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00326}00326\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_DATA1:\ \textcolor{comment}{//\ read\ code\ request}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00327}00327\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_data;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00328}00328\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>req\_length\ =\ modbus\_rtu\_send\_msg((\textcolor{keywordtype}{void}*)\ cc\_buffer\_tx,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_em\_data1,\ \textcolor{keyword}{sizeof}(modbus\_em\_data1));}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00329}00329\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00330}00330\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_DATA2:\ \textcolor{comment}{//\ read\ code\ request}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00331}00331\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_data;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00332}00332\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>req\_length\ =\ modbus\_rtu\_send\_msg((\textcolor{keywordtype}{void}*)\ cc\_buffer\_tx,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_em\_data2,\ \textcolor{keyword}{sizeof}(modbus\_em\_data2));}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00333}00333\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00334}00334\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_LAST:\ \textcolor{comment}{//\ end\ of\ command\ sequences}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00335}00335\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ CLEAR;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00336}00336\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>mcmd\ =\ G\_ID;\ \textcolor{comment}{//\ what\ do\ we\ run\ next}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00337}00337\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00338}00338\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_ID:\ \textcolor{comment}{//\ operating\ mode\ request}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00339}00339\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_id;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00340}00340\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00341}00341\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>req\_length\ =\ modbus\_rtu\_send\_msg((\textcolor{keywordtype}{void}*)\ cc\_buffer\_tx,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_em\_id,\ \textcolor{keyword}{sizeof}(modbus\_em\_id));}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00342}00342\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00343}00343\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00344}00344\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00345}00345\ \ \ \ \ \textcolor{keywordflow}{case}\ INIT:}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00346}00346\ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_init;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00347}00347\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00348}00348\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ MODBUS\ master\ query\ speed}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00349}00349\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00350}00350\ \textcolor{preprocessor}{\#ifdef\ \ FASTQ}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00351}00351\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get\_500ahz(\textcolor{keyword}{false})\ >=\ CDELAY)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00352}00352\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00353}00353\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get\_2hz(\textcolor{keyword}{false})\ >=\ QDELAY)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00354}00354\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00355}00355\ \textcolor{preprocessor}{\#ifndef\ AUTO\_DERE}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00356}00356\ \ \ \ \ \ \ \ \ \ \ \ \ half\_dup\_tx(\textcolor{keyword}{false});\ \textcolor{comment}{//\ no\ delays\ here}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00357}00357\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00358}00358\ \ \ \ \ \ \ \ \ \ \ \ \ M.recv\_count\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00359}00359\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ SEND;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00360}00360\ \ \ \ \ \ \ \ \ \ \ \ \ clear\_500hz();}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00361}00361\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_init\_d;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00362}00362\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00363}00363\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00364}00364\ \ \ \ \ \textcolor{keywordflow}{case}\ SEND:}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00365}00365\ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_send;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00366}00366\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get\_500hz(\textcolor{keyword}{false})\ >=\ TEDELAY)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00367}00367\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint8\_t\ i\ =\ 0;\ i\ <\ client-\/>req\_length;\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00368}00368\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Swrite(cc\_buffer\_tx[i]);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00369}00369\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00370}00370\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ RECV;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00371}00371\ \ \ \ \ \ \ \ \ \ \ \ \ clear\_500hz();\ \textcolor{comment}{//\ state\ machine\ execute\ background\ timer\ clear}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00372}00372\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_send\_d;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00373}00373\ \ \ \ \ \ \ \ \ \ \ \ \ M.sends++;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00374}00374\ \ \ \ \ \ \ \ \ \ \ \ \ M.rx\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00375}00375\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (serial\_trmt())\ \{\ \textcolor{comment}{//\ check\ for\ serial\ UART\ transmit\ shift\ register\ and\ buffer\ empty}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00376}00376\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ clear\_500hz();\ \textcolor{comment}{//\ clear\ timer\ until\ buffer\ empty}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00377}00377\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00378}00378\ \textcolor{preprocessor}{\#ifndef\ AUTO\_DERE}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00379}00379\ \ \ \ \ \ \ \ \ \ \ \ \ DERE\_SetLow();\ \textcolor{comment}{//\ enable\ modbus\ receiver}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00380}00380\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00381}00381\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00382}00382\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00383}00383\ \ \ \ \ \textcolor{keywordflow}{case}\ RECV:}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00384}00384\ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_recv;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00385}00385\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get\_500hz(\textcolor{keyword}{false})\ >=\ TEDELAY)\ \{\ \textcolor{comment}{//\ state\ machine\ execute\ timer\ test}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00386}00386\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00387}00387\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>trace\ =\ T\_recv\_r;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00388}00388\ \textcolor{preprocessor}{\#ifndef\ AUTO\_DERE}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00389}00389\ \ \ \ \ \ \ \ \ \ \ \ \ half\_dup\_rx(\textcolor{keyword}{false});\ \textcolor{comment}{//\ no\ delays\ here}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00390}00390\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00391}00391\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00392}00392\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00393}00393\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ check\ received\ response\ data\ for\ size\ and\ format\ for\ each\ command\ sent}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00394}00394\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00395}00395\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (client-\/>modbus\_command)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00396}00396\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_LIGHT:\ \textcolor{comment}{//\ check\ for\ controller\ back-\/light\ codes}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00397}00397\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ modbus\_write\_check(client,\ \&client-\/>light\_ok,\ \textcolor{keyword}{sizeof}(em\_light));}
 \DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00398}00398\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00399}00399\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00400}00400\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00401}00401\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00402}00402\ \ \ \ \ \textcolor{keywordflow}{default}:}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00403}00403\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00404}00404\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00405}00405\ \ \ \ \ IO\_RF7\_SetLow();}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00406}00406\ \ \ \ \ \textcolor{keywordflow}{return}\ client-\/>trace;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00407}00407\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00408}00408\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00409}00409\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00410}00410\ \textcolor{comment}{\ *\ state\ machine\ no\ busy\ wait\ timers}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00411}00411\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00412}00412\ \textcolor{keywordtype}{void}\ clear\_2hz(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00413}00413\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00414}00414\ \ \ \ \ MT.clock\_2hz\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00415}00415\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00416}00416\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00417}00417\ \textcolor{keywordtype}{void}\ clear\_500ahz(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00418}00418\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00419}00419\ \ \ \ \ MT.clock\_500ahz\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00420}00420\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00421}00421\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00422}00422\ \textcolor{keywordtype}{void}\ clear\_500hz(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00423}00423\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00424}00424\ \ \ \ \ MT.clock\_500hz\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00425}00425\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00426}00426\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00427}00427\ uint32\_t\ get\_2hz(\textcolor{keyword}{const}\ uint8\_t\ mode)}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00428}00428\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00429}00429\ \ \ \ \ \textcolor{keyword}{static}\ uint32\_t\ tmp\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00399}00399\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_PASSWD:\ \textcolor{comment}{//\ check\ for\ controller\ password\ codes}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00400}00400\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ modbus\_write\_check(client,\ \&client-\/>passwd\_ok,\ \textcolor{keyword}{sizeof}(em\_passwd));}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00401}00401\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00402}00402\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_CONFIG:\ \textcolor{comment}{//\ check\ for\ controller\ configuration\ codes}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00403}00403\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ modbus\_write\_check(client,\ \&client-\/>config\_ok,\ \textcolor{keyword}{sizeof}(em\_config));}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00404}00404\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00405}00405\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_DATA1:\ \textcolor{comment}{//\ check\ for\ controller\ data1\ codes}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00406}00406\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ modbus\_read\_check(client,\ \&client-\/>data\_ok,\ \textcolor{keyword}{sizeof}(em\_data1),\ em\_data\_handler);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00407}00407\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00408}00408\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_DATA2:\ \textcolor{comment}{//\ check\ for\ controller\ data2\ codes}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00409}00409\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ modbus\_read\_check(client,\ \&client-\/>data\_ok,\ \textcolor{keyword}{sizeof}(em\_data2),\ emt\_data\_handler);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00410}00410\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00411}00411\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_VERSION:\ \textcolor{comment}{//\ check\ for\ controller\ EM540\ firmware\ codes}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00412}00412\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ modbus\_read\_check(client,\ \&client-\/>version\_ok,\ \textcolor{keyword}{sizeof}(em\_version),\ emv\_data\_handler);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00413}00413\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00414}00414\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_SERIAL:\ \textcolor{comment}{//\ check\ for\ controller\ EM540\ serial\ codes}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00415}00415\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ modbus\_read\_check(client,\ \&client-\/>serial\_ok,\ \textcolor{keyword}{sizeof}(em\_serial),\ ems\_data\_handler);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00416}00416\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00417}00417\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ G\_ID:\ \textcolor{comment}{//\ check\ for\ client\ module\ type}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00418}00418\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00419}00419\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ modbus\_read\_id\_check(client,\ \&client-\/>id\_ok,\ \textcolor{keyword}{sizeof}(em\_id));}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00420}00420\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00421}00421\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00422}00422\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00423}00423\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00424}00424\ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00425}00425\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00426}00426\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00427}00427\ \ \ \ \ IO\_RF7\_SetLow();}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00428}00428\ \ \ \ \ \textcolor{keywordflow}{return}\ client-\/>trace;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00429}00429\ \}}
 \DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00430}00430\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00431}00431\ \ \ \ \ \textcolor{keywordflow}{if}\ (mode)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00432}00432\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ tmp;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00433}00433\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00434}00434\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00435}00435\ \ \ \ \ tmp\ =\ MT.clock\_2hz;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00436}00436\ \ \ \ \ \textcolor{keywordflow}{return}\ tmp;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00431}00431\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00432}00432\ \textcolor{comment}{\ *\ state\ machine\ no\ busy\ wait\ timers}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00433}00433\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00434}00434\ \textcolor{keywordtype}{void}\ clear\_2hz(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00435}00435\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00436}00436\ \ \ \ \ MT.clock\_2hz\ =\ 0;}
 \DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00437}00437\ \}}
 \DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00438}00438\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00439}00439\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00440}00440\ \textcolor{comment}{\ *\ 500Hz\ updates}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00441}00441\ \textcolor{comment}{\ *\ used\ for\ fast\ updates\ timing}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00442}00442\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00443}00443\ uint32\_t\ get\_500ahz(\textcolor{keyword}{const}\ uint8\_t\ mode)}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00444}00444\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00445}00445\ \ \ \ \ \textcolor{keyword}{static}\ uint32\_t\ tmp\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00446}00446\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00447}00447\ \ \ \ \ \textcolor{keywordflow}{if}\ (mode)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00448}00448\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ tmp;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00449}00449\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00450}00450\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00451}00451\ \ \ \ \ tmp\ =\ MT.clock\_500ahz;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00452}00452\ \ \ \ \ \textcolor{keywordflow}{return}\ tmp;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00453}00453\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00454}00454\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00455}00455\ uint32\_t\ get\_500hz(\textcolor{keyword}{const}\ uint8\_t\ mode)}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00456}00456\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00457}00457\ \ \ \ \ \textcolor{keyword}{static}\ uint32\_t\ tmp\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00458}00458\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00459}00459\ \ \ \ \ \textcolor{keywordflow}{if}\ (mode)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00460}00460\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ tmp;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00461}00461\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00462}00462\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00463}00463\ \ \ \ \ tmp\ =\ MT.clock\_500hz;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00464}00464\ \ \ \ \ \textcolor{keywordflow}{return}\ tmp;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00465}00465\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00466}00466\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00467}00467\ \textcolor{comment}{//\ switch\ RS\ transceiver\ to\ transmit\ mode\ and\ wait\ if\ not\ tx}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00439}00439\ \textcolor{keywordtype}{void}\ clear\_500ahz(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00440}00440\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00441}00441\ \ \ \ \ MT.clock\_500ahz\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00442}00442\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00443}00443\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00444}00444\ \textcolor{keywordtype}{void}\ clear\_500hz(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00445}00445\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00446}00446\ \ \ \ \ MT.clock\_500hz\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00447}00447\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00448}00448\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00449}00449\ uint32\_t\ get\_2hz(\textcolor{keyword}{const}\ uint8\_t\ mode)}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00450}00450\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00451}00451\ \ \ \ \ \textcolor{keyword}{static}\ uint32\_t\ tmp\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00452}00452\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00453}00453\ \ \ \ \ \textcolor{keywordflow}{if}\ (mode)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00454}00454\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ tmp;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00455}00455\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00456}00456\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00457}00457\ \ \ \ \ tmp\ =\ MT.clock\_2hz;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00458}00458\ \ \ \ \ \textcolor{keywordflow}{return}\ tmp;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00459}00459\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00460}00460\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00461}00461\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00462}00462\ \textcolor{comment}{\ *\ 500Hz\ updates}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00463}00463\ \textcolor{comment}{\ *\ used\ for\ fast\ updates\ timing}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00464}00464\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00465}00465\ uint32\_t\ get\_500ahz(\textcolor{keyword}{const}\ uint8\_t\ mode)}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00466}00466\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00467}00467\ \ \ \ \ \textcolor{keyword}{static}\ uint32\_t\ tmp\ =\ 0;}
 \DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00468}00468\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00469}00469\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ half\_dup\_tx(\textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ delay)}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00470}00470\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00471}00471\ \textcolor{preprocessor}{\#ifndef\ AUTO\_DERE}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00472}00472\ \ \ \ \ \textcolor{keywordflow}{if}\ (DERE\_GetValue())\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00473}00473\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00474}00474\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00475}00475\ \ \ \ \ DERE\_SetHigh();\ \textcolor{comment}{//\ enable\ modbus\ transmitter}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00469}00469\ \ \ \ \ \textcolor{keywordflow}{if}\ (mode)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00470}00470\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ tmp;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00471}00471\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00472}00472\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00473}00473\ \ \ \ \ tmp\ =\ MT.clock\_500ahz;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00474}00474\ \ \ \ \ \textcolor{keywordflow}{return}\ tmp;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00475}00475\ \}}
 \DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00476}00476\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00477}00477\ \ \ \ \ \textcolor{keywordflow}{if}\ (delay)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00478}00478\ \ \ \ \ \ \ \ \ WaitMs(DUPL\_DELAY);\ \textcolor{comment}{//\ busy\ waits}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00479}00479\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00480}00480\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00481}00481\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00482}00482\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00483}00483\ \textcolor{comment}{//\ switch\ RS\ transceiver\ to\ receive\ mode\ and\ wait\ if\ not\ rx}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00477}00477\ uint32\_t\ get\_500hz(\textcolor{keyword}{const}\ uint8\_t\ mode)}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00478}00478\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00479}00479\ \ \ \ \ \textcolor{keyword}{static}\ uint32\_t\ tmp\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00480}00480\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00481}00481\ \ \ \ \ \textcolor{keywordflow}{if}\ (mode)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00482}00482\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ tmp;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00483}00483\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00484}00484\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00485}00485\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ half\_dup\_rx(\textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ delay)}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00486}00486\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00487}00487\ \textcolor{preprocessor}{\#ifndef\ AUTO\_DERE}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00488}00488\ \ \ \ \ \textcolor{keywordflow}{if}\ (!DERE\_GetValue())\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00489}00489\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00490}00490\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00491}00491\ \ \ \ \ \textcolor{keywordflow}{if}\ (delay)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00492}00492\ \ \ \ \ \ \ \ \ WaitMs(DUPL\_DELAY);\ \textcolor{comment}{//\ busy\ waits}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00493}00493\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00494}00494\ \ \ \ \ DERE\_SetLow();\ \textcolor{comment}{//\ enable\ modbus\ receiver}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00495}00495\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00496}00496\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00497}00497\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00498}00498\ \textcolor{comment}{//\ ISR\ function\ for\ TMR4}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00499}00499\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00500}00500\ \textcolor{keywordtype}{void}\ timer\_500ms\_tick(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00501}00501\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00502}00502\ \ \ \ \ MT.clock\_2hz++;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00485}00485\ \ \ \ \ tmp\ =\ MT.clock\_500hz;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00486}00486\ \ \ \ \ \textcolor{keywordflow}{return}\ tmp;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00487}00487\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00488}00488\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00489}00489\ \textcolor{comment}{//\ switch\ RS\ transceiver\ to\ transmit\ mode\ and\ wait\ if\ not\ tx}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00490}00490\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00491}00491\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ half\_dup\_tx(\textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ delay)}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00492}00492\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00493}00493\ \textcolor{preprocessor}{\#ifndef\ AUTO\_DERE}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00494}00494\ \ \ \ \ \textcolor{keywordflow}{if}\ (DERE\_GetValue())\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00495}00495\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00496}00496\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00497}00497\ \ \ \ \ DERE\_SetHigh();\ \textcolor{comment}{//\ enable\ modbus\ transmitter}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00498}00498\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00499}00499\ \ \ \ \ \textcolor{keywordflow}{if}\ (delay)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00500}00500\ \ \ \ \ \ \ \ \ WaitMs(DUPL\_DELAY);\ \textcolor{comment}{//\ busy\ waits}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00501}00501\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00502}00502\ \textcolor{preprocessor}{\#endif}}
 \DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00503}00503\ \}}
 \DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00504}00504\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00505}00505\ \textcolor{comment}{//\ ISR\ function\ for\ TMR3}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00505}00505\ \textcolor{comment}{//\ switch\ RS\ transceiver\ to\ receive\ mode\ and\ wait\ if\ not\ rx}}
 \DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00506}00506\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00507}00507\ \textcolor{keywordtype}{void}\ timer\_2ms\_tick(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00507}00507\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ half\_dup\_rx(\textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ delay)}
 \DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00508}00508\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00509}00509\ \ \ \ \ MT.clock\_500hz++;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00510}00510\ \ \ \ \ MT.clock\_500ahz++;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00511}00511\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00512}00512\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00513}00513\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00514}00514\ \textcolor{comment}{\ *\ check\ if\ we\ are\ done\ with\ interrupt\ background\ buffered\ transmission\ of\ serial\ data\ with\ FIFO}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00515}00515\ \textcolor{comment}{\ *}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00516}00516\ \textcolor{comment}{\ *\ TRMT:\ Transmit\ Shift\ Register\ is\ Empty\ bit\ (read-\/only)}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00517}00517\ \textcolor{comment}{\ *\ 1\ =\ Transmit\ shift\ register\ is\ empty\ and\ transmit\ buffer\ is\ empty\ (the\ last\ transmission\ has\ completed)}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00518}00518\ \textcolor{comment}{\ *\ 0\ =\ Transmit\ shift\ register\ is\ not\ empty,\ a\ transmission\ is\ in\ progress\ or\ queued\ in\ the\ transmit\ buffer}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00519}00519\ \textcolor{comment}{\ *}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00520}00520\ \textcolor{comment}{\ *\ ?\ 8-\/level\ deep\ First-\/In-\/First-\/Out\ (FIFO)\ transmit\ data\ buffer,\ ?\ 8-\/level\ deep\ FIFO\ receive\ data\ buffer}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00521}00521\ \textcolor{comment}{\ *\ Interrupt\ is\ generated\ and\ asserted\ while\ the\ transmit\ buffer\ is\ empty}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00522}00522\ \textcolor{comment}{\ *}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00523}00523\ \textcolor{comment}{\ *\ so\ this\ will\ return\ 'true'\ after\ the\ buffer\ is\ empty\ 'interrupt'\ and\ after\ the\ last\ bit\ is\ on\ the\ wire}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00524}00524\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00525}00525\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00526}00526\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ serial\_trmt(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00527}00527\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00528}00528\ \ \ \ \ \textcolor{keywordflow}{return}\ !(Strmt);\ \textcolor{comment}{//\ note,\ we\ invert\ the\ TRMT\ bit\ so\ it's\ true\ while\ transmitting}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00529}00529\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00530}00530\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00531}00531\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00532}00532\ \textcolor{comment}{\ *\ serial\ port\ testing\ routine}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00533}00533\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00534}00534\ \textcolor{keywordtype}{void}\ mb\_tx\_test(\mbox{\hyperlink{structC__data}{C\_data}}\ *\ client)}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00535}00535\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00536}00536\ \ \ \ \ \textcolor{keywordflow}{if}\ (TimerDone(TMR\_MBTEST))\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00537}00537\ \ \ \ \ \ \ \ \ StartTimer(TMR\_MBTEST,\ 500);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00538}00538\ \ \ \ \ \ \ \ \ client-\/>req\_length\ =\ modbus\_rtu\_send\_msg((\textcolor{keywordtype}{void}*)\ cc\_buffer\_tx,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_em\_passwd,\ \textcolor{keyword}{sizeof}(modbus\_em\_passwd));}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00539}00539\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (int8\_t\ i\ =\ 0;\ i\ <\ client-\/>req\_length;\ i++)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00540}00540\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Strdy())\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00541}00541\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Swrite(cc\_buffer\_tx[i]);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00542}00542\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00543}00543\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00544}00544\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00545}00545\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00546}00546\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00547}00547\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ UART3\_DefaultFramingErrorHandler\_mb(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00548}00548\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00549}00549\ \ \ \ \ INT\_TRACE;\ \textcolor{comment}{//\ GPIO\ interrupt\ scope\ trace}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00550}00550\ \ \ \ \ MM\_ERROR\_S;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00509}00509\ \textcolor{preprocessor}{\#ifndef\ AUTO\_DERE}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00510}00510\ \ \ \ \ \textcolor{keywordflow}{if}\ (!DERE\_GetValue())\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00511}00511\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00512}00512\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00513}00513\ \ \ \ \ \textcolor{keywordflow}{if}\ (delay)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00514}00514\ \ \ \ \ \ \ \ \ WaitMs(DUPL\_DELAY);\ \textcolor{comment}{//\ busy\ waits}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00515}00515\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00516}00516\ \ \ \ \ DERE\_SetLow();\ \textcolor{comment}{//\ enable\ modbus\ receiver}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00517}00517\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00518}00518\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00519}00519\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00520}00520\ \textcolor{comment}{//\ ISR\ function\ for\ TMR4}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00521}00521\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00522}00522\ \textcolor{keywordtype}{void}\ timer\_500ms\_tick(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00523}00523\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00524}00524\ \ \ \ \ MT.clock\_2hz++;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00525}00525\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00526}00526\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00527}00527\ \textcolor{comment}{//\ ISR\ function\ for\ TMR3}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00528}00528\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00529}00529\ \textcolor{keywordtype}{void}\ timer\_2ms\_tick(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00530}00530\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00531}00531\ \ \ \ \ MT.clock\_500hz++;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00532}00532\ \ \ \ \ MT.clock\_500ahz++;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00533}00533\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00534}00534\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00535}00535\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00536}00536\ \textcolor{comment}{\ *\ check\ if\ we\ are\ done\ with\ interrupt\ background\ buffered\ transmission\ of\ serial\ data\ with\ FIFO}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00537}00537\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00538}00538\ \textcolor{comment}{\ *\ TRMT:\ Transmit\ Shift\ Register\ is\ Empty\ bit\ (read-\/only)}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00539}00539\ \textcolor{comment}{\ *\ 1\ =\ Transmit\ shift\ register\ is\ empty\ and\ transmit\ buffer\ is\ empty\ (the\ last\ transmission\ has\ completed)}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00540}00540\ \textcolor{comment}{\ *\ 0\ =\ Transmit\ shift\ register\ is\ not\ empty,\ a\ transmission\ is\ in\ progress\ or\ queued\ in\ the\ transmit\ buffer}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00541}00541\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00542}00542\ \textcolor{comment}{\ *\ ?\ 8-\/level\ deep\ First-\/In-\/First-\/Out\ (FIFO)\ transmit\ data\ buffer,\ ?\ 8-\/level\ deep\ FIFO\ receive\ data\ buffer}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00543}00543\ \textcolor{comment}{\ *\ Interrupt\ is\ generated\ and\ asserted\ while\ the\ transmit\ buffer\ is\ empty}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00544}00544\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00545}00545\ \textcolor{comment}{\ *\ so\ this\ will\ return\ 'true'\ after\ the\ buffer\ is\ empty\ 'interrupt'\ and\ after\ the\ last\ bit\ is\ on\ the\ wire}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00546}00546\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00547}00547\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00548}00548\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ serial\_trmt(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00549}00549\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00550}00550\ \ \ \ \ \textcolor{keywordflow}{return}\ !(Strmt);\ \textcolor{comment}{//\ note,\ we\ invert\ the\ TRMT\ bit\ so\ it's\ true\ while\ transmitting}}
 \DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00551}00551\ \}}
 \DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00552}00552\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00553}00553\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ UART3\_DefaultOverrunErrorHandler\_mb(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00554}00554\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00555}00555\ \ \ \ \ INT\_TRACE;\ \textcolor{comment}{//\ GPIO\ interrupt\ scope\ trace}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00556}00556\ \ \ \ \ MM\_ERROR\_S;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00557}00557\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00558}00558\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00559}00559\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ UART3\_DefaultErrorHandler\_mb(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00560}00560\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00561}00561\ \ \ \ \ INT\_TRACE;\ \textcolor{comment}{//\ GPIO\ interrupt\ scope\ trace}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00562}00562\ \ \ \ \ MM\_ERROR\_S;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00563}00563\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00564}00564\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00565}00565\ \textcolor{keywordtype}{void}\ mb\_setup(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00566}00566\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00567}00567\ \ \ \ \ UART3\_SetFramingErrorHandler(UART3\_DefaultFramingErrorHandler\_mb);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00568}00568\ \ \ \ \ UART3\_SetOverrunErrorHandler(UART3\_DefaultOverrunErrorHandler\_mb);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00569}00569\ \ \ \ \ UART3\_SetErrorHandler(UART3\_DefaultErrorHandler\_mb);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00570}00570\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00571}00571\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00572}00572\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ modbus\_write\_check(\mbox{\hyperlink{structC__data}{C\_data}}\ *\ client,\ \textcolor{keywordtype}{bool}*\ cstate,\ \textcolor{keyword}{const}\ uint16\_t\ rec\_length)}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00573}00573\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00574}00574\ \ \ \ \ uint16\_t\ c\_crc,\ c\_crc\_rec;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00575}00575\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00576}00576\ \textcolor{preprocessor}{\#ifdef\ \ MB\_EM540}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00577}00577\ \ \ \ \ client-\/>req\_length\ =\ rec\_length;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00578}00578\ \ \ \ \ \textcolor{keywordflow}{if}\ (DBUG\_R((M.recv\_count\ >=\ client-\/>req\_length)\ \&\&\ (cc\_buffer[0]\ ==\ MADDR)\ \&\&\ (cc\_buffer[1]\ ==\ WRITE\_SINGLE\_REGISTER)))\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00579}00579\ \ \ \ \ \ \ \ \ c\_crc\ =\ crc16(cc\_buffer,\ client-\/>req\_length\ -\/\ 2);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00580}00580\ \ \ \ \ \ \ \ \ c\_crc\_rec\ =\ crc16\_receive(client);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00581}00581\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (DBUG\_R\ c\_crc\ ==\ c\_crc\_rec)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00582}00582\ \ \ \ \ \ \ \ \ \ \ \ \ *cstate\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00583}00583\ \ \ \ \ \ \ \ \ \ \ \ \ MM\_ERROR\_C;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00584}00584\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00585}00585\ \ \ \ \ \ \ \ \ \ \ \ \ *cstate\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00586}00586\ \ \ \ \ \ \ \ \ \ \ \ \ log\_crc\_error(c\_crc,\ c\_crc\_rec);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00587}00587\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00588}00588\ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ CLEAR;\ \textcolor{comment}{//\ where\ do\ we\ go\ next}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00589}00589\ \ \ \ \ \ \ \ \ client-\/>mcmd\ =\ G\_LAST;\ \textcolor{comment}{//\ what\ do\ we\ run\ next}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00590}00590\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00591}00591\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get\_500hz(\textcolor{keyword}{false})\ >=\ RDELAY)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00592}00592\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ CLEAR;\ \textcolor{comment}{//\ where\ do\ we\ go\ next}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00593}00593\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>mcmd\ =\ G\_ID;\ \textcolor{comment}{//\ what\ do\ we\ run\ next}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00594}00594\ \ \ \ \ \ \ \ \ \ \ \ \ M.to\_error++;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00595}00595\ \ \ \ \ \ \ \ \ \ \ \ \ M.error++;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00596}00596\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (client-\/>data\_ok)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00597}00597\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ MM\_ERROR\_C;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00598}00598\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00599}00599\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00600}00600\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00601}00601\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00602}00602\ \ \ \ \ \textcolor{keywordflow}{return}\ *cstate;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00603}00603\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00604}00604\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00605}00605\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ modbus\_read\_check(\mbox{\hyperlink{structC__data}{C\_data}}\ *\ client,\ \textcolor{keywordtype}{bool}*\ cstate,\ \textcolor{keyword}{const}\ uint16\_t\ rec\_length,\ \textcolor{keywordtype}{void}\ (*\ DataHandler)(\textcolor{keywordtype}{void}))}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00606}00606\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00607}00607\ \ \ \ \ uint16\_t\ c\_crc,\ c\_crc\_rec;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00608}00608\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00609}00609\ \textcolor{preprocessor}{\#ifdef\ \ MB\_EM540}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00610}00610\ \ \ \ \ client-\/>req\_length\ =\ rec\_length;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00611}00611\ \ \ \ \ \textcolor{keywordflow}{if}\ (DBUG\_R((M.recv\_count\ >=\ client-\/>req\_length)\ \&\&\ (cc\_buffer[0]\ ==\ MADDR)\ \&\&\ (cc\_buffer[1]\ ==\ READ\_HOLDING\_REGISTERS)))\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00612}00612\ \ \ \ \ \ \ \ \ c\_crc\ =\ crc16(cc\_buffer,\ client-\/>req\_length\ -\/\ 2);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00613}00613\ \ \ \ \ \ \ \ \ c\_crc\_rec\ =\ crc16\_receive(client);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00614}00614\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (DBUG\_R\ c\_crc\ ==\ c\_crc\_rec)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00615}00615\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>data\_ok\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00616}00616\ \ \ \ \ \ \ \ \ \ \ \ \ *cstate\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00617}00617\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00618}00618\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ move\ from\ receive\ buffer\ to\ data\ structure\ and\ munge\ the\ data\ into\ the\ correct\ local\ 32-\/bit\ format\ from\ MODBUS\ client}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00619}00619\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00620}00620\ \ \ \ \ \ \ \ \ \ \ \ \ DataHandler();}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00621}00621\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>data\_prev\ =\ client-\/>data\_count;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00622}00622\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>data\_count++;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00623}00623\ \ \ \ \ \ \ \ \ \ \ \ \ MM\_ERROR\_C;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00624}00624\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00625}00625\ \ \ \ \ \ \ \ \ \ \ \ \ MM\_ERROR\_C;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00626}00626\ \ \ \ \ \ \ \ \ \ \ \ \ *cstate\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00627}00627\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>data\_ok\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00628}00628\ \ \ \ \ \ \ \ \ \ \ \ \ log\_crc\_error(c\_crc,\ c\_crc\_rec);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00629}00629\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (client-\/>data\_ok)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00630}00630\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00631}00631\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00632}00632\ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ CLEAR;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00633}00633\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00634}00634\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get\_500hz(\textcolor{keyword}{false})\ >=\ RDELAY)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00635}00635\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ CLEAR;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00636}00636\ \ \ \ \ \ \ \ \ \ \ \ \ MM\_ERROR\_C;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00637}00637\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>mcmd\ =\ G\_ID;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00638}00638\ \ \ \ \ \ \ \ \ \ \ \ \ M.to\_error++;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00639}00639\ \ \ \ \ \ \ \ \ \ \ \ \ M.error++;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00640}00640\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (client-\/>data\_ok)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00641}00641\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00642}00642\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00643}00643\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00644}00644\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00645}00645\ \ \ \ \ \textcolor{keywordflow}{return}\ *cstate;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00646}00646\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00647}00647\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00648}00648\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ modbus\_read\_id\_check(\mbox{\hyperlink{structC__data}{C\_data}}\ *\ client,\ \textcolor{keywordtype}{bool}*\ cstate,\ \textcolor{keyword}{const}\ uint16\_t\ rec\_length)}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00649}00649\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00650}00650\ \ \ \ \ uint16\_t\ c\_crc,\ c\_crc\_rec;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00651}00651\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00652}00652\ \textcolor{preprocessor}{\#ifdef\ \ MB\_EM540}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00653}00653\ \ \ \ \ client-\/>req\_length\ =\ rec\_length;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00654}00654\ \ \ \ \ \textcolor{keywordflow}{if}\ (DBUG\_R((M.recv\_count\ >=\ client-\/>req\_length)\ \&\&\ (cc\_buffer[0]\ ==\ MADDR)\ \&\&\ (cc\_buffer[1]\ ==\ READ\_HOLDING\_REGISTERS)))\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00655}00655\ \ \ \ \ \ \ \ \ c\_crc\ =\ crc16(cc\_buffer,\ client-\/>req\_length\ -\/\ 2);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00656}00656\ \ \ \ \ \ \ \ \ c\_crc\_rec\ =\ crc16\_receive(client);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00657}00657\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((DBUG\_R\ c\_crc\ ==\ c\_crc\_rec)\ \&\&\ (cc\_buffer[3]\ ==\ MB\_EM540\_ID\_H)\ \&\&\ (cc\_buffer[4]\ ==\ MB\_EM540\_ID\_L))\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00658}00658\ \ \ \ \ \ \ \ \ \ \ \ \ MM\_ERROR\_C;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00659}00659\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>id\_ok\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00660}00660\ \ \ \ \ \ \ \ \ \ \ \ \ *cstate\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00661}00661\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00662}00662\ \ \ \ \ \ \ \ \ \ \ \ \ MM\_ERROR\_S;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00663}00663\ \ \ \ \ \ \ \ \ \ \ \ \ *cstate\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00664}00664\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>id\_ok\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00665}00665\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>config\_ok\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00666}00666\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>passwd\_ok\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00667}00667\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>data\_ok\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00668}00668\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>light\_ok\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00669}00669\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>version\_ok\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00670}00670\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>serial\_ok\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00671}00671\ \ \ \ \ \ \ \ \ \ \ \ \ log\_crc\_error(c\_crc,\ c\_crc\_rec);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00672}00672\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00673}00673\ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ CLEAR;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00674}00674\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00675}00675\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get\_500hz(\textcolor{keyword}{false})\ >=\ RDELAY)\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00676}00676\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ CLEAR;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00677}00677\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>mcmd\ =\ G\_ID;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00678}00678\ \ \ \ \ \ \ \ \ \ \ \ \ M.to\_error++;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00679}00679\ \ \ \ \ \ \ \ \ \ \ \ \ M.error++;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00680}00680\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>id\_ok\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00553}00553\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00554}00554\ \textcolor{comment}{\ *\ serial\ port\ testing\ routine}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00555}00555\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00556}00556\ \textcolor{keywordtype}{void}\ mb\_tx\_test(\mbox{\hyperlink{structC__data}{C\_data}}\ *\ client)}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00557}00557\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00558}00558\ \ \ \ \ \textcolor{keywordflow}{if}\ (TimerDone(TMR\_MBTEST))\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00559}00559\ \ \ \ \ \ \ \ \ StartTimer(TMR\_MBTEST,\ 500);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00560}00560\ \ \ \ \ \ \ \ \ client-\/>req\_length\ =\ modbus\_rtu\_send\_msg((\textcolor{keywordtype}{void}*)\ cc\_buffer\_tx,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\ modbus\_em\_passwd,\ \textcolor{keyword}{sizeof}(modbus\_em\_passwd));}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00561}00561\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (int8\_t\ i\ =\ 0;\ i\ <\ client-\/>req\_length;\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00562}00562\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Strdy())\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00563}00563\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Swrite(cc\_buffer\_tx[i]);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00564}00564\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00565}00565\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00566}00566\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00567}00567\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00568}00568\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00569}00569\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ UART3\_DefaultFramingErrorHandler\_mb(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00570}00570\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00571}00571\ \ \ \ \ INT\_TRACE;\ \textcolor{comment}{//\ GPIO\ interrupt\ scope\ trace}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00572}00572\ \ \ \ \ MM\_ERROR\_S;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00573}00573\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00574}00574\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00575}00575\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ UART3\_DefaultOverrunErrorHandler\_mb(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00576}00576\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00577}00577\ \ \ \ \ INT\_TRACE;\ \textcolor{comment}{//\ GPIO\ interrupt\ scope\ trace}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00578}00578\ \ \ \ \ MM\_ERROR\_S;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00579}00579\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00580}00580\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00581}00581\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ UART3\_DefaultErrorHandler\_mb(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00582}00582\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00583}00583\ \ \ \ \ INT\_TRACE;\ \textcolor{comment}{//\ GPIO\ interrupt\ scope\ trace}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00584}00584\ \ \ \ \ MM\_ERROR\_S;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00585}00585\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00586}00586\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00587}00587\ \textcolor{keywordtype}{void}\ mb\_setup(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00588}00588\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00589}00589\ \ \ \ \ UART3\_SetFramingErrorHandler(UART3\_DefaultFramingErrorHandler\_mb);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00590}00590\ \ \ \ \ UART3\_SetOverrunErrorHandler(UART3\_DefaultOverrunErrorHandler\_mb);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00591}00591\ \ \ \ \ UART3\_SetErrorHandler(UART3\_DefaultErrorHandler\_mb);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00592}00592\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00593}00593\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00594}00594\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ modbus\_write\_check(\mbox{\hyperlink{structC__data}{C\_data}}\ *\ client,\ \textcolor{keywordtype}{bool}*\ cstate,\ \textcolor{keyword}{const}\ uint16\_t\ rec\_length)}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00595}00595\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00596}00596\ \ \ \ \ uint16\_t\ c\_crc,\ c\_crc\_rec;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00597}00597\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00598}00598\ \textcolor{preprocessor}{\#ifdef\ \ MB\_EM540}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00599}00599\ \ \ \ \ client-\/>req\_length\ =\ rec\_length;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00600}00600\ \ \ \ \ \textcolor{keywordflow}{if}\ (DBUG\_R((M.recv\_count\ >=\ client-\/>req\_length)\ \&\&\ (cc\_buffer[0]\ ==\ MADDR)\ \&\&\ (cc\_buffer[1]\ ==\ WRITE\_SINGLE\_REGISTER)))\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00601}00601\ \ \ \ \ \ \ \ \ c\_crc\ =\ crc16(cc\_buffer,\ client-\/>req\_length\ -\/\ 2);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00602}00602\ \ \ \ \ \ \ \ \ c\_crc\_rec\ =\ crc16\_receive(client);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00603}00603\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (DBUG\_R\ c\_crc\ ==\ c\_crc\_rec)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00604}00604\ \ \ \ \ \ \ \ \ \ \ \ \ *cstate\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00605}00605\ \ \ \ \ \ \ \ \ \ \ \ \ MM\_ERROR\_C;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00606}00606\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00607}00607\ \ \ \ \ \ \ \ \ \ \ \ \ *cstate\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00608}00608\ \ \ \ \ \ \ \ \ \ \ \ \ log\_crc\_error(c\_crc,\ c\_crc\_rec);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00609}00609\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00610}00610\ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ CLEAR;\ \textcolor{comment}{//\ where\ do\ we\ go\ next}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00611}00611\ \ \ \ \ \ \ \ \ client-\/>mcmd\ =\ G\_LAST;\ \textcolor{comment}{//\ what\ do\ we\ run\ next}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00612}00612\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00613}00613\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get\_500hz(\textcolor{keyword}{false})\ >=\ RDELAY)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00614}00614\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ CLEAR;\ \textcolor{comment}{//\ where\ do\ we\ go\ next}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00615}00615\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>mcmd\ =\ G\_ID;\ \textcolor{comment}{//\ what\ do\ we\ run\ next}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00616}00616\ \ \ \ \ \ \ \ \ \ \ \ \ M.to\_error++;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00617}00617\ \ \ \ \ \ \ \ \ \ \ \ \ M.error++;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00618}00618\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (client-\/>data\_ok)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00619}00619\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ MM\_ERROR\_C;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00620}00620\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00621}00621\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00622}00622\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00623}00623\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00624}00624\ \ \ \ \ \textcolor{keywordflow}{return}\ *cstate;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00625}00625\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00626}00626\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00627}00627\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ modbus\_read\_check(\mbox{\hyperlink{structC__data}{C\_data}}\ *\ client,\ \textcolor{keywordtype}{bool}*\ cstate,\ \textcolor{keyword}{const}\ uint16\_t\ rec\_length,\ \textcolor{keywordtype}{void}\ (*\ DataHandler)(\textcolor{keywordtype}{void}))}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00628}00628\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00629}00629\ \ \ \ \ uint16\_t\ c\_crc,\ c\_crc\_rec;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00630}00630\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00631}00631\ \textcolor{preprocessor}{\#ifdef\ \ MB\_EM540}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00632}00632\ \ \ \ \ client-\/>req\_length\ =\ rec\_length;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00633}00633\ \ \ \ \ \textcolor{keywordflow}{if}\ (DBUG\_R((M.recv\_count\ >=\ client-\/>req\_length)\ \&\&\ (cc\_buffer[0]\ ==\ MADDR)\ \&\&\ (cc\_buffer[1]\ ==\ READ\_HOLDING\_REGISTERS)))\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00634}00634\ \ \ \ \ \ \ \ \ c\_crc\ =\ crc16(cc\_buffer,\ client-\/>req\_length\ -\/\ 2);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00635}00635\ \ \ \ \ \ \ \ \ c\_crc\_rec\ =\ crc16\_receive(client);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00636}00636\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (DBUG\_R\ c\_crc\ ==\ c\_crc\_rec)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00637}00637\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>data\_ok\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00638}00638\ \ \ \ \ \ \ \ \ \ \ \ \ *cstate\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00639}00639\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00640}00640\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ *\ move\ from\ receive\ buffer\ to\ data\ structure\ and\ munge\ the\ data\ into\ the\ correct\ local\ 32-\/bit\ format\ from\ MODBUS\ client}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00641}00641\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00642}00642\ \ \ \ \ \ \ \ \ \ \ \ \ DataHandler();}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00643}00643\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>data\_prev\ =\ client-\/>data\_count;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00644}00644\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>data\_count++;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00645}00645\ \ \ \ \ \ \ \ \ \ \ \ \ MM\_ERROR\_C;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00646}00646\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00647}00647\ \ \ \ \ \ \ \ \ \ \ \ \ MM\_ERROR\_C;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00648}00648\ \ \ \ \ \ \ \ \ \ \ \ \ *cstate\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00649}00649\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>data\_ok\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00650}00650\ \ \ \ \ \ \ \ \ \ \ \ \ log\_crc\_error(c\_crc,\ c\_crc\_rec);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00651}00651\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00652}00652\ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ CLEAR;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00653}00653\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00654}00654\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get\_500hz(\textcolor{keyword}{false})\ >=\ RDELAY)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00655}00655\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ CLEAR;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00656}00656\ \ \ \ \ \ \ \ \ \ \ \ \ MM\_ERROR\_C;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00657}00657\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>mcmd\ =\ G\_ID;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00658}00658\ \ \ \ \ \ \ \ \ \ \ \ \ M.to\_error++;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00659}00659\ \ \ \ \ \ \ \ \ \ \ \ \ M.error++;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00660}00660\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00661}00661\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00662}00662\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00663}00663\ \ \ \ \ \textcolor{keywordflow}{return}\ *cstate;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00664}00664\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00665}00665\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00666}00666\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ modbus\_read\_id\_check(\mbox{\hyperlink{structC__data}{C\_data}}\ *\ client,\ \textcolor{keywordtype}{bool}*\ cstate,\ \textcolor{keyword}{const}\ uint16\_t\ rec\_length)}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00667}00667\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00668}00668\ \ \ \ \ uint16\_t\ c\_crc,\ c\_crc\_rec;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00669}00669\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00670}00670\ \textcolor{preprocessor}{\#ifdef\ \ MB\_EM540}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00671}00671\ \ \ \ \ client-\/>req\_length\ =\ rec\_length;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00672}00672\ \ \ \ \ \textcolor{keywordflow}{if}\ (DBUG\_R((M.recv\_count\ >=\ client-\/>req\_length)\ \&\&\ (cc\_buffer[0]\ ==\ MADDR)\ \&\&\ (cc\_buffer[1]\ ==\ READ\_HOLDING\_REGISTERS)))\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00673}00673\ \ \ \ \ \ \ \ \ c\_crc\ =\ crc16(cc\_buffer,\ client-\/>req\_length\ -\/\ 2);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00674}00674\ \ \ \ \ \ \ \ \ c\_crc\_rec\ =\ crc16\_receive(client);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00675}00675\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((DBUG\_R\ c\_crc\ ==\ c\_crc\_rec)\ \&\&\ (cc\_buffer[3]\ ==\ MB\_EM540\_ID\_H)\ \&\&\ (cc\_buffer[4]\ ==\ MB\_EM540\_ID\_L))\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00676}00676\ \ \ \ \ \ \ \ \ \ \ \ \ MM\_ERROR\_C;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00677}00677\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>id\_ok\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00678}00678\ \ \ \ \ \ \ \ \ \ \ \ \ *cstate\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00679}00679\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00680}00680\ \ \ \ \ \ \ \ \ \ \ \ \ MM\_ERROR\_S;}
 \DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00681}00681\ \ \ \ \ \ \ \ \ \ \ \ \ *cstate\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00682}00682\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>config\_ok\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00683}00683\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>passwd\_ok\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00684}00684\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>data\_ok\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00685}00685\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>light\_ok\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00686}00686\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>version\_ok\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00687}00687\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>serial\_ok\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00688}00688\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00689}00689\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00690}00690\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00691}00691\ \ \ \ \ \textcolor{keywordflow}{return}\ *cstate;}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00692}00692\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00693}00693\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00694}00694\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ em\_data\_handler(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00695}00695\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00696}00696\ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00697}00697\ \textcolor{comment}{\ \ \ \ \ *\ load\ EM540\ data\ pointer\ with\ receive\ buffer\ to\ data\ structure}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00698}00698\ \textcolor{comment}{\ \ \ \ \ *\ and\ munge\ the\ data\ into\ the\ correct\ local\ formats\ for\ client}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00699}00699\ \textcolor{comment}{\ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00700}00700\ \ \ \ \ em\_ptr\ =\ (\mbox{\hyperlink{structEM__data1}{EM\_data1}}*)\ \&\ cc\_buffer[3];}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00701}00701\ \ \ \ \ em.vl1l2\ =\ mb32\_swap(em\_ptr-\/>vl1l2);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00702}00702\ \ \ \ \ em.al1\ =\ mb32\_swap(em\_ptr-\/>al1);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00703}00703\ \ \ \ \ em.wl1\ =\ mb32\_swap(em\_ptr-\/>wl1);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00704}00704\ \ \ \ \ em.val1\ =\ mb32\_swap(em\_ptr-\/>val1);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00705}00705\ \ \ \ \ em.varl1\ =\ mb32\_swap(em\_ptr-\/>varl1);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00706}00706\ \ \ \ \ em.pfl1\ =\ mb16\_swap(em\_ptr-\/>pfl1);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00707}00707\ \ \ \ \ em.pfsys\ =\ mb16\_swap(em\_ptr-\/>pfsys);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00708}00708\ \ \ \ \ em.hz\ =\ mb16\_swap(em\_ptr-\/>hz);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00709}00709\ \textcolor{preprocessor}{\#ifndef\ MB\_EM540\_ONE}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00710}00710\ \ \ \ \ em.vl2l3\ =\ mb32\_swap(em\_ptr-\/>vl2l3);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00711}00711\ \ \ \ \ em.vl3l1\ =\ mb32\_swap(em\_ptr-\/>vl3l1);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00712}00712\ \ \ \ \ em.al2\ =\ mb32\_swap(em\_ptr-\/>al2);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00713}00713\ \ \ \ \ em.al3\ =\ mb32\_swap(em\_ptr-\/>al3);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00714}00714\ \ \ \ \ em.wl2\ =\ mb32\_swap(em\_ptr-\/>wl2);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00715}00715\ \ \ \ \ em.wl3\ =\ mb32\_swap(em\_ptr-\/>wl3);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00716}00716\ \ \ \ \ em.val2\ =\ mb32\_swap(em\_ptr-\/>val2);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00717}00717\ \ \ \ \ em.val3\ =\ mb32\_swap(em\_ptr-\/>val3);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00718}00718\ \ \ \ \ em.varl2\ =\ mb32\_swap(em\_ptr-\/>varl2);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00719}00719\ \ \ \ \ em.varl3\ =\ mb32\_swap(em\_ptr-\/>varl3);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00720}00720\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00721}00721\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00722}00722\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00723}00723\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ emt\_data\_handler(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00724}00724\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00725}00725\ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00726}00726\ \textcolor{comment}{\ \ \ \ \ *\ move\ from\ receive\ buffer\ to\ data\ structure\ and\ munge\ the\ data\ into\ the\ correct\ local\ formats\ from\ MODBUS\ client}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00727}00727\ \textcolor{comment}{\ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00728}00728\ \textcolor{preprocessor}{\#ifdef\ \ \ MB\_EM540\_EMT}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00729}00729\ \ \ \ \ memcpy((\textcolor{keywordtype}{void}*)\ \&emt,\ (\textcolor{keywordtype}{void}*)\ \&cc\_buffer[3],\ \textcolor{keyword}{sizeof}(emt));}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00730}00730\ \ \ \ \ emt.hz\ =\ mb32\_swap(emt.hz);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00731}00731\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00732}00732\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00733}00733\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00734}00734\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ems\_data\_handler(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00735}00735\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00736}00736\ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00737}00737\ \textcolor{comment}{\ \ \ \ \ *\ move\ from\ receive\ buffer\ to\ data\ structure\ and\ munge\ the\ data\ into\ the\ correct\ local\ formats\ from\ MODBUS\ client}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00738}00738\ \textcolor{comment}{\ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00739}00739\ \ \ \ \ memcpy((\textcolor{keywordtype}{void}*)\ \&ems,\ (\textcolor{keywordtype}{void}*)\ \&cc\_buffer[3],\ \textcolor{keyword}{sizeof}(ems));}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00740}00740\ \ \ \ \ ems.serial[13]\ =\ 0;\ \textcolor{comment}{//\ terminate\ serial\ string\ data}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00741}00741\ \ \ \ \ ems.year\ =\ mb16\_swap(ems.year);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00742}00742\ \}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00743}00743\ }
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00744}00744\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ emv\_data\_handler(\textcolor{keywordtype}{void})}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00745}00745\ \{}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00746}00746\ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00747}00747\ \textcolor{comment}{\ \ \ \ \ *\ move\ from\ receive\ buffer\ to\ data\ structure\ and\ munge\ the\ data\ into\ the\ correct\ local\ formats\ from\ MODBUS\ client}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00748}00748\ \textcolor{comment}{\ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00749}00749\ \ \ \ \ memcpy((\textcolor{keywordtype}{void}*)\ \&emv,\ (\textcolor{keywordtype}{void}*)\ \&cc\_buffer[3],\ \textcolor{keyword}{sizeof}(emv));}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00750}00750\ \ \ \ \ emv.firmware\ =\ mb16\_swap(emv.firmware);}
-\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00751}00751\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00682}00682\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>id\_ok\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00683}00683\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>config\_ok\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00684}00684\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>passwd\_ok\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00685}00685\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>data\_ok\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00686}00686\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>light\_ok\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00687}00687\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>version\_ok\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00688}00688\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>serial\_ok\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00689}00689\ \ \ \ \ \ \ \ \ \ \ \ \ log\_crc\_error(c\_crc,\ c\_crc\_rec);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00690}00690\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00691}00691\ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ CLEAR;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00692}00692\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00693}00693\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get\_500hz(\textcolor{keyword}{false})\ >=\ RDELAY)\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00694}00694\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>cstate\ =\ CLEAR;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00695}00695\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>mcmd\ =\ G\_ID;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00696}00696\ \ \ \ \ \ \ \ \ \ \ \ \ M.to\_error++;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00697}00697\ \ \ \ \ \ \ \ \ \ \ \ \ M.error++;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00698}00698\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>id\_ok\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00699}00699\ \ \ \ \ \ \ \ \ \ \ \ \ *cstate\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00700}00700\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>config\_ok\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00701}00701\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>passwd\_ok\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00702}00702\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>data\_ok\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00703}00703\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>light\_ok\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00704}00704\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>version\_ok\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00705}00705\ \ \ \ \ \ \ \ \ \ \ \ \ client-\/>serial\_ok\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00706}00706\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00707}00707\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00708}00708\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00709}00709\ \ \ \ \ \textcolor{keywordflow}{return}\ *cstate;}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00710}00710\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00711}00711\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00712}00712\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ em\_data\_handler(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00713}00713\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00714}00714\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00715}00715\ \textcolor{comment}{\ \ \ \ \ *\ load\ EM540\ data\ pointer\ with\ receive\ buffer\ to\ data\ structure}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00716}00716\ \textcolor{comment}{\ \ \ \ \ *\ and\ munge\ the\ data\ into\ the\ correct\ local\ formats\ for\ client}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00717}00717\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00718}00718\ \ \ \ \ em\_ptr\ =\ (\mbox{\hyperlink{structEM__data1}{EM\_data1}}*)\ \&\ cc\_buffer[3];}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00719}00719\ \ \ \ \ em.vl1n\ =\ mb32\_swap(em\_ptr-\/>vl1n);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00720}00720\ \ \ \ \ em.vl2n\ =\ mb32\_swap(em\_ptr-\/>vl2n);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00721}00721\ \ \ \ \ em.vl3n\ =\ mb32\_swap(em\_ptr-\/>vl3n);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00722}00722\ \ \ \ \ em.vl1l2\ =\ mb32\_swap(em\_ptr-\/>vl1l2);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00723}00723\ \ \ \ \ em.vl2l3\ =\ mb32\_swap(em\_ptr-\/>vl2l3);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00724}00724\ \ \ \ \ em.vl3l1\ =\ mb32\_swap(em\_ptr-\/>vl3l1);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00725}00725\ \ \ \ \ em.al1\ =\ mb32\_swap(em\_ptr-\/>al1);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00726}00726\ \ \ \ \ em.al2\ =\ mb32\_swap(em\_ptr-\/>al2);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00727}00727\ \ \ \ \ em.al3\ =\ mb32\_swap(em\_ptr-\/>al3);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00728}00728\ \ \ \ \ em.wl1\ =\ mb32\_swap(em\_ptr-\/>wl1);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00729}00729\ \ \ \ \ em.wl2\ =\ mb32\_swap(em\_ptr-\/>wl2);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00730}00730\ \ \ \ \ em.wl3\ =\ mb32\_swap(em\_ptr-\/>wl3);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00731}00731\ \ \ \ \ em.val1\ =\ mb32\_swap(em\_ptr-\/>val1);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00732}00732\ \ \ \ \ em.val2\ =\ mb32\_swap(em\_ptr-\/>val2);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00733}00733\ \ \ \ \ em.val3\ =\ mb32\_swap(em\_ptr-\/>val3);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00734}00734\ \ \ \ \ em.varl1\ =\ mb32\_swap(em\_ptr-\/>varl1);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00735}00735\ \ \ \ \ em.varl2\ =\ mb32\_swap(em\_ptr-\/>varl2);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00736}00736\ \ \ \ \ em.varl3\ =\ mb32\_swap(em\_ptr-\/>varl3);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00737}00737\ \ \ \ \ em.wsys\ =\ mb32\_swap(em\_ptr-\/>wsys);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00738}00738\ \ \ \ \ em.vasys\ =\ mb32\_swap(em\_ptr-\/>vasys);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00739}00739\ \ \ \ \ em.varsys\ =\ mb32\_swap(em\_ptr-\/>varsys);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00740}00740\ \ \ \ \ em.pfl1\ =\ mb16\_swap(em\_ptr-\/>pfl1);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00741}00741\ \ \ \ \ em.pfl2\ =\ mb16\_swap(em\_ptr-\/>pfl2);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00742}00742\ \ \ \ \ em.pfsys\ =\ mb16\_swap(em\_ptr-\/>pfsys);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00743}00743\ \ \ \ \ em.hz\ =\ mb16\_swap(em\_ptr-\/>hz);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00744}00744\ \textcolor{preprocessor}{\#ifndef\ MB\_EM540\_ONE}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00745}00745\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00746}00746\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00747}00747\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00748}00748\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ emt\_data\_handler(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00749}00749\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00750}00750\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00751}00751\ \textcolor{comment}{\ \ \ \ \ *\ move\ from\ receive\ buffer\ to\ data\ structure\ and\ munge\ the\ data\ into\ the\ correct\ local\ formats\ from\ MODBUS\ client}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00752}00752\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00753}00753\ \textcolor{preprocessor}{\#ifdef\ \ \ MB\_EM540\_EMT}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00754}00754\ \ \ \ \ memcpy((\textcolor{keywordtype}{void}*)\ \&emt,\ (\textcolor{keywordtype}{void}*)\ \&cc\_buffer[3],\ \textcolor{keyword}{sizeof}(emt));}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00755}00755\ \ \ \ \ emt.hz\ =\ mb32\_swap(emt.hz);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00756}00756\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00757}00757\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00758}00758\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00759}00759\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ems\_data\_handler(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00760}00760\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00761}00761\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00762}00762\ \textcolor{comment}{\ \ \ \ \ *\ move\ from\ receive\ buffer\ to\ data\ structure\ and\ munge\ the\ data\ into\ the\ correct\ local\ formats\ from\ MODBUS\ client}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00763}00763\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00764}00764\ \ \ \ \ memcpy((\textcolor{keywordtype}{void}*)\ \&ems,\ (\textcolor{keywordtype}{void}*)\ \&cc\_buffer[3],\ \textcolor{keyword}{sizeof}(ems));}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00765}00765\ \ \ \ \ ems.serial[13]\ =\ 0;\ \textcolor{comment}{//\ terminate\ serial\ string\ data}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00766}00766\ \ \ \ \ ems.year\ =\ mb16\_swap(ems.year);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00767}00767\ \}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00768}00768\ }
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00769}00769\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ emv\_data\_handler(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00770}00770\ \{}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00771}00771\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00772}00772\ \textcolor{comment}{\ \ \ \ \ *\ move\ from\ receive\ buffer\ to\ data\ structure\ and\ munge\ the\ data\ into\ the\ correct\ local\ formats\ from\ MODBUS\ client}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00773}00773\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00774}00774\ \ \ \ \ memcpy((\textcolor{keywordtype}{void}*)\ \&emv,\ (\textcolor{keywordtype}{void}*)\ \&cc\_buffer[3],\ \textcolor{keyword}{sizeof}(emv));}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00775}00775\ \ \ \ \ emv.firmware\ =\ mb16\_swap(emv.firmware);}
+\DoxyCodeLine{\Hypertarget{modbus__master_8c_source_l00776}00776\ \}}
 
 \end{DoxyCode}

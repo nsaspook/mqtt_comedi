@@ -1,4 +1,4 @@
-/** \file bcmdio.h
+/** \file bmcdio.h
  * File:   bmcdio.h
  * Author: root
  *

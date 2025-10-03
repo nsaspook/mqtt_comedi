@@ -5,6 +5,8 @@
 {\ttfamily \#include "{}mcc\+\_\+generated\+\_\+files/adc.\+h"{}}\newline
 {\ttfamily \#include "{}mcc\+\_\+generated\+\_\+files/spi1.\+h"{}}\newline
 {\ttfamily \#include "{}mcc\+\_\+generated\+\_\+files/pin\+\_\+manager.\+h"{}}\newline
+{\ttfamily \#include "{}calibr.\+h"{}}\newline
+{\ttfamily \#include "{}modbus\+\_\+master.\+h"{}}\newline
 Include dependency graph for vconfig.\+h\+:
 \nopagebreak
 \begin{figure}[H]
@@ -26,7 +28,11 @@ This graph shows which files directly or indirectly include this file\+:
 \item 
 struct \mbox{\hyperlink{structspi__link__type}{spi\+\_\+link\+\_\+type}}
 \item 
-struct \mbox{\hyperlink{structB__type}{B\+\_\+type}}
+struct \mbox{\hyperlink{structmx__logpage__t}{mx\+\_\+logpage\+\_\+t}}
+\item 
+struct \mbox{\hyperlink{structBM__type}{BM\+\_\+type}}
+\item 
+struct \mbox{\hyperlink{structBF__type}{BF\+\_\+type}}
 \item 
 struct \mbox{\hyperlink{structterminal__type}{terminal\+\_\+type}}
 \item 
@@ -41,15 +47,17 @@ struct \mbox{\hyperlink{structEB__data}{EB\+\_\+data}}
 \item 
 \#define \mbox{\hyperlink{vconfig_8h_a712efb20035ebc74c479895e9124373a}{NHD}}
 \item 
-\#define \mbox{\hyperlink{vconfig_8h_a98ed931f97fef7e06e3ea441d0326c67}{VER}}~"{}V0.\+30"{}
+\#define \mbox{\hyperlink{vconfig_8h_a98ed931f97fef7e06e3ea441d0326c67}{VER}}~"{}V0.\+45"{}
 \item 
 \#define \mbox{\hyperlink{vconfig_8h_ab8e8259c832d33f1ce179260fb57b2d6}{DIO\+\_\+\+TEST}}
 \item 
 \#define \mbox{\hyperlink{vconfig_8h_a8dab32689cfc77e4d3cb66d520a72817}{DIO\+\_\+\+SHOW\+\_\+\+BUF}}
 \item 
-\#define \mbox{\hyperlink{vconfig_8h_ae417fdeaa7c1064b1e98b14b836c9702}{DI\+\_\+\+DEBUG}}
+\#define \mbox{\hyperlink{vconfig_8h_adda35ee0c7815e577290da5d11b62d54}{SER\+\_\+\+DEBUG}}
 \item 
 \#define \mbox{\hyperlink{vconfig_8h_ad4b7feda5e06ec57a494f82f81a4fc97}{DI\+\_\+\+MC\+\_\+\+CMD}}
+\item 
+\#define \mbox{\hyperlink{vconfig_8h_af31e41c9b753041075f37b66448e0aff}{AIO\+\_\+\+TEST}}
 \item 
 \#define \mbox{\hyperlink{vconfig_8h_ad5a44a7f7099f4518f885f48a93ceb14}{SLED}}~MLED\+\_\+\+LAT
 \item 
@@ -115,7 +123,31 @@ struct \mbox{\hyperlink{structEB__data}{EB\+\_\+data}}
 \item 
 \#define \mbox{\hyperlink{vconfig_8h_a538b030c21fd2c21e98f7282b9c6f92f}{EQUIP\+\_\+\+UART}}~2
 \item 
-\#define \mbox{\hyperlink{vconfig_8h_aea39dd94dc1a08f74fc5cd8adeaddec8}{DEF\+\_\+\+TIME}}~0
+\#define \mbox{\hyperlink{vconfig_8h_aea39dd94dc1a08f74fc5cd8adeaddec8}{DEF\+\_\+\+TIME}}~1694196350 /\texorpdfstring{$\ast$}{*} default epoch \mbox{\hyperlink{mconfig_8c_ae7841e681c8c9d59818568d39553642c}{time}} \texorpdfstring{$\ast$}{*}/
+\item 
+\#define \mbox{\hyperlink{vconfig_8h_a826ee84188f6bf7a43caa2e021b943e2}{CHK\+\_\+\+DAY\+\_\+\+TIME}}~1200
+\item 
+\#define \mbox{\hyperlink{vconfig_8h_a25ab35e786370cdb54a193647854f4a4}{BAT\+\_\+\+DAY\+\_\+\+COUNT}}~45
+\item 
+\#define \mbox{\hyperlink{vconfig_8h_a29b4c81f013496f5f63caa15c4be26a9}{BAT\+\_\+\+NIGHT\+\_\+\+COUNT}}~90
+\item 
+\#define \mbox{\hyperlink{vconfig_8h_aacd744a917e61146ec8b7175b4761683}{STX}}~2
+\item 
+\#define \mbox{\hyperlink{vconfig_8h_a86dedb3d6fe83648d7db08c5c5f16cb5}{DC1\+\_\+\+CMD}}~17
+\item 
+\#define \mbox{\hyperlink{vconfig_8h_a92a2357cfef44fd2378753a0950ea00e}{DC2\+\_\+\+CMD}}~18
+\item 
+\#define \mbox{\hyperlink{vconfig_8h_a8c3b77b8f1d0964fa23ee90664aaf29d}{DC3\+\_\+\+CMD}}~19
+\item 
+\#define \mbox{\hyperlink{vconfig_8h_abf68ec2e81f26b2302895d3bdfc95268}{DC4\+\_\+\+CMD}}~20
+\item 
+\#define \mbox{\hyperlink{vconfig_8h_adc2e8798c877fe7fdca7136149981e3f}{LOG\+\_\+\+VARS1}}
+\item 
+\#define \mbox{\hyperlink{vconfig_8h_a375f7aa5404de01ee9c4a8a70bbe26e4}{LOG\+\_\+\+VARS2}}
+\item 
+\#define \mbox{\hyperlink{vconfig_8h_ab894664a69e9fa97bca7e9ebfcf88853}{LOG\+\_\+\+VARS3}}
+\item 
+\#define \mbox{\hyperlink{vconfig_8h_a02ac473d943133b71a6dfa010a784dd0}{LOG\+\_\+\+VARS4}}
 \item 
 \#define \mbox{\hyperlink{vconfig_8h_a258c547b1f322860cdb3f4f6f3142961}{MAX\+\_\+\+SHAPES}}~6
 \item 
@@ -124,8 +156,11 @@ struct \mbox{\hyperlink{structEB__data}{EB\+\_\+data}}
 \doxysubsubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
-\Hypertarget{vconfig_8h_a955c74a0adcde831e27de07b0f7eafff}\label{vconfig_8h_a955c74a0adcde831e27de07b0f7eafff} 
-typedef struct B\+\_\+type {\bfseries B\+\_\+type}
+\Hypertarget{vconfig_8h_acae92732af965fd7729643f4a69a8dcd}\label{vconfig_8h_acae92732af965fd7729643f4a69a8dcd} 
+typedef struct BM\+\_\+type {\bfseries BM\+\_\+type}
+\item 
+\Hypertarget{vconfig_8h_a41212e7b3e34e780a1e4870fe4d96a0b}\label{vconfig_8h_a41212e7b3e34e780a1e4870fe4d96a0b} 
+typedef struct BF\+\_\+type {\bfseries BF\+\_\+type}
 \item 
 \Hypertarget{vconfig_8h_a68df5a2f7d8a6914ffa1dcff61cf4161}\label{vconfig_8h_a68df5a2f7d8a6914ffa1dcff61cf4161} 
 typedef struct terminal\+\_\+type {\bfseries terminal\+\_\+type}
@@ -145,6 +180,12 @@ typedef struct EB\+\_\+data {\bfseries EB\+\_\+data}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Enumerations}
 \begin{DoxyCompactItemize}
+\item 
+enum {\bfseries D\+\_\+\+SW} \{ {\bfseries D\+\_\+\+SW\+\_\+A} = 0
+, {\bfseries D\+\_\+\+SW\+\_\+L}
+, {\bfseries D\+\_\+\+SW\+\_\+M}
+, {\bfseries D\+\_\+\+SW\+\_\+\+COUNT}
+ \}
 \item 
 enum {\bfseries D\+\_\+\+CODES} \{ \newline
 {\bfseries DIS\+\_\+\+STR} = 0
@@ -192,81 +233,6 @@ enum {\bfseries BMC\+\_\+\+STATES} \{ \newline
 {\bfseries BMC\+\_\+\+STATE\+\_\+\+REMOTE}
 , {\bfseries BMC\+\_\+\+STATE\+\_\+\+ERROR}
  \}
-\item 
-enum {\bfseries BMC\+\_\+\+EQUIP} \{ {\bfseries BMC\+\_\+\+GENERIC} = 0
-, {\bfseries BMC\+\_\+\+VII80}
-, {\bfseries BMC\+\_\+\+E220}
-, {\bfseries BMC\+\_\+\+ERROR} = 9
- \}
-\item 
-enum {\bfseries LINK\+\_\+\+STATES} \{ \newline
-{\bfseries LINK\+\_\+\+STATE\+\_\+\+IDLE} = 0
-, {\bfseries LINK\+\_\+\+STATE\+\_\+\+ENQ}
-, {\bfseries LINK\+\_\+\+STATE\+\_\+\+EOT}
-, {\bfseries LINK\+\_\+\+STATE\+\_\+\+ACK}
-, \newline
-{\bfseries LINK\+\_\+\+STATE\+\_\+\+DONE}
-, {\bfseries LINK\+\_\+\+STATE\+\_\+\+NAK}
-, {\bfseries LINK\+\_\+\+STATE\+\_\+\+ERROR}
- \}
-\item 
-enum {\bfseries LINK\+\_\+\+ERRORS} \{ \newline
-{\bfseries LINK\+\_\+\+ERROR\+\_\+\+NONE} = 10
-, {\bfseries LINK\+\_\+\+ERROR\+\_\+\+T1}
-, {\bfseries LINK\+\_\+\+ERROR\+\_\+\+T2}
-, {\bfseries LINK\+\_\+\+ERROR\+\_\+\+T3}
-, \newline
-{\bfseries LINK\+\_\+\+ERROR\+\_\+\+T4}
-, {\bfseries LINK\+\_\+\+ERROR\+\_\+\+CHECKSUM}
-, {\bfseries LINK\+\_\+\+ERROR\+\_\+\+NAK}
-, {\bfseries LINK\+\_\+\+ERROR\+\_\+\+ABORT}
-, \newline
-{\bfseries LINK\+\_\+\+ERROR\+\_\+\+SEND}
- \}
-\item 
-enum {\bfseries MSG\+\_\+\+ERRORS} \{ \newline
-{\bfseries MSG\+\_\+\+ERROR\+\_\+\+NONE} = 0
-, {\bfseries MSG\+\_\+\+ERROR\+\_\+\+ID} = 1
-, {\bfseries MSG\+\_\+\+ERROR\+\_\+\+STREAM} = 3
-, {\bfseries MSG\+\_\+\+ERROR\+\_\+\+FUNCTION} = 5
-, \newline
-{\bfseries MSG\+\_\+\+ERROR\+\_\+\+DATA} = 7
-, {\bfseries MSG\+\_\+\+ERROR\+\_\+\+TIMEOUT} = 9
-, {\bfseries MSG\+\_\+\+ERROR\+\_\+\+DATASIZE} = 11
-, {\bfseries MSG\+\_\+\+ERROR\+\_\+\+RESET} = 20
- \}
-\item 
-enum {\bfseries SEND\+\_\+\+ERRORS} \{ \newline
-{\bfseries SEND\+\_\+\+ERROR\+\_\+\+NONE} = 0
-, {\bfseries SEND\+\_\+\+ERROR\+\_\+\+ABORT}
-, {\bfseries SEND\+\_\+\+ERROR\+\_\+\+EOT}
-, {\bfseries SEND\+\_\+\+ERROR\+\_\+\+T2}
-, \newline
-{\bfseries SEND\+\_\+\+ERROR\+\_\+\+T3}
-, {\bfseries SEND\+\_\+\+ERROR\+\_\+\+DATA}
- \}
-\item 
-enum {\bfseries RECV\+\_\+\+ERRORS} \{ \newline
-{\bfseries RECV\+\_\+\+ERROR\+\_\+\+NONE} = 0
-, {\bfseries RECV\+\_\+\+ERROR\+\_\+\+NAK}
-, {\bfseries RECV\+\_\+\+ERROR\+\_\+\+EOT}
-, {\bfseries RECV\+\_\+\+ERROR\+\_\+\+T2}
-, \newline
-{\bfseries RECV\+\_\+\+ERROR\+\_\+\+T3}
-, {\bfseries RECV\+\_\+\+ERROR\+\_\+\+CKSUM}
-, {\bfseries RECV\+\_\+\+ERROR\+\_\+\+DATA}
- \}
-\item 
-enum {\bfseries TICKER\+\_\+\+VAL} \{ {\bfseries TICKER\+\_\+\+ZERO} = 0
-, {\bfseries TICKER\+\_\+\+LOW} = 20
-, {\bfseries TICKER\+\_\+\+HIGH} = 40
- \}
-\item 
-enum {\bfseries D\+\_\+\+SW} \{ {\bfseries D\+\_\+\+SW\+\_\+A} = 0
-, {\bfseries D\+\_\+\+SW\+\_\+L}
-, {\bfseries D\+\_\+\+SW\+\_\+M}
-, {\bfseries D\+\_\+\+SW\+\_\+\+COUNT}
- \}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
@@ -285,29 +251,37 @@ void \mbox{\hyperlink{vconfig_8h_a57fb97fef6e66fa3d27d9163aa7e0b9c}{UART1\+\_\+\
 \Hypertarget{vconfig_8h_aa1321b4e8cb9026b2556b51e7461a6fa}\label{vconfig_8h_aa1321b4e8cb9026b2556b51e7461a6fa} 
 void {\bfseries UART2\+\_\+\+Initialize115200} (void)
 \item 
-void \mbox{\hyperlink{vconfig_8h_acd52e079250052fc87b5835daea13181}{update\+\_\+time}} (struct tm \texorpdfstring{$\ast$}{*}, \mbox{\hyperlink{structEB__data}{EB\+\_\+data}} \texorpdfstring{$\ast$}{*})
+void \mbox{\hyperlink{vconfig_8h_a648fdc40d04970350b7215feea6aef01}{update\+\_\+time}} (const struct tm \texorpdfstring{$\ast$}{*}, \mbox{\hyperlink{structEB__data}{EB\+\_\+data}} \texorpdfstring{$\ast$}{*})
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-const char \mbox{\hyperlink{vconfig_8h_a6cf1761fbf02492c4708c24137b32b3e}{msg\+\_\+gemcmds}} \mbox{[}$\,$\mbox{]} = "{}Host CMDS\+: M C R P O L S D E H F"{}
+const char \mbox{\hyperlink{vconfig_8h_abe11ffeb3e484b3b76c7191c3d32a84d}{log\+\_\+format1}} \mbox{[}$\,$\mbox{]} = "{}\texorpdfstring{$^\wedge$}{\string^},\%d,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%d.\%01d,\%d.\%01d,\%d.\%01d,\%d,\%d,\%d,\%d,\%d,\%llu,\%7.\+4f,\%7.\+4f,\%6.\+4f,\%7.\+4f,1957,\texorpdfstring{$\sim$}{\string~}EOT \textbackslash{}r\textbackslash{}n"{}
 \item 
-const char \mbox{\hyperlink{vconfig_8h_a9e8cbf2d07c7534b12e0d103640dd772}{msg\+\_\+freecmds}} \mbox{[}$\,$\mbox{]} = "{}Port baud rate unlocked "{}
+const char \mbox{\hyperlink{vconfig_8h_a77ac685b84b57769d0aab0f6be41d774}{log\+\_\+format2}} \mbox{[}$\,$\mbox{]} = "{}\texorpdfstring{$^\wedge$}{\string^},\%d,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%d.\%01d,\%d.\%01d,\%d.\%01d,\%d,\%d,\%d,\%d,\%d,\%llu,\%7.\+4f,\%7.\+4f,\%6.\+4f,\%7.\+4f,1957,\texorpdfstring{$\sim$}{\string~}EOT \textbackslash{}r\textbackslash{}n"{}
 \item 
-const char \mbox{\hyperlink{vconfig_8h_a99232107677e11813831c2eb07fd327e}{msg\+\_\+gemremote}} \mbox{[}$\,$\mbox{]} = "{}Host CMDS\+: ENABLED REMOTE"{}
+const char \mbox{\hyperlink{vconfig_8h_ab718b1cf0b05814fa6a6e09f4fc0afdb}{log\+\_\+format3}} \mbox{[}$\,$\mbox{]} = "{}\texorpdfstring{$^\wedge$}{\string^},\%d,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%d.\%01d,\%d.\%01d,\%d.\%01d,\%d,\%d,\%d,\%d,\%d,\%llu,\%7.\+4f,\%7.\+4f,\%6.\+4f,\%7.\+4f,1957,\texorpdfstring{$\sim$}{\string~}EOT \textbackslash{}r\textbackslash{}n"{}
+\item 
+const char \mbox{\hyperlink{vconfig_8h_a9243f9ffbe3cc118a23e9ddca6fed9c9}{log\+\_\+format4}} \mbox{[}$\,$\mbox{]} = "{}\texorpdfstring{$^\wedge$}{\string^},\%d,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%d.\%01d,\%d.\%01d,\%d.\%01d,\%d,\%d,\%d,\%d,\%d,\%llu,\%7.\+4f,\%7.\+4f,\%6.\+4f,\%7.\+4f,1957,\texorpdfstring{$\sim$}{\string~}EOT \textbackslash{}r\textbackslash{}n"{}
 \item 
 const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{vconfig_8h_a18cb707e246d466f19e01ed2e0b6ada5}{BMC\+\_\+\+TEXT}} \mbox{[}$\,$\mbox{]}
 \item 
 const char \mbox{\hyperlink{vconfig_8h_af097b0122107ff8e59d6b25bf48f4a70}{spin}} \mbox{[}MAX\+\_\+\+SHAPES\mbox{]}\mbox{[}MAX\+\_\+\+STRLEN\mbox{]}
 \item 
-\mbox{\hyperlink{structB__type}{B\+\_\+type}} \mbox{\hyperlink{vconfig_8h_a390edc6dc84cb12feefd336799714268}{B}}
+const char \mbox{\hyperlink{vconfig_8h_a976fe65f45bb47e4211ddac864240dbf}{text\+\_\+test}} \mbox{[}$\,$\mbox{]}
+\item 
+\mbox{\hyperlink{structBM__type}{BM\+\_\+type}} \mbox{\hyperlink{vconfig_8h_a3a38aaf607185c11e1049670971260c1}{BM}}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
+File\+: \doxylink{vconfig_8h}{vconfig.\+h} Author\+: root
+
+Created on February 19, 2019, 4\+:41 PM
+
 Software version and a brief doc for each version changes. Version for 57Q84.
 
-V0.\+01 OPI daq slave via SPI2 V0.\+03 add all ADC channels and clean up for SECS defines and variables V0.\+04 start adding the DIO devices code with speed and mode changes 4MHz and mode 1, 50KHz mode 3 for the display V0.\+05 have the SPI I/O routines working for the DIO devices V0.\+10 mainly working DO version V0.\+11 mainly working DI version V0.\+12 5 transfers for 24 bit DI SPI V0.\+13 fix ADC higher channels and cleanup SPI link protocols V0.\+14 remove serial speed switching code V0.\+15 update to 9 byte packets for all commands V.\+016 fix TIC12400 I/O bugs V.\+017 code cleanup V.\+018 more code cleanup V.\+020 18f57q84 version V.\+021 fix-\/up serial data protocol with STX to mark start of string V0.\+30 version for the FM80 MODBUS and FM80 serial 
+V0.\+01 OPI daq slave via SPI2 V0.\+03 add all ADC channels and clean up for SECS defines and variables V0.\+04 start adding the DIO devices code with speed and mode changes 4MHz and mode 1, 50KHz mode 3 for the display V0.\+05 have the SPI I/O routines working for the DIO devices V0.\+10 mainly working DO version V0.\+11 mainly working DI version V0.\+12 5 transfers for 24 bit DI SPI V0.\+13 fix ADC higher channels and cleanup SPI link protocols V0.\+14 remove serial speed switching code V0.\+15 update to 9 byte packets for all commands V.\+016 fix TIC12400 I/O bugs V.\+017 code cleanup V.\+018 more code cleanup V.\+020 18f57q84 version V.\+021 fix-\/up serial data protocol with STX to mark start of string V0.\+30 version for the FM80 MODBUS and FM80 serial V0.\+31 more cleanup of code V0.\+32 add code for FM80 state machine and call-\/backs V0.\+33 finally traced the FM80 restart code, optimize timing for all new code V0.\+34 testing daq\+\_\+bmc CSV data link to the OPi V0.\+35 cleanup ISR and other misc code V0.\+36 LCD dimming, DI changes back to bright V0.\+37 still working on float restart sequencing V0.\+38 cleanup debugging LCD code V0.\+39 GET\+\_\+\+CFG\+\_\+\+BYTES channel 4 or 5 (0 will send CFG byte) will send calibration float (32-\/bit IEEE 754) for HV channels D0..D4 V0.\+40 change to 3-\/phase with neutral for GTO power monitoring V0.\+41 add FM80 panel power to data stream V0.\+42 fix a few display bugs V0.\+43 four possible data transfers using DCx\+\_\+\+CMD V0.\+44 57Q84 and 47Q84 detection and daq configuration V0.\+45 MUI keying to calibration download data 
 
 Definition in file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
@@ -324,7 +298,37 @@ Definition in file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 
 
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00093}{93}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+
+\Hypertarget{vconfig_8h_af31e41c9b753041075f37b66448e0aff}\index{vconfig.h@{vconfig.h}!AIO\_TEST@{AIO\_TEST}}
+\index{AIO\_TEST@{AIO\_TEST}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{AIO\_TEST}{AIO\_TEST}}
+{\footnotesize\ttfamily \label{vconfig_8h_af31e41c9b753041075f37b66448e0aff} 
+\#define AIO\+\_\+\+TEST}
+
+
+
 Definition at line \mbox{\hyperlink{vconfig_8h_source_l00078}{78}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+
+\Hypertarget{vconfig_8h_a25ab35e786370cdb54a193647854f4a4}\index{vconfig.h@{vconfig.h}!BAT\_DAY\_COUNT@{BAT\_DAY\_COUNT}}
+\index{BAT\_DAY\_COUNT@{BAT\_DAY\_COUNT}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{BAT\_DAY\_COUNT}{BAT\_DAY\_COUNT}}
+{\footnotesize\ttfamily \label{vconfig_8h_a25ab35e786370cdb54a193647854f4a4} 
+\#define BAT\+\_\+\+DAY\+\_\+\+COUNT~45}
+
+
+
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00127}{127}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+
+\Hypertarget{vconfig_8h_a29b4c81f013496f5f63caa15c4be26a9}\index{vconfig.h@{vconfig.h}!BAT\_NIGHT\_COUNT@{BAT\_NIGHT\_COUNT}}
+\index{BAT\_NIGHT\_COUNT@{BAT\_NIGHT\_COUNT}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{BAT\_NIGHT\_COUNT}{BAT\_NIGHT\_COUNT}}
+{\footnotesize\ttfamily \label{vconfig_8h_a29b4c81f013496f5f63caa15c4be26a9} 
+\#define BAT\+\_\+\+NIGHT\+\_\+\+COUNT~90}
+
+
+
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00128}{128}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_acb38722fc3fb0d520ce45ec707388a62}\index{vconfig.h@{vconfig.h}!BDELAY@{BDELAY}}
 \index{BDELAY@{BDELAY}!vconfig.h@{vconfig.h}}
@@ -334,7 +338,17 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00078}{78}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00075}{75}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00090}{90}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+
+\Hypertarget{vconfig_8h_a826ee84188f6bf7a43caa2e021b943e2}\index{vconfig.h@{vconfig.h}!CHK\_DAY\_TIME@{CHK\_DAY\_TIME}}
+\index{CHK\_DAY\_TIME@{CHK\_DAY\_TIME}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{CHK\_DAY\_TIME}{CHK\_DAY\_TIME}}
+{\footnotesize\ttfamily \label{vconfig_8h_a826ee84188f6bf7a43caa2e021b943e2} 
+\#define CHK\+\_\+\+DAY\+\_\+\+TIME~1200}
+
+
+
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00126}{126}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a6e4620d42c52471ef96ee8e58181e953}\index{vconfig.h@{vconfig.h}!DBUG\_VTERM@{DBUG\_VTERM}}
 \index{DBUG\_VTERM@{DBUG\_VTERM}!vconfig.h@{vconfig.h}}
@@ -344,7 +358,47 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00075}{75}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00095}{95}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00110}{110}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+
+\Hypertarget{vconfig_8h_a86dedb3d6fe83648d7db08c5c5f16cb5}\index{vconfig.h@{vconfig.h}!DC1\_CMD@{DC1\_CMD}}
+\index{DC1\_CMD@{DC1\_CMD}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{DC1\_CMD}{DC1\_CMD}}
+{\footnotesize\ttfamily \label{vconfig_8h_a86dedb3d6fe83648d7db08c5c5f16cb5} 
+\#define DC1\+\_\+\+CMD~17}
+
+
+
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00131}{131}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+
+\Hypertarget{vconfig_8h_a92a2357cfef44fd2378753a0950ea00e}\index{vconfig.h@{vconfig.h}!DC2\_CMD@{DC2\_CMD}}
+\index{DC2\_CMD@{DC2\_CMD}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{DC2\_CMD}{DC2\_CMD}}
+{\footnotesize\ttfamily \label{vconfig_8h_a92a2357cfef44fd2378753a0950ea00e} 
+\#define DC2\+\_\+\+CMD~18}
+
+
+
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00132}{132}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+
+\Hypertarget{vconfig_8h_a8c3b77b8f1d0964fa23ee90664aaf29d}\index{vconfig.h@{vconfig.h}!DC3\_CMD@{DC3\_CMD}}
+\index{DC3\_CMD@{DC3\_CMD}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{DC3\_CMD}{DC3\_CMD}}
+{\footnotesize\ttfamily \label{vconfig_8h_a8c3b77b8f1d0964fa23ee90664aaf29d} 
+\#define DC3\+\_\+\+CMD~19}
+
+
+
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00133}{133}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+
+\Hypertarget{vconfig_8h_abf68ec2e81f26b2302895d3bdfc95268}\index{vconfig.h@{vconfig.h}!DC4\_CMD@{DC4\_CMD}}
+\index{DC4\_CMD@{DC4\_CMD}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{DC4\_CMD}{DC4\_CMD}}
+{\footnotesize\ttfamily \label{vconfig_8h_abf68ec2e81f26b2302895d3bdfc95268} 
+\#define DC4\+\_\+\+CMD~20}
+
+
+
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00134}{134}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a53a262d0570686af1ae541f0b676e7ce}\index{vconfig.h@{vconfig.h}!DDELAY@{DDELAY}}
 \index{DDELAY@{DDELAY}!vconfig.h@{vconfig.h}}
@@ -354,17 +408,17 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00095}{95}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00076}{76}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00091}{91}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_aea39dd94dc1a08f74fc5cd8adeaddec8}\index{vconfig.h@{vconfig.h}!DEF\_TIME@{DEF\_TIME}}
 \index{DEF\_TIME@{DEF\_TIME}!vconfig.h@{vconfig.h}}
 \doxysubsubsection{\texorpdfstring{DEF\_TIME}{DEF\_TIME}}
 {\footnotesize\ttfamily \label{vconfig_8h_aea39dd94dc1a08f74fc5cd8adeaddec8} 
-\#define DEF\+\_\+\+TIME~0}
+\#define DEF\+\_\+\+TIME~1694196350 /\texorpdfstring{$\ast$}{*} default epoch \mbox{\hyperlink{mconfig_8c_ae7841e681c8c9d59818568d39553642c}{time}} \texorpdfstring{$\ast$}{*}/}
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00110}{110}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00125}{125}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a5aa0e3cbc7fa4d0fbfb805bcdad119ad}\index{vconfig.h@{vconfig.h}!DEFAULT\_TID@{DEFAULT\_TID}}
 \index{DEFAULT\_TID@{DEFAULT\_TID}!vconfig.h@{vconfig.h}}
@@ -374,7 +428,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00110}{110}} of file \mbo
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00070}{70}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00085}{85}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_af7687c69d4759663825cfe83b9e73645}\index{vconfig.h@{vconfig.h}!DFLIP@{DFLIP}}
 \index{DFLIP@{DFLIP}!vconfig.h@{vconfig.h}}
@@ -384,17 +438,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00070}{70}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00077}{77}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
-
-\Hypertarget{vconfig_8h_ae417fdeaa7c1064b1e98b14b836c9702}\index{vconfig.h@{vconfig.h}!DI\_DEBUG@{DI\_DEBUG}}
-\index{DI\_DEBUG@{DI\_DEBUG}!vconfig.h@{vconfig.h}}
-\doxysubsubsection{\texorpdfstring{DI\_DEBUG}{DI\_DEBUG}}
-{\footnotesize\ttfamily \label{vconfig_8h_ae417fdeaa7c1064b1e98b14b836c9702} 
-\#define DI\+\_\+\+DEBUG}
-
-
-
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00054}{54}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00092}{92}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_ad4b7feda5e06ec57a494f82f81a4fc97}\index{vconfig.h@{vconfig.h}!DI\_MC\_CMD@{DI\_MC\_CMD}}
 \index{DI\_MC\_CMD@{DI\_MC\_CMD}!vconfig.h@{vconfig.h}}
@@ -404,7 +448,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00054}{54}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00057}{57}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00072}{72}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a8dab32689cfc77e4d3cb66d520a72817}\index{vconfig.h@{vconfig.h}!DIO\_SHOW\_BUF@{DIO\_SHOW\_BUF}}
 \index{DIO\_SHOW\_BUF@{DIO\_SHOW\_BUF}!vconfig.h@{vconfig.h}}
@@ -414,7 +458,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00057}{57}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00053}{53}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00068}{68}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_ab8e8259c832d33f1ce179260fb57b2d6}\index{vconfig.h@{vconfig.h}!DIO\_TEST@{DIO\_TEST}}
 \index{DIO\_TEST@{DIO\_TEST}!vconfig.h@{vconfig.h}}
@@ -424,7 +468,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00053}{53}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00052}{52}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00067}{67}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a14c330b77d60237d679cb07cdbb55183}\index{vconfig.h@{vconfig.h}!DLED@{DLED}}
 \index{DLED@{DLED}!vconfig.h@{vconfig.h}}
@@ -434,7 +478,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00052}{52}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00066}{66}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00081}{81}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a538b030c21fd2c21e98f7282b9c6f92f}\index{vconfig.h@{vconfig.h}!EQUIP\_UART@{EQUIP\_UART}}
 \index{EQUIP\_UART@{EQUIP\_UART}!vconfig.h@{vconfig.h}}
@@ -444,7 +488,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00066}{66}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00108}{108}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00123}{123}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a55da5a2fff626db22032d63b334c49aa}\index{vconfig.h@{vconfig.h}!HELP\_VTERM@{HELP\_VTERM}}
 \index{HELP\_VTERM@{HELP\_VTERM}!vconfig.h@{vconfig.h}}
@@ -454,7 +498,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00108}{108}} of file \mbo
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00094}{94}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00109}{109}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a7afc5871455b573b8d1c0c207a01d0cd}\index{vconfig.h@{vconfig.h}!HOST\_UART@{HOST\_UART}}
 \index{HOST\_UART@{HOST\_UART}!vconfig.h@{vconfig.h}}
@@ -464,7 +508,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00094}{94}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00107}{107}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00122}{122}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_ac9aaa2ee7db2839baaa73a76809841a9}\index{vconfig.h@{vconfig.h}!INFO\_VTERM@{INFO\_VTERM}}
 \index{INFO\_VTERM@{INFO\_VTERM}!vconfig.h@{vconfig.h}}
@@ -474,7 +518,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00107}{107}} of file \mbo
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00096}{96}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00111}{111}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_afb32c9be07d685141d0b0b78d7533b6c}\index{vconfig.h@{vconfig.h}!LDELAY@{LDELAY}}
 \index{LDELAY@{LDELAY}!vconfig.h@{vconfig.h}}
@@ -484,7 +528,79 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00096}{96}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00073}{73}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00088}{88}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+
+\Hypertarget{vconfig_8h_adc2e8798c877fe7fdca7136149981e3f}\index{vconfig.h@{vconfig.h}!LOG\_VARS1@{LOG\_VARS1}}
+\index{LOG\_VARS1@{LOG\_VARS1}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{LOG\_VARS1}{LOG\_VARS1}}
+{\footnotesize\ttfamily \label{vconfig_8h_adc2e8798c877fe7fdca7136149981e3f} 
+\#define LOG\+\_\+\+VARS1}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ BMC4.d\_id,((float)\ em.vl3l1)\ /\ 10.0f,((\textcolor{keywordtype}{float})\ em.al1)\ /\ 1000.0f,\ ((float)\ em.wl1)\ /\ 10.0f,\ ((\textcolor{keywordtype}{float})\ em.wl2)\ /\ 10.0f,\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ ((float)\ em.val1)\ /\ 10.0f,\ ((\textcolor{keywordtype}{float})\ em.varl1)\ /\ 10.0f,\ \ ((float)\ em.pfsys)\ /\ 10.0f,\ ((\textcolor{keywordtype}{float})\ emt.hz)\ /\ 1000.0f,vw,\ vf,\ pvw,\ pvf,\ bat\_amp\_whole\ -\/\ 128,\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ bat\_amp\_frac\ -\/\ 128,\ bat\_amp\_panel\ -\/\ 128,\ panel\_watts,\ BM.FM80\_online,\ cc\_mode,\ C.data\_ok,BM.node\_id,\ ha\_daq\_calib.scaler4,\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ ha\_daq\_calib.scaler5,\ ha\_daq\_calib.A200\_Z,\ ha\_daq\_calib.A200\_S}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00137}{137}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+
+\Hypertarget{vconfig_8h_a375f7aa5404de01ee9c4a8a70bbe26e4}\index{vconfig.h@{vconfig.h}!LOG\_VARS2@{LOG\_VARS2}}
+\index{LOG\_VARS2@{LOG\_VARS2}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{LOG\_VARS2}{LOG\_VARS2}}
+{\footnotesize\ttfamily \label{vconfig_8h_a375f7aa5404de01ee9c4a8a70bbe26e4} 
+\#define LOG\+\_\+\+VARS2}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ BMC4.d\_id,((float)\ em.vl1n)\ /\ 10.0f,((\textcolor{keywordtype}{float})\ em.vl2n)\ /\ 10.0f,\ ((float)\ em.vl3n)\ /\ 10.0f,\ ((\textcolor{keywordtype}{float})\ em.al2)\ /\ 1000.0f,\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ ((float)\ em.wl3)\ /\ 10.0f,\ ((\textcolor{keywordtype}{float})\ em.wsys)\ /\ 10.0f,\ \ ((float)\ em.pfl1)\ /\ 10.0f,\ ((\textcolor{keywordtype}{float})\ em.pfl2)\ /\ 10.0f,vw,\ vf,\ pvw,\ pvf,\ bat\_amp\_whole\ -\/\ 128,\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ bat\_amp\_frac\ -\/\ 128,\ bat\_amp\_panel\ -\/\ 128,\ panel\_watts,\ BM.FM80\_online,\ cc\_mode,\ C.data\_ok,BM.node\_id,\ ha\_daq\_calib.scaler4,\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ ha\_daq\_calib.scaler5,\ ha\_daq\_calib.A200\_Z,\ ha\_daq\_calib.A200\_S}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00143}{143}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+
+\Hypertarget{vconfig_8h_ab894664a69e9fa97bca7e9ebfcf88853}\index{vconfig.h@{vconfig.h}!LOG\_VARS3@{LOG\_VARS3}}
+\index{LOG\_VARS3@{LOG\_VARS3}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{LOG\_VARS3}{LOG\_VARS3}}
+{\footnotesize\ttfamily \label{vconfig_8h_ab894664a69e9fa97bca7e9ebfcf88853} 
+\#define LOG\+\_\+\+VARS3}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ BMC4.d\_id,((float)\ em.vl3l1)\ /\ 10.0f,((\textcolor{keywordtype}{float})\ em.al1)\ /\ 1000.0f,\ ((float)\ em.wl1)\ /\ 10.0f,\ ((\textcolor{keywordtype}{float})\ em.wl2)\ /\ 10.0f,\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ ((float)\ em.val1)\ /\ 10.0f,\ ((\textcolor{keywordtype}{float})\ em.varl1)\ /\ 10.0f,\ \ ((float)\ em.pfsys)\ /\ 10.0f,\ ((\textcolor{keywordtype}{float})\ emt.hz)\ /\ 1000.0f,vw,\ vf,\ pvw,\ pvf,\ bat\_amp\_whole\ -\/\ 128,\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ bat\_amp\_frac\ -\/\ 128,\ bat\_amp\_panel\ -\/\ 128,\ panel\_watts,\ BM.FM80\_online,\ cc\_mode,\ C.data\_ok,BM.node\_id,\ ha\_daq\_calib.scaler4,\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ ha\_daq\_calib.scaler5,\ ha\_daq\_calib.A200\_Z,\ ha\_daq\_calib.A200\_S}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00149}{149}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+
+\Hypertarget{vconfig_8h_a02ac473d943133b71a6dfa010a784dd0}\index{vconfig.h@{vconfig.h}!LOG\_VARS4@{LOG\_VARS4}}
+\index{LOG\_VARS4@{LOG\_VARS4}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{LOG\_VARS4}{LOG\_VARS4}}
+{\footnotesize\ttfamily \label{vconfig_8h_a02ac473d943133b71a6dfa010a784dd0} 
+\#define LOG\+\_\+\+VARS4}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ BMC4.d\_id,((float)\ em.vl3l1)\ /\ 10.0f,((\textcolor{keywordtype}{float})\ em.al1)\ /\ 1000.0f,\ ((float)\ em.wl1)\ /\ 10.0f,\ ((\textcolor{keywordtype}{float})\ em.wl2)\ /\ 10.0f,\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ ((float)\ em.val1)\ /\ 10.0f,\ ((\textcolor{keywordtype}{float})\ em.varl1)\ /\ 10.0f,\ \ ((float)\ em.pfsys)\ /\ 10.0f,\ ((\textcolor{keywordtype}{float})\ emt.hz)\ /\ 1000.0f,vw,\ vf,\ pvw,\ pvf,\ bat\_amp\_whole\ -\/\ 128,\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ bat\_amp\_frac\ -\/\ 128,\ bat\_amp\_panel\ -\/\ 128,\ panel\_watts,\ BM.FM80\_online,\ cc\_mode,\ C.data\_ok,BM.node\_id,\ ha\_daq\_calib.scaler4,\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ ha\_daq\_calib.scaler5,\ ha\_daq\_calib.A200\_Z,\ ha\_daq\_calib.A200\_S}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00155}{155}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a685257e1a75565a4ab60b9ac3170bc79}\index{vconfig.h@{vconfig.h}!MAIN\_VTERM@{MAIN\_VTERM}}
 \index{MAIN\_VTERM@{MAIN\_VTERM}!vconfig.h@{vconfig.h}}
@@ -494,7 +610,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00073}{73}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00097}{97}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00112}{112}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a2491303d0fe260aaba8f46717cda66cc}\index{vconfig.h@{vconfig.h}!MAX\_BUF@{MAX\_BUF}}
 \index{MAX\_BUF@{MAX\_BUF}!vconfig.h@{vconfig.h}}
@@ -504,7 +620,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00097}{97}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00089}{89}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00104}{104}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a10bdc02e1ec8277227b753fe2f962aff}\index{vconfig.h@{vconfig.h}!MAX\_HELP\_STRLEN@{MAX\_HELP\_STRLEN}}
 \index{MAX\_HELP\_STRLEN@{MAX\_HELP\_STRLEN}!vconfig.h@{vconfig.h}}
@@ -514,7 +630,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00089}{89}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00086}{86}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00101}{101}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_af5080a15ffa5dd54905d23bd92a90123}\index{vconfig.h@{vconfig.h}!MAX\_INFO@{MAX\_INFO}}
 \index{MAX\_INFO@{MAX\_INFO}!vconfig.h@{vconfig.h}}
@@ -524,7 +640,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00086}{86}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00088}{88}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00103}{103}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_ae46a29eacd6e2c97824ec6d4256a531b}\index{vconfig.h@{vconfig.h}!MAX\_LCD\_LINES@{MAX\_LCD\_LINES}}
 \index{MAX\_LCD\_LINES@{MAX\_LCD\_LINES}!vconfig.h@{vconfig.h}}
@@ -534,7 +650,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00088}{88}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00092}{92}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00107}{107}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a842ed03f27719bc87666bfd1f75415b8}\index{vconfig.h@{vconfig.h}!MAX\_LINE@{MAX\_LINE}}
 \index{MAX\_LINE@{MAX\_LINE}!vconfig.h@{vconfig.h}}
@@ -544,7 +660,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00092}{92}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00084}{84}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00099}{99}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a258c547b1f322860cdb3f4f6f3142961}\index{vconfig.h@{vconfig.h}!MAX\_SHAPES@{MAX\_SHAPES}}
 \index{MAX\_SHAPES@{MAX\_SHAPES}!vconfig.h@{vconfig.h}}
@@ -554,7 +670,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00084}{84}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00299}{299}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00305}{305}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_ae381522e1d10c3730b356f1ac5d2dccb}\index{vconfig.h@{vconfig.h}!MAX\_STRLEN@{MAX\_STRLEN}}
 \index{MAX\_STRLEN@{MAX\_STRLEN}!vconfig.h@{vconfig.h}}
@@ -564,7 +680,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00299}{299}} of file \mbo
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00083}{83}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00098}{98}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a7860ed9074ba7b7e3b09ec2d061a0390}\index{vconfig.h@{vconfig.h}!MAX\_TERM@{MAX\_TERM}}
 \index{MAX\_TERM@{MAX\_TERM}!vconfig.h@{vconfig.h}}
@@ -574,7 +690,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00083}{83}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00090}{90}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00105}{105}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_aa47d8edb512a07387ff40fff7317ace0}\index{vconfig.h@{vconfig.h}!MAX\_TEXT@{MAX\_TEXT}}
 \index{MAX\_TEXT@{MAX\_TEXT}!vconfig.h@{vconfig.h}}
@@ -584,7 +700,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00090}{90}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00085}{85}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00100}{100}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_ab3e3981a81a6bcff8d3a2451a164d92f}\index{vconfig.h@{vconfig.h}!MAX\_VTERM@{MAX\_VTERM}}
 \index{MAX\_VTERM@{MAX\_VTERM}!vconfig.h@{vconfig.h}}
@@ -594,7 +710,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00085}{85}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00091}{91}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00106}{106}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a712efb20035ebc74c479895e9124373a}\index{vconfig.h@{vconfig.h}!NHD@{NHD}}
 \index{NHD@{NHD}!vconfig.h@{vconfig.h}}
@@ -614,7 +730,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00023}{23}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00074}{74}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00089}{89}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_abe7562f7904deac99ecf0b19bf97a0e6}\index{vconfig.h@{vconfig.h}!SEQDELAY@{SEQDELAY}}
 \index{SEQDELAY@{SEQDELAY}!vconfig.h@{vconfig.h}}
@@ -624,7 +740,17 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00074}{74}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00072}{72}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00087}{87}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+
+\Hypertarget{vconfig_8h_adda35ee0c7815e577290da5d11b62d54}\index{vconfig.h@{vconfig.h}!SER\_DEBUG@{SER\_DEBUG}}
+\index{SER\_DEBUG@{SER\_DEBUG}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{SER\_DEBUG}{SER\_DEBUG}}
+{\footnotesize\ttfamily \label{vconfig_8h_adda35ee0c7815e577290da5d11b62d54} 
+\#define SER\+\_\+\+DEBUG}
+
+
+
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00070}{70}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_ad5a44a7f7099f4518f885f48a93ceb14}\index{vconfig.h@{vconfig.h}!SLED@{SLED}}
 \index{SLED@{SLED}!vconfig.h@{vconfig.h}}
@@ -634,7 +760,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00072}{72}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00065}{65}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00080}{80}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_aca88297e9ecf69b2492c0024938ab51a}\index{vconfig.h@{vconfig.h}!SPIN\_CHAR@{SPIN\_CHAR}}
 \index{SPIN\_CHAR@{SPIN\_CHAR}!vconfig.h@{vconfig.h}}
@@ -644,7 +770,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00065}{65}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00102}{102}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00117}{117}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_aa38902a1400d34f9469b3449385c5a7d}\index{vconfig.h@{vconfig.h}!SPIN\_VAL\_UPDATE@{SPIN\_VAL\_UPDATE}}
 \index{SPIN\_VAL\_UPDATE@{SPIN\_VAL\_UPDATE}!vconfig.h@{vconfig.h}}
@@ -654,7 +780,17 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00102}{102}} of file \mbo
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00308}{308}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00314}{314}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+
+\Hypertarget{vconfig_8h_aacd744a917e61146ec8b7175b4761683}\index{vconfig.h@{vconfig.h}!STX@{STX}}
+\index{STX@{STX}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{STX}{STX}}
+{\footnotesize\ttfamily \label{vconfig_8h_aacd744a917e61146ec8b7175b4761683} 
+\#define STX~2}
+
+
+
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00130}{130}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_ac7c0dedd40a02479223fe6dda9be9762}\index{vconfig.h@{vconfig.h}!SWITCH\_DURATION@{SWITCH\_DURATION}}
 \index{SWITCH\_DURATION@{SWITCH\_DURATION}!vconfig.h@{vconfig.h}}
@@ -664,7 +800,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00308}{308}} of file \mbo
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00100}{100}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00115}{115}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a131f7922fd974d2bc717fe0e7910a409}\index{vconfig.h@{vconfig.h}!SWITCH\_VTERM@{SWITCH\_VTERM}}
 \index{SWITCH\_VTERM@{SWITCH\_VTERM}!vconfig.h@{vconfig.h}}
@@ -674,7 +810,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00100}{100}} of file \mbo
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00099}{99}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00114}{114}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a77725d9b114976abca698c51fd846ea1}\index{vconfig.h@{vconfig.h}!TDELAY@{TDELAY}}
 \index{TDELAY@{TDELAY}!vconfig.h@{vconfig.h}}
@@ -684,7 +820,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00099}{99}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00071}{71}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00086}{86}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_aad9cc64d45a76ba0d37c00f8cd9caa37}\index{vconfig.h@{vconfig.h}!TRACE@{TRACE}}
 \index{TRACE@{TRACE}!vconfig.h@{vconfig.h}}
@@ -694,7 +830,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00071}{71}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00068}{68}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00083}{83}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_aaf93e8f6de29f33a6fffb4c4b2865e2d}\index{vconfig.h@{vconfig.h}!UART\_SPEED\_EADR@{UART\_SPEED\_EADR}}
 \index{UART\_SPEED\_EADR@{UART\_SPEED\_EADR}!vconfig.h@{vconfig.h}}
@@ -704,7 +840,7 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00068}{68}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00104}{104}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00119}{119}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a986c11bb8689508dcc3d5d629e2f5b2e}\index{vconfig.h@{vconfig.h}!UART\_SPEED\_LOCK\_EADR@{UART\_SPEED\_LOCK\_EADR}}
 \index{UART\_SPEED\_LOCK\_EADR@{UART\_SPEED\_LOCK\_EADR}!vconfig.h@{vconfig.h}}
@@ -714,13 +850,13 @@ Definition at line \mbox{\hyperlink{vconfig_8h_source_l00104}{104}} of file \mbo
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00105}{105}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00120}{120}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a98ed931f97fef7e06e3ea441d0326c67}\index{vconfig.h@{vconfig.h}!VER@{VER}}
 \index{VER@{VER}!vconfig.h@{vconfig.h}}
 \doxysubsubsection{\texorpdfstring{VER}{VER}}
 {\footnotesize\ttfamily \label{vconfig_8h_a98ed931f97fef7e06e3ea441d0326c67} 
-\#define VER~"{}V0.\+30"{}}
+\#define VER~"{}V0.\+45"{}}
 
 
 
@@ -739,7 +875,7 @@ typedef uint24\+\_\+t device\+\_\+id\+\_\+address\+\_\+t}
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00311}{311}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00319}{319}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_ad2a35b1a4377b6b59d25fe4b683b0b94}\index{vconfig.h@{vconfig.h}!device\_id\_data\_t@{device\_id\_data\_t}}
 \index{device\_id\_data\_t@{device\_id\_data\_t}!vconfig.h@{vconfig.h}}
@@ -749,23 +885,13 @@ typedef uint16\+\_\+t device\+\_\+id\+\_\+data\+\_\+t}
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00310}{310}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00318}{318}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 
 
 \label{doc-enum-members}
 \Hypertarget{vconfig_8h_doc-enum-members}
 \doxysubsection{Enumeration Type Documentation}
-\Hypertarget{vconfig_8h_aec263266a4204aa03fdae4de676fb316}\index{vconfig.h@{vconfig.h}!BMC\_EQUIP@{BMC\_EQUIP}}
-\index{BMC\_EQUIP@{BMC\_EQUIP}!vconfig.h@{vconfig.h}}
-\doxysubsubsection{\texorpdfstring{BMC\_EQUIP}{BMC\_EQUIP}}
-{\footnotesize\ttfamily \label{vconfig_8h_aec263266a4204aa03fdae4de676fb316} 
-enum BMC\+\_\+\+EQUIP}
-
-
-
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00188}{188}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
-
 \Hypertarget{vconfig_8h_aeca8c65dd46b7a5e8a909becda53defd}\index{vconfig.h@{vconfig.h}!BMC\_STATES@{BMC\_STATES}}
 \index{BMC\_STATES@{BMC\_STATES}!vconfig.h@{vconfig.h}}
 \doxysubsubsection{\texorpdfstring{BMC\_STATES}{BMC\_STATES}}
@@ -774,7 +900,7 @@ enum BMC\+\_\+\+STATES}
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00177}{177}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00264}{264}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_aef985d2753ce26fc25d6b4e516d8b6bf}\index{vconfig.h@{vconfig.h}!D\_CODES@{D\_CODES}}
 \index{D\_CODES@{D\_CODES}!vconfig.h@{vconfig.h}}
@@ -784,7 +910,7 @@ enum D\+\_\+\+CODES}
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00135}{135}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00222}{222}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_ae885e7cc1ca1c0d01d42f26535be391b}\index{vconfig.h@{vconfig.h}!D\_SW@{D\_SW}}
 \index{D\_SW@{D\_SW}!vconfig.h@{vconfig.h}}
@@ -794,57 +920,7 @@ enum D\+\_\+\+SW}
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00257}{257}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
-
-\Hypertarget{vconfig_8h_af796e9da5425e8ecd9b2b24f03036e4e}\index{vconfig.h@{vconfig.h}!LINK\_ERRORS@{LINK\_ERRORS}}
-\index{LINK\_ERRORS@{LINK\_ERRORS}!vconfig.h@{vconfig.h}}
-\doxysubsubsection{\texorpdfstring{LINK\_ERRORS}{LINK\_ERRORS}}
-{\footnotesize\ttfamily \label{vconfig_8h_af796e9da5425e8ecd9b2b24f03036e4e} 
-enum LINK\+\_\+\+ERRORS}
-
-
-
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00205}{205}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
-
-\Hypertarget{vconfig_8h_a09ac31eb6ea872dc46a6cb24742c8da4}\index{vconfig.h@{vconfig.h}!LINK\_STATES@{LINK\_STATES}}
-\index{LINK\_STATES@{LINK\_STATES}!vconfig.h@{vconfig.h}}
-\doxysubsubsection{\texorpdfstring{LINK\_STATES}{LINK\_STATES}}
-{\footnotesize\ttfamily \label{vconfig_8h_a09ac31eb6ea872dc46a6cb24742c8da4} 
-enum LINK\+\_\+\+STATES}
-
-
-
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00195}{195}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
-
-\Hypertarget{vconfig_8h_aa743ac3f28abb32a12618b940b6f0527}\index{vconfig.h@{vconfig.h}!MSG\_ERRORS@{MSG\_ERRORS}}
-\index{MSG\_ERRORS@{MSG\_ERRORS}!vconfig.h@{vconfig.h}}
-\doxysubsubsection{\texorpdfstring{MSG\_ERRORS}{MSG\_ERRORS}}
-{\footnotesize\ttfamily \label{vconfig_8h_aa743ac3f28abb32a12618b940b6f0527} 
-enum MSG\+\_\+\+ERRORS}
-
-
-
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00217}{217}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
-
-\Hypertarget{vconfig_8h_ac398138c6974d87a67f4f6b801a8b61a}\index{vconfig.h@{vconfig.h}!RECV\_ERRORS@{RECV\_ERRORS}}
-\index{RECV\_ERRORS@{RECV\_ERRORS}!vconfig.h@{vconfig.h}}
-\doxysubsubsection{\texorpdfstring{RECV\_ERRORS}{RECV\_ERRORS}}
-{\footnotesize\ttfamily \label{vconfig_8h_ac398138c6974d87a67f4f6b801a8b61a} 
-enum RECV\+\_\+\+ERRORS}
-
-
-
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00237}{237}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
-
-\Hypertarget{vconfig_8h_a19ea40db8b889e947aaf705b44b5d7f6}\index{vconfig.h@{vconfig.h}!SEND\_ERRORS@{SEND\_ERRORS}}
-\index{SEND\_ERRORS@{SEND\_ERRORS}!vconfig.h@{vconfig.h}}
-\doxysubsubsection{\texorpdfstring{SEND\_ERRORS}{SEND\_ERRORS}}
-{\footnotesize\ttfamily \label{vconfig_8h_a19ea40db8b889e947aaf705b44b5d7f6} 
-enum SEND\+\_\+\+ERRORS}
-
-
-
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00228}{228}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00177}{177}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a666347abbc5250f2ae649a244f864823}\index{vconfig.h@{vconfig.h}!SEQ\_STATES@{SEQ\_STATES}}
 \index{SEQ\_STATES@{SEQ\_STATES}!vconfig.h@{vconfig.h}}
@@ -854,17 +930,7 @@ enum SEQ\+\_\+\+STATES}
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00159}{159}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
-
-\Hypertarget{vconfig_8h_a2cbfa5756c4af90e23afb81490bc2e93}\index{vconfig.h@{vconfig.h}!TICKER\_VAL@{TICKER\_VAL}}
-\index{TICKER\_VAL@{TICKER\_VAL}!vconfig.h@{vconfig.h}}
-\doxysubsubsection{\texorpdfstring{TICKER\_VAL}{TICKER\_VAL}}
-{\footnotesize\ttfamily \label{vconfig_8h_a2cbfa5756c4af90e23afb81490bc2e93} 
-enum TICKER\+\_\+\+VAL}
-
-
-
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00247}{247}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00246}{246}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_a39e3f20e42f8ac997987b71f7a9744c9}\index{vconfig.h@{vconfig.h}!UI\_STATES@{UI\_STATES}}
 \index{UI\_STATES@{UI\_STATES}!vconfig.h@{vconfig.h}}
@@ -874,7 +940,7 @@ enum UI\+\_\+\+STATES}
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00169}{169}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00256}{256}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 
 
@@ -889,7 +955,7 @@ device\+\_\+id\+\_\+data\+\_\+t Device\+ID\+\_\+\+Read (\begin{DoxyParamCaption}
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00938}{938}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l01017}{1017}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
 \Hypertarget{vconfig_8h_a9ea28862fc0d3821e23f3fdd9a6dc440}\index{vconfig.h@{vconfig.h}!spinners@{spinners}}
 \index{spinners@{spinners}!vconfig.h@{vconfig.h}}
@@ -899,7 +965,7 @@ char spinners (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{shape}{, }\item[{co
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00893}{893}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l00972}{972}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
 \Hypertarget{vconfig_8h_a57fb97fef6e66fa3d27d9163aa7e0b9c}\index{vconfig.h@{vconfig.h}!UART1\_Initialize115200@{UART1\_Initialize115200}}
 \index{UART1\_Initialize115200@{UART1\_Initialize115200}!vconfig.h@{vconfig.h}}
@@ -921,30 +987,30 @@ void UART1\+\_\+\+Initialize19200 (\begin{DoxyParamCaption}\item[{void}]{}{}\end
 
 Definition at line \mbox{\hyperlink{uart1_8c_source_l00347}{347}} of file \mbox{\hyperlink{uart1_8c_source}{uart1.\+c}}.
 
-\Hypertarget{vconfig_8h_acd52e079250052fc87b5835daea13181}\index{vconfig.h@{vconfig.h}!update\_time@{update\_time}}
+\Hypertarget{vconfig_8h_a648fdc40d04970350b7215feea6aef01}\index{vconfig.h@{vconfig.h}!update\_time@{update\_time}}
 \index{update\_time@{update\_time}!vconfig.h@{vconfig.h}}
 \doxysubsubsection{\texorpdfstring{update\_time()}{update\_time()}}
-{\footnotesize\ttfamily \label{vconfig_8h_acd52e079250052fc87b5835daea13181} 
-void update\+\_\+time (\begin{DoxyParamCaption}\item[{struct tm \texorpdfstring{$\ast$}{*}}]{ts}{, }\item[{\mbox{\hyperlink{structEB__data}{EB\+\_\+data}} \texorpdfstring{$\ast$}{*}}]{EB}{}\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \label{vconfig_8h_a648fdc40d04970350b7215feea6aef01} 
+void update\+\_\+time (\begin{DoxyParamCaption}\item[{const struct tm \texorpdfstring{$\ast$}{*}}]{ts}{, }\item[{\mbox{\hyperlink{structEB__data}{EB\+\_\+data}} \texorpdfstring{$\ast$}{*}}]{EB}{}\end{DoxyParamCaption})}
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00971}{971}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l01050}{1050}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
 
 
 \label{doc-var-members}
 \Hypertarget{vconfig_8h_doc-var-members}
 \doxysubsection{Variable Documentation}
-\Hypertarget{vconfig_8h_a390edc6dc84cb12feefd336799714268}\index{vconfig.h@{vconfig.h}!B@{B}}
-\index{B@{B}!vconfig.h@{vconfig.h}}
-\doxysubsubsection{\texorpdfstring{B}{B}}
-{\footnotesize\ttfamily \label{vconfig_8h_a390edc6dc84cb12feefd336799714268} 
-\mbox{\hyperlink{structB__type}{B\+\_\+type}} B\hspace{0.3cm}{\ttfamily [extern]}}
+\Hypertarget{vconfig_8h_a3a38aaf607185c11e1049670971260c1}\index{vconfig.h@{vconfig.h}!BM@{BM}}
+\index{BM@{BM}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{BM}{BM}}
+{\footnotesize\ttfamily \label{vconfig_8h_a3a38aaf607185c11e1049670971260c1} 
+\mbox{\hyperlink{structBM__type}{BM\+\_\+type}} BM\hspace{0.3cm}{\ttfamily [extern]}}
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00253}{253}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l00247}{247}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
 \Hypertarget{vconfig_8h_a18cb707e246d466f19e01ed2e0b6ada5}\index{vconfig.h@{vconfig.h}!BMC\_TEXT@{BMC\_TEXT}}
 \index{BMC\_TEXT@{BMC\_TEXT}!vconfig.h@{vconfig.h}}
@@ -954,37 +1020,47 @@ const char\texorpdfstring{$\ast$}{*} BMC\+\_\+\+TEXT\mbox{[}$\,$\mbox{]}\hspace{
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00199}{199}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l00202}{202}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
-\Hypertarget{vconfig_8h_a9e8cbf2d07c7534b12e0d103640dd772}\index{vconfig.h@{vconfig.h}!msg\_freecmds@{msg\_freecmds}}
-\index{msg\_freecmds@{msg\_freecmds}!vconfig.h@{vconfig.h}}
-\doxysubsubsection{\texorpdfstring{msg\_freecmds}{msg\_freecmds}}
-{\footnotesize\ttfamily \label{vconfig_8h_a9e8cbf2d07c7534b12e0d103640dd772} 
-const char msg\+\_\+freecmds\mbox{[}$\,$\mbox{]} = "{}Port baud rate unlocked "{}}
-
-
-
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00113}{113}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
-
-\Hypertarget{vconfig_8h_a6cf1761fbf02492c4708c24137b32b3e}\index{vconfig.h@{vconfig.h}!msg\_gemcmds@{msg\_gemcmds}}
-\index{msg\_gemcmds@{msg\_gemcmds}!vconfig.h@{vconfig.h}}
-\doxysubsubsection{\texorpdfstring{msg\_gemcmds}{msg\_gemcmds}}
-{\footnotesize\ttfamily \label{vconfig_8h_a6cf1761fbf02492c4708c24137b32b3e} 
-const char msg\+\_\+gemcmds\mbox{[}$\,$\mbox{]} = "{}Host CMDS\+: M C R P O L S D E H F"{}}
+\Hypertarget{vconfig_8h_abe11ffeb3e484b3b76c7191c3d32a84d}\index{vconfig.h@{vconfig.h}!log\_format1@{log\_format1}}
+\index{log\_format1@{log\_format1}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{log\_format1}{log\_format1}}
+{\footnotesize\ttfamily \label{vconfig_8h_abe11ffeb3e484b3b76c7191c3d32a84d} 
+const char log\+\_\+format1\mbox{[}$\,$\mbox{]} = "{}\texorpdfstring{$^\wedge$}{\string^},\%d,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%d.\%01d,\%d.\%01d,\%d.\%01d,\%d,\%d,\%d,\%d,\%d,\%llu,\%7.\+4f,\%7.\+4f,\%6.\+4f,\%7.\+4f,1957,\texorpdfstring{$\sim$}{\string~}EOT \textbackslash{}r\textbackslash{}n"{}}
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00112}{112}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00136}{136}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
-\Hypertarget{vconfig_8h_a99232107677e11813831c2eb07fd327e}\index{vconfig.h@{vconfig.h}!msg\_gemremote@{msg\_gemremote}}
-\index{msg\_gemremote@{msg\_gemremote}!vconfig.h@{vconfig.h}}
-\doxysubsubsection{\texorpdfstring{msg\_gemremote}{msg\_gemremote}}
-{\footnotesize\ttfamily \label{vconfig_8h_a99232107677e11813831c2eb07fd327e} 
-const char msg\+\_\+gemremote\mbox{[}$\,$\mbox{]} = "{}Host CMDS\+: ENABLED REMOTE"{}}
+\Hypertarget{vconfig_8h_a77ac685b84b57769d0aab0f6be41d774}\index{vconfig.h@{vconfig.h}!log\_format2@{log\_format2}}
+\index{log\_format2@{log\_format2}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{log\_format2}{log\_format2}}
+{\footnotesize\ttfamily \label{vconfig_8h_a77ac685b84b57769d0aab0f6be41d774} 
+const char log\+\_\+format2\mbox{[}$\,$\mbox{]} = "{}\texorpdfstring{$^\wedge$}{\string^},\%d,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%d.\%01d,\%d.\%01d,\%d.\%01d,\%d,\%d,\%d,\%d,\%d,\%llu,\%7.\+4f,\%7.\+4f,\%6.\+4f,\%7.\+4f,1957,\texorpdfstring{$\sim$}{\string~}EOT \textbackslash{}r\textbackslash{}n"{}}
 
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00114}{114}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00142}{142}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+
+\Hypertarget{vconfig_8h_ab718b1cf0b05814fa6a6e09f4fc0afdb}\index{vconfig.h@{vconfig.h}!log\_format3@{log\_format3}}
+\index{log\_format3@{log\_format3}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{log\_format3}{log\_format3}}
+{\footnotesize\ttfamily \label{vconfig_8h_ab718b1cf0b05814fa6a6e09f4fc0afdb} 
+const char log\+\_\+format3\mbox{[}$\,$\mbox{]} = "{}\texorpdfstring{$^\wedge$}{\string^},\%d,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%d.\%01d,\%d.\%01d,\%d.\%01d,\%d,\%d,\%d,\%d,\%d,\%llu,\%7.\+4f,\%7.\+4f,\%6.\+4f,\%7.\+4f,1957,\texorpdfstring{$\sim$}{\string~}EOT \textbackslash{}r\textbackslash{}n"{}}
+
+
+
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00148}{148}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+
+\Hypertarget{vconfig_8h_a9243f9ffbe3cc118a23e9ddca6fed9c9}\index{vconfig.h@{vconfig.h}!log\_format4@{log\_format4}}
+\index{log\_format4@{log\_format4}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{log\_format4}{log\_format4}}
+{\footnotesize\ttfamily \label{vconfig_8h_a9243f9ffbe3cc118a23e9ddca6fed9c9} 
+const char log\+\_\+format4\mbox{[}$\,$\mbox{]} = "{}\texorpdfstring{$^\wedge$}{\string^},\%d,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%3.\+2f,\%d.\%01d,\%d.\%01d,\%d.\%01d,\%d,\%d,\%d,\%d,\%d,\%llu,\%7.\+4f,\%7.\+4f,\%6.\+4f,\%7.\+4f,1957,\texorpdfstring{$\sim$}{\string~}EOT \textbackslash{}r\textbackslash{}n"{}}
+
+
+
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00154}{154}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
 
 \Hypertarget{vconfig_8h_af097b0122107ff8e59d6b25bf48f4a70}\index{vconfig.h@{vconfig.h}!spin@{spin}}
 \index{spin@{spin}!vconfig.h@{vconfig.h}}
@@ -1006,5 +1082,15 @@ const char spin\mbox{[}MAX\+\_\+\+SHAPES\mbox{]}\mbox{[}MAX\+\_\+\+STRLEN\mbox{]
 \end{DoxyCode}
 
 
-Definition at line \mbox{\hyperlink{vconfig_8h_source_l00300}{300}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+Definition at line \mbox{\hyperlink{vconfig_8h_source_l00306}{306}} of file \mbox{\hyperlink{vconfig_8h_source}{vconfig.\+h}}.
+
+\Hypertarget{vconfig_8h_a976fe65f45bb47e4211ddac864240dbf}\index{vconfig.h@{vconfig.h}!text\_test@{text\_test}}
+\index{text\_test@{text\_test}!vconfig.h@{vconfig.h}}
+\doxysubsubsection{\texorpdfstring{text\_test}{text\_test}}
+{\footnotesize\ttfamily \label{vconfig_8h_a976fe65f45bb47e4211ddac864240dbf} 
+const char text\+\_\+test\mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00200}{200}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 

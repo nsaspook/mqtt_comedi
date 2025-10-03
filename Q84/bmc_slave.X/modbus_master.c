@@ -1,3 +1,7 @@
+
+/** \file modbus_master.c
+ * 
+ */
 #include "modbus_master.h"
 
 #define	ON	1

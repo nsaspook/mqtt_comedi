@@ -1,4 +1,4 @@
-/*
+/** \file daq_bmc.c
  *     comedi/drivers/daq_bmc.c
  *
  *
@@ -41,16 +41,16 @@ The DAQ-BMC appears in Comedi as a digital I/O subdevices with
 
 a analog input subdevice with 16 possible single-ended channels set by the SPI slave device
 and a analog output subdevice with 1 channel with onboard dac
- *
- a serial r/w memory subdevice with two possible ports, one RS232, the other TTL
- * the TTL port is currently not used remotely on the Q84 by Comedi
- *
+
+a serial r/w memory subdevice ports [0..1], one RS232, the other TTL
+the TTL port is currently not used remotely on the Q84 by Comedi
+ports [4..7] are data-streams for connected device data
  *
  * Caveats:
  *
  *
- * 0 = force PIC slave PIC18F57Q84 mode
- * 1 = force PIC slave PIC18F57Q84 mode with NO DI or DO
+ * 0 = force PIC slave PIC18Fx7Q84 mode
+ * 1 = force PIC slave PIC18Fx7Q84 mode with NO DI or DO
  * This is normally autodetected
  *
  * Module parameters are found in the /sys/modules/daq_bmc/parameters directory
@@ -98,7 +98,7 @@ static const uint32_t CHECKBYTE = 0x57;
 #define Q84_BYTES 9
 
 /*
- * branch macros for ARM7
+ * branch macros for instruction prediction
  */
 #define likely(x)      __builtin_expect(!!(x), 1)
 #define unlikely(x)    __builtin_expect(!!(x), 0)
@@ -1338,7 +1338,6 @@ static int daqbmc_sio_insn_write(struct comedi_device *dev,
 
 	if (insn->n > 0) {
 		val = data[insn->n - 1];
-
 		serialWriteOPi(dev, chan, &val);
 		data[1] = val;
 		serial_count++;
@@ -1381,9 +1380,7 @@ static int daqbmc_di_insn_bits(struct comedi_device *dev,
 		return -EFAULT;
 	}
 	devpriv->digitalRead = digitalReadOPi;
-
 	pinOPi = digitalReadOPi(dev, data);
-
 	data[1] = pinOPi;
 	di_count++;
 	return 2;
@@ -1411,7 +1408,6 @@ static int32_t daqbmc_ai_rinsn(struct comedi_device *dev,
 	}
 
 	devpriv->ai_hunk = false;
-
 	devpriv->ai_chan = CR_CHAN(insn->chanspec);
 	devpriv->ai_range = CR_RANGE(insn->chanspec);
 
@@ -1481,6 +1477,7 @@ static int32_t daqbmc_create_thread(struct comedi_device *dev,
 /*
  * returns slave device configuration data
  * used to set the Analog only mode of the board automatically
+ * and to set the Q84 model type
  * a return value of 0xff means no board detected
  */
 static int32_t daqbmc_bmc_get_config(struct comedi_device *dev)
@@ -1535,7 +1532,7 @@ static int32_t daqbmc_bmc_get_config(struct comedi_device *dev)
 	memcpy(&devpriv->scalar5, devpriv->scalar5_ptr, 4);
 
 	devpriv->ai_count++;
-	dev_info(dev->class_dev, "Calibration Scalars read from board\n");
+	dev_info(dev->class_dev, "Calibration data downloaded from board\n");
 	mutex_unlock(&devpriv->drvdata_lock);
 	clear_bit(SPI_AI_RUN, &devpriv->state_bits);
 	smp_mb__after_atomic();
@@ -1640,7 +1637,6 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 					thisboard->ai_cs);
 				mutex_unlock(&devpriv->drvdata_lock);
 				smp_mb__after_atomic();
-
 			}
 			clear_bit(CSnA, &spi_device_missing);
 		} else {
@@ -1683,7 +1679,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	}
 
 	dev_info(dev->class_dev,
-		"%s board detection started\n",
+		"%s device detection started\n",
 		thisboard->name);
 	devpriv->num_subdev = 0;
 	if (daqbmc_spi_probe(dev, devpriv->ai_spi)) {
@@ -1799,9 +1795,9 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 
 	if ((ret & 0x4) == 0x04) { // 47Q84 processor
 		daqbmc_cpu = PICSL12_47;
-		dev_info(dev->class_dev, "PIC18F47Q84 DAQ device detected\n");
+		dev_info(dev->class_dev, "PIC18F47Q84 DAQ device setup complete\n");
 	} else {
-		dev_info(dev->class_dev, "PIC18F57Q84 DAQ device detected\n");
+		dev_info(dev->class_dev, "PIC18F57Q84 DAQ device setup complete\n");
 	}
 
 	if (daqbmc_cpu != PICSL12_47) {

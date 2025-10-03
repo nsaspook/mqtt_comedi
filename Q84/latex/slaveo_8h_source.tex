@@ -18,113 +18,140 @@
 \DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00019}00019\ \textcolor{preprocessor}{\#include\ "{}mcc\_generated\_files/tmr0.h"{}}}
 \DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00020}00020\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{eadog_8h}{eadog.h}}"{}}}
 \DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00021}00021\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{timers_8h}{timers.h}}"{}}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00022}00022\ }
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00023}00023\ \textcolor{preprocessor}{\#define\ SLAVEO\_DRIVER\ "{}V0.8"{}}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00022}00022\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{vconfig_8h}{vconfig.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{calibr_8h}{calibr.h}}"{}}}
 \DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00024}00024\ }
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00025}00025\ \textcolor{preprocessor}{\#define\ SLAVE\_DEBUG}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00025}00025\ \textcolor{preprocessor}{\#define\ SLAVEO\_DRIVER\ "{}V0.91"{}}}
 \DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00026}00026\ }
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00027}00027\ \ \ \ \ \textcolor{comment}{/*\ PIC\ Slave\ commands\ */}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00028}00028\ \textcolor{preprocessor}{\#define\ CMD\_ZERO\ \ \ \ \ \ \ \ 0b00000000}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00029}00029\ \textcolor{preprocessor}{\#define\ CMD\_ADC\_GO\ \ \ \ \ \ 0b10000000\ \ }\textcolor{comment}{//\ Read\ ADC\ data}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00030}00030\ \textcolor{preprocessor}{\#define\ CMD\_DAC\_GO\ \ \ \ \ \ 0x90\ \ \ \ \ \ \ \ }\textcolor{comment}{//\ Set\ DAC\ data}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00031}00031\ \textcolor{preprocessor}{\#define\ CMD\_PORT\_GO\ \ \ \ \ 0xa0\ \ \ \ \ \ \ \ }\textcolor{comment}{//\ Set\ DO\ data}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00032}00032\ \textcolor{preprocessor}{\#define\ CMD\_CHAR\_GO\ \ \ \ \ 0b10110000}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00033}00033\ \textcolor{preprocessor}{\#define\ CMD\_ADC\_DATA\ \ \ \ 0b11000000}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00034}00034\ \textcolor{preprocessor}{\#define\ CMD\_PORT\_DATA\ \ \ 0b11010000}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00035}00035\ \textcolor{preprocessor}{\#define\ CMD\_CHAR\_DATA\ \ \ 0b11100000\ \ }\textcolor{comment}{//\ Send\ serial\ TX\ buffer}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00036}00036\ \textcolor{preprocessor}{\#define\ CMD\_PORT\_GET\ \ \ \ 0b11110000\ \ }\textcolor{comment}{//\ Read\ DI\ data}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00037}00037\ \textcolor{preprocessor}{\#define\ CMD\_CHAR\_GET\ \ \ \ 0b00010000\ \ }\textcolor{comment}{//\ Get\ serial\ RX\ buffer}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00038}00038\ \textcolor{preprocessor}{\#define\ CMD\_DUMMY\_CFG\ \ \ 0b01000000\ \ }\textcolor{comment}{//\ stuff\ config\ data\ in\ SPI\ buffer}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00039}00039\ \textcolor{preprocessor}{\#define\ CMD\_DEAD\ \ \ \ \ \ \ \ 0b11111111\ \ \ \ \ \ }\textcolor{comment}{//\ This\ is\ usually\ a\ bad\ response}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00040}00040\ }
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00041}00041\ \textcolor{preprocessor}{\#define\ CHECKBYTE\ \ \ \ \ \ \ 0x57}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00042}00042\ }
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00043}00043\ \textcolor{preprocessor}{\#define\ CMD\_DUMMY\ \ \ \ \ \ \ 0b01100111\ \ }\textcolor{comment}{/*\ 7\ channels\ 4.096\ */}\textcolor{preprocessor}{}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00044}00044\ \textcolor{preprocessor}{\#define\ NUM\_AI\_CHAN\ \ \ \ \ 15}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00045}00045\ \textcolor{preprocessor}{\#define\ AI\_BUFFER\_NUM\ \ \ 0x40}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00046}00046\ \textcolor{preprocessor}{\#define\ AI\_CHAN\_FIX\ 5}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00047}00047\ }
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00048}00048\ \textcolor{preprocessor}{\#define\ NUM\_AO\_CHAN\ \ \ \ \ 1}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00049}00049\ \textcolor{preprocessor}{\#define\ AO\_BUFFER\_NUM\ \ \ 0x40}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00050}00050\ }
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00051}00051\ \textcolor{preprocessor}{\#define\ SPI\_BUFFER\_LEN\ \ 10}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00052}00052\ \textcolor{preprocessor}{\#define\ PACKET\_BUF\_SIZ\ \ 16}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00053}00053\ \textcolor{preprocessor}{\#define\ RSTRING\_BUF\_SIZ\ 81}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00027}00027\ \textcolor{preprocessor}{\#define\ F27Q84\ \ 0x9903}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00028}00028\ \textcolor{preprocessor}{\#define\ F47Q84\ \ 0x9904}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00029}00029\ \textcolor{preprocessor}{\#define\ F57Q84\ \ 0x9905}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00031}00031\ \textcolor{preprocessor}{\#define\ SLAVE\_DEBUG}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00033}00033\ \ \ \ \ \textcolor{comment}{/*\ PIC\ Slave\ commands\ */}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00034}00034\ \textcolor{preprocessor}{\#define\ CMD\_ZERO\ \ \ \ \ \ \ \ 0b00000000}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00035}00035\ \textcolor{preprocessor}{\#define\ CMD\_ADC\_GO\ \ \ \ \ \ 0b10000000\ \ }\textcolor{comment}{//\ Read\ ADC\ data}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00036}00036\ \textcolor{preprocessor}{\#define\ CMD\_DAC\_GO\ \ \ \ \ \ 0x90\ \ \ \ \ \ \ \ }\textcolor{comment}{//\ Set\ DAC\ data}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00037}00037\ \textcolor{preprocessor}{\#define\ CMD\_PORT\_GO\ \ \ \ \ 0xa0\ \ \ \ \ \ \ \ }\textcolor{comment}{//\ Set\ DO\ data}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00038}00038\ \textcolor{preprocessor}{\#define\ CMD\_CHAR\_GO\ \ \ \ \ 0b10110000}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00039}00039\ \textcolor{preprocessor}{\#define\ CMD\_ADC\_DATA\ \ \ \ 0b11000000}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00040}00040\ \textcolor{preprocessor}{\#define\ CMD\_PORT\_DATA\ \ \ 0b11010000}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00041}00041\ \textcolor{preprocessor}{\#define\ CMD\_CHAR\_DATA\ \ \ 0b11100000\ \ }\textcolor{comment}{//\ Send\ serial\ TX\ buffer}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00042}00042\ \textcolor{preprocessor}{\#define\ CMD\_PORT\_GET\ \ \ \ 0b11110000\ \ }\textcolor{comment}{//\ Read\ DI\ data}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00043}00043\ \textcolor{preprocessor}{\#define\ CMD\_CHAR\_GET\ \ \ \ 0b00010000\ \ }\textcolor{comment}{//\ Get\ serial\ RX\ buffer}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00044}00044\ \textcolor{preprocessor}{\#define\ CMD\_DUMMY\_CFG\ \ \ 0b01000000\ \ }\textcolor{comment}{//\ stuff\ config\ data\ in\ SPI\ buffer}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00045}00045\ \textcolor{preprocessor}{\#define\ CMD\_DEAD\ \ \ \ \ \ \ \ 0b11111111\ \ \ \ \ \ }\textcolor{comment}{//\ This\ is\ usually\ a\ bad\ response}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00046}00046\ }
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00047}00047\ \textcolor{preprocessor}{\#define\ CHECKBYTE\ \ \ \ \ \ \ 0x57}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00048}00048\ \textcolor{preprocessor}{\#define\ CHECKMARK\ \ \ 0x1957}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00050}00050\ \textcolor{preprocessor}{\#define\ CMD\_DUMMY\ \ \ \ \ \ \ 0b01100111\ \ }\textcolor{comment}{/*\ 7\ channels\ 4.096\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00051}00051\ \textcolor{preprocessor}{\#define\ NUM\_AI\_CHAN\ \ \ \ \ 15}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00052}00052\ \textcolor{preprocessor}{\#define\ AI\_BUFFER\_NUM\ \ \ 0x40}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00053}00053\ \textcolor{preprocessor}{\#define\ AI\_CHAN\_FIX\ 5}}
 \DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00054}00054\ }
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00055}00055\ \textcolor{preprocessor}{\#define\ HI\_NIBBLE\ \ \ \ \ \ \ 0xf0}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00056}00056\ \textcolor{preprocessor}{\#define\ LO\_NIBBLE\ \ \ \ \ \ \ 0x0f}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00057}00057\ \textcolor{preprocessor}{\#define\ ADC\_SWAP\_MASK\ \ \ 0b01000000}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00058}00058\ \textcolor{preprocessor}{\#define\ UART\_DUMMY\_MASK\ 0b01000000}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00059}00059\ }
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00060}00060\ \textcolor{preprocessor}{\#define\ PORT\_GET\_BYTES\ \ 7}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00061}00061\ \textcolor{preprocessor}{\#define\ CHAR\_GET\_BYTES\ \ 7}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00062}00062\ \textcolor{preprocessor}{\#define\ CFG\_GET\_BYTES\ \ \ 7}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00063}00063\ \textcolor{preprocessor}{\#define\ ADC\_GET\_BYTES\ \ \ 7}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00064}00064\ \textcolor{preprocessor}{\#define\ PORT\_GO\_BYTES\ \ \ 7}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00065}00065\ \textcolor{preprocessor}{\#define\ CHAR\_GO\_BYTES\ \ \ 7}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00066}00066\ \textcolor{preprocessor}{\#define\ DAC\_GO\_BYTES\ \ \ \ 7}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00067}00067\ }
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00068}\mbox{\hyperlink{structspi__link__type__ss}{00068}}\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structspi__link__type__ss}{spi\_link\_type\_ss}}\ \{\ \textcolor{comment}{//\ internal\ state\ table}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00069}00069\ \ \ \ \ \ \ \ \ uint8\_t\ SPI\_DATA\ :\ 1;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00070}00070\ \ \ \ \ \ \ \ \ uint8\_t\ ADC\_DATA\ :\ 1;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00071}00071\ \ \ \ \ \ \ \ \ uint8\_t\ PORT\_DATA\ :\ 1;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00072}00072\ \ \ \ \ \ \ \ \ uint8\_t\ CHAR\_DATA\ :\ 1;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00073}00073\ \ \ \ \ \ \ \ \ uint8\_t\ REMOTE\_LINK\ :\ 1;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00074}00074\ \ \ \ \ \ \ \ \ uint8\_t\ REMOTE\_DATA\_DONE\ :\ 1;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00075}00075\ \ \ \ \ \ \ \ \ uint8\_t\ LOW\_BITS\ :\ 1;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00076}00076\ \ \ \ \ \ \ \ \ uint8\_t\ ADC\_RUN\ :\ 1;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00077}00077\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00078}00078\ }
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00079}\mbox{\hyperlink{structspi__stat__type__ss}{00079}}\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structspi__stat__type__ss}{spi\_stat\_type\_ss}}\ \{}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00080}00080\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ adc\_count,\ dac\_count,}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00081}00081\ \ \ \ \ \ \ \ \ port\_count,\ port\_error\_count,\ port\_data\_count,\ zombie\_count,}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00082}00082\ \ \ \ \ \ \ \ \ char\_count,\ char\_error\_count,\ rxof\_bit,\ txdone\_bit,\ txuf\_bit,}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00083}00083\ \ \ \ \ \ \ \ \ slave\_int\_count,\ last\_slave\_int\_count,\ slave\_tx\_count,}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00084}00084\ \ \ \ \ \ \ \ \ comm\_count,\ idle\_count,\ spi\_error\_count,\ spi\_noerror\_count;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00085}00085\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint8\_t\ comm\_ok,\ raw\_index,\ daq\_conf;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00055}00055\ \textcolor{preprocessor}{\#define\ NUM\_AO\_CHAN\ \ \ \ \ 1}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00056}00056\ \textcolor{preprocessor}{\#define\ AO\_BUFFER\_NUM\ \ \ 0x40}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00058}00058\ \textcolor{preprocessor}{\#define\ SPI\_BUFFER\_LEN\ \ 10}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00059}00059\ \textcolor{preprocessor}{\#define\ PACKET\_BUF\_SIZ\ \ 16}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00060}00060\ \textcolor{preprocessor}{\#define\ RSTRING\_BUF\_SIZ\ 81}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00062}00062\ \textcolor{preprocessor}{\#define\ HI\_NIBBLE\ \ \ \ \ \ \ 0xf0}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00063}00063\ \textcolor{preprocessor}{\#define\ LO\_NIBBLE\ \ \ \ \ \ \ 0x0f}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00064}00064\ \textcolor{preprocessor}{\#define\ ADC\_SWAP\_MASK\ \ \ 0b01000000}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00065}00065\ \textcolor{preprocessor}{\#define\ UART\_DUMMY\_MASK\ 0b01000000}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00066}00066\ }
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00067}00067\ \textcolor{preprocessor}{\#define\ PORT\_GET\_BYTES\ \ 7}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00068}00068\ \textcolor{preprocessor}{\#define\ CHAR\_GET\_BYTES\ \ 7}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00069}00069\ \textcolor{preprocessor}{\#define\ CFG\_GET\_BYTES\ \ \ 7}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00070}00070\ \textcolor{preprocessor}{\#define\ ADC\_GET\_BYTES\ \ \ 7}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00071}00071\ \textcolor{preprocessor}{\#define\ PORT\_GO\_BYTES\ \ \ 7}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00072}00072\ \textcolor{preprocessor}{\#define\ CHAR\_GO\_BYTES\ \ \ 7}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00073}00073\ \textcolor{preprocessor}{\#define\ DAC\_GO\_BYTES\ \ \ \ 7}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00075}00075\ \textcolor{preprocessor}{\#define\ MAX\_BMC\_BUF\ 512}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00076}00076\ }
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00077}\mbox{\hyperlink{structspi__link__type__ss}{00077}}\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structspi__link__type__ss}{spi\_link\_type\_ss}}\ \{\ \textcolor{comment}{//\ internal\ state\ table}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00078}00078\ \ \ \ \ \ \ \ \ uint8\_t\ SPI\_DATA\ :\ 1;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00079}00079\ \ \ \ \ \ \ \ \ uint8\_t\ ADC\_DATA\ :\ 1;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00080}00080\ \ \ \ \ \ \ \ \ uint8\_t\ PORT\_DATA\ :\ 1;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00081}00081\ \ \ \ \ \ \ \ \ uint8\_t\ CHAR\_DATA\ :\ 1;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00082}00082\ \ \ \ \ \ \ \ \ uint8\_t\ REMOTE\_LINK\ :\ 1;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00083}00083\ \ \ \ \ \ \ \ \ uint8\_t\ REMOTE\_DATA\_DONE\ :\ 1;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00084}00084\ \ \ \ \ \ \ \ \ uint8\_t\ LOW\_BITS\ :\ 1;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00085}00085\ \ \ \ \ \ \ \ \ uint8\_t\ ADC\_RUN\ :\ 1;}
 \DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00086}00086\ \ \ \ \ \};}
 \DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00087}00087\ }
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00088}\mbox{\hyperlink{structserial__buffer__type__ss}{00088}}\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structserial__buffer__type__ss}{serial\_buffer\_type\_ss}}\ \{}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00089}00089\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint8\_t\ data[PACKET\_BUF\_SIZ],\ r\_string[RSTRING\_BUF\_SIZ],\ adcl,\ adc2,\ adch,\ command,\ raw\_index,\ r\_string\_index,\ r\_string\_chan;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00090}00090\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ place;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00091}00091\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ make\_value,\ get\_value,\ dac\_value,\ adc\_value,\ cfg\_value,\ cmake\_value,\ cget\_value;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00092}00092\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00093}00093\ }
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00094}00094\ \ \ \ \ \textcolor{keyword}{enum}\ daqbmc\_packet\_index\ \{}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00095}00095\ \ \ \ \ \ \ \ \ BMC\_CMD\ =\ 0,}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00096}00096\ \ \ \ \ \ \ \ \ BMC\_D0,}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00097}00097\ \ \ \ \ \ \ \ \ BMC\_D1,}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00098}00098\ \ \ \ \ \ \ \ \ BMC\_D2,}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00099}00099\ \ \ \ \ \ \ \ \ BMC\_D3,}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00100}00100\ \ \ \ \ \ \ \ \ BMC\_D4,}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00101}00101\ \ \ \ \ \ \ \ \ BMC\_EXT\ =\ 6,}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00102}00102\ \ \ \ \ \ \ \ \ BMC\_CKSUM\ =\ 7,}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00103}00103\ \ \ \ \ \ \ \ \ BMC\_DUMMY,}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00104}00104\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00105}00105\ }
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00106}00106\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structspi__link__type__ss}{spi\_link\_type\_ss}}\ spi\_comm\_ss;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00107}00107\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structserial__buffer__type__ss}{serial\_buffer\_type\_ss}}\ serial\_buffer\_ss;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00108}00108\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structspi__stat__type__ss}{spi\_stat\_type\_ss}}\ spi\_stat\_ss,\ report\_stat\_ss;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00109}00109\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ uint8\_t\ data\_in2,\ adc\_buffer\_ptr,\ adc\_channel,\ channel,\ upper;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00110}00110\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ uint16\_t\ adc\_buffer[AI\_BUFFER\_NUM],\ adc\_data\_in,\ dac\_buffer[AO\_BUFFER\_NUM],\ dac\_data\_in;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00111}00111\ \ \ \ \ \textcolor{keyword}{extern}\ \mbox{\hyperlink{structV__data}{V\_data}}\ V;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00112}00112\ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ failure;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00113}00113\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ uint8\_t\ in\_buf1,\ in\_buf2,\ in\_buf3;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00114}00114\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ uint8\_t\ tmp\_buf;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00115}00115\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ r\_string\_ready;}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00116}00116\ }
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00117}00117\ \ \ \ \ \textcolor{keywordtype}{void}\ check\_slaveo(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00118}00118\ \ \ \ \ \textcolor{keywordtype}{void}\ init\_slaveo(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00119}00119\ }
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00120}00120\ \ \ \ \ \textcolor{keywordtype}{void}\ slaveo\_rx\_isr(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00121}00121\ \ \ \ \ \textcolor{keywordtype}{void}\ slaveo\_spi\_isr(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00122}00122\ \ \ \ \ \textcolor{keywordtype}{void}\ slaveo\_time\_isr(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00088}\mbox{\hyperlink{structspi__stat__type__ss}{00088}}\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structspi__stat__type__ss}{spi\_stat\_type\_ss}}\ \{}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00089}00089\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ adc\_count,\ dac\_count,\ bmc\_counts,}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00090}00090\ \ \ \ \ \ \ \ \ port\_count,\ port\_error\_count,\ port\_data\_count,\ zombie\_count,}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00091}00091\ \ \ \ \ \ \ \ \ char\_count,\ char\_error\_count,\ rxof\_bit,\ txdone\_bit,\ txuf\_bit,}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00092}00092\ \ \ \ \ \ \ \ \ slave\_int\_count,\ last\_slave\_int\_count,\ slave\_tx\_count,}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00093}00093\ \ \ \ \ \ \ \ \ comm\_count,\ idle\_count,\ spi\_error\_count,\ spi\_noerror\_count;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00094}00094\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint8\_t\ comm\_ok,\ raw\_index,\ daq\_conf;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00095}00095\ \ \ \ \ \ \ \ \ uint16\_t\ deviceid,\ devicerev;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00096}00096\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ mui;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00097}00097\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00099}\mbox{\hyperlink{structserial__buffer__type__ss}{00099}}\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structserial__buffer__type__ss}{serial\_buffer\_type\_ss}}\ \{}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00100}00100\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint8\_t\ data[PACKET\_BUF\_SIZ],\ r\_string[RSTRING\_BUF\_SIZ],\ adcl,\ adc2,\ adch,\ command,\ raw\_index,\ r\_string\_index,\ r\_string\_chan;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00101}00101\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ place;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00102}00102\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ make\_value,\ get\_value,\ dac\_value,\ adc\_value,\ cfg\_value,\ cmake\_value,\ cget\_value;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00103}00103\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00104}00104\ }
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00105}\mbox{\hyperlink{structbmc__buffer__type}{00105}}\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structbmc__buffer__type}{bmc\_buffer\_type}}\ \{}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00106}00106\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{char}\ *buffer,\ *log\_buffer;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00107}00107\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint16\_t\ len,\ pos;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00108}00108\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ bmc\_flag;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00109}00109\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint8\_t\ d\_id;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00110}00110\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00111}00111\ }
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00112}00112\ \ \ \ \ \textcolor{keyword}{enum}\ daqbmc\_packet\_index\ \{}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00113}00113\ \ \ \ \ \ \ \ \ BMC\_CMD\ =\ 0,}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00114}00114\ \ \ \ \ \ \ \ \ BMC\_D0,}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00115}00115\ \ \ \ \ \ \ \ \ BMC\_D1,}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00116}00116\ \ \ \ \ \ \ \ \ BMC\_D2,}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00117}00117\ \ \ \ \ \ \ \ \ BMC\_D3,}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00118}00118\ \ \ \ \ \ \ \ \ BMC\_D4,}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00119}00119\ \ \ \ \ \ \ \ \ BMC\_EXT\ =\ 6,}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00120}00120\ \ \ \ \ \ \ \ \ BMC\_CKSUM\ =\ 7,}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00121}00121\ \ \ \ \ \ \ \ \ BMC\_DUMMY,}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00122}00122\ \ \ \ \ \};}
 \DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00123}00123\ }
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00124}00124\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00125}00125\ \}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00126}00126\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00127}00127\ }
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00128}00128\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{/*\ SLAVEO\_H\ */}\textcolor{preprocessor}{}}
-\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00129}00129\ }
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00124}00124\ \ \ \ \ \textcolor{keyword}{enum}\ daqbmc\_data\_index\ \{}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00125}00125\ \ \ \ \ \ \ \ \ BMC\_EM540\_DATA\ =\ 4,}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00126}00126\ \ \ \ \ \ \ \ \ BMC\_DATA\_DUMMY,}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00127}00127\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00128}00128\ }
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00129}00129\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structspi__link__type__ss}{spi\_link\_type\_ss}}\ spi\_comm\_ss;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00130}00130\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structserial__buffer__type__ss}{serial\_buffer\_type\_ss}}\ serial\_buffer\_ss;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00131}00131\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structspi__stat__type__ss}{spi\_stat\_type\_ss}}\ spi\_stat\_ss,\ report\_stat\_ss;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00132}00132\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ uint8\_t\ data\_in2,\ adc\_buffer\_ptr,\ adc\_channel,\ channel,\ upper;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00133}00133\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ uint16\_t\ adc\_buffer[AI\_BUFFER\_NUM],\ adc\_data\_in,\ dac\_buffer[AO\_BUFFER\_NUM],\ dac\_data\_in;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00134}00134\ \ \ \ \ \textcolor{keyword}{extern}\ \mbox{\hyperlink{structV__data}{V\_data}}\ V;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00135}00135\ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ failure;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00136}00136\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ uint8\_t\ in\_buf1,\ in\_buf2,\ in\_buf3;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00137}00137\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ uint8\_t\ tmp\_buf;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00138}00138\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ r\_string\_ready,\ bmc\_string\_ready,\ update\_bmc\_string;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00139}00139\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structbmc__buffer__type}{bmc\_buffer\_type}}\ BMC4;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00140}00140\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{char}\ buffer[MAX\_BMC\_BUF],\ log\_buffer[MAX\_BMC\_BUF];}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00141}00141\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structha__daq__calib__type}{ha\_daq\_calib\_type}}\ ha\_daq\_calib;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00142}00142\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structbmc__buffer__type}{bmc\_buffer\_type}}\ BMC4;}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00143}00143\ }
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00144}00144\ \ \ \ \ \textcolor{keywordtype}{void}\ check\_slaveo(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00145}00145\ \ \ \ \ \textcolor{keywordtype}{void}\ init\_slaveo(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00146}00146\ }
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00147}00147\ \ \ \ \ \textcolor{keywordtype}{void}\ slaveo\_rx\_isr(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00148}00148\ \ \ \ \ \textcolor{keywordtype}{void}\ slaveo\_spi\_isr(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00149}00149\ \ \ \ \ \textcolor{keywordtype}{void}\ slaveo\_time\_isr(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00150}00150\ }
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00151}00151\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00152}00152\ \}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00153}00153\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00154}00154\ }
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00155}00155\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{/*\ SLAVEO\_H\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{\Hypertarget{slaveo_8h_source_l00156}00156\ }
 
 \end{DoxyCode}

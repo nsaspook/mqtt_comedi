@@ -1,6 +1,7 @@
 var dir_34e43cb4c96e8db60f60ed47ff269d1b =
 [
     [ "adc.p1.d", "adc_8p1_8d_source.html", null ],
+    [ "clc1.p1.d", "clc1_8p1_8d_source.html", null ],
     [ "dac1.p1.d", "dac1_8p1_8d_source.html", null ],
     [ "device_config.p1.d", "device__config_8p1_8d_source.html", null ],
     [ "dma1.p1.d", "dma1_8p1_8d_source.html", null ],
@@ -13,6 +14,7 @@ var dir_34e43cb4c96e8db60f60ed47ff269d1b =
     [ "spi1.p1.d", "spi1_8p1_8d_source.html", null ],
     [ "spi2.p1.d", "spi2_8p1_8d_source.html", null ],
     [ "tmr0.p1.d", "tmr0_8p1_8d_source.html", null ],
+    [ "tmr1.p1.d", "tmr1_8p1_8d_source.html", null ],
     [ "tmr2.p1.d", "tmr2_8p1_8d_source.html", null ],
     [ "tmr3.p1.d", "tmr3_8p1_8d_source.html", null ],
     [ "tmr4.p1.d", "tmr4_8p1_8d_source.html", null ],

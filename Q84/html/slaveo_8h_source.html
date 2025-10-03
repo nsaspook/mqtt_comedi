@@ -31,7 +31,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="1-2.gif"/></td>
   <td id="projectalign">
-   <div id="projectname">My Project<span id="projectnumber">&#160;1.0</span>
+   <div id="projectname">My Project<span id="projectnumber">&#160;2.0</span>
    </div>
    <div id="projectbrief">Comedi DAQ to MQTT bridge Q84 Slave</div>
   </td>
@@ -116,127 +116,160 @@ $(function(){initNavTree('slaveo_8h_source.html','',''); initResizable(true); })
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;mcc_generated_files/tmr0.h&quot;</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="eadog_8h.html">eadog.h</a>&quot;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="timers_8h.html">timers.h</a>&quot;</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#define SLAVEO_DRIVER &quot;V0.8&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="vconfig_8h.html">vconfig.h</a>&quot;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;<a class="code" href="calibr_8h.html">calibr.h</a>&quot;</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#define SLAVE_DEBUG</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#define SLAVEO_DRIVER &quot;V0.91&quot;</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="comment">/* PIC Slave commands */</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#define CMD_ZERO        0b00000000</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#define CMD_ADC_GO      0b10000000  </span><span class="comment">// Read ADC data</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#define CMD_DAC_GO      0x90        </span><span class="comment">// Set DAC data</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#define CMD_PORT_GO     0xa0        </span><span class="comment">// Set DO data</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#define CMD_CHAR_GO     0b10110000</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#define CMD_ADC_DATA    0b11000000</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#define CMD_PORT_DATA   0b11010000</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#define CMD_CHAR_DATA   0b11100000  </span><span class="comment">// Send serial TX buffer</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#define CMD_PORT_GET    0b11110000  </span><span class="comment">// Read DI data</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#define CMD_CHAR_GET    0b00010000  </span><span class="comment">// Get serial RX buffer</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#define CMD_DUMMY_CFG   0b01000000  </span><span class="comment">// stuff config data in SPI buffer</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#define CMD_DEAD        0b11111111      </span><span class="comment">// This is usually a bad response</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#define CHECKBYTE       0x57</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#define CMD_DUMMY       0b01100111  </span><span class="comment">/* 7 channels 4.096 */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#define NUM_AI_CHAN     15</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#define AI_BUFFER_NUM   0x40</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#define AI_CHAN_FIX 5</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#define NUM_AO_CHAN     1</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#define AO_BUFFER_NUM   0x40</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#define SPI_BUFFER_LEN  10</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#define PACKET_BUF_SIZ  16</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#define RSTRING_BUF_SIZ 81</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#define F27Q84  0x9903</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#define F47Q84  0x9904</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#define F57Q84  0x9905</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#define SLAVE_DEBUG</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="comment">/* PIC Slave commands */</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#define CMD_ZERO        0b00000000</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#define CMD_ADC_GO      0b10000000  </span><span class="comment">// Read ADC data</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#define CMD_DAC_GO      0x90        </span><span class="comment">// Set DAC data</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#define CMD_PORT_GO     0xa0        </span><span class="comment">// Set DO data</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#define CMD_CHAR_GO     0b10110000</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#define CMD_ADC_DATA    0b11000000</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#define CMD_PORT_DATA   0b11010000</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#define CMD_CHAR_DATA   0b11100000  </span><span class="comment">// Send serial TX buffer</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#define CMD_PORT_GET    0b11110000  </span><span class="comment">// Read DI data</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#define CMD_CHAR_GET    0b00010000  </span><span class="comment">// Get serial RX buffer</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#define CMD_DUMMY_CFG   0b01000000  </span><span class="comment">// stuff config data in SPI buffer</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#define CMD_DEAD        0b11111111      </span><span class="comment">// This is usually a bad response</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">#define CHECKBYTE       0x57</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#define CHECKMARK   0x1957</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#define CMD_DUMMY       0b01100111  </span><span class="comment">/* 7 channels 4.096 */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#define NUM_AI_CHAN     15</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#define AI_BUFFER_NUM   0x40</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#define AI_CHAN_FIX 5</span></div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#define HI_NIBBLE       0xf0</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#define LO_NIBBLE       0x0f</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">#define ADC_SWAP_MASK   0b01000000</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#define UART_DUMMY_MASK 0b01000000</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#define PORT_GET_BYTES  7</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#define CHAR_GET_BYTES  7</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">#define CFG_GET_BYTES   7</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">#define ADC_GET_BYTES   7</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="preprocessor">#define PORT_GO_BYTES   7</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">#define CHAR_GO_BYTES   7</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">#define DAC_GO_BYTES    7</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="foldopen" id="foldopen00068" data-start="{" data-end="};">
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="structspi__link__type__ss.html">   68</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structspi__link__type__ss.html">spi_link_type_ss</a> { <span class="comment">// internal state table</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        uint8_t SPI_DATA : 1;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        uint8_t ADC_DATA : 1;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        uint8_t PORT_DATA : 1;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        uint8_t CHAR_DATA : 1;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        uint8_t REMOTE_LINK : 1;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        uint8_t REMOTE_DATA_DONE : 1;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        uint8_t LOW_BITS : 1;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        uint8_t ADC_RUN : 1;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    };</div>
-</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="foldopen" id="foldopen00079" data-start="{" data-end="};">
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="structspi__stat__type__ss.html">   79</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structspi__stat__type__ss.html">spi_stat_type_ss</a> {</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="keyword">volatile</span> uint32_t adc_count, dac_count,</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        port_count, port_error_count, port_data_count, zombie_count,</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        char_count, char_error_count, rxof_bit, txdone_bit, txuf_bit,</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        slave_int_count, last_slave_int_count, slave_tx_count,</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        comm_count, idle_count, spi_error_count, spi_noerror_count;</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        <span class="keyword">volatile</span> uint8_t comm_ok, raw_index, daq_conf;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#define NUM_AO_CHAN     1</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#define AO_BUFFER_NUM   0x40</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#define SPI_BUFFER_LEN  10</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#define PACKET_BUF_SIZ  16</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#define RSTRING_BUF_SIZ 81</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">#define HI_NIBBLE       0xf0</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">#define LO_NIBBLE       0x0f</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="preprocessor">#define ADC_SWAP_MASK   0b01000000</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">#define UART_DUMMY_MASK 0b01000000</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">#define PORT_GET_BYTES  7</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#define CHAR_GET_BYTES  7</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">#define CFG_GET_BYTES   7</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#define ADC_GET_BYTES   7</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#define PORT_GO_BYTES   7</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="preprocessor">#define CHAR_GO_BYTES   7</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">#define DAC_GO_BYTES    7</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="preprocessor">#define MAX_BMC_BUF 512</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="foldopen" id="foldopen00077" data-start="{" data-end="};">
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="structspi__link__type__ss.html">   77</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structspi__link__type__ss.html">spi_link_type_ss</a> { <span class="comment">// internal state table</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        uint8_t SPI_DATA : 1;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        uint8_t ADC_DATA : 1;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        uint8_t PORT_DATA : 1;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        uint8_t CHAR_DATA : 1;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        uint8_t REMOTE_LINK : 1;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        uint8_t REMOTE_DATA_DONE : 1;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        uint8_t LOW_BITS : 1;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        uint8_t ADC_RUN : 1;</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    };</div>
 </div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
 <div class="foldopen" id="foldopen00088" data-start="{" data-end="};">
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="structserial__buffer__type__ss.html">   88</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structserial__buffer__type__ss.html">serial_buffer_type_ss</a> {</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        <span class="keyword">volatile</span> uint8_t data[PACKET_BUF_SIZ], r_string[RSTRING_BUF_SIZ], adcl, adc2, adch, command, raw_index, r_string_index, r_string_chan;</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        <span class="keyword">volatile</span> uint32_t place;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keyword">volatile</span> <span class="keywordtype">bool</span> make_value, get_value, dac_value, adc_value, cfg_value, cmake_value, cget_value;</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    };</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="structspi__stat__type__ss.html">   88</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structspi__stat__type__ss.html">spi_stat_type_ss</a> {</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        <span class="keyword">volatile</span> uint32_t adc_count, dac_count, bmc_counts,</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        port_count, port_error_count, port_data_count, zombie_count,</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        char_count, char_error_count, rxof_bit, txdone_bit, txuf_bit,</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        slave_int_count, last_slave_int_count, slave_tx_count,</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        comm_count, idle_count, spi_error_count, spi_noerror_count;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        <span class="keyword">volatile</span> uint8_t comm_ok, raw_index, daq_conf;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        uint16_t deviceid, devicerev;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="keyword">volatile</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> mui;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    };</div>
 </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keyword">enum</span> daqbmc_packet_index {</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        BMC_CMD = 0,</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        BMC_D0,</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        BMC_D1,</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        BMC_D2,</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        BMC_D3,</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        BMC_D4,</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        BMC_EXT = 6,</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        BMC_CKSUM = 7,</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        BMC_DUMMY,</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    };</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="keyword">struct </span><a class="code hl_struct" href="structspi__link__type__ss.html">spi_link_type_ss</a> spi_comm_ss;</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="keyword">struct </span><a class="code hl_struct" href="structserial__buffer__type__ss.html">serial_buffer_type_ss</a> serial_buffer_ss;</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="keyword">struct </span><a class="code hl_struct" href="structspi__stat__type__ss.html">spi_stat_type_ss</a> spi_stat_ss, report_stat_ss;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> uint8_t data_in2, adc_buffer_ptr, adc_channel, channel, upper;</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> uint16_t adc_buffer[AI_BUFFER_NUM], adc_data_in, dac_buffer[AO_BUFFER_NUM], dac_data_in;</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keyword">extern</span> <a class="code hl_struct" href="structV__data.html">V_data</a> V;</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keyword">volatile</span> <span class="keywordtype">bool</span> failure;</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> uint8_t in_buf1, in_buf2, in_buf3;</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> uint8_t tmp_buf;</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="keywordtype">bool</span> r_string_ready;</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keywordtype">void</span> check_slaveo(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordtype">void</span> init_slaveo(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keywordtype">void</span> slaveo_rx_isr(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="keywordtype">void</span> slaveo_spi_isr(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="keywordtype">void</span> slaveo_time_isr(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="foldopen" id="foldopen00099" data-start="{" data-end="};">
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="structserial__buffer__type__ss.html">   99</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structserial__buffer__type__ss.html">serial_buffer_type_ss</a> {</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        <span class="keyword">volatile</span> uint8_t data[PACKET_BUF_SIZ], r_string[RSTRING_BUF_SIZ], adcl, adc2, adch, command, raw_index, r_string_index, r_string_chan;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="keyword">volatile</span> uint32_t place;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keyword">volatile</span> <span class="keywordtype">bool</span> make_value, get_value, dac_value, adc_value, cfg_value, cmake_value, cget_value;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    };</div>
+</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="foldopen" id="foldopen00105" data-start="{" data-end="};">
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="structbmc__buffer__type.html">  105</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structbmc__buffer__type.html">bmc_buffer_type</a> {</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <span class="keyword">volatile</span> <span class="keywordtype">char</span> *buffer, *log_buffer;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        <span class="keyword">volatile</span> uint16_t len, pos;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <span class="keyword">volatile</span> <span class="keywordtype">bool</span> bmc_flag;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        <span class="keyword">volatile</span> uint8_t d_id;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    };</div>
+</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keyword">enum</span> daqbmc_packet_index {</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        BMC_CMD = 0,</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        BMC_D0,</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        BMC_D1,</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        BMC_D2,</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        BMC_D3,</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        BMC_D4,</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        BMC_EXT = 6,</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        BMC_CKSUM = 7,</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        BMC_DUMMY,</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    };</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="preprocessor">#ifdef  __cplusplus</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>}</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="preprocessor">#endif  </span><span class="comment">/* SLAVEO_H */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="keyword">enum</span> daqbmc_data_index {</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        BMC_EM540_DATA = 4,</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        BMC_DATA_DUMMY,</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    };</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="keyword">struct </span><a class="code hl_struct" href="structspi__link__type__ss.html">spi_link_type_ss</a> spi_comm_ss;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="keyword">struct </span><a class="code hl_struct" href="structserial__buffer__type__ss.html">serial_buffer_type_ss</a> serial_buffer_ss;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="keyword">struct </span><a class="code hl_struct" href="structspi__stat__type__ss.html">spi_stat_type_ss</a> spi_stat_ss, report_stat_ss;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> uint8_t data_in2, adc_buffer_ptr, adc_channel, channel, upper;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> uint16_t adc_buffer[AI_BUFFER_NUM], adc_data_in, dac_buffer[AO_BUFFER_NUM], dac_data_in;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keyword">extern</span> <a class="code hl_struct" href="structV__data.html">V_data</a> V;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="keyword">volatile</span> <span class="keywordtype">bool</span> failure;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> uint8_t in_buf1, in_buf2, in_buf3;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> uint8_t tmp_buf;</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="keywordtype">bool</span> r_string_ready, bmc_string_ready, update_bmc_string;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="keyword">struct </span><a class="code hl_struct" href="structbmc__buffer__type.html">bmc_buffer_type</a> BMC4;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="keywordtype">char</span> buffer[MAX_BMC_BUF], log_buffer[MAX_BMC_BUF];</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    <span class="keyword">extern</span> <span class="keyword">struct </span><a class="code hl_struct" href="structha__daq__calib__type.html">ha_daq_calib_type</a> ha_daq_calib;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="keyword">struct </span><a class="code hl_struct" href="structbmc__buffer__type.html">bmc_buffer_type</a> BMC4;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keywordtype">void</span> check_slaveo(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <span class="keywordtype">void</span> init_slaveo(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="keywordtype">void</span> slaveo_rx_isr(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    <span class="keywordtype">void</span> slaveo_spi_isr(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    <span class="keywordtype">void</span> slaveo_time_isr(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="preprocessor">#ifdef  __cplusplus</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>}</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="preprocessor">#endif  </span><span class="comment">/* SLAVEO_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="ttc" id="acalibr_8h_html"><div class="ttname"><a href="calibr_8h.html">calibr.h</a></div></div>
 <div class="ttc" id="aeadog_8h_html"><div class="ttname"><a href="eadog_8h.html">eadog.h</a></div></div>
 <div class="ttc" id="amconfig_8h_html"><div class="ttname"><a href="mconfig_8h.html">mconfig.h</a></div></div>
-<div class="ttc" id="astructV__data_html"><div class="ttname"><a href="structV__data.html">V_data</a></div><div class="ttdef"><b>Definition</b> <a href="vconfig_8h_source.html#l00264">vconfig.h:264</a></div></div>
-<div class="ttc" id="astructserial__buffer__type__ss_html"><div class="ttname"><a href="structserial__buffer__type__ss.html">serial_buffer_type_ss</a></div><div class="ttdef"><b>Definition</b> <a href="#l00088">slaveo.h:88</a></div></div>
-<div class="ttc" id="astructspi__link__type__ss_html"><div class="ttname"><a href="structspi__link__type__ss.html">spi_link_type_ss</a></div><div class="ttdef"><b>Definition</b> <a href="#l00068">slaveo.h:68</a></div></div>
-<div class="ttc" id="astructspi__stat__type__ss_html"><div class="ttname"><a href="structspi__stat__type__ss.html">spi_stat_type_ss</a></div><div class="ttdef"><b>Definition</b> <a href="#l00079">slaveo.h:79</a></div></div>
+<div class="ttc" id="astructV__data_html"><div class="ttname"><a href="structV__data.html">V_data</a></div><div class="ttdef"><b>Definition</b> <a href="vconfig_8h_source.html#l00275">vconfig.h:275</a></div></div>
+<div class="ttc" id="astructbmc__buffer__type_html"><div class="ttname"><a href="structbmc__buffer__type.html">bmc_buffer_type</a></div><div class="ttdef"><b>Definition</b> <a href="#l00105">slaveo.h:105</a></div></div>
+<div class="ttc" id="astructha__daq__calib__type_html"><div class="ttname"><a href="structha__daq__calib__type.html">ha_daq_calib_type</a></div><div class="ttdef"><b>Definition</b> <a href="calibr_8h_source.html#l00030">calibr.h:30</a></div></div>
+<div class="ttc" id="astructserial__buffer__type__ss_html"><div class="ttname"><a href="structserial__buffer__type__ss.html">serial_buffer_type_ss</a></div><div class="ttdef"><b>Definition</b> <a href="#l00099">slaveo.h:99</a></div></div>
+<div class="ttc" id="astructspi__link__type__ss_html"><div class="ttname"><a href="structspi__link__type__ss.html">spi_link_type_ss</a></div><div class="ttdef"><b>Definition</b> <a href="#l00077">slaveo.h:77</a></div></div>
+<div class="ttc" id="astructspi__stat__type__ss_html"><div class="ttname"><a href="structspi__stat__type__ss.html">spi_stat_type_ss</a></div><div class="ttdef"><b>Definition</b> <a href="#l00088">slaveo.h:88</a></div></div>
 <div class="ttc" id="atimers_8h_html"><div class="ttname"><a href="timers_8h.html">timers.h</a></div></div>
+<div class="ttc" id="avconfig_8h_html"><div class="ttname"><a href="vconfig_8h.html">vconfig.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

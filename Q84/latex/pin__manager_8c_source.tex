@@ -115,40 +115,41 @@
 \DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00158}00158\ \ \ \ \ RD6PPS\ =\ 0x23;\ \ \ \textcolor{comment}{//RD6-\/>UART2:TX2;\ \ \ \ }}
 \DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00159}00159\ \ \ \ \ RF2PPS\ =\ 0x27;\ \ \ \textcolor{comment}{//RF2-\/>UART3:TXDE3;\ \ \ \ }}
 \DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00160}00160\ \ \ \ \ SPI2SCKPPS\ =\ 0x1A;\ \ \ \textcolor{comment}{//RD2-\/>SPI2:SCK2;\ \ \ \ }}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00161}00161\ \ \ \ \ SPI1SCKPPS\ =\ 0x13;\ \ \ \textcolor{comment}{//RC3-\/>SPI1:SCK1;\ \ \ \ }}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00162}00162\ \ \ \ \ RC5PPS\ =\ 0x32;\ \ \ \textcolor{comment}{//RC5-\/>SPI1:SDO1;\ \ \ \ }}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00163}00163\ \ \ \ \ SPI1SDIPPS\ =\ 0x14;\ \ \ \textcolor{comment}{//RC4-\/>SPI1:SDI1;\ \ \ \ }}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00164}00164\ \}}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00165}00165\ \ \ }
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00166}00166\ \textcolor{keywordtype}{void}\ \_\_interrupt(irq(IOC),base(8))\ PIN\_MANAGER\_IOC()}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00167}00167\ \{\ \ \ }
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00168}00168\ \ \ \ \ \textcolor{comment}{//\ interrupt\ on\ change\ for\ pin\ IOCBF6}}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00169}00169\ \ \ \ \ \textcolor{keywordflow}{if}(IOCBFbits.IOCBF6\ ==\ 1)}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00170}00170\ \ \ \ \ \{}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00171}00171\ \ \ \ \ \ \ \ \ IOCBF6\_ISR();\ \ }
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00172}00172\ \ \ \ \ \}\ \ \ }
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00173}00173\ \}}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00174}00174\ }
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00178}00178\ \textcolor{keywordtype}{void}\ IOCBF6\_ISR(\textcolor{keywordtype}{void})\ \{}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00179}00179\ }
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00180}00180\ \ \ \ \ \textcolor{comment}{//\ Add\ custom\ IOCBF6\ code}}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00181}00181\ }
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00182}00182\ \ \ \ \ \textcolor{comment}{//\ Call\ the\ interrupt\ handler\ for\ the\ callback\ registered\ at\ runtime}}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00183}00183\ \ \ \ \ \textcolor{keywordflow}{if}(IOCBF6\_InterruptHandler)}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00184}00184\ \ \ \ \ \{}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00185}00185\ \ \ \ \ \ \ \ \ IOCBF6\_InterruptHandler();}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00186}00186\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00187}00187\ \ \ \ \ IOCBFbits.IOCBF6\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00188}00188\ \}}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00189}00189\ }
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00193}00193\ \textcolor{keywordtype}{void}\ IOCBF6\_SetInterruptHandler(\textcolor{keywordtype}{void}\ (*\ InterruptHandler)(\textcolor{keywordtype}{void}))\{}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00194}00194\ \ \ \ \ IOCBF6\_InterruptHandler\ =\ InterruptHandler;}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00195}00195\ \}}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00196}00196\ }
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00200}00200\ \textcolor{keywordtype}{void}\ IOCBF6\_DefaultInterruptHandler(\textcolor{keywordtype}{void})\{}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00201}00201\ \ \ \ \ \textcolor{comment}{//\ add\ your\ IOCBF6\ interrupt\ custom\ code}}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00202}00202\ \ \ \ \ \textcolor{comment}{//\ or\ set\ custom\ function\ using\ IOCBF6\_SetInterruptHandler()}}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00203}00203\ \}}
-\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00204}00204\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00161}00161\ \ \ \ \ RF6PPS\ =\ 0x01;\ \ \ \textcolor{comment}{//RF6-\/>CLC1:CLC1;\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00162}00162\ \ \ \ \ SPI1SCKPPS\ =\ 0x13;\ \ \ \textcolor{comment}{//RC3-\/>SPI1:SCK1;\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00163}00163\ \ \ \ \ RC5PPS\ =\ 0x32;\ \ \ \textcolor{comment}{//RC5-\/>SPI1:SDO1;\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00164}00164\ \ \ \ \ SPI1SDIPPS\ =\ 0x14;\ \ \ \textcolor{comment}{//RC4-\/>SPI1:SDI1;\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00165}00165\ \}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00166}00166\ \ \ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00167}00167\ \textcolor{keywordtype}{void}\ \_\_interrupt(irq(IOC),base(8))\ PIN\_MANAGER\_IOC()}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00168}00168\ \{\ \ \ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00169}00169\ \ \ \ \ \textcolor{comment}{//\ interrupt\ on\ change\ for\ pin\ IOCBF6}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00170}00170\ \ \ \ \ \textcolor{keywordflow}{if}(IOCBFbits.IOCBF6\ ==\ 1)}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00171}00171\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00172}00172\ \ \ \ \ \ \ \ \ IOCBF6\_ISR();\ \ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00173}00173\ \ \ \ \ \}\ \ \ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00174}00174\ \}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00175}00175\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00179}00179\ \textcolor{keywordtype}{void}\ IOCBF6\_ISR(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00180}00180\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00181}00181\ \ \ \ \ \textcolor{comment}{//\ Add\ custom\ IOCBF6\ code}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00182}00182\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00183}00183\ \ \ \ \ \textcolor{comment}{//\ Call\ the\ interrupt\ handler\ for\ the\ callback\ registered\ at\ runtime}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00184}00184\ \ \ \ \ \textcolor{keywordflow}{if}(IOCBF6\_InterruptHandler)}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00185}00185\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00186}00186\ \ \ \ \ \ \ \ \ IOCBF6\_InterruptHandler();}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00187}00187\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00188}00188\ \ \ \ \ IOCBFbits.IOCBF6\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00189}00189\ \}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00190}00190\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00194}00194\ \textcolor{keywordtype}{void}\ IOCBF6\_SetInterruptHandler(\textcolor{keywordtype}{void}\ (*\ InterruptHandler)(\textcolor{keywordtype}{void}))\{}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00195}00195\ \ \ \ \ IOCBF6\_InterruptHandler\ =\ InterruptHandler;}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00196}00196\ \}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00197}00197\ }
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00201}00201\ \textcolor{keywordtype}{void}\ IOCBF6\_DefaultInterruptHandler(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00202}00202\ \ \ \ \ \textcolor{comment}{//\ add\ your\ IOCBF6\ interrupt\ custom\ code}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00203}00203\ \ \ \ \ \textcolor{comment}{//\ or\ set\ custom\ function\ using\ IOCBF6\_SetInterruptHandler()}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00204}00204\ \}}
+\DoxyCodeLine{\Hypertarget{pin__manager_8c_source_l00205}00205\ }
 
 \end{DoxyCode}

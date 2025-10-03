@@ -1,4 +1,4 @@
-/*
+/** \file main.c.c
  * Orange PI SPI DAQ add on board
  * Led1 RED	SPI command activity (short) or errors (long) blinks
  * LED2 GREEN	1 second CPU running blinker

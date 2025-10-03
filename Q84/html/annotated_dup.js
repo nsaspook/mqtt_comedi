@@ -1,7 +1,8 @@
 var annotated_dup =
 [
-    [ "B_type", "structB__type.html", null ],
+    [ "BF_type", "structBF__type.html", null ],
     [ "BM_type", "structBM__type.html", null ],
+    [ "bmc_buffer_type", "structbmc__buffer__type.html", null ],
     [ "C_data", "structC__data.html", null ],
     [ "D_data", "structD__data.html", null ],
     [ "EB_data", "structEB__data.html", null ],
@@ -9,6 +10,7 @@ var annotated_dup =
     [ "EM_data2", "structEM__data2.html", null ],
     [ "EM_serial", "structEM__serial.html", null ],
     [ "EM_version", "structEM__version.html", null ],
+    [ "ha_daq_calib_type", "structha__daq__calib__type.html", null ],
     [ "M_data", "structM__data.html", null ],
     [ "M_time_data", "structM__time__data.html", null ],
     [ "MREG", "unionMREG.html", null ],

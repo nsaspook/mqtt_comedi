@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['logging_5fcmds_0',['logging_cmds',['../mconfig_8c.html#a914644e400a0b8a58f027b2d57842838',1,'logging_cmds(void):&#160;mconfig.c'],['../mconfig_8h.html#a914644e400a0b8a58f027b2d57842838',1,'logging_cmds(void):&#160;mconfig.c']]]
+  ['ha_5fdaq_5fcalib_5ftype_0',['ha_daq_calib_type',['../structha__daq__calib__type.html',1,'']]]
 ];

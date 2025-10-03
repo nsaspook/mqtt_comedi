@@ -52,140 +52,141 @@
 \DoxyCodeLine{\Hypertarget{bmc_8c_source_l00055}00055\ \textcolor{comment}{//\ Comedi\ I/O\ device\ type}}
 \DoxyCodeLine{\Hypertarget{bmc_8c_source_l00056}00056\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *board\_name\ =\ \textcolor{stringliteral}{"{}NO\_BOARD"{}},\ *driver\_name\ =\ \textcolor{stringliteral}{"{}NO\_DRIVER"{}};}
 \DoxyCodeLine{\Hypertarget{bmc_8c_source_l00057}00057\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00058}00058\ FILE*\ fout;\ \textcolor{comment}{//\ logging\ stream}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00058}00058\ FILE\ *fout,\ *calfile;\ \textcolor{comment}{//\ logging\ stream\ and\ calibration\ data}}
 \DoxyCodeLine{\Hypertarget{bmc_8c_source_l00059}00059\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00060}00060\ \textcolor{comment}{/*\ ripped\ from\ http://aquaticus.info/pwm-\/sine-\/wave\ */}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00060}00060\ \textcolor{keywordtype}{int}\ usleep(uint32\_t);\ \textcolor{comment}{//\ for\ C11}}
 \DoxyCodeLine{\Hypertarget{bmc_8c_source_l00061}00061\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00062}00062\ \textcolor{keyword}{const}\ uint8\_t\ sine\_wave[256]\ =\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00063}00063\ \ \ \ \ 0x80,\ 0x83,\ 0x86,\ 0x89,\ 0x8C,\ 0x90,\ 0x93,\ 0x96,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00064}00064\ \ \ \ \ 0x99,\ 0x9C,\ 0x9F,\ 0xA2,\ 0xA5,\ 0xA8,\ 0xAB,\ 0xAE,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00065}00065\ \ \ \ \ 0xB1,\ 0xB3,\ 0xB6,\ 0xB9,\ 0xBC,\ 0xBF,\ 0xC1,\ 0xC4,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00066}00066\ \ \ \ \ 0xC7,\ 0xC9,\ 0xCC,\ 0xCE,\ 0xD1,\ 0xD3,\ 0xD5,\ 0xD8,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00067}00067\ \ \ \ \ 0xDA,\ 0xDC,\ 0xDE,\ 0xE0,\ 0xE2,\ 0xE4,\ 0xE6,\ 0xE8,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00068}00068\ \ \ \ \ 0xEA,\ 0xEB,\ 0xED,\ 0xEF,\ 0xF0,\ 0xF1,\ 0xF3,\ 0xF4,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00069}00069\ \ \ \ \ 0xF5,\ 0xF6,\ 0xF8,\ 0xF9,\ 0xFA,\ 0xFA,\ 0xFB,\ 0xFC,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00070}00070\ \ \ \ \ 0xFD,\ 0xFD,\ 0xFE,\ 0xFE,\ 0xFE,\ 0xFF,\ 0xFF,\ 0xFF,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00071}00071\ \ \ \ \ 0xFF,\ 0xFF,\ 0xFF,\ 0xFF,\ 0xFE,\ 0xFE,\ 0xFE,\ 0xFD,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00072}00072\ \ \ \ \ 0xFD,\ 0xFC,\ 0xFB,\ 0xFA,\ 0xFA,\ 0xF9,\ 0xF8,\ 0xF6,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00073}00073\ \ \ \ \ 0xF5,\ 0xF4,\ 0xF3,\ 0xF1,\ 0xF0,\ 0xEF,\ 0xED,\ 0xEB,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00074}00074\ \ \ \ \ 0xEA,\ 0xE8,\ 0xE6,\ 0xE4,\ 0xE2,\ 0xE0,\ 0xDE,\ 0xDC,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00075}00075\ \ \ \ \ 0xDA,\ 0xD8,\ 0xD5,\ 0xD3,\ 0xD1,\ 0xCE,\ 0xCC,\ 0xC9,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00076}00076\ \ \ \ \ 0xC7,\ 0xC4,\ 0xC1,\ 0xBF,\ 0xBC,\ 0xB9,\ 0xB6,\ 0xB3,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00077}00077\ \ \ \ \ 0xB1,\ 0xAE,\ 0xAB,\ 0xA8,\ 0xA5,\ 0xA2,\ 0x9F,\ 0x9C,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00078}00078\ \ \ \ \ 0x99,\ 0x96,\ 0x93,\ 0x90,\ 0x8C,\ 0x89,\ 0x86,\ 0x83,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00079}00079\ \ \ \ \ 0x80,\ 0x7D,\ 0x7A,\ 0x77,\ 0x74,\ 0x70,\ 0x6D,\ 0x6A,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00080}00080\ \ \ \ \ 0x67,\ 0x64,\ 0x61,\ 0x5E,\ 0x5B,\ 0x58,\ 0x55,\ 0x52,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00081}00081\ \ \ \ \ 0x4F,\ 0x4D,\ 0x4A,\ 0x47,\ 0x44,\ 0x41,\ 0x3F,\ 0x3C,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00082}00082\ \ \ \ \ 0x39,\ 0x37,\ 0x34,\ 0x32,\ 0x2F,\ 0x2D,\ 0x2B,\ 0x28,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00083}00083\ \ \ \ \ 0x26,\ 0x24,\ 0x22,\ 0x20,\ 0x1E,\ 0x1C,\ 0x1A,\ 0x18,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00084}00084\ \ \ \ \ 0x16,\ 0x15,\ 0x13,\ 0x11,\ 0x10,\ 0x0F,\ 0x0D,\ 0x0C,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00085}00085\ \ \ \ \ 0x0B,\ 0x0A,\ 0x08,\ 0x07,\ 0x06,\ 0x06,\ 0x05,\ 0x04,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00086}00086\ \ \ \ \ 0x03,\ 0x03,\ 0x02,\ 0x02,\ 0x02,\ 0x01,\ 0x01,\ 0x01,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00087}00087\ \ \ \ \ 0x01,\ 0x01,\ 0x01,\ 0x01,\ 0x02,\ 0x02,\ 0x02,\ 0x03,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00088}00088\ \ \ \ \ 0x03,\ 0x04,\ 0x05,\ 0x06,\ 0x06,\ 0x07,\ 0x08,\ 0x0A,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00089}00089\ \ \ \ \ 0x0B,\ 0x0C,\ 0x0D,\ 0x0F,\ 0x10,\ 0x11,\ 0x13,\ 0x15,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00090}00090\ \ \ \ \ 0x16,\ 0x18,\ 0x1A,\ 0x1C,\ 0x1E,\ 0x20,\ 0x22,\ 0x24,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00091}00091\ \ \ \ \ 0x26,\ 0x28,\ 0x2B,\ 0x2D,\ 0x2F,\ 0x32,\ 0x34,\ 0x37,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00092}00092\ \ \ \ \ 0x39,\ 0x3C,\ 0x3F,\ 0x41,\ 0x44,\ 0x47,\ 0x4A,\ 0x4D,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00093}00093\ \ \ \ \ 0x4F,\ 0x52,\ 0x55,\ 0x58,\ 0x5B,\ 0x5E,\ 0x61,\ 0x64,}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00094}00094\ \ \ \ \ 0x67,\ 0x6A,\ 0x6D,\ 0x70,\ 0x74,\ 0x77,\ 0x7A,\ 0x7D}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00095}00095\ \};}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00096}00096\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00097}00097\ \textcolor{keywordtype}{void}\ led\_lightshow(\textcolor{keywordtype}{int}\ speed)}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00098}00098\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00099}00099\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ j\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00100}00100\ \ \ \ \ \textcolor{keyword}{static}\ uint8\_t\ cylon\ =\ 0xff;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00101}00101\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ alive\_led\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00102}00102\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ LED\_UP\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00103}00103\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00104}00104\ \ \ \ \ \textcolor{keywordflow}{if}\ (j++\ >=\ speed)\ \{\ \textcolor{comment}{//\ delay\ a\ bit\ ok}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00105}00105\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (0)\ \{\ \textcolor{comment}{//\ screen\ status\ feedback}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00106}00106\ \ \ \ \ \ \ \ \ \ \ \ \ bmc.dataout.dio\_buf\ =\ \string~cylon;\ \textcolor{comment}{//\ roll\ leds\ cylon\ style}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00107}00107\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ \ \ bmc.dataout.dio\_buf\ =\ cylon;\ \textcolor{comment}{//\ roll\ leds\ cylon\ style\ (inverted)}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00109}00109\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00110}00110\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00111}00111\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (LED\_UP\ \&\&\ (alive\_led\ !=\ 0))\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00112}00112\ \ \ \ \ \ \ \ \ \ \ \ \ alive\_led\ =\ alive\_led\ *\ 2;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00113}00113\ \ \ \ \ \ \ \ \ \ \ \ \ cylon\ =\ cylon\ <<\ 1;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00114}00114\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00115}00115\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (alive\_led\ !=\ 0)\ alive\_led\ =\ alive\_led\ /\ 2;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00116}00116\ \ \ \ \ \ \ \ \ \ \ \ \ cylon\ =\ cylon\ >>\ 1;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00117}00117\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00118}00118\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (alive\_led\ <\ 2)\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00119}00119\ \ \ \ \ \ \ \ \ \ \ \ \ alive\_led\ =\ 2;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00120}00120\ \ \ \ \ \ \ \ \ \ \ \ \ LED\_UP\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00121}00121\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00122}00122\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (alive\_led\ >\ 128)\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ alive\_led\ =\ 128;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ LED\_UP\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00126}00126\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00127}00127\ \ \ \ \ \ \ \ \ j\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00128}00128\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00129}00129\ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00130}00130\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00131}00131\ \textcolor{keywordtype}{int}\ main(\textcolor{keywordtype}{int}\ argc,\ \textcolor{keywordtype}{char}\ *argv[])}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00132}00132\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00133}00133\ \ \ \ \ \textcolor{keywordtype}{int}\ do\_ao\_only\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00134}00134\ \ \ \ \ uint8\_t\ i\ =\ 0,\ j\ =\ 75;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00135}00135\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00136}00136\ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00137}00137\ \textcolor{comment}{\ \ \ \ \ *\ start\ the\ MQTT\ processing}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00138}00138\ \textcolor{comment}{\ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00139}00139\ \ \ \ \ bmc\_mqtt\_init();}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00140}00140\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00141}00141\ \ \ \ \ \textcolor{keywordflow}{if}\ (do\_ao\_only)\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00142}00142\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (init\_dac(0.0,\ 25.0,\ \textcolor{keyword}{false})\ <\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00143}00143\ \ \ \ \ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Missing\ Analog\ AO\ subdevice\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00144}00144\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00145}00145\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00146}00146\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00147}00147\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00148}00148\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00149}00149\ \ \ \ \ \ \ \ \ \ \ \ \ set\_dac\_raw(0,\ sine\_wave[255\ -\/\ i++]\ <<\ 4);}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00150}00150\ \ \ \ \ \ \ \ \ \ \ \ \ set\_dac\_raw(1,\ sine\_wave[255\ -\/\ j++]\ <<\ 4);}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00151}00151\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00152}00152\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00153}00153\ \textcolor{preprocessor}{\#ifndef\ DIGITAL\_ONLY}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00154}00154\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (init\_daq(0.0,\ 25.0,\ \textcolor{keyword}{false})\ <\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00155}00155\ \ \ \ \ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Missing\ Analog\ subdevice(s)\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00156}00156\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00157}00157\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00158}00158\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00159}00159\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (init\_dio()\ <\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00160}00160\ \ \ \ \ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Missing\ Digital\ subdevice(s)\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00161}00161\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00162}00162\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00163}00163\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00164}00164\ \ \ \ \ \ \ \ \ E.dac[0]\ =\ 1.23f;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00165}00165\ \ \ \ \ \ \ \ \ E.dac[1]\ =\ 3.21f;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00166}00166\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00167}00167\ \ \ \ \ \ \ \ \ E.do\_16b\ =\ 0x01;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00168}00168\ \ \ \ \ \ \ \ \ E.di\_16b\ =\ 0x10;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00169}00169\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00170}00170\ \ \ \ \ \ \ \ \ fflush(fout);}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00171}00171\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00172}00172\ \ \ \ \ \ \ \ \ \ \ \ \ usleep(MAIN\_DELAY);\ \textcolor{comment}{//\ sample\ rate\ \string~1\ msec}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00173}00173\ \ \ \ \ \ \ \ \ \ \ \ \ set\_dac\_raw(0,\ sine\_wave[i++]);}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00174}00174\ \ \ \ \ \ \ \ \ \ \ \ \ get\_data\_sample();}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00175}00175\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00176}00176\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bmc.BOARD\ ==\ bmcboard)\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00177}00177\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ led\_lightshow(15);}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00178}00178\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00179}00179\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ led\_lightshow(10);}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00180}00180\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00181}00181\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00182}00182\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ha\_flag\_vars\_ss.runner)\ \{\ \textcolor{comment}{//\ timer\ or\ trigger\ from\ mqtt}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00183}00183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ comedi\_push\_mqtt();\ \textcolor{comment}{//\ send\ json\ formatted\ data\ to\ the\ mqtt\ server}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00184}00184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ha\_flag\_vars\_ss.runner\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00185}00185\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00186}00186\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00187}00187\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00188}00188\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00189}00189\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00190}00190\ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00191}00191\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00062}00062\ \textcolor{comment}{/*\ ripped\ from\ http://aquaticus.info/pwm-\/sine-\/wave\ */}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00063}00063\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00064}00064\ \textcolor{keyword}{const}\ uint8\_t\ sine\_wave[256]\ =\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00065}00065\ \ \ \ \ 0x80,\ 0x83,\ 0x86,\ 0x89,\ 0x8C,\ 0x90,\ 0x93,\ 0x96,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00066}00066\ \ \ \ \ 0x99,\ 0x9C,\ 0x9F,\ 0xA2,\ 0xA5,\ 0xA8,\ 0xAB,\ 0xAE,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00067}00067\ \ \ \ \ 0xB1,\ 0xB3,\ 0xB6,\ 0xB9,\ 0xBC,\ 0xBF,\ 0xC1,\ 0xC4,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00068}00068\ \ \ \ \ 0xC7,\ 0xC9,\ 0xCC,\ 0xCE,\ 0xD1,\ 0xD3,\ 0xD5,\ 0xD8,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00069}00069\ \ \ \ \ 0xDA,\ 0xDC,\ 0xDE,\ 0xE0,\ 0xE2,\ 0xE4,\ 0xE6,\ 0xE8,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00070}00070\ \ \ \ \ 0xEA,\ 0xEB,\ 0xED,\ 0xEF,\ 0xF0,\ 0xF1,\ 0xF3,\ 0xF4,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00071}00071\ \ \ \ \ 0xF5,\ 0xF6,\ 0xF8,\ 0xF9,\ 0xFA,\ 0xFA,\ 0xFB,\ 0xFC,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00072}00072\ \ \ \ \ 0xFD,\ 0xFD,\ 0xFE,\ 0xFE,\ 0xFE,\ 0xFF,\ 0xFF,\ 0xFF,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00073}00073\ \ \ \ \ 0xFF,\ 0xFF,\ 0xFF,\ 0xFF,\ 0xFE,\ 0xFE,\ 0xFE,\ 0xFD,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00074}00074\ \ \ \ \ 0xFD,\ 0xFC,\ 0xFB,\ 0xFA,\ 0xFA,\ 0xF9,\ 0xF8,\ 0xF6,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00075}00075\ \ \ \ \ 0xF5,\ 0xF4,\ 0xF3,\ 0xF1,\ 0xF0,\ 0xEF,\ 0xED,\ 0xEB,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00076}00076\ \ \ \ \ 0xEA,\ 0xE8,\ 0xE6,\ 0xE4,\ 0xE2,\ 0xE0,\ 0xDE,\ 0xDC,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00077}00077\ \ \ \ \ 0xDA,\ 0xD8,\ 0xD5,\ 0xD3,\ 0xD1,\ 0xCE,\ 0xCC,\ 0xC9,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00078}00078\ \ \ \ \ 0xC7,\ 0xC4,\ 0xC1,\ 0xBF,\ 0xBC,\ 0xB9,\ 0xB6,\ 0xB3,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00079}00079\ \ \ \ \ 0xB1,\ 0xAE,\ 0xAB,\ 0xA8,\ 0xA5,\ 0xA2,\ 0x9F,\ 0x9C,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00080}00080\ \ \ \ \ 0x99,\ 0x96,\ 0x93,\ 0x90,\ 0x8C,\ 0x89,\ 0x86,\ 0x83,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00081}00081\ \ \ \ \ 0x80,\ 0x7D,\ 0x7A,\ 0x77,\ 0x74,\ 0x70,\ 0x6D,\ 0x6A,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00082}00082\ \ \ \ \ 0x67,\ 0x64,\ 0x61,\ 0x5E,\ 0x5B,\ 0x58,\ 0x55,\ 0x52,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00083}00083\ \ \ \ \ 0x4F,\ 0x4D,\ 0x4A,\ 0x47,\ 0x44,\ 0x41,\ 0x3F,\ 0x3C,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00084}00084\ \ \ \ \ 0x39,\ 0x37,\ 0x34,\ 0x32,\ 0x2F,\ 0x2D,\ 0x2B,\ 0x28,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00085}00085\ \ \ \ \ 0x26,\ 0x24,\ 0x22,\ 0x20,\ 0x1E,\ 0x1C,\ 0x1A,\ 0x18,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00086}00086\ \ \ \ \ 0x16,\ 0x15,\ 0x13,\ 0x11,\ 0x10,\ 0x0F,\ 0x0D,\ 0x0C,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00087}00087\ \ \ \ \ 0x0B,\ 0x0A,\ 0x08,\ 0x07,\ 0x06,\ 0x06,\ 0x05,\ 0x04,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00088}00088\ \ \ \ \ 0x03,\ 0x03,\ 0x02,\ 0x02,\ 0x02,\ 0x01,\ 0x01,\ 0x01,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00089}00089\ \ \ \ \ 0x01,\ 0x01,\ 0x01,\ 0x01,\ 0x02,\ 0x02,\ 0x02,\ 0x03,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00090}00090\ \ \ \ \ 0x03,\ 0x04,\ 0x05,\ 0x06,\ 0x06,\ 0x07,\ 0x08,\ 0x0A,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00091}00091\ \ \ \ \ 0x0B,\ 0x0C,\ 0x0D,\ 0x0F,\ 0x10,\ 0x11,\ 0x13,\ 0x15,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00092}00092\ \ \ \ \ 0x16,\ 0x18,\ 0x1A,\ 0x1C,\ 0x1E,\ 0x20,\ 0x22,\ 0x24,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00093}00093\ \ \ \ \ 0x26,\ 0x28,\ 0x2B,\ 0x2D,\ 0x2F,\ 0x32,\ 0x34,\ 0x37,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00094}00094\ \ \ \ \ 0x39,\ 0x3C,\ 0x3F,\ 0x41,\ 0x44,\ 0x47,\ 0x4A,\ 0x4D,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00095}00095\ \ \ \ \ 0x4F,\ 0x52,\ 0x55,\ 0x58,\ 0x5B,\ 0x5E,\ 0x61,\ 0x64,}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00096}00096\ \ \ \ \ 0x67,\ 0x6A,\ 0x6D,\ 0x70,\ 0x74,\ 0x77,\ 0x7A,\ 0x7D}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00097}00097\ \};}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00099}00099\ \textcolor{keywordtype}{void}\ led\_lightshow(\textcolor{keywordtype}{int}\ speed)}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00100}00100\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00101}00101\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ j\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00102}00102\ \ \ \ \ \textcolor{keyword}{static}\ uint8\_t\ cylon\ =\ 0xff;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00103}00103\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ alive\_led\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00104}00104\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ LED\_UP\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00106}00106\ \ \ \ \ \textcolor{keywordflow}{if}\ (j++\ >=\ speed)\ \{\ \textcolor{comment}{//\ delay\ a\ bit\ ok}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00107}00107\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (0)\ \{\ \textcolor{comment}{//\ screen\ status\ feedback}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ \ \ bmc.dataout.dio\_buf\ =\ \string~cylon;\ \textcolor{comment}{//\ roll\ leds\ cylon\ style}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00109}00109\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00110}00110\ \ \ \ \ \ \ \ \ \ \ \ \ bmc.dataout.dio\_buf\ =\ cylon;\ \textcolor{comment}{//\ roll\ leds\ cylon\ style\ (inverted)}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00111}00111\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00112}00112\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00113}00113\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (LED\_UP\ \&\&\ (alive\_led\ !=\ 0))\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00114}00114\ \ \ \ \ \ \ \ \ \ \ \ \ alive\_led\ =\ alive\_led\ *\ 2;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00115}00115\ \ \ \ \ \ \ \ \ \ \ \ \ cylon\ =\ cylon\ <<\ 1;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00116}00116\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00117}00117\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (alive\_led\ !=\ 0)\ alive\_led\ =\ alive\_led\ /\ 2;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00118}00118\ \ \ \ \ \ \ \ \ \ \ \ \ cylon\ =\ cylon\ >>\ 1;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00119}00119\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00120}00120\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (alive\_led\ <\ 2)\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00121}00121\ \ \ \ \ \ \ \ \ \ \ \ \ alive\_led\ =\ 2;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00122}00122\ \ \ \ \ \ \ \ \ \ \ \ \ LED\_UP\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00123}00123\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (alive\_led\ >\ 128)\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ alive\_led\ =\ 128;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00126}00126\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ LED\_UP\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00127}00127\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00128}00128\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00129}00129\ \ \ \ \ \ \ \ \ j\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00130}00130\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00131}00131\ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00132}00132\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00133}00133\ \textcolor{keywordtype}{int}\ main(\textcolor{keywordtype}{int}\ argc,\ \textcolor{keywordtype}{char}\ *argv[])}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00134}00134\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00135}00135\ \ \ \ \ \textcolor{keywordtype}{int}\ do\_ao\_only\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00136}00136\ \ \ \ \ uint8\_t\ i\ =\ 0,\ j\ =\ 75;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00137}00137\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00138}00138\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00139}00139\ \textcolor{comment}{\ \ \ \ \ *\ start\ the\ MQTT\ processing}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00140}00140\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00141}00141\ \ \ \ \ bmc\_mqtt\_init();}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00142}00142\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00143}00143\ \ \ \ \ \textcolor{keywordflow}{if}\ (do\_ao\_only)\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00144}00144\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (init\_dac(0.0,\ 25.0,\ \textcolor{keyword}{false})\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00145}00145\ \ \ \ \ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Missing\ Analog\ AO\ subdevice\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00146}00146\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00147}00147\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00148}00148\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00149}00149\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00150}00150\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00151}00151\ \ \ \ \ \ \ \ \ \ \ \ \ set\_dac\_raw(0,\ sine\_wave[255\ -\/\ i++]\ <<\ 4);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00152}00152\ \ \ \ \ \ \ \ \ \ \ \ \ set\_dac\_raw(1,\ sine\_wave[255\ -\/\ j++]\ <<\ 4);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00153}00153\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00154}00154\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00155}00155\ \textcolor{preprocessor}{\#ifndef\ DIGITAL\_ONLY}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00156}00156\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (init\_daq(0.0,\ 25.0,\ \textcolor{keyword}{false})\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00157}00157\ \ \ \ \ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Missing\ Analog\ subdevice(s)\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00158}00158\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00159}00159\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00160}00160\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00161}00161\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (init\_dio()\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00162}00162\ \ \ \ \ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Missing\ Digital\ subdevice(s)\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00163}00163\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00164}00164\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00165}00165\ \ \ \ \ \ \ \ \ E.dac[0]\ =\ 1.23f;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00166}00166\ \ \ \ \ \ \ \ \ E.dac[1]\ =\ 3.21f;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00167}00167\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00168}00168\ \ \ \ \ \ \ \ \ E.do\_16b\ =\ 0x01;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00169}00169\ \ \ \ \ \ \ \ \ E.di\_16b\ =\ 0x10;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00170}00170\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00171}00171\ \ \ \ \ \ \ \ \ fflush(fout);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00172}00172\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00173}00173\ \ \ \ \ \ \ \ \ \ \ \ \ usleep(MAIN\_DELAY);\ \textcolor{comment}{//\ sample\ rate\ \string~1\ msec}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00174}00174\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ set\_dac\_raw(0,\ sine\_wave[i++]);}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00175}00175\ \ \ \ \ \ \ \ \ \ \ \ \ get\_data\_sample();}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00176}00176\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00177}00177\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bmc.BOARD\ ==\ bmcboard)\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00178}00178\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ led\_lightshow(10);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00179}00179\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00180}00180\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ led\_lightshow(10);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00181}00181\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00182}00182\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00183}00183\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ha\_flag\_vars\_ss.runner)\ \{\ \textcolor{comment}{//\ timer\ or\ trigger\ from\ mqtt}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00184}00184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ comedi\_push\_mqtt();\ \textcolor{comment}{//\ send\ json\ formatted\ data\ to\ the\ mqtt\ server}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00185}00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ha\_flag\_vars\_ss.runner\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00186}00186\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00187}00187\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00188}00188\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00189}00189\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00190}00190\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00191}00191\ \}}
 \DoxyCodeLine{\Hypertarget{bmc_8c_source_l00192}00192\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00193}00193\ }
 
 \end{DoxyCode}

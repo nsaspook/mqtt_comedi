@@ -1,6 +1,7 @@
 \doxysection{bmc\+\_\+slave.\+X/eadog.c File Reference}
 \hypertarget{eadog_8c}{}\label{eadog_8c}\index{bmc\_slave.X/eadog.c@{bmc\_slave.X/eadog.c}}
 {\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include "{}mxcmd.\+h"{}}\newline
 {\ttfamily \#include "{}eadog.\+h"{}}\newline
 {\ttfamily \#include "{}vconfig.\+h"{}}\newline
 {\ttfamily \#include "{}mcc\+\_\+generated\+\_\+files/mcc.\+h"{}}\newline
@@ -22,9 +23,11 @@ Include dependency graph for eadog.\+c\+:
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
+void \mbox{\hyperlink{eadog_8c_a3ff828022c3c7d1ef14e5879c8404350}{wdtdelay}} (const uint32\+\_\+t)
+\item 
 bool \mbox{\hyperlink{eadog_8c_ab5c89a01791e81a5efcee4e25a938a7e}{init\+\_\+display}} (void)
 \item 
-void \mbox{\hyperlink{eadog_8c_a354a7869fc0c21ba6ac9176523c70406}{ea\+Dog\+M\+\_\+\+Write\+String}} (char \texorpdfstring{$\ast$}{*}str\+Ptr)
+void \mbox{\hyperlink{eadog_8c_a9f7edfc6f1eb732311ad8ff33fe177ba}{ea\+Dog\+M\+\_\+\+Write\+String}} (const char \texorpdfstring{$\ast$}{*}str\+Ptr)
 \item 
 void \mbox{\hyperlink{eadog_8c_ac5585b92f3ab25fe8ae2e2b5ec1cbf35}{send\+\_\+lcd\+\_\+cmd\+\_\+dma}} (const uint8\+\_\+t str\+Ptr)
 \item 
@@ -70,7 +73,7 @@ void \mbox{\hyperlink{eadog_8c_af97a7634a90dd5ed782b7124540c7818}{clear\+\_\+lcd
 \item 
 void \mbox{\hyperlink{eadog_8c_ad48c238ccf5961cfd48b7660c65f7839}{spi\+\_\+rec\+\_\+done}} (void)
 \item 
-char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{eadog_8c_ae8f50b6d3935a397ae8af27a63be14a2}{ea\+Dog\+M\+\_\+\+Scroll\+\_\+\+String}} (char \texorpdfstring{$\ast$}{*}str\+Ptr)
+char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{eadog_8c_ab4766eb4c494409881d9bddf54c5289b}{ea\+Dog\+M\+\_\+\+Scroll\+\_\+\+String}} (const char \texorpdfstring{$\ast$}{*}str\+Ptr)
 \item 
 void \mbox{\hyperlink{eadog_8c_acc9ccd8c6efcbbefec86c4122d0065f2}{ea\+Dog\+M\+\_\+\+Scroll\+\_\+\+Task}} (void)
 \item 
@@ -104,7 +107,7 @@ volatile uint8\+\_\+t \mbox{\hyperlink{eadog_8c_add35ee879fe033aa1abfd75c54af55e
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00018}{18}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00019}{19}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_a00f46ef6532ece2210bb23643fd4b6b0}\index{eadog.c@{eadog.c}!E\_TRACE@{E\_TRACE}}
 \index{E\_TRACE@{E\_TRACE}!eadog.c@{eadog.c}}
@@ -114,7 +117,7 @@ Definition at line \mbox{\hyperlink{eadog_8c_source_l00018}{18}} of file \mbox{\
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00010}{10}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00011}{11}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 
 
@@ -129,7 +132,7 @@ void check\+\_\+lcd\+\_\+dim (\begin{DoxyParamCaption}\item[{const bool}]{dim}{}
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00530}{530}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00531}{531}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_af97a7634a90dd5ed782b7124540c7818}\index{eadog.c@{eadog.c}!clear\_lcd\_done@{clear\_lcd\_done}}
 \index{clear\_lcd\_done@{clear\_lcd\_done}!eadog.c@{eadog.c}}
@@ -139,7 +142,7 @@ void clear\+\_\+lcd\+\_\+done (\begin{DoxyParamCaption}\item[{void}]{}{}\end{Dox
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00437}{437}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00438}{438}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_a2276e41b9d632dd7ace4bf60bd595b2c}\index{eadog.c@{eadog.c}!eaDogM\_ClearRow@{eaDogM\_ClearRow}}
 \index{eaDogM\_ClearRow@{eaDogM\_ClearRow}!eadog.c@{eadog.c}}
@@ -149,17 +152,17 @@ void ea\+Dog\+M\+\_\+\+Clear\+Row (\begin{DoxyParamCaption}\item[{const uint8\+\
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00318}{318}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00319}{319}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
-\Hypertarget{eadog_8c_ae8f50b6d3935a397ae8af27a63be14a2}\index{eadog.c@{eadog.c}!eaDogM\_Scroll\_String@{eaDogM\_Scroll\_String}}
+\Hypertarget{eadog_8c_ab4766eb4c494409881d9bddf54c5289b}\index{eadog.c@{eadog.c}!eaDogM\_Scroll\_String@{eaDogM\_Scroll\_String}}
 \index{eaDogM\_Scroll\_String@{eaDogM\_Scroll\_String}!eadog.c@{eadog.c}}
 \doxysubsubsection{\texorpdfstring{eaDogM\_Scroll\_String()}{eaDogM\_Scroll\_String()}}
-{\footnotesize\ttfamily \label{eadog_8c_ae8f50b6d3935a397ae8af27a63be14a2} 
-char \texorpdfstring{$\ast$}{*} ea\+Dog\+M\+\_\+\+Scroll\+\_\+\+String (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{str\+Ptr}{}\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \label{eadog_8c_ab4766eb4c494409881d9bddf54c5289b} 
+char \texorpdfstring{$\ast$}{*} ea\+Dog\+M\+\_\+\+Scroll\+\_\+\+String (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{str\+Ptr}{}\end{DoxyParamCaption})}
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00485}{485}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00486}{486}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_acc9ccd8c6efcbbefec86c4122d0065f2}\index{eadog.c@{eadog.c}!eaDogM\_Scroll\_Task@{eaDogM\_Scroll\_Task}}
 \index{eaDogM\_Scroll\_Task@{eaDogM\_Scroll\_Task}!eadog.c@{eadog.c}}
@@ -169,7 +172,7 @@ void ea\+Dog\+M\+\_\+\+Scroll\+\_\+\+Task (\begin{DoxyParamCaption}\item[{void}]
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00500}{500}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00501}{501}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_a14d6c8d2a272183e99a56fdf118a8dc8}\index{eadog.c@{eadog.c}!eaDogM\_SetPos@{eaDogM\_SetPos}}
 \index{eaDogM\_SetPos@{eaDogM\_SetPos}!eadog.c@{eadog.c}}
@@ -179,7 +182,7 @@ void ea\+Dog\+M\+\_\+\+Set\+Pos (\begin{DoxyParamCaption}\item[{const uint8\+\_\
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00313}{313}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00314}{314}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_a14fc02c95332797dcaf9f04006e6cfb6}\index{eadog.c@{eadog.c}!eaDogM\_WriteByteToCGRAM@{eaDogM\_WriteByteToCGRAM}}
 \index{eaDogM\_WriteByteToCGRAM@{eaDogM\_WriteByteToCGRAM}!eadog.c@{eadog.c}}
@@ -189,7 +192,7 @@ void ea\+Dog\+M\+\_\+\+Write\+Byte\+To\+CGRAM (\begin{DoxyParamCaption}\item[{co
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00323}{323}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00324}{324}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_a012b70e817b582af428c3dc8043ff04c}\index{eadog.c@{eadog.c}!eaDogM\_WriteChr@{eaDogM\_WriteChr}}
 \index{eaDogM\_WriteChr@{eaDogM\_WriteChr}!eadog.c@{eadog.c}}
@@ -199,7 +202,7 @@ void ea\+Dog\+M\+\_\+\+Write\+Chr (\begin{DoxyParamCaption}\item[{const int8\+\_
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00340}{340}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00341}{341}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_a38560127e69611361f6edc5b83c9518f}\index{eadog.c@{eadog.c}!eaDogM\_WriteCommand@{eaDogM\_WriteCommand}}
 \index{eaDogM\_WriteCommand@{eaDogM\_WriteCommand}!eadog.c@{eadog.c}}
@@ -209,7 +212,7 @@ void ea\+Dog\+M\+\_\+\+Write\+Command (\begin{DoxyParamCaption}\item[{const uint
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00331}{331}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00332}{332}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_a69927a3649ff3bd7d1e714c40412dd05}\index{eadog.c@{eadog.c}!eaDogM\_WriteIntAtPos@{eaDogM\_WriteIntAtPos}}
 \index{eaDogM\_WriteIntAtPos@{eaDogM\_WriteIntAtPos}!eadog.c@{eadog.c}}
@@ -219,17 +222,17 @@ void ea\+Dog\+M\+\_\+\+Write\+Int\+At\+Pos (\begin{DoxyParamCaption}\item[{const
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00308}{308}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00309}{309}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
-\Hypertarget{eadog_8c_a354a7869fc0c21ba6ac9176523c70406}\index{eadog.c@{eadog.c}!eaDogM\_WriteString@{eaDogM\_WriteString}}
+\Hypertarget{eadog_8c_a9f7edfc6f1eb732311ad8ff33fe177ba}\index{eadog.c@{eadog.c}!eaDogM\_WriteString@{eaDogM\_WriteString}}
 \index{eaDogM\_WriteString@{eaDogM\_WriteString}!eadog.c@{eadog.c}}
 \doxysubsubsection{\texorpdfstring{eaDogM\_WriteString()}{eaDogM\_WriteString()}}
-{\footnotesize\ttfamily \label{eadog_8c_a354a7869fc0c21ba6ac9176523c70406} 
-void ea\+Dog\+M\+\_\+\+Write\+String (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{str\+Ptr}{}\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \label{eadog_8c_a9f7edfc6f1eb732311ad8ff33fe177ba} 
+void ea\+Dog\+M\+\_\+\+Write\+String (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{str\+Ptr}{}\end{DoxyParamCaption})}
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00165}{165}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00166}{166}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_a469b07cd52f5a0a71c589c78ded7ca3b}\index{eadog.c@{eadog.c}!eaDogM\_WriteStringAtPos@{eaDogM\_WriteStringAtPos}}
 \index{eaDogM\_WriteStringAtPos@{eaDogM\_WriteStringAtPos}!eadog.c@{eadog.c}}
@@ -239,7 +242,7 @@ void ea\+Dog\+M\+\_\+\+Write\+String\+At\+Pos (\begin{DoxyParamCaption}\item[{co
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00269}{269}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00270}{270}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_ab5c89a01791e81a5efcee4e25a938a7e}\index{eadog.c@{eadog.c}!init\_display@{init\_display}}
 \index{init\_display@{init\_display}!eadog.c@{eadog.c}}
@@ -249,7 +252,7 @@ bool init\+\_\+display (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamC
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00049}{49}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00050}{50}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_a5d89523c6da6150f0e42c89f8f717f0e}\index{eadog.c@{eadog.c}!no\_dma\_set\_lcd@{no\_dma\_set\_lcd}}
 \index{no\_dma\_set\_lcd@{no\_dma\_set\_lcd}!eadog.c@{eadog.c}}
@@ -259,7 +262,7 @@ void no\+\_\+dma\+\_\+set\+\_\+lcd (\begin{DoxyParamCaption}\item[{void}]{}{}\en
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00519}{519}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00520}{520}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_ac5585b92f3ab25fe8ae2e2b5ec1cbf35}\index{eadog.c@{eadog.c}!send\_lcd\_cmd\_dma@{send\_lcd\_cmd\_dma}}
 \index{send\_lcd\_cmd\_dma@{send\_lcd\_cmd\_dma}!eadog.c@{eadog.c}}
@@ -269,7 +272,7 @@ void send\+\_\+lcd\+\_\+cmd\+\_\+dma (\begin{DoxyParamCaption}\item[{const uint8
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00191}{191}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00192}{192}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_a73a4ef55ce025687fb0498bbf1af928e}\index{eadog.c@{eadog.c}!send\_lcd\_data\_dma@{send\_lcd\_data\_dma}}
 \index{send\_lcd\_data\_dma@{send\_lcd\_data\_dma}!eadog.c@{eadog.c}}
@@ -279,7 +282,7 @@ void send\+\_\+lcd\+\_\+data\+\_\+dma (\begin{DoxyParamCaption}\item[{const uint
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00200}{200}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00201}{201}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_a4003f144ad500adb8b664ecf940460f7}\index{eadog.c@{eadog.c}!send\_lcd\_pos\_dma@{send\_lcd\_pos\_dma}}
 \index{send\_lcd\_pos\_dma@{send\_lcd\_pos\_dma}!eadog.c@{eadog.c}}
@@ -289,7 +292,7 @@ void send\+\_\+lcd\+\_\+pos\+\_\+dma (\begin{DoxyParamCaption}\item[{const uint8
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00253}{253}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00254}{254}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_a04070bc2b13d36a7e8d27426981dec07}\index{eadog.c@{eadog.c}!send\_spi1\_mc33996\_dma@{send\_spi1\_mc33996\_dma}}
 \index{send\_spi1\_mc33996\_dma@{send\_spi1\_mc33996\_dma}!eadog.c@{eadog.c}}
@@ -299,7 +302,7 @@ void send\+\_\+spi1\+\_\+mc33996\+\_\+dma (\begin{DoxyParamCaption}\item[{uint8\
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00232}{232}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00233}{233}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_a7f4d66e1e6fb5e1a1a3681469d4287ec}\index{eadog.c@{eadog.c}!send\_spi1\_tic12400\_dma@{send\_spi1\_tic12400\_dma}}
 \index{send\_spi1\_tic12400\_dma@{send\_spi1\_tic12400\_dma}!eadog.c@{eadog.c}}
@@ -309,7 +312,7 @@ void send\+\_\+spi1\+\_\+tic12400\+\_\+dma (\begin{DoxyParamCaption}\item[{uint8
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00214}{214}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00215}{215}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_af2766e0444001bb7952930559a89ee99}\index{eadog.c@{eadog.c}!set\_lcd\_dim@{set\_lcd\_dim}}
 \index{set\_lcd\_dim@{set\_lcd\_dim}!eadog.c@{eadog.c}}
@@ -319,7 +322,7 @@ void set\+\_\+lcd\+\_\+dim (\begin{DoxyParamCaption}\item[{const bool}]{dim}{}\e
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00555}{555}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00556}{556}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_ad48c238ccf5961cfd48b7660c65f7839}\index{eadog.c@{eadog.c}!spi\_rec\_done@{spi\_rec\_done}}
 \index{spi\_rec\_done@{spi\_rec\_done}!eadog.c@{eadog.c}}
@@ -329,7 +332,7 @@ void spi\+\_\+rec\+\_\+done (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyP
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00476}{476}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00477}{477}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_aa1f14a3ecc647d99fcf5ea0281eb433a}\index{eadog.c@{eadog.c}!start\_lcd@{start\_lcd}}
 \index{start\_lcd@{start\_lcd}!eadog.c@{eadog.c}}
@@ -339,7 +342,7 @@ void start\+\_\+lcd (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCapt
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00352}{352}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00353}{353}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_a9cbfe6158a26e6e51778b1fdad627533}\index{eadog.c@{eadog.c}!start\_spi1\_read@{start\_spi1\_read}}
 \index{start\_spi1\_read@{start\_spi1\_read}!eadog.c@{eadog.c}}
@@ -349,7 +352,7 @@ void start\+\_\+spi1\+\_\+read (\begin{DoxyParamCaption}\item[{void}]{}{}\end{Do
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00362}{362}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00363}{363}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_ab1a2883fe5f06d51728b1046ea10aeee}\index{eadog.c@{eadog.c}!start\_spi1\_read1@{start\_spi1\_read1}}
 \index{start\_spi1\_read1@{start\_spi1\_read1}!eadog.c@{eadog.c}}
@@ -359,7 +362,7 @@ void start\+\_\+spi1\+\_\+read1 (\begin{DoxyParamCaption}\item[{void}]{}{}\end{D
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00373}{373}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00374}{374}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_a6c1680eb5821cfbf5d7dc689a2774846}\index{eadog.c@{eadog.c}!wait\_lcd\_check@{wait\_lcd\_check}}
 \index{wait\_lcd\_check@{wait\_lcd\_check}!eadog.c@{eadog.c}}
@@ -369,7 +372,7 @@ bool wait\+\_\+lcd\+\_\+check (\begin{DoxyParamCaption}\item[{void}]{}{}\end{Dox
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00391}{391}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00392}{392}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_ad1c508e21d80c901ee119631b8d06349}\index{eadog.c@{eadog.c}!wait\_lcd\_done@{wait\_lcd\_done}}
 \index{wait\_lcd\_done@{wait\_lcd\_done}!eadog.c@{eadog.c}}
@@ -379,7 +382,7 @@ void wait\+\_\+lcd\+\_\+done (\begin{DoxyParamCaption}\item[{void}]{}{}\end{Doxy
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00396}{396}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00397}{397}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_a41e751304b342050075d6a42885e5be9}\index{eadog.c@{eadog.c}!wait\_lcd\_set@{wait\_lcd\_set}}
 \index{wait\_lcd\_set@{wait\_lcd\_set}!eadog.c@{eadog.c}}
@@ -389,7 +392,7 @@ void wait\+\_\+lcd\+\_\+set (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyP
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00381}{381}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00382}{382}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_a7450fab7660204a55f1eda4e1130f9d2}\index{eadog.c@{eadog.c}!wait\_read\_done@{wait\_read\_done}}
 \index{wait\_read\_done@{wait\_read\_done}!eadog.c@{eadog.c}}
@@ -399,7 +402,7 @@ void wait\+\_\+read\+\_\+done (\begin{DoxyParamCaption}\item[{void}]{}{}\end{Dox
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00415}{415}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00416}{416}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_af8359ab8ae9704578441970b7f1ca20a}\index{eadog.c@{eadog.c}!wait\_read\_set@{wait\_read\_set}}
 \index{wait\_read\_set@{wait\_read\_set}!eadog.c@{eadog.c}}
@@ -409,7 +412,17 @@ void wait\+\_\+read\+\_\+set (\begin{DoxyParamCaption}\item[{void}]{}{}\end{Doxy
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00386}{386}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00387}{387}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+
+\Hypertarget{eadog_8c_a3ff828022c3c7d1ef14e5879c8404350}\index{eadog.c@{eadog.c}!wdtdelay@{wdtdelay}}
+\index{wdtdelay@{wdtdelay}!eadog.c@{eadog.c}}
+\doxysubsubsection{\texorpdfstring{wdtdelay()}{wdtdelay()}}
+{\footnotesize\ttfamily \label{eadog_8c_a3ff828022c3c7d1ef14e5879c8404350} 
+void wdtdelay (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{delay}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00595}{595}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 
 
@@ -424,7 +437,7 @@ volatile uint8\+\_\+t c0}
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00033}{33}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00034}{34}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_a929f744d1282cec81f869446049448de}\index{eadog.c@{eadog.c}!c1@{c1}}
 \index{c1@{c1}!eadog.c@{eadog.c}}
@@ -434,7 +447,7 @@ volatile uint8\+\_\+t c1}
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00033}{33}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00034}{34}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_add35ee879fe033aa1abfd75c54af55ec}\index{eadog.c@{eadog.c}!c2@{c2}}
 \index{c2@{c2}!eadog.c@{eadog.c}}
@@ -444,7 +457,7 @@ volatile uint8\+\_\+t c2}
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00033}{33}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00034}{34}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 \Hypertarget{eadog_8c_a7722e6df2875d9534e7906918ba1b6ad}\index{eadog.c@{eadog.c}!spi\_link@{spi\_link}}
 \index{spi\_link@{spi\_link}!eadog.c@{eadog.c}}
@@ -461,5 +474,5 @@ volatile struct \mbox{\hyperlink{structspi__link__type}{spi\+\_\+link\+\_\+type}
 \end{DoxyCode}
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00021}{21}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00022}{22}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 

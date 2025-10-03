@@ -38,6 +38,8 @@ var dir_8e39805f766f0bbf46d9e94c980bf01c =
     [ "spi2.h", "spi2_8h_source.html", null ],
     [ "tmr0.c", "tmr0_8c_source.html", null ],
     [ "tmr0.h", "tmr0_8h_source.html", null ],
+    [ "tmr1.c", "tmr1_8c_source.html", null ],
+    [ "tmr1.h", "tmr1_8h_source.html", null ],
     [ "tmr2.c", "tmr2_8c_source.html", null ],
     [ "tmr2.h", "tmr2_8h_source.html", null ],
     [ "tmr3.c", "tmr3_8c_source.html", null ],

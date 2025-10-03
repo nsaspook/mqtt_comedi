@@ -1,6 +1,6 @@
 #include "mxcmd.h"
 
-/*
+/** \file mxcmd.c
  * FM80 MATE serial protocol communications
  */
 static volatile uint8_t data = 0x00, dcount = 0, dstart = 0, rdstart = 0;
