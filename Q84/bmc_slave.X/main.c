@@ -409,27 +409,7 @@ void main(void)
 	/*
 	 * calibration scalar selection using MUI from controller
 	 */
-	switch (spi_stat_ss.mui) {
-	case 0x589B6:
-		ha_daq_calib.scaler4 = HV_SCALE4_0;
-		ha_daq_calib.scaler5 = HV_SCALE5_0;
-		break;
-	case 0: // USBBoard
-		ha_daq_calib.scaler4 = HV_SCALE4_1;
-		ha_daq_calib.scaler5 = HV_SCALE5_1;
-		break;
-	case 0x598F3:
-	case 0x55AF3:
-		ha_daq_calib.scaler4 = HV_SCALE4_2;
-		ha_daq_calib.scaler5 = HV_SCALE5_2;
-		break;
-	case 0x5ABB6:
-		ha_daq_calib.scaler4 = HV_SCALE4_3;
-		ha_daq_calib.scaler5 = HV_SCALE5_3;
-		break;
-	default:
-		break;
-	}
+	set_calibration(spi_stat_ss.mui);
 
 #ifdef MB_MASTER
 	UART3_SetRxInterruptHandler(my_modbus_rx_32); // install custom serial receive ISR
@@ -823,7 +803,7 @@ void main(void)
 				snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "W%ld VA%ld P%d             ", em.wl1, em.val1, em.pfsys);
 
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
-				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "OF %lu ERR %lu                        ", spi_stat_ss.rxof_bit, spi_stat_ss.spi_error_count);
+				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3f,5 %6.3f                      ", (((float) adc_buffer[channel_ANA4]) / 4.096f) * ha_daq_calib.scaler4, (((float) adc_buffer[channel_ANA5]) / 4.096f) * ha_daq_calib.scaler5);
 				snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu                               ", spi_stat_ss.bmc_counts);
 				snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "%s %s                       ", (char *) build_date, VER);
 
@@ -841,8 +821,12 @@ void main(void)
 				adc_buffer[channel_ANA5], adc_buffer[channel_ANC6], adc_buffer[channel_ANC7], adc_buffer[channel_AND5]);
 			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "CFG%.2X D%X R%X                   ", // bmc config, deviceid, devicerev
 				spi_stat_ss.daq_conf, spi_stat_ss.deviceid, spi_stat_ss.devicerev);
+#ifdef SHOW_DAC
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "DAC %2u                           ", // 8-bit dax value
 				adc_buffer[channel_DAC1]);
+#else
+			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "4 %6.3fV, 5 %6.3fV                      ", (((float) adc_buffer[channel_ANA4])) / 4096.0f * ha_daq_calib.scaler4, (((float) adc_buffer[channel_ANA5])) / 4096.0f * ha_daq_calib.scaler5);
+#endif
 #else
 #ifdef DIO_TEST
 #ifdef DIO_SHOW_BUF
@@ -914,7 +898,7 @@ void main(void)
 
 			snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX                                  ", spi_stat_ss.mui);
 			snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "Dev %X Rev %X                            ", spi_stat_ss.deviceid, spi_stat_ss.devicerev);
-			snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "A1 0x%.2x, A2 0x%.2x                    ", V.v_tx_line, V.v_rx_line);
+			snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "4 %6.3fV, 5 %6.3fV                      ", ((float) adc_buffer[channel_ANA4] / 4096.0f) * ha_daq_calib.scaler4, ((float) adc_buffer[channel_ANA5] / 4096.0f) * ha_daq_calib.scaler5);
 			snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "SPI2 errors 0x%.2lx                                 ",
 				spi_stat_ss.spi_error_count);
 #endif

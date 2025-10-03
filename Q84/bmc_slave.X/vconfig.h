@@ -22,9 +22,10 @@ extern "C" {
 
 #define NHD		// SPI 20X4 display, nhd-0420d3z-nsw-bbw
 
-	//#define DIS_DEBUG	// active status display, disable during normal operation
+	#define DIS_DEBUG	// active status display, disable during normal operation
+// #define SHOW_DAC
 
-#define VER	"V0.45"
+#define VER	"V0.46"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -60,6 +61,7 @@ extern "C" {
 	 * V0.43 four possible data transfers using DCx_CMD
 	 * V0.44 57Q84 and 47Q84 detection and daq configuration
 	 * V0.45 MUI keying to calibration download data
+	 * V0.46 add ADC4 and ADC5 voltage calibration values on debug screens
 	 */
 	/*
 	 * TIC12400 testing modes
