@@ -803,7 +803,7 @@ void main(void)
 				snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "W%ld VA%ld P%d             ", em.wl1, em.val1, em.pfsys);
 
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
-				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3f,5 %6.3f                      ", (((float) adc_buffer[channel_ANA4]) / 4.096f) * ha_daq_calib.scaler4, (((float) adc_buffer[channel_ANA5]) / 4.096f) * ha_daq_calib.scaler5);
+				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3f,5 %6.3f                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));
 				snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu                               ", spi_stat_ss.bmc_counts);
 				snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "%s %s                       ", (char *) build_date, VER);
 
@@ -825,7 +825,7 @@ void main(void)
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "DAC %2u                           ", // 8-bit dax value
 				adc_buffer[channel_DAC1]);
 #else
-			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "4 %6.3fV, 5 %6.3fV                      ", (((float) adc_buffer[channel_ANA4])) / 4096.0f * ha_daq_calib.scaler4, (((float) adc_buffer[channel_ANA5])) / 4096.0f * ha_daq_calib.scaler5);
+			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "4 %6.3fV, 5 %6.3fV                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));
 #endif
 #else
 #ifdef DIO_TEST

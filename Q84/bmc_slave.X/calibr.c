@@ -36,3 +36,16 @@ void set_calibration(unsigned long long mui)
 	}
 }
 
+/*
+ * return scaled voltages
+ */
+float phy_chan4(uint16_t value)
+{
+	return(((float) value)) / 4096.0f * ha_daq_calib.scaler4;
+}
+
+float phy_chan5(uint16_t value)
+{
+	return(((float) value)) / 4096.0f * ha_daq_calib.scaler5;
+}
+
