@@ -22,8 +22,8 @@ extern "C" {
 
 #define NHD		// SPI 20X4 display, nhd-0420d3z-nsw-bbw
 
-//	#define DIS_DEBUG	// active status display, disable during normal operation
-// #define SHOW_DAC
+	//	#define DIS_DEBUG	// active status display, disable during normal operation
+	// #define SHOW_DAC
 
 #define VER	"V0.46"
 	/** \file vconfig.h
@@ -134,7 +134,7 @@ extern "C" {
 #define DC2_CMD  18
 #define DC3_CMD  19
 #define DC4_CMD  20
-	
+
 #define DC_NEXT		DC1_CMD // repeat 2 or 4 lines with DC3_CMD value here
 
 	const char log_format1[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%7.4f,%7.4f,%6.4f,%7.4f,1957,~EOT                                                  \r\n";
@@ -147,7 +147,7 @@ extern "C" {
 #define LOG_VARS2	BMC4.d_id,((float) em.vl1n) / 10.0f,((float) em.vl2n) / 10.0f, ((float) em.vl3n) / 10.0f, ((float) em.al2) / 1000.0f, \
 	((float) em.wl3) / 10.0f, ((float) em.wsys) / 10.0f,  ((float) em.pfl1) / 10.0f, ((float) em.pfl2) / 10.0f,vw, vf, pvw, pvf, bat_amp_whole - 128, \
 	bat_amp_frac - 128, bat_amp_panel - 128, panel_watts, BM.FM80_online, cc_mode, C.data_ok,BM.node_id, ha_daq_calib.scaler4, \
-	ha_daq_calib.scaler5, ha_daq_calib.A200_Z, ha_daq_calib.A200_S	
+	ha_daq_calib.scaler5, ha_daq_calib.A200_Z, ha_daq_calib.A200_S
 
 	const char log_format3[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%7.4f,%7.4f,%6.4f,%7.4f,1957,~EOT                                                  \r\n";
 #define LOG_VARS3	BMC4.d_id,((float) em.vl3l1) / 10.0f,((float) em.al1) / 1000.0f, ((float) em.wl1) / 10.0f, ((float) em.wl2) / 10.0f, \

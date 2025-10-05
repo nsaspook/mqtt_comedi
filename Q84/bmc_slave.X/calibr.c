@@ -9,7 +9,7 @@ void set_calibration(unsigned long long mui)
 	 * calibration scalar selection using MUI from controller
 	 */
 	switch (mui) {
-	case 0x589B6:
+	case 0x589B6: //
 		ha_daq_calib.scaler4 = HV_SCALE4_0;
 		ha_daq_calib.scaler5 = HV_SCALE5_0;
 		break;
@@ -17,15 +17,16 @@ void set_calibration(unsigned long long mui)
 		ha_daq_calib.scaler4 = HV_SCALE4_1;
 		ha_daq_calib.scaler5 = HV_SCALE5_1;
 		break;
-	case 0x598F3:
+	case 0x598F3: //
 		ha_daq_calib.scaler4 = HV_SCALE4_2;
 		ha_daq_calib.scaler5 = HV_SCALE5_2;
 		break;
-	case 0x5ABB6:
+	case 0x5ABB6: //
 		ha_daq_calib.scaler4 = HV_SCALE4_3;
 		ha_daq_calib.scaler5 = HV_SCALE5_3;
 		break;
-	case 0x55AF3:
+// dead chip/replaced	case 0x55AF3:
+	case 0x4DE66:
 		ha_daq_calib.scaler4 = HV_SCALE4_4;
 		ha_daq_calib.scaler5 = HV_SCALE5_4;
 		break;

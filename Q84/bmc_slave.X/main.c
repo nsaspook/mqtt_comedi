@@ -392,7 +392,7 @@ void main(void)
 	V.ui_state = UI_STATE_INIT;
 
 	/*
-	 * read and store the MUI for PCB tracing
+	 * read and store the controller MUI for PCB identification
 	 */
 	BM.node_id = 0;
 	for (uint8_t i = 0; i <= 8; i++) {
@@ -400,11 +400,19 @@ void main(void)
 		BM.node_id += BM.mui[i];
 	}
 	spi_stat_ss.mui = BM.node_id;
+	spi_stat_ss.devicerev = DeviceID_Read(0x3ffffc);
 	spi_stat_ss.deviceid = DeviceID_Read(0x3ffffe);
 	if (spi_stat_ss.deviceid != F57Q84) {
-		spi_stat_ss.daq_conf |= 0x04; // Not a 57Q84 controller, 47Q84 likely
+		if (spi_stat_ss.deviceid == F47Q84) {
+			spi_stat_ss.daq_conf |= 0x04; // Old daq Board
+		} else { // mark as dead or bad board
+			spi_stat_ss.daq_conf = 0xff;
+			spi_stat_ss.devicerev = 0xff;
+			spi_stat_ss.mui = 0xff;
+			BM.node_id = 0xffffffff;
+		}
 	}
-	spi_stat_ss.devicerev = DeviceID_Read(0x3ffffc);
+
 
 	/*
 	 * calibration scalar selection using MUI from controller
@@ -438,7 +446,6 @@ void main(void)
 	TMR1_StartTimer();
 
 	speed_text = "Locked 115200bps";
-	//    UART2_Initialize115200();
 	UART1_Initialize115200();
 	WaitMs(SDELAY);
 	RLED_SetLow(); // start complete power-up serial speed setups, LEDS OFF
@@ -466,6 +473,7 @@ void main(void)
 			/*
 			 * FM80 processing state machine
 			 */
+			TP1_SetLow();
 			switch (state) {
 			case state_init:
 				send_mx_cmd(cmd_id);
@@ -539,6 +547,7 @@ void main(void)
 				rec_mx_cmd(state_init_cb, REC_LEN);
 				break;
 			}
+			TP1_SetHigh();
 
 			if (TimerDone(TMR_RESTART)) {
 				StartTimer(TMR_RESTART, 30000);
@@ -591,7 +600,7 @@ void main(void)
 				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " MC 0x%X 0x%X 0x%X         ", mc_init.cmd[3], mc_init.cmd[4], mc_init.cmd[5]);
 			}
 #else
-			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " %llx Run Display             ", spi_stat_ss.mui);
+			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " %llX Run Display             ", spi_stat_ss.mui);
 #endif
 			if (failure) {
 				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " NSASPOOK Analog Dev  ");
