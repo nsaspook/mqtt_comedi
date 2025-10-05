@@ -1116,7 +1116,7 @@ void bmc_logger(void)
 	case DC2_CMD:
 		BMC4.d_id = d_id;
 		snprintf((char*) log_buffer, MAX_B_BUF, log_format2, LOG_VARS2);
-		d_id = DC3_CMD;
+		d_id = DC_NEXT;
 		break;
 	case DC3_CMD:
 		BMC4.d_id = d_id;
