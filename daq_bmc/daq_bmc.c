@@ -51,7 +51,7 @@ ports [4..7] are data-streams for connected device data
  *
  * 0 = force PIC slave PIC18Fx7Q84 mode
  * 1 = force PIC slave PIC18Fx7Q84 mode with NO DI or DO
- * This is normally autodetected
+ * This is normally auto-detected
  *
  * Module parameters are found in the /sys/modules/daq_bmc/parameters directory
  *
