@@ -5,10 +5,10 @@ Linker command line:
 -W-3 --edf=/ldrv/microchip/xc8/v3.10/pic/dat/20250813170317_en.msgs \
   -pivt0x8=08h -cn -h+dist/default/production/bmc_slave.X.production.sym \
   --cmf=dist/default/production/bmc_slave.X.production.cmf -z -Q18F57Q84 \
-  -o/tmp/xcXAIiiEO/driver_tmp_3.o --defsym=__MPLAB_BUILD=1 \
+  -o/tmp/xcXjmPpKE/driver_tmp_3.o --defsym=__MPLAB_BUILD=1 \
   --fixupoverflow=error \
   -Mdist/default/production/bmc_slave.X.production.map \
-  --md=/tmp/xcXAIiiEO/driver_tmp_0.dat -E1 -ver=XC8 Compiler \
+  --md=/tmp/xcXjmPpKE/driver_tmp_0.dat -E1 -ver=XC8 Compiler \
   -ASTACK=02381h-036FFh -pstack=STACK -ACODE=00h-01FFFFh \
   -ACONST=00h-01FFFFh -ASMALLCONST=04000h-040FFhx192,014000h-0140FFhx192 \
   -AMEDIUMCONST=04000h-0FFFFh,014000h-01FFFFh -ACOMRAM=0501h-055Fh \
@@ -40,7 +40,7 @@ Linker command line:
   -pfarbss=FARRAM,fardata=FARRAM,nvFARRAM=FARRAM \
   -pintsave_regs=BIGRAM,bigbss=BIGRAM,bigdata=BIGRAM -pbss=RAM \
   -pidata=CODE,irdata=CODE,ibigdata=CODE,ifardata=CODE -prparam=COMRAM \
-  /tmp/xcXAIiiEO/driver_tmp_12.o \
+  /tmp/xcXjmPpKE/driver_tmp_12.o \
   dist/default/production/bmc_slave.X.production.o 
 
 Object code version is 3.11
@@ -50,14 +50,14 @@ Machine type is 18F57Q84
 
 
                 Name                               Link     Load   Length Selector   Space Scale
-/tmp/xcXAIiiEO/driver_tmp_12.o
+/tmp/xcXjmPpKE/driver_tmp_12.o
                 stack                              2381     2381     137F     2381       2
                 config                           300000   300000       23        0       4
                 init                                10A      10A        8        4       0
                 reset_vec                             0        0        4        0       0
 dist/default/production/bmc_slave.X.production.o
                 config                           300000   300000       23        0       4
-                mediumconst                        F304     F304      CFC     7982       0
+                mediumconst                        F2C8     F2C8      D38     7964       0
                 ivt0x8                                8        8      102        4       0
                 text310                           1F886    1F886        2     F8D9       0
                 text309                           1F7C8    1F7C8        8     F8D9       0
@@ -742,7 +742,7 @@ TOTAL           Name                               Link     Load   Length     Sp
         CLASS   SMALLCONST     
 
         CLASS   MEDIUMCONST    
-                mediumconst                        F304     F304      CFC         0
+                mediumconst                        F2C8     F2C8      D38         0
 
         CLASS   COMRAM         
                 cstackCOMRAM                        539      539       14         1
@@ -928,7 +928,7 @@ SEGMENTS        Name                           Load    Length   Top    Selector 
                 bssBANK5                       000560  0000A0  000600       560       1  BANK5   
                 bssBANK15                      000F00  0000FF  000FFF       F00       1  BANK15  
                 bssBANK17                      001100  0000FF  0011FF      1100       1  BANK17  
-                mediumconst                    00F304  000CFC  010000      7982       0  MEDIUMCO
+                mediumconst                    00F2C8  000D38  010000      7964       0  MEDIUMCO
                 bssBANK18                      001200  0000F0  0012F0      1200       1  BANK18  
                 bssBANK14                      000E00  0000F0  000EF0       E00       1  BANK14  
                 bssBANK19                      001300  0000F0  0013F0      1300       1  BANK19  
@@ -994,7 +994,7 @@ UNUSED ADDRESS RANGES
         BIGSFR           000000-0004FF              500
                          003700-003FFF              900
         CODE             000004-000007                4
-                         000112-00F303             F1F2
+                         000112-00F2C7             F1B6
                          01870F-01870F                1
                          01C75E-01C75F                2
                          01D12D-01D12D                1
@@ -1019,7 +1019,7 @@ UNUSED ADDRESS RANGES
                          01F888-01FFFF              778
         CONFIG           300023-300023                1
         CONST            000004-000007                4
-                         000112-00F303             F1F2
+                         000112-00F2C7             F1B6
                          01870F-01870F                1
                          01C75E-01C75F                2
                          01D12D-01D12D                1
@@ -1044,7 +1044,7 @@ UNUSED ADDRESS RANGES
                          01F888-01FFFF              778
         EEDATA           380000-3803FF              400
         IDLOC            200000-20003F               40
-        MEDIUMCONST      004000-00F303             B304
+        MEDIUMCONST      004000-00F2C7             B2C8
                          01870F-01870F                1
                          01C75E-01C75F                2
                          01D12D-01D12D                1
@@ -1081,7 +1081,7 @@ UNUSED ADDRESS RANGES
                          002381-0036FF              100
         SFR              000000-0004FF              100
                          003700-003FFF              100
-        SMALLCONST       004000-00F303              100
+        SMALLCONST       004000-00F2C7              100
                          01870F-01870F                1
                          01C75E-01C75F                2
                          01D12D-01D12D                1
@@ -1113,6 +1113,8 @@ IVTBASEU                                          (abs)        00045F
 TMR0_ISR@CountCallBack                            bssBANK5     000594
 TMR1_ISR@CountCallBack                            bssBANK5     00058E
 TMR5_ISR@CountCallBack                            bssBANK5     000596
+_A200_0_SCALAR                                    mediumconst  00F9ED
+_A200_0_ZERO                                      mediumconst  00F9F1
 _ADACCH                                           (abs)        0003E4
 _ADACCL                                           (abs)        0003E3
 _ADACCU                                           (abs)        0003E5
@@ -1242,7 +1244,7 @@ _DMAnSSA                                          (abs)        0000F9
 _DMAnSSZ                                          (abs)        0000F7
 _Default_ISR                                      text232      01F7C0
 _DeviceID_Read                                    text220      01C5FE
-_FM80_name                                        mediumconst  00F8C5
+_FM80_name                                        mediumconst  00F889
 _FM_io                                            text247      01BA84
 _FM_rx                                            text43       01E84C
 _FM_rx_count                                      text42       01F770
@@ -1251,6 +1253,20 @@ _FM_tensec_io                                     text309      01F7C8
 _FM_tx                                            text17       01DEB4
 _FM_tx_empty                                      text16       01F62A
 _GIE                                              (abs)        0026B7
+_HV_SCALAR4                                       mediumconst  00F9F9
+_HV_SCALAR4@calibr$F9519                          mediumconst  00F9BD
+_HV_SCALAR5                                       mediumconst  00F9F5
+_HV_SCALAR5@calibr$F9520                          mediumconst  00F9B9
+_HV_SCALE4_0@calibr$F9521                         mediumconst  00F9B5
+_HV_SCALE4_1@calibr$F9523                         mediumconst  00F9AD
+_HV_SCALE4_2@calibr$F9525                         mediumconst  00F9A5
+_HV_SCALE4_3@calibr$F9527                         mediumconst  00F99D
+_HV_SCALE4_4@calibr$F9529                         mediumconst  00F995
+_HV_SCALE5_0@calibr$F9522                         mediumconst  00F9B1
+_HV_SCALE5_1@calibr$F9524                         mediumconst  00F9A9
+_HV_SCALE5_2@calibr$F9526                         mediumconst  00F9A1
+_HV_SCALE5_3@calibr$F9528                         mediumconst  00F999
+_HV_SCALE5_4@calibr$F9530                         mediumconst  00F991
 _INLVLA                                           (abs)        000404
 _INLVLB                                           (abs)        00040C
 _INLVLC                                           (abs)        000414
@@ -2193,7 +2209,7 @@ __Linit                                           init         00010A
 __Lintsave_regs                                   intsave_regs 000000
 __Lirdata                                         irdata       000000
 __Livt0x8                                         ivt0x8       000008
-__Lmediumconst                                    mediumconst  00F304
+__Lmediumconst                                    mediumconst  00F2C8
 __LnvBANK7                                        nvBANK7      000000
 __LnvFARRAM                                       nvFARRAM     000000
 __Lnvbit                                          nvbit        000000
@@ -2569,13 +2585,15 @@ ___lwmod                                          text39       01E28E
 ___param_bank                                     (abs)        000000
 ___rparam_used                                    (abs)        000001
 ___secs_to_tm                                     text138      0162A2
-___secs_to_tm@days_in_month                       mediumconst  00F505
+___secs_to_tm@days_in_month                       mediumconst  00F4C9
 ___sp                                             stack        002381
 ___stack_hi                                       stack        002A02
 ___stack_lo                                       stack        002381
 ___xxtofl                                         text148      01ADF8
 __accesstop                                       (abs)        000560
 __activetblptr                                    (abs)        000003
+__end_of_A200_0_SCALAR                            mediumconst  00F9F1
+__end_of_A200_0_ZERO                              mediumconst  00F9F5
 __end_of_ADC_ACTI_ISR                             text264      01E5D2
 __end_of_ADC_ADCH1_ISR                            text266      01E612
 __end_of_ADC_ADI_ISR                              text262      01E592
@@ -2625,7 +2643,7 @@ __end_of_DMA3_SetORIInterruptHandler              text200      01F46E
 __end_of_DMA3_SetSCNTIInterruptHandler            text199      01F452
 __end_of_Default_ISR                              text232      01F7C8
 __end_of_DeviceID_Read                            text220      01C6B2
-__end_of_FM80_name                                mediumconst  00F8DD
+__end_of_FM80_name                                mediumconst  00F8A1
 __end_of_FM_io                                    text247      01BB84
 __end_of_FM_rx                                    text43       01E888
 __end_of_FM_rx_count                              text42       01F77A
@@ -2633,6 +2651,21 @@ __end_of_FM_rx_ready                              text41       01F678
 __end_of_FM_tensec_io                             text309      01F7D0
 __end_of_FM_tx                                    text17       01DEFC
 __end_of_FM_tx_empty                              text16       01F63E
+__end_of_HV_SCALAR4                               mediumconst  00F9FD
+__end_of_HV_SCALAR4@calibr$F9519                  mediumconst  00F9C1
+__end_of_HV_SCALAR5                               mediumconst  00F9F9
+__end_of_HV_SCALAR5@calibr$F9520                  mediumconst  00F9BD
+__end_of_HV_SCALE4_0@calibr$F9521                 mediumconst  00F9B9
+__end_of_HV_SCALE4_1@calibr$F9523                 mediumconst  00F9B1
+__end_of_HV_SCALE4_2@calibr$F9525                 mediumconst  00F9A9
+__end_of_HV_SCALE4_3@calibr$F9527                 mediumconst  00F9A1
+__end_of_HV_SCALE4_4@calibr$F9529                 mediumconst  00F999
+__end_of_HV_SCALE5_0@calibr$F9522                 mediumconst  00F9B5
+__end_of_HV_SCALE5_1@calibr$F9524                 mediumconst  00F9AD
+__end_of_HV_SCALE5_2@calibr$F9526                 mediumconst  00F9A5
+__end_of_HV_SCALE5_3@calibr$F9528                 mediumconst  00F99D
+__end_of_HV_SCALE5_4@calibr$F9530                 mediumconst  00F995
+__end_of_HV_SCALE_OFFSET                          mediumconst  00FA01
 __end_of_INTERRUPT_Initialize                     text197      01D75E
 __end_of_IOCBF6_DefaultInterruptHandler           text235      01F868
 __end_of_IOCBF6_ISR                               text234      01EECC
@@ -2770,11 +2803,11 @@ __end_of___lomod                                  text105      01BA84
 __end_of___lwdiv                                  text40       01DD88
 __end_of___lwmod                                  text39       01E2D0
 __end_of___secs_to_tm                             text138      016B5E
-__end_of___secs_to_tm@days_in_month               mediumconst  00F511
+__end_of___secs_to_tm@days_in_month               mediumconst  00F4D5
 __end_of___xxtofl                                 text148      01AF64
 __end_of__initialization                          cinit        01A27C
 __end_of_abs                                      text113      01F09E
-__end_of_adc_scale_zero                           mediumconst  00FA07
+__end_of_adc_scale_zero                           mediumconst  00FA0F
 __end_of_asctime                                  text144      0190B4
 __end_of_atoa                                     text117      014AF8
 __end_of_bmc_logger                               text99       0127E4
@@ -2785,18 +2818,18 @@ __end_of_clear_500ahz                             text70       01F740
 __end_of_clear_500hz                              text69       01F734
 __end_of_clear_lcd_done                           text254      01F83C
 __end_of_clear_slaveo_flags                       text274      01F68A
-__end_of_cmd_batterya                             mediumconst  00F94D
-__end_of_cmd_batteryv                             mediumconst  00F95D
-__end_of_cmd_fwreva                               mediumconst  00F91D
-__end_of_cmd_fwrevb                               mediumconst  00F90D
-__end_of_cmd_fwrevc                               mediumconst  00F8FD
-__end_of_cmd_id                                   mediumconst  00F99D
-__end_of_cmd_misc                                 mediumconst  00F92D
-__end_of_cmd_mx_status                            mediumconst  00F97D
-__end_of_cmd_panelv                               mediumconst  00F96D
-__end_of_cmd_restart                              mediumconst  00F8ED
-__end_of_cmd_status                               mediumconst  00F98D
-__end_of_cmd_watts                                mediumconst  00F93D
+__end_of_cmd_batterya                             mediumconst  00F911
+__end_of_cmd_batteryv                             mediumconst  00F921
+__end_of_cmd_fwreva                               mediumconst  00F8E1
+__end_of_cmd_fwrevb                               mediumconst  00F8D1
+__end_of_cmd_fwrevc                               mediumconst  00F8C1
+__end_of_cmd_id                                   mediumconst  00F961
+__end_of_cmd_misc                                 mediumconst  00F8F1
+__end_of_cmd_mx_status                            mediumconst  00F941
+__end_of_cmd_panelv                               mediumconst  00F931
+__end_of_cmd_restart                              mediumconst  00F8B1
+__end_of_cmd_status                               mediumconst  00F951
+__end_of_cmd_watts                                mediumconst  00F901
 __end_of_crc16                                    text67       01D4A2
 __end_of_crc16_receive                            text66       01D51A
 __end_of_ctoa                                     text116      01CB10
@@ -2821,10 +2854,10 @@ __end_of_init_slaveo                              text74       01DF8C
 __end_of_labs                                     text111      01DC46
 __end_of_localtime                                text136      01F11C
 __end_of_log_crc_error                            text58       01DF44
-__end_of_log_format1                              mediumconst  00F7ED
-__end_of_log_format2                              mediumconst  00F736
-__end_of_log_format3                              mediumconst  00F67F
-__end_of_log_format4                              mediumconst  00F5C8
+__end_of_log_format1                              mediumconst  00F7B1
+__end_of_log_format2                              mediumconst  00F6FA
+__end_of_log_format3                              mediumconst  00F643
+__end_of_log_format4                              mediumconst  00F58C
 __end_of_logging_cmds                             text73       01F860
 __end_of_lp_filter                                text37       01B0CC
 __end_of_main                                     text0        011510
@@ -2833,22 +2866,22 @@ __end_of_mb16_swap                                text65       01D9C4
 __end_of_mb32_swap                                text64       01C3D6
 __end_of_mc33996_init                             text48       01C9DE
 __end_of_mc33996_update                           text47       01D962
-__end_of_mc_gsrc                                  mediumconst  00FA02
-__end_of_mc_olce                                  mediumconst  00F9FC
-__end_of_mc_pwm                                   mediumconst  00FA05
-__end_of_mc_sfpd                                  mediumconst  00F9FF
+__end_of_mc_gsrc                                  mediumconst  00FA0A
+__end_of_mc_olce                                  mediumconst  00FA04
+__end_of_mc_pwm                                   mediumconst  00FA0D
+__end_of_mc_sfpd                                  mediumconst  00FA07
 __end_of_mconfig_init                             text46       01F1CE
 __end_of_memcpy                                   text124      01D232
 __end_of_memset                                   text82       01EDF6
-__end_of_modbus_em_config                         mediumconst  00F9AF
-__end_of_modbus_em_data1                          mediumconst  00F9C1
-__end_of_modbus_em_data2                          mediumconst  00F9BB
-__end_of_modbus_em_id                             mediumconst  00F9CD
-__end_of_modbus_em_light                          mediumconst  00F9A3
-__end_of_modbus_em_passwd                         mediumconst  00F9A9
-__end_of_modbus_em_serial                         mediumconst  00F9B5
-__end_of_modbus_em_version                        mediumconst  00F9C7
-__end_of_modbus_name                              mediumconst  00F8C5
+__end_of_modbus_em_config                         mediumconst  00F973
+__end_of_modbus_em_data1                          mediumconst  00F985
+__end_of_modbus_em_data2                          mediumconst  00F97F
+__end_of_modbus_em_id                             mediumconst  00F991
+__end_of_modbus_em_light                          mediumconst  00F967
+__end_of_modbus_em_passwd                         mediumconst  00F96D
+__end_of_modbus_em_serial                         mediumconst  00F979
+__end_of_modbus_em_version                        mediumconst  00F98B
+__end_of_modbus_name                              mediumconst  00F889
 __end_of_modbus_read_check                        text57       01A450
 __end_of_modbus_read_id_check                     text56       019A4C
 __end_of_modbus_rtu_send_msg                      text54       01EC4E
@@ -2876,13 +2909,13 @@ __end_of_set_calibration                          text14       01ADF8
 __end_of_set_display_info                         text12       01EF1C
 __end_of_set_lcd_dim                              text11       01D7C8
 __end_of_set_vterm                                text10       01EF8A
-__end_of_setup1a_trigger                          mediumconst  00F9E9
-__end_of_setup1b                                  mediumconst  00F9ED
-__end_of_setup1c                                  mediumconst  00F9F1
-__end_of_setup21                                  mediumconst  00F9F5
-__end_of_setup22                                  mediumconst  00F9E5
-__end_of_setup23                                  mediumconst  00F9E1
-__end_of_setup32                                  mediumconst  00F9F9
+__end_of_setup1a_trigger                          mediumconst  00F9DD
+__end_of_setup1b                                  mediumconst  00F9E1
+__end_of_setup1c                                  mediumconst  00F9E5
+__end_of_setup21                                  mediumconst  00F9E9
+__end_of_setup22                                  mediumconst  00F9D9
+__end_of_setup23                                  mediumconst  00F9D5
+__end_of_setup32                                  mediumconst  00F9ED
 __end_of_slaveo_rx_isr                            text273      01724A
 __end_of_slaveo_spi_isr                           text270      01F666
 __end_of_snprintf                                 text100      01A60C
@@ -2890,7 +2923,7 @@ __end_of_spi_des_byte                             text284      01F6AE
 __end_of_spi_lcd_byte                             text252      01F86E
 __end_of_spi_or_byte                              text286      01F6FE
 __end_of_spi_src_byte                             text288      01EEF6
-__end_of_spin                                     mediumconst  00F865
+__end_of_spin                                     mediumconst  00F829
 __end_of_spinners                                 text9        01C0C0
 __end_of_srand                                    text8        01EF66
 __end_of_start_lcd                                text93       01F800
@@ -2902,7 +2935,7 @@ __end_of_state_init_cb                            text35       01E3D2
 __end_of_state_misc_cb                            text24       01EBEA
 __end_of_state_mx_log_cb                          text27       019E88
 __end_of_state_mx_status_cb                       text29       01BE3C
-__end_of_state_name                               mediumconst  00F8AD
+__end_of_state_name                               mediumconst  00F871
 __end_of_state_panelv_cb                          text32       01F7B0
 __end_of_state_restart_cb                         text33       01F7D6
 __end_of_state_status_cb                          text34       01C188
@@ -2911,18 +2944,18 @@ __end_of_state_watts_cb                           text36       01EC1C
 __end_of_stoa                                     text107      01AAEE
 __end_of_strcpy                                   text118      01EC80
 __end_of_strlen                                   text120      01DFD4
-__end_of_table_crc_hi@modbus_master$F8949         mediumconst  00F505
-__end_of_table_crc_lo@modbus_master$F8950         mediumconst  00F405
+__end_of_table_crc_hi@modbus_master$F9099         mediumconst  00F4C9
+__end_of_table_crc_lo@modbus_master$F9100         mediumconst  00F3C9
 __end_of_test_slave                               text282      01F852
 __end_of_tic12400_init                            text3        018A52
 __end_of_tic12400_read_sw                         text2        01D0AA
 __end_of_tic12400_reset                           text1        01E352
 __end_of_tic12400_wr                              text4        019C78
 __end_of_tic_int_handler                          text236      01F652
-__end_of_ticdevid01                               mediumconst  00F9D9
-__end_of_ticread05                                mediumconst  00F9DD
-__end_of_ticreset1a                               mediumconst  00F9D1
-__end_of_ticstat02                                mediumconst  00F9D5
+__end_of_ticdevid01                               mediumconst  00F9CD
+__end_of_ticread05                                mediumconst  00F9D1
+__end_of_ticreset1a                               mediumconst  00F9C5
+__end_of_ticstat02                                mediumconst  00F9C9
 __end_of_timer_2ms_tick                           text227      01F586
 __end_of_timer_500ms_tick                         text231      01F6EE
 __end_of_timer_ms_tick                            text249      01E9B4
@@ -2936,7 +2969,7 @@ __end_of_wait_lcd_set                             text92       01F7FA
 __end_of_wdtdelay                                 text81       01E0A8
 __end_of_xtoa                                     text103      019804
 __initialization                                  cinit        01A086
-__mediumconst                                     mediumconst  00F304
+__mediumconst                                     mediumconst  00F2C8
 __pbssBANK10                                      bssBANK10    000A00
 __pbssBANK11                                      bssBANK11    000B00
 __pbssBANK12                                      bssBANK12    000C00
@@ -2974,7 +3007,7 @@ __pidataBANK8                                     idataBANK8   01D0AA
 __pidataBANK9                                     idataBANK9   01E80F
 __pidataBIGRAM                                    idataBIGRAM  018380
 __pivt0x8                                         ivt0x8       000008
-__pmediumconst                                    mediumconst  00F304
+__pmediumconst                                    mediumconst  00F2C8
 __pnvBANK7                                        nvBANK7      0007F4
 __ptext0                                          text0        010000
 __ptext1                                          text1        01E312
@@ -3288,7 +3321,7 @@ __ptext97                                         text97       01B234
 __ptext98                                         text98       01DCEA
 __ptext99                                         text99       011510
 __ramtop                                          ramtop       004000
-__smallconst                                      mediumconst  00F304
+__smallconst                                      mediumconst  00F2C8
 _abs                                              text113      01F07E
 _abuf                                             bssBANK9     000980
 _adc_buffer                                       bssBANK11    000B00
@@ -3306,7 +3339,7 @@ _bmc_newtime                                      bssBANK6     0006B9
 _bmc_string_ready                                 bssBANK5     0005B8
 _buffer                                           bssBIGRAM    001DF2
 _bufferRAM                                        (abs)        003700
-_build_date@mconfig$F7252                         bssBANK6     0006B3
+_build_date@mconfig$F7312                         bssBANK6     0006B3
 _c0                                               bssBANK5     0005A8
 _c1                                               bssBANK5     0005A7
 _c2                                               bssBANK5     0005A6
@@ -3325,21 +3358,21 @@ _clear_500ahz                                     text70       01F734
 _clear_500hz                                      text69       01F728
 _clear_lcd_done                                   text254      01F836
 _clear_slaveo_flags                               text274      01F678
-_cmd_batterya                                     mediumconst  00F93D
-_cmd_batteryv                                     mediumconst  00F94D
+_cmd_batterya                                     mediumconst  00F901
+_cmd_batteryv                                     mediumconst  00F911
 _cmd_date                                         dataBANK10   000AEB
-_cmd_fwreva                                       mediumconst  00F90D
-_cmd_fwrevb                                       mediumconst  00F8FD
-_cmd_fwrevc                                       mediumconst  00F8ED
-_cmd_id                                           mediumconst  00F98D
-_cmd_misc                                         mediumconst  00F91D
+_cmd_fwreva                                       mediumconst  00F8D1
+_cmd_fwrevb                                       mediumconst  00F8C1
+_cmd_fwrevc                                       mediumconst  00F8B1
+_cmd_id                                           mediumconst  00F951
+_cmd_misc                                         mediumconst  00F8E1
 _cmd_mx_log                                       dataBANK8    000873
-_cmd_mx_status                                    mediumconst  00F96D
-_cmd_panelv                                       mediumconst  00F95D
-_cmd_restart                                      mediumconst  00F8DD
-_cmd_status                                       mediumconst  00F97D
+_cmd_mx_status                                    mediumconst  00F931
+_cmd_panelv                                       mediumconst  00F921
+_cmd_restart                                      mediumconst  00F8A1
+_cmd_status                                       mediumconst  00F941
 _cmd_time                                         dataBANK9    0009ED
-_cmd_watts                                        mediumconst  00F92D
+_cmd_watts                                        mediumconst  00F8F1
 _crc16                                            text67       01D428
 _crc16_receive                                    text66       01D4A2
 _ctoa                                             text116      01CA78
@@ -3386,10 +3419,10 @@ _lcd_dma_buf                                      bssBANK12    000CA2
 _localtime                                        text136      01F0FE
 _log_buffer                                       bssBIGRAM    001BF2
 _log_crc_error                                    text58       01DEFC
-_log_format1                                      mediumconst  00F736
-_log_format2                                      mediumconst  00F67F
-_log_format3                                      mediumconst  00F5C8
-_log_format4                                      mediumconst  00F511
+_log_format1                                      mediumconst  00F6FA
+_log_format2                                      mediumconst  00F643
+_log_format3                                      mediumconst  00F58C
+_log_format4                                      mediumconst  00F4D5
 _logging_cmds                                     text73       01F85E
 _lp_filter                                        text37       01AF64
 _main                                             text0        010000
@@ -3399,24 +3432,24 @@ _mb32_swap                                        text64       01C318
 _mc33996_init                                     text48       01C944
 _mc33996_update                                   text47       01D8FE
 _mc33996_w_buf                                    bssBANK8     0008EF
-_mc_gsrc                                          mediumconst  00F9FF
+_mc_gsrc                                          mediumconst  00FA07
 _mc_init                                          bssBANK8     0008CF
-_mc_olce                                          mediumconst  00F9F9
+_mc_olce                                          mediumconst  00FA01
 _mc_onoff                                         bssBANK6     0006C0
-_mc_pwm                                           mediumconst  00FA02
-_mc_sfpd                                          mediumconst  00F9FC
+_mc_pwm                                           mediumconst  00FA0A
+_mc_sfpd                                          mediumconst  00FA04
 _mconfig_init                                     text46       01F1B2
 _memcpy                                           text124      01D1B0
 _memset                                           text82       01EDCA
-_modbus_em_config                                 mediumconst  00F9A9
-_modbus_em_data1                                  mediumconst  00F9BB
-_modbus_em_data2                                  mediumconst  00F9B5
-_modbus_em_id                                     mediumconst  00F9C7
-_modbus_em_light                                  mediumconst  00F99D
-_modbus_em_passwd                                 mediumconst  00F9A3
-_modbus_em_serial                                 mediumconst  00F9AF
-_modbus_em_version                                mediumconst  00F9C1
-_modbus_name                                      mediumconst  00F8AD
+_modbus_em_config                                 mediumconst  00F96D
+_modbus_em_data1                                  mediumconst  00F97F
+_modbus_em_data2                                  mediumconst  00F979
+_modbus_em_id                                     mediumconst  00F98B
+_modbus_em_light                                  mediumconst  00F961
+_modbus_em_passwd                                 mediumconst  00F967
+_modbus_em_serial                                 mediumconst  00F973
+_modbus_em_version                                mediumconst  00F985
+_modbus_name                                      mediumconst  00F871
 _modbus_read_check                                text57       01A282
 _modbus_read_id_check                             text56       019804
 _modbus_rtu_send_msg                              text54       01EC1C
@@ -3461,13 +3494,13 @@ _set_calibration                                  text14       01AC74
 _set_display_info                                 text12       01EEF6
 _set_lcd_dim                                      text11       01D75E
 _set_vterm                                        text10       01EF66
-_setup1a_trigger                                  mediumconst  00F9E5
-_setup1b                                          mediumconst  00F9E9
-_setup1c                                          mediumconst  00F9ED
-_setup21                                          mediumconst  00F9F1
-_setup22                                          mediumconst  00F9E1
-_setup23                                          mediumconst  00F9DD
-_setup32                                          mediumconst  00F9F5
+_setup1a_trigger                                  mediumconst  00F9D9
+_setup1b                                          mediumconst  00F9DD
+_setup1c                                          mediumconst  00F9E1
+_setup21                                          mediumconst  00F9E5
+_setup22                                          mediumconst  00F9D5
+_setup23                                          mediumconst  00F9D1
+_setup32                                          mediumconst  00F9E9
 _slaveo_rx_isr                                    text273      016B5E
 _slaveo_spi_isr                                   text270      01F652
 _snprintf                                         text100      01A450
@@ -3480,7 +3513,7 @@ _spi_link                                         bssBANK5     000560
 _spi_or_byte                                      text286      01F6EE
 _spi_src_byte                                     text288      01EECC
 _spi_stat_ss                                      bssBANK7     000700
-_spin                                             mediumconst  00F7ED
+_spin                                             mediumconst  00F7B1
 _spinners                                         text9        01BFF6
 _srand                                            text8        01EF42
 _start_lcd                                        text93       01F7FA
@@ -3493,7 +3526,7 @@ _state_init_cb                                    text35       01E392
 _state_misc_cb                                    text24       01EBB6
 _state_mx_log_cb                                  text27       019C78
 _state_mx_status_cb                               text29       01BD5A
-_state_name                                       mediumconst  00F865
+_state_name                                       mediumconst  00F829
 _state_panelv_cb                                  text32       01F7A8
 _state_restart_cb                                 text33       01F7D0
 _state_status_cb                                  text34       01C0C0
@@ -3502,8 +3535,8 @@ _state_watts_cb                                   text36       01EBEA
 _stoa                                             text107      01A960
 _strcpy                                           text118      01EC4E
 _strlen                                           text120      01DF8C
-_table_crc_hi@modbus_master$F8949                 mediumconst  00F405
-_table_crc_lo@modbus_master$F8950                 mediumconst  00F305
+_table_crc_hi@modbus_master$F9099                 mediumconst  00F3C9
+_table_crc_lo@modbus_master$F9100                 mediumconst  00F2C9
 _tbuf                                             bssBANK11    000B80
 _test_slave                                       text282      01F84E
 _tic12400_counts                                  bssBANK8     0008BB
@@ -3526,11 +3559,11 @@ _tic12400_value_counts                            bssBANK8     0008B7
 _tic12400_wr                                      text4        019A4C
 _tic_int_handler                                  text236      01F63E
 _tic_rw                                           bssBANK8     0008DF
-_ticdevid01                                       mediumconst  00F9D5
+_ticdevid01                                       mediumconst  00F9C9
 _tickCount                                        bssBANK8     000883
-_ticread05                                        mediumconst  00F9D9
-_ticreset1a                                       mediumconst  00F9CD
-_ticstat02                                        mediumconst  00F9D1
+_ticread05                                        mediumconst  00F9CD
+_ticreset1a                                       mediumconst  00F9C1
+_ticstat02                                        mediumconst  00F9C5
 _ticvalue                                         bssBANK5     00057C
 _timer0ReloadVal16bit                             bssCOMRAM    000557
 _timer1ReloadVal                                  bssBANK5     000590
@@ -4147,56 +4180,73 @@ mcc_generated_files/tmr5.c
 mcc_generated_files/tmr5.c estimated size: 262
 
 shared
-		_cmd_batterya  		MEDIUMCONST    	F93D	0000	16
-		_mc_pwm        		MEDIUMCONST    	FA02	0000	3
-		_cmd_batteryv  		MEDIUMCONST    	F94D	0000	16
-		_ticreset1a    		MEDIUMCONST    	F9CD	0000	4
-		_setup1b       		MEDIUMCONST    	F9E9	0000	4
-		_setup23       		MEDIUMCONST    	F9DD	0000	4
-		_mc_olce       		MEDIUMCONST    	F9F9	0000	3
-		_ticread05     		MEDIUMCONST    	F9D9	0000	4
-		_mc_sfpd       		MEDIUMCONST    	F9FC	0000	3
-		_cmd_panelv    		MEDIUMCONST    	F95D	0000	16
-		___secs_to_tm@days_in_month		MEDIUMCONST    	F505	0000	12
-		_cmd_status    		MEDIUMCONST    	F97D	0000	16
-		_setup22       		MEDIUMCONST    	F9E1	0000	4
-		_log_format1   		MEDIUMCONST    	F736	0000	183
-		_log_format2   		MEDIUMCONST    	F67F	0000	183
-		_log_format3   		MEDIUMCONST    	F5C8	0000	183
-		_log_format4   		MEDIUMCONST    	F511	0000	183
-		_cmd_id        		MEDIUMCONST    	F98D	0000	16
-		_mc_gsrc       		MEDIUMCONST    	F9FF	0000	3
-		_modbus_name   		MEDIUMCONST    	F8AD	0000	24
-		_cmd_restart   		MEDIUMCONST    	F8DD	0000	16
-		_modbus_em_id  		MEDIUMCONST    	F9C7	0000	6
-		_cmd_mx_status 		MEDIUMCONST    	F96D	0000	16
+		_cmd_batterya  		MEDIUMCONST    	F901	0000	16
+		_mc_pwm        		MEDIUMCONST    	FA0A	0000	3
+		_cmd_batteryv  		MEDIUMCONST    	F911	0000	16
+		_ticreset1a    		MEDIUMCONST    	F9C1	0000	4
+		_setup1b       		MEDIUMCONST    	F9DD	0000	4
+		_setup23       		MEDIUMCONST    	F9D1	0000	4
+		_HV_SCALAR4    		MEDIUMCONST    	F9F9	0000	4
+		_HV_SCALAR5    		MEDIUMCONST    	F9F5	0000	4
+		_mc_olce       		MEDIUMCONST    	FA01	0000	3
+		_ticread05     		MEDIUMCONST    	F9CD	0000	4
+		_mc_sfpd       		MEDIUMCONST    	FA04	0000	3
+		_HV_SCALAR4@calibr$F9519		MEDIUMCONST    	F9BD	0000	4
+		_A200_0_ZERO   		MEDIUMCONST    	F9F1	0000	4
+		_cmd_panelv    		MEDIUMCONST    	F921	0000	16
+		___secs_to_tm@days_in_month		MEDIUMCONST    	F4C9	0000	12
+		_A200_0_SCALAR 		MEDIUMCONST    	F9ED	0000	4
+		_HV_SCALE5_4@calibr$F9530		MEDIUMCONST    	F991	0000	4
+		_cmd_status    		MEDIUMCONST    	F941	0000	16
+		_setup22       		MEDIUMCONST    	F9D5	0000	4
+		_log_format1   		MEDIUMCONST    	F6FA	0000	183
+		_log_format2   		MEDIUMCONST    	F643	0000	183
+		_log_format3   		MEDIUMCONST    	F58C	0000	183
+		_log_format4   		MEDIUMCONST    	F4D5	0000	183
+		_cmd_id        		MEDIUMCONST    	F951	0000	16
+		_HV_SCALAR5@calibr$F9520		MEDIUMCONST    	F9B9	0000	4
+		_mc_gsrc       		MEDIUMCONST    	FA07	0000	3
+		_modbus_name   		MEDIUMCONST    	F871	0000	24
+		_cmd_restart   		MEDIUMCONST    	F8A1	0000	16
+		_modbus_em_id  		MEDIUMCONST    	F98B	0000	6
+		_cmd_mx_status 		MEDIUMCONST    	F931	0000	16
 		__initialization		CODE           	1A086	0000	502
-		_modbus_em_config		MEDIUMCONST    	F9A9	0000	6
-		_modbus_em_serial		MEDIUMCONST    	F9AF	0000	6
-		_modbus_em_passwd		MEDIUMCONST    	F9A3	0000	6
+		_HV_SCALE_OFFSET		MEDIUMCONST    	0000	0000	0
+		_modbus_em_config		MEDIUMCONST    	F96D	0000	6
+		_modbus_em_serial		MEDIUMCONST    	F973	0000	6
+		_modbus_em_passwd		MEDIUMCONST    	F967	0000	6
 		_adc_scale_zero		MEDIUMCONST    	0000	0000	0
-		_cmd_watts     		MEDIUMCONST    	F92D	0000	16
-		_table_crc_lo@modbus_master$F8950		MEDIUMCONST    	F305	0000	256
-		_ticdevid01    		MEDIUMCONST    	F9D5	0000	4
-		_table_crc_hi@modbus_master$F8949		MEDIUMCONST    	F405	0000	256
-		_spin          		MEDIUMCONST    	F7ED	0000	120
-		_state_name    		MEDIUMCONST    	F865	0000	72
-		_setup21       		MEDIUMCONST    	F9F1	0000	4
-		_setup32       		MEDIUMCONST    	F9F5	0000	4
-		_setup1c       		MEDIUMCONST    	F9ED	0000	4
-		_modbus_em_version		MEDIUMCONST    	F9C1	0000	6
-		_modbus_em_data1		MEDIUMCONST    	F9BB	0000	6
-		_modbus_em_data2		MEDIUMCONST    	F9B5	0000	6
-		_ticstat02     		MEDIUMCONST    	F9D1	0000	4
-		_cmd_fwreva    		MEDIUMCONST    	F90D	0000	16
-		_cmd_fwrevb    		MEDIUMCONST    	F8FD	0000	16
-		_cmd_fwrevc    		MEDIUMCONST    	F8ED	0000	16
-		_FM80_name     		MEDIUMCONST    	F8C5	0000	24
-		_cmd_misc      		MEDIUMCONST    	F91D	0000	16
-		_setup1a_trigger		MEDIUMCONST    	F9E5	0000	4
-		_modbus_em_light		MEDIUMCONST    	F99D	0000	6
+		_cmd_watts     		MEDIUMCONST    	F8F1	0000	16
+		_table_crc_lo@modbus_master$F9100		MEDIUMCONST    	F2C9	0000	256
+		_ticdevid01    		MEDIUMCONST    	F9C9	0000	4
+		_table_crc_hi@modbus_master$F9099		MEDIUMCONST    	F3C9	0000	256
+		_HV_SCALE4_0@calibr$F9521		MEDIUMCONST    	F9B5	0000	4
+		_HV_SCALE5_0@calibr$F9522		MEDIUMCONST    	F9B1	0000	4
+		_HV_SCALE4_1@calibr$F9523		MEDIUMCONST    	F9AD	0000	4
+		_HV_SCALE5_1@calibr$F9524		MEDIUMCONST    	F9A9	0000	4
+		_HV_SCALE4_2@calibr$F9525		MEDIUMCONST    	F9A5	0000	4
+		_HV_SCALE5_2@calibr$F9526		MEDIUMCONST    	F9A1	0000	4
+		_HV_SCALE4_3@calibr$F9527		MEDIUMCONST    	F99D	0000	4
+		_HV_SCALE5_3@calibr$F9528		MEDIUMCONST    	F999	0000	4
+		_HV_SCALE4_4@calibr$F9529		MEDIUMCONST    	F995	0000	4
+		_spin          		MEDIUMCONST    	F7B1	0000	120
+		_state_name    		MEDIUMCONST    	F829	0000	72
+		_setup21       		MEDIUMCONST    	F9E5	0000	4
+		_setup32       		MEDIUMCONST    	F9E9	0000	4
+		_setup1c       		MEDIUMCONST    	F9E1	0000	4
+		_modbus_em_version		MEDIUMCONST    	F985	0000	6
+		_modbus_em_data1		MEDIUMCONST    	F97F	0000	6
+		_modbus_em_data2		MEDIUMCONST    	F979	0000	6
+		_ticstat02     		MEDIUMCONST    	F9C5	0000	4
+		_cmd_fwreva    		MEDIUMCONST    	F8D1	0000	16
+		_cmd_fwrevb    		MEDIUMCONST    	F8C1	0000	16
+		_cmd_fwrevc    		MEDIUMCONST    	F8B1	0000	16
+		_FM80_name     		MEDIUMCONST    	F889	0000	24
+		_cmd_misc      		MEDIUMCONST    	F8E1	0000	16
+		_setup1a_trigger		MEDIUMCONST    	F9D9	0000	4
+		_modbus_em_light		MEDIUMCONST    	F961	0000	6
 
-shared estimated size: 2294
+shared estimated size: 2358
 
 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/fltol.c
 		___fltol       		CODE           	1C188	0000	200

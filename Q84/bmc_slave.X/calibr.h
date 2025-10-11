@@ -15,23 +15,23 @@ extern "C" {
 
 #include "vconfig.h"
 
-#define HV_SCALE_OFFSET         0.0f
-#define HV_SCALAR4		64.2600f // defaults
-#define HV_SCALAR5		64.2600f
+	static const float HV_SCALE_OFFSET = 0.0f;
+	static const float HV_SCALAR4 = 64.2600f; // defaults
+	static const float HV_SCALAR5 = 64.2600f;
 
-#define HV_SCALE4_0             64.2695f
-#define HV_SCALE5_0             64.2695f
-#define HV_SCALE4_1             64.1890f
-#define HV_SCALE5_1             64.1415f
-#define HV_SCALE4_2             54.1890f
-#define HV_SCALE5_2             54.1415f
-#define HV_SCALE4_3             55.6000f
-#define HV_SCALE5_3             55.6500f
-#define HV_SCALE4_4             64.3590f
-#define HV_SCALE5_4             64.3850f
+	static const float HV_SCALE4_0 = 64.2695f;
+	static const float HV_SCALE5_0 = 64.2695f;
+	static const float HV_SCALE4_1 = 64.1890f;
+	static const float HV_SCALE5_1 = 64.1415f;
+	static const float HV_SCALE4_2 = 54.1890f;
+	static const float HV_SCALE5_2 = 54.1415f;
+	static const float HV_SCALE4_3 = 55.6000f;
+	static const float HV_SCALE5_3 = 55.6500f;
+	static const float HV_SCALE4_4 = 64.3590f;
+	static const float HV_SCALE5_4 = 64.3850f;
 
-#define A200_0_ZERO		2.5216f // Battery sensor zero ADC value
-#define A200_0_SCALAR		133.05f // Battery Amp scalar to +- 200A
+	static const float A200_0_ZERO = 2.5216f; // Battery sensor zero ADC value
+	static const float A200_0_SCALAR = 133.05f; // Battery Amp scalar to +- 200A
 
 	struct ha_daq_calib_type {
 		uint16_t checkmark;

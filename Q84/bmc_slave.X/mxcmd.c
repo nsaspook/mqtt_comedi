@@ -38,7 +38,7 @@ uint8_t FM_tx(const uint16_t * data, const uint8_t count)
 		memcpy((void *) tbuf, (const void *) data, (size_t) (count << 1)); // copy 16-bit values
 		dstart = 0;
 		dcount = count;
-		BM.FM80_io = true; // start the CANBUS lockup until the RX transaction is complete
+		BM.FM80_io = true;
 	}
 	return dstart;
 }
