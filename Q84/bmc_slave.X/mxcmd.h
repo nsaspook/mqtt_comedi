@@ -33,19 +33,16 @@ extern "C" {
 #define IO_TEST
 
 #define	FM_BUFFER	32
-#define BUFFER_SPACING	1
-#define SPINNER_SPEED	200
 #define LP_BUFFER_SIZE	9
-#define ONLINE_TIMEOUT	30000
-
-#define FM80_ID		0x03
 #define FMxx_STATE	abuf[2]
-
-#define AMP_WHOLE_ZERO	128
-
 #define CMD_CRC_LEN	10
-
 #define DTG_LEN		3 // normal size is 26 but we must save buffer space
+
+	static const uint8_t BUFFER_SPACING = 1;
+	static const uint8_t SPINNER_SPEED = 200;
+	static const uint16_t ONLINE_TIMEOUT = 30000;
+	static const uint8_t FM80_ID = 0x03;
+	static const uint8_t AMP_WHOLE_ZERO = 128;
 
 	const uint16_t cmd_id[] = {0x100, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02};
 	const uint16_t cmd_status[] = {0x100, 0x02, 0x01, 0xc8, 0x00, 0x00, 0x00, 0xcb};

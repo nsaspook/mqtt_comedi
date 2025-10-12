@@ -6,17 +6,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v F25001 `(v ~T0 @X0 0 tf ]
 [v F25007 `(v ~T0 @X0 0 tf ]
 "11 rs232.c
-[c E25342 0 1 2 3 4 5 6 .. ]
-[n E25342 . SEQ_STATE_INIT SEQ_STATE_RX SEQ_STATE_TX SEQ_STATE_TRIGGER SEQ_STATE_QUEUE SEQ_STATE_DONE SEQ_STATE_ERROR  ]
-[c E25351 0 1 2 3 4 .. ]
-[n E25351 . UI_STATE_INIT UI_STATE_HOST UI_STATE_DEBUG UI_STATE_LOG UI_STATE_ERROR  ]
-[c E25314 0 1 2 3 4 5 6 7 8 9 10 11 .. ]
-[n E25314 . DIS_STR DIS_TERM DIS_LOG DIS_LOAD DIS_UNLOAD DIS_PUMP DIS_HELP DIS_SEQUENCE DIS_SEQUENCE_M DIS_ERR DIS_FREE DIS_CLEAR  ]
-"241 ./vconfig.h
-[s S3407 `uc -> 32 `i `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 :1 `uc 1 `E25314 1 `E25314 1 `us 1 `us 1 ]
+[c E25352 0 1 2 3 4 5 6 .. ]
+[n E25352 . SEQ_STATE_INIT SEQ_STATE_RX SEQ_STATE_TX SEQ_STATE_TRIGGER SEQ_STATE_QUEUE SEQ_STATE_DONE SEQ_STATE_ERROR  ]
+[c E25361 0 1 2 3 4 .. ]
+[n E25361 . UI_STATE_INIT UI_STATE_HOST UI_STATE_DEBUG UI_STATE_LOG UI_STATE_ERROR  ]
+[c E25324 0 1 2 3 4 5 6 7 8 9 10 11 .. ]
+[n E25324 . DIS_STR DIS_TERM DIS_LOG DIS_LOAD DIS_UNLOAD DIS_PUMP DIS_HELP DIS_SEQUENCE DIS_SEQUENCE_M DIS_ERR DIS_FREE DIS_CLEAR  ]
+"242 ./vconfig.h
+[s S3407 `uc -> 32 `i `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 :1 `uc 1 `E25324 1 `E25324 1 `us 1 `us 1 ]
 [n S3407 terminal_type ack mesgid TID mcode mparm cmdlen log_seq host_display_ack info help_temp ceid log_num ]
-"279
-[s S3408 `E25342 1 `E25351 1 `uc -> 128 `i `uc -> 160 `i `uc -> 64 `i `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `l 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `E25351 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `Vus 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :4 `uc 1 :4 `uc 1 `S3407 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `Vuc 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `us 1 `us 1 `s 1 `s 1 `uc 1 `uc 1 `s 1 `s 1 `ul 1 `ul 1 `ul 1 ]
+"280
+[s S3408 `E25352 1 `E25361 1 `uc -> 128 `i `uc -> 160 `i `uc -> 64 `i `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `l 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `E25361 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `Vus 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :4 `uc 1 :4 `uc 1 `S3407 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `Vuc 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `us 1 `us 1 `s 1 `s 1 `uc 1 `uc 1 `s 1 `s 1 `ul 1 `ul 1 `ul 1 ]
 [n S3408 V_data s_state ui_state buf terminal info ticks systemb tx_total rx_total bt_total br_total brn_total btn_total bmc_do bmc_di utc_ticks testing stream function error abort msg_error msg_ret alarm event ui_sw r_checksum t_checksum checksum_error timer_error ping mode_pwm equip_timeout sequences all_errors ceid bmc_ao rbit wbit ebit failed_send failed_receive response uart llid sid ping_count euart vterm vterm_switch uart_speed_fast ticker flipper queue debug help stack help_id rerror speed_spin set_sequ log_s6f11 log_abort log_char v_tx_line v_rx_line tx_volts rx_volts tx_rs232 rx_rs232 secs_value cmd_value utc_cmd_value di_fail do_fail ]
 "4 rs232.c
 [v _V `S3408 ~T0 @X0 0 e ]
@@ -2543,7 +2543,47 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _SPI2_InterruptHandler `*F25001 ~T0 @X0 1 e ]
 "77
 [v _SPI2_RxInterruptHandler `*F25007 ~T0 @X0 1 e ]
-"241 ./modbus_master.h
+"70 ./modbus_master.h
+[v _TMDELAY `Cuc ~T0 @X0 1 s ]
+[i _TMDELAY
+-> -> 2 `i `uc
+]
+"71
+[v _TEDELAY `Cuc ~T0 @X0 1 s ]
+[i _TEDELAY
+-> -> 1 `i `uc
+]
+"72
+[v _RDELAY `Cuc ~T0 @X0 1 s ]
+[i _RDELAY
+-> -> 200 `i `uc
+]
+"73
+[v _CDELAY `Cuc ~T0 @X0 1 s ]
+[i _CDELAY
+-> -> 40 `i `uc
+]
+"74
+[v _QDELAY `Cuc ~T0 @X0 1 s ]
+[i _QDELAY
+-> -> 2 `i `uc
+]
+"75
+[v _TODELAY `Cuc ~T0 @X0 1 s ]
+[i _TODELAY
+-> -> 4 `i `uc
+]
+"76
+[v _SPACING `Cuc ~T0 @X0 1 s ]
+[i _SPACING
+-> -> 40 `i `uc
+]
+"77
+[v _DUPL_DELAY `Cuc ~T0 @X0 1 s ]
+[i _DUPL_DELAY
+-> -> 2 `i `uc
+]
+"241
 [v _table_crc_hi `Cuc ~T0 @X0 -> 256 `i s ]
 [i _table_crc_hi
 :U ..
@@ -3067,7 +3107,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 64 `i `uc
 ..
 ]
-"140 ./vconfig.h
+"311
+[v _BOFF `Cuc ~T0 @X0 1 s ]
+[i _BOFF
+-> -> 0 `i `uc
+]
+"312
+[v _BON `Cuc ~T0 @X0 1 s ]
+[i _BON
+-> -> 255 `i `uc
+]
+"141 ./vconfig.h
 [v _log_format1 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format1
 :U ..
@@ -3256,7 +3306,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"146
+"147
 [v _log_format2 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format2
 :U ..
@@ -3445,7 +3495,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"152
+"153
 [v _log_format3 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format3
 :U ..
@@ -3634,7 +3684,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"158
+"159
 [v _log_format4 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format4
 :U ..
@@ -3823,9 +3873,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-[v F25453 `Cuc ~T0 @X0 -> 20 `i t ]
-"310
-[v _spin `F25453 ~T0 @X0 -> 6 `i e ]
+[v F25463 `Cuc ~T0 @X0 -> 20 `i t ]
+"311
+[v _spin `F25463 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
 :U ..

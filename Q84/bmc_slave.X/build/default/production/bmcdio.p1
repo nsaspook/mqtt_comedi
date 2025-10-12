@@ -2587,7 +2587,47 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _A200_0_SCALAR
 -> .133.05 `f
 ]
-"241 ./modbus_master.h
+"70 ./modbus_master.h
+[v _TMDELAY `Cuc ~T0 @X0 1 s ]
+[i _TMDELAY
+-> -> 2 `i `uc
+]
+"71
+[v _TEDELAY `Cuc ~T0 @X0 1 s ]
+[i _TEDELAY
+-> -> 1 `i `uc
+]
+"72
+[v _RDELAY `Cuc ~T0 @X0 1 s ]
+[i _RDELAY
+-> -> 200 `i `uc
+]
+"73
+[v _CDELAY `Cuc ~T0 @X0 1 s ]
+[i _CDELAY
+-> -> 40 `i `uc
+]
+"74
+[v _QDELAY `Cuc ~T0 @X0 1 s ]
+[i _QDELAY
+-> -> 2 `i `uc
+]
+"75
+[v _TODELAY `Cuc ~T0 @X0 1 s ]
+[i _TODELAY
+-> -> 4 `i `uc
+]
+"76
+[v _SPACING `Cuc ~T0 @X0 1 s ]
+[i _SPACING
+-> -> 40 `i `uc
+]
+"77
+[v _DUPL_DELAY `Cuc ~T0 @X0 1 s ]
+[i _DUPL_DELAY
+-> -> 2 `i `uc
+]
+"241
 [v _table_crc_hi `Cuc ~T0 @X0 -> 256 `i s ]
 [i _table_crc_hi
 :U ..
@@ -3111,7 +3151,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 64 `i `uc
 ..
 ]
-"140 ./vconfig.h
+"311
+[v _BOFF `Cuc ~T0 @X0 1 s ]
+[i _BOFF
+-> -> 0 `i `uc
+]
+"312
+[v _BON `Cuc ~T0 @X0 1 s ]
+[i _BON
+-> -> 255 `i `uc
+]
+"141 ./vconfig.h
 [v _log_format1 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format1
 :U ..
@@ -3300,7 +3350,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"146
+"147
 [v _log_format2 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format2
 :U ..
@@ -3489,7 +3539,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"152
+"153
 [v _log_format3 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format3
 :U ..
@@ -3678,7 +3728,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"158
+"159
 [v _log_format4 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format4
 :U ..
@@ -3867,9 +3917,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-[v F25479 `Cuc ~T0 @X0 -> 20 `i t ]
-"310
-[v _spin `F25479 ~T0 @X0 -> 6 `i e ]
+[v F25489 `Cuc ~T0 @X0 -> 20 `i t ]
+"311
+[v _spin `F25489 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
 :U ..
@@ -3947,7 +3997,122 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-"135 ./slaveo.h
+"27 ./slaveo.h
+[v _F27Q84 `Cus ~T0 @X0 1 s ]
+[i _F27Q84
+-> -> 39171 `ui `us
+]
+"28
+[v _F47Q84 `Cus ~T0 @X0 1 s ]
+[i _F47Q84
+-> -> 39172 `ui `us
+]
+"29
+[v _F57Q84 `Cus ~T0 @X0 1 s ]
+[i _F57Q84
+-> -> 39173 `ui `us
+]
+"34
+[v _CMD_ZERO `Cuc ~T0 @X0 1 s ]
+[i _CMD_ZERO
+-> -> 0 `i `uc
+]
+"35
+[v _CMD_ADC_GO `Cuc ~T0 @X0 1 s ]
+[i _CMD_ADC_GO
+-> -> 128 `i `uc
+]
+"36
+[v _CMD_DAC_GO `Cuc ~T0 @X0 1 s ]
+[i _CMD_DAC_GO
+-> -> 144 `i `uc
+]
+"37
+[v _CMD_PORT_GO `Cuc ~T0 @X0 1 s ]
+[i _CMD_PORT_GO
+-> -> 160 `i `uc
+]
+"38
+[v _CMD_CHAR_GO `Cuc ~T0 @X0 1 s ]
+[i _CMD_CHAR_GO
+-> -> 176 `i `uc
+]
+"39
+[v _CMD_ADC_DATA `Cuc ~T0 @X0 1 s ]
+[i _CMD_ADC_DATA
+-> -> 192 `i `uc
+]
+"40
+[v _CMD_PORT_DATA `Cuc ~T0 @X0 1 s ]
+[i _CMD_PORT_DATA
+-> -> 208 `i `uc
+]
+"41
+[v _CMD_CHAR_DATA `Cuc ~T0 @X0 1 s ]
+[i _CMD_CHAR_DATA
+-> -> 224 `i `uc
+]
+"42
+[v _CMD_PORT_GET `Cuc ~T0 @X0 1 s ]
+[i _CMD_PORT_GET
+-> -> 240 `i `uc
+]
+"43
+[v _CMD_CHAR_GET `Cuc ~T0 @X0 1 s ]
+[i _CMD_CHAR_GET
+-> -> 16 `i `uc
+]
+"44
+[v _CMD_DUMMY_CFG `Cuc ~T0 @X0 1 s ]
+[i _CMD_DUMMY_CFG
+-> -> 64 `i `uc
+]
+"45
+[v _CMD_DEAD `Cuc ~T0 @X0 1 s ]
+[i _CMD_DEAD
+-> -> 255 `i `uc
+]
+"46
+[v _CMD_DUMMY `Cuc ~T0 @X0 1 s ]
+[i _CMD_DUMMY
+-> -> 103 `i `uc
+]
+"66
+[v _PORT_GET_BYTES `Cuc ~T0 @X0 1 s ]
+[i _PORT_GET_BYTES
+-> -> 7 `i `uc
+]
+"67
+[v _CHAR_GET_BYTES `Cuc ~T0 @X0 1 s ]
+[i _CHAR_GET_BYTES
+-> -> 7 `i `uc
+]
+"68
+[v _CFG_GET_BYTES `Cuc ~T0 @X0 1 s ]
+[i _CFG_GET_BYTES
+-> -> 7 `i `uc
+]
+"69
+[v _ADC_GET_BYTES `Cuc ~T0 @X0 1 s ]
+[i _ADC_GET_BYTES
+-> -> 7 `i `uc
+]
+"70
+[v _PORT_GO_BYTES `Cuc ~T0 @X0 1 s ]
+[i _PORT_GO_BYTES
+-> -> 7 `i `uc
+]
+"71
+[v _CHAR_GO_BYTES `Cuc ~T0 @X0 1 s ]
+[i _CHAR_GO_BYTES
+-> -> 7 `i `uc
+]
+"72
+[v _DAC_GO_BYTES `Cuc ~T0 @X0 1 s ]
+[i _DAC_GO_BYTES
+-> -> 7 `i `uc
+]
+"134
 [v _failure `Va ~T0 @X0 1 e ]
 "88 ./tic12400.h
 [v _b_read `Vuc ~T0 @X0 1 e ]
@@ -4125,5 +4290,5 @@ Version 4.0 HI-TECH Software Intermediate Code
 "92
 [e :UE 3450 ]
 }
-[a 2C 49 50 58 51 54 58 51 54 0 ]
-[a 1C 79 99 116 32 49 49 32 50 48 50 53 0 ]
+[a 1C 79 99 116 32 49 50 32 50 48 50 53 0 ]
+[a 2C 49 49 58 49 50 58 50 49 0 ]

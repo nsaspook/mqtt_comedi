@@ -10,28 +10,6 @@
  * BMCboard SPI DAQ slave for the Orange PI
  */
 
-//#define	TIMEROFFSET     26474           // timer0 16bit counter value for 1 second to overflow
-//#define SLAVE_ACTIVE	10		// Activity counter level
-
-/* DIO defines */
-#define LOW             0			// digital output state levels, sink
-#define	HIGH            1			// digital output state levels, source
-#define	SON             LOW       		//
-#define SOFF            HIGH			//
-#define	S_ON            LOW       		// low select/on for chip/led
-#define S_OFF           HIGH			// high deselect/off chip/led
-#define	R_ON            HIGH       		// control relay states, relay is on when output gate is high, uln2803,omron relays need the CPU at 5.5vdc to drive
-#define R_OFF           LOW			// control relay states
-#define R_ALL_OFF       0x00
-#define R_ALL_ON        0xff
-#define NO              LOW
-#define YES             HIGH
-#define STX             2
-#define DC1_CMD		17
-#define DC2_CMD		18
-#define DC3_CMD		19
-#define DC4_CMD		20
-
 #include <xc.h>
 #include "slaveo.h"
 
@@ -92,7 +70,6 @@ void slaveo_rx_isr(void)
 	/* we only get this when the master wants data, the slave never generates one */
 	// SPI port #2 SLAVE receiver
 
-	IO_RF5_SetHigh();
 	DLED_SetHigh();
 #ifdef SLAVE_DEBUG
 	if (SPI2INTFbits.RXOIF) {
@@ -466,7 +443,6 @@ void slaveo_rx_isr(void)
 
 isr_end:
 	DLED_SetLow();
-	IO_RF5_SetLow();
 }
 
 void slaveo_spi_isr(void)

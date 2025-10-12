@@ -1,11 +1,8 @@
 
 /** \file modbus_master.c
- * 
+ *
  */
 #include "modbus_master.h"
-
-#define	ON	1
-#define	OFF	0
 
 typedef struct M_time_data { // ISR used, mainly for non-atomic mod problems
 	uint32_t clock_500hz;
@@ -77,7 +74,9 @@ em_config[] = {MADDR, WRITE_SINGLE_REGISTER, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 em_passwd[] = {MADDR, WRITE_SINGLE_REGISTER, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
 em_light[] = {MADDR, WRITE_SINGLE_REGISTER, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
-
+/*
+ * register data frames
+ */
 EM_data1 em, *em_ptr;
 EM_data2 emt;
 EM_serial ems;
@@ -270,7 +269,6 @@ int8_t master_controller_work(C_data * client)
 		return T_spacing;
 	}
 
-	IO_RF7_SetHigh();
 	spacing = 0;
 
 	client->trace = T_begin;
@@ -424,7 +422,6 @@ int8_t master_controller_work(C_data * client)
 	default:
 		break;
 	}
-	IO_RF7_SetLow();
 	return client->trace;
 }
 

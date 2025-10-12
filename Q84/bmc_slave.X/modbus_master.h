@@ -67,14 +67,14 @@ extern "C" {
 #define MAX_DATA        240
 	//#define LOCAL_ECHO	1
 #define FASTQ			// MODBUS query speed, define for faster sampling rates
-#define TMDELAY		2	// half-duplex delay
-#define TEDELAY		1	// half-duplex delay
-#define RDELAY		200	// receive timeout
-#define CDELAY		40	// fast query delay 100ms
-#define QDELAY		2	// slow query delay 1s
-#define TODELAY		4	// misc delay
-#define SPACING		40	// control loop cpu usage factor
-#define DUPL_DELAY	2	// extra duplex delay mode
+	static const uint8_t TMDELAY = 2; // half-duplex delay
+	static const uint8_t TEDELAY = 1; // half-duplex delay
+	static const uint8_t RDELAY = 200; // receive timeout
+	static const uint8_t CDELAY = 40; // fast query delay 100ms
+	static const uint8_t QDELAY = 2; // slow query delay 1s
+	static const uint8_t TODELAY = 4; // misc delay
+	static const uint8_t SPACING = 40; // control loop cpu usage factor
+	static const uint8_t DUPL_DELAY = 2; // extra duplex delay mode
 
 	/*
 	 * RS485 port defines
@@ -308,8 +308,8 @@ extern "C" {
 #define WRITE_MULTIPLE_COILS        15
 #define WRITE_MULTIPLE_REGISTERS    16
 
-#define BOFF	0
-#define BON	255
+	static const uint8_t BOFF = 0;
+	static const uint8_t BON = 255;
 
 #define MM_ERROR_S	MLED_SetHigh() // RED LED
 #define MM_ERROR_C	MLED_SetLow()  // RED LED

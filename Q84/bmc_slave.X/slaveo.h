@@ -24,30 +24,29 @@ extern "C" {
 
 #define SLAVEO_DRIVER "V0.91"
 
-#define F27Q84	0x9903
-#define F47Q84	0x9904
-#define F57Q84	0x9905
+	static const uint16_t F27Q84 = 0x9903;
+	static const uint16_t F47Q84 = 0x9904;
+	static const uint16_t F57Q84 = 0x9905;
 
 #define SLAVE_DEBUG
 
 	/* PIC Slave commands */
-#define CMD_ZERO        0b00000000
-#define CMD_ADC_GO      0b10000000	// Read ADC data
-#define CMD_DAC_GO      0x90		// Set DAC data
-#define CMD_PORT_GO     0xa0		// Set DO data
-#define CMD_CHAR_GO     0b10110000
-#define CMD_ADC_DATA	0b11000000
-#define CMD_PORT_DATA	0b11010000
-#define CMD_CHAR_DATA	0b11100000	// Send serial TX buffer
-#define CMD_PORT_GET    0b11110000	// Read DI data
-#define CMD_CHAR_GET    0b00010000	// Get serial RX buffer
-#define CMD_DUMMY_CFG	0b01000000	// stuff config data in SPI buffer
-#define CMD_DEAD        0b11111111      // This is usually a bad response
+	static const uint8_t CMD_ZERO = 0b00000000;
+	static const uint8_t CMD_ADC_GO = 0b10000000; // Read ADC data
+	static const uint8_t CMD_DAC_GO = 0x90; // Set DAC data
+	static const uint8_t CMD_PORT_GO = 0xa0; // Set DO data
+	static const uint8_t CMD_CHAR_GO = 0b10110000;
+	static const uint8_t CMD_ADC_DATA = 0b11000000;
+	static const uint8_t CMD_PORT_DATA = 0b11010000;
+	static const uint8_t CMD_CHAR_DATA = 0b11100000; // Send serial TX buffer
+	static const uint8_t CMD_PORT_GET = 0b11110000; // Read DI data
+	static const uint8_t CMD_CHAR_GET = 0b00010000; // Get serial RX buffer
+	static const uint8_t CMD_DUMMY_CFG = 0b01000000; // stuff config data in SPI buffer
+	static const uint8_t CMD_DEAD = 0b11111111; // This is usually a bad response
+	static const uint8_t CMD_DUMMY = 0b01100111; /* 7 channels 4.096 */
 
 #define CHECKBYTE       0x57
 #define CHECKMARK	0x1957
-
-#define CMD_DUMMY       0b01100111	/* 7 channels 4.096 */
 #define NUM_AI_CHAN     15
 #define AI_BUFFER_NUM	0x40
 #define AI_CHAN_FIX	5
@@ -64,13 +63,13 @@ extern "C" {
 #define	ADC_SWAP_MASK	0b01000000
 #define UART_DUMMY_MASK	0b01000000
 
-#define PORT_GET_BYTES	7
-#define CHAR_GET_BYTES	7
-#define CFG_GET_BYTES	7
-#define ADC_GET_BYTES	7
-#define PORT_GO_BYTES	7
-#define CHAR_GO_BYTES	7
-#define DAC_GO_BYTES	7
+	static const uint8_t PORT_GET_BYTES = 7;
+	static const uint8_t CHAR_GET_BYTES = 7;
+	static const uint8_t CFG_GET_BYTES = 7;
+	static const uint8_t ADC_GET_BYTES = 7;
+	static const uint8_t PORT_GO_BYTES = 7;
+	static const uint8_t CHAR_GO_BYTES = 7;
+	static const uint8_t DAC_GO_BYTES = 7;
 
 #define MAX_BMC_BUF	512
 
