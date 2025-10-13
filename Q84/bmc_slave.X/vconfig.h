@@ -64,36 +64,25 @@ extern "C" {
 	 * V0.46 add ADC4 and ADC5 voltage calibration values on debug screens
 	 * V0.47 cleanup defines and convert to static const variables
 	 */
+
+	//#define DI_DEBUG
+	//#define TRACE
+
 	/*
 	 * TIC12400 testing modes
 	 */
 #define DIO_TEST
 #define DIO_SHOW_BUF
-	//#define DI_DEBUG
 #define SER_DEBUG
-
 #define DI_MC_CMD
-
-	/* analog testing a calibration mode
+	/* analog testing calibration mode
 	 *
 	 */
-
 #define AIO_TEST
-
-#define SLED	MLED_LAT
+	/*
+	 * debug LED
+	 */
 #define DLED	DLED_LAT
-
-#define TRACE
-
-#define DEFAULT_TID	1
-#define TDELAY		3000
-#define SEQDELAY	10000
-#define LDELAY		1000
-#define SDELAY		500
-#define BDELAY		300
-#define DDELAY		500 // display update spacing
-#define DFLIP		1500 // display info flipping spacing
-#define ADCDELAY	1 // adc update rate ms
 
 	/*
 	 * characters per line on the display
@@ -113,30 +102,33 @@ extern "C" {
 #define DBUG_VTERM      2
 #define INFO_VTERM      1
 #define MAIN_VTERM      0
+#define SPIN_CHAR  19
+#define EQUIP_UART  2
+#define DEF_TIME  1694196350 /* default epoch time */
 
-#define SWITCH_VTERM	70 // time between main to info screen switches
-#define SWITCH_DURATION	32 // time in the info screen
-
-#define SPIN_CHAR       19
-
-#define UART_SPEED_EADR         0x03F0 // offset from 0x380000
-#define UART_SPEED_LOCK_EADR	0x03F1 // offset from 0x380000
-
-#define HOST_UART       1
-#define EQUIP_UART      2
-
-#define DEF_TIME        1694196350 /* default epoch time */
-#define CHK_DAY_TIME	1200
-#define BAT_DAY_COUNT	45	// number of reports before updates
-#define BAT_NIGHT_COUNT	90
-
+	/*
+	 * data logging commands and sequencing
+	 */
 #define STX      2
 #define DC1_CMD  17
 #define DC2_CMD  18
 #define DC3_CMD  19
 #define DC4_CMD  20
-
 #define DC_NEXT		DC1_CMD // repeat 2 or 4 lines with DC3_CMD value here
+
+	static const uint16_t TDELAY = 3000;
+	static const uint16_t SEQDELAY = 10000;
+	static const uint16_t LDELAY = 1000;
+	static const uint16_t SDELAY = 500;
+	static const uint16_t DDELAY = 500; // display update spacing
+	static const uint16_t DFLIP = 1500; // display info flipping spacing
+	static const uint8_t ADCDELAY = 1; // adc update rate ms
+	static const uint8_t SWITCH_VTERM = 70; // time between main to info screen switches
+	static const uint8_t SWITCH_DURATION = 32; // time in the info screen
+	static const uint8_t HOST_UART = 1;
+	static const uint16_t CHK_DAY_TIME = 1200;
+	static const uint8_t BAT_DAY_COUNT = 45; // number of reports before updates
+	static const uint8_t BAT_NIGHT_COUNT = 90;
 
 	const char log_format1[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%7.4f,%7.4f,%6.4f,%7.4f,1957,~EOT                                                  \r\n";
 #define LOG_VARS1	BMC4.d_id,((float) em.vl3l1) / 10.0f,((float) em.al1) / 1000.0f, ((float) em.wl1) / 10.0f, ((float) em.wl2) / 10.0f, \

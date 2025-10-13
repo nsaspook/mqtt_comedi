@@ -23,12 +23,22 @@ extern "C" {
 #include "calibr.h"
 
 #define SLAVEO_DRIVER "V0.91"
+#define SLAVE_DEBUG
+#define CHECKBYTE       0x57
+#define CHECKMARK	0x1957
+#define AI_BUFFER_NUM	0x40
+#define AO_BUFFER_NUM	0x40
+#define SPI_BUFFER_LEN	10
+#define PACKET_BUF_SIZ	16
+#define RSTRING_BUF_SIZ	81
+#define MAX_BMC_BUF	512
 
+	/*
+	 * controller codes
+	 */
 	static const uint16_t F27Q84 = 0x9903;
 	static const uint16_t F47Q84 = 0x9904;
 	static const uint16_t F57Q84 = 0x9905;
-
-#define SLAVE_DEBUG
 
 	/* PIC Slave commands */
 	static const uint8_t CMD_ZERO = 0b00000000;
@@ -45,23 +55,13 @@ extern "C" {
 	static const uint8_t CMD_DEAD = 0b11111111; // This is usually a bad response
 	static const uint8_t CMD_DUMMY = 0b01100111; /* 7 channels 4.096 */
 
-#define CHECKBYTE       0x57
-#define CHECKMARK	0x1957
-#define NUM_AI_CHAN     15
-#define AI_BUFFER_NUM	0x40
-#define AI_CHAN_FIX	5
-
-#define NUM_AO_CHAN     1
-#define AO_BUFFER_NUM	0x40
-
-#define SPI_BUFFER_LEN	10
-#define PACKET_BUF_SIZ	16
-#define RSTRING_BUF_SIZ	81
-
-#define	HI_NIBBLE       0xf0
-#define	LO_NIBBLE       0x0f
-#define	ADC_SWAP_MASK	0b01000000
-#define UART_DUMMY_MASK	0b01000000
+	static const uint8_t NUM_AI_CHAN = 15;
+	static const uint8_t AI_CHAN_FIX = 5;
+	static const uint8_t NUM_AO_CHAN = 1;
+	static const uint8_t HI_NIBBLE = 0xf0;
+	static const uint8_t LO_NIBBLE = 0x0f;
+	static const uint8_t ADC_SWAP_MASK = 0b01000000;
+	static const uint8_t UART_DUMMY_MASK = 0b01000000;
 
 	static const uint8_t PORT_GET_BYTES = 7;
 	static const uint8_t CHAR_GET_BYTES = 7;
@@ -70,8 +70,6 @@ extern "C" {
 	static const uint8_t PORT_GO_BYTES = 7;
 	static const uint8_t CHAR_GO_BYTES = 7;
 	static const uint8_t DAC_GO_BYTES = 7;
-
-#define MAX_BMC_BUF	512
 
 	struct spi_link_type_ss { // internal state table
 		uint8_t SPI_DATA : 1;

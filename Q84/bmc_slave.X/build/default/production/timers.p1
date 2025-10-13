@@ -3108,7 +3108,72 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _BON
 -> -> 255 `i `uc
 ]
-"141 ./vconfig.h
+"119 ./vconfig.h
+[v _TDELAY `Cus ~T0 @X0 1 s ]
+[i _TDELAY
+-> -> 3000 `i `us
+]
+"120
+[v _SEQDELAY `Cus ~T0 @X0 1 s ]
+[i _SEQDELAY
+-> -> 10000 `i `us
+]
+"121
+[v _LDELAY `Cus ~T0 @X0 1 s ]
+[i _LDELAY
+-> -> 1000 `i `us
+]
+"122
+[v _SDELAY `Cus ~T0 @X0 1 s ]
+[i _SDELAY
+-> -> 500 `i `us
+]
+"123
+[v _DDELAY `Cus ~T0 @X0 1 s ]
+[i _DDELAY
+-> -> 500 `i `us
+]
+"124
+[v _DFLIP `Cus ~T0 @X0 1 s ]
+[i _DFLIP
+-> -> 1500 `i `us
+]
+"125
+[v _ADCDELAY `Cuc ~T0 @X0 1 s ]
+[i _ADCDELAY
+-> -> 1 `i `uc
+]
+"126
+[v _SWITCH_VTERM `Cuc ~T0 @X0 1 s ]
+[i _SWITCH_VTERM
+-> -> 70 `i `uc
+]
+"127
+[v _SWITCH_DURATION `Cuc ~T0 @X0 1 s ]
+[i _SWITCH_DURATION
+-> -> 32 `i `uc
+]
+"128
+[v _HOST_UART `Cuc ~T0 @X0 1 s ]
+[i _HOST_UART
+-> -> 1 `i `uc
+]
+"129
+[v _CHK_DAY_TIME `Cus ~T0 @X0 1 s ]
+[i _CHK_DAY_TIME
+-> -> 1200 `i `us
+]
+"130
+[v _BAT_DAY_COUNT `Cuc ~T0 @X0 1 s ]
+[i _BAT_DAY_COUNT
+-> -> 45 `i `uc
+]
+"131
+[v _BAT_NIGHT_COUNT `Cuc ~T0 @X0 1 s ]
+[i _BAT_NIGHT_COUNT
+-> -> 90 `i `uc
+]
+"133
 [v _log_format1 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format1
 :U ..
@@ -3297,7 +3362,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"147
+"139
 [v _log_format2 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format2
 :U ..
@@ -3486,7 +3551,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"153
+"145
 [v _log_format3 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format3
 :U ..
@@ -3675,7 +3740,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"159
+"151
 [v _log_format4 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format4
 :U ..
@@ -3864,9 +3929,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-[v F25463 `Cuc ~T0 @X0 -> 20 `i t ]
-"311
-[v _spin `F25463 ~T0 @X0 -> 6 `i e ]
+[v F25476 `Cuc ~T0 @X0 -> 20 `i t ]
+"303
+[v _spin `F25476 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
 :U ..
@@ -3944,9 +4009,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-[v F25505 `(v ~T0 @X0 1 tf2`uc`us ]
+[v F25518 `(v ~T0 @X0 1 tf2`uc`us ]
 "15 timers.c
-[v _StartTimer `TF25505 ~T0 @X0 1 e ]
+[v _StartTimer `TF25518 ~T0 @X0 1 e ]
 "16
 {
 [e :U _StartTimer ]
@@ -3960,9 +4025,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 "18
 [e :UE 3411 ]
 }
-[v F25509 `(a ~T0 @X0 1 tf1`uc ]
+[v F25522 `(a ~T0 @X0 1 tf1`uc ]
 "23
-[v _TimerDone `TF25509 ~T0 @X0 1 e ]
+[v _TimerDone `TF25522 ~T0 @X0 1 e ]
 "24
 {
 [e :U _TimerDone ]
