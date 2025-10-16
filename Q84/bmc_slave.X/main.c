@@ -434,8 +434,6 @@ void main(void)
 
 #endif
 	TMR2_StartTimer();
-	// timer3 2ms in init_mb_master_timers
-	// timer4 500ms in init_mb_master_timers
 	TMR5_SetInterruptHandler(onesec_io);
 	TMR5_StartTimer();
 	TMR6_StartTimer(); // software timer and FM80 I/O
@@ -1328,7 +1326,6 @@ void state_mx_status_cb(void)
 void state_status_cb(void)
 {
 	static uint16_t day_clocks = 0;
-	static uint8_t status_prev = STATUS_SLEEPING;
 
 #ifdef debug_data
 	printf("%5d: %3x %3x %3x %3x %3x STATUS: FM80 %s mode\r\n", rx_count++, abuf[0], abuf[1], abuf[2], abuf[3], abuf[4], state_name[abuf[2]]);

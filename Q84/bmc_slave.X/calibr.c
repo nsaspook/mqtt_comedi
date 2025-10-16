@@ -25,7 +25,7 @@ void set_calibration(unsigned long long mui)
 		ha_daq_calib.scaler4 = HV_SCALE4_3;
 		ha_daq_calib.scaler5 = HV_SCALE5_3;
 		break;
-// dead chip/replaced	case 0x55AF3:
+		// dead chip/replaced	case 0x55AF3:
 	case 0x4DE66:
 		ha_daq_calib.scaler4 = HV_SCALE4_4;
 		ha_daq_calib.scaler5 = HV_SCALE5_4;
@@ -42,11 +42,19 @@ void set_calibration(unsigned long long mui)
  */
 float phy_chan4(uint16_t value)
 {
-	return(((float) value)) / 4096.0f * ha_daq_calib.scaler4;
+	if (value) {
+		return((((float) value)) / 4096.0f) * ha_daq_calib.scaler4;
+	} else {
+		return 0.00001f;
+	}
 }
 
 float phy_chan5(uint16_t value)
 {
-	return(((float) value)) / 4096.0f * ha_daq_calib.scaler5;
+	if (value) {
+		return((((float) value)) / 4096.0f) * ha_daq_calib.scaler5;
+	} else {
+		return 0.00001f;
+	}
 }
 
