@@ -70,6 +70,8 @@ extern "C" {
 #define KAI             60
 
 #define ANA_BUFFERS     0x40
+	
+//#define USE_RELAYS
 
 	/*
 	 * system testing defines
@@ -96,6 +98,7 @@ extern "C" {
 	};
 
 	void led_lightshow(int);
+	void relay_set(uint16_t);
 
 #ifdef __cplusplus
 }

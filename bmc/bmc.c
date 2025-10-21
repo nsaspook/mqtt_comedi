@@ -130,6 +130,11 @@ void led_lightshow(int speed)
 	}
 }
 
+void relay_set(uint16_t relays)
+{
+	bmc.dataout.dio_buf = relays;
+}
+
 int main(int argc, char *argv[])
 {
 	int do_ao_only = false;
@@ -175,7 +180,11 @@ int main(int argc, char *argv[])
 			get_data_sample();
 
 			if (bmc.BOARD == bmcboard) {
+#ifdef USE_RELAYS
+				relay_set(0b01010101);
+#else
 				led_lightshow(10);
+#endif
 			} else {
 				led_lightshow(10);
 			}
