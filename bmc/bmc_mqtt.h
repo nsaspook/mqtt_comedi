@@ -16,6 +16,9 @@ extern "C" {
 #include <sys/socket.h>
 #include <netdb.h>
 
+	
+#define BENERGY	480.0f
+#define BENERGY_INTEGRAL 1440.0f
 #define MQTT_RETRY 10
 
 #define HA_SW_DELAY     400000  // usecs

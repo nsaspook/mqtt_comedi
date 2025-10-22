@@ -26,6 +26,7 @@ int32_t validate_failure;
 struct ha_csv_type {
 	double acvolts, acamps, acwatts, acwatts_gti, acwatts_aux, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, panel_watts, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
 	uint32_t d_id;
+	double benergy;
 };
 
 char tmp_test_ptr[SYSLOG_SIZ];
@@ -487,7 +488,9 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	MQTTClient_message pubmsg = MQTTClient_message_initializer;
 	MQTTClient_deliveryToken token;
 	ha_flag_vars_ss.deliveredtoken = 0;
-	static struct ha_csv_type R; // results from Q84 board
+	static struct ha_csv_type R = {
+		.benergy = BENERGY,
+	}; // results from Q84 board
 
 	//#define DIGITAL_ONLY
 
@@ -684,6 +687,18 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		fflush(fout);
 		E.mqtt_count++;
 		E.sequence++;
+
+		/*
+		 * Battery energy calculations and fixes
+		 */
+		R.benergy = R.benergy + ((R.bsensor0 * R.bvolts) / BENERGY_INTEGRAL); // 2.5 seconds per sample interval
+		if (R.benergy > BENERGY) {
+			R.benergy = BENERGY;
+		}
+		if (R.benergy < 0.0f) {
+			R.benergy = 0.0f;
+		}
+
 		json = cJSON_CreateObject();
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "name", 64);
 		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (const char *) &ha_daq_host.clients[ha_daq_host.hindex]);
@@ -789,6 +804,8 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.em540_online);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bmc_id", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.bmc_id);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_benergy", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.benergy);
 		}
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "build_date", 64);
 		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], FW_Date);
