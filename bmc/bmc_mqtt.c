@@ -27,6 +27,8 @@ struct ha_csv_type {
 	double acvolts, acamps, acwatts, acwatts_gti, acwatts_aux, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, panel_watts, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
 	uint32_t d_id;
 	double benergy, runtime;
+	uint32_t boot_wait;
+	bool boot_volts;
 };
 
 char tmp_test_ptr[SYSLOG_SIZ];
@@ -39,6 +41,37 @@ struct ha_flag_type ha_flag_vars_ss = {
 	.ha_id = COMEDI_ID,
 	.var_update = 0,
 };
+
+// 24V LiFePO4 Battery to SOC data table slots, scale battery voltage to match
+static const float bsoc_voltage[BVSOC_SLOTS] = {
+	20.000f,
+	24.000f,
+	25.200f,
+	25.600f,
+	25.800f,
+	26.000f,
+	26.200f,
+	26.400f,
+	26.600f,
+	26.800f,
+	27.200f,
+	29.200f,
+}; // SoC voltage guess
+
+static const float bsoc_soc[BVSOC_SLOTS] = {
+	0.01f,
+	0.10f,
+	0.20f,
+	0.30f,
+	0.50f,
+	0.60f,
+	0.65f,
+	0.70f,
+	0.90f,
+	0.99f,
+	1.00f,
+	1.00f
+}; // Battery SoC guess
 
 struct ha_daq_hosts_type ha_daq_host = {
 	.hosts[0] = "10.1.1.30",
@@ -117,6 +150,7 @@ struct ha_daq_hosts_type ha_daq_host = {
 static double ac0_filter(const double);
 static double ac1_filter(const double);
 static double bsensor0_filter(const double);
+static double Volts_to_SOC(const double);
 
 /** \file bmc_mqtt.c
  * show all assigned networking addresses and types
@@ -485,6 +519,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	time_t rawtime;
 	static uint32_t spam = 0;
 	static uint32_t pacer = 1001;
+	double Soc = 1.0f;
 
 	MQTTClient_message pubmsg = MQTTClient_message_initializer;
 	MQTTClient_deliveryToken token;
@@ -492,6 +527,8 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	static struct ha_csv_type R = {
 		.benergy = BENERGY,
 		.runtime = BAT_RUN_MAX,
+		.boot_wait = 0,
+		.boot_volts = true,
 	}; // results from Q84 board
 
 	//#define DIGITAL_ONLY
@@ -693,9 +730,15 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		E.mqtt_count++;
 		E.sequence++;
 
+
 		/*
 		 * Battery energy calculations and fixes
 		 */
+		if (R.boot_volts && (R.boot_wait++ > 2) && R.bvolts > 12.0f) { // find boot battery energy from voltage tagle
+			R.boot_volts = false;
+			Soc = Volts_to_SOC(R.bvolts * 2.0f); // convert to 24vdc standard Soc table
+			R.benergy = BENERGY*Soc;
+		}
 		R.benergy = R.benergy + ((bsensor0_filter(R.bsensor0) * R.bvolts) / BENERGY_INTEGRAL); // 2.5 seconds per sample interval
 		if (R.benergy > BENERGY) {
 			R.benergy = BENERGY;
@@ -972,4 +1015,23 @@ char * validate_bmc_text(const char * text, bool * valid)
 	}
 
 	return tmp_p;
+}
+
+/*
+ * static SOC table for 24vdc LiFePO4, scale bvoltage to the correct voltage range
+ */
+double Volts_to_SOC(const double bvoltage)
+{
+	uint8_t slot;
+	double soc = 0;
+
+	/*
+	 * walk up the table
+	 */
+	for (slot = 0; slot < BVSOC_SLOTS; slot++) {
+		if (bvoltage > bsoc_voltage[slot]) {
+			soc = bsoc_soc[slot];
+		}
+	}
+	return soc;
 }

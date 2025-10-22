@@ -49,11 +49,13 @@ extern "C" {
 #define BSENSOR_MAX_POS  125.0f
 
 #define UPDATE_PACER  250 // MQTT and logging frequency to 0.01 seconds.
-#define BAT_RUN_MAX 24.0f  // max displayed run time at current load
+#define BAT_RUN_MAX 36.0f  // max displayed run time at current load
 #define DRAIN_HOUR 1.0f
 #define IDLE_DRAIN      10.0f // system operational drain losses in W
 
 #define VALIDATE_LEN 55
+
+#define BVSOC_SLOTS     12      // 24V LiFePO4 Battery to SOC data table slots
 
 	/*
 	 * maps the EM540 modbus registers to int32_t and uint16_t values
