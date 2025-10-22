@@ -26,7 +26,7 @@ int32_t validate_failure;
 struct ha_csv_type {
 	double acvolts, acamps, acwatts, acwatts_gti, acwatts_aux, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, panel_watts, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
 	uint32_t d_id;
-	double benergy;
+	double benergy, runtime;
 };
 
 char tmp_test_ptr[SYSLOG_SIZ];
@@ -114,8 +114,9 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.A200_S[3] = A200_0_SCALAR,
 };
 
-double ac0_filter(const double);
-double ac1_filter(const double);
+static double ac0_filter(const double);
+static double ac1_filter(const double);
+static double bsensor0_filter(const double);
 
 /** \file bmc_mqtt.c
  * show all assigned networking addresses and types
@@ -490,6 +491,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	ha_flag_vars_ss.deliveredtoken = 0;
 	static struct ha_csv_type R = {
 		.benergy = BENERGY,
+		.runtime = BAT_RUN_MAX,
 	}; // results from Q84 board
 
 	//#define DIGITAL_ONLY
@@ -527,6 +529,9 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 
 	if (bmc.BOARD == bmcboard) {
 		E.adc[channel_ANA0] = get_adc_volts(channel_ANA0);
+		/*
+		 * Battery 200A current sensor
+		 */
 		R.bsensor0 = lp_filter((E.adc[channel_ANA0] - ha_daq_host.calib.A200_Z[ha_daq_host.bindex]) * ha_daq_host.calib.A200_S[ha_daq_host.bindex], BSENSOR0, true);
 		E.adc[channel_ANA1] = get_adc_volts(channel_ANA1);
 		E.adc[channel_ANA2] = get_adc_volts(channel_ANA2);
@@ -691,12 +696,33 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		/*
 		 * Battery energy calculations and fixes
 		 */
-		R.benergy = R.benergy + ((R.bsensor0 * R.bvolts) / BENERGY_INTEGRAL); // 2.5 seconds per sample interval
+		R.benergy = R.benergy + ((bsensor0_filter(R.bsensor0) * R.bvolts) / BENERGY_INTEGRAL); // 2.5 seconds per sample interval
 		if (R.benergy > BENERGY) {
 			R.benergy = BENERGY;
 		}
 		if (R.benergy < 0.0f) {
 			R.benergy = 0.0f;
+		}
+
+		/*
+		 * Battery runtime calculations at current load
+		 */
+		if ((bsensor0_filter(R.bsensor0) + 0.001f) * (R.bvolts + 0.001f) > 0.00001f) {
+			R.runtime = (R.benergy / DRAIN_HOUR) / IDLE_DRAIN;
+			if (R.runtime > BAT_RUN_MAX) {
+				R.runtime = BAT_RUN_MAX;
+			}
+			if (R.runtime < 0.0001f) {
+				R.runtime = 0.0001f;
+			}
+		} else {
+			R.runtime = (R.benergy / DRAIN_HOUR) / ((fabs(bsensor0_filter(R.bsensor0) * R.bvolts) + IDLE_DRAIN));
+			if (R.runtime > BAT_RUN_MAX) {
+				R.runtime = BAT_RUN_MAX;
+			}
+			if (R.runtime < 0.0001f) {
+				R.runtime = 0.0001f;
+			}
 		}
 
 		json = cJSON_CreateObject();
@@ -806,6 +832,8 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.bmc_id);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_benergy", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.benergy);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_runtime", 64);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.runtime);
 		}
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "build_date", 64);
 		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], FW_Date);
@@ -855,7 +883,7 @@ void comedi_push_mqtt(void)
 	mqtt_bmc_data(E.client_p, ha_daq_host.topics[ha_daq_host.hindex]);
 }
 
-double ac0_filter(const double raw)
+static double ac0_filter(const double raw)
 {
 	static double accum = 0.0f;
 	static double coef = COEF;
@@ -863,7 +891,15 @@ double ac0_filter(const double raw)
 	return accum / coef;
 }
 
-double ac1_filter(const double raw)
+static double ac1_filter(const double raw)
+{
+	static double accum = 0.0f;
+	static double coef = COEF;
+	accum = accum - accum / coef + raw;
+	return accum / coef;
+}
+
+static double bsensor0_filter(const double raw)
 {
 	static double accum = 0.0f;
 	static double coef = COEF;

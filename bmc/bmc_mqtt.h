@@ -11,13 +11,13 @@ extern "C" {
 #include "daq.h"
 
 #define NI_MAXHOST      1025
-#define NI_MAXSERV      32 
+#define NI_MAXSERV      32
 
 #include <sys/socket.h>
 #include <netdb.h>
 
-	
-#define BENERGY	480.0f
+
+#define BENERGY 480.0f
 #define BENERGY_INTEGRAL 1440.0f
 #define MQTT_RETRY 10
 
@@ -37,7 +37,7 @@ extern "C" {
 #define MBMQTT  1024
 #define CHECKMARK 1957
 #define CSV_COUNT 22
-	
+
 #define MAINS_HZ 60.0f
 #define MAINS_HZ_LOW 45.0f
 #define MAINS_HZ_HIGH 65.0f
@@ -45,10 +45,13 @@ extern "C" {
 #define CALIB_HV_LOW 50.0f
 #define CALIB_HV_HIGH 75.0f
 
-#define BSENSOR_MAX_NEG  -125.0f 
-#define BSENSOR_MAX_POS  125.0f 
+#define BSENSOR_MAX_NEG  -125.0f
+#define BSENSOR_MAX_POS  125.0f
 
 #define UPDATE_PACER  250 // MQTT and logging frequency to 0.01 seconds.
+#define BAT_RUN_MAX 24.0f  // max displayed run time at current load
+#define DRAIN_HOUR 1.0f
+#define IDLE_DRAIN      10.0f // system operational drain losses in W
 
 #define VALIDATE_LEN 55
 
