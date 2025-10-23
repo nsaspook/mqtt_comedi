@@ -15,10 +15,15 @@ extern "C" {
 	/*
 	 * configuration data for Home Assistant
 	 */
-#define BENERGY  480.0f
-#define BVOLTAGE 12.6f
-#define PVENERGY 300.0f
-#define PVVOLTAGE 12.6f
+#define DBENERGY  500.0f
+#define DBVOLTAGE 12.6f
+#define DPVENERGY 300.0f
+#define DPVVOLTAGE 12.6f
+#define DSOC_MODE 2.0f
+
+	struct bmc_settings {
+		double BENERGYV, BVOLTAGEV, PVENERGYV, PVVOLTAGEV, SOC_MODEV;
+	};
 
 #define BMC_MAXHOST      1025
 #define BENERGY_INTEGRAL 1440.0f

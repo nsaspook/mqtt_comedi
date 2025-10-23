@@ -23,6 +23,17 @@ char hname[256], *hname_ptr = hname;
 size_t hname_len = 12;
 int32_t validate_failure;
 
+/*
+ * BMC default setting structure for local configuration setup from host config file
+ */
+struct bmc_settings S = {
+	.BENERGYV = DBENERGY,
+	.BVOLTAGEV = DBVOLTAGE,
+	.PVENERGYV = DPVENERGY,
+	.PVVOLTAGEV = DPVVOLTAGE,
+	.SOC_MODEV = DSOC_MODE,
+};
+
 struct ha_csv_type {
 	double acvolts, acamps, acwatts, acwatts_gti, acwatts_aux, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, panel_watts, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
 	uint32_t d_id;
@@ -45,8 +56,8 @@ struct ha_flag_type ha_flag_vars_ss = {
 // 24V LiFePO4 Battery to SOC data table slots, scale battery voltage to match
 static const float bsoc_voltage[BVSOC_SLOTS] = {
 	20.000f,
-	24.000f,
 	25.200f,
+	25.400f,
 	25.600f,
 	25.800f,
 	26.000f,
@@ -525,7 +536,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	MQTTClient_deliveryToken token;
 	ha_flag_vars_ss.deliveredtoken = 0;
 	static struct ha_csv_type R = {
-		.benergy = BENERGY,
+		.benergy = DBENERGY, // default running value, updates per run
 		.runtime = BAT_RUN_MAX,
 		.boot_wait = 0,
 		.boot_volts = true,
@@ -736,12 +747,12 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		 */
 		if (R.boot_volts && (R.boot_wait++ > 2) && R.bvolts > 12.0f) { // find boot battery energy from voltage tagle
 			R.boot_volts = false;
-			Soc = Volts_to_SOC(R.bvolts * 2.0f); // convert to 24vdc standard Soc table
-			R.benergy = BENERGY*Soc;
+			Soc = Volts_to_SOC(R.bvolts * S.SOC_MODEV); // convert to 24vdc standard Soc table
+			R.benergy = S.BENERGYV*Soc;
 		}
 		R.benergy = R.benergy + ((bsensor0_filter(R.bsensor0) * R.bvolts) / BENERGY_INTEGRAL); // 2.5 seconds per sample interval
-		if (R.benergy > BENERGY) {
-			R.benergy = BENERGY;
+		if (R.benergy > S.BENERGYV) {
+			R.benergy = S.BENERGYV;
 		}
 		if (R.benergy < 0.0f) {
 			R.benergy = 0.0f;
@@ -824,13 +835,13 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_pfl2", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.achz);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bank_energy", 64);
-				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], BENERGY);
+				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], S.BENERGYV);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bank_voltage", 64);
-				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], BVOLTAGE);
+				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], S.BVOLTAGEV);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_pv_energy", 64);
-				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], PVENERGY);
+				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], S.PVENERGYV);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_pv_voltage", 64);
-				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], PVVOLTAGE);
+				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], S.PVVOLTAGEV);
 				break;
 			case DC1_CMD:
 			default:
