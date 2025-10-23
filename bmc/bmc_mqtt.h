@@ -9,15 +9,18 @@ extern "C" {
 
 #include "bmc.h"
 #include "daq.h"
-
-#define NI_MAXHOST      1025
-#define NI_MAXSERV      32
-
 #include <sys/socket.h>
 #include <netdb.h>
 
+	/*
+	 * configuration data for Home Assistant
+	 */
+#define BENERGY  480.0f
+#define BVOLTAGE 12.6f
+#define PVENERGY 300.0f
+#define PVVOLTAGE 12.6f
 
-#define BENERGY 480.0f
+#define BMC_MAXHOST      1025
 #define BENERGY_INTEGRAL 1440.0f
 #define MQTT_RETRY 10
 
@@ -36,6 +39,9 @@ extern "C" {
 
 #define MBMQTT  1024
 #define CHECKMARK 1957
+	/*
+	 * number of data items from daq_bmc board for serial data streams
+	 */
 #define CSV_COUNT 22
 
 #define MAINS_HZ 60.0f
@@ -49,7 +55,7 @@ extern "C" {
 #define BSENSOR_MAX_POS  125.0f
 
 #define UPDATE_PACER  250 // MQTT and logging frequency to 0.01 seconds.
-#define BAT_RUN_MAX 36.0f  // max displayed run time at current load
+#define BAT_RUN_MAX 48.0f  // max displayed run time at current load
 #define DRAIN_HOUR 1.0f
 #define IDLE_DRAIN      10.0f // system operational drain losses in W
 
@@ -115,12 +121,12 @@ extern "C" {
 	};
 
 	struct ha_daq_hosts_type {
-		const char hosts[4][NI_MAXHOST];
-		const char mqtt[4][NI_MAXHOST];
-		const char clients[4][NI_MAXHOST];
-		const char topics[4][NI_MAXHOST];
-		const char listen[4][NI_MAXHOST];
-		char hname[4][NI_MAXHOST];
+		const char hosts[4][BMC_MAXHOST];
+		const char mqtt[4][BMC_MAXHOST];
+		const char clients[4][BMC_MAXHOST];
+		const char topics[4][BMC_MAXHOST];
+		const char listen[4][BMC_MAXHOST];
+		char hname[4][BMC_MAXHOST];
 		double scaler[4], scaler4[4], scaler5[4];
 		uint8_t hindex, bindex;
 		uint32_t pacer[4];

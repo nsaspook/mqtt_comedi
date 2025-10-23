@@ -160,7 +160,7 @@ void showIP(void)
 {
 	struct ifaddrs *ifaddr, *ifa;
 	int s;
-	char host[NI_MAXHOST];
+	char host[BMC_MAXHOST];
 
 	if (getifaddrs(&ifaddr) == -1) {
 		perror("getifaddrs");
@@ -171,7 +171,7 @@ void showIP(void)
 		if (ifa->ifa_addr == NULL)
 			continue;
 
-		s = getnameinfo(ifa->ifa_addr, sizeof(struct sockaddr_in), host, NI_MAXHOST, NULL, 0, NI_NUMERICHOST);
+		s = getnameinfo(ifa->ifa_addr, sizeof(struct sockaddr_in), host, BMC_MAXHOST, NULL, 0, NI_NUMERICHOST);
 
 		if (ifa->ifa_addr->sa_family == AF_INET) {
 			if (s != 0) {
@@ -596,7 +596,6 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			if (jtoken != NULL) {
 				/*
 				 * parse the string for variable values
-				 * double acvolts, acamps, acwatts, acva, acvar, acpf, achz, bvolts, pvolts, bamps, pamps, fm_online, fm_mode;
 				 */
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
@@ -698,6 +697,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			R.achz = MAINS_HZ;
 		}
 
+		// sanity checks for scalars
 		if (ha_daq_host.calib.scaler4[ha_daq_host.bindex] > CALIB_HV_HIGH || ha_daq_host.calib.scaler4[ha_daq_host.bindex] < CALIB_HV_LOW) {
 			ha_daq_host.calib.scaler4[ha_daq_host.bindex] = HV_SCALE4_0;
 		}
@@ -748,7 +748,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		}
 
 		/*
-		 * Battery runtime calculations at current load
+		 * Battery runtime calculations at current battery load
 		 */
 		if ((bsensor0_filter(R.bsensor0) + 0.001f) * (R.bvolts + 0.001f) > 0.00001f) {
 			R.runtime = (R.benergy / DRAIN_HOUR) / IDLE_DRAIN;
@@ -823,6 +823,14 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acpf);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_pfl2", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.achz);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bank_energy", 64);
+				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], BENERGY);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bank_voltage", 64);
+				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], BVOLTAGE);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_pv_energy", 64);
+				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], PVENERGY);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_pv_voltage", 64);
+				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], PVVOLTAGE);
 				break;
 			case DC1_CMD:
 			default:
