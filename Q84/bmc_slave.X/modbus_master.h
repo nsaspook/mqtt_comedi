@@ -203,6 +203,19 @@ extern "C" {
 		phaseseq, hz;
 	} EM_data1;
 
+	typedef struct EM_tmp {
+		volatile float
+		vl1n, vl2n, vl3n,
+		vl1l2, vl2l3, vl3l1,
+		al1, al2, al3,
+		wl1, wl2, wl3,
+		val1, val2, val3,
+		varl1, varl2, varl3,
+		vlnsys, vllsys, wsys, vasys, varsys,
+		pfl1, pfl2, pfl3, pfsys,
+		phaseseq, hz;
+	} EM_tmp;
+
 	typedef __pack struct EM_data2 {
 		volatile int64_t
 		kwhpt, kvarhpt, kwhpp, kvarhpp,
@@ -330,6 +343,7 @@ extern "C" {
 	extern volatile struct VM_type VM;
 	extern C_data C; // MODBUS client state data
 	extern EM_data1 em; // converted results data
+	extern EM_tmp em_tmp; // converted results data
 	extern EM_data2 emt; // converted results data
 	extern EM_serial ems; // converted results data
 	extern EM_version emv; // converted results data

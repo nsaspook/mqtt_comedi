@@ -55,7 +55,7 @@ static const float bsoc_voltage[BVSOC_SLOTS] = {
 	26.600f,
 	26.800f,
 	27.200f,
-	29.200f,
+	35.000f,
 }; // SoC voltage guess
 
 static const float bsoc_soc[BVSOC_SLOTS] = {
@@ -1023,7 +1023,7 @@ char * validate_bmc_text(const char * text, bool * valid)
 double Volts_to_SOC(const double bvoltage)
 {
 	uint8_t slot;
-	double soc = 0;
+	double soc = 0.80f;
 
 	/*
 	 * walk up the table

@@ -139,8 +139,8 @@ static const uint32_t SUBDEV_MEM = 4;
 static const uint32_t SMP_CORES = 4;
 static const uint32_t CONF_Q84 = 3;
 static const uint32_t MEM_BLOCKS = 8; // 0..3 CLCD display lines, 4..7 serial comms for FM80, MODBUS, etc ...
-static const uint32_t SPI_GAP = 9000; // time for the Q84 to process each received SPI byte
-static const uint32_t SPI_GAP_LONG = 14000; // time for the Q84 to process each received SPI byte
+static const uint32_t SPI_GAP = 7000; // time for the Q84 to process each received SPI byte
+static const uint32_t SPI_GAP_LONG = 12000; // time for the Q84 to process each received SPI byte
 
 static const uint32_t I8254_MAX_COUNT = 0x10000;
 

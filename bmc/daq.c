@@ -473,6 +473,7 @@ int get_data_sample(void)
 
 				if ((daq_data_index > MAX_STRLEN) || (daq_bmc_data_text[BMC4.pos] == '^')) {
 					comedi_data_write(it, subdev_serial0, 4, range_ao, AREF_GROUND, STX); // update daq_bmc data buffer
+					comedi_data_write(it, subdev_serial0, 4, range_ao, AREF_GROUND, STX);
 					daq_data_index = 0;
 					strncpy(daq_bmc_data_buf, daq_bmc_data_text, SYSLOG_SIZ);
 					BMC4.pos = 0;

@@ -78,6 +78,7 @@ em_light[] = {MADDR, WRITE_SINGLE_REGISTER, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
  * register data frames
  */
 EM_data1 em, *em_ptr;
+EM_tmp em_tmp;
 EM_data2 emt;
 EM_serial ems;
 EM_version emv;
@@ -738,6 +739,8 @@ static void em_data_handler(void)
 	em.pfl2 = mb16_swap(em_ptr->pfl2);
 	em.pfsys = mb16_swap(em_ptr->pfsys);
 	em.hz = mb16_swap(em_ptr->hz);
+	
+	em_tmp.al1=((float) em.al1) / 1000.0f;
 #ifndef MB_EM540_ONE
 #endif
 }
@@ -750,6 +753,8 @@ static void emt_data_handler(void)
 #ifdef	 MB_EM540_EMT
 	memcpy((void*) &emt, (void*) &cc_buffer[3], sizeof(emt));
 	emt.hz = mb32_swap(emt.hz);
+	
+	em_tmp.hz = ((float) emt.hz) / 1000.0f;
 #endif
 }
 
