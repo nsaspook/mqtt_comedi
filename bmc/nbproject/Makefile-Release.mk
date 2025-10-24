@@ -54,7 +54,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=`pkg-config --libs comedilib` `pkg-config --libs libcjson` `pkg-config --libs libcurl` -lm  -lpaho-mqtt3c  
+LDLIBSOPTIONS=`pkg-config --libs comedilib` `pkg-config --libs libcjson` `pkg-config --libs libcurl` -lm  -lpaho-mqtt3c -lconfig  
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}

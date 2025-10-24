@@ -140,6 +140,64 @@ int main(int argc, char *argv[])
 	int do_ao_only = false;
 	uint8_t i = 0, j = 75;
 
+	static const char *output_file = "/etc/daq_bmc/bmc_config.cfg"; // will only read data from here
+	static const char *output_file_tmp = "/tmp/bmc_config.cfg"; // if the correct directory is missing
+	config_t cfg;
+	config_setting_t *setting, *group;
+
+	/*
+	 * read configuration file settings
+	 */
+	config_init(&cfg);
+	/* Read the file. If there is an error, create a new file */
+	if (!config_read_file(&cfg, "/etc/daq_bmc/bmc_config.cfg")) {
+		fprintf(stderr, "%s:%d - %s\n", config_error_file(&cfg),
+			config_error_line(&cfg), config_error_text(&cfg));
+		config_destroy(&cfg);
+
+		config_init(&cfg);
+		group = config_root_setting(&cfg);
+		setting = config_setting_add(group, "BENERGYV", CONFIG_TYPE_FLOAT);
+		config_setting_set_float(setting, S.BENERGYV);
+		setting = config_setting_add(group, "BVOLTAGEV", CONFIG_TYPE_FLOAT);
+		config_setting_set_float(setting, S.BVOLTAGEV);
+		setting = config_setting_add(group, "PVENERGYV", CONFIG_TYPE_FLOAT);
+		config_setting_set_float(setting, S.PVENERGYV);
+		setting = config_setting_add(group, "PVVOLTAGEV", CONFIG_TYPE_FLOAT);
+		config_setting_set_float(setting, S.PVVOLTAGEV);
+		setting = config_setting_add(group, "SOC_MODEV", CONFIG_TYPE_FLOAT);
+		config_setting_set_float(setting, S.SOC_MODEV);
+
+		/* Write out the new configuration. */
+		if (!config_write_file(&cfg, output_file)) {
+			if (!config_write_file(&cfg, output_file_tmp)) {
+				fprintf(stderr, "Error while writing file.\n");
+				config_destroy(&cfg);
+				return(EXIT_FAILURE);
+			} else {
+				fprintf(stderr, "Testing configuration successfully written to: %s\n",
+					output_file_tmp);
+			}
+		} else {
+			fprintf(stderr, "New configuration successfully written to: %s\n",
+				output_file);
+		}
+		config_destroy(&cfg);
+	} else {
+
+		if (config_lookup_float(&cfg, "BENERGYV", &S.BENERGYV)
+			&& config_lookup_float(&cfg, "BVOLTAGEV", &S.BVOLTAGEV)
+			&& config_lookup_float(&cfg, "PVENERGYV", &S.PVENERGYV)
+			&& config_lookup_float(&cfg, "PVVOLTAGEV", &S.PVVOLTAGEV)
+			&& config_lookup_float(&cfg, "SOC_MODEV", &S.SOC_MODEV)) {
+			fprintf(stderr, "Configuration successfully read %4.1f %4.1f %4.1f %4.1f %4.1f from: %s\n",
+				S.BENERGYV, S.BVOLTAGEV, S.PVENERGYV, S.PVVOLTAGEV, S.SOC_MODEV, output_file);
+		} else {
+			fprintf(stderr, "No/Incorrect settings in configuration file.\n");
+		}
+		config_destroy(&cfg);
+	}
+
 	/*
 	 * start the MQTT processing
 	 */

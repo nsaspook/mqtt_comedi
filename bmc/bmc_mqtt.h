@@ -11,6 +11,7 @@ extern "C" {
 #include "daq.h"
 #include <sys/socket.h>
 #include <netdb.h>
+#include <libconfig.h>
 
 	/*
 	 * configuration data for Home Assistant
@@ -62,7 +63,7 @@ extern "C" {
 #define UPDATE_PACER  250 // MQTT and logging frequency to 0.01 seconds.
 #define BAT_RUN_MAX 48.0f  // max displayed run time at current load
 #define DRAIN_HOUR 1.0f
-#define IDLE_DRAIN      10.0f // system operational drain losses in W
+#define IDLE_DRAIN      1.0f // system battery losses in W
 
 #define VALIDATE_LEN 55
 
@@ -141,6 +142,7 @@ extern "C" {
 	extern struct ha_flag_type ha_flag_vars_ss, ha_daq_hosts_type;
 	extern struct ha_daq_hosts_type ha_daq_host;
 	char * validate_bmc_text(const char *, bool *);
+	extern struct bmc_settings S;
 
 	void mqtt_bmc_data(MQTTClient, const char *);
 	void delivered(void *, MQTTClient_deliveryToken);
