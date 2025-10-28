@@ -71,6 +71,8 @@ extern "C" {
 
 #define ANA_BUFFERS     0x40
 	
+#define EXIT_CONFIG_WRITE_FAIL
+	
 //#define USE_RELAYS
 
 	/*
@@ -99,6 +101,7 @@ extern "C" {
 
 	void led_lightshow(int);
 	void relay_set(uint16_t);
+	bool get_set_config(void);
 
 #ifdef __cplusplus
 }

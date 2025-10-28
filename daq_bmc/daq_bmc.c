@@ -1769,7 +1769,8 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	 * Probe the BMCboard existence and for configuration data
 	 */
 	ret = daqbmc_bmc_get_config(dev);
-
+	ret = daqbmc_bmc_get_config(dev);
+	
 	if (ret == 0xff) { // no SPI comms with daq_bmc board
 		dev_err(dev->class_dev,
 			"BMCBoard not detected 0X%X, unloading driver \n", ret);
@@ -1910,7 +1911,7 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 		return -ENOMEM;
 
 	/*
-	 * default SPI delays of zero
+	 * default SPI delays
 	 */
 	pdata->delay = CS_CHANGE_DELAY_USECS0;
 	pdata->cs_delay = CS_CHANGE_DELAY_USECS0;

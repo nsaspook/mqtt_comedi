@@ -135,22 +135,20 @@ void relay_set(uint16_t relays)
 	bmc.dataout.dio_buf = relays;
 }
 
-int main(int argc, char *argv[])
+bool get_set_config(void)
 {
-	int do_ao_only = false;
-	uint8_t i = 0, j = 75;
-
 	static const char *output_file = "/etc/daq_bmc/bmc_config.cfg"; // will only read data from here
 	static const char *output_file_tmp = "/tmp/bmc_config.cfg"; // if the correct directory is missing
 	config_t cfg;
 	config_setting_t *setting, *group;
+	bool config_status = false;
 
 	/*
 	 * read configuration file settings
 	 */
 	config_init(&cfg);
 	/* Read the file. If there is an error, create a new file */
-	if (!config_read_file(&cfg, "/etc/daq_bmc/bmc_config.cfg")) {
+	if (!config_read_file(&cfg, output_file)) {
 		fprintf(stderr, "%s:%d - %s\n", config_error_file(&cfg),
 			config_error_line(&cfg), config_error_text(&cfg));
 		config_destroy(&cfg);
@@ -171,9 +169,11 @@ int main(int argc, char *argv[])
 		/* Write out the new configuration. */
 		if (!config_write_file(&cfg, output_file)) {
 			if (!config_write_file(&cfg, output_file_tmp)) {
-				fprintf(stderr, "Error while writing file.\n");
+				fprintf(stderr, "Error while writing file to %s and %s.\n", output_file, output_file_tmp);
+#ifdef EXIT_CONFIG_WRITE_FAIL
 				config_destroy(&cfg);
 				return(EXIT_FAILURE);
+#endif
 			} else {
 				fprintf(stderr, "Testing configuration successfully written to: %s\n",
 					output_file_tmp);
@@ -181,6 +181,7 @@ int main(int argc, char *argv[])
 		} else {
 			fprintf(stderr, "New configuration successfully written to: %s\n",
 				output_file);
+			config_status = true;
 		}
 		config_destroy(&cfg);
 	} else {
@@ -192,11 +193,24 @@ int main(int argc, char *argv[])
 			&& config_lookup_float(&cfg, "SOC_MODEV", &S.SOC_MODEV)) {
 			fprintf(stderr, "Configuration successfully read %4.1f %4.1f %4.1f %4.1f %4.1f from: %s\n",
 				S.BENERGYV, S.BVOLTAGEV, S.PVENERGYV, S.PVVOLTAGEV, S.SOC_MODEV, output_file);
+			config_status = true;
 		} else {
 			fprintf(stderr, "No/Incorrect settings in configuration file.\n");
 		}
 		config_destroy(&cfg);
 	}
+	return config_status;
+}
+
+int main(int argc, char *argv[])
+{
+	int do_ao_only = false;
+	uint8_t i = 0, j = 75;
+
+	/*
+	 * read configuration file settings
+	 */
+	get_set_config();
 
 	/*
 	 * start the MQTT processing
