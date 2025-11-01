@@ -25,7 +25,7 @@ extern "C" {
 	//	#define DIS_DEBUG	// active status display, disable during normal operation
 	// #define SHOW_DAC
 
-#define VER	"V0.47"
+#define VER	"V0.48"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -63,6 +63,7 @@ extern "C" {
 	 * V0.45 MUI keying to calibration download data
 	 * V0.46 add ADC4 and ADC5 voltage calibration values on debug screens
 	 * V0.47 cleanup defines and convert to static const variables
+	 * V0.48 Minor display changes
 	 */
 
 	//#define DI_DEBUG

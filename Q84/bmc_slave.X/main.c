@@ -601,9 +601,9 @@ void main(void)
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " %llX Run Display             ", spi_stat_ss.mui);
 #endif
 			if (failure) {
-				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " NSASPOOK Analog Dev  ");
+				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " %s Analog Dev        ", (spi_stat_ss.deviceid == F57Q84) ? "57Q84" : "47Q84");
 			} else {
-				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " NSASPOOK All Dev     ");
+				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " %s All Dev           ", (spi_stat_ss.deviceid == F57Q84) ? "57Q84" : "47Q84");
 			}
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, " %s                   ", (char *) build_date);
 			snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, " INFO                 ");
