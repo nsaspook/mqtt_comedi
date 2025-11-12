@@ -45,6 +45,7 @@ extern "C" {
 
 #define MBMQTT  1024
 #define CHECKMARK 1957
+#define CHECKBYTE 0x57
 	/*
 	 * number of data items from daq_bmc board for serial data streams
 	 */

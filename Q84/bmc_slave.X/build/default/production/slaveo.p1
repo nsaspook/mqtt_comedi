@@ -90,7 +90,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _SPI2INTFbits `VS224 ~T0 @X0 0 e@151 ]
 "85 ./slaveo.h
 [s S3392 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vuc 1 `Vuc 1 `Vuc 1 `us 1 `us 1 `Vuo 1 ]
-[n S3392 spi_stat_type_ss adc_count dac_count bmc_counts port_count port_error_count port_data_count zombie_count char_count char_error_count rxof_bit txdone_bit txuf_bit slave_int_count last_slave_int_count slave_tx_count comm_count idle_count spi_error_count spi_noerror_count comm_ok raw_index daq_conf deviceid devicerev mui ]
+[n S3392 spi_stat_type_ss adc_count dac_count bmc_counts port_count port_error_count port_data_count zombie_count char_count char_error_count rxof_bit txdone_bit txuf_bit slave_int_count last_slave_int_count slave_tx_count comm_count idle_count spi_error_count spi_noerror_count daq_conf comm_ok raw_index deviceid devicerev mui ]
 "128
 [v _spi_stat_ss `VS3392 ~T0 @X0 0 e ]
 "74
@@ -112,10 +112,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n E25426 . UI_STATE_INIT UI_STATE_HOST UI_STATE_DEBUG UI_STATE_LOG UI_STATE_ERROR  ]
 [c E25389 0 1 2 3 4 5 6 7 8 9 10 11 .. ]
 [n E25389 . DIS_STR DIS_TERM DIS_LOG DIS_LOAD DIS_UNLOAD DIS_PUMP DIS_HELP DIS_SEQUENCE DIS_SEQUENCE_M DIS_ERR DIS_FREE DIS_CLEAR  ]
-"235 ./vconfig.h
+"238 ./vconfig.h
 [s S3409 `uc -> 32 `i `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 :1 `uc 1 `E25389 1 `E25389 1 `us 1 `us 1 ]
 [n S3409 terminal_type ack mesgid TID mcode mparm cmdlen log_seq host_display_ack info help_temp ceid log_num ]
-"273
+"276
 [s S3410 `E25417 1 `E25426 1 `uc -> 128 `i `uc -> 160 `i `uc -> 64 `i `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `l 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `E25426 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `Vus 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :4 `uc 1 :4 `uc 1 `S3409 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `Vuc 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `us 1 `us 1 `s 1 `s 1 `uc 1 `uc 1 `s 1 `s 1 `ul 1 `ul 1 `ul 1 ]
 [n S3410 V_data s_state ui_state buf terminal info ticks systemb tx_total rx_total bt_total br_total brn_total btn_total bmc_do bmc_di utc_ticks testing stream function error abort msg_error msg_ret alarm event ui_sw r_checksum t_checksum checksum_error timer_error ping mode_pwm equip_timeout sequences all_errors ceid bmc_ao rbit wbit ebit failed_send failed_receive response uart llid sid ping_count euart vterm vterm_switch uart_speed_fast ticker flipper queue debug help stack help_id rerror speed_spin set_sequ log_s6f11 log_abort log_char v_tx_line v_rx_line tx_volts rx_volts tx_rs232 rx_rs232 secs_value cmd_value utc_cmd_value di_fail do_fail ]
 "131 ./slaveo.h
@@ -3264,72 +3264,72 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _BON
 -> -> 255 `i `uc
 ]
-"120 ./vconfig.h
+"121 ./vconfig.h
 [v _TDELAY `Cus ~T0 @X0 1 s ]
 [i _TDELAY
 -> -> 3000 `i `us
 ]
-"121
+"122
 [v _SEQDELAY `Cus ~T0 @X0 1 s ]
 [i _SEQDELAY
 -> -> 10000 `i `us
 ]
-"122
+"123
 [v _LDELAY `Cus ~T0 @X0 1 s ]
 [i _LDELAY
 -> -> 1000 `i `us
 ]
-"123
+"124
 [v _SDELAY `Cus ~T0 @X0 1 s ]
 [i _SDELAY
 -> -> 500 `i `us
 ]
-"124
+"125
 [v _DDELAY `Cus ~T0 @X0 1 s ]
 [i _DDELAY
 -> -> 500 `i `us
 ]
-"125
+"126
 [v _DFLIP `Cus ~T0 @X0 1 s ]
 [i _DFLIP
 -> -> 1500 `i `us
 ]
-"126
+"127
 [v _ADCDELAY `Cuc ~T0 @X0 1 s ]
 [i _ADCDELAY
 -> -> 1 `i `uc
 ]
-"127
+"128
 [v _SWITCH_VTERM `Cuc ~T0 @X0 1 s ]
 [i _SWITCH_VTERM
 -> -> 70 `i `uc
 ]
-"128
+"129
 [v _SWITCH_DURATION `Cuc ~T0 @X0 1 s ]
 [i _SWITCH_DURATION
 -> -> 32 `i `uc
 ]
-"129
+"130
 [v _HOST_UART `Cuc ~T0 @X0 1 s ]
 [i _HOST_UART
 -> -> 1 `i `uc
 ]
-"130
+"131
 [v _CHK_DAY_TIME `Cus ~T0 @X0 1 s ]
 [i _CHK_DAY_TIME
 -> -> 1200 `i `us
 ]
-"131
+"132
 [v _BAT_DAY_COUNT `Cuc ~T0 @X0 1 s ]
 [i _BAT_DAY_COUNT
 -> -> 45 `i `uc
 ]
-"132
+"133
 [v _BAT_NIGHT_COUNT `Cuc ~T0 @X0 1 s ]
 [i _BAT_NIGHT_COUNT
 -> -> 90 `i `uc
 ]
-"134
+"137
 [v _log_format1 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format1
 :U ..
@@ -3433,25 +3433,25 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 37 `c
 -> 54 `c
 -> 46 `c
--> 52 `c
+-> 51 `c
 -> 102 `c
 -> 44 `c
 -> 37 `c
 -> 54 `c
 -> 46 `c
--> 52 `c
+-> 51 `c
 -> 102 `c
 -> 44 `c
 -> 37 `c
 -> 54 `c
 -> 46 `c
--> 52 `c
+-> 51 `c
 -> 102 `c
 -> 44 `c
 -> 37 `c
 -> 54 `c
 -> 46 `c
--> 52 `c
+-> 51 `c
 -> 102 `c
 -> 44 `c
 -> 49 `c
@@ -3518,7 +3518,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"140
+"143
 [v _log_format2 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format2
 :U ..
@@ -3707,7 +3707,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"146
+"149
 [v _log_format3 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format3
 :U ..
@@ -3896,7 +3896,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"152
+"155
 [v _log_format4 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format4
 :U ..
@@ -4086,7 +4086,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ]
 [v F25528 `Cuc ~T0 @X0 -> 20 `i t ]
-"304
+"307
 [v _spin `F25528 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
@@ -4816,7 +4816,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! == -> . _serial_buffer_ss 6 `i -> _ADC_GET_BYTES `i 3480  ]
 {
 "232
-[e = _SPI2TXB . _spi_stat_ss 21 ]
+[e = _SPI2TXB . _spi_stat_ss 19 ]
 "233
 [e = . _serial_buffer_ss 13 -> -> 0 `i `a ]
 "234
@@ -4987,7 +4987,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "301
 [e :U 3510 ]
 "302
-[e = _SPI2TXB . _spi_stat_ss 21 ]
+[e = _SPI2TXB . _spi_stat_ss 19 ]
 "303
 [e $U 3507  ]
 "304

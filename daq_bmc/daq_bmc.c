@@ -82,7 +82,7 @@ ports [4..7] are data-streams for connected device data
 #include <linux/list.h>
 #include <linux/completion.h>
 
-#define bmc_version "version 0.98 "
+#define bmc_version "version 0.99 "
 #define spibmc_version "version 1.4 "
 
 static const uint32_t CHECKMARK = 0x1957;
@@ -285,14 +285,14 @@ struct daqbmc_device {
 
 /*
  * Use only MODE 3 for Orange PI SPI connections, MODE 0 seems to have issues on this board
- * Max SCK 12MHz, normally runs at 10MHz
+ * Max SCK 12MHz, normally runs at 8MHz
  */
 static const struct daqbmc_device daqbmc_devices[] = {
 	{
 		.name = "PICSL12",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
-		.max_speed_hz = 10000000,
+		.max_speed_hz = 8000000,
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
 		.spi_mode = 3,
@@ -306,7 +306,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.name = "PICSL12_AO",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
-		.max_speed_hz = 10000000,
+		.max_speed_hz = 8000000,
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
 		.spi_mode = 3,
@@ -1770,12 +1770,18 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	 */
 	ret = daqbmc_bmc_get_config(dev);
 	ret = daqbmc_bmc_get_config(dev);
-	
+
 	if (ret == 0xff) { // no SPI comms with daq_bmc board
 		dev_err(dev->class_dev,
 			"BMCBoard not detected 0X%X, unloading driver \n", ret);
 		ret = -EINVAL;
 		goto daqbmc_kfree_rx_exit;
+	}
+
+	if (ret == CHECKBYTE) { // bad ID from daq_bmc board
+		dev_err(dev->class_dev,
+			"BMCBoard CPU not detected 0X%X, force board ID 0x00 \n", ret);
+		ret=0x00;
 	}
 
 	dev_info(dev->class_dev,

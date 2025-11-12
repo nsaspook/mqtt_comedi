@@ -86,7 +86,7 @@
 // CONFIG7
 #pragma config BBSIZE = BBSIZE_512    // Boot Block Size selection bits->Boot Block size is 512 words
 #pragma config BBEN = OFF    // Boot Block enable bit->Boot block disabled
-#pragma config SAFEN = OFF    // Storage Area Flash enable bit->SAF disabled
+#pragma config SAFEN = ON    // Storage Area Flash enable bit->SAF enabled
 
 // CONFIG8
 #pragma config WRTB = OFF    // Boot Block Write Protection bit->Boot Block not Write protected

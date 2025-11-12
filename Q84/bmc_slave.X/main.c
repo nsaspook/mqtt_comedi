@@ -56,7 +56,7 @@
 // CONFIG7
 #pragma config BBSIZE = BBSIZE_512// Boot Block Size selection bits (Boot Block size is 512 words)
 #pragma config BBEN = OFF       // Boot Block enable bit (Boot block disabled)
-#pragma config SAFEN = OFF      // Storage Area Flash enable bit (SAF disabled)
+#pragma config SAFEN = ON      // Storage Area Flash enable bit (SAF disabled)
 #pragma config DEBUG = OFF      // Background Debugger (Background Debugger disabled)
 
 // CONFIG8
@@ -412,7 +412,8 @@ void main(void)
 			BM.node_id = 0xffffffff;
 		}
 	}
-
+	
+	
 
 	/*
 	 * calibration scalar selection using MUI from controller
@@ -811,7 +812,7 @@ void main(void)
 
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
 				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3f,5 %6.3f                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));
-				snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu                               ", spi_stat_ss.bmc_counts);
+				snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu  0X%.2X                             ", spi_stat_ss.bmc_counts,spi_stat_ss.daq_conf);
 				snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "%s %s                       ", (char *) build_date, VER);
 
 				refresh_lcd();

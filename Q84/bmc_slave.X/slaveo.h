@@ -88,7 +88,7 @@ extern "C" {
 		char_count, char_error_count, rxof_bit, txdone_bit, txuf_bit,
 		slave_int_count, last_slave_int_count, slave_tx_count,
 		comm_count, idle_count, spi_error_count, spi_noerror_count;
-		volatile uint8_t comm_ok, raw_index, daq_conf;
+		volatile uint8_t daq_conf, comm_ok, raw_index;
 		uint16_t deviceid, devicerev;
 		volatile unsigned long long mui;
 	};
