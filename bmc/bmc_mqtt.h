@@ -120,9 +120,9 @@ extern "C" {
 		bool oldfile, fileok;
 		uint64_t bmc_id[4];
 		double offset4[4];
-		double scaler4[4];
+		double scalar4[4];
 		double offset5[4];
-		double scaler5[4];
+		double scalar5[4];
 		double A200_Z[4];
 		double A200_S[4];
 	};
@@ -134,7 +134,7 @@ extern "C" {
 		const char topics[4][BMC_MAXHOST];
 		const char listen[4][BMC_MAXHOST];
 		char hname[4][BMC_MAXHOST];
-		double scaler[4], scaler4[4], scaler5[4];
+		double scalar[4], scalar4[4], scalar5[4];
 		uint8_t hindex, bindex;
 		uint32_t pacer[4];
 		struct ha_daq_calib_type calib;

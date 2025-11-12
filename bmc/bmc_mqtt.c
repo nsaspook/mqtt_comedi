@@ -109,18 +109,18 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.clients[1] = "Energy_Mqtt_BMC2",
 	.clients[2] = "Energy_Mqtt_BMC3",
 	.clients[3] = "Energy_Mqtt_BMC4",
-	.scaler[0] = HV_SCALE0,
-	.scaler[1] = HV_SCALE1,
-	.scaler[2] = HV_SCALE2,
-	.scaler[3] = HV_SCALE3,
-	.scaler4[0] = HV_SCALE4_0,
-	.scaler4[1] = HV_SCALE4_1,
-	.scaler4[2] = HV_SCALE4_2,
-	.scaler4[3] = HV_SCALE4_3,
-	.scaler5[0] = HV_SCALE5_0,
-	.scaler5[1] = HV_SCALE5_1,
-	.scaler5[2] = HV_SCALE5_2,
-	.scaler5[3] = HV_SCALE5_3,
+	.scalar[0] = HV_SCALE0,
+	.scalar[1] = HV_SCALE1,
+	.scalar[2] = HV_SCALE2,
+	.scalar[3] = HV_SCALE3,
+	.scalar4[0] = HV_SCALE4_0,
+	.scalar4[1] = HV_SCALE4_1,
+	.scalar4[2] = HV_SCALE4_2,
+	.scalar4[3] = HV_SCALE4_3,
+	.scalar5[0] = HV_SCALE5_0,
+	.scalar5[1] = HV_SCALE5_1,
+	.scalar5[2] = HV_SCALE5_2,
+	.scalar5[3] = HV_SCALE5_3,
 	.pacer[0] = UPDATE_PACER, // opiha
 	.pacer[1] = UPDATE_PACER, // daq1
 	.pacer[2] = UPDATE_PACER, // daq2
@@ -130,30 +130,30 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.checkmark = CHECKMARK,
 	.calib.bmc_id[0] = 0x589B6, // bmc Q84 MUI testing board
 	.calib.offset4[0] = HV_SCALE_OFFSET,
-	.calib.scaler4[0] = HV_SCALE4_0,
+	.calib.scalar4[0] = HV_SCALE4_0,
 	.calib.offset5[0] = HV_SCALE_OFFSET,
-	.calib.scaler5[0] = HV_SCALE5_0,
+	.calib.scalar5[0] = HV_SCALE5_0,
 	.calib.A200_Z[0] = A200_0_ZERO,
 	.calib.A200_S[0] = A200_0_SCALAR,
 	.calib.bmc_id[1] = 0, // K8055 (VM110) modified for two HV inputs
 	.calib.offset4[1] = HV_SCALE_OFFSET,
-	.calib.scaler4[1] = HV_SCALE4_1,
+	.calib.scalar4[1] = HV_SCALE4_1,
 	.calib.offset5[1] = HV_SCALE_OFFSET,
-	.calib.scaler5[1] = HV_SCALE5_1,
+	.calib.scalar5[1] = HV_SCALE5_1,
 	.calib.A200_Z[1] = A200_0_ZERO,
 	.calib.A200_S[1] = A200_0_SCALAR,
 	.calib.bmc_id[2] = 0x55AF3, // bmc Q84 MUI
 	.calib.offset4[2] = HV_SCALE_OFFSET,
-	.calib.scaler4[2] = HV_SCALE4_2,
+	.calib.scalar4[2] = HV_SCALE4_2,
 	.calib.offset5[2] = HV_SCALE_OFFSET,
-	.calib.scaler5[2] = HV_SCALE5_2,
+	.calib.scalar5[2] = HV_SCALE5_2,
 	.calib.A200_Z[2] = A200_0_ZERO,
 	.calib.A200_S[2] = A200_0_SCALAR,
 	.calib.bmc_id[3] = 0x5ABB6, // bmc Q84 MUI enclosure board
 	.calib.offset4[3] = HV_SCALE_OFFSET,
-	.calib.scaler4[3] = HV_SCALE4_3,
+	.calib.scalar4[3] = HV_SCALE4_3,
 	.calib.offset5[3] = HV_SCALE_OFFSET,
-	.calib.scaler5[3] = HV_SCALE5_3,
+	.calib.scalar5[3] = HV_SCALE5_3,
 	.calib.A200_Z[3] = A200_0_ZERO,
 	.calib.A200_S[3] = A200_0_SCALAR,
 };
@@ -665,10 +665,10 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				}
 				jtoken = strtok(NULL, ","); // set the calibration data from the Q84
 				if (jtoken != NULL)
-					ha_daq_host.calib.scaler4[ha_daq_host.bindex] = atof(jtoken);
+					ha_daq_host.calib.scalar4[ha_daq_host.bindex] = atof(jtoken);
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
-					ha_daq_host.calib.scaler5[ha_daq_host.bindex] = atof(jtoken);
+					ha_daq_host.calib.scalar5[ha_daq_host.bindex] = atof(jtoken);
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
 					ha_daq_host.calib.A200_Z[ha_daq_host.bindex] = atof(jtoken);
@@ -709,11 +709,11 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		}
 
 		// sanity checks for scalars
-		if (ha_daq_host.calib.scaler4[ha_daq_host.bindex] > CALIB_HV_HIGH || ha_daq_host.calib.scaler4[ha_daq_host.bindex] < CALIB_HV_LOW) {
-			ha_daq_host.calib.scaler4[ha_daq_host.bindex] = HV_SCALE4_0;
+		if (ha_daq_host.calib.scalar4[ha_daq_host.bindex] > CALIB_HV_HIGH || ha_daq_host.calib.scalar4[ha_daq_host.bindex] < CALIB_HV_LOW) {
+			ha_daq_host.calib.scalar4[ha_daq_host.bindex] = HV_SCALE4_0;
 		}
-		if (ha_daq_host.calib.scaler5[ha_daq_host.bindex] > CALIB_HV_HIGH || ha_daq_host.calib.scaler5[ha_daq_host.bindex] < CALIB_HV_LOW) {
-			ha_daq_host.calib.scaler5[ha_daq_host.bindex] = HV_SCALE5_0;
+		if (ha_daq_host.calib.scalar5[ha_daq_host.bindex] > CALIB_HV_HIGH || ha_daq_host.calib.scalar5[ha_daq_host.bindex] < CALIB_HV_LOW) {
+			ha_daq_host.calib.scalar5[ha_daq_host.bindex] = HV_SCALE5_0;
 		}
 
 		if (ok_data) {
@@ -728,14 +728,14 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		}
 		memset(daq_bmc_data_text, 0, MAX_STRLEN);
 		if (bmc.BOARD == bmcboard) {
-			fprintf(fout, "ANA0 %lfV, ANA1 %fV, ANA2 %f, ANA4 %fV, ANA5 %fV, AND5 %fV, Battery Sensor %6.3fA, : Host Index %d, Scaler Index %d, Scaler ANA4 %f, Scaler ANA5 %f Serial 0X%X\n",
+			fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV, ANA2 %6.3fV, ANA4 %6.3fV, ANA5 %6.3fV, AND5 %6.3fV, Battery Sensor %6.3fA, : Host Index %d, Scalar Index %d, Scalar ANA4 %6.4f, Scalar ANA5 %6.4f Serial 0X%X\n",
 				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2),
-				E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], R.bsensor0, ha_daq_host.hindex, ha_daq_host.bindex, ha_daq_host.calib.scaler4[ha_daq_host.bindex], ha_daq_host.calib.scaler5[ha_daq_host.bindex],
+				E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], R.bsensor0, ha_daq_host.hindex, ha_daq_host.bindex, ha_daq_host.calib.scalar4[ha_daq_host.bindex], ha_daq_host.calib.scalar5[ha_daq_host.bindex],
 				daq_bmc_data[0]);
 		} else {
-			fprintf(fout, "ANA0 %lfV, ANA1 %fV : Scaler Index %d, Scaler ANA4 %f, Scaler ANA5 %f\n",
+			fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV : Scalar Index %d, Scalar ANA4 %6.4f, Scalar ANA5 %6.4f\n",
 				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1),
-				ha_daq_host.hindex, ha_daq_host.scaler4[ha_daq_host.hindex], ha_daq_host.scaler5[ha_daq_host.hindex]);
+				ha_daq_host.hindex, ha_daq_host.scalar4[ha_daq_host.hindex], ha_daq_host.scalar5[ha_daq_host.hindex]);
 		}
 		fflush(fout);
 		E.mqtt_count++;

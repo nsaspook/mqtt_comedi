@@ -250,9 +250,9 @@ double get_adc_volts(int chan)
 	if (bmc.BOARD == bmcboard) {
 		if (chan == channel_ANA4 || chan == channel_ANA5) {
 			if (chan == channel_ANA4) {
-				ad_range->max = ha_daq_host.calib.scaler4[ha_daq_host.bindex];
+				ad_range->max = ha_daq_host.calib.scalar4[ha_daq_host.bindex];
 			} else {
-				ad_range->max = ha_daq_host.calib.scaler5[ha_daq_host.bindex];
+				ad_range->max = ha_daq_host.calib.scalar5[ha_daq_host.bindex];
 			}
 			ad_range->min = 0.0f;
 		} else {
@@ -260,7 +260,7 @@ double get_adc_volts(int chan)
 			ad_range->min = 0.0f;
 		}
 	} else {
-		ad_range->max = ha_daq_host.scaler[ha_daq_host.hindex];
+		ad_range->max = ha_daq_host.scalar[ha_daq_host.hindex];
 	}
 
 	return comedi_to_phys(data[0], ad_range, maxdata_ai);
