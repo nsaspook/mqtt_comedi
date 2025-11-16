@@ -16,7 +16,7 @@ extern "C" {
 	/*
 	 * configuration data for Home Assistant
 	 */
-#define DBENERGY  500.0f
+#define DBENERGY  2100.0f
 #define DBVOLTAGE 12.6f
 #define DPVENERGY 300.0f
 #define DPVVOLTAGE 12.6f
@@ -62,7 +62,7 @@ extern "C" {
 #define BSENSOR_MAX_POS  125.0f
 
 #define UPDATE_PACER  250 // MQTT and logging frequency to 0.01 seconds.
-#define BAT_RUN_MAX 48.0f  // max displayed run time at current load
+#define BAT_RUN_MAX 140.0f  // max displayed run time at current load
 #define DRAIN_HOUR 1.0f
 #define IDLE_DRAIN      1.0f // system battery losses in W
 
