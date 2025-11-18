@@ -8,17 +8,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 "300 ./vconfig.h
 [s S3411 `Cuc -> 32 `i `Cuc -> 32 `i `Cuc -> 32 `i ]
 [n S3411 V_help message display extrams ]
-[v F25888 `uc ~T0 @X0 -> 128 `i t ]
-[v F25887 `F25888 ~T0 @X0 -> 4 `i t ]
+[v F25889 `uc ~T0 @X0 -> 128 `i t ]
+[v F25888 `F25889 ~T0 @X0 -> 4 `i t ]
 "13 mconfig.c
 [c E25389 0 1 2 3 4 5 6 7 8 9 10 11 .. ]
 [n E25389 . DIS_STR DIS_TERM DIS_LOG DIS_LOAD DIS_UNLOAD DIS_PUMP DIS_HELP DIS_SEQUENCE DIS_SEQUENCE_M DIS_ERR DIS_FREE DIS_CLEAR  ]
 "6
-[s S3424 `F25887 -> 4 `i :2 `uc 1 `E25389 1 ]
+[s S3424 `F25888 -> 4 `i :2 `uc 1 `E25389 1 ]
 [n S3424 D_data lcd vterm last_info ]
 "29 /ldrv/microchip/xc8/v3.10/pic/include/c99/string.h
 [v _memset `(*v ~T0 @X0 0 ef3`*v`i`ui ]
-"128 ./eadog.h
+"129 ./eadog.h
 [v _set_lcd_dim `(v ~T0 @X0 0 ef1`Ca ]
 "54 mconfig.c
 [c E25417 0 1 2 3 4 5 6 .. ]
@@ -37,9 +37,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _snprintf `(i ~T0 @X0 0 e2v`*uc`ui`*Cuc ]
 "46 ./mydisplay.h
 [v _get_vterm_ptr `(*uc ~T0 @X0 0 ef2`uc`Cuc ]
-"117 ./eadog.h
+"118 ./eadog.h
 [v _wait_lcd_done `(v ~T0 @X0 0 ef ]
-"125
+"126
 [v _eaDogM_WriteStringAtPos `(v ~T0 @X0 0 ef3`Cuc`Cuc`*uc ]
 "35 ./timers.h
 [v _WaitMs `(v ~T0 @X0 0 ef1`us ]
@@ -5221,9 +5221,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 "222
 [e :UE 3452 ]
 }
-[v F25980 `(E25389 ~T0 @X0 1 tf ]
+[v F25981 `(E25389 ~T0 @X0 1 tf ]
 "224
-[v _display_info `TF25980 ~T0 @X0 1 e ]
+[v _display_info `TF25981 ~T0 @X0 1 e ]
 "225
 {
 [e :U _display_info ]
@@ -5234,9 +5234,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 "227
 [e :UE 3461 ]
 }
-[v F25982 `(E25389 ~T0 @X0 1 tf ]
+[v F25983 `(E25389 ~T0 @X0 1 tf ]
 "229
-[v _display_help `TF25982 ~T0 @X0 1 e ]
+[v _display_help `TF25983 ~T0 @X0 1 e ]
 "230
 {
 [e :U _display_help ]
@@ -5257,22 +5257,22 @@ Version 4.0 HI-TECH Software Intermediate Code
 "235
 [f ]
 "236
-[v F25985 `E25389 ~T0 @X0 1 s old_info ]
-[i F25985
+[v F25986 `E25389 ~T0 @X0 1 s old_info ]
+[i F25986
 . `E25389 0
 ]
 "238
 [e $ ! != -> ( _TimerDone (1 -> . `E25009 2 `uc `i -> 0 `i 3464  ]
 {
 "239
-[e = F25985 . . _V 42 8 ]
+[e = F25986 . . _V 42 8 ]
 "240
 [e = . . _V 42 8 _new_response_info ]
 "241
 }
 [e :U 3464 ]
 "242
-[e ) F25985 ]
+[e ) F25986 ]
 [e $UE 3463  ]
 "243
 [e :UE 3463 ]
@@ -5287,13 +5287,13 @@ Version 4.0 HI-TECH Software Intermediate Code
 "246
 [f ]
 "247
-[v F25988 `E25389 ~T0 @X0 1 s old_info ]
+[v F25989 `E25389 ~T0 @X0 1 s old_info ]
 "249
-[e = F25988 . . _V 42 9 ]
+[e = F25989 . . _V 42 9 ]
 "250
 [e = . . _V 42 9 _new_response_info ]
 "251
-[e ) F25988 ]
+[e ) F25989 ]
 [e $UE 3465  ]
 "252
 [e :UE 3465 ]
@@ -5348,23 +5348,23 @@ Version 4.0 HI-TECH Software Intermediate Code
 "411
 [f ]
 "412
-[v F25997 `ul ~T0 @X0 1 s current_time ]
+[v F25998 `ul ~T0 @X0 1 s current_time ]
 "414
 [e = . . _PIE8bits 0 4 -> -> 0 `i `uc ]
 "415
-[e = F25997 . _V 15 ]
+[e = F25998 . _V 15 ]
 "416
 [e = . . _PIE8bits 0 4 -> -> 1 `i `uc ]
 "417
 [e $ ! != _t -> -> 0 `i `*ul 3470  ]
 {
 "418
-[e = _t &U F25997 ]
+[e = _t &U F25998 ]
 "419
 }
 [e :U 3470 ]
 "420
-[e ) F25997 ]
+[e ) F25998 ]
 [e $UE 3469  ]
 "421
 [e :UE 3469 ]

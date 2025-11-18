@@ -16,7 +16,7 @@ extern "C" {
 	/*
 	 * configuration data for Home Assistant
 	 */
-#define DBENERGY  2100.0f
+#define DBENERGY  3100.0f
 #define DBVOLTAGE 12.6f
 #define DPVENERGY 300.0f
 #define DPVVOLTAGE 12.6f

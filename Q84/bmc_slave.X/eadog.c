@@ -581,7 +581,11 @@ void set_lcd_dim(const bool dim)
 		BM.dim_delay = 0;
 #ifdef USE_LCD_DMA
 		send_lcd_cmd_dma(LCD_CMD_BRI); // set back-light level
-		send_lcd_data_dma(NHD_BL_LOW);
+		if (cc_mode == STATUS_SLEEPING) {
+			send_lcd_data_dma(NHD_BL_OFF);
+		} else {
+			send_lcd_data_dma(NHD_BL_LOW);
+		}
 #else
 		send_lcd_cmd(LCD_CMD_BRI); // set back-light level
 		send_lcd_data(NHD_BL_LOW);

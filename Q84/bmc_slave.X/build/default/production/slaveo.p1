@@ -50,8 +50,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "4335 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f57q84.h
 [v _SPI2RXB `Vuc ~T0 @X0 0 e@141 ]
 "55 slaveo.c
-[c E25801 0 1 2 3 4 5 6 7 8 .. ]
-[n E25801 daqbmc_packet_index BMC_CMD BMC_D0 BMC_D1 BMC_D2 BMC_D3 BMC_D4 BMC_EXT BMC_CKSUM BMC_DUMMY  ]
+[c E25802 0 1 2 3 4 5 6 7 8 .. ]
+[n E25802 daqbmc_packet_index BMC_CMD BMC_D0 BMC_D1 BMC_D2 BMC_D3 BMC_D4 BMC_EXT BMC_CKSUM BMC_DUMMY  ]
 "4696 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.28.451/xc8/pic/include/proc/pic18f57q84.h
 [s S213 :1 `uc 1 :1 `uc 1 :1 `uc 1 :3 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S213 . RXR TXR SSET . SSFLT BUSY ]
@@ -101,8 +101,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "129
 [v _data_in2 `Vuc ~T0 @X0 0 e ]
 "93 slaveo.c
-[c E25811 4 5 .. ]
-[n E25811 daqbmc_data_index BMC_EM540_DATA BMC_DATA_DUMMY  ]
+[c E25812 4 5 .. ]
+[n E25812 daqbmc_data_index BMC_EM540_DATA BMC_DATA_DUMMY  ]
 "380 ./mcc_generated_files/uart1.h
 [v _UART1_Write `(v ~T0 @X0 0 ef1`uc ]
 "142 slaveo.c
@@ -4426,7 +4426,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! != -> . . _SPI2STATUSbits 0 3 `i -> 0 `i 3429  ]
 [e :U 3430 ]
 "55
-[e = *U + &U . _serial_buffer_ss 0 * -> . `E25801 2 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux _val ]
+[e = *U + &U . _serial_buffer_ss 0 * -> . `E25802 2 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux _val ]
 "56
 [e = . . _SPI2STATUSbits 0 3 -> -> 0 `i `uc ]
 "57
@@ -4490,15 +4490,15 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! == -> . _serial_buffer_ss 6 `i -> _CHAR_GO_BYTES `i 3440  ]
 {
 "93
-[e $ ! < & -> *U + &U . _serial_buffer_ss 0 * -> . `E25801 2 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 7 `i -> . `E25811 0 `i 3441  ]
+[e $ ! < & -> *U + &U . _serial_buffer_ss 0 * -> . `E25802 2 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 7 `i -> . `E25812 0 `i 3441  ]
 {
 "97
-[e ( _UART1_Write (1 *U + &U . _serial_buffer_ss 0 * -> . `E25801 1 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux ]
+[e ( _UART1_Write (1 *U + &U . _serial_buffer_ss 0 * -> . `E25802 1 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux ]
 "99
 [e $ ! ! != -> _r_string_ready `i -> 0 `i 3442  ]
 {
 "100
-[e $ ! == -> *U + &U . _serial_buffer_ss 0 * -> . `E25801 1 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 2 `i 3443  ]
+[e $ ! == -> *U + &U . _serial_buffer_ss 0 * -> . `E25802 1 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 2 `i 3443  ]
 {
 "101
 [e = . _serial_buffer_ss 7 -> -> 0 `i `uc ]
@@ -4510,9 +4510,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 3443 ]
 {
 "104
-[e = *U + &U . _serial_buffer_ss 1 * -> ++ . _serial_buffer_ss 7 -> -> 1 `i `Vuc `ux -> -> # *U &U . _serial_buffer_ss 1 `ui `ux *U + &U . _serial_buffer_ss 0 * -> . `E25801 1 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux ]
+[e = *U + &U . _serial_buffer_ss 1 * -> ++ . _serial_buffer_ss 7 -> -> 1 `i `Vuc `ux -> -> # *U &U . _serial_buffer_ss 1 `ui `ux *U + &U . _serial_buffer_ss 0 * -> . `E25802 1 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux ]
 "105
-[e = . _serial_buffer_ss 8 -> & -> *U + &U . _serial_buffer_ss 0 * -> . `E25801 2 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 3 `i `uc ]
+[e = . _serial_buffer_ss 8 -> & -> *U + &U . _serial_buffer_ss 0 * -> . `E25802 2 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 3 `i `uc ]
 "106
 [e $ ! >= -> . _serial_buffer_ss 7 `i -> 20 `i 3445  ]
 {
@@ -4569,7 +4569,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e $U 3447  ]
 [e :U 3448 ]
-[e [\ *U + &U . _serial_buffer_ss 0 * -> . `E25801 1 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux , $ -> 2 `i 3449
+[e [\ *U + &U . _serial_buffer_ss 0 * -> . `E25802 1 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux , $ -> 2 `i 3449
  , $ -> 17 `i 3450
  , $ -> 18 `i 3451
  , $ -> 19 `i 3452
@@ -4582,7 +4582,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "130
 [e = . _serial_buffer_ss 15 -> -> 0 `i `a ]
 "131
-[e = . _serial_buffer_ss 6 -> . `E25801 0 `uc ]
+[e = . _serial_buffer_ss 6 -> . `E25802 0 `uc ]
 "132
 [e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
 "133
@@ -4607,15 +4607,15 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! == -> . _serial_buffer_ss 6 `i -> _PORT_GO_BYTES `i 3457  ]
 {
 "142
-[e = . _V 13 -> *U + &U . _serial_buffer_ss 0 * -> . `E25801 1 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `ul ]
+[e = . _V 13 -> *U + &U . _serial_buffer_ss 0 * -> . `E25802 1 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `ul ]
 "143
-[e =+ . _V 13 -> & -> << -> *U + &U . _serial_buffer_ss 0 * -> . `E25801 2 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 8 `ui `ul -> -> 65280 `ui `ul `Vul ]
+[e =+ . _V 13 -> & -> << -> *U + &U . _serial_buffer_ss 0 * -> . `E25802 2 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 8 `ui `ul -> -> 65280 `ui `ul `Vul ]
 "144
 [e = _data_in2 -> -> 0 `i `uc ]
 "145
 [e = . _serial_buffer_ss 10 -> -> 0 `i `a ]
 "146
-[e = . _serial_buffer_ss 6 -> . `E25801 0 `uc ]
+[e = . _serial_buffer_ss 6 -> . `E25802 0 `uc ]
 "147
 [e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
 "148
@@ -4640,11 +4640,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! == -> . _serial_buffer_ss 6 `i -> _DAC_GO_BYTES `i 3460  ]
 {
 "157
-[e = . _V 36 -> *U + &U . _serial_buffer_ss 0 * -> . `E25801 1 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `us ]
+[e = . _V 36 -> *U + &U . _serial_buffer_ss 0 * -> . `E25802 1 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `us ]
 "158
 [e = . _serial_buffer_ss 12 -> -> 0 `i `a ]
 "159
-[e = . _serial_buffer_ss 6 -> . `E25801 0 `uc ]
+[e = . _serial_buffer_ss 6 -> . `E25802 0 `uc ]
 "160
 [e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
 "161
@@ -4669,7 +4669,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! == -> . _serial_buffer_ss 6 `i -> _CHAR_GET_BYTES `i 3463  ]
 {
 "171
-[e $ ! < & -> *U + &U . _serial_buffer_ss 0 * -> . `E25801 2 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 7 `i -> . `E25811 0 `i 3464  ]
+[e $ ! < & -> *U + &U . _serial_buffer_ss 0 * -> . `E25802 2 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 7 `i -> . `E25812 0 `i 3464  ]
 {
 "175
 [e $ ! != -> ( _UART1_is_rx_ready ..  `i -> 0 `i 3465  ]
@@ -4713,7 +4713,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "189
 [e = . _serial_buffer_ss 16 -> -> 0 `i `a ]
 "190
-[e = . _serial_buffer_ss 6 -> . `E25801 0 `uc ]
+[e = . _serial_buffer_ss 6 -> . `E25802 0 `uc ]
 "191
 [e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
 "193
@@ -4724,10 +4724,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 3463 ]
 {
 "195
-[e $ ! < & -> *U + &U . _serial_buffer_ss 0 * -> . `E25801 2 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 7 `i -> . `E25811 0 `i 3470  ]
+[e $ ! < & -> *U + &U . _serial_buffer_ss 0 * -> . `E25802 2 `ux -> -> # *U &U . _serial_buffer_ss 0 `ui `ux `i -> 7 `i -> . `E25812 0 `i 3470  ]
 {
 "196
-[e $ ! == -> . _serial_buffer_ss 6 `i -> . `E25801 1 `i 3471  ]
+[e $ ! == -> . _serial_buffer_ss 6 `i -> . `E25802 1 `i 3471  ]
 {
 "197
 [e = _tmp_buf -> -> 0 `i `uc ]
@@ -4774,7 +4774,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "214
 [e = . _serial_buffer_ss 11 -> -> 0 `i `a ]
 "215
-[e = . _serial_buffer_ss 6 -> . `E25801 0 `uc ]
+[e = . _serial_buffer_ss 6 -> . `E25802 0 `uc ]
 "216
 [e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
 "217
@@ -4785,7 +4785,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 3475 ]
 {
 "219
-[e $ ! == -> . _serial_buffer_ss 6 `i -> . `E25801 1 `i 3477  ]
+[e $ ! == -> . _serial_buffer_ss 6 `i -> . `E25802 1 `i 3477  ]
 {
 "220
 [e = _tmp_buf -> | -> _in_buf1 `i -> 1 `i `uc ]
@@ -4820,7 +4820,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "233
 [e = . _serial_buffer_ss 13 -> -> 0 `i `a ]
 "234
-[e = . _serial_buffer_ss 6 -> . `E25801 0 `uc ]
+[e = . _serial_buffer_ss 6 -> . `E25802 0 `uc ]
 "235
 [e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
 "236
@@ -4831,7 +4831,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 3480 ]
 {
 "238
-[e $ ! == -> . _serial_buffer_ss 6 `i -> . `E25801 1 `i 3482  ]
+[e $ ! == -> . _serial_buffer_ss 6 `i -> . `E25802 1 `i 3482  ]
 {
 "239
 [e = _SPI2TXB -> & -> *U + &U _adc_buffer * -> _channel `ux -> -> # *U &U _adc_buffer `ui `ux `ui -> -> 255 `i `ui `uc ]
@@ -4864,7 +4864,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "251
 [e = . _serial_buffer_ss 14 -> -> 0 `i `a ]
 "252
-[e = . _serial_buffer_ss 6 -> . `E25801 0 `uc ]
+[e = . _serial_buffer_ss 6 -> . `E25802 0 `uc ]
 "253
 [e ++ . _spi_stat_ss 10 -> -> 1 `i `Vul ]
 "254
@@ -4916,10 +4916,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e $U 3490  ]
 [e :U 3491 ]
-[e [\ . _serial_buffer_ss 6 , $ . `E25801 1 3492
- , $ . `E25801 2 3493
- , $ . `E25801 3 3494
- , $ . `E25801 4 3495
+[e [\ . _serial_buffer_ss 6 , $ . `E25802 1 3492
+ , $ . `E25802 2 3493
+ , $ . `E25802 3 3494
+ , $ . `E25802 4 3495
  3496 ]
 [e :U 3490 ]
 "275
@@ -4963,10 +4963,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e $U 3498  ]
 [e :U 3499 ]
-[e [\ . _serial_buffer_ss 6 , $ . `E25801 1 3500
- , $ . `E25801 2 3501
- , $ . `E25801 3 3502
- , $ . `E25801 4 3503
+[e [\ . _serial_buffer_ss 6 , $ . `E25802 1 3500
+ , $ . `E25802 2 3501
+ , $ . `E25802 3 3502
+ , $ . `E25802 4 3503
  3504 ]
 [e :U 3498 ]
 "294
@@ -4994,7 +4994,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e $U 3507  ]
 [e :U 3508 ]
-[e [\ . _serial_buffer_ss 6 , $ . `E25801 1 3509
+[e [\ . _serial_buffer_ss 6 , $ . `E25802 1 3509
  3510 ]
 [e :U 3507 ]
 "305
@@ -5020,7 +5020,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! > -> =+ . _serial_buffer_ss 6 -> -> 1 `i `Vuc `i - -> 10 `i -> 1 `i 3511  ]
 {
 "312
-[e = . _serial_buffer_ss 6 -> . `E25801 0 `uc ]
+[e = . _serial_buffer_ss 6 -> . `E25802 0 `uc ]
 "313
 [e ++ . _spi_stat_ss 11 -> -> 1 `i `Vul ]
 "314
@@ -5046,7 +5046,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "325
 [e = . _spi_comm_ss 3 -> -> 0 `i `uc ]
 "326
-[e = . _serial_buffer_ss 6 -> . `E25801 1 `uc ]
+[e = . _serial_buffer_ss 6 -> . `E25802 1 `uc ]
 "327
 [e = . _serial_buffer_ss 12 -> -> 1 `i `a ]
 "328
@@ -5132,7 +5132,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 3529 ]
 "366
-[e = . _serial_buffer_ss 6 -> . `E25801 0 `uc ]
+[e = . _serial_buffer_ss 6 -> . `E25802 0 `uc ]
 "367
 [e ( _clear_slaveo_flags ..  ]
 "368
@@ -5172,7 +5172,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 3516 ]
 "377
-[e = . _serial_buffer_ss 6 -> . `E25801 1 `uc ]
+[e = . _serial_buffer_ss 6 -> . `E25802 1 `uc ]
 "378
 [e = . _serial_buffer_ss 13 -> -> 1 `i `a ]
 "379
@@ -5192,7 +5192,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "386
 [e = . _spi_comm_ss 3 -> -> 0 `i `uc ]
 "387
-[e = . _serial_buffer_ss 6 -> . `E25801 1 `uc ]
+[e = . _serial_buffer_ss 6 -> . `E25802 1 `uc ]
 "388
 [e = . _serial_buffer_ss 11 -> -> 1 `i `a ]
 "389
@@ -5212,7 +5212,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "396
 [e = . _spi_comm_ss 3 -> -> 0 `i `uc ]
 "397
-[e = . _serial_buffer_ss 6 -> . `E25801 1 `uc ]
+[e = . _serial_buffer_ss 6 -> . `E25802 1 `uc ]
 "398
 [e = . _serial_buffer_ss 10 -> -> 1 `i `a ]
 "399
@@ -5234,7 +5234,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "407
 [e = _channel -> & -> _data_in2 `i -> _LO_NIBBLE `i `uc ]
 "408
-[e = . _serial_buffer_ss 6 -> . `E25801 1 `uc ]
+[e = . _serial_buffer_ss 6 -> . `E25802 1 `uc ]
 "409
 [e = . _serial_buffer_ss 16 -> -> 1 `i `a ]
 "410
@@ -5256,7 +5256,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "418
 [e = _channel -> & -> _data_in2 `i -> _LO_NIBBLE `i `uc ]
 "419
-[e = . _serial_buffer_ss 6 -> . `E25801 1 `uc ]
+[e = . _serial_buffer_ss 6 -> . `E25802 1 `uc ]
 "420
 [e = . _serial_buffer_ss 15 -> -> 1 `i `a ]
 "421
@@ -5270,7 +5270,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! == -> _command `i -> _CMD_DUMMY_CFG `i 3539  ]
 {
 "426
-[e = . _serial_buffer_ss 6 -> . `E25801 1 `uc ]
+[e = . _serial_buffer_ss 6 -> . `E25802 1 `uc ]
 "427
 [e = . _serial_buffer_ss 14 -> -> 1 `i `a ]
 "428

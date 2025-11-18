@@ -25,8 +25,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [s S3407 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va -> 3 `i `Va -> 3 `i `Va -> 3 `i `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Vuc 1 `Vuc 1 `Vuc 1 `Vuc -> 3 `i `f 1 `f 1 `us -> 10 `i `us -> 3 `i `S3406 1 `Vuo 1 ]
 [n S3407 BM_type ten_sec_flag one_sec_flag FM80_charged pv_high pv_update once a_switch a_trigger a_type pacing rx_count flush pv_prev day_check dim_delay FM80_online FM80_io LOG display_dim display_update display_on fm80_restart canbus_online modbus_online alt_display a_pin run_time net_balance mui fwrev log node_id ]
 "247 main.c
-[c E25900 0 1 2 3 4 5 .. ]
-[n E25900 status_type STATUS_SLEEPING STATUS_FLOATING STATUS_BULK STATUS_ABSORB STATUS_EQUALIZE STATUS_LAST  ]
+[c E25901 0 1 2 3 4 5 .. ]
+[n E25901 status_type STATUS_SLEEPING STATUS_FLOATING STATUS_BULK STATUS_ABSORB STATUS_EQUALIZE STATUS_LAST  ]
 "74 ./slaveo.h
 [s S3419 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S3419 spi_link_type_ss SPI_DATA ADC_DATA PORT_DATA CHAR_DATA REMOTE_LINK REMOTE_DATA_DONE LOW_BITS ADC_RUN ]
@@ -43,8 +43,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [s S3390 `us 1 `uo 1 `d 1 `d 1 `d 1 `d 1 `d 1 `d 1 ]
 [n S3390 ha_daq_calib_type checkmark bmc_id offset4 scaler4 offset5 scaler5 A200_Z A200_S ]
 "329 main.c
-[c E25981 0 1 2 3 4 5 6 7 8 9 10 11 12 .. ]
-[n E25981 state_type state_init state_status state_panel state_batteryv state_batterya state_watts state_fwrev state_time state_date state_mx_log state_misc state_mx_status state_last  ]
+[c E25982 0 1 2 3 4 5 6 7 8 9 10 11 12 .. ]
+[n E25982 state_type state_init state_status state_panel state_batteryv state_batterya state_watts state_fwrev state_time state_date state_mx_log state_misc state_mx_status state_last  ]
 "102 ./slaveo.h
 [s S3422 `*Vuc 1 `*Vuc 1 `Vus 1 `Vus 1 `Va 1 `Vuc 1 ]
 [n S3422 bmc_buffer_type buffer log_buffer len pos bmc_flag d_id ]
@@ -176,9 +176,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _C `S3399 ~T0 @X0 0 e ]
 "340 main.c
 [v _send_mx_cmd `(v ~T0 @X0 0 sf1`*Cus ]
-[v F26007 `(v ~T0 @X0 0 tf ]
+[v F26008 `(v ~T0 @X0 0 tf ]
 "341
-[v _rec_mx_cmd `(v ~T0 @X0 0 sf2`*F26007`Cuc ]
+[v _rec_mx_cmd `(v ~T0 @X0 0 sf2`*F26008`Cuc ]
 "345
 [v _state_init_cb `(v ~T0 @X0 0 ef ]
 "346
@@ -208,9 +208,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v F25029 `(a ~T0 @X0 1 tf1`uc ]
 "34 ./timers.h
 [v _TimerDone `TF25029 ~T0 @X0 0 e ]
-"105 ./eadog.h
+"106 ./eadog.h
 [v _init_display `(a ~T0 @X0 0 ef ]
-"121
+"122
 [v _eaDogM_WriteCommand `(v ~T0 @X0 0 ef1`Cuc ]
 "45 ./mydisplay.h
 [v _set_vterm `(uc ~T0 @X0 0 ef1`Cuc ]
@@ -263,7 +263,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S3405 spi_link_type SPI_LCD SPI_AUX LCD_TIMER LCD_DATA READ_DATA delay config txbuf rxbuf int_count int_read des_bytes src_bytes or_bytes ]
 "198 main.c
 [v _spi_link `VS3405 ~T0 @X0 0 e ]
-"129 ./eadog.h
+"130 ./eadog.h
 [v _check_lcd_dim `(v ~T0 @X0 0 ef1`Ca ]
 "135 ./slaveo.h
 [v _r_string_ready `Va ~T0 @X0 0 e ]
@@ -278,7 +278,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _phy_chan4 `(f ~T0 @X0 0 ef1`us ]
 "52
 [v _phy_chan5 `(f ~T0 @X0 0 ef1`us ]
-"128 ./eadog.h
+"129 ./eadog.h
 [v _set_lcd_dim `(v ~T0 @X0 0 ef1`Ca ]
 "52 ./mydisplay.h
 [v _check_help `(v ~T0 @X0 0 ef1`Ca ]
@@ -323,8 +323,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _FM_tx_empty `(a ~T0 @X0 0 ef ]
 "109
 [v _FM_tx `(uc ~T0 @X0 0 ef2`*Cus`Cuc ]
-[v F26077 `(v ~T0 @X0 0 tf ]
-[v F26079 `(v ~T0 @X0 0 tf ]
+[v F26078 `(v ~T0 @X0 0 tf ]
+[v F26080 `(v ~T0 @X0 0 tf ]
 "112
 [v _FM_rx_ready `(a ~T0 @X0 0 ef ]
 "113
@@ -4966,9 +4966,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 70 `i `us
 ..
 ]
-[v F25908 `Cuc ~T0 @X0 -> 12 `i t ]
+[v F25909 `Cuc ~T0 @X0 -> 12 `i t ]
 "74
-[v _state_name `F25908 ~T0 @X0 -> 6 `i e ]
+[v _state_name `F25909 ~T0 @X0 -> 6 `i e ]
 [i _state_name
 :U ..
 :U ..
@@ -5024,9 +5024,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-[v F25910 `Cuc ~T0 @X0 -> 12 `i t ]
+[v F25911 `Cuc ~T0 @X0 -> 12 `i t ]
 "83
-[v _FM80_name `F25910 ~T0 @X0 -> 2 `i e ]
+[v _FM80_name `F25911 ~T0 @X0 -> 2 `i e ]
 [i _FM80_name
 :U ..
 :U ..
@@ -5048,9 +5048,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-[v F25912 `Cuc ~T0 @X0 -> 12 `i t ]
+[v F25913 `Cuc ~T0 @X0 -> 12 `i t ]
 "88
-[v _canbus_name `F25912 ~T0 @X0 -> 2 `i e ]
+[v _canbus_name `F25913 ~T0 @X0 -> 2 `i e ]
 [i _canbus_name
 :U ..
 :U ..
@@ -5074,9 +5074,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-[v F25914 `Cuc ~T0 @X0 -> 12 `i t ]
+[v F25915 `Cuc ~T0 @X0 -> 12 `i t ]
 "93
-[v _modbus_name `F25914 ~T0 @X0 -> 2 `i e ]
+[v _modbus_name `F25915 ~T0 @X0 -> 2 `i e ]
 [i _modbus_name
 :U ..
 :U ..
@@ -5691,9 +5691,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 0 `i `us
 -> -> 0 `i `us
 -> -> 0 `i `us
--> . `E25900 0 `us
+-> . `E25901 0 `us
 -> -> 0 `i `Vus
--> -> 4 `i `us
+-> -> 16 `i `us
 -> -> 0 `i `Va
 -> -> 0 `i `Va
 -> -> 0 `i `Va
@@ -5986,14 +5986,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _abuf `us ~T0 @X0 -> 32 `i s ]
 [v _cbuf `us ~T0 @X0 -> 34 `i s ]
 "329
-[v _state `VE25981 ~T0 @X0 1 e ]
+[v _state `VE25982 ~T0 @X0 1 e ]
 [i _state
-. `E25981 0
+. `E25982 0
 ]
 "330
 [v _cc_mode `Vus ~T0 @X0 1 e ]
 [i _cc_mode
--> . `E25900 5 `us
+-> . `E25901 5 `us
 ]
 [v _mx_code `Vus ~T0 @X0 1 e ]
 [i _mx_code
@@ -6367,18 +6367,18 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e $U 3467  ]
 [e :U 3468 ]
-[e [\ -> _state `ui , $ -> . `E25981 0 `ui 3469
- , $ -> . `E25981 1 `ui 3470
- , $ -> . `E25981 2 `ui 3473
- , $ -> . `E25981 3 `ui 3474
- , $ -> . `E25981 4 `ui 3475
- , $ -> . `E25981 5 `ui 3476
- , $ -> . `E25981 11 `ui 3477
- , $ -> . `E25981 6 `ui 3478
- , $ -> . `E25981 9 `ui 3485
- , $ -> . `E25981 7 `ui 3486
- , $ -> . `E25981 8 `ui 3487
- , $ -> . `E25981 10 `ui 3488
+[e [\ -> _state `ui , $ -> . `E25982 0 `ui 3469
+ , $ -> . `E25982 1 `ui 3470
+ , $ -> . `E25982 2 `ui 3473
+ , $ -> . `E25982 3 `ui 3474
+ , $ -> . `E25982 4 `ui 3475
+ , $ -> . `E25982 5 `ui 3476
+ , $ -> . `E25982 11 `ui 3477
+ , $ -> . `E25982 6 `ui 3478
+ , $ -> . `E25982 9 `ui 3485
+ , $ -> . `E25982 7 `ui 3486
+ , $ -> . `E25982 8 `ui 3487
+ , $ -> . `E25982 10 `ui 3488
  3489 ]
 [e :U 3467 ]
 "549
@@ -6914,8 +6914,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! != -> ( _TimerDone (1 -> . `E25009 5 `uc `i -> 0 `i 3561  ]
 {
 "789
-[v F26052 `uc ~T0 @X0 1 s switcher ]
-[i F26052
+[v F26053 `uc ~T0 @X0 1 s switcher ]
+[i F26053
 -> -> 1 `i `uc
 ]
 "791
@@ -6976,17 +6976,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! > -> ++ . _V 49 -> -> 1 `i `uc `i -> _SWITCH_VTERM `i 3564  ]
 {
 "887
-[e ( _set_vterm (1 F26052 ]
+[e ( _set_vterm (1 F26053 ]
 "888
 [e $ ! > -> . _V 49 `i + + -> _SWITCH_VTERM `i -> . _V 51 `i -> _SWITCH_DURATION `i 3565  ]
 {
 "889
-[e ++ F26052 -> -> 1 `i `uc ]
+[e ++ F26053 -> -> 1 `i `uc ]
 "890
-[e $ ! == & -> F26052 `i -> 3 `i -> 3 `i 3566  ]
+[e $ ! == & -> F26053 `i -> 3 `i -> 3 `i 3566  ]
 {
 "891
-[e = F26052 -> -> 1 `i `uc ]
+[e = F26053 -> -> 1 `i `uc ]
 "892
 }
 [e :U 3566 ]
@@ -7107,7 +7107,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "965
 [f ]
 "966
-[v F26061 `uc ~T0 @X0 -> 6 `i s s ]
+[v F26062 `uc ~T0 @X0 -> 6 `i s s ]
 "967
 [v _c `uc ~T0 @X0 1 a ]
 "969
@@ -7118,14 +7118,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 "971
 [e $ ! != -> _reset `i -> 0 `i 3588  ]
 "972
-[e = *U + &U F26061 * -> _shape `ux -> -> # *U &U F26061 `ui `ux -> -> 0 `i `uc ]
+[e = *U + &U F26062 * -> _shape `ux -> -> # *U &U F26062 `ui `ux -> -> 0 `i `uc ]
 [e :U 3588 ]
 "973
-[e = _c *U + &U *U + &U _spin * -> _shape `ux -> * -> # *U &U *U &U _spin `ui -> -> 20 `i `ui `ux * -> *U + &U F26061 * -> _shape `ux -> -> # *U &U F26061 `ui `ux `ux -> -> # *U &U *U + &U _spin * -> _shape `ux -> * -> # *U &U *U &U _spin `ui -> -> 20 `i `ui `ux `ui `ux ]
+[e = _c *U + &U *U + &U _spin * -> _shape `ux -> * -> # *U &U *U &U _spin `ui -> -> 20 `i `ui `ux * -> *U + &U F26062 * -> _shape `ux -> -> # *U &U F26062 `ui `ux `ux -> -> # *U &U *U + &U _spin * -> _shape `ux -> * -> # *U &U *U &U _spin `ui -> -> 20 `i `ui `ux `ui `ux ]
 "974
-[e $ ! >= -> =+ *U + &U F26061 * -> _shape `ux -> -> # *U &U F26061 `ui `ux -> -> 1 `i `uc `ui ( _strlen (1 &U *U + &U _spin * -> _shape `ux -> * -> # *U &U *U &U _spin `ui -> -> 20 `i `ui `ux 3589  ]
+[e $ ! >= -> =+ *U + &U F26062 * -> _shape `ux -> -> # *U &U F26062 `ui `ux -> -> 1 `i `uc `ui ( _strlen (1 &U *U + &U _spin * -> _shape `ux -> * -> # *U &U *U &U _spin `ui -> -> 20 `i `ui `ux 3589  ]
 "975
-[e = *U + &U F26061 * -> _shape `ux -> -> # *U &U F26061 `ui `ux -> -> 0 `i `uc ]
+[e = *U + &U F26062 * -> _shape `ux -> -> # *U &U F26062 `ui `ux -> -> 0 `i `uc ]
 [e :U 3589 ]
 "977
 [e ) _c ]
@@ -7269,18 +7269,18 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :UE 3597 ]
 }
 "1072
-[v _rec_mx_cmd `(v ~T0 @X0 1 sf2`*F26077`Cuc ]
+[v _rec_mx_cmd `(v ~T0 @X0 1 sf2`*F26078`Cuc ]
 "1073
 {
 [e :U _rec_mx_cmd ]
 "1072
-[v _DataHandler `*F26079 ~T0 @X0 1 r1 ]
+[v _DataHandler `*F26080 ~T0 @X0 1 r1 ]
 [v _rec_len `Cuc ~T0 @X0 1 r2 ]
 "1073
 [f ]
 "1074
-[v F26081 `us ~T0 @X0 1 s online_count ]
-[i F26081
+[v F26082 `us ~T0 @X0 1 s online_count ]
+[i F26082
 -> -> 0 `i `us
 ]
 "1076
@@ -7290,7 +7290,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! >= -> ( _FM_rx_count ..  `i -> _rec_len `i 3602  ]
 {
 "1078
-[e = F26081 -> -> 0 `i `us ]
+[e = F26082 -> -> 0 `i `us ]
 "1079
 [e $ ! == -> _rec_len `i -> 17 `i 3603  ]
 {
@@ -7316,18 +7316,18 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 3602 ]
 {
 "1087
-[e $ ! > -> ++ F26081 -> -> 1 `i `us `ui -> _ONLINE_TIMEOUT `ui 3606  ]
+[e $ ! > -> ++ F26082 -> -> 1 `i `us `ui -> _ONLINE_TIMEOUT `ui 3606  ]
 {
 "1088
-[e = F26081 -> -> 0 `i `us ]
+[e = F26082 -> -> 0 `i `us ]
 "1089
 [e = . _BM 15 -> -> 0 `i `a ]
 "1090
 [e = . _BM 16 -> -> 0 `i `a ]
 "1091
-[e = _cc_mode -> . `E25900 5 `us ]
+[e = _cc_mode -> . `E25901 5 `us ]
 "1092
-[e = _state . `E25981 0 ]
+[e = _state . `E25982 0 ]
 "1093
 }
 [e :U 3606 ]
@@ -7338,18 +7338,18 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 3601 ]
 "1096
-[e $ ! && == -> . _BM 15 `i -> 0 `i > -> ++ F26081 -> -> 1 `i `us `ui -> _ONLINE_TIMEOUT `ui 3607  ]
+[e $ ! && == -> . _BM 15 `i -> 0 `i > -> ++ F26082 -> -> 1 `i `us `ui -> _ONLINE_TIMEOUT `ui 3607  ]
 {
 "1097
-[e = F26081 -> -> 0 `i `us ]
+[e = F26082 -> -> 0 `i `us ]
 "1098
 [e = . _BM 15 -> -> 0 `i `a ]
 "1099
 [e = . _BM 16 -> -> 0 `i `a ]
 "1100
-[e = _cc_mode -> . `E25900 5 `us ]
+[e = _cc_mode -> . `E25901 5 `us ]
 "1101
-[e = _state . `E25981 5 ]
+[e = _state . `E25982 5 ]
 "1102
 [e = _mx_code -> -> 0 `i `us ]
 "1103
@@ -7367,8 +7367,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _bmc_logger ]
 [f ]
 "1112
-[v F26083 `uc ~T0 @X0 1 s d_id ]
-[i F26083
+[v F26084 `uc ~T0 @X0 1 s d_id ]
+[i F26084
 -> -> 17 `i `uc
 ]
 "1114
@@ -7385,49 +7385,49 @@ Version 4.0 HI-TECH Software Intermediate Code
 "1119
 [e :U 3612 ]
 "1120
-[e = . _BMC4 5 F26083 ]
+[e = . _BMC4 5 F26084 ]
 "1121
 [e ( _snprintf (2 , , , , , , , , , , , , , , , , , , , , , , , , , (. , , &U _log_buffer -> -> 512 `i `ui &U _log_format1 -> . _BMC4 5 `i -> / -> . _em 5 `f -> .10.0 `f `d -> . _em_tmp 6 `d -> / -> . _em 9 `f -> .10.0 `f `d -> / -> . _em 10 `f -> .10.0 `f `d -> / -> . _em 12 `f -> .10.0 `f `d -> / -> . _em 15 `f -> .10.0 `f `d -> / -> . _em 26 `f -> .10.0 `f `d -> . _em_tmp 28 `d -> _vw `ui -> _vf `ui -> _pvw `ui -> _pvf `ui - -> _bat_amp_whole `ui -> -> 128 `i `ui - -> _bat_amp_frac `ui -> -> 128 `i `ui - -> _bat_amp_panel `ui -> -> 128 `i `ui -> _panel_watts `ui -> . _BM 15 `i -> _cc_mode `ui -> . _C 8 `i . _BM 31 . _ha_daq_calib 3 . _ha_daq_calib 5 . _ha_daq_calib 6 . _ha_daq_calib 7 ]
 "1122
-[e = F26083 -> -> 18 `i `uc ]
+[e = F26084 -> -> 18 `i `uc ]
 "1123
 [e $U 3609  ]
 "1124
 [e :U 3613 ]
 "1125
-[e = . _BMC4 5 F26083 ]
+[e = . _BMC4 5 F26084 ]
 "1126
 [e ( _snprintf (2 , , , , , , , , , , , , , , , , , , , , , , , , , (. , , &U _log_buffer -> -> 512 `i `ui &U _log_format2 -> . _BMC4 5 `i -> / -> . _em 0 `f -> .10.0 `f `d -> / -> . _em 1 `f -> .10.0 `f `d -> / -> . _em 2 `f -> .10.0 `f `d -> / -> . _em 7 `f -> .1000.0 `f `d -> / -> . _em 11 `f -> .10.0 `f `d -> / -> . _em 20 `f -> .10.0 `f `d -> / -> . _em 23 `f -> .10.0 `f `d -> / -> . _em 24 `f -> .10.0 `f `d -> _vw `ui -> _vf `ui -> _pvw `ui -> _pvf `ui - -> _bat_amp_whole `ui -> -> 128 `i `ui - -> _bat_amp_frac `ui -> -> 128 `i `ui - -> _bat_amp_panel `ui -> -> 128 `i `ui -> _panel_watts `ui -> . _BM 15 `i -> _cc_mode `ui -> . _C 8 `i . _BM 31 . _ha_daq_calib 3 . _ha_daq_calib 5 . _ha_daq_calib 6 . _ha_daq_calib 7 ]
 "1127
-[e = F26083 -> -> 17 `i `uc ]
+[e = F26084 -> -> 17 `i `uc ]
 "1128
 [e $U 3609  ]
 "1129
 [e :U 3614 ]
 "1130
-[e = . _BMC4 5 F26083 ]
+[e = . _BMC4 5 F26084 ]
 "1131
 [e ( _snprintf (2 , , , , , , , , , , , , , , , , , , , , , , , , , (. , , &U _log_buffer -> -> 512 `i `ui &U _log_format3 -> . _BMC4 5 `i -> / -> . _em 5 `f -> .10.0 `f `d -> / -> . _em 6 `f -> .1000.0 `f `d -> / -> . _em 9 `f -> .10.0 `f `d -> / -> . _em 10 `f -> .10.0 `f `d -> / -> . _em 12 `f -> .10.0 `f `d -> / -> . _em 15 `f -> .10.0 `f `d -> / -> . _em 26 `f -> .10.0 `f `d -> / -> . _emt 17 `f -> .1000.0 `f `d -> _vw `ui -> _vf `ui -> _pvw `ui -> _pvf `ui - -> _bat_amp_whole `ui -> -> 128 `i `ui - -> _bat_amp_frac `ui -> -> 128 `i `ui - -> _bat_amp_panel `ui -> -> 128 `i `ui -> _panel_watts `ui -> . _BM 15 `i -> _cc_mode `ui -> . _C 8 `i . _BM 31 . _ha_daq_calib 3 . _ha_daq_calib 5 . _ha_daq_calib 6 . _ha_daq_calib 7 ]
 "1132
-[e = F26083 -> -> 20 `i `uc ]
+[e = F26084 -> -> 20 `i `uc ]
 "1133
 [e $U 3609  ]
 "1134
 [e :U 3615 ]
 "1135
-[e = . _BMC4 5 F26083 ]
+[e = . _BMC4 5 F26084 ]
 "1136
 [e ( _snprintf (2 , , , , , , , , , , , , , , , , , , , , , , , , , (. , , &U _log_buffer -> -> 512 `i `ui &U _log_format4 -> . _BMC4 5 `i -> / -> . _em 5 `f -> .10.0 `f `d -> / -> . _em 6 `f -> .1000.0 `f `d -> / -> . _em 9 `f -> .10.0 `f `d -> / -> . _em 10 `f -> .10.0 `f `d -> / -> . _em 12 `f -> .10.0 `f `d -> / -> . _em 15 `f -> .10.0 `f `d -> / -> . _em 26 `f -> .10.0 `f `d -> / -> . _emt 17 `f -> .1000.0 `f `d -> _vw `ui -> _vf `ui -> _pvw `ui -> _pvf `ui - -> _bat_amp_whole `ui -> -> 128 `i `ui - -> _bat_amp_frac `ui -> -> 128 `i `ui - -> _bat_amp_panel `ui -> -> 128 `i `ui -> _panel_watts `ui -> . _BM 15 `i -> _cc_mode `ui -> . _C 8 `i . _BM 31 . _ha_daq_calib 3 . _ha_daq_calib 5 . _ha_daq_calib 6 . _ha_daq_calib 7 ]
 "1137
-[e = F26083 -> -> 17 `i `uc ]
+[e = F26084 -> -> 17 `i `uc ]
 "1138
 [e $U 3609  ]
 "1139
 [e :U 3616 ]
 "1140
-[e = F26083 -> -> 17 `i `uc ]
+[e = F26084 -> -> 17 `i `uc ]
 "1141
-[e = . _BMC4 5 F26083 ]
+[e = . _BMC4 5 F26084 ]
 "1142
 [e ( _snprintf (2 , , , , , , , , , , , , , , , , , , , , , , , , , (. , , &U _log_buffer -> -> 512 `i `ui &U _log_format1 -> . _BMC4 5 `i -> / -> . _em 5 `f -> .10.0 `f `d -> . _em_tmp 6 `d -> / -> . _em 9 `f -> .10.0 `f `d -> / -> . _em 10 `f -> .10.0 `f `d -> / -> . _em 12 `f -> .10.0 `f `d -> / -> . _em 15 `f -> .10.0 `f `d -> / -> . _em 26 `f -> .10.0 `f `d -> . _em_tmp 28 `d -> _vw `ui -> _vf `ui -> _pvw `ui -> _pvf `ui - -> _bat_amp_whole `ui -> -> 128 `i `ui - -> _bat_amp_frac `ui -> -> 128 `i `ui - -> _bat_amp_panel `ui -> -> 128 `i `ui -> _panel_watts `ui -> . _BM 15 `i -> _cc_mode `ui -> . _C 8 `i . _BM 31 . _ha_daq_calib 3 . _ha_daq_calib 5 . _ha_daq_calib 6 . _ha_daq_calib 7 ]
 "1143
@@ -7436,7 +7436,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e $U 3609  ]
 [e :U 3610 ]
-[e [\ F26083 , $ -> 2 `i 3611
+[e [\ F26084 , $ -> 2 `i 3611
  , $ -> 17 `i 3612
  , $ -> 18 `i 3613
  , $ -> 19 `i 3614
@@ -7481,8 +7481,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "1165
 [v _Soc `f ~T0 @X0 1 a ]
 "1166
-[v F26089 `uc ~T0 @X0 1 s off_delay ]
-[i F26089
+[v F26090 `uc ~T0 @X0 1 s off_delay ]
+[i F26090
 -> -> 0 `i `uc
 ]
 "1168
@@ -7493,19 +7493,19 @@ Version 4.0 HI-TECH Software Intermediate Code
 "1170
 [e = . _BM 15 -> -> 1 `i `a ]
 "1171
-[e = F26089 -> -> 0 `i `uc ]
+[e = F26090 -> -> 0 `i `uc ]
 "1172
 }
 [e $U 3620  ]
 [e :U 3619 ]
 {
 "1173
-[e $ ! > -> ++ F26089 -> -> 1 `i `uc `i -> 3 `i 3621  ]
+[e $ ! > -> ++ F26090 -> -> 1 `i `uc `i -> 3 `i 3621  ]
 {
 "1174
 [e = . _BM 15 -> -> 0 `i `a ]
 "1175
-[e = _cc_mode -> . `E25900 5 `us ]
+[e = _cc_mode -> . `E25901 5 `us ]
 "1176
 }
 [e :U 3621 ]
@@ -7513,7 +7513,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 3620 ]
 "1178
-[e = _state . `E25981 1 ]
+[e = _state . `E25982 1 ]
 "1179
 [e :UE 3618 ]
 }
@@ -7526,7 +7526,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "1183
 [e ( _volt_f (1 -> + -> *U + &U _abuf * -> -> -> 2 `i `ui `ux -> -> # *U &U _abuf `ui `ux `ui << -> *U + &U _abuf * -> -> -> 1 `i `ui `ux -> -> # *U &U _abuf `ui `ux `ui -> 8 `i `us ]
 "1187
-[e = _state . `E25981 4 ]
+[e = _state . `E25982 4 ]
 "1188
 [e :UE 3622 ]
 }
@@ -7539,7 +7539,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "1192
 [e ( _volt_f (1 -> + -> *U + &U _abuf * -> -> -> 2 `i `ui `ux -> -> # *U &U _abuf `ui `ux `ui << -> *U + &U _abuf * -> -> -> 1 `i `ui `ux -> -> # *U &U _abuf `ui `ux `ui -> 8 `i `us ]
 "1196
-[e = _state . `E25981 5 ]
+[e = _state . `E25982 5 ]
 "1197
 [e :UE 3623 ]
 }
@@ -7555,7 +7555,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! ! != -> . _C 12 `i -> 0 `i 3625  ]
 {
 "1203
-[e = _state . `E25981 10 ]
+[e = _state . `E25982 10 ]
 "1204
 }
 [e $U 3626  ]
@@ -7564,7 +7564,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "1205
 [e = . _C 12 -> -> 0 `i `a ]
 "1206
-[e = _state . `E25981 7 ]
+[e = _state . `E25982 7 ]
 "1207
 }
 [e :U 3626 ]
@@ -7578,7 +7578,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _state_time_cb ]
 [f ]
 "1217
-[e = _state . `E25981 8 ]
+[e = _state . `E25982 8 ]
 "1218
 [e :UE 3627 ]
 }
@@ -7589,7 +7589,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _state_date_cb ]
 [f ]
 "1227
-[e = _state . `E25981 10 ]
+[e = _state . `E25982 10 ]
 "1228
 [e :UE 3628 ]
 }
@@ -7600,7 +7600,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _state_restart_cb ]
 [f ]
 "1237
-[e = _state . `E25981 0 ]
+[e = _state . `E25982 0 ]
 "1238
 [e :UE 3629 ]
 }
@@ -7621,9 +7621,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 "1247
 [e = . _BM 15 -> -> 0 `i `a ]
 "1248
-[e = _cc_mode -> . `E25900 5 `us ]
+[e = _cc_mode -> . `E25901 5 `us ]
 "1249
-[e = _state . `E25981 0 ]
+[e = _state . `E25982 0 ]
 "1250
 [e $UE 3630  ]
 "1251
@@ -7633,14 +7633,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! ! != -> . _BM 0 `i -> 0 `i 3633  ]
 {
 "1253
-[e = _state . `E25981 10 ]
+[e = _state . `E25982 10 ]
 "1254
 }
 [e $U 3634  ]
 [e :U 3633 ]
 {
 "1255
-[e = _state . `E25981 1 ]
+[e = _state . `E25982 1 ]
 "1256
 }
 [e :U 3634 ]
@@ -7678,7 +7678,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "1273
 [e = *U + &U _cmd_mx_log * -> -> -> 7 `i `ui `ux -> -> # *U &U _cmd_mx_log `ui `ux -> + -> 22 `i -> . . _BM 30 11 `i `us ]
 "1275
-[e = _state . `E25981 11 ]
+[e = _state . `E25982 11 ]
 "1276
 [e :UE 3635 ]
 }
@@ -7694,14 +7694,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! != -> . _BM 15 `i -> 0 `i 3637  ]
 {
 "1285
-[e = _state . `E25981 9 ]
+[e = _state . `E25982 9 ]
 "1286
 }
 [e $U 3638  ]
 [e :U 3637 ]
 {
 "1287
-[e = _state . `E25981 11 ]
+[e = _state . `E25982 11 ]
 "1288
 }
 [e :U 3638 ]
@@ -7771,7 +7771,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 3642 ]
 "1324
-[e = _state . `E25981 6 ]
+[e = _state . `E25982 6 ]
 "1325
 [e :UE 3639 ]
 }
@@ -7782,8 +7782,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _state_status_cb ]
 [f ]
 "1329
-[v F26101 `us ~T0 @X0 1 s day_clocks ]
-[i F26101
+[v F26102 `us ~T0 @X0 1 s day_clocks ]
+[i F26102
 -> -> 0 `i `us
 ]
 "1345
@@ -7797,15 +7797,15 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 3648 ]
 "1350
-[e $ ! != -> *U + &U _abuf * -> -> -> 2 `i `ui `ux -> -> # *U &U _abuf `ui `ux `ui -> . `E25900 0 `ui 3649  ]
+[e $ ! != -> *U + &U _abuf * -> -> -> 2 `i `ui `ux -> -> # *U &U _abuf `ui `ux `ui -> . `E25901 0 `ui 3649  ]
 {
 "1351
-[e $ ! > -> =+ F26101 -> -> 1 `i `us `ui -> _BAT_DAY_COUNT `ui 3650  ]
+[e $ ! > -> =+ F26102 -> -> 1 `i `us `ui -> _BAT_DAY_COUNT `ui 3650  ]
 {
 "1352
-[e = F26101 -> -> 0 `i `us ]
+[e = F26102 -> -> 0 `i `us ]
 "1353
-[e $ ! && ! != -> . _BM 5 `i -> 0 `i == -> . _BM 12 `ui -> . `E25900 0 `ui 3651  ]
+[e $ ! && ! != -> . _BM 5 `i -> 0 `i == -> . _BM 12 `ui -> . `E25901 0 `ui 3651  ]
 {
 "1354
 [e = . _BM 13 -> -> 0 `i `us ]
@@ -7829,12 +7829,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 3649 ]
 {
 "1362
-[e $ ! > -> =+ F26101 -> -> 1 `i `us `ui -> _BAT_NIGHT_COUNT `ui 3653  ]
+[e $ ! > -> =+ F26102 -> -> 1 `i `us `ui -> _BAT_NIGHT_COUNT `ui 3653  ]
 {
 "1363
-[e = F26101 -> -> 0 `i `us ]
+[e = F26102 -> -> 0 `i `us ]
 "1364
-[e $ ! && ! != -> . _BM 5 `i -> 0 `i != -> . _BM 12 `ui -> . `E25900 0 `ui 3654  ]
+[e $ ! && ! != -> . _BM 5 `i -> 0 `i != -> . _BM 12 `ui -> . `E25901 0 `ui 3654  ]
 {
 "1365
 [e = . _BM 13 -> -> 0 `i `us ]
@@ -7866,12 +7866,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 3655 ]
 {
 "1377
-[e = _cc_mode -> . `E25900 5 `us ]
+[e = _cc_mode -> . `E25901 5 `us ]
 "1378
 }
 [e :U 3656 ]
 "1379
-[e = _state . `E25981 5 ]
+[e = _state . `E25982 5 ]
 "1380
 [e :UE 3647 ]
 }
@@ -7882,7 +7882,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _state_panelv_cb ]
 [f ]
 "1387
-[e = _state . `E25981 3 ]
+[e = _state . `E25982 3 ]
 "1388
 [e :UE 3657 ]
 }
@@ -7897,12 +7897,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 [a 33C 86 48 46 52 57 0 ]
 [a 40C 86 48 46 52 57 0 ]
 [a 53C 86 48 46 52 57 0 ]
-[a 1C 78 111 118 32 49 49 32 50 48 50 53 0 ]
+[a 1C 78 111 118 32 49 55 32 50 48 50 53 0 ]
 [a 19C 53 55 81 56 52 0 ]
 [a 22C 53 55 81 56 52 0 ]
 [a 20C 52 55 81 56 52 0 ]
 [a 23C 52 55 81 56 52 0 ]
-[a 2C 49 55 58 50 56 58 51 48 0 ]
+[a 2C 49 55 58 53 50 58 53 50 0 ]
 [a 7C 82 69 77 79 84 69 32 0 ]
 [a 6C 79 78 76 73 78 69 32 0 ]
 [a 8C 69 82 82 79 82 32 32 0 ]

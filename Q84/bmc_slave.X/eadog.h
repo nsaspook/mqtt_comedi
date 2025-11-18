@@ -94,7 +94,7 @@ extern "C" {
 #define LCD2		2
 #define LCD3		3
 
-#define DIM_DELAY	4
+#define DIM_DELAY	16
 
 #define NSB		5
 #define LSB		21
@@ -102,6 +102,7 @@ extern "C" {
 #define LCD_PWR_DELAY	600000
 
 	extern volatile uint8_t c0, c1, c2;
+	extern volatile uint16_t cc_mode;
 	bool init_display(void);
 	void no_dma_set_lcd(void);
 	void send_lcd_data_dma(const uint8_t);
