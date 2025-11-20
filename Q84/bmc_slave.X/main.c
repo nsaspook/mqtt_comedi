@@ -46,12 +46,12 @@
 #pragma config XINST = OFF      // Extended Instruction Set Enable bit (Extended Instruction Set and Indexed Addressing Mode disabled)
 
 // CONFIG5
-#pragma config WDTCPS = WDTCPS_31// WDT Period selection bits (Divider ratio 1:65536; software control of WDTPS)
-#pragma config WDTE = OFF       // WDT operating mode (WDT Disabled; SWDTEN is ignored)
+//#pragma config WDTCPS = WDTCPS_31// WDT Period selection bits (Divider ratio 1:65536; software control of WDTPS)
+//#pragma config WDTE = OFF       // WDT operating mode (WDT Disabled; SWDTEN is ignored)
 
 // CONFIG6
 #pragma config WDTCWS = WDTCWS_7// WDT Window Select bits (window always open (100%); software control; keyed access not required)
-#pragma config WDTCCS = SC      // WDT input clock selector (Software Control)
+//#pragma config WDTCCS = SC      // WDT input clock selector (Software Control)
 
 // CONFIG7
 #pragma config BBSIZE = BBSIZE_512// Boot Block Size selection bits (Boot Block size is 512 words)
@@ -197,7 +197,6 @@ typedef signed long long int24_t;
 
 extern volatile struct spi_link_type spi_link;
 static const char *build_date = __DATE__, *build_time = __TIME__;
-const char text_test[] = {"the quick brown fox jumps over the lazy dogs back"};
 
 const char * BMC_TEXT [] = {
 	"DISABLE",
@@ -1125,6 +1124,7 @@ void bmc_logger(void)
 		BMC4.d_id = d_id;
 		snprintf((char*) log_buffer, MAX_B_BUF, log_format2, LOG_VARS2);
 		d_id = DC_NEXT;
+        ClrWdt();
 		break;
 	case DC3_CMD:
 		BMC4.d_id = d_id;
