@@ -970,7 +970,7 @@ static double bsensor0_filter(const double raw)
 }
 
 /*
- * check the BMC CSV data string for proper format, size and checkmark
+ * check the BMC CSV data string for proper format, size and check-mark
  */
 char * validate_bmc_text(const char * text, bool * valid)
 {

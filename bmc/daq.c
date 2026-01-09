@@ -449,24 +449,6 @@ int get_data_sample(void)
 	}
 
 	if (SERIAL_OPEN) {
-#ifdef SEND_TEXT
-		uint32_t slow_text = 0;
-
-		if (++slow_text > SLOW_TEXT) {
-			slow_text = 0;
-			serial_buf = daq_text_ptr[daq_text_index++];
-			if (daq_text_index > MAX_STRLEN) {
-				comedi_data_write(it, subdev_serial0, 0, range_ao, AREF_GROUND, STX);
-				daq_text_index = 0;
-				serial_buf = 0;
-				line_index++;
-				daq_text_ptr = daq_text[line_index & 0x03];
-			} else {
-				comedi_data_write(it, subdev_serial0, line_index & 0x03, range_ao, AREF_GROUND, serial_buf);
-				comedi_data_read(it, subdev_serial0, line_index & 0x03, range_ao, AREF_GROUND, &serial_buf);
-			}
-		}
-#endif
 		if (BMC4.bmc_flag) {
 			if (++slow_data > SLOW_DATA) {
 				slow_data = 0;
