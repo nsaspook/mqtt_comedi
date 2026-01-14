@@ -853,8 +853,8 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwatts);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwatts_gti", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwatts_gti);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwatts_aux", 64);
-				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwatts_aux);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwatts_gti_abs", 64);
+				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], fabs(R.acwin));
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acva", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acva);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acvar", 64);

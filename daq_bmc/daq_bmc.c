@@ -82,7 +82,7 @@ ports [4..7] are data-streams for connected device data
 #include <linux/list.h>
 #include <linux/completion.h>
 
-#define bmc_version "version 0.99 "
+#define bmc_version "version 1.00 "
 #define spibmc_version "version 1.4 "
 
 static const uint32_t CHECKMARK = 0x1957;
@@ -1769,7 +1769,9 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	 * Probe the BMCboard existence and for configuration data
 	 */
 	ret = daqbmc_bmc_get_config(dev);
-	ret = daqbmc_bmc_get_config(dev);
+        if (ret == 0xff) {
+            ret = daqbmc_bmc_get_config(dev);
+        }
 
 	if (ret == 0xff) { // no SPI comms with daq_bmc board
 		dev_err(dev->class_dev,
