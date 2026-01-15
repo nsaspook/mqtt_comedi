@@ -35,7 +35,7 @@ struct bmc_settings S = {
 };
 
 struct ha_csv_type {
-	double acvolts, acamps, acwatts, acwatts_gti, acwatts_aux, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, panel_watts, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
+	double acvolts, acamps, acwatts, acwatts_gti, acwatts_gti_abs, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, panel_watts, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
 	uint32_t d_id;
 	double benergy, runtime;
 	uint32_t boot_wait;
@@ -686,6 +686,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		 * various data fix-ups and sanity checks
 		 */
 		R.acwin = R.acwatts_gti;
+		R.acwatts_gti_abs = fabs(R.acwatts_gti); // absolute value for HA power/energy calculations
 		if (R.acwatts > 0.0f) {
 			R.acwout = R.acwatts; // utility power used
 		} else {
@@ -854,7 +855,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwatts_gti", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwatts_gti);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwatts_gti_abs", 64);
-				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], fabs(R.acwin));
+				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwatts_gti_abs);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acva", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acva);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acvar", 64);
