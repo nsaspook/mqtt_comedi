@@ -1359,7 +1359,7 @@ void state_status_cb(void)
 			BM.pv_high = true;
 		}
 	} else {
-		if (++day_clocks > BAT_NIGHT_COUNT) {
+		if ((++day_clocks > BAT_NIGHT_COUNT) && (pvw < PV_VOLTS_HIGH)) {
 			day_clocks = 0;
 			if (!BM.once && (BM.pv_prev != STATUS_SLEEPING)) { // check for night and update day totals
 				BM.day_check = 0;

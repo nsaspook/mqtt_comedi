@@ -25,7 +25,7 @@ extern "C" {
     //	#define DIS_DEBUG	// active status display, disable during normal operation
     // #define SHOW_DAC
 
-#define VER	"V0.49"
+#define VER	"V0.50"
     /** \file vconfig.h
      * Software version and a brief doc for each version changes.
         Version for 57Q84.
@@ -65,6 +65,7 @@ extern "C" {
      * V0.47 cleanup defines and convert to static const variables
      * V0.48 Minor display changes
      * V0.49 shorted calibration fractional values for sequence 17
+     * V0.50 add High VoC check for night switching from FMXX_STATE
      */
 
     //#define DI_DEBUG
@@ -131,6 +132,7 @@ extern "C" {
     static const uint16_t CHK_DAY_TIME = 1200;
     static const uint8_t BAT_DAY_COUNT = 45; // number of reports before updates
     static const uint8_t BAT_NIGHT_COUNT = 90;
+    static const uint8_t PV_VOLTS_HIGH = 70;
     
 #define SOF_ADDR	0x01ff00
 

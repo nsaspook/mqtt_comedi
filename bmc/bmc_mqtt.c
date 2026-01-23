@@ -746,7 +746,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		/*
 		 * Battery energy calculations and fixes
 		 */
-		if (R.boot_volts && (R.boot_wait++ > 2) && R.bvolts > 12.0f) { // find boot battery energy from voltage tagle
+		if (R.boot_volts && (R.boot_wait++ > 2) && R.bvolts > 12.0f) { // find boot battery energy from voltage table
 			R.boot_volts = false;
 			Soc = Volts_to_SOC(R.bvolts * S.SOC_MODEV); // convert to 24vdc standard Soc table
 			R.benergy = S.BENERGYV*Soc;
