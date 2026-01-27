@@ -618,7 +618,6 @@ void main(void)
 			snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "OF %lu ERR %lu                        ", spi_stat_ss.rxof_bit, spi_stat_ss.spi_error_count);
 			snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu                               ", spi_stat_ss.bmc_counts);
 			snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "%s Ver %s                       ", (char *) build_date, VER);
-			ClrWdt(); // reset the WDT timer
 			refresh_lcd();
 			WaitMs(TDELAY);
 			if (failure) { // DIO not working or missing
@@ -1125,6 +1124,7 @@ void bmc_logger(void)
 		BMC4.d_id = d_id;
 		snprintf((char*) log_buffer, MAX_B_BUF, log_format2, LOG_VARS2);
 		d_id = DC_NEXT;
+		ClrWdt(); // reset the WDT timer
 		break;
 	case DC3_CMD:
 		BMC4.d_id = d_id;

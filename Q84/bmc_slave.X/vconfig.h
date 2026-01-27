@@ -25,7 +25,7 @@ extern "C" {
     //	#define DIS_DEBUG	// active status display, disable during normal operation
     // #define SHOW_DAC
 
-#define VER	"V0.50"
+#define VER	"V0.51"
     /** \file vconfig.h
      * Software version and a brief doc for each version changes.
         Version for 57Q84.
@@ -66,6 +66,7 @@ extern "C" {
      * V0.48 Minor display changes
      * V0.49 shorted calibration fractional values for sequence 17
      * V0.50 add High VoC check for night switching from FMXX_STATE
+     * V0.51 re-enable WDT reboots
      */
 
     //#define DI_DEBUG

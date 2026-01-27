@@ -71,6 +71,7 @@ void slaveo_rx_isr(void)
 	// SPI port #2 SLAVE receiver
 
 	DLED_SetHigh();
+	Nop();
 #ifdef SLAVE_DEBUG
 	if (SPI2INTFbits.RXOIF) {
 		spi_stat_ss.rxof_bit++;
