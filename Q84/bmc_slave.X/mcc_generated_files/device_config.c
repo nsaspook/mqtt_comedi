@@ -77,11 +77,11 @@
 
 // CONFIG5
 #pragma config WDTCPS = WDTCPS_18    // WDT Period selection bits->Divider ratio 1:8388608
-#pragma config WDTE = NSLEEP    // WDT operating mode->WDT enabled while sleep=0, suspended when sleep=1; SWDTEN ignored
+#pragma config WDTE = ON    // WDT operating mode->WDT enabled regardless of sleep; SWDTEN is ignored
 
 // CONFIG6
 #pragma config WDTCWS = WDTCWS_7    // WDT Window Select bits->window always open (100%); software control; keyed access not required
-#pragma config WDTCCS = LFINTOSC    // WDT input clock selector->WDT reference clock is the 31.0 kHz LFINTOSC
+#pragma config WDTCCS = MFINTOSC    // WDT input clock selector->WDT reference clock is the 31.0 kHz LFINTOSC
 
 // CONFIG7
 #pragma config BBSIZE = BBSIZE_512    // Boot Block Size selection bits->Boot Block size is 512 words

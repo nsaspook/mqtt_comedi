@@ -7,7 +7,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v F25001 `(v ~T0 @X0 0 tf ]
 "10 timers.c
 [v _tickCount `Vus ~T0 @X0 -> 0 `x e ]
-"37
+"36
 [c E24363 0 1 2 3 4 5 6 7 8 9 10 11 12 13 .. ]
 [n E24363 APP_TIMERS TMR_INTERNAL TMR_ADC TMR_INFO TMR_HELP TMR_HELPDIS TMR_DISPLAY TMR_SEQ TMR_FLIPPER TMR_MBMASTER TMR_MBTEST TMR_SPIN TMR_DERE TMR_RESTART TMR_COUNT  ]
 "8 /ldrv/microchip/xc8/v3.10/pic/include/builtins.h
@@ -4041,37 +4041,37 @@ Version 4.0 HI-TECH Software Intermediate Code
 "24
 [f ]
 "25
-[; <"  clrwdt ;# ">
-"26
 [e $ ! == -> *U + &U _tickCount * -> _timer `ux -> -> # *U &U _tickCount `ui `ux `ui -> -> 0 `i `ui 3414  ]
 {
-"27
+"26
 [e ) -> -> 1 `i `a ]
 [e $UE 3413  ]
-"28
+"27
 }
 [e :U 3414 ]
-"29
+"28
 [e ) -> -> 0 `i `a ]
 [e $UE 3413  ]
-"30
+"29
 [e :UE 3413 ]
 }
-"35
+"34
 [v _WaitMs `(v ~T0 @X0 1 ef1`us ]
-"36
+"35
 {
 [e :U _WaitMs ]
-"35
+"34
 [v _numMilliseconds `Cus ~T0 @X0 1 r1 ]
-"36
+"35
 [f ]
-"37
+"36
 [e ( _StartTimer (2 , -> . `E24363 0 `uc _numMilliseconds ]
-"38
+"37
 [e $U 3416  ]
 [e :U 3417 ]
 {
+"38
+[e ( ___nop ..  ]
 "39
 [e ( ___nop ..  ]
 "40
@@ -4079,29 +4079,25 @@ Version 4.0 HI-TECH Software Intermediate Code
 "41
 [e ( ___nop ..  ]
 "42
-[e ( ___nop ..  ]
-"43
-[; <"  clrwdt ;# ">
-"44
 }
 [e :U 3416 ]
-"38
+"37
 [e $ ! != -> ( _TimerDone (1 -> . `E24363 0 `uc `i -> 0 `i 3417  ]
 [e :U 3418 ]
-"45
+"43
 [e :UE 3415 ]
 }
-"50
+"48
 [v _timer_ms_tick `(v ~T0 @X0 1 ef2`Cul`Cum ]
-"51
+"49
 {
 [e :U _timer_ms_tick ]
-"50
+"48
 [v _status `Cul ~T0 @X0 1 r1 ]
 [v _context `Cum ~T0 @X0 1 r2 ]
-"51
+"49
 [f ]
-"53
+"51
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
@@ -4109,20 +4105,20 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $U 3421  ]
 [e :U 3420 ]
 {
-"54
+"52
 [e $ ! != -> *U + &U _tickCount * -> _i `ux -> -> # *U &U _tickCount `ui `ux `ui -> -> 0 `i `ui 3423  ]
 {
-"55
+"53
 [e -- *U + &U _tickCount * -> _i `ux -> -> # *U &U _tickCount `ui `ux -> -> 1 `i `us ]
-"56
+"54
 }
 [e :U 3423 ]
-"57
+"55
 }
 [e ++ _i -> -> 1 `i `uc ]
 [e $ < -> _i `i -> . `E24363 13 `i 3420  ]
 [e :U 3421 ]
 }
-"62
+"60
 [e :UE 3419 ]
 }

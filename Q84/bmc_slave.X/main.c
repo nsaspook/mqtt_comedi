@@ -50,8 +50,8 @@
 //#pragma config WDTE = OFF       // WDT operating mode (WDT Disabled; SWDTEN is ignored)
 
 // CONFIG6
-#pragma config WDTCWS = WDTCWS_7// WDT Window Select bits (window always open (100%); software control; keyed access not required)
-//#pragma config WDTCCS = SC      // WDT input clock selector (Software Control)
+//#pragma config WDTCWS = WDTCWS_7// WDT Window Select bits (window always open (100%); software control; keyed access not required)
+#pragma config WDTCCS = MFINTOSC      // WDT input clock selector (Software Control)
 
 // CONFIG7
 #pragma config BBSIZE = BBSIZE_512// Boot Block Size selection bits (Boot Block size is 512 words)
@@ -411,8 +411,8 @@ void main(void)
 			BM.node_id = 0xffffffff;
 		}
 	}
-	
-	
+
+
 
 	/*
 	 * calibration scalar selection using MUI from controller
@@ -618,6 +618,7 @@ void main(void)
 			snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "OF %lu ERR %lu                        ", spi_stat_ss.rxof_bit, spi_stat_ss.spi_error_count);
 			snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu                               ", spi_stat_ss.bmc_counts);
 			snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "%s Ver %s                       ", (char *) build_date, VER);
+			ClrWdt(); // reset the WDT timer
 			refresh_lcd();
 			WaitMs(TDELAY);
 			if (failure) { // DIO not working or missing
@@ -811,7 +812,7 @@ void main(void)
 
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
 				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3f,5 %6.3f                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));
-				snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu  0X%.2X                             ", spi_stat_ss.bmc_counts,spi_stat_ss.daq_conf);
+				snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu  0X%.2X                             ", spi_stat_ss.bmc_counts, spi_stat_ss.daq_conf);
 				snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "%s %s                       ", (char *) build_date, VER);
 
 				refresh_lcd();
@@ -1124,7 +1125,6 @@ void bmc_logger(void)
 		BMC4.d_id = d_id;
 		snprintf((char*) log_buffer, MAX_B_BUF, log_format2, LOG_VARS2);
 		d_id = DC_NEXT;
-        ClrWdt();
 		break;
 	case DC3_CMD:
 		BMC4.d_id = d_id;

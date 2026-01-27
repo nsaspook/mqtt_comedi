@@ -601,6 +601,6 @@ void wdtdelay(const uint32_t delay)
 	uint32_t dcount;
 
 	for (dcount = 0; dcount <= delay; dcount++) { // delay a bit
-		ClrWdt(); // reset the WDT timer
+//		ClrWdt(); // reset the WDT timer
 	};
 }

@@ -22,7 +22,6 @@ inline void StartTimer(const uint8_t timer, const uint16_t count)
 
 inline bool TimerDone(const uint8_t timer)
 {
-	ClrWdt(); // reset the WDT timer
 	if (tickCount[timer] == 0) { //Check if counted down to zero
 		return true; //then return true
 	}
@@ -40,7 +39,6 @@ void WaitMs(const uint16_t numMilliseconds)
 		Nop();
 		Nop();
 		Nop();
-		ClrWdt(); // reset the WDT timer
 	}
 }
 
