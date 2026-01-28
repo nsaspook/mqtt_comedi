@@ -22,75 +22,75 @@ extern "C" {
 
 #define NHD		// SPI 20X4 display, nhd-0420d3z-nsw-bbw
 
-    //	#define DIS_DEBUG	// active status display, disable during normal operation
-    // #define SHOW_DAC
+	//	#define DIS_DEBUG	// active status display, disable during normal operation
+	// #define SHOW_DAC
 
 #define VER	"V0.51"
-    /** \file vconfig.h
-     * Software version and a brief doc for each version changes.
-        Version for 57Q84.
+	/** \file vconfig.h
+	 * Software version and a brief doc for each version changes.
+	    Version for 57Q84.
 
-     * V0.01 OPI daq slave via SPI2
-     * V0.03 add all ADC channels and clean up for SECS defines and variables
-     * V0.04 start adding the DIO devices code with speed and mode changes 4MHz and mode 1, 50KHz mode 3 for the display
-     * V0.05 have the SPI I/O routines working for the DIO devices
-     * V0.10 mainly working DO version
-     * V0.11 mainly working DI version
-     * V0.12 5 transfers for 24 bit DI SPI
-     * V0.13 fix ADC higher channels and cleanup SPI link protocols
-     * V0.14 remove serial speed switching code
-     * V0.15 update to 9 byte packets for all commands
-     * V.016 fix TIC12400 I/O bugs
-     * V.017 code cleanup
-     * V.018 more code cleanup
-     * V.020 18f57q84 version
-     * V.021 fix-up serial data protocol with STX to mark start of string
-     * V0.30 version for the FM80 MODBUS and FM80 serial
-     * V0.31 more cleanup of code
-     * V0.32 add code for FM80 state machine and call-backs
-     * V0.33 finally traced the FM80 restart code, optimize timing for all new code
-     * V0.34 testing daq_bmc CSV data link to the OPi
-     * V0.35 cleanup ISR and other misc code
-     * V0.36 LCD dimming, DI changes back to bright
-     * V0.37 still working on float restart sequencing
-     * V0.38 cleanup debugging LCD code
-     * V0.39 GET_CFG_BYTES channel 4 or 5 (0 will send CFG byte) will send calibration float (32-bit IEEE 754) for HV channels D0..D4
-     * V0.40 change to 3-phase with neutral for GTO power monitoring
-     * V0.41 add FM80 panel power to data stream
-     * V0.42 fix a few display bugs
-     * V0.43 four possible data transfers using DCx_CMD
-     * V0.44 57Q84 and 47Q84 detection and daq configuration
-     * V0.45 MUI keying to calibration download data
-     * V0.46 add ADC4 and ADC5 voltage calibration values on debug screens
-     * V0.47 cleanup defines and convert to static const variables
-     * V0.48 Minor display changes
-     * V0.49 shorted calibration fractional values for sequence 17
-     * V0.50 add High VoC check for night switching from FMXX_STATE
-     * V0.51 re-enable WDT reboots
-     */
+	 * V0.01 OPI daq slave via SPI2
+	 * V0.03 add all ADC channels and clean up for SECS defines and variables
+	 * V0.04 start adding the DIO devices code with speed and mode changes 4MHz and mode 1, 50KHz mode 3 for the display
+	 * V0.05 have the SPI I/O routines working for the DIO devices
+	 * V0.10 mainly working DO version
+	 * V0.11 mainly working DI version
+	 * V0.12 5 transfers for 24 bit DI SPI
+	 * V0.13 fix ADC higher channels and cleanup SPI link protocols
+	 * V0.14 remove serial speed switching code
+	 * V0.15 update to 9 byte packets for all commands
+	 * V.016 fix TIC12400 I/O bugs
+	 * V.017 code cleanup
+	 * V.018 more code cleanup
+	 * V.020 18f57q84 version
+	 * V.021 fix-up serial data protocol with STX to mark start of string
+	 * V0.30 version for the FM80 MODBUS and FM80 serial
+	 * V0.31 more cleanup of code
+	 * V0.32 add code for FM80 state machine and call-backs
+	 * V0.33 finally traced the FM80 restart code, optimize timing for all new code
+	 * V0.34 testing daq_bmc CSV data link to the OPi
+	 * V0.35 cleanup ISR and other misc code
+	 * V0.36 LCD dimming, DI changes back to bright
+	 * V0.37 still working on float restart sequencing
+	 * V0.38 cleanup debugging LCD code
+	 * V0.39 GET_CFG_BYTES channel 4 or 5 (0 will send CFG byte) will send calibration float (32-bit IEEE 754) for HV channels D0..D4
+	 * V0.40 change to 3-phase with neutral for GTO power monitoring
+	 * V0.41 add FM80 panel power to data stream
+	 * V0.42 fix a few display bugs
+	 * V0.43 four possible data transfers using DCx_CMD
+	 * V0.44 57Q84 and 47Q84 detection and daq configuration
+	 * V0.45 MUI keying to calibration download data
+	 * V0.46 add ADC4 and ADC5 voltage calibration values on debug screens
+	 * V0.47 cleanup defines and convert to static const variables
+	 * V0.48 Minor display changes
+	 * V0.49 shorted calibration fractional values for sequence 17
+	 * V0.50 add High VoC check for night switching from FMXX_STATE
+	 * V0.51 re-enable WDT reboots
+	 */
 
-    //#define DI_DEBUG
-    //#define TRACE
+	//#define DI_DEBUG
+	//#define TRACE
 
-    /*
-     * TIC12400 testing modes
-     */
+	/*
+	 * TIC12400 testing modes
+	 */
 #define DIO_TEST
 #define DIO_SHOW_BUF
 #define SER_DEBUG
 #define DI_MC_CMD
-    /* analog testing calibration mode
-     *
-     */
+	/* analog testing calibration mode
+	 *
+	 */
 #define AIO_TEST
-    /*
-     * debug LED
-     */
+	/*
+	 * debug LED
+	 */
 #define DLED	DLED_LAT
 
-    /*
-     * characters per line on the display
-     */
+	/*
+	 * characters per line on the display
+	 */
 #define MAX_STRLEN      20
 #define MAX_LINE        MAX_STRLEN+1
 #define MAX_TEXT        MAX_STRLEN+1
@@ -110,9 +110,9 @@ extern "C" {
 #define EQUIP_UART  2
 #define DEF_TIME  1694196350 /* default epoch time */
 
-    /*
-     * data logging commands and sequencing
-     */
+	/*
+	 * data logging commands and sequencing
+	 */
 #define STX      2
 #define DC1_CMD  17
 #define DC2_CMD  18
@@ -120,230 +120,233 @@ extern "C" {
 #define DC4_CMD  20
 #define DC_NEXT		DC1_CMD // repeat 2 or 4 lines with DC3_CMD value here
 
-    static const uint16_t TDELAY = 3000;
-    static const uint16_t SEQDELAY = 10000;
-    static const uint16_t LDELAY = 1000;
-    static const uint16_t SDELAY = 500;
-    static const uint16_t DDELAY = 500; // display update spacing
-    static const uint16_t DFLIP = 1500; // display info flipping spacing
-    static const uint8_t ADCDELAY = 1; // adc update rate ms
-    static const uint8_t SWITCH_VTERM = 70; // time between main to info screen switches
-    static const uint8_t SWITCH_DURATION = 32; // time in the info screen
-    static const uint8_t HOST_UART = 1;
-    static const uint16_t CHK_DAY_TIME = 1200;
-    static const uint8_t BAT_DAY_COUNT = 45; // number of reports before updates
-    static const uint8_t BAT_NIGHT_COUNT = 90;
-    static const uint8_t PV_VOLTS_HIGH = 70;
-    
+	static const uint16_t TDELAY = 3000;
+	static const uint16_t SEQDELAY = 10000;
+	static const uint16_t LDELAY = 100;
+	static const uint16_t SDELAY = 100;
+	static const uint16_t DDELAY = 500; // display update spacing
+	static const uint16_t DFLIP = 1500; // display info flipping spacing
+	static const uint8_t ADCDELAY = 1; // adc update rate ms
+	static const uint8_t SWITCH_VTERM = 70; // time between main to info screen switches
+	static const uint8_t SWITCH_DURATION = 32; // time in the info screen
+	static const uint8_t HOST_UART = 1;
+	static const uint16_t CHK_DAY_TIME = 1200;
+	static const uint8_t BAT_DAY_COUNT = 45; // number of reports before updates
+	static const uint8_t BAT_NIGHT_COUNT = 90;
+	static const uint8_t PV_VOLTS_HIGH = 70;
+
 #define SOF_ADDR	0x01ff00
 
-    const char log_format1[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%6.3f,%6.3f,%6.3f,%6.3f,1957,~EOT                                                  \r\n";
+	const char log_format1[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%6.3f,%6.3f,%6.3f,%6.3f,1957,~EOT                                                  \r\n";
 #define LOG_VARS1	BMC4.d_id,((float) em.vl3l1) / 10.0f,em_tmp.al1, ((float) em.wl1) / 10.0f, ((float) em.wl2) / 10.0f, \
 	((float) em.val1) / 10.0f, ((float) em.varl1) / 10.0f,  ((float) em.pfsys) / 10.0f, em_tmp.hz,vw, vf, pvw, pvf, bat_amp_whole - 128, \
 	bat_amp_frac - 128, bat_amp_panel - 128, panel_watts, BM.FM80_online, cc_mode, C.data_ok,BM.node_id, ha_daq_calib.scaler4, \
 	ha_daq_calib.scaler5, ha_daq_calib.A200_Z, ha_daq_calib.A200_S
 
-    const char log_format2[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%6.4f,%6.4f,%6.4f,%6.4f,1957,~EOT                                                  \r\n";
+	const char log_format2[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%6.4f,%6.4f,%6.4f,%6.4f,1957,~EOT                                                  \r\n";
 #define LOG_VARS2	BMC4.d_id,((float) em.vl1n) / 10.0f,((float) em.vl2n) / 10.0f, ((float) em.vl3n) / 10.0f, ((float) em.al2) / 1000.0f, \
 	((float) em.wl3) / 10.0f, ((float) em.wsys) / 10.0f,  ((float) em.pfl1) / 10.0f, ((float) em.pfl2) / 10.0f,vw, vf, pvw, pvf, bat_amp_whole - 128, \
 	bat_amp_frac - 128, bat_amp_panel - 128, panel_watts, BM.FM80_online, cc_mode, C.data_ok,BM.node_id, ha_daq_calib.scaler4, \
 	ha_daq_calib.scaler5, ha_daq_calib.A200_Z, ha_daq_calib.A200_S
 
-    const char log_format3[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%7.4f,%7.4f,%6.4f,%7.4f,1957,~EOT                                                  \r\n";
+	const char log_format3[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%7.4f,%7.4f,%6.4f,%7.4f,1957,~EOT                                                  \r\n";
 #define LOG_VARS3	BMC4.d_id,((float) em.vl3l1) / 10.0f,((float) em.al1) / 1000.0f, ((float) em.wl1) / 10.0f, ((float) em.wl2) / 10.0f, \
 	((float) em.val1) / 10.0f, ((float) em.varl1) / 10.0f,  ((float) em.pfsys) / 10.0f, ((float) emt.hz) / 1000.0f,vw, vf, pvw, pvf, bat_amp_whole - 128, \
 	bat_amp_frac - 128, bat_amp_panel - 128, panel_watts, BM.FM80_online, cc_mode, C.data_ok,BM.node_id, ha_daq_calib.scaler4, \
 	ha_daq_calib.scaler5, ha_daq_calib.A200_Z, ha_daq_calib.A200_S
 
-    const char log_format4[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%7.4f,%7.4f,%6.4f,%7.4f,1957,~EOT                                                  \r\n";
+	const char log_format4[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%7.4f,%7.4f,%6.4f,%7.4f,1957,~EOT                                                  \r\n";
 #define LOG_VARS4	BMC4.d_id,((float) em.vl3l1) / 10.0f,((float) em.al1) / 1000.0f, ((float) em.wl1) / 10.0f, ((float) em.wl2) / 10.0f, \
 	((float) em.val1) / 10.0f, ((float) em.varl1) / 10.0f,  ((float) em.pfsys) / 10.0f, ((float) emt.hz) / 1000.0f,vw, vf, pvw, pvf, bat_amp_whole - 128, \
 	bat_amp_frac - 128, bat_amp_panel - 128, panel_watts, BM.FM80_online, cc_mode, C.data_ok,BM.node_id, ha_daq_calib.scaler4, \
 	ha_daq_calib.scaler5, ha_daq_calib.A200_Z, ha_daq_calib.A200_S
 
-    struct spi_link_type { // internal SPI state table
-        uint8_t SPI_LCD : 1;
-        uint8_t SPI_AUX : 1;
-        uint8_t LCD_TIMER : 1;
-        volatile uint8_t LCD_DATA : 1;
-        volatile uint8_t READ_DATA : 1;
-        uint16_t delay;
-        uint8_t config;
-        uint8_t * txbuf;
-        uint8_t * rxbuf;
-        volatile int32_t int_count, int_read, des_bytes, src_bytes, or_bytes;
-    };
+	struct spi_link_type { // internal SPI state table
+		uint8_t SPI_LCD : 1;
+		uint8_t SPI_AUX : 1;
+		uint8_t LCD_TIMER : 1;
+		volatile uint8_t LCD_DATA : 1;
+		volatile uint8_t READ_DATA : 1;
+		uint16_t delay;
+		uint8_t config;
+		uint8_t * txbuf;
+		uint8_t * rxbuf;
+		volatile int32_t int_count, int_read, des_bytes, src_bytes, or_bytes;
+	};
 
-    /*
-     * switch inputs and flags, uses the IOC interrupt and the software
-     * timing ISR for processing
-     */
-    enum D_SW {
-        D_SW_A = 0, // alternate LCD display
-        D_SW_L, // history logging from FM80
-        D_SW_M,
-        D_SW_COUNT // one extra for number of switches to check
-    };
+	/*
+	 * switch inputs and flags, uses the IOC interrupt and the software
+	 * timing ISR for processing
+	 */
+	enum D_SW {
+		D_SW_A = 0, // alternate LCD display
+		D_SW_L, // history logging from FM80
+		D_SW_M,
+		D_SW_COUNT // one extra for number of switches to check
+	};
 
-    typedef struct {
-        uint8_t type;
-        int16_t day;
-        int16_t amp_hours;
-        int16_t kilowatt_hours;
-        int16_t volts_peak;
-        int16_t amps_peak;
-        int16_t kilowatts_peak;
-        int16_t bat_min;
-        int16_t bat_max;
-        int16_t absorb_time;
-        int16_t float_time;
-        uint8_t select;
-    } mx_logpage_t;
+	typedef struct {
+		uint8_t type;
+		int16_t day;
+		int16_t amp_hours;
+		int16_t kilowatt_hours;
+		int16_t volts_peak;
+		int16_t amps_peak;
+		int16_t kilowatts_peak;
+		int16_t bat_min;
+		int16_t bat_max;
+		int16_t absorb_time;
+		int16_t float_time;
+		uint8_t select;
+	} mx_logpage_t;
 
-    typedef struct BM_type {
-        volatile bool ten_sec_flag, one_sec_flag, FM80_charged, pv_high, pv_update, once, a_switch[D_SW_COUNT], a_trigger[D_SW_COUNT], a_type[D_SW_COUNT];
-        volatile uint16_t pacing, rx_count, flush, pv_prev, day_check, dim_delay;
-        volatile bool FM80_online, FM80_io, LOG, display_dim, display_update, display_on, fm80_restart;
-        volatile uint8_t canbus_online, modbus_online, alt_display, a_pin[D_SW_COUNT];
-        float run_time, net_balance;
-        uint16_t mui[10];
-        uint16_t fwrev[3];
-        mx_logpage_t log;
-        volatile unsigned long long node_id;
-    } BM_type;
+	typedef struct BM_type {
+		volatile bool ten_sec_flag, one_sec_flag, FM80_charged, pv_high, pv_update, once, a_switch[D_SW_COUNT], a_trigger[D_SW_COUNT], a_type[D_SW_COUNT];
+		volatile uint16_t pacing, rx_count, flush, pv_prev, day_check, dim_delay;
+		volatile bool FM80_online, FM80_io, LOG, display_dim, display_update, display_on, fm80_restart;
+		volatile uint8_t canbus_online, modbus_online, alt_display, a_pin[D_SW_COUNT];
+		float run_time, net_balance;
+		uint16_t mui[10];
+		uint16_t fwrev[3];
+		mx_logpage_t log;
+		volatile unsigned long long node_id;
+	} BM_type;
 
-    typedef struct BF_type {
-        volatile bool ten_sec_flag, one_sec_flag, FM80_charged, pv_high, pv_update, once, a_switch[D_SW_COUNT], a_trigger[D_SW_COUNT], a_type[D_SW_COUNT];
-        volatile uint16_t pacing, rx_count, flush, pv_prev, day_check, node_id, dim_delay;
-        volatile bool FM80_online, FM80_io, LOG, display_dim, display_update, display_on, fm80_restart;
-        volatile uint8_t canbus_online, modbus_online, alt_display, a_pin[D_SW_COUNT];
-        float run_time, net_balance;
-        uint16_t mui[10];
-        uint16_t fwrev[3];
-        mx_logpage_t log;
-    } BF_type;
+	typedef struct BF_type {
+		volatile bool ten_sec_flag, one_sec_flag, FM80_charged, pv_high, pv_update, once, a_switch[D_SW_COUNT], a_trigger[D_SW_COUNT], a_type[D_SW_COUNT];
+		volatile uint16_t pacing, rx_count, flush, pv_prev, day_check, node_id, dim_delay;
+		volatile bool FM80_online, FM80_io, LOG, display_dim, display_update, display_on, fm80_restart;
+		volatile uint8_t canbus_online, modbus_online, alt_display, a_pin[D_SW_COUNT];
+		float run_time, net_balance;
+		uint16_t mui[10];
+		uint16_t fwrev[3];
+		mx_logpage_t log;
+	} BF_type;
 
-    typedef enum {
-        DIS_STR = 0,
-        DIS_TERM,
-        DIS_LOG,
-        DIS_LOAD,
-        DIS_UNLOAD,
-        DIS_PUMP,
-        DIS_HELP,
-        DIS_SEQUENCE,
-        DIS_SEQUENCE_M,
-        DIS_ERR,
-        DIS_FREE,
-        DIS_CLEAR,
-    } D_CODES;
+	typedef enum {
+		DIS_STR = 0,
+		DIS_TERM,
+		DIS_LOG,
+		DIS_LOAD,
+		DIS_UNLOAD,
+		DIS_PUMP,
+		DIS_HELP,
+		DIS_SEQUENCE,
+		DIS_SEQUENCE_M,
+		DIS_ERR,
+		DIS_FREE,
+		DIS_CLEAR,
+	} D_CODES;
 
-    typedef struct terminal_type {
-        uint8_t ack[32], mesgid;
-        uint8_t TID, mcode, mparm, cmdlen, log_seq;
-        uint8_t host_display_ack : 1;
-        D_CODES info, help_temp;
-        uint16_t ceid;
-        uint16_t log_num;
-    } terminal_type;
+	typedef struct terminal_type {
+		uint8_t ack[32], mesgid;
+		uint8_t TID, mcode, mparm, cmdlen, log_seq;
+		uint8_t host_display_ack : 1;
+		D_CODES info, help_temp;
+		uint16_t ceid;
+		uint16_t log_num;
+	} terminal_type;
 
-    typedef enum {
-        SEQ_STATE_INIT = 0,
-        SEQ_STATE_RX,
-        SEQ_STATE_TX,
-        SEQ_STATE_TRIGGER,
-        SEQ_STATE_QUEUE,
-        SEQ_STATE_DONE,
-        SEQ_STATE_ERROR
-    } SEQ_STATES;
+	typedef enum {
+		SEQ_STATE_INIT = 0,
+		SEQ_STATE_RX,
+		SEQ_STATE_TX,
+		SEQ_STATE_TRIGGER,
+		SEQ_STATE_QUEUE,
+		SEQ_STATE_DONE,
+		SEQ_STATE_ERROR
+	} SEQ_STATES;
 
-    typedef enum {
-        UI_STATE_INIT = 0,
-        UI_STATE_HOST,
-        UI_STATE_DEBUG,
-        UI_STATE_LOG,
-        UI_STATE_ERROR
-    } UI_STATES;
+	typedef enum {
+		UI_STATE_INIT = 0,
+		UI_STATE_HOST,
+		UI_STATE_DEBUG,
+		UI_STATE_LOG,
+		UI_STATE_ERROR
+	} UI_STATES;
 
-    typedef enum {
-        BMC_STATE_DISABLE = 0,
-        BMC_STATE_COMM,
-        BMC_STATE_OFFLINE,
-        BMC_STATE_ONLINE,
-        BMC_STATE_REMOTE,
-        BMC_STATE_ERROR
-    } BMC_STATES;
+	typedef enum {
+		BMC_STATE_DISABLE = 0,
+		BMC_STATE_COMM,
+		BMC_STATE_OFFLINE,
+		BMC_STATE_ONLINE,
+		BMC_STATE_REMOTE,
+		BMC_STATE_ERROR
+	} BMC_STATES;
 
-    extern const char * BMC_TEXT [];
+	extern const char * BMC_TEXT [];
 
-    typedef struct V_data { // control data structure
-        SEQ_STATES s_state;
-        UI_STATES ui_state;
-        char buf[MAX_BUF + 1], terminal[MAX_TERM + 1], info[MAX_INFO + 1];
-        volatile uint32_t ticks, systemb, tx_total, rx_total, bt_total, br_total, brn_total, btn_total, bmc_do, bmc_di;
-        volatile uint32_t utc_ticks;
-        int32_t testing;
-        uint8_t stream, function, error, abort, msg_error, msg_ret, alarm, event;
-        UI_STATES ui_sw;
-        uint16_t r_checksum, t_checksum, checksum_error, timer_error, ping, mode_pwm, equip_timeout, sequences, all_errors, ceid;
-        volatile uint16_t bmc_ao;
-        uint8_t rbit : 1, wbit : 1, ebit : 1, failed_send : 4, failed_receive : 4;
-        terminal_type response;
-        uint8_t uart, llid, sid, ping_count, euart, vterm, vterm_switch, uart_speed_fast;
-        volatile uint8_t ticker;
-        bool flipper, queue, debug, help, stack, help_id, rerror, speed_spin, set_sequ, log_s6f11, log_abort, log_char;
-        adc_result_t v_tx_line, v_rx_line;
-        int16_t tx_volts, rx_volts;
-        char tx_rs232, rx_rs232;
-        int16_t secs_value, cmd_value;
-        time_t utc_cmd_value,
-        di_fail, do_fail;
-    } V_data;
+	typedef struct V_data { // control data structure
+		SEQ_STATES s_state;
+		UI_STATES ui_state;
+		char buf[MAX_BUF + 1], terminal[MAX_TERM + 1], info[MAX_INFO + 1];
+		volatile uint32_t ticks, systemb, tx_total, rx_total, bt_total, br_total, brn_total, btn_total, bmc_do, bmc_di;
+		volatile uint32_t utc_ticks;
+		int32_t testing;
+		uint8_t stream, function, error, abort, msg_error, msg_ret, alarm, event;
+		UI_STATES ui_sw;
+		uint16_t r_checksum, t_checksum, checksum_error, timer_error, ping, mode_pwm, equip_timeout, sequences, all_errors, ceid;
+		volatile uint16_t bmc_ao;
+		uint8_t rbit : 1, wbit : 1, ebit : 1, failed_send : 4, failed_receive : 4;
+		terminal_type response;
+		uint8_t uart, llid, sid, ping_count, euart, vterm, vterm_switch, uart_speed_fast;
+		volatile uint8_t ticker;
+		bool flipper, queue, debug, help, stack, help_id, rerror, speed_spin, set_sequ, log_s6f11, log_abort, log_char;
+		adc_result_t v_tx_line, v_rx_line;
+		int16_t tx_volts, rx_volts;
+		char tx_rs232, rx_rs232;
+		int16_t secs_value, cmd_value;
+		time_t utc_cmd_value,
+		di_fail, do_fail;
+	} V_data;
 
-    typedef struct V_help {
-        const char message[MAX_HELP_STRLEN], display[MAX_HELP_STRLEN], extrams[MAX_HELP_STRLEN];
-    } V_help;
+	typedef struct V_help {
+		const char message[MAX_HELP_STRLEN], display[MAX_HELP_STRLEN], extrams[MAX_HELP_STRLEN];
+	} V_help;
 
-    extern char spinners(uint8_t, const uint8_t);
-    /* spinner defines */
+	extern char spinners(uint8_t, const uint8_t);
+	/* spinner defines */
 #define MAX_SHAPES  6
-    const char spin[MAX_SHAPES][MAX_STRLEN] = {
-        "||//--", // classic LCD version with no \ character
-        "||//--\\\\", // classic
-        "OOOOOO--__-", // eye blink
-        "vv<<^^>>", // point spinner
-        "..**x#x#XX||--", // warp portal
-        "..ooOOoo" // ball bouncer
-    };
+	const char spin[MAX_SHAPES][MAX_STRLEN] = {
+		"||//--", // classic LCD version with no \ character
+		"||//--\\\\", // classic
+		"OOOOOO--__-", // eye blink
+		"vv<<^^>>", // point spinner
+		"..**x#x#XX||--", // warp portal
+		"..ooOOoo" // ball bouncer
+	};
 #define SPIN_VAL_UPDATE	5
 
-    extern const char text_test[];
+	extern const char text_test[];
 
-    typedef uint16_t device_id_data_t;
-    typedef uint24_t device_id_address_t;
-    device_id_data_t DeviceID_Read(device_id_address_t);
+	typedef uint16_t device_id_data_t;
+	typedef uint24_t device_id_address_t;
+	device_id_data_t DeviceID_Read(device_id_address_t);
 
-    typedef struct EB_data {
-        uint8_t checkmark;
-        uint8_t version, alt_display;
-        bool loaded;
-        float FMw, FMpv, FMa, FMbv, ENw, ENva, ENvar, ENac;
-        float volt_whole, bat_amp_whole;
-        float bat_energy;
-        uint16_t cc_mode, bat_cycles, bat_mode, time, date;
-        uint32_t bat_time, fm80_time, q84_sequence;
-        uint16_t crc;
-    } EB_data;
+	typedef struct EB_data {
+		uint8_t checkmark;
+		uint8_t version, alt_display;
+		bool loaded;
+		float FMw, FMpv, FMa, FMbv, ENw, ENva, ENvar, ENac;
+		float volt_whole, bat_amp_whole;
+		float bat_energy;
+		uint16_t cc_mode, bat_cycles, bat_mode, time, date;
+		uint32_t bat_time, fm80_time, q84_sequence;
+		uint16_t crc;
+	} EB_data;
 
-    extern BM_type BM;
+	extern BM_type BM;
 
-    extern void UART1_Initialize19200(void);
-    extern void UART2_Initialize19200(void);
+	extern void UART1_Initialize19200(void);
+	extern void UART2_Initialize19200(void);
 
-    extern void UART1_Initialize115200(void);
-    extern void UART2_Initialize115200(void);
+	extern void UART1_Initialize115200(void);
+	extern void UART2_Initialize115200(void);
 
-    void update_time(const struct tm *, EB_data *);
+	void update_time(const struct tm *, EB_data *);
+	int16_t num_fract(const int16_t);
+	int16_t num_whole(const int16_t);
+
 
 #ifdef	__cplusplus
 }

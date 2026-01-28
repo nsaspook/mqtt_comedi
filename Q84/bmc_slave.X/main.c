@@ -1160,6 +1160,16 @@ static void volt_f(const uint16_t voltage)
 	volt_whole = voltage / 10;
 }
 
+int16_t num_fract(const int16_t num_10x)
+{
+	return num_10x % 10;
+}
+
+int16_t num_whole(const int16_t num_10x)
+{
+	return num_10x / 10;
+}
+
 void state_init_cb(void)
 {
 	float Soc;
