@@ -86,45 +86,55 @@ static const float bsoc_soc[BVSOC_SLOTS] = {
 
 struct ha_daq_hosts_type ha_daq_host = {
 	.hosts[0] = "10.1.1.30",
-	.hosts[1] = "10.1.1.39", // no HA server
+	.hosts[1] = "10.1.1.39", // no HA server comedi_usb,vmk80xx
 	.hosts[2] = "10.1.1.46", //
 	.hosts[3] = "10.1.1.45",
+	.hosts[4] = "10.1.1.40", // comedi_usb,vmk80xx rpi2B
 	.mqtt[0] = "10.1.1.30",
 	.mqtt[1] = "10.1.1.172", // no HA server
 	.mqtt[2] = "10.1.1.172", //
 	.mqtt[3] = "10.1.1.45",
+	.mqtt[4] = "10.1.1.40",
 	.topics[0] = "comedi/bmc/data/bmc/1",
 	.topics[1] = "comedi/bmc/data/bmc/2",
 	.topics[2] = "comedi/bmc/data/bmc/3",
 	.topics[3] = "comedi/bmc/data/bmc/4",
+	.topics[4] = "comedi/bmc/data/bmc/5",
 	.listen[0] = "comedi/bmc/listen/bmc/1",
 	.listen[1] = "comedi/bmc/listen/bmc/2",
 	.listen[2] = "comedi/bmc/listen/bmc/3",
 	.listen[3] = "comedi/bmc/listen/bmc/4",
+	.listen[4] = "comedi/bmc/listen/bmc/5",
 	.hname[0] = "RDAQ1",
 	.hname[1] = "RDAQ2",
 	.hname[2] = "RDAQ3",
 	.hname[3] = "RDAQ4",
+	.hname[4] = "RDAQ5",
 	.clients[0] = "Energy_Mqtt_BMC1",
 	.clients[1] = "Energy_Mqtt_BMC2",
 	.clients[2] = "Energy_Mqtt_BMC3",
 	.clients[3] = "Energy_Mqtt_BMC4",
+	.clients[4] = "Energy_Mqtt_BMC5",
 	.scalar[0] = HV_SCALE0,
 	.scalar[1] = HV_SCALE1,
 	.scalar[2] = HV_SCALE2,
 	.scalar[3] = HV_SCALE3,
+	.scalar[4] = HV_SCALE1,
 	.scalar4[0] = HV_SCALE4_0,
 	.scalar4[1] = HV_SCALE4_1,
 	.scalar4[2] = HV_SCALE4_2,
 	.scalar4[3] = HV_SCALE4_3,
+	.scalar4[4] = HV_SCALE4_1,
 	.scalar5[0] = HV_SCALE5_0,
 	.scalar5[1] = HV_SCALE5_1,
 	.scalar5[2] = HV_SCALE5_2,
 	.scalar5[3] = HV_SCALE5_3,
+	.scalar5[4] = HV_SCALE5_1,
 	.pacer[0] = UPDATE_PACER, // opiha
 	.pacer[1] = UPDATE_PACER, // daq1
 	.pacer[2] = UPDATE_PACER, // daq2
 	.pacer[3] = UPDATE_PACER,
+	.pacer[4] = UPDATE_PACER,
 	.hindex = 0,
 	.bindex = 0,
 	.calib.checkmark = CHECKMARK,
@@ -156,6 +166,13 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.scalar5[3] = HV_SCALE5_3,
 	.calib.A200_Z[3] = A200_0_ZERO,
 	.calib.A200_S[3] = A200_0_SCALAR,
+	.calib.bmc_id[4] = 1, // K8055 (VM110) modified for two HV inputs
+	.calib.offset4[4] = HV_SCALE_OFFSET,
+	.calib.scalar4[4] = HV_SCALE4_1,
+	.calib.offset5[4] = HV_SCALE_OFFSET,
+	.calib.scalar5[4] = HV_SCALE5_1,
+	.calib.A200_Z[4] = A200_0_ZERO,
+	.calib.A200_S[4] = A200_0_SCALAR,
 };
 
 static double ac0_filter(const double);
@@ -205,6 +222,12 @@ void showIP(void)
 			}
 			if (strcmp(host, &ha_daq_host.hosts[3][0]) == 0) {
 				ha_daq_host.hindex = 3;
+			}
+			if (strcmp(host, &ha_daq_host.hosts[4][0]) == 0) {
+				ha_daq_host.hindex = 4;
+			}
+			if (strcmp(host, &ha_daq_host.hosts[5][0]) == 0) {
+				ha_daq_host.hindex = 5;
 			}
 			ha_daq_host.bindex = ha_daq_host.hindex;
 		}

@@ -26,7 +26,8 @@ extern "C" {
 		double BENERGYV, BVOLTAGEV, PVENERGYV, PVVOLTAGEV, SOC_MODEV;
 	};
 
-#define BMC_MAXHOST      1025
+#define HOST_SLOTS	6	//BMC host data slots
+#define BMC_MAXHOST      1025	// hosts buffer size
 #define BENERGY_INTEGRAL 1440.0f
 #define MQTT_RETRY 10
 
@@ -118,25 +119,25 @@ extern "C" {
 		uint16_t checkmark;
 		bool newfile;
 		bool oldfile, fileok;
-		uint64_t bmc_id[4];
-		double offset4[4];
-		double scalar4[4];
-		double offset5[4];
-		double scalar5[4];
-		double A200_Z[4];
-		double A200_S[4];
+		uint64_t bmc_id[HOST_SLOTS];
+		double offset4[HOST_SLOTS];
+		double scalar4[HOST_SLOTS];
+		double offset5[HOST_SLOTS];
+		double scalar5[HOST_SLOTS];
+		double A200_Z[HOST_SLOTS];
+		double A200_S[HOST_SLOTS];
 	};
 
 	struct ha_daq_hosts_type {
-		const char hosts[4][BMC_MAXHOST];
-		const char mqtt[4][BMC_MAXHOST];
-		const char clients[4][BMC_MAXHOST];
-		const char topics[4][BMC_MAXHOST];
-		const char listen[4][BMC_MAXHOST];
-		char hname[4][BMC_MAXHOST];
-		double scalar[4], scalar4[4], scalar5[4];
+		const char hosts[HOST_SLOTS][BMC_MAXHOST];
+		const char mqtt[HOST_SLOTS][BMC_MAXHOST];
+		const char clients[HOST_SLOTS][BMC_MAXHOST];
+		const char topics[HOST_SLOTS][BMC_MAXHOST];
+		const char listen[HOST_SLOTS][BMC_MAXHOST];
+		char hname[HOST_SLOTS][BMC_MAXHOST];
+		double scalar[HOST_SLOTS], scalar4[HOST_SLOTS], scalar5[HOST_SLOTS];
 		uint8_t hindex, bindex;
-		uint32_t pacer[4];
+		uint32_t pacer[HOST_SLOTS];
 		struct ha_daq_calib_type calib;
 	};
 

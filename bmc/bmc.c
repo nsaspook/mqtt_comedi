@@ -258,7 +258,11 @@ int main(int argc, char *argv[])
 				led_lightshow(10);
 #endif
 			} else {
-				led_lightshow(10);
+				if (ha_daq_host.hindex == 4) {
+					led_lightshow(2);
+				} else {
+					led_lightshow(10);
+				}
 			}
 
 			if (ha_flag_vars_ss.runner) { // timer or trigger from mqtt
