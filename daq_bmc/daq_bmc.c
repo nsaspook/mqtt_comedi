@@ -82,8 +82,10 @@ ports [4..7] are data-streams for connected device data
 #include <linux/list.h>
 #include <linux/completion.h>
 
-#define bmc_version "version 1.00 "
-#define spibmc_version "version 1.4 "
+#define bmc_version "version 1.20 "
+#define spibmc_version "version 1.5 "
+
+#define RPI2B
 
 static const uint32_t CHECKMARK = 0x1957;
 static const uint32_t CHECKBYTE = 0x57;
@@ -122,6 +124,10 @@ static LIST_HEAD(device_list);
 
 /* Driver board type default */
 static const uint32_t BMCBOARD = 0;
+
+/* Driver board controller type */
+static const bool FORCE_47Q84 = false;
+static const bool FORCE_57Q84_ALL = true;
 
 /* analog chip types  index to daqbmc_device array */
 static const uint32_t PICSL12 = 0; // index into chip config array
@@ -168,7 +174,12 @@ static const struct spi_delay CS_CHANGE_DELAY_USECS10 = {
 /*
  * This selects the chip select, not the interface number like spi0, spi1
  */
+#ifdef RPI2B
+static const uint32_t CSnA = 0; /*  BMCboard Q84 slave CS, spi0 on the RPi */
+static const uint32_t CSnB = 1; /*  BMCboard Q84 slave CS, spi0 on the RPi */
+#else
 static const uint32_t CSnA = 1; /*  BMCboard Q84 slave CS, spi1 on the OPi */
+#endif
 
 /*
  * PIC Slave commands
@@ -493,6 +504,8 @@ static void daqbmc_ao_put_samples(struct comedi_device *,
 	struct comedi_subdevice *,
 	uint16_t *);
 static int32_t bmc_spi_exchange(struct comedi_device *, struct bmc_packet_type *);
+static int32_t bmc_spi_packet(struct spi_device *, struct bmc_packet_type *, ktime_t);
+static int32_t daqbmc_bmc_get_config(struct comedi_device *);
 
 /*
  * piBoardRev:
@@ -511,6 +524,36 @@ static int32_t piBoardRev(struct comedi_device *dev)
 	//	dev_info(dev->class_dev, "board SID 0X%X\n", *efuse);
 	bmc_rev = boardRev;
 	return boardRev;
+}
+
+static int32_t bmc_spi_packet(struct spi_device *spi, struct bmc_packet_type * packet, ktime_t slower)
+{
+	int32_t ret = 0;
+
+	if (spi == NULL) {
+		ret = -ESHUTDOWN;
+		return ret;
+	}
+
+	spi_message_init_with_transfers(packet->m, &packet->one_t, 1); //one transfer per message
+#ifdef RPI2B
+	spi_bus_lock(spi->controller);
+#else
+	spi_bus_lock(spi->master);
+#endif
+	ret = spi_sync_locked(spi, packet->m);
+#ifdef RPI2B
+	spi_bus_unlock(spi->controller);
+#else
+	spi_bus_unlock(spi->master);
+#endif
+	if (ret == 0) {
+		ret = packet->m->actual_length;
+	}
+	__set_current_state(TASK_UNINTERRUPTIBLE);
+	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
+
+	return ret;
 }
 
 /*
@@ -542,15 +585,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_CMD];
 	packet->one_t.cs_change = false;
 	packet->one_t.len = 1;
-	spi_message_init_with_transfers(packet->m, &packet->one_t, 1); //one transfer per message
-	spi_bus_lock(spi->master);
-	ret = spi_sync_locked(spi, packet->m);
-	spi_bus_unlock(spi->master);
-	if (ret == 0) {
-		ret = packet->m->actual_length;
-	}
-	__set_current_state(TASK_UNINTERRUPTIBLE);
-	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
+	ret = bmc_spi_packet(spi, packet, slower);
 
 	/*
 	 * send the data
@@ -559,57 +594,31 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D0];
 	packet->one_t.cs_change = false;
 	packet->one_t.len = 1;
-	spi_message_init_with_transfers(packet->m, &packet->one_t, 1); //one transfer per message
-	spi_bus_lock(spi->master);
-	spi_sync_locked(spi, packet->m);
-	spi_bus_unlock(spi->master);
-	slower = SPI_GAP;
-	__set_current_state(TASK_UNINTERRUPTIBLE);
-	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
+	ret = bmc_spi_packet(spi, packet, slower);
 
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D1];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D1];
 	packet->one_t.cs_change = false;
 	packet->one_t.len = 1;
-	spi_message_init_with_transfers(packet->m, &packet->one_t, 1); //one transfer per message
-	spi_bus_lock(spi->master);
-	spi_sync_locked(spi, packet->m);
-	spi_bus_unlock(spi->master);
-	__set_current_state(TASK_UNINTERRUPTIBLE);
-	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
+	ret = bmc_spi_packet(spi, packet, slower);
 
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D2];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D2];
 	packet->one_t.cs_change = false;
 	packet->one_t.len = 1;
-	spi_message_init_with_transfers(packet->m, &packet->one_t, 1); //one transfer per message
-	spi_bus_lock(spi->master);
-	spi_sync_locked(spi, packet->m);
-	spi_bus_unlock(spi->master);
-	__set_current_state(TASK_UNINTERRUPTIBLE);
-	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
+	ret = bmc_spi_packet(spi, packet, slower);
 
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D3];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D3];
 	packet->one_t.cs_change = false;
 	packet->one_t.len = 1;
-	spi_message_init_with_transfers(packet->m, &packet->one_t, 1); //one transfer per message
-	spi_bus_lock(spi->master);
-	spi_sync_locked(spi, packet->m);
-	spi_bus_unlock(spi->master);
-	__set_current_state(TASK_UNINTERRUPTIBLE);
-	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
+	ret = bmc_spi_packet(spi, packet, slower);
 
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D4];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D4];
 	packet->one_t.cs_change = false;
 	packet->one_t.len = 1;
-	spi_message_init_with_transfers(packet->m, &packet->one_t, 1); //one transfer per message
-	spi_bus_lock(spi->master);
-	spi_sync_locked(spi, packet->m);
-	spi_bus_unlock(spi->master);
-	__set_current_state(TASK_UNINTERRUPTIBLE);
-	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
+	ret = bmc_spi_packet(spi, packet, slower);
 
 	/*
 	 * extended channel data
@@ -618,12 +627,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_EXT];
 	packet->one_t.cs_change = false;
 	packet->one_t.len = 1;
-	spi_message_init_with_transfers(packet->m, &packet->one_t, 1); //one transfer per message
-	spi_bus_lock(spi->master);
-	spi_sync_locked(spi, packet->m);
-	spi_bus_unlock(spi->master);
-	__set_current_state(TASK_UNINTERRUPTIBLE);
-	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
+	ret = bmc_spi_packet(spi, packet, slower);
 	/*
 	 * packet [0..6] 8-bit added checksum
 	 */
@@ -631,12 +635,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_CKSUM];
 	packet->one_t.cs_change = false;
 	packet->one_t.len = 1;
-	spi_message_init_with_transfers(packet->m, &packet->one_t, 1); //one transfer per message
-	spi_bus_lock(spi->master);
-	spi_sync_locked(spi, packet->m);
-	spi_bus_unlock(spi->master);
-	__set_current_state(TASK_UNINTERRUPTIBLE);
-	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
+	ret = bmc_spi_packet(spi, packet, slower);
 
 	/*
 	 * dummy byte to transfer last byte of data
@@ -645,12 +644,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_DUMMY];
 	packet->one_t.cs_change = false;
 	packet->one_t.len = 1;
-	spi_message_init_with_transfers(packet->m, &packet->one_t, 1); //one transfer per message
-	spi_bus_lock(spi->master);
-	spi_sync_locked(spi, packet->m);
-	spi_bus_unlock(spi->master);
-	__set_current_state(TASK_UNINTERRUPTIBLE);
-	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
+	ret = bmc_spi_packet(spi, packet, slower);
 
 	return ret;
 }
@@ -1626,7 +1620,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		 * probe/init hardware for special cases that may need
 		 * many SPI transfers
 		 */
-		if (pdata->slave.spi->chip_select == thisboard->ai_cs) {
+		if (*pdata->slave.spi->chip_select == thisboard->ai_cs) {
 			devpriv->ai_spi = &pdata->slave;
 			devpriv->ao_spi = &pdata->slave;
 			pdata->one_t.tx_buf = pdata->tx_buff;
@@ -1769,9 +1763,14 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	 * Probe the BMCboard existence and for configuration data
 	 */
 	ret = daqbmc_bmc_get_config(dev);
-        if (ret == 0xff) {
-            ret = daqbmc_bmc_get_config(dev);
-        }
+
+	if (FORCE_57Q84_ALL) {
+		ret = 0x00;
+	}
+
+	if (ret == 0xff) {
+		ret = daqbmc_bmc_get_config(dev);
+	}
 
 	if (ret == 0xff) { // no SPI comms with daq_bmc board
 		dev_err(dev->class_dev,
@@ -1783,7 +1782,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	if (ret == CHECKBYTE) { // bad ID from daq_bmc board
 		dev_err(dev->class_dev,
 			"BMCBoard CPU not detected 0X%X, force board ID 0x00 \n", ret);
-		ret=0x00;
+		ret = 0x00;
 	}
 
 	dev_info(dev->class_dev,
@@ -1802,7 +1801,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			"BMCBoard Digital DI DO Disabled, controller device %s \n", daqbmc_devices[daqbmc_conf].name);
 	}
 
-	if ((ret & 0x4) == 0x04) { // 47Q84 processor
+	if ((ret & 0x4) == 0x04 || FORCE_47Q84) { // 47Q84 processor
 		daqbmc_cpu = PICSL12_47;
 		dev_info(dev->class_dev, "PIC18F47Q84 DAQ device setup complete\n");
 	} else {
@@ -1945,16 +1944,47 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 	 * Do only one chip select for the BMCboard
 	 */
 	dev_info(&spi->dev,
-		"BMCboard default: do_conf=%d, di_conf=%d, daqbmc_conf=%d\n",
-		do_conf, di_conf, daqbmc_conf);
+		"BMCboard default: do_conf=%d, di_conf=%d, daqbmc_conf=%d, chip select %d\n",
+		do_conf, di_conf, daqbmc_conf, (uint32_t) * spi->chip_select);
 
-	if (spi->chip_select == CSnA) {
+	if ((uint32_t) * spi->chip_select == CSnA) {
 		/*
 		 * get a copy of the slave device 0 to share with Comedi
 		 * we need a device to talk to the Q84
 		 *
 		 * create entry into the Comedi device list
 		 */
+
+		dev_info(&spi->dev,
+			"SPI device match: spi->chip_select == CSnA %d\n",
+			(uint32_t) * spi->chip_select);
+
+		INIT_LIST_HEAD(&pdata->device_entry);
+		pdata->slave.spi = spi;
+		/*
+		 * put entry into the Comedi device list
+		 */
+		list_add_tail(&pdata->device_entry, &device_list);
+		spi->mode = daqbmc_devices[daqbmc_conf].spi_mode;
+		spi->max_speed_hz = daqbmc_devices[daqbmc_conf].max_speed_hz;
+		spi->word_delay = CS_CHANGE_DELAY_USECS0;
+		spi->cs_setup = CS_CHANGE_DELAY_USECS0;
+		spi->cs_hold = CS_CHANGE_DELAY_USECS0;
+		spi->cs_inactive = CS_CHANGE_DELAY_USECS0;
+	}
+
+	if ((uint32_t) * spi->chip_select == CSnB) {
+		/*
+		 * get a copy of the slave device 0 to share with Comedi
+		 * we need a device to talk to the Q84
+		 *
+		 * create entry into the Comedi device list
+		 */
+
+		dev_info(&spi->dev,
+			"SPI device match: spi->chip_select == CSnB %d\n",
+			(uint32_t) * spi->chip_select);
+
 		INIT_LIST_HEAD(&pdata->device_entry);
 		pdata->slave.spi = spi;
 		/*
@@ -1973,15 +2003,20 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 	spi_setup(spi);
 
 	/* setup Comedi part of driver */
-	if (spi->chip_select == CSnA) {
+	if ((uint32_t) * spi->chip_select == CSnA) {
 		ret = comedi_driver_register(&daqbmc_driver);
 		if (ret < 0) {
 			goto kfree_rx_exit;
 		}
 
 		if (bmc_autoload) {
+#ifdef RPI2B
+			ret = comedi_auto_config(&spi->controller->dev,
+				&daqbmc_driver, 0);
+#else
 			ret = comedi_auto_config(&spi->master->dev,
 				&daqbmc_driver, 0);
+#endif
 		}
 
 		if (ret < 0) {
@@ -2022,8 +2057,28 @@ static int spibmc_spi_remove(struct spi_device * spi)
 	return 0;
 }
 
+static const struct class spibmc_class = {
+	.name = "spibmc",
+};
+
 static const struct spi_device_id spibmc_spi_ids[] = {
-	{ .name = "spi-bmc"},
+#ifdef RPI2B
+	{ .name = "bh2228fv"},
+	{ .name = "dh2228fv"},
+	{ .name = "jg10309-01"},
+	{ .name = "ltc2488"},
+	{ .name = "sx1301"},
+	{ .name = "bk4"},
+	{ .name = "dhcom-board"},
+	{ .name = "m53cpld"},
+	{ .name = "spi-petra"},
+	{ .name = "spi-authenta"},
+	{ .name = "em3581"},
+	{ .name = "si3210"},
+	{ .name = "spibmc"},
+	{},
+#else
+	{ .name = "spibmc"},
 	{ .name = "dh2228fv"},
 	{ .name = "ltc2488"},
 	{ .name = "sx1301"},
@@ -2033,6 +2088,7 @@ static const struct spi_device_id spibmc_spi_ids[] = {
 	{ .name = "spi-petra"},
 	{ .name = "spi-authenta"},
 	{},
+#endif
 };
 MODULE_DEVICE_TABLE(spi, spibmc_spi_ids);
 
@@ -2042,7 +2098,7 @@ MODULE_DEVICE_TABLE(spi, spibmc_spi_ids);
  */
 static int spibmc_of_check(struct device *dev)
 {
-	if (device_property_match_string(dev, "compatible", "spi-bmc") < 0) {
+	if (device_property_match_string(dev, "compatible", "spibmc") < 0) {
 		return 0;
 	}
 
@@ -2052,7 +2108,22 @@ static int spibmc_of_check(struct device *dev)
 }
 
 static const struct of_device_id spibmc_dt_ids[] = {
-	{ .compatible = "orangepi,spi-bmc", .data = &spibmc_of_check},
+#ifdef RPI2B
+	{ .compatible = "cisco,spi-petra", .data = &spibmc_of_check},
+	{ .compatible = "dh,dhcom-board", .data = &spibmc_of_check},
+	{ .compatible = "elgin,jg10309-01", .data = &spibmc_of_check},
+	{ .compatible = "lineartechnology,ltc2488", .data = &spibmc_of_check},
+	{ .compatible = "lwn,bk4", .data = &spibmc_of_check},
+	{ .compatible = "menlo,m53cpld", .data = &spibmc_of_check},
+	{ .compatible = "micron,spi-authenta", .data = &spibmc_of_check},
+	{ .compatible = "rohm,bh2228fv", .data = &spibmc_of_check},
+	{ .compatible = "rohm,dh2228fv", .data = &spibmc_of_check},
+	{ .compatible = "semtech,sx1301", .data = &spibmc_of_check},
+	{ .compatible = "silabs,em3581", .data = &spibmc_of_check},
+	{ .compatible = "silabs,si3210", .data = &spibmc_of_check},
+	{},
+#else
+	{ .compatible = "orangepi,spibmc", .data = &spibmc_of_check},
 	{ .compatible = "rohm,dh2228fv", .data = &spibmc_of_check},
 	{ .compatible = "lineartechnology,ltc2488", .data = &spibmc_of_check},
 	{ .compatible = "semtech,sx1301", .data = &spibmc_of_check},
@@ -2062,6 +2133,7 @@ static const struct of_device_id spibmc_dt_ids[] = {
 	{ .compatible = "cisco,spi-petra", .data = &spibmc_of_check},
 	{ .compatible = "micron,spi-authenta", .data = &spibmc_of_check},
 	{},
+#endif
 };
 MODULE_DEVICE_TABLE(of, spibmc_dt_ids);
 
@@ -2157,7 +2229,7 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	dev_info(dev->class_dev,
 		"BMCboard SPI setup: spi cs %d: %d Hz: mode 0x%x: "
 		"probing for controller device %s\n",
-		spi_adc->spi->chip_select,
+		(int) *spi_adc->spi->chip_select,
 		spi_adc->spi->max_speed_hz,
 		spi_adc->spi->mode,
 		spi_adc->device_spi->name);
@@ -2187,15 +2259,19 @@ static void __exit daqbmc_exit(void)
 		slave_spi = &pdata->slave;
 	}
 
+#ifdef RPI2B
+	comedi_auto_unconfig(&slave_spi->spi->controller->dev);
+#else
 	comedi_auto_unconfig(&slave_spi->spi->master->dev);
+#endif
 	comedi_driver_unregister(&daqbmc_driver);
 	spi_unregister_driver(&spibmc_spi_driver);
 }
 module_exit(daqbmc_exit);
 
 MODULE_AUTHOR("NSASPOOK <nsaspooksma2@gmail.com");
-MODULE_DESCRIPTION("OPi DI/DO/AI/AO SPI Driver");
-MODULE_VERSION("6.1.31");
+MODULE_DESCRIPTION("RPI/OPI DI/DO/AI/AO SPI Driver");
+MODULE_VERSION("6.12.62");
 MODULE_LICENSE("GPL");
 MODULE_ALIAS("spi:spibmc");
 
