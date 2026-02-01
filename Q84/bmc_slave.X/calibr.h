@@ -29,6 +29,8 @@ extern "C" {
 	static const float HV_SCALE5_3 = 55.6500f;
 	static const float HV_SCALE4_4 = 64.3590f;
 	static const float HV_SCALE5_4 = 64.3850f;
+	static const float HV_SCALE4_5 = 64.3590f;
+	static const float HV_SCALE5_5 = 64.3800f;
 
 	static const float A200_0_ZERO = 2.5216f; // Battery sensor zero ADC value
 	static const float A200_0_SCALAR = 133.05f; // Battery Amp scalar to +- 200A

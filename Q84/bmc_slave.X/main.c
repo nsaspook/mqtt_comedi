@@ -327,12 +327,13 @@ enum state_type {
 static uint16_t abuf[FM_BUFFER], cbuf[FM_BUFFER + 2];
 volatile enum state_type state = state_init;
 volatile uint16_t cc_mode = STATUS_LAST, mx_code = 0x00;
-volatile char buffer[MAX_B_BUF], log_buffer[MAX_B_BUF];
+volatile char buffer[MAX_B_BUF], log_buffer[MAX_B_BUF], boot_char = ' ';
 volatile struct bmc_buffer_type BMC4 = {
 	.log_buffer = log_buffer,
 	.buffer = buffer,
 	.d_id = DC1_CMD,
 };
+volatile bool timeout = false;
 
 struct tm *bmc_newtime;
 
@@ -369,11 +370,16 @@ void main(void)
 #endif
 	SPI2STATUSbits.SPI2CLRBF;
 
+	if (STATUSbits.TO == 0) {
+		timeout = true;
+		boot_char = '!';
+	}
+
 	// Initialize the device
 	SYSTEM_Initialize();
 
 	PIE1bits.ADIE = 0; // lock ADC interrupts off
-	SPI_OPI();
+	SPI2_PI();
 	// Enable high priority global interrupts
 	INTERRUPT_GlobalInterruptHighEnable();
 
@@ -567,17 +573,21 @@ void main(void)
 			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "Port %s             ", speed_text);
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "Port %s             ", speed_text);
 			refresh_lcd();
-			WaitMs(LDELAY);
+			if (timeout) {
+				WaitMs(WLDELAY);
+			} else {
+				WaitMs(LDELAY);
+			}
 
 			SPI_TIC12400();
 			tic12400_reset();
-			if (!tic12400_init()) {
+			if (!tic12400_init() && IO_FAIL) {
 				V.di_fail = true;
 				failure = true;
 				spi_stat_ss.daq_conf |= 0x01; // fail DI
 			};
 			SPI_MC33996();
-			if (!mc33996_init()) {
+			if (!mc33996_init() && IO_FAIL) {
 				V.do_fail = true;
 				failure = true;
 				spi_stat_ss.daq_conf |= 0x02; // fail DO
@@ -589,16 +599,16 @@ void main(void)
 			srand(1957);
 			set_vterm(V.vterm); // set to buffer 0
 			snprintf(V.info, MAX_INFO, " Terminal Info               ");
-			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, " OPI DAQ_BMC %s        ", VER);
+			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, " %cPI DAQ_BMC %s        ", boot_char, VER);
+			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " %llX Run Display %d             ", spi_stat_ss.mui, spi_stat_ss.daq_conf);
+
 #ifdef DIS_DEBUG
 			if (V.di_fail) {
-				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " TIC %ld 0x%lX 0x%lX         ", tic12400_fail_value, tic12400_id & 0xffff, tic12400_read_status);
+				snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, " TIC %ld 0x%lX 0x%lX         ", tic12400_fail_value, tic12400_id & 0xffff, tic12400_read_status);
 			}
 			if (V.do_fail) {
 				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " MC 0x%X 0x%X 0x%X         ", mc_init.cmd[3], mc_init.cmd[4], mc_init.cmd[5]);
 			}
-#else
-			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " %llX Run Display             ", spi_stat_ss.mui);
 #endif
 			if (failure) {
 				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " %s Analog Dev        ", (spi_stat_ss.deviceid == F57Q84) ? "57Q84" : "47Q84");

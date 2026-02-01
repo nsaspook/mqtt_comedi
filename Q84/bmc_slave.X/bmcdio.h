@@ -28,7 +28,7 @@ extern "C" {
 	void SPI_EADOG(void);
 	void SPI_TIC12400(void);
 	void SPI_MC33996(void);
-	void SPI_OPI(void);
+	void SPI2_PI(void);
 
 #ifdef	__cplusplus
 }

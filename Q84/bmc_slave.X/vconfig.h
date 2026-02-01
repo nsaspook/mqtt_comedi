@@ -22,8 +22,9 @@ extern "C" {
 
 #define NHD		// SPI 20X4 display, nhd-0420d3z-nsw-bbw
 
-	//	#define DIS_DEBUG	// active status display, disable during normal operation
+//#define DIS_DEBUG	// active status display, disable during normal operation
 	// #define SHOW_DAC
+#define IO_FAIL	true
 
 #define VER	"V0.51"
 	/** \file vconfig.h
@@ -123,6 +124,7 @@ extern "C" {
 	static const uint16_t TDELAY = 3000;
 	static const uint16_t SEQDELAY = 10000;
 	static const uint16_t LDELAY = 100;
+	static const uint16_t WLDELAY = 1500;
 	static const uint16_t SDELAY = 100;
 	static const uint16_t DDELAY = 500; // display update spacing
 	static const uint16_t DFLIP = 1500; // display info flipping spacing

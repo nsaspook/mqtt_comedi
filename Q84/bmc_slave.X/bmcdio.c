@@ -87,6 +87,6 @@ void SPI_MC33996(void)
 /*
  * SPI2
  */
-void SPI_OPI(void)
+void SPI2_PI(void)
 {
 }

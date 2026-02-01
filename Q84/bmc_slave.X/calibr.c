@@ -30,6 +30,10 @@ void set_calibration(unsigned long long mui)
 		ha_daq_calib.scaler4 = HV_SCALE4_4;
 		ha_daq_calib.scaler5 = HV_SCALE5_4;
 		break;
+	case 0x61DB5:
+		ha_daq_calib.scaler4 = HV_SCALE4_5;
+		ha_daq_calib.scaler5 = HV_SCALE5_5;
+		break;
 	default:
 		ha_daq_calib.scaler4 = HV_SCALAR4;
 		ha_daq_calib.scaler5 = HV_SCALAR5;
