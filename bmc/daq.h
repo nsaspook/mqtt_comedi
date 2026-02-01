@@ -37,8 +37,7 @@ extern "C" {
 #define HV_SCALE1               74.4f
 #define HV_SCALE2               74.4f
 #define HV_SCALE3               83.6f
-#define HV_SCALE4               64.1890f
-#define HV_SCALE5               64.1415f
+#define HV_SCALE4               83.6f
 #define HV_SCALE4_0             64.2600f
 #define HV_SCALE5_0             64.2600f
 #define HV_SCALE4_1             64.1890f
@@ -47,6 +46,8 @@ extern "C" {
 #define HV_SCALE5_2             54.1415f
 #define HV_SCALE4_3             64.1890f
 #define HV_SCALE5_3             64.1415f
+#define HV_SCALE4_4             64.2600f
+#define HV_SCALE5_4             64.2600f
 #define HV_SCALE_RAW            4.096f
 #define HV_SCALE_OFFSET         0.0f
 
@@ -79,6 +80,7 @@ extern "C" {
 		B_2 = 0x04,
 		B_3 = 0x08,
 		B_15 = 0x8000,
+		B_16 = 0x208040,
 	} B_CODES;
 
 	typedef enum { // need to keep all ADC channels in the 4-bit 0x0f range

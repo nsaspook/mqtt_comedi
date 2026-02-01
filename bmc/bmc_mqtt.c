@@ -85,16 +85,16 @@ static const float bsoc_soc[BVSOC_SLOTS] = {
 }; // Battery SoC guess
 
 struct ha_daq_hosts_type ha_daq_host = {
-	.hosts[0] = "10.1.1.30",
+	.hosts[0] = "10.1.1.30", // HA server and full devices
 	.hosts[1] = "10.1.1.39", // no HA server comedi_usb,vmk80xx
-	.hosts[2] = "10.1.1.46", //
-	.hosts[3] = "10.1.1.45",
-	.hosts[4] = "10.1.1.40", // comedi_usb,vmk80xx rpi2B
+	.hosts[2] = "10.1.1.46", // no HA server
+	.hosts[3] = "10.1.1.45", // HA server and full devices
+	.hosts[4] = "10.1.1.40", // no HA server, rpi2B testing system
 	.mqtt[0] = "10.1.1.30",
 	.mqtt[1] = "10.1.1.172", // no HA server
-	.mqtt[2] = "10.1.1.172", //
+	.mqtt[2] = "10.1.1.172", // no HA server
 	.mqtt[3] = "10.1.1.45",
-	.mqtt[4] = "10.1.1.40",
+	.mqtt[4] = "10.1.1.40", // no HA server, has internal mqtt server
 	.topics[0] = "comedi/bmc/data/bmc/1",
 	.topics[1] = "comedi/bmc/data/bmc/2",
 	.topics[2] = "comedi/bmc/data/bmc/3",
@@ -119,17 +119,17 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.scalar[1] = HV_SCALE1,
 	.scalar[2] = HV_SCALE2,
 	.scalar[3] = HV_SCALE3,
-	.scalar[4] = HV_SCALE1,
+	.scalar[4] = HV_SCALE4,
 	.scalar4[0] = HV_SCALE4_0,
 	.scalar4[1] = HV_SCALE4_1,
 	.scalar4[2] = HV_SCALE4_2,
 	.scalar4[3] = HV_SCALE4_3,
-	.scalar4[4] = HV_SCALE4_1,
+	.scalar4[4] = HV_SCALE4_4,
 	.scalar5[0] = HV_SCALE5_0,
 	.scalar5[1] = HV_SCALE5_1,
 	.scalar5[2] = HV_SCALE5_2,
 	.scalar5[3] = HV_SCALE5_3,
-	.scalar5[4] = HV_SCALE5_1,
+	.scalar5[4] = HV_SCALE5_4,
 	.pacer[0] = UPDATE_PACER, // opiha
 	.pacer[1] = UPDATE_PACER, // daq1
 	.pacer[2] = UPDATE_PACER, // daq2
@@ -138,7 +138,7 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.hindex = 0,
 	.bindex = 0,
 	.calib.checkmark = CHECKMARK,
-	.calib.bmc_id[0] = 0x589B6, // bmc Q84 MUI testing board
+	.calib.bmc_id[0] = 0x589B6, // bmc Q84 MUI online system board
 	.calib.offset4[0] = HV_SCALE_OFFSET,
 	.calib.scalar4[0] = HV_SCALE4_0,
 	.calib.offset5[0] = HV_SCALE_OFFSET,
@@ -166,11 +166,11 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.scalar5[3] = HV_SCALE5_3,
 	.calib.A200_Z[3] = A200_0_ZERO,
 	.calib.A200_S[3] = A200_0_SCALAR,
-	.calib.bmc_id[4] = 1, // K8055 (VM110) modified for two HV inputs
+	.calib.bmc_id[4] = 0x61DB5, // 57Q84 BMC testing board
 	.calib.offset4[4] = HV_SCALE_OFFSET,
-	.calib.scalar4[4] = HV_SCALE4_1,
+	.calib.scalar4[4] = HV_SCALE4_0,
 	.calib.offset5[4] = HV_SCALE_OFFSET,
-	.calib.scalar5[4] = HV_SCALE5_1,
+	.calib.scalar5[4] = HV_SCALE5_0,
 	.calib.A200_Z[4] = A200_0_ZERO,
 	.calib.A200_S[4] = A200_0_SCALAR,
 };
@@ -545,7 +545,7 @@ null_exit:
 }
 
 /*
- * send Comedi variables MQTT host
+ * send Comedi variables to MQTT host
  */
 void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 {
@@ -741,11 +741,11 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		}
 
 		if (ok_data) {
-			fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, goods %d, bads %d, d_id %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, goods, bads, R.d_id);
+			fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, goods %d, bads %d, d_id %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, goods, bads, R.d_id);
 		} else {
 			if ((bmc.BOARD == bmcboard) && SERIAL_OPEN) {
 				bads++;
-				fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, bads %d, validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, tmp_test_ptr, ok_data, bads, validate_failure);
+				fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, bads %d, validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, tmp_test_ptr, ok_data, bads, validate_failure);
 			} else {
 				fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain);
 			}

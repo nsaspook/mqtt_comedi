@@ -25,7 +25,7 @@
  * TODO: get some SoC board rev and other info from the OPi zero 3
  *
 Driver: "experimental" daq_bmc in progress ...
- * for 6.1.31+ kernels with device-tree enabled for Orange PI Zero 3
+ * for 6.1.31+ kernels with device-tree enabled for Orange PI Zero 3 and RPi 2B
  * see README.md for install instructions
  *
 Description: BMCBOARD daq_bmc spibmc
@@ -125,9 +125,9 @@ static LIST_HEAD(device_list);
 /* Driver board type default */
 static const uint32_t BMCBOARD = 0;
 
-/* Driver board controller type */
+/* Driver board controller type tests */
 static const bool FORCE_47Q84 = false;
-static const bool FORCE_57Q84_ALL = true;
+static const bool FORCE_57Q84_ALL = false;
 
 /* analog chip types  index to daqbmc_device array */
 static const uint32_t PICSL12 = 0; // index into chip config array
