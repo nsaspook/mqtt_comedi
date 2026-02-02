@@ -86,6 +86,39 @@ ports [4..7] are data-streams for connected device data
 #define spibmc_version "version 1.5 "
 
 #define RPI2B
+/* 40 pin connector	headers		test cable colors
+ * RPi pin		daq_bmc pin
+ * 6  GND		1 - SPI2 VSS	green/brown
+ * 26 SPI0 CE1		2 - SPI2 SS2	burgandy
+ * 23 SPI0 SCLK		3 - SPI2 SCK	blue
+ * 19 SPI0 MOSI		4 - SPI2 MOSI	green
+ * 21 SPI0 MISO		5 - SPI2 MISO	yellow
+ * 18 GPIO 24		6 - SPI2 REQ	orange NC
+ * 
+ * 
+ * 4  5V power		4 - SV1 5V VDD
+ * 
+ * 
+ * 2  5V power		2 - GLORY 5V VDD
+ * 9  GND		1 - GLORY VSS
+ */
+
+#define OPIZ3
+/* 26 pin connector	headers		test cable colors
+ * OPi pin		daq_bmc pin
+ * 6  GND		1 - SPI2 VSS	green/brown
+ * 24 SPI1 CE0		2 - SPI2 SS2	burgandy
+ * 23 SPI1 SCLK		3 - SPI2 SCK	blue
+ * 19 SPI1 MOSI		4 - SPI2 MOSI	green
+ * 21 SPI1 MISO		5 - SPI2 MISO	yellow
+ * 18 GPIO 14		6 - SPI2 REQ	orange NC
+ * 
+ * 2  5V power		4 - SV1 5V VDD
+ * 
+ * 13 pin connector	headers		test cable colors
+ * 1  5V power		2 - GLORY 5V VDD
+ * 2  GND		1 - GLORY VSS
+ */
 
 static const uint32_t CHECKMARK = 0x1957;
 static const uint32_t CHECKBYTE = 0x57;
@@ -2270,8 +2303,12 @@ static void __exit daqbmc_exit(void)
 module_exit(daqbmc_exit);
 
 MODULE_AUTHOR("NSASPOOK <nsaspooksma2@gmail.com");
-MODULE_DESCRIPTION("RPI/OPI DI/DO/AI/AO SPI Driver");
+MODULE_DESCRIPTION("RPI/OPI DI/DO/AI/AO SPI Driver for Comedi");
+#ifdef RPI2B
 MODULE_VERSION("6.12.62");
+#else
+MODULE_VERSION("6.1.31+");
+#endif
 MODULE_LICENSE("GPL");
 MODULE_ALIAS("spi:spibmc");
 
