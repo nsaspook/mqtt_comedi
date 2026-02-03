@@ -205,7 +205,7 @@ bool get_set_config(void)
 int main(int argc, char *argv[])
 {
 	int do_ao_only = false;
-	uint8_t i = 0, j = 75;
+	uint32_t i = 0, j = 75;
 
 	/*
 	 * read configuration file settings

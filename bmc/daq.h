@@ -26,7 +26,7 @@ extern "C" {
 
 #define SLOW_TEXT 1
 #define SLOW_DATA 1
-#define MAX_STRLEN      128
+#define MAX_STRLEN      256
 
 #define JUST_BITS false
 	/*
@@ -58,6 +58,7 @@ extern "C" {
 #define OVER_SAMP       4
 
 #define BMCBoard        "BMCboard (Q84)"
+#define BMC_CHAN 4
 #define USBBoard        "K8055 (VM110)"
 
 	typedef enum {
@@ -125,7 +126,7 @@ extern "C" {
 	};
 
 	extern volatile struct bmcdata bmc;
-	extern uint32_t datain, serial_buf;
+	extern uint32_t datain, serial_buf, overrun;
 	extern union dio_buf_type obits;
 	extern uint32_t daq_bmc_data[SYSLOG_SIZ];
 	extern char daq_bmc_data_text[SYSLOG_SIZ];

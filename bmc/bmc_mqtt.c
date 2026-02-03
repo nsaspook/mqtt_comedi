@@ -745,17 +745,17 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		} else {
 			if ((bmc.BOARD == bmcboard) && SERIAL_OPEN) {
 				bads++;
-				fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, bads %d, validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, tmp_test_ptr, ok_data, bads, validate_failure);
+				fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, bads %d, Overruns %d validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, tmp_test_ptr, ok_data, bads, overrun, validate_failure);
 			} else {
 				fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain);
 			}
 		}
 		memset(daq_bmc_data_text, 0, MAX_STRLEN);
 		if (bmc.BOARD == bmcboard) {
-			fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV, ANA2 %6.3fV, ANA4 %6.3fV, ANA5 %6.3fV, AND5 %6.3fV, Battery Sensor %6.3fA, : Host Index %d, Scalar Index %d, Scalar ANA4 %6.4f, Scalar ANA5 %6.4f Serial 0X%X\n",
+			fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV, ANA2 %6.3fV, ANA4 %6.3fV, ANA5 %6.3fV, AND5 %6.3fV, Battery Sensor %6.3fA, : Host Index %d, Scalar Index %d, Scalar ANA4 %6.4f, Scalar ANA5 %6.4f Serial 0X%X %X\n",
 				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2),
 				E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], R.bsensor0, ha_daq_host.hindex, ha_daq_host.bindex, ha_daq_host.calib.scalar4[ha_daq_host.bindex], ha_daq_host.calib.scalar5[ha_daq_host.bindex],
-				daq_bmc_data[0]);
+				daq_bmc_data[0], daq_bmc_data[1]);
 		} else {
 			fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV : Scalar Index %d, Scalar ANA4 %6.4f, Scalar ANA5 %6.4f\n",
 				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1),
@@ -1050,11 +1050,11 @@ char * validate_bmc_text(const char * text, bool * valid)
 			}
 		} else {
 			valid[0] = false;
-			validate_failure = 2;
+			validate_failure = 2; // data frame length error
 		}
 	} else {
 		valid[0] = false;
-		validate_failure = 1;
+		validate_failure = 1; // no/incorrect ASCII data-frame character
 	}
 
 	return tmp_p;
@@ -1065,7 +1065,7 @@ char * validate_bmc_text(const char * text, bool * valid)
  */
 double Volts_to_SOC(const double bvoltage)
 {
-	uint8_t slot;
+	uint32_t slot;
 	double soc = 0.80f;
 
 	/*

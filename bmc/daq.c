@@ -56,7 +56,7 @@ bool ADC_OPEN = true, DIO_OPEN = true, ADC_ERROR = false, DEV_OPEN = true,
 bool DO_OPEN = true, DI_OPEN = true, DO_ERROR = false;
 union dio_buf_type obits, ibits;
 
-uint32_t datain, serial_buf, daq_bmc_data[SYSLOG_SIZ];
+uint32_t datain, serial_buf, daq_bmc_data[SYSLOG_SIZ], overrun = 0;
 const char text_test[] = {"the quick brown fox jumps over the lazy dogs back"};
 
 char *daq_text[] = {
@@ -66,7 +66,7 @@ char *daq_text[] = {
 	"daq_bmc text 3           ",
 }, *daq_text_ptr, daq_bmc_data_text[SYSLOG_SIZ], daq_bmc_data_buf[SYSLOG_SIZ];
 
-uint8_t daq_text_index = 0, line_index = 0, daq_data_index = 0;
+uint32_t daq_data_index = 0;
 static uint32_t slow_data = 0;
 
 struct bmc_buffer_type BMC4 = {
@@ -423,26 +423,26 @@ int get_data_sample(void)
 
 		// send I/O as a byte mask
 		if (bmc.BOARD == bmcboard) {
-				if (tmp_data == B_NONE) {
-					obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
-					obits.bytes[1] = ~bmc.dataout.bytes[0];
-					obits.bytes[2] = ~bmc.dataout.bytes[0];
-					obits.bytes[3] = ~bmc.dataout.bytes[0];
-				} else {
-					if ((tmp_data == B_0) || (tmp_data == B_16)) {
-						obits.bytes[0] = ~bmc.dataout.bytes[0]; // buffer output
-						obits.bytes[1] = bmc.dataout.bytes[0];
-						obits.bytes[2] = bmc.dataout.bytes[0];
-						obits.bytes[3] = bmc.dataout.bytes[0];
-					} else {
-						obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
-						obits.bytes[1] = bmc.dataout.bytes[0];
-						obits.bytes[2] = bmc.dataout.bytes[0];
-						obits.bytes[3] = bmc.dataout.bytes[0];
-					}
-				}
-				comedi_dio_bitfield2(it, subdev_do, obits.dio_buf, &obits.dio_buf, 0);
+			if (tmp_data == B_NONE) {
+				obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
+				obits.bytes[1] = ~bmc.dataout.bytes[0];
+				obits.bytes[2] = ~bmc.dataout.bytes[0];
+				obits.bytes[3] = ~bmc.dataout.bytes[0];
 			} else {
+					if ((tmp_data == B_0) || (tmp_data == B_15)) {
+					obits.bytes[0] = ~bmc.dataout.bytes[0]; // buffer output
+					obits.bytes[1] = bmc.dataout.bytes[0];
+					obits.bytes[2] = bmc.dataout.bytes[0];
+					obits.bytes[3] = bmc.dataout.bytes[0];
+				} else {
+					obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
+					obits.bytes[1] = bmc.dataout.bytes[0];
+					obits.bytes[2] = bmc.dataout.bytes[0];
+					obits.bytes[3] = bmc.dataout.bytes[0];
+				}
+			}
+			comedi_dio_bitfield2(it, subdev_do, obits.dio_buf, &obits.dio_buf, 0);
+		} else {
 			obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
 			comedi_dio_bitfield2(it, subdev_do, 0xff, &obits.dio_buf, 0);
 		}
@@ -454,14 +454,15 @@ int get_data_sample(void)
 				slow_data = 0;
 
 				if ((daq_data_index > MAX_STRLEN) || (daq_bmc_data_text[BMC4.pos] == '^')) {
-					comedi_data_write(it, subdev_serial0, 4, range_ao, AREF_GROUND, STX); // update daq_bmc data buffer
-					comedi_data_write(it, subdev_serial0, 4, range_ao, AREF_GROUND, STX);
+					overrun = daq_data_index;
+					comedi_data_write(it, subdev_serial0, BMC_CHAN, range_ao, AREF_GROUND, STX); // update daq_bmc data buffer
+					comedi_data_write(it, subdev_serial0, BMC_CHAN, range_ao, AREF_GROUND, STX);
 					daq_data_index = 0;
 					strncpy(daq_bmc_data_buf, daq_bmc_data_text, SYSLOG_SIZ);
 					BMC4.pos = 0;
 					BMC4.bmc_flag = false;
 				} else {
-					comedi_data_read(it, subdev_serial0, 4, range_ao, AREF_GROUND, &daq_bmc_data[BMC4.pos]);
+					comedi_data_read(it, subdev_serial0, BMC_CHAN, range_ao, AREF_GROUND, &daq_bmc_data[BMC4.pos]);
 					daq_bmc_data_text[BMC4.pos] = (char) (daq_bmc_data[BMC4.pos] >> 8);
 					serial_buf = daq_bmc_data_text[BMC4.pos];
 					BMC4.pos++;
