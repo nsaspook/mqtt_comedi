@@ -111,7 +111,7 @@ void slaveo_rx_isr(void)
 						}
 					}
 				}
-			} else { // [4..7] sync character for type of data requested
+			} else { // [4..7] sync character for type of data requested, only using channel 4 for comedi link to data
 				switch (serial_buffer_ss.data[BMC_D0]) {
 				case STX:
 				case DC1_CMD:
