@@ -78,7 +78,7 @@ extern "C" {
 		"Bulk",
 		"Absorb",
 		"Equalize",
-		" N/A ",
+		"N/A ",
 	};
 
 	const char FM80_name [][12] = {
