@@ -51,15 +51,19 @@ extern "C" {
 #define HV_SCALE_RAW            4.096f
 #define HV_SCALE_OFFSET         0.0f
 
-#define A200_0_ZERO  2.5216f
+	/*
+	 * make sure battery sensor power is connected to 24VDC supply
+	 * the sensor board has a precision 5VDC reference/supply
+	 */
+#define A200_0_ZERO    2.5216f
 #define A200_0_SCALAR  133.05f // BATTERY Amp scalar
-#define BSENSOR0 0
+#define BSENSOR0       0
 
-#define OVER_SAMP       4
+#define OVER_SAMP      4
 
-#define BMCBoard        "BMCboard (Q84)"
-#define BMC_CHAN 4
-#define USBBoard        "K8055 (VM110)"
+#define BMCBoard       "BMCboard (Q84)"
+#define BMC_CHAN       4
+#define USBBoard       "K8055 (VM110)"
 
 	typedef enum {
 		bmcboard = 0,

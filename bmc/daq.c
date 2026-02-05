@@ -429,7 +429,7 @@ int get_data_sample(void)
 				obits.bytes[2] = ~bmc.dataout.bytes[0];
 				obits.bytes[3] = ~bmc.dataout.bytes[0];
 			} else {
-					if ((tmp_data == B_0) || (tmp_data == B_15)) {
+				if ((tmp_data == B_0) || (tmp_data == B_15)) {
 					obits.bytes[0] = ~bmc.dataout.bytes[0]; // buffer output
 					obits.bytes[1] = bmc.dataout.bytes[0];
 					obits.bytes[2] = bmc.dataout.bytes[0];

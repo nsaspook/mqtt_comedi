@@ -92,7 +92,7 @@ for the FMx0 charge controller and for the modbus EM540 power meter
  * 23 SPI0 SCLK		3 - SPI2 SCK	blue
  * 19 SPI0 MOSI		4 - SPI2 MOSI	green
  * 21 SPI0 MISO		5 - SPI2 MISO	yellow
- * 18 GPIO 24		6 - SPI2 REQ	orange NC
+ * 30 GND		6 - 3.3V VSS	orange NC
  *
  *
  * 4  5V power		4 - SV1 5V VDD
@@ -188,7 +188,7 @@ static const uint32_t SPI_GAP_LONG = 12000; // time for the Q84 to process each 
 
 static const uint32_t PIC18_CONVD_57Q84 = 24;
 static const uint32_t PIC18_CMDD_57Q84 = 4;
-static const uint32_t SPI_BUFF_SIZE_NOHUNK = 4096; // normally 64
+static const uint32_t SPI_BUFF_SIZE_NOHUNK = 64; // normally 64
 static const uint32_t MAX_CHANLIST_LEN = 256;
 static const uint32_t CONV_SPEED = 50000; /* 10s of nsecs: the true rate is ~3000/5000 so we need a fixup,  two conversions per result */
 static const uint32_t MAX_BOARD_RATE = 1000000000;
@@ -333,7 +333,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.name = "PICSL12",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
-		.max_speed_hz = 4000000,
+		.max_speed_hz = 500000,
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
 		.spi_mode = 3,
@@ -347,7 +347,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.name = "PICSL12_AO",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
-		.max_speed_hz = 4000000,
+		.max_speed_hz = 500000,
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
 		.spi_mode = 3,
@@ -765,7 +765,7 @@ static void daqbmc_ao_put_sample(struct comedi_device *dev,
 	struct daqbmc_private *devpriv = dev->private;
 	uint32_t chan, range;
 
-	struct bmc_packet_type *packet = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC);
+	struct bmc_packet_type *packet = kzalloc(sizeof(*packet), GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC | GFP_DMA);
 	if (!packet) {
 		return;
 	}
@@ -814,7 +814,7 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 	uint32_t chan;
 	int32_t val = 0;
 
-	struct bmc_packet_type *packet = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC);
+	struct bmc_packet_type *packet = kzalloc(sizeof(*packet), GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC | GFP_DMA);
 	if (!packet) {
 		return 0;
 	}
@@ -1187,7 +1187,7 @@ static void digitalWritePi(struct comedi_device *dev,
 {
 	struct daqbmc_private *devpriv = dev->private;
 	uint32_t val_value;
-	struct bmc_packet_type *packet = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC);
+	struct bmc_packet_type *packet = kzalloc(sizeof(*packet), GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC | GFP_DMA);
 
 	if (!packet) {
 		return;
@@ -1220,7 +1220,7 @@ static int digitalReadPi(struct comedi_device *dev,
 	struct daqbmc_private *devpriv = dev->private;
 
 	uint32_t val_value;
-	struct bmc_packet_type *packet = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC);
+	struct bmc_packet_type *packet = kzalloc(sizeof(*packet), GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC | GFP_DMA);
 	if (!packet) {
 		return 0;
 	}
@@ -1284,7 +1284,7 @@ static void serialWritePi(struct comedi_device *dev,
 	uint32_t *value)
 {
 	uint32_t val_value;
-	struct bmc_packet_type *packet = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC);
+	struct bmc_packet_type *packet = kzalloc(sizeof(*packet), GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC | GFP_DMA);
 
 	if (!packet) {
 		return;
@@ -1318,7 +1318,7 @@ static int32_t daqbmc_sio_get_sample(struct comedi_device *dev,
 	uint32_t chan = 4;
 	int32_t val = 0;
 
-	struct bmc_packet_type *packet = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC);
+	struct bmc_packet_type *packet = kzalloc(sizeof(*packet), GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC | GFP_DMA);
 	if (!packet) {
 		return 0;
 	}
@@ -1509,7 +1509,7 @@ static int32_t daqbmc_bmc_get_config(struct comedi_device *dev)
 	int32_t val = 0;
 	uint32_t chan = 1;
 
-	struct bmc_packet_type *packet = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC);
+	struct bmc_packet_type *packet = kzalloc(sizeof(*packet), GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC  | GFP_DMA);
 	if (!packet) {
 		return CHECKBYTE;
 	}
@@ -1636,12 +1636,12 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		/*
 		 * use smaller SPI data buffers if we don't hunk
 		 */
-		pdata->tx_buff = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL);
+		pdata->tx_buff = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL | GFP_DMA);
 		if (!pdata->tx_buff) {
 			ret = -ENOMEM;
 			goto daqbmc_kfree_exit;
 		}
-		pdata->rx_buff = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL);
+		pdata->rx_buff = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL | GFP_DMA);
 		if (!pdata->rx_buff) {
 			ret = -ENOMEM;
 			goto daqbmc_kfree_tx_exit;
@@ -1959,12 +1959,12 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 	reinit_completion(&done);
 	pdata->ping_pong = false;
 	pdata->upper_lower = 0;
-	pdata->tx_buff = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL);
+	pdata->tx_buff = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL | GFP_DMA);
 	if (!pdata->tx_buff) {
 		ret = -ENOMEM;
 		goto kfree_exit;
 	}
-	pdata->rx_buff = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL);
+	pdata->rx_buff = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL | GFP_DMA);
 	if (!pdata->rx_buff) {
 		ret = -ENOMEM;
 		goto kfree_tx_exit;
