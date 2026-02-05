@@ -20,13 +20,7 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define NHD		// SPI 20X4 display, nhd-0420d3z-nsw-bbw
-
-//#define DIS_DEBUG	// active status display, disable during normal operation
-	// #define SHOW_DAC
-#define IO_FAIL	true
-
-#define VER	"V0.51"
+#define VER	"V0.52"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -68,27 +62,48 @@ extern "C" {
 	 * V0.49 shorted calibration fractional values for sequence 17
 	 * V0.50 add High VoC check for night switching from FMXX_STATE
 	 * V0.51 re-enable WDT reboots
+	 * V0.52 add WDT clears to analog conversion sequence
 	 */
-
-	//#define DI_DEBUG
-	//#define TRACE
 
 	/*
-	 * TIC12400 testing modes
+	 * internal variables and states debug screens
 	 */
+	//	#define DIS_DEBUG	// active debug status display, disable during normal operation
+
+	/*
+	 * TP1 sync triggers enable
+	 */
+	//#define TRACE
+	//#define MAIN_TRACE
+
+
+	/*
+	 * over-ride DIO testing failures
+	 * set to true for normal operation
+	 */
+#define IO_FAIL	true
+
+	/*
+	 * DIO and SERIAL testing modes
+	 */
+#define DI_DEBUG
 #define DIO_TEST
 #define DIO_SHOW_BUF
 #define SER_DEBUG
 #define DI_MC_CMD
-	/* analog testing calibration mode
-	 *
+
+	/*
+	 * analog testing calibration mode
 	 */
 #define AIO_TEST
+	// #define SHOW_DAC
+
 	/*
 	 * debug LED
 	 */
 #define DLED	DLED_LAT
 
+#define NHD		// SPI 20X4 display, nhd-0420d3z-nsw-bbw
 	/*
 	 * characters per line on the display
 	 */
@@ -119,7 +134,7 @@ extern "C" {
 #define DC2_CMD  18
 #define DC3_CMD  19
 #define DC4_CMD  20
-#define DC_NEXT		DC1_CMD // repeat 2 or 4 lines with DC3_CMD value here
+#define DC_NEXT	 DC1_CMD // repeat 2 or 4 lines with DC3_CMD value here
 
 	static const uint16_t TDELAY = 3000;
 	static const uint16_t SEQDELAY = 10000;
@@ -136,8 +151,6 @@ extern "C" {
 	static const uint8_t BAT_DAY_COUNT = 45; // number of reports before updates
 	static const uint8_t BAT_NIGHT_COUNT = 90;
 	static const uint8_t PV_VOLTS_HIGH = 70;
-
-#define SOF_ADDR	0x01ff00
 
 	const char log_format1[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%6.3f,%6.3f,%6.3f,%6.3f,1957,~EOT                                                  \r\n";
 #define LOG_VARS1	BMC4.d_id,((float) em.vl3l1) / 10.0f,em_tmp.al1, ((float) em.wl1) / 10.0f, ((float) em.wl2) / 10.0f, \

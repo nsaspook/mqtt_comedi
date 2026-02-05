@@ -1,7 +1,7 @@
 #include "calibr.h"
 
 /*
- * use MUI to find calibration data for each board
+ * use Q84 MUI to find calibration data for each board
  */
 void set_calibration(unsigned long long mui)
 {
@@ -25,7 +25,6 @@ void set_calibration(unsigned long long mui)
 		ha_daq_calib.scaler4 = HV_SCALE4_3;
 		ha_daq_calib.scaler5 = HV_SCALE5_3;
 		break;
-		// dead chip/replaced	case 0x55AF3:
 	case 0x4DE66:
 		ha_daq_calib.scaler4 = HV_SCALE4_4;
 		ha_daq_calib.scaler5 = HV_SCALE5_4;

@@ -22,7 +22,7 @@ extern "C" {
 #include "vconfig.h"
 #include "calibr.h"
 
-#define SLAVEO_DRIVER "V0.91"
+#define SLAVEO_DRIVER   "V0.91"
 #define SLAVE_DEBUG
 #define CHECKBYTE       0x57
 #define CHECKMARK	0x1957

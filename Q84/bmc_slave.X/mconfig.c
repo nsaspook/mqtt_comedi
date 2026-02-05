@@ -252,21 +252,17 @@ D_CODES set_temp_display_help(const D_CODES new_response_info)
 }
 
 /** \file mconfig.c
- * send to logging serial port, busy wait until port buffer has space
+ * send to logging TTL serial port, busy wait until port buffer has space
+ * use UART3
  */
 void log_serial(uint8_t * data, uint16_t len)
 {
-#ifdef DDDD
 	uint16_t idx = 0;
 
 	if (len == 0) {
 		return;
 	}
 
-	if (len == 1 && !V.log_char) {
-		return;
-	}
-	RELAY0_SetHigh();
 	while (len--) {
 		if (UART3_is_tx_ready()) {
 			UART3_Write(data[idx++]);
@@ -276,13 +272,11 @@ void log_serial(uint8_t * data, uint16_t len)
 			UART3_Write(data[idx++]);
 		}
 	}
-	RELAY0_SetLow();
-#endif
 }
 
 /**
  *
- * check for incoming data on the logging TTL serial connection
+ * check for incoming data on the logging TTL serial port
  * use UART3
  *
  * cmd_value is the buffer variable

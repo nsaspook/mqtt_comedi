@@ -23,7 +23,7 @@ extern "C" {
 #include "tic12400.h"
 #include "mc33996.h"
 
-#define BMCDIO_DRIVER "V0.8"
+#define BMCDIO_DRIVER "V0.9"
 
 	void SPI_EADOG(void);
 	void SPI_TIC12400(void);

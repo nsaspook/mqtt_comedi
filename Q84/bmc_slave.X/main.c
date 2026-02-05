@@ -10,8 +10,9 @@
  */
 
 /*
- * UART1 RS-232 comms, ANALOG header, TX-PIN 7 , RX-PIN 6 , SV1 serial bus, TX-PIN 8, RX-PIN 7
- * UART2 RS-232 comms, TTL serial HEADER, TX-PIN 2 , RX-PIN 3 , SV1 serial bus, TX-PIN 10, RX-PIN 9
+ * UART1 MODBUS comms, ANALOG header, TX-PIN 7 , RX-PIN 6 , SV1 serial bus, TX-PIN 8, RX-PIN 7, interrupts, 9600 bps
+ * UART2 FMx0 serial comms 9-bits async OPTO isolated, polled. 96--bps
+ * UART3 logging/debug comms, TTL serial HEADER, TX-PIN 2 , RX-PIN 3 , SV1 serial bus, TX-PIN 10, RX-PIN 9, interrupts, 115200 bps
  */
 
 // PIC18F57Q84 Configuration Bit Settings
@@ -45,12 +46,7 @@
 #pragma config LVP = OFF        // Low Voltage Programming Enable bit (HV on MCLR/VPP must be used for programming)
 #pragma config XINST = OFF      // Extended Instruction Set Enable bit (Extended Instruction Set and Indexed Addressing Mode disabled)
 
-// CONFIG5
-//#pragma config WDTCPS = WDTCPS_31// WDT Period selection bits (Divider ratio 1:65536; software control of WDTPS)
-//#pragma config WDTE = OFF       // WDT operating mode (WDT Disabled; SWDTEN is ignored)
-
 // CONFIG6
-//#pragma config WDTCWS = WDTCWS_7// WDT Window Select bits (window always open (100%); software control; keyed access not required)
 #pragma config WDTCCS = MFINTOSC      // WDT input clock selector (Software Control)
 
 // CONFIG7
@@ -273,6 +269,7 @@ volatile struct spi_stat_type_ss spi_stat_ss = {
 };
 volatile struct serial_buffer_type_ss serial_buffer_ss = {
 	.data[BMC_CMD] = CHECKBYTE,
+	.data[BMC_CKSUM] = CHECKBYTE,
 	.raw_index = BMC_CMD,
 	.r_string_index = 0,
 	.r_string_chan = 3,
@@ -340,7 +337,7 @@ struct tm *bmc_newtime;
 static void send_mx_cmd(const uint16_t *);
 static void rec_mx_cmd(void (* DataHandler)(void), const uint8_t);
 /*
- * callbacks to handle FM80 register data
+ * call-backs to handle FM80 register data
  */
 void state_init_cb(void);
 void state_status_cb(void);
@@ -365,9 +362,7 @@ void bmc_logger(void);
 void main(void)
 {
 	char * s, * speed_text;
-#ifdef FLIP_SERIAL
-	uint8_t temp_lock = false;
-#endif
+
 	SPI2STATUSbits.SPI2CLRBF;
 
 	if (STATUSbits.TO == 0) {
@@ -391,7 +386,6 @@ void main(void)
 	DLED_SetHigh();
 
 	SetBMCPriority(); // ISR Priority > Peripheral Priority > Main Priority
-
 	mconfig_init(); // zero the entire text buffer
 
 	V.ui_state = UI_STATE_INIT;
@@ -417,8 +411,6 @@ void main(void)
 			BM.node_id = 0xffffffff;
 		}
 	}
-
-
 
 	/*
 	 * calibration scalar selection using MUI from controller
@@ -457,10 +449,12 @@ void main(void)
 	DLED_SetLow();
 
 	/*
-	 * master processing I/O loop
+	 * master processing I/O, comms and display loop
 	 */
 	while (true) {
+#ifdef MAIN_TRACE
 		TP1_SetHigh();
+#endif
 		/*
 		 * check and parse logging configuration commands
 		 * not used
@@ -469,15 +463,21 @@ void main(void)
 
 		if ((spi_stat_ss.daq_conf & 0x04) == 0x00) { // the 47Q84 board has no EM540 or FM80 support
 #ifdef MB_MASTER
+#ifdef MAIN_TRACE
 			TP1_SetLow();
+#endif
 			master_controller_work(&C); // master MODBUS processing
+#ifdef MAIN_TRACE
 			TP1_SetHigh();
+#endif
 #endif
 #ifdef MX_MATE
 			/*
 			 * FM80 processing state machine
 			 */
+#ifdef MAIN_TRACE
 			TP1_SetLow();
+#endif
 			switch (state) {
 			case state_init:
 				send_mx_cmd(cmd_id);
@@ -551,7 +551,9 @@ void main(void)
 				rec_mx_cmd(state_init_cb, REC_LEN);
 				break;
 			}
+#ifdef MAIN_TRACE
 			TP1_SetHigh();
+#endif
 
 			if (TimerDone(TMR_RESTART)) {
 				StartTimer(TMR_RESTART, 30000);
@@ -610,7 +612,7 @@ void main(void)
 				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " MC 0x%X 0x%X 0x%X         ", mc_init.cmd[3], mc_init.cmd[4], mc_init.cmd[5]);
 			}
 #endif
-			if (failure) {
+			if (failure) { // DO or DI not working or missing
 				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " %s Analog Dev        ", (spi_stat_ss.deviceid == F57Q84) ? "57Q84" : "47Q84");
 			} else {
 				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " %s All Dev           ", (spi_stat_ss.deviceid == F57Q84) ? "57Q84" : "47Q84");
@@ -781,6 +783,7 @@ void main(void)
 				adc_buffer[channel_FVR_Buffer2] = ADC_GetConversionResult();
 			};
 			DAC1DATL = (uint8_t) V.bmc_ao; // update DAC1 output
+			ClrWdt(); // reset the WDT timer
 
 			if (!V.di_fail) {
 				SPI_TIC12400();
@@ -805,7 +808,7 @@ void main(void)
 			}
 			check_lcd_dim(false);
 			/*
-			 * send ascii data to CLCD
+			 * send text updates to CLCD
 			 */
 			if (r_string_ready) {
 				bmc_logger();
@@ -839,7 +842,7 @@ void main(void)
 			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "CFG%.2X D%X R%X                   ", // bmc config, deviceid, devicerev
 				spi_stat_ss.daq_conf, spi_stat_ss.deviceid, spi_stat_ss.devicerev);
 #ifdef SHOW_DAC
-			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "DAC %2u                           ", // 8-bit dax value
+			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "DAC %2u                           ", // 8-bit dac value
 				adc_buffer[channel_DAC1]);
 #else
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "4 %6.3fV, 5 %6.3fV                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));
@@ -953,7 +956,9 @@ void main(void)
 			V.set_sequ = true;
 			check_help(false);
 		}
+#ifdef MAIN_TRACE
 		TP1_SetLow();
+#endif
 	}
 }
 

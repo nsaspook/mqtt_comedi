@@ -21,10 +21,11 @@ extern "C" {
 #include "eadog.h"
 #include "timers.h"
 
-	const char build_version[] = "V3.00 FM80 interface Q84";
+	const char build_version[] = "V3.01 FMx0 interface Q84";
 	/*
 	 * code changes
-	 * 3.00 version for the daq_bmc board
+	 * V3.00 version for the daq_bmc board
+	 * V3.01 code cleanups
 	 */
 
 #define MX_MATE
@@ -77,12 +78,12 @@ extern "C" {
 		"Bulk",
 		"Absorb",
 		"Equalize",
-		" Last",
+		" N/A ",
 	};
 
 	const char FM80_name [][12] = {
 		"Offline",
-		"FM80",
+		"FMx0",
 	};
 
 	const char canbus_name [][12] = {
