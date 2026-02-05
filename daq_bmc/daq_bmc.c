@@ -82,10 +82,28 @@ for the FMx0 charge controller and for the modbus EM540 power meter
 #include <linux/completion.h>
 
 #define bmc_version "version 1.21 "
-#define spibmc_version "version 1. "
+#define spibmc_version "version 1.6 "
+
+/*
+ * Look for Soc board types using C preprocessor defines
+ *  echo | gcc -dM -E -
+ *  echo | clang -dM -E -
+ */
 
 #define RPI2B
-/* 40 pin connector	headers		test cable colors
+
+#ifdef __ARM_ARCH_8A // running old 6.1.31 kernel
+#define OPIZ3
+#endif
+
+enum daqbmc_platform_index {
+	BMC_Soc_0 = 0,
+	BMC_Soc_1,
+	BMC_RPI2B,
+	BMC_OPIZ3,
+};
+
+/* 40 pin connector	headers		test cable colors, RPI2B
  * RPi pin		daq_bmc pin
  * 6  GND		1 - SPI2 VSS	green/brown
  * 26 SPI0 CE1		2 - SPI2 SS2	burgandy
@@ -102,8 +120,7 @@ for the FMx0 charge controller and for the modbus EM540 power meter
  * 9  GND		1 - GLORY VSS
  */
 
-#define OPIZ3
-/* 26 pin connector	headers		test cable colors
+/* 26 pin connector	headers		test cable colors, OPIZ3
  * OPi pin		daq_bmc pin
  * 6  GND		1 - SPI2 VSS	green/brown
  * 24 SPI1 CE0		2 - SPI2 SS2	burgandy
@@ -119,6 +136,9 @@ for the FMx0 charge controller and for the modbus EM540 power meter
  * 2  GND		1 - GLORY VSS
  */
 
+/*
+ * stop date/time in binary warning
+ */
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdate-time"
 static const char *const FW_Date = __DATE__;
@@ -131,9 +151,9 @@ static const uint32_t CHECKBYTE = 0x57;
 /*
  * SPI transfer buffer size
  * must be a define to init buffer sizes
- * normally 1024
+ * normally 64
  */
-#define HUNK_LEN 1024
+#define HUNK_LEN 64
 #define SPECIAL_LEN 64
 #define Q84_BYTES 9
 
@@ -204,12 +224,8 @@ static const struct spi_delay CS_CHANGE_DELAY_USECS10 = {
 /*
  * This selects the chip select, not the interface number like spi0, spi1
  */
-#ifdef RPI2B
-static const uint32_t CSnA = 0; /*  BMCboard Q84 slave CS, spi0 on the RPi */
-static const uint32_t CS_BMC = 1; /*  BMCboard Q84 slave CS, spi0 on the RPi */
-#else
-static const uint32_t CS_BMC = 1; /*  BMCboard Q84 slave CS, spi1 on the OPi */
-#endif
+static const uint32_t CSnA = 0; /*  BMCboard Q84 not used CS, spi0 on the RPi, spi1 on OPi */
+static const uint32_t CS_BMC = 1; /*  BMCboard Q84 slave CS, spi0 on the RPi, spi1 on OPi  */
 
 /*
  * PIC Slave commands
@@ -333,7 +349,11 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.name = "PICSL12",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
-		.max_speed_hz = 500000,
+#ifdef RPI2B
+		.max_speed_hz = 4000000,
+#else
+		.max_speed_hz = 8000000,
+#endif
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
 		.spi_mode = 3,
@@ -347,7 +367,11 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.name = "PICSL12_AO",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
-		.max_speed_hz = 500000,
+#ifdef RPI2B
+		.max_speed_hz = 4000000,
+#else
+		.max_speed_hz = 8000000,
+#endif
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
 		.spi_mode = 3,
@@ -538,20 +562,19 @@ static int32_t daqbmc_bmc_get_config(struct comedi_device *);
 
 /*
  * piBoardRev:
- *	Return a number representing the hardware revision of the board.
- *	Revision is currently 3 only. -1 is returned on error.
+ *	Return a number representing the hardware revision of the PI board.
+ *	3 = OPI, 2 = RPi2b, etc...
  *********************************************************************
  */
 static int32_t piBoardRev(struct comedi_device *dev)
 {
-	int32_t boardRev = 3; // hardwired for now
-	//	uint32_t *efuse = (uint32_t *) 0x01c14200;
+	int32_t boardRev = BMC_OPIZ3; // default to OPi Zero3 4G board
 
-	/*
-	 * set module param
-	 */
-	//	dev_info(dev->class_dev, "board SID 0X%X\n", *efuse);
+#ifdef RPI2B
+	boardRev = BMC_RPI2B;
+#endif
 	bmc_rev = boardRev;
+
 	return boardRev;
 }
 
@@ -565,13 +588,13 @@ static int32_t bmc_spi_packet(struct spi_device *spi, struct bmc_packet_type * p
 	}
 
 	spi_message_init_with_transfers(packet->m, &packet->one_t, 1); //one transfer per message
-#ifdef RPI2B
+#ifndef OPIZ3
 	spi_bus_lock(spi->controller);
 #else
 	spi_bus_lock(spi->master);
 #endif
 	ret = spi_sync_locked(spi, packet->m);
-#ifdef RPI2B
+#ifndef OPIZ3
 	spi_bus_unlock(spi->controller);
 #else
 	spi_bus_unlock(spi->master);
@@ -719,6 +742,7 @@ static int32_t daqbmc_ao_thread_function(void *data)
 			smp_mb__after_atomic();
 		}
 	}
+
 	return 0;
 }
 
@@ -790,7 +814,6 @@ static void daqbmc_ao_put_sample(struct comedi_device *dev,
 	devpriv->ao_count++;
 	mutex_unlock(&devpriv->drvdata_lock);
 	smp_mb__after_atomic();
-
 	kfree(packet);
 }
 
@@ -843,6 +866,7 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 	smp_mb__after_atomic();
 
 	kfree(packet);
+
 	return val & s->maxdata;
 }
 
@@ -912,6 +936,7 @@ static int32_t daqbmc_ao_inttrig(struct comedi_device *dev,
 
 	mutex_unlock(&devpriv->cmd_lock);
 	smp_mb__after_atomic();
+
 	return ret;
 }
 
@@ -989,6 +1014,7 @@ static int32_t daqbmc_ao_cmd(struct comedi_device *dev,
 ao_cmd_exit:
 	mutex_unlock(&devpriv->cmd_lock);
 	smp_mb__after_atomic();
+
 	return ret;
 }
 
@@ -1024,6 +1050,7 @@ static int32_t daqbmc_ao_delay_rate(struct comedi_device *dev,
 		spacing_usecs = 0;
 	}
 	dev_info(dev->class_dev, "ao rate %i, spacing usecs %i\n", rate, spacing_usecs);
+
 	return spacing_usecs;
 }
 
@@ -1175,6 +1202,7 @@ static int32_t daqbmc_ao_cancel(struct comedi_device *dev,
 	devpriv->ao_cmd_canceled = true;
 	s->async->inttrig = NULL;
 	dev_info(dev->class_dev, "ao cancel end\n");
+
 	return 0;
 }
 
@@ -1272,6 +1300,7 @@ static int daqbmc_do_insn_bits(struct comedi_device *dev,
 
 	data[1] = s->state;
 	do_count++;
+
 	return insn->n;
 }
 
@@ -1305,7 +1334,6 @@ static void serialWritePi(struct comedi_device *dev,
 		packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
 		bmc_spi_exchange(dev, packet);
 	}
-
 	kfree(packet);
 }
 
@@ -1340,6 +1368,7 @@ static int32_t daqbmc_sio_get_sample(struct comedi_device *dev,
 	val += (packet->bmc_byte_r[BMC_D1] << 16); // serial data is fresh
 
 	kfree(packet);
+
 	return val;
 }
 
@@ -1365,6 +1394,7 @@ static int daqbmc_sio_insn_write(struct comedi_device *dev,
 		data[1] = val;
 		serial_count++;
 	}
+
 	return insn->n;
 }
 
@@ -1406,6 +1436,7 @@ static int daqbmc_di_insn_bits(struct comedi_device *dev,
 	pinPi = digitalReadPi(dev, data);
 	data[1] = pinPi;
 	di_count++;
+
 	return 2;
 }
 
@@ -1443,6 +1474,7 @@ static int32_t daqbmc_ai_rinsn(struct comedi_device *dev,
 ai_read_exit:
 	mutex_unlock(&devpriv->cmd_lock);
 	smp_mb__after_atomic();
+
 	return ret ? ret : insn->n;
 }
 
@@ -1464,6 +1496,7 @@ static int32_t daqbmc_ao_winsn(struct comedi_device *dev,
 		daqbmc_ao_put_sample(dev, s, val);
 	}
 	ao_count = devpriv->ao_count;
+
 	return insn->n;
 }
 
@@ -1494,6 +1527,7 @@ static int32_t daqbmc_create_thread(struct comedi_device *dev,
 	} else {
 		return PTR_ERR(devpriv->ao_spi->daqbmc_task);
 	}
+
 	return 0;
 }
 
@@ -1509,7 +1543,7 @@ static int32_t daqbmc_bmc_get_config(struct comedi_device *dev)
 	int32_t val = 0;
 	uint32_t chan = 1;
 
-	struct bmc_packet_type *packet = kzalloc(sizeof(*packet), GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC  | GFP_DMA);
+	struct bmc_packet_type *packet = kzalloc(sizeof(*packet), GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC | GFP_DMA);
 	if (!packet) {
 		return CHECKBYTE;
 	}
@@ -1561,6 +1595,7 @@ static int32_t daqbmc_bmc_get_config(struct comedi_device *dev)
 	smp_mb__after_atomic();
 
 	kfree(packet);
+
 	return val;
 }
 
@@ -1696,7 +1731,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	 * need to get SoC board info
 	 */
 	devpriv->board_rev = piBoardRev(dev); /* what board are we running on? */
-	if (devpriv->board_rev < 3) {
+	if (devpriv->board_rev < BMC_RPI2B) {
 		dev_err(dev->class_dev, "invalid Pi board revision! %u\n",
 			devpriv->board_rev);
 		ret = -EINVAL;
@@ -1903,6 +1938,7 @@ daqbmc_kfree_rx_exit:
 daqbmc_kfree_tx_exit:
 	kfree(pdata->tx_buff);
 daqbmc_kfree_exit:
+
 	return ret;
 }
 
@@ -2042,7 +2078,7 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 		}
 
 		if (bmc_autoload) {
-#ifdef RPI2B
+#ifndef OPIZ3
 			ret = comedi_auto_config(&spi->controller->dev,
 				&daqbmc_driver, 0);
 #else
@@ -2063,6 +2099,7 @@ kfree_tx_exit:
 	kfree(pdata->tx_buff);
 kfree_exit:
 	kfree(pdata);
+
 	return ret;
 }
 
@@ -2086,6 +2123,7 @@ static int spibmc_spi_remove(struct spi_device * spi)
 		kfree(pdata);
 	}
 	dev_info(&spi->dev, "spibmc driver released\n");
+
 	return 0;
 }
 
@@ -2094,7 +2132,7 @@ static const struct class spibmc_class = {
 };
 
 static const struct spi_device_id spibmc_spi_ids[] = {
-#ifdef RPI2B
+#ifndef OPIZ3
 	{ .name = "bh2228fv"},
 	{ .name = "dh2228fv"},
 	{ .name = "jg10309-01"},
@@ -2136,11 +2174,12 @@ static int spibmc_of_check(struct device *dev)
 
 	dev_err(dev, "spibmc listed directly in DT is not supported\n");
 	dev_info(dev, "Use a compatible alias string like spi-bmc in DT\n");
+
 	return -EINVAL;
 }
 
 static const struct of_device_id spibmc_dt_ids[] = {
-#ifdef RPI2B
+#ifndef OPIZ3
 	{ .compatible = "cisco,spi-petra", .data = &spibmc_of_check},
 	{ .compatible = "dh,dhcom-board", .data = &spibmc_of_check},
 	{ .compatible = "elgin,jg10309-01", .data = &spibmc_of_check},
@@ -2173,6 +2212,7 @@ MODULE_DEVICE_TABLE(of, spibmc_dt_ids);
 static int spibmc_acpi_check(struct device *dev)
 {
 	dev_warn(dev, "do not use this driver in production systems!\n");
+
 	return 0;
 }
 
@@ -2279,7 +2319,7 @@ static void __exit daqbmc_exit(void)
 		slave_spi = &pdata->slave;
 	}
 
-#ifdef RPI2B
+#ifndef OPIZ3
 	comedi_auto_unconfig(&slave_spi->spi->controller->dev);
 #else
 	comedi_auto_unconfig(&slave_spi->spi->master->dev);
@@ -2292,8 +2332,9 @@ module_exit(daqbmc_exit);
 MODULE_AUTHOR("NSASPOOK <nsaspooksma2@gmail.com");
 MODULE_DESCRIPTION("RPI/OPI DI/DO/AI/AO SPI Driver for Comedi");
 #ifdef RPI2B
-MODULE_VERSION("6.12.62");
-#else
+MODULE_VERSION("6.12.62+");
+#endif
+#ifdef OPIZ3
 MODULE_VERSION("6.1.31");
 #endif
 MODULE_LICENSE("GPL");

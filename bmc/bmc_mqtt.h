@@ -63,6 +63,7 @@ extern "C" {
 #define BSENSOR_MAX_POS  125.0f
 
 #define UPDATE_PACER  250 // MQTT and logging frequency to 0.01 seconds.
+#define UPDATE_PACER_RPI2B	350
 #define BAT_RUN_MAX 140.0f  // max displayed run time at current load
 #define DRAIN_HOUR 1.0f
 #define IDLE_DRAIN      1.0f // system battery losses in W
