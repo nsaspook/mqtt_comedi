@@ -7,6 +7,7 @@ var dir_476c00135fcb01ebabea28e3815f59f8 =
     [ "mcc_generated_files", "dir_8e39805f766f0bbf46d9e94c980bf01c.html", "dir_8e39805f766f0bbf46d9e94c980bf01c" ],
     [ "bmcdio.c", "bmcdio_8c.html", null ],
     [ "bmcdio.h", "bmcdio_8h.html", null ],
+    [ "calibr.c", "calibr_8c_source.html", null ],
     [ "calibr.h", "calibr_8h.html", "calibr_8h" ],
     [ "eadog.c", "eadog_8c.html", null ],
     [ "eadog.h", "eadog_8h.html", "eadog_8h" ],

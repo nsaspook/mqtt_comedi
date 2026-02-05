@@ -127,66 +127,147 @@
 \DoxyCodeLine{\Hypertarget{bmc_8c_source_l00130}00130\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{bmc_8c_source_l00131}00131\ \}}
 \DoxyCodeLine{\Hypertarget{bmc_8c_source_l00132}00132\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00133}00133\ \textcolor{keywordtype}{int}\ main(\textcolor{keywordtype}{int}\ argc,\ \textcolor{keywordtype}{char}\ *argv[])}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00133}00133\ \textcolor{keywordtype}{void}\ relay\_set(uint16\_t\ relays)}
 \DoxyCodeLine{\Hypertarget{bmc_8c_source_l00134}00134\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00135}00135\ \ \ \ \ \textcolor{keywordtype}{int}\ do\_ao\_only\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00136}00136\ \ \ \ \ uint8\_t\ i\ =\ 0,\ j\ =\ 75;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00135}00135\ \ \ \ \ bmc.dataout.dio\_buf\ =\ relays;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00136}00136\ \}}
 \DoxyCodeLine{\Hypertarget{bmc_8c_source_l00137}00137\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00138}00138\ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00139}00139\ \textcolor{comment}{\ \ \ \ \ *\ start\ the\ MQTT\ processing}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00140}00140\ \textcolor{comment}{\ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00141}00141\ \ \ \ \ bmc\_mqtt\_init();}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00142}00142\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00143}00143\ \ \ \ \ \textcolor{keywordflow}{if}\ (do\_ao\_only)\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00144}00144\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (init\_dac(0.0,\ 25.0,\ \textcolor{keyword}{false})\ <\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00145}00145\ \ \ \ \ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Missing\ Analog\ AO\ subdevice\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00146}00146\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00147}00147\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00148}00148\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00149}00149\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00150}00150\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00151}00151\ \ \ \ \ \ \ \ \ \ \ \ \ set\_dac\_raw(0,\ sine\_wave[255\ -\/\ i++]\ <<\ 4);}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00152}00152\ \ \ \ \ \ \ \ \ \ \ \ \ set\_dac\_raw(1,\ sine\_wave[255\ -\/\ j++]\ <<\ 4);}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00153}00153\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00154}00154\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00155}00155\ \textcolor{preprocessor}{\#ifndef\ DIGITAL\_ONLY}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00156}00156\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (init\_daq(0.0,\ 25.0,\ \textcolor{keyword}{false})\ <\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00157}00157\ \ \ \ \ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Missing\ Analog\ subdevice(s)\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00158}00158\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00159}00159\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00160}00160\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00161}00161\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (init\_dio()\ <\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00162}00162\ \ \ \ \ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Missing\ Digital\ subdevice(s)\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00163}00163\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00164}00164\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00165}00165\ \ \ \ \ \ \ \ \ E.dac[0]\ =\ 1.23f;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00166}00166\ \ \ \ \ \ \ \ \ E.dac[1]\ =\ 3.21f;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00167}00167\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00168}00168\ \ \ \ \ \ \ \ \ E.do\_16b\ =\ 0x01;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00169}00169\ \ \ \ \ \ \ \ \ E.di\_16b\ =\ 0x10;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00170}00170\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00171}00171\ \ \ \ \ \ \ \ \ fflush(fout);}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00172}00172\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00173}00173\ \ \ \ \ \ \ \ \ \ \ \ \ usleep(MAIN\_DELAY);\ \textcolor{comment}{//\ sample\ rate\ \string~1\ msec}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00174}00174\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ set\_dac\_raw(0,\ sine\_wave[i++]);}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00175}00175\ \ \ \ \ \ \ \ \ \ \ \ \ get\_data\_sample();}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00176}00176\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00177}00177\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bmc.BOARD\ ==\ bmcboard)\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00178}00178\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ led\_lightshow(10);}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00179}00179\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00180}00180\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ led\_lightshow(10);}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00181}00181\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00182}00182\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00183}00183\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ha\_flag\_vars\_ss.runner)\ \{\ \textcolor{comment}{//\ timer\ or\ trigger\ from\ mqtt}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00184}00184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ comedi\_push\_mqtt();\ \textcolor{comment}{//\ send\ json\ formatted\ data\ to\ the\ mqtt\ server}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00185}00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ha\_flag\_vars\_ss.runner\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00186}00186\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00187}00187\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00138}00138\ \textcolor{keywordtype}{bool}\ get\_set\_config(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00139}00139\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00140}00140\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *output\_file\ =\ \textcolor{stringliteral}{"{}/etc/daq\_bmc/bmc\_config.cfg"{}};\ \textcolor{comment}{//\ will\ only\ read\ data\ from\ here}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00141}00141\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *output\_file\_tmp\ =\ \textcolor{stringliteral}{"{}/tmp/bmc\_config.cfg"{}};\ \textcolor{comment}{//\ if\ the\ correct\ directory\ is\ missing}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00142}00142\ \ \ \ \ config\_t\ cfg;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00143}00143\ \ \ \ \ config\_setting\_t\ *setting,\ *group;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00144}00144\ \ \ \ \ \textcolor{keywordtype}{bool}\ config\_status\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00145}00145\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00146}00146\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00147}00147\ \textcolor{comment}{\ \ \ \ \ *\ read\ configuration\ file\ settings}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00148}00148\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00149}00149\ \ \ \ \ config\_init(\&cfg);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00150}00150\ \ \ \ \ \textcolor{comment}{/*\ Read\ the\ file.\ If\ there\ is\ an\ error,\ create\ a\ new\ file\ */}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00151}00151\ \ \ \ \ \textcolor{keywordflow}{if}\ (!config\_read\_file(\&cfg,\ output\_file))\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00152}00152\ \ \ \ \ \ \ \ \ fprintf(stderr,\ \textcolor{stringliteral}{"{}\%s:\%d\ -\/\ \%s\(\backslash\)n"{}},\ config\_error\_file(\&cfg),}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00153}00153\ \ \ \ \ \ \ \ \ \ \ \ \ config\_error\_line(\&cfg),\ config\_error\_text(\&cfg));}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00154}00154\ \ \ \ \ \ \ \ \ config\_destroy(\&cfg);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00155}00155\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00156}00156\ \ \ \ \ \ \ \ \ config\_init(\&cfg);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00157}00157\ \ \ \ \ \ \ \ \ group\ =\ config\_root\_setting(\&cfg);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00158}00158\ \ \ \ \ \ \ \ \ setting\ =\ config\_setting\_add(group,\ \textcolor{stringliteral}{"{}BENERGYV"{}},\ CONFIG\_TYPE\_FLOAT);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00159}00159\ \ \ \ \ \ \ \ \ config\_setting\_set\_float(setting,\ S.BENERGYV);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00160}00160\ \ \ \ \ \ \ \ \ setting\ =\ config\_setting\_add(group,\ \textcolor{stringliteral}{"{}BVOLTAGEV"{}},\ CONFIG\_TYPE\_FLOAT);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00161}00161\ \ \ \ \ \ \ \ \ config\_setting\_set\_float(setting,\ S.BVOLTAGEV);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00162}00162\ \ \ \ \ \ \ \ \ setting\ =\ config\_setting\_add(group,\ \textcolor{stringliteral}{"{}PVENERGYV"{}},\ CONFIG\_TYPE\_FLOAT);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00163}00163\ \ \ \ \ \ \ \ \ config\_setting\_set\_float(setting,\ S.PVENERGYV);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00164}00164\ \ \ \ \ \ \ \ \ setting\ =\ config\_setting\_add(group,\ \textcolor{stringliteral}{"{}PVVOLTAGEV"{}},\ CONFIG\_TYPE\_FLOAT);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00165}00165\ \ \ \ \ \ \ \ \ config\_setting\_set\_float(setting,\ S.PVVOLTAGEV);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00166}00166\ \ \ \ \ \ \ \ \ setting\ =\ config\_setting\_add(group,\ \textcolor{stringliteral}{"{}SOC\_MODEV"{}},\ CONFIG\_TYPE\_FLOAT);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00167}00167\ \ \ \ \ \ \ \ \ config\_setting\_set\_float(setting,\ S.SOC\_MODEV);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00168}00168\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00169}00169\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ Write\ out\ the\ new\ configuration.\ */}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00170}00170\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!config\_write\_file(\&cfg,\ output\_file))\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00171}00171\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!config\_write\_file(\&cfg,\ output\_file\_tmp))\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00172}00172\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fprintf(stderr,\ \textcolor{stringliteral}{"{}Error\ while\ writing\ file\ to\ \%s\ and\ \%s.\(\backslash\)n"{}},\ output\_file,\ output\_file\_tmp);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00173}00173\ \textcolor{preprocessor}{\#ifdef\ EXIT\_CONFIG\_WRITE\_FAIL}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00174}00174\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ config\_destroy(\&cfg);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00175}00175\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(EXIT\_FAILURE);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00176}00176\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00177}00177\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00178}00178\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fprintf(stderr,\ \textcolor{stringliteral}{"{}Testing\ configuration\ successfully\ written\ to:\ \%s\(\backslash\)n"{}},}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00179}00179\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ output\_file\_tmp);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00180}00180\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00181}00181\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00182}00182\ \ \ \ \ \ \ \ \ \ \ \ \ fprintf(stderr,\ \textcolor{stringliteral}{"{}New\ configuration\ successfully\ written\ to:\ \%s\(\backslash\)n"{}},}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00183}00183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ output\_file);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00184}00184\ \ \ \ \ \ \ \ \ \ \ \ \ config\_status\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00185}00185\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00186}00186\ \ \ \ \ \ \ \ \ config\_destroy(\&cfg);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00187}00187\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
 \DoxyCodeLine{\Hypertarget{bmc_8c_source_l00188}00188\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00189}00189\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00190}00190\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00191}00191\ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00192}00192\ }
-\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00193}00193\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00189}00189\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (config\_lookup\_float(\&cfg,\ \textcolor{stringliteral}{"{}BENERGYV"{}},\ \&S.BENERGYV)}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00190}00190\ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ config\_lookup\_float(\&cfg,\ \textcolor{stringliteral}{"{}BVOLTAGEV"{}},\ \&S.BVOLTAGEV)}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00191}00191\ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ config\_lookup\_float(\&cfg,\ \textcolor{stringliteral}{"{}PVENERGYV"{}},\ \&S.PVENERGYV)}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00192}00192\ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ config\_lookup\_float(\&cfg,\ \textcolor{stringliteral}{"{}PVVOLTAGEV"{}},\ \&S.PVVOLTAGEV)}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00193}00193\ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ config\_lookup\_float(\&cfg,\ \textcolor{stringliteral}{"{}SOC\_MODEV"{}},\ \&S.SOC\_MODEV))\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00194}00194\ \ \ \ \ \ \ \ \ \ \ \ \ fprintf(stderr,\ \textcolor{stringliteral}{"{}Configuration\ successfully\ read\ \%4.1f\ \%4.1f\ \%4.1f\ \%4.1f\ \%4.1f\ from:\ \%s\(\backslash\)n"{}},}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00195}00195\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ S.BENERGYV,\ S.BVOLTAGEV,\ S.PVENERGYV,\ S.PVVOLTAGEV,\ S.SOC\_MODEV,\ output\_file);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00196}00196\ \ \ \ \ \ \ \ \ \ \ \ \ config\_status\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00197}00197\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00198}00198\ \ \ \ \ \ \ \ \ \ \ \ \ fprintf(stderr,\ \textcolor{stringliteral}{"{}No/Incorrect\ settings\ in\ configuration\ file.\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00199}00199\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00200}00200\ \ \ \ \ \ \ \ \ config\_destroy(\&cfg);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00201}00201\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00202}00202\ \ \ \ \ \textcolor{keywordflow}{return}\ config\_status;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00203}00203\ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00204}00204\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00205}00205\ \textcolor{keywordtype}{int}\ main(\textcolor{keywordtype}{int}\ argc,\ \textcolor{keywordtype}{char}\ *argv[])}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00206}00206\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00207}00207\ \ \ \ \ \textcolor{keywordtype}{int}\ do\_ao\_only\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00208}00208\ \ \ \ \ uint8\_t\ i\ =\ 0,\ j\ =\ 75;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00209}00209\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00210}00210\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00211}00211\ \textcolor{comment}{\ \ \ \ \ *\ read\ configuration\ file\ settings}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00212}00212\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00213}00213\ \ \ \ \ get\_set\_config();}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00214}00214\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00215}00215\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00216}00216\ \textcolor{comment}{\ \ \ \ \ *\ start\ the\ MQTT\ processing}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00217}00217\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00218}00218\ \ \ \ \ bmc\_mqtt\_init();}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00219}00219\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00220}00220\ \ \ \ \ \textcolor{keywordflow}{if}\ (do\_ao\_only)\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00221}00221\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (init\_dac(0.0,\ 25.0,\ \textcolor{keyword}{false})\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00222}00222\ \ \ \ \ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Missing\ Analog\ AO\ subdevice\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00223}00223\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00224}00224\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00225}00225\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00226}00226\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00227}00227\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00228}00228\ \ \ \ \ \ \ \ \ \ \ \ \ set\_dac\_raw(0,\ sine\_wave[255\ -\/\ i++]\ <<\ 4);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00229}00229\ \ \ \ \ \ \ \ \ \ \ \ \ set\_dac\_raw(1,\ sine\_wave[255\ -\/\ j++]\ <<\ 4);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00230}00230\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00231}00231\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00232}00232\ \textcolor{preprocessor}{\#ifndef\ DIGITAL\_ONLY}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00233}00233\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (init\_daq(0.0,\ 25.0,\ \textcolor{keyword}{false})\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00234}00234\ \ \ \ \ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Missing\ Analog\ subdevice(s)\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00235}00235\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00236}00236\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00237}00237\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00238}00238\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (init\_dio()\ <\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00239}00239\ \ \ \ \ \ \ \ \ \ \ \ \ fprintf(fout,\ \textcolor{stringliteral}{"{}Missing\ Digital\ subdevice(s)\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00240}00240\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00241}00241\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00242}00242\ \ \ \ \ \ \ \ \ E.dac[0]\ =\ 1.23f;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00243}00243\ \ \ \ \ \ \ \ \ E.dac[1]\ =\ 3.21f;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00244}00244\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00245}00245\ \ \ \ \ \ \ \ \ E.do\_16b\ =\ 0x01;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00246}00246\ \ \ \ \ \ \ \ \ E.di\_16b\ =\ 0x10;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00247}00247\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00248}00248\ \ \ \ \ \ \ \ \ fflush(fout);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00249}00249\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00250}00250\ \ \ \ \ \ \ \ \ \ \ \ \ usleep(MAIN\_DELAY);\ \textcolor{comment}{//\ sample\ rate\ \string~1\ msec}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00251}00251\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ set\_dac\_raw(0,\ sine\_wave[i++]);}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00252}00252\ \ \ \ \ \ \ \ \ \ \ \ \ get\_data\_sample();}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00253}00253\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00254}00254\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bmc.BOARD\ ==\ bmcboard)\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00255}00255\ \textcolor{preprocessor}{\#ifdef\ USE\_RELAYS}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00256}00256\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ relay\_set(0b01010101);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00257}00257\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00258}00258\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ led\_lightshow(10);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00259}00259\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00260}00260\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00261}00261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ led\_lightshow(10);}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00262}00262\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00263}00263\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00264}00264\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ha\_flag\_vars\_ss.runner)\ \{\ \textcolor{comment}{//\ timer\ or\ trigger\ from\ mqtt}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00265}00265\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ comedi\_push\_mqtt();\ \textcolor{comment}{//\ send\ json\ formatted\ data\ to\ the\ mqtt\ server}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00266}00266\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ha\_flag\_vars\_ss.runner\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00267}00267\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00268}00268\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00269}00269\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00270}00270\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00271}00271\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00272}00272\ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00273}00273\ }
+\DoxyCodeLine{\Hypertarget{bmc_8c_source_l00274}00274\ }
 
 \end{DoxyCode}

@@ -200,18 +200,22 @@ extern "C" {
 		D_SW_COUNT // one extra for number of switches to check
 	};
 
+	/*
+	 * Orignal python code
+	 * https://github.com/jorticus/pymate/blob/master/README.md
+	 */
 	typedef struct {
 		uint8_t type;
 		int16_t day;
 		int16_t amp_hours;
-		int16_t kilowatt_hours;
+		int16_t kilowatt_hours; // tenths of KWh
 		int16_t volts_peak;
 		int16_t amps_peak;
 		int16_t kilowatts_peak;
 		int16_t bat_min;
 		int16_t bat_max;
 		int16_t absorb_time;
-		int16_t float_time;
+		int16_t float_time; // minutes
 		uint8_t select;
 	} mx_logpage_t;
 

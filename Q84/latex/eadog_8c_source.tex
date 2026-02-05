@@ -584,24 +584,29 @@
 \DoxyCodeLine{\Hypertarget{eadog_8c_source_l00581}00581\ \ \ \ \ \ \ \ \ BM.dim\_delay\ =\ 0;}
 \DoxyCodeLine{\Hypertarget{eadog_8c_source_l00582}00582\ \textcolor{preprocessor}{\#ifdef\ USE\_LCD\_DMA}}
 \DoxyCodeLine{\Hypertarget{eadog_8c_source_l00583}00583\ \ \ \ \ \ \ \ \ send\_lcd\_cmd\_dma(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00584}00584\ \ \ \ \ \ \ \ \ send\_lcd\_data\_dma(NHD\_BL\_LOW);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00585}00585\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00586}00586\ \ \ \ \ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00587}00587\ \ \ \ \ \ \ \ \ send\_lcd\_data(NHD\_BL\_LOW);}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00588}00588\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00589}00589\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00590}00590\ \}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00591}00591\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00592}00592\ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00593}00593\ \textcolor{comment}{\ *\ busy\ loop\ delay\ with\ WDT\ reset}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00594}00594\ \textcolor{comment}{\ */}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00595}00595\ \textcolor{keywordtype}{void}\ wdtdelay(\textcolor{keyword}{const}\ uint32\_t\ delay)}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00596}00596\ \{}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00597}00597\ \ \ \ \ uint32\_t\ dcount;}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00598}00598\ }
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00599}00599\ \ \ \ \ \textcolor{keywordflow}{for}\ (dcount\ =\ 0;\ dcount\ <=\ delay;\ dcount++)\ \{\ \textcolor{comment}{//\ delay\ a\ bit}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00600}00600\ \ \ \ \ \ \ \ \ ClrWdt();\ \textcolor{comment}{//\ reset\ the\ WDT\ timer}}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00601}00601\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00602}00602\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00584}00584\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cc\_mode\ ==\ STATUS\_SLEEPING)\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00585}00585\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_data\_dma(NHD\_BL\_OFF);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00586}00586\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00587}00587\ \ \ \ \ \ \ \ \ \ \ \ \ send\_lcd\_data\_dma(NHD\_BL\_LOW);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00588}00588\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00589}00589\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00590}00590\ \ \ \ \ \ \ \ \ send\_lcd\_cmd(LCD\_CMD\_BRI);\ \textcolor{comment}{//\ set\ back-\/light\ level}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00591}00591\ \ \ \ \ \ \ \ \ send\_lcd\_data(NHD\_BL\_LOW);}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00592}00592\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00593}00593\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00594}00594\ \}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00595}00595\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00596}00596\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00597}00597\ \textcolor{comment}{\ *\ busy\ loop\ delay\ with\ WDT\ reset}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00598}00598\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00599}00599\ \textcolor{keywordtype}{void}\ wdtdelay(\textcolor{keyword}{const}\ uint32\_t\ delay)}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00600}00600\ \{}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00601}00601\ \ \ \ \ uint32\_t\ dcount;}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00602}00602\ }
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00603}00603\ \ \ \ \ \textcolor{keywordflow}{for}\ (dcount\ =\ 0;\ dcount\ <=\ delay;\ dcount++)\ \{\ \textcolor{comment}{//\ delay\ a\ bit}}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00604}00604\ \ \ \ \ \ \ \ \ Nop();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00605}00605\ \ \ \ \ \ \ \ \ Nop();}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00606}00606\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{eadog_8c_source_l00607}00607\ \}}
 
 \end{DoxyCode}

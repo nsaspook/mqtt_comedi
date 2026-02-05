@@ -8,8 +8,7 @@
 {\ttfamily \#include "{}timers.\+h"{}}\newline
 {\ttfamily \#include "{}mcc\+\_\+generated\+\_\+files/mcc.\+h"{}}\newline
 {\ttfamily \#include "{}mcc\+\_\+generated\+\_\+files/uart3.\+h"{}}\newline
-Include dependency graph for modbus\+\_\+master.\+h\+:
-\nopagebreak
+Include dependency graph for modbus\+\_\+master.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -42,6 +41,8 @@ struct \mbox{\hyperlink{structM__data}{M\+\_\+data}}
 struct \mbox{\hyperlink{structC__data}{C\+\_\+data}}
 \item 
 struct \mbox{\hyperlink{structEM__data1}{EM\+\_\+data1}}
+\item 
+struct \mbox{\hyperlink{structEM__tmp}{EM\+\_\+tmp}}
 \item 
 struct \mbox{\hyperlink{structEM__data2}{EM\+\_\+data2}}
 \item 
@@ -84,22 +85,6 @@ struct \mbox{\hyperlink{structEM__version}{EM\+\_\+version}}
 \item 
 \#define \mbox{\hyperlink{modbus__master_8h_af9c36b86b3e472fc758bcfcc8013b0eb}{FASTQ}}
 \item 
-\#define \mbox{\hyperlink{modbus__master_8h_aedb4fe6a345869e5a70ae9164032d08f}{TMDELAY}}~2
-\item 
-\#define \mbox{\hyperlink{modbus__master_8h_a4c601ed7af6a69050f5578067126fb61}{TEDELAY}}~1
-\item 
-\#define \mbox{\hyperlink{modbus__master_8h_a425bcc5937972ae1bd308bf8e6a13535}{RDELAY}}~200
-\item 
-\#define \mbox{\hyperlink{modbus__master_8h_a0fdbeddf72f3780df2f0e740ca11adb2}{CDELAY}}~40
-\item 
-\#define \mbox{\hyperlink{modbus__master_8h_a5f1d53ca2f2da7fa6c2b8eb0660f3b1f}{QDELAY}}~2
-\item 
-\#define \mbox{\hyperlink{modbus__master_8h_a97342f5cf6b60063b0212cb309b97621}{TODELAY}}~4
-\item 
-\#define \mbox{\hyperlink{modbus__master_8h_ab2dc237e07e2b4c8a52a5203c216fd37}{SPACING}}~40
-\item 
-\#define \mbox{\hyperlink{modbus__master_8h_ab83ebaee004c42a7add55f4e71c7f97a}{DUPL\+\_\+\+DELAY}}~2
-\item 
 \#define \mbox{\hyperlink{modbus__master_8h_ac9df3ac1684b80558780997a5ed4cc03}{Swrite}}~UART3\+\_\+\+Write
 \item 
 \#define \mbox{\hyperlink{modbus__master_8h_a8ed044302995360281208fd66a5ebd08}{Strmt}}~UART3\+\_\+is\+\_\+tx\+\_\+done
@@ -128,10 +113,6 @@ struct \mbox{\hyperlink{structEM__version}{EM\+\_\+version}}
 \item 
 \#define \mbox{\hyperlink{modbus__master_8h_a05ffcc8957228e4887e7bc18306c9934}{WRITE\+\_\+\+MULTIPLE\+\_\+\+REGISTERS}}~16
 \item 
-\#define \mbox{\hyperlink{modbus__master_8h_a1b6ff0063cfdadffcee4c23821a9f2ac}{BOFF}}~0
-\item 
-\#define \mbox{\hyperlink{modbus__master_8h_a3885dd98e70586362c2f92d6f46a1c5c}{BON}}~255
-\item 
 \#define \mbox{\hyperlink{modbus__master_8h_af17f890e8d983bab6c8b113f4a04aa82}{MM\+\_\+\+ERROR\+\_\+S}}~MLED\+\_\+\+Set\+High()
 \item 
 \#define \mbox{\hyperlink{modbus__master_8h_a0a88d1810b2c2c20957e7ecbeb3e16cd}{MM\+\_\+\+ERROR\+\_\+C}}~MLED\+\_\+\+Set\+Low()
@@ -156,6 +137,9 @@ typedef struct C\+\_\+data {\bfseries C\+\_\+data}
 \item 
 \Hypertarget{modbus__master_8h_a938e68b46bd363141526fc3d24a368d7}\label{modbus__master_8h_a938e68b46bd363141526fc3d24a368d7} 
 typedef \+\_\+\+\_\+pack struct EM\+\_\+data1 {\bfseries EM\+\_\+data1}
+\item 
+\Hypertarget{modbus__master_8h_ad103642d6874f5ba8b024463c955824d}\label{modbus__master_8h_ad103642d6874f5ba8b024463c955824d} 
+typedef struct EM\+\_\+tmp {\bfseries EM\+\_\+tmp}
 \item 
 \Hypertarget{modbus__master_8h_a3f0d571d268b7e8217c0f434b4c13c48}\label{modbus__master_8h_a3f0d571d268b7e8217c0f434b4c13c48} 
 typedef \+\_\+\+\_\+pack struct EM\+\_\+data2 {\bfseries EM\+\_\+data2}
@@ -262,6 +246,8 @@ volatile struct \mbox{\hyperlink{structVM__type}{VM\+\_\+type}} \mbox{\hyperlink
 \item 
 \mbox{\hyperlink{structEM__data1}{EM\+\_\+data1}} \mbox{\hyperlink{modbus__master_8h_a6b4eae00bfaa75a10707f816dcddf8a2}{em}}
 \item 
+\mbox{\hyperlink{structEM__tmp}{EM\+\_\+tmp}} \mbox{\hyperlink{modbus__master_8h_a7436972fbe7474220728f2ea610efe83}{em\+\_\+tmp}}
+\item 
 \mbox{\hyperlink{structEM__data2}{EM\+\_\+data2}} \mbox{\hyperlink{modbus__master_8h_ad191a89afedc59648e8f67556d13375c}{emt}}
 \item 
 \mbox{\hyperlink{structEM__serial}{EM\+\_\+serial}} \mbox{\hyperlink{modbus__master_8h_a432631245393587c2229a92d6017b089}{ems}}
@@ -292,36 +278,6 @@ Definition in file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master
 
 Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00034}{34}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
 
-\Hypertarget{modbus__master_8h_a1b6ff0063cfdadffcee4c23821a9f2ac}\index{modbus\_master.h@{modbus\_master.h}!BOFF@{BOFF}}
-\index{BOFF@{BOFF}!modbus\_master.h@{modbus\_master.h}}
-\doxysubsubsection{\texorpdfstring{BOFF}{BOFF}}
-{\footnotesize\ttfamily \label{modbus__master_8h_a1b6ff0063cfdadffcee4c23821a9f2ac} 
-\#define BOFF~0}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00311}{311}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
-
-\Hypertarget{modbus__master_8h_a3885dd98e70586362c2f92d6f46a1c5c}\index{modbus\_master.h@{modbus\_master.h}!BON@{BON}}
-\index{BON@{BON}!modbus\_master.h@{modbus\_master.h}}
-\doxysubsubsection{\texorpdfstring{BON}{BON}}
-{\footnotesize\ttfamily \label{modbus__master_8h_a3885dd98e70586362c2f92d6f46a1c5c} 
-\#define BON~255}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00312}{312}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
-
-\Hypertarget{modbus__master_8h_a0fdbeddf72f3780df2f0e740ca11adb2}\index{modbus\_master.h@{modbus\_master.h}!CDELAY@{CDELAY}}
-\index{CDELAY@{CDELAY}!modbus\_master.h@{modbus\_master.h}}
-\doxysubsubsection{\texorpdfstring{CDELAY}{CDELAY}}
-{\footnotesize\ttfamily \label{modbus__master_8h_a0fdbeddf72f3780df2f0e740ca11adb2} 
-\#define CDELAY~40}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00073}{73}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
-
 \Hypertarget{modbus__master_8h_a20f4b8cc1fdc0a22a16eeffef6b94f4c}\index{modbus\_master.h@{modbus\_master.h}!DBUG\_R@{DBUG\_R}}
 \index{DBUG\_R@{DBUG\_R}!modbus\_master.h@{modbus\_master.h}}
 \doxysubsubsection{\texorpdfstring{DBUG\_R}{DBUG\_R}}
@@ -331,16 +287,6 @@ Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00073}{73}} of fil
 
 
 Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00044}{44}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
-
-\Hypertarget{modbus__master_8h_ab83ebaee004c42a7add55f4e71c7f97a}\index{modbus\_master.h@{modbus\_master.h}!DUPL\_DELAY@{DUPL\_DELAY}}
-\index{DUPL\_DELAY@{DUPL\_DELAY}!modbus\_master.h@{modbus\_master.h}}
-\doxysubsubsection{\texorpdfstring{DUPL\_DELAY}{DUPL\_DELAY}}
-{\footnotesize\ttfamily \label{modbus__master_8h_ab83ebaee004c42a7add55f4e71c7f97a} 
-\#define DUPL\+\_\+\+DELAY~2}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00077}{77}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
 
 \Hypertarget{modbus__master_8h_a9f3b33df22638a18471cea5b5138f2dc}\index{modbus\_master.h@{modbus\_master.h}!EM\_DATA\_LEN1@{EM\_DATA\_LEN1}}
 \index{EM\_DATA\_LEN1@{EM\_DATA\_LEN1}!modbus\_master.h@{modbus\_master.h}}
@@ -470,7 +416,7 @@ Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00023}{23}} of fil
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00315}{315}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
+Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00328}{328}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
 
 \Hypertarget{modbus__master_8h_af17f890e8d983bab6c8b113f4a04aa82}\index{modbus\_master.h@{modbus\_master.h}!MM\_ERROR\_S@{MM\_ERROR\_S}}
 \index{MM\_ERROR\_S@{MM\_ERROR\_S}!modbus\_master.h@{modbus\_master.h}}
@@ -480,27 +426,7 @@ Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00315}{315}} of fi
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00314}{314}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
-
-\Hypertarget{modbus__master_8h_a5f1d53ca2f2da7fa6c2b8eb0660f3b1f}\index{modbus\_master.h@{modbus\_master.h}!QDELAY@{QDELAY}}
-\index{QDELAY@{QDELAY}!modbus\_master.h@{modbus\_master.h}}
-\doxysubsubsection{\texorpdfstring{QDELAY}{QDELAY}}
-{\footnotesize\ttfamily \label{modbus__master_8h_a5f1d53ca2f2da7fa6c2b8eb0660f3b1f} 
-\#define QDELAY~2}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00074}{74}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
-
-\Hypertarget{modbus__master_8h_a425bcc5937972ae1bd308bf8e6a13535}\index{modbus\_master.h@{modbus\_master.h}!RDELAY@{RDELAY}}
-\index{RDELAY@{RDELAY}!modbus\_master.h@{modbus\_master.h}}
-\doxysubsubsection{\texorpdfstring{RDELAY}{RDELAY}}
-{\footnotesize\ttfamily \label{modbus__master_8h_a425bcc5937972ae1bd308bf8e6a13535} 
-\#define RDELAY~200}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00072}{72}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
+Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00327}{327}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
 
 \Hypertarget{modbus__master_8h_a43e02d2affd736b055b1de8817d8d61b}\index{modbus\_master.h@{modbus\_master.h}!READ\_COILS@{READ\_COILS}}
 \index{READ\_COILS@{READ\_COILS}!modbus\_master.h@{modbus\_master.h}}
@@ -510,7 +436,7 @@ Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00072}{72}} of fil
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00302}{302}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
+Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00315}{315}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
 
 \Hypertarget{modbus__master_8h_a2b8528449a29b7e1ed7a17f41f0f00b0}\index{modbus\_master.h@{modbus\_master.h}!READ\_DISCRETE\_INPUTS@{READ\_DISCRETE\_INPUTS}}
 \index{READ\_DISCRETE\_INPUTS@{READ\_DISCRETE\_INPUTS}!modbus\_master.h@{modbus\_master.h}}
@@ -520,7 +446,7 @@ Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00302}{302}} of fi
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00303}{303}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
+Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00316}{316}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
 
 \Hypertarget{modbus__master_8h_a72629c87e1b18706ed17ee3dc768d5d1}\index{modbus\_master.h@{modbus\_master.h}!READ\_HOLDING\_REGISTERS@{READ\_HOLDING\_REGISTERS}}
 \index{READ\_HOLDING\_REGISTERS@{READ\_HOLDING\_REGISTERS}!modbus\_master.h@{modbus\_master.h}}
@@ -530,7 +456,7 @@ Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00303}{303}} of fi
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00304}{304}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
+Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00317}{317}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
 
 \Hypertarget{modbus__master_8h_a860e48854b8e16a310dd29fe6e069561}\index{modbus\_master.h@{modbus\_master.h}!READ\_INPUT\_REGISTERS@{READ\_INPUT\_REGISTERS}}
 \index{READ\_INPUT\_REGISTERS@{READ\_INPUT\_REGISTERS}!modbus\_master.h@{modbus\_master.h}}
@@ -540,7 +466,7 @@ Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00304}{304}} of fi
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00305}{305}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
+Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00318}{318}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
 
 \Hypertarget{modbus__master_8h_a73041837103445f8384e51c68c063216}\index{modbus\_master.h@{modbus\_master.h}!SERIAL\_DATA\_LEN@{SERIAL\_DATA\_LEN}}
 \index{SERIAL\_DATA\_LEN@{SERIAL\_DATA\_LEN}!modbus\_master.h@{modbus\_master.h}}
@@ -561,16 +487,6 @@ Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00033}{33}} of fil
 
 
 Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00086}{86}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
-
-\Hypertarget{modbus__master_8h_ab2dc237e07e2b4c8a52a5203c216fd37}\index{modbus\_master.h@{modbus\_master.h}!SPACING@{SPACING}}
-\index{SPACING@{SPACING}!modbus\_master.h@{modbus\_master.h}}
-\doxysubsubsection{\texorpdfstring{SPACING}{SPACING}}
-{\footnotesize\ttfamily \label{modbus__master_8h_ab2dc237e07e2b4c8a52a5203c216fd37} 
-\#define SPACING~40}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00076}{76}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
 
 \Hypertarget{modbus__master_8h_a9057e3ba59362641cb404ceab13a881a}\index{modbus\_master.h@{modbus\_master.h}!Srbuffer@{Srbuffer}}
 \index{Srbuffer@{Srbuffer}!modbus\_master.h@{modbus\_master.h}}
@@ -632,36 +548,6 @@ Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00029}{29}} of fil
 
 Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00083}{83}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
 
-\Hypertarget{modbus__master_8h_a4c601ed7af6a69050f5578067126fb61}\index{modbus\_master.h@{modbus\_master.h}!TEDELAY@{TEDELAY}}
-\index{TEDELAY@{TEDELAY}!modbus\_master.h@{modbus\_master.h}}
-\doxysubsubsection{\texorpdfstring{TEDELAY}{TEDELAY}}
-{\footnotesize\ttfamily \label{modbus__master_8h_a4c601ed7af6a69050f5578067126fb61} 
-\#define TEDELAY~1}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00071}{71}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
-
-\Hypertarget{modbus__master_8h_aedb4fe6a345869e5a70ae9164032d08f}\index{modbus\_master.h@{modbus\_master.h}!TMDELAY@{TMDELAY}}
-\index{TMDELAY@{TMDELAY}!modbus\_master.h@{modbus\_master.h}}
-\doxysubsubsection{\texorpdfstring{TMDELAY}{TMDELAY}}
-{\footnotesize\ttfamily \label{modbus__master_8h_aedb4fe6a345869e5a70ae9164032d08f} 
-\#define TMDELAY~2}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00070}{70}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
-
-\Hypertarget{modbus__master_8h_a97342f5cf6b60063b0212cb309b97621}\index{modbus\_master.h@{modbus\_master.h}!TODELAY@{TODELAY}}
-\index{TODELAY@{TODELAY}!modbus\_master.h@{modbus\_master.h}}
-\doxysubsubsection{\texorpdfstring{TODELAY}{TODELAY}}
-{\footnotesize\ttfamily \label{modbus__master_8h_a97342f5cf6b60063b0212cb309b97621} 
-\#define TODELAY~4}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00075}{75}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
-
 \Hypertarget{modbus__master_8h_a9f224f8960c021dd05ed3fa2cdd01284}\index{modbus\_master.h@{modbus\_master.h}!WRITE\_MULTIPLE\_COILS@{WRITE\_MULTIPLE\_COILS}}
 \index{WRITE\_MULTIPLE\_COILS@{WRITE\_MULTIPLE\_COILS}!modbus\_master.h@{modbus\_master.h}}
 \doxysubsubsection{\texorpdfstring{WRITE\_MULTIPLE\_COILS}{WRITE\_MULTIPLE\_COILS}}
@@ -670,7 +556,7 @@ Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00075}{75}} of fil
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00308}{308}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
+Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00321}{321}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
 
 \Hypertarget{modbus__master_8h_a05ffcc8957228e4887e7bc18306c9934}\index{modbus\_master.h@{modbus\_master.h}!WRITE\_MULTIPLE\_REGISTERS@{WRITE\_MULTIPLE\_REGISTERS}}
 \index{WRITE\_MULTIPLE\_REGISTERS@{WRITE\_MULTIPLE\_REGISTERS}!modbus\_master.h@{modbus\_master.h}}
@@ -680,7 +566,7 @@ Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00308}{308}} of fi
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00309}{309}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
+Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00322}{322}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
 
 \Hypertarget{modbus__master_8h_a264ba45a1739807963d0404270e4b142}\index{modbus\_master.h@{modbus\_master.h}!WRITE\_SINGLE\_COIL@{WRITE\_SINGLE\_COIL}}
 \index{WRITE\_SINGLE\_COIL@{WRITE\_SINGLE\_COIL}!modbus\_master.h@{modbus\_master.h}}
@@ -690,7 +576,7 @@ Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00309}{309}} of fi
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00306}{306}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
+Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00319}{319}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
 
 \Hypertarget{modbus__master_8h_ae193fb8e7fb5dafe59b40642c13b4b42}\index{modbus\_master.h@{modbus\_master.h}!WRITE\_SINGLE\_REGISTER@{WRITE\_SINGLE\_REGISTER}}
 \index{WRITE\_SINGLE\_REGISTER@{WRITE\_SINGLE\_REGISTER}!modbus\_master.h@{modbus\_master.h}}
@@ -700,7 +586,7 @@ Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00306}{306}} of fi
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00307}{307}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
+Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00320}{320}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
 
 
 
@@ -735,7 +621,7 @@ enum filter\+\_\+type}
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00226}{226}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
+Definition at line \mbox{\hyperlink{modbus__master_8h_source_l00239}{239}} of file \mbox{\hyperlink{modbus__master_8h_source}{modbus\+\_\+master.\+h}}.
 
 \Hypertarget{modbus__master_8h_a88668637ccaca17d11f722f59f59406b}\index{modbus\_master.h@{modbus\_master.h}!trace\_type@{trace\_type}}
 \index{trace\_type@{trace\_type}!modbus\_master.h@{modbus\_master.h}}
@@ -820,7 +706,7 @@ void mb\+\_\+setup (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCapti
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00587}{587}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00585}{585}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
 \Hypertarget{modbus__master_8h_a2ec9a048919034f4daaa76c92285269d}\index{modbus\_master.h@{modbus\_master.h}!mb\_tx\_test@{mb\_tx\_test}}
 \index{mb\_tx\_test@{mb\_tx\_test}!modbus\_master.h@{modbus\_master.h}}
@@ -830,7 +716,7 @@ void mb\+\_\+tx\+\_\+test (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struc
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00556}{556}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00554}{554}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
 \Hypertarget{modbus__master_8h_a9f3266015b32b55423f7ff3d32079455}\index{modbus\_master.h@{modbus\_master.h}!my\_modbus\_rx\_32@{my\_modbus\_rx\_32}}
 \index{my\_modbus\_rx\_32@{my\_modbus\_rx\_32}!modbus\_master.h@{modbus\_master.h}}
@@ -855,13 +741,23 @@ Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00166}{166}} of fi
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00029}{29}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00026}{26}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
 \Hypertarget{modbus__master_8h_a6b4eae00bfaa75a10707f816dcddf8a2}\index{modbus\_master.h@{modbus\_master.h}!em@{em}}
 \index{em@{em}!modbus\_master.h@{modbus\_master.h}}
 \doxysubsubsection{\texorpdfstring{em}{em}}
 {\footnotesize\ttfamily \label{modbus__master_8h_a6b4eae00bfaa75a10707f816dcddf8a2} 
 \mbox{\hyperlink{structEM__data1}{EM\+\_\+data1}} em\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00080}{80}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+
+\Hypertarget{modbus__master_8h_a7436972fbe7474220728f2ea610efe83}\index{modbus\_master.h@{modbus\_master.h}!em\_tmp@{em\_tmp}}
+\index{em\_tmp@{em\_tmp}!modbus\_master.h@{modbus\_master.h}}
+\doxysubsubsection{\texorpdfstring{em\_tmp}{em\_tmp}}
+{\footnotesize\ttfamily \label{modbus__master_8h_a7436972fbe7474220728f2ea610efe83} 
+\mbox{\hyperlink{structEM__tmp}{EM\+\_\+tmp}} em\+\_\+tmp\hspace{0.3cm}{\ttfamily [extern]}}
 
 
 
@@ -905,5 +801,5 @@ volatile struct \mbox{\hyperlink{structVM__type}{VM\+\_\+type}} VM\hspace{0.3cm}
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00044}{44}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00041}{41}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 

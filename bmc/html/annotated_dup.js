@@ -1,6 +1,7 @@
 var annotated_dup =
 [
     [ "bmc_buffer_type", "structbmc__buffer__type.html", null ],
+    [ "bmc_settings", "structbmc__settings.html", null ],
     [ "bmcdata", "structbmcdata.html", null ],
     [ "dio_buf_type", "uniondio__buf__type.html", null ],
     [ "EM_data1", "structEM__data1.html", null ],

@@ -602,7 +602,7 @@ void main(void)
 			set_vterm(V.vterm); // set to buffer 0
 			snprintf(V.info, MAX_INFO, " Terminal Info               ");
 			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, " %cPI DAQ_BMC %s        ", boot_char, VER);
-			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " %llX Run Display %d             ", spi_stat_ss.mui, spi_stat_ss.daq_conf);
+			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " %llX Run Display 0X%.2X             ", spi_stat_ss.mui, spi_stat_ss.daq_conf);
 
 #ifdef DIS_DEBUG
 			if (V.di_fail) {
@@ -813,17 +813,17 @@ void main(void)
 			if (r_string_ready) {
 				bmc_logger();
 				snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%s                         ", &BMC4.log_buffer[2]);
-				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s Vac%ld A%3.2f           ", modbus_name[C.id_ok], em.vl3l1 / 10, ((float) em.al1) / 1000.0f);
-				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%s %s A%d.%01d A%d              ", FM80_name[BM.FM80_online], state_name[cc_mode], bat_amp_whole - 128, bat_amp_frac - 128, bat_amp_panel - 128);
-				snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "BAT V%d.%01d PV V%d.%01d                 ", vw, vf, pvw, pvf);
+				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %ldVAC %3.2fA           ", modbus_name[C.id_ok], em.vl3l1 / 10, ((float) em.al1) / 1000.0f);
+				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%s %s %d.%01dA %dA              ", FM80_name[BM.FM80_online], state_name[cc_mode], bat_amp_whole - 128, bat_amp_frac - 128, bat_amp_panel - 128);
+				snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "BAT %d.%01dV PV %d.%01dV                 ", vw, vf, pvw, pvf);
 
-				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "kwh %u float %u                       ", BM.log.kilowatt_hours, BM.log.float_time);
-				snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "Bmax %u Bmin %u                      ", BM.log.bat_max, BM.log.bat_min);
-				snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "V%ld A%3.2f                        ", em.vl1l2, ((float) em.al1) / 1000.0f);
-				snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "W%ld VA%ld P%d             ", em.wl1, em.val1, em.pfsys);
+				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "%2.1fKWh float %3.1fH                       ", (float) BM.log.kilowatt_hours / 0.1f, (float) BM.log.float_time / 60.0f);
+				snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "Bmax %uV Bmin %uV                      ", BM.log.bat_max / 10, BM.log.bat_min / 10);
+				snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%ldV %3.2fA                        ", em.vl1l2, ((float) em.al1) / 1000.0f);
+				snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%ldW %ldVA %dPF             ", em.wl1, em.val1, em.pfsys);
 
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
-				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3f,5 %6.3f                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));
+				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3fV,5 %6.3fV                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));
 				snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu  0X%.2X                             ", spi_stat_ss.bmc_counts, spi_stat_ss.daq_conf);
 				snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "%s %s                       ", (char *) build_date, VER);
 

@@ -9,6 +9,7 @@ var annotated_dup =
     [ "EM_data1", "structEM__data1.html", null ],
     [ "EM_data2", "structEM__data2.html", null ],
     [ "EM_serial", "structEM__serial.html", null ],
+    [ "EM_tmp", "structEM__tmp.html", null ],
     [ "EM_version", "structEM__version.html", null ],
     [ "ha_daq_calib_type", "structha__daq__calib__type.html", null ],
     [ "M_data", "structM__data.html", null ],

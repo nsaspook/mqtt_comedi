@@ -39,7 +39,7 @@
 \DoxyCodeLine{\Hypertarget{bmc_8h_source_l00036}00036\ \textcolor{preprocessor}{\#include\ "{}MQTTClient.h"{}}}
 \DoxyCodeLine{\Hypertarget{bmc_8h_source_l00037}00037\ \textcolor{preprocessor}{\#include\ "{}bmc\_mqtt.h"{}}}
 \DoxyCodeLine{\Hypertarget{bmc_8h_source_l00038}00038\ }
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00039}00039\ \textcolor{preprocessor}{\#define\ LOG\_VERSION\ \ \ \ \ "{}V0.21"{}}}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00039}00039\ \textcolor{preprocessor}{\#define\ LOG\_VERSION\ \ \ \ \ "{}V0.25"{}}}
 \DoxyCodeLine{\Hypertarget{bmc_8h_source_l00040}00040\ \textcolor{preprocessor}{\#define\ MQTT\_VERSION\ \ \ \ "{}V3.11"{}}}
 \DoxyCodeLine{\Hypertarget{bmc_8h_source_l00041}00041\ \textcolor{preprocessor}{\#define\ TNAME\ \ "{}maint9"{}}}
 \DoxyCodeLine{\Hypertarget{bmc_8h_source_l00042}00042\ \textcolor{preprocessor}{\#define\ LADDRESS\ \ \ \ \ \ \ \ "{}tcp://127.0.0.1:1883"{}}}
@@ -73,38 +73,44 @@
 \DoxyCodeLine{\Hypertarget{bmc_8h_source_l00070}00070\ \textcolor{preprocessor}{\#define\ KAI\ \ \ \ \ \ \ \ \ \ \ \ \ 60}}
 \DoxyCodeLine{\Hypertarget{bmc_8h_source_l00071}00071\ }
 \DoxyCodeLine{\Hypertarget{bmc_8h_source_l00072}00072\ \textcolor{preprocessor}{\#define\ ANA\_BUFFERS\ \ \ \ \ 0x40}}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00073}00073\ }
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00074}00074\ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00075}00075\ \textcolor{comment}{\ \ \ \ \ *\ system\ testing\ defines}}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00076}00076\ \textcolor{comment}{\ \ \ \ \ *\ all\ should\ be\ undefined\ for\ normal\ operation}}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00077}00077\ \textcolor{comment}{\ \ \ \ \ */}}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00078}00078\ \ \ \ \ \textcolor{comment}{//\#define\ DAC\_TESTING}}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00079}00079\ \ \ \ \ \textcolor{comment}{//digital\ only}}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00080}00080\ \ \ \ \ \textcolor{comment}{//\#define\ DIGITAL\_ONLY}}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00081}00081\ }
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00082}00082\ \ \ \ \ \textcolor{keyword}{extern}\ FILE\ *fout,\ *calfile;\ \textcolor{comment}{//\ logging\ stream}}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00083}00083\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structenergy__type}{energy\_type}}\ E;}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00084}00084\ }
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00085}\mbox{\hyperlink{structenergy__type}{00085}}\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structenergy__type}{energy\_type}}\ \{}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00086}00086\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ once\_gti,\ once\_ac,\ iammeter,\ fm80,\ dumpload,\ homeassistant,\ once\_gti\_zero,\ comedi;}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00087}00087\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{double}\ gti\_low\_adj,\ ac\_low\_adj,\ dl\_excess\_adj;}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00088}00088\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ ac\_sw\_on,\ gti\_sw\_on,\ ac\_sw\_status,\ gti\_sw\_status,\ solar\_shutdown,\ solar\_mode,\ startup,\ ac\_mismatch,\ dc\_mismatch,\ mode\_mismatch,\ dl\_excess;}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00089}00089\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ speed\_go,\ im\_delay,\ im\_display,\ gti\_delay,\ sequence,\ mqtt\_count;}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00090}00090\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int32\_t\ rc,\ sane;}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00091}00091\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ thirty\_sec\_clock,\ log\_spam,\ log\_time\_reset;}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00092}00092\ \ \ \ \ \ \ \ \ pthread\_mutex\_t\ ha\_lock;}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00093}00093\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int16\_t\ di\_16b,\ do\_16b;}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00094}00094\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ adc[ANA\_BUFFERS],\ dac[ANA\_BUFFERS];}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00095}00095\ \ \ \ \ \ \ \ \ MQTTClient\ client\_p,\ client\_sd,\ client\_ha;}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00096}00096\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00097}00097\ }
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00098}00098\ \ \ \ \ \textcolor{keywordtype}{void}\ led\_lightshow(\textcolor{keywordtype}{int});}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00099}00099\ }
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00100}00100\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00101}00101\ \}}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00102}00102\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00103}00103\ }
-\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00104}00104\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ BMC\_H\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00073}00073\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00074}00074\ \textcolor{preprocessor}{\#define\ EXIT\_CONFIG\_WRITE\_FAIL}}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00075}00075\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00076}00076\ \textcolor{comment}{//\#define\ USE\_RELAYS}}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00078}00078\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00079}00079\ \textcolor{comment}{\ \ \ \ \ *\ system\ testing\ defines}}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00080}00080\ \textcolor{comment}{\ \ \ \ \ *\ all\ should\ be\ undefined\ for\ normal\ operation}}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00081}00081\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00082}00082\ \ \ \ \ \textcolor{comment}{//\#define\ DAC\_TESTING}}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00083}00083\ \ \ \ \ \textcolor{comment}{//digital\ only}}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00084}00084\ \ \ \ \ \textcolor{comment}{//\#define\ DIGITAL\_ONLY}}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00086}00086\ \ \ \ \ \textcolor{keyword}{extern}\ FILE\ *fout,\ *calfile;\ \textcolor{comment}{//\ logging\ stream}}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00087}00087\ \ \ \ \ \textcolor{keyword}{extern}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structenergy__type}{energy\_type}}\ E;}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00088}00088\ }
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00089}\mbox{\hyperlink{structenergy__type}{00089}}\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structenergy__type}{energy\_type}}\ \{}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00090}00090\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ once\_gti,\ once\_ac,\ iammeter,\ fm80,\ dumpload,\ homeassistant,\ once\_gti\_zero,\ comedi;}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00091}00091\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{double}\ gti\_low\_adj,\ ac\_low\_adj,\ dl\_excess\_adj;}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00092}00092\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ ac\_sw\_on,\ gti\_sw\_on,\ ac\_sw\_status,\ gti\_sw\_status,\ solar\_shutdown,\ solar\_mode,\ startup,\ ac\_mismatch,\ dc\_mismatch,\ mode\_mismatch,\ dl\_excess;}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00093}00093\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ speed\_go,\ im\_delay,\ im\_display,\ gti\_delay,\ sequence,\ mqtt\_count;}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00094}00094\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int32\_t\ rc,\ sane;}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00095}00095\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ thirty\_sec\_clock,\ log\_spam,\ log\_time\_reset;}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00096}00096\ \ \ \ \ \ \ \ \ pthread\_mutex\_t\ ha\_lock;}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00097}00097\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int16\_t\ di\_16b,\ do\_16b;}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00098}00098\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ adc[ANA\_BUFFERS],\ dac[ANA\_BUFFERS];}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00099}00099\ \ \ \ \ \ \ \ \ MQTTClient\ client\_p,\ client\_sd,\ client\_ha;}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00100}00100\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00101}00101\ }
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00102}00102\ \ \ \ \ \textcolor{keywordtype}{void}\ led\_lightshow(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00103}00103\ \ \ \ \ \textcolor{keywordtype}{void}\ relay\_set(uint16\_t);}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00104}00104\ \ \ \ \ \textcolor{keywordtype}{bool}\ get\_set\_config(\textcolor{keywordtype}{void});}
 \DoxyCodeLine{\Hypertarget{bmc_8h_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00106}00106\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00107}00107\ \}}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00108}00108\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00110}00110\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ BMC\_H\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{\Hypertarget{bmc_8h_source_l00111}00111\ }
 
 \end{DoxyCode}

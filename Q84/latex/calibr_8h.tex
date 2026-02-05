@@ -1,12 +1,13 @@
 \doxysection{bmc\+\_\+slave.\+X/calibr.h File Reference}
 \hypertarget{calibr_8h}{}\label{calibr_8h}\index{bmc\_slave.X/calibr.h@{bmc\_slave.X/calibr.h}}
 {\ttfamily \#include $<$xc.\+h$>$}\newline
+{\ttfamily \#include "{}vconfig.\+h"{}}\newline
 Include dependency graph for calibr.\+h\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=198pt]{calibr_8h__incl}
+\includegraphics[width=350pt]{calibr_8h__incl}
 \end{center}
 \end{figure}
 This graph shows which files directly or indirectly include this file\+:
@@ -22,174 +23,88 @@ This graph shows which files directly or indirectly include this file\+:
 \item 
 struct \mbox{\hyperlink{structha__daq__calib__type}{ha\+\_\+daq\+\_\+calib\+\_\+type}}
 \end{DoxyCompactItemize}
-\doxysubsubsection*{Macros}
+\doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-\#define \mbox{\hyperlink{calibr_8h_acb49ae8a6d7cffa2a9e1a83f29aa28f3}{HV\+\_\+\+SCALE\+\_\+\+OFFSET}}~0.\+0f
+void \mbox{\hyperlink{calibr_8h_a79f37a1a9e6812b8f917ae05702d8049}{set\+\_\+calibration}} (unsigned long long)
 \item 
-\#define \mbox{\hyperlink{calibr_8h_a2c2ab0706a9945cb2ee30419089281c4}{HV\+\_\+\+SCALAR4}}~64.\+2600f
+float \mbox{\hyperlink{calibr_8h_a80ebdcd8e0efd6f160faafd7e0a0bd5b}{phy\+\_\+chan4}} (uint16\+\_\+t)
 \item 
-\#define \mbox{\hyperlink{calibr_8h_af101b2d193c434b2cea4105d80b2aa59}{HV\+\_\+\+SCALAR5}}~64.\+2600f
+float \mbox{\hyperlink{calibr_8h_a539f16cb8c4fce876b95d5c97411fc4a}{phy\+\_\+chan5}} (uint16\+\_\+t)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
 \item 
-\#define \mbox{\hyperlink{calibr_8h_ad2507542f794644f6614892a9e6ddd2a}{HV\+\_\+\+SCALE4\+\_\+0}}~64.\+2600f
+volatile struct \mbox{\hyperlink{structspi__stat__type__ss}{spi\+\_\+stat\+\_\+type\+\_\+ss}} \mbox{\hyperlink{calibr_8h_a027874cb31b7257cd1bae1de3d7a087e}{spi\+\_\+stat\+\_\+ss}}
 \item 
-\#define \mbox{\hyperlink{calibr_8h_a4808496fb27344af3afdf9d8bb6f44c3}{HV\+\_\+\+SCALE5\+\_\+0}}~64.\+2600f
-\item 
-\#define \mbox{\hyperlink{calibr_8h_a0be2cc341545cb83496e6aadd5dabba5}{HV\+\_\+\+SCALE4\+\_\+1}}~64.\+1890f
-\item 
-\#define \mbox{\hyperlink{calibr_8h_adde533d6e547a890e476596c04e58979}{HV\+\_\+\+SCALE5\+\_\+1}}~64.\+1415f
-\item 
-\#define \mbox{\hyperlink{calibr_8h_a537bbd8f610d5ab144250ca8c5000535}{HV\+\_\+\+SCALE4\+\_\+2}}~54.\+1890f
-\item 
-\#define \mbox{\hyperlink{calibr_8h_a078ab58df9d58cbec73cba6e9eeadd10}{HV\+\_\+\+SCALE5\+\_\+2}}~54.\+1415f
-\item 
-\#define \mbox{\hyperlink{calibr_8h_afb536687872e6c45002d9390c3e28eba}{HV\+\_\+\+SCALE4\+\_\+3}}~64.\+1890f
-\item 
-\#define \mbox{\hyperlink{calibr_8h_a7f2b6c9cedec75a75b39e75b2222d61c}{HV\+\_\+\+SCALE5\+\_\+3}}~64.\+1415f
-\item 
-\#define \mbox{\hyperlink{calibr_8h_aa09aa4505aa733fbf4fb148a088a59fa}{A200\+\_\+0\+\_\+\+ZERO}}~2.\+5216f
-\item 
-\#define \mbox{\hyperlink{calibr_8h_a0eb2558c87331393440930cff19d0739}{A200\+\_\+0\+\_\+\+SCALAR}}~133.\+05f
+struct \mbox{\hyperlink{structha__daq__calib__type}{ha\+\_\+daq\+\_\+calib\+\_\+type}} \mbox{\hyperlink{calibr_8h_a5b53aad72b2f4887a37100b31dfb9962}{ha\+\_\+daq\+\_\+calib}}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-Calibration values for host for HV inputs and 200A current sensor 
+Calibration values for host for HV inputs and 200A current sensor
+
+return physical voltage units for channels 4 \& 5 
 
 Definition in file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
 
 
 
-\label{doc-define-members}
-\Hypertarget{calibr_8h_doc-define-members}
-\doxysubsection{Macro Definition Documentation}
-\Hypertarget{calibr_8h_a0eb2558c87331393440930cff19d0739}\index{calibr.h@{calibr.h}!A200\_0\_SCALAR@{A200\_0\_SCALAR}}
-\index{A200\_0\_SCALAR@{A200\_0\_SCALAR}!calibr.h@{calibr.h}}
-\doxysubsubsection{\texorpdfstring{A200\_0\_SCALAR}{A200\_0\_SCALAR}}
-{\footnotesize\ttfamily \label{calibr_8h_a0eb2558c87331393440930cff19d0739} 
-\#define A200\+\_\+0\+\_\+\+SCALAR~133.\+05f}
+\label{doc-func-members}
+\Hypertarget{calibr_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{calibr_8h_a80ebdcd8e0efd6f160faafd7e0a0bd5b}\index{calibr.h@{calibr.h}!phy\_chan4@{phy\_chan4}}
+\index{phy\_chan4@{phy\_chan4}!calibr.h@{calibr.h}}
+\doxysubsubsection{\texorpdfstring{phy\_chan4()}{phy\_chan4()}}
+{\footnotesize\ttfamily \label{calibr_8h_a80ebdcd8e0efd6f160faafd7e0a0bd5b} 
+float phy\+\_\+chan4 (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{value}{}\end{DoxyParamCaption})}
 
 
 
-Definition at line \mbox{\hyperlink{calibr_8h_source_l00028}{28}} of file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
+Definition at line \mbox{\hyperlink{calibr_8c_source_l00046}{46}} of file \mbox{\hyperlink{calibr_8c_source}{calibr.\+c}}.
 
-\Hypertarget{calibr_8h_aa09aa4505aa733fbf4fb148a088a59fa}\index{calibr.h@{calibr.h}!A200\_0\_ZERO@{A200\_0\_ZERO}}
-\index{A200\_0\_ZERO@{A200\_0\_ZERO}!calibr.h@{calibr.h}}
-\doxysubsubsection{\texorpdfstring{A200\_0\_ZERO}{A200\_0\_ZERO}}
-{\footnotesize\ttfamily \label{calibr_8h_aa09aa4505aa733fbf4fb148a088a59fa} 
-\#define A200\+\_\+0\+\_\+\+ZERO~2.\+5216f}
-
-
-
-Definition at line \mbox{\hyperlink{calibr_8h_source_l00027}{27}} of file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
-
-\Hypertarget{calibr_8h_a2c2ab0706a9945cb2ee30419089281c4}\index{calibr.h@{calibr.h}!HV\_SCALAR4@{HV\_SCALAR4}}
-\index{HV\_SCALAR4@{HV\_SCALAR4}!calibr.h@{calibr.h}}
-\doxysubsubsection{\texorpdfstring{HV\_SCALAR4}{HV\_SCALAR4}}
-{\footnotesize\ttfamily \label{calibr_8h_a2c2ab0706a9945cb2ee30419089281c4} 
-\#define HV\+\_\+\+SCALAR4~64.\+2600f}
+\Hypertarget{calibr_8h_a539f16cb8c4fce876b95d5c97411fc4a}\index{calibr.h@{calibr.h}!phy\_chan5@{phy\_chan5}}
+\index{phy\_chan5@{phy\_chan5}!calibr.h@{calibr.h}}
+\doxysubsubsection{\texorpdfstring{phy\_chan5()}{phy\_chan5()}}
+{\footnotesize\ttfamily \label{calibr_8h_a539f16cb8c4fce876b95d5c97411fc4a} 
+float phy\+\_\+chan5 (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{value}{}\end{DoxyParamCaption})}
 
 
 
-Definition at line \mbox{\hyperlink{calibr_8h_source_l00015}{15}} of file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
+Definition at line \mbox{\hyperlink{calibr_8c_source_l00055}{55}} of file \mbox{\hyperlink{calibr_8c_source}{calibr.\+c}}.
 
-\Hypertarget{calibr_8h_af101b2d193c434b2cea4105d80b2aa59}\index{calibr.h@{calibr.h}!HV\_SCALAR5@{HV\_SCALAR5}}
-\index{HV\_SCALAR5@{HV\_SCALAR5}!calibr.h@{calibr.h}}
-\doxysubsubsection{\texorpdfstring{HV\_SCALAR5}{HV\_SCALAR5}}
-{\footnotesize\ttfamily \label{calibr_8h_af101b2d193c434b2cea4105d80b2aa59} 
-\#define HV\+\_\+\+SCALAR5~64.\+2600f}
-
-
-
-Definition at line \mbox{\hyperlink{calibr_8h_source_l00016}{16}} of file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
-
-\Hypertarget{calibr_8h_ad2507542f794644f6614892a9e6ddd2a}\index{calibr.h@{calibr.h}!HV\_SCALE4\_0@{HV\_SCALE4\_0}}
-\index{HV\_SCALE4\_0@{HV\_SCALE4\_0}!calibr.h@{calibr.h}}
-\doxysubsubsection{\texorpdfstring{HV\_SCALE4\_0}{HV\_SCALE4\_0}}
-{\footnotesize\ttfamily \label{calibr_8h_ad2507542f794644f6614892a9e6ddd2a} 
-\#define HV\+\_\+\+SCALE4\+\_\+0~64.\+2600f}
+\Hypertarget{calibr_8h_a79f37a1a9e6812b8f917ae05702d8049}\index{calibr.h@{calibr.h}!set\_calibration@{set\_calibration}}
+\index{set\_calibration@{set\_calibration}!calibr.h@{calibr.h}}
+\doxysubsubsection{\texorpdfstring{set\_calibration()}{set\_calibration()}}
+{\footnotesize\ttfamily \label{calibr_8h_a79f37a1a9e6812b8f917ae05702d8049} 
+void set\+\_\+calibration (\begin{DoxyParamCaption}\item[{unsigned long long}]{mui}{}\end{DoxyParamCaption})}
 
 
 
-Definition at line \mbox{\hyperlink{calibr_8h_source_l00018}{18}} of file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
-
-\Hypertarget{calibr_8h_a0be2cc341545cb83496e6aadd5dabba5}\index{calibr.h@{calibr.h}!HV\_SCALE4\_1@{HV\_SCALE4\_1}}
-\index{HV\_SCALE4\_1@{HV\_SCALE4\_1}!calibr.h@{calibr.h}}
-\doxysubsubsection{\texorpdfstring{HV\_SCALE4\_1}{HV\_SCALE4\_1}}
-{\footnotesize\ttfamily \label{calibr_8h_a0be2cc341545cb83496e6aadd5dabba5} 
-\#define HV\+\_\+\+SCALE4\+\_\+1~64.\+1890f}
+Definition at line \mbox{\hyperlink{calibr_8c_source_l00006}{6}} of file \mbox{\hyperlink{calibr_8c_source}{calibr.\+c}}.
 
 
 
-Definition at line \mbox{\hyperlink{calibr_8h_source_l00020}{20}} of file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
-
-\Hypertarget{calibr_8h_a537bbd8f610d5ab144250ca8c5000535}\index{calibr.h@{calibr.h}!HV\_SCALE4\_2@{HV\_SCALE4\_2}}
-\index{HV\_SCALE4\_2@{HV\_SCALE4\_2}!calibr.h@{calibr.h}}
-\doxysubsubsection{\texorpdfstring{HV\_SCALE4\_2}{HV\_SCALE4\_2}}
-{\footnotesize\ttfamily \label{calibr_8h_a537bbd8f610d5ab144250ca8c5000535} 
-\#define HV\+\_\+\+SCALE4\+\_\+2~54.\+1890f}
-
-
-
-Definition at line \mbox{\hyperlink{calibr_8h_source_l00022}{22}} of file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
-
-\Hypertarget{calibr_8h_afb536687872e6c45002d9390c3e28eba}\index{calibr.h@{calibr.h}!HV\_SCALE4\_3@{HV\_SCALE4\_3}}
-\index{HV\_SCALE4\_3@{HV\_SCALE4\_3}!calibr.h@{calibr.h}}
-\doxysubsubsection{\texorpdfstring{HV\_SCALE4\_3}{HV\_SCALE4\_3}}
-{\footnotesize\ttfamily \label{calibr_8h_afb536687872e6c45002d9390c3e28eba} 
-\#define HV\+\_\+\+SCALE4\+\_\+3~64.\+1890f}
+\label{doc-var-members}
+\Hypertarget{calibr_8h_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{calibr_8h_a5b53aad72b2f4887a37100b31dfb9962}\index{calibr.h@{calibr.h}!ha\_daq\_calib@{ha\_daq\_calib}}
+\index{ha\_daq\_calib@{ha\_daq\_calib}!calibr.h@{calibr.h}}
+\doxysubsubsection{\texorpdfstring{ha\_daq\_calib}{ha\_daq\_calib}}
+{\footnotesize\ttfamily \label{calibr_8h_a5b53aad72b2f4887a37100b31dfb9962} 
+struct \mbox{\hyperlink{structha__daq__calib__type}{ha\+\_\+daq\+\_\+calib\+\_\+type}} ha\+\_\+daq\+\_\+calib\hspace{0.3cm}{\ttfamily [extern]}}
 
 
 
-Definition at line \mbox{\hyperlink{calibr_8h_source_l00024}{24}} of file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l00278}{278}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
-\Hypertarget{calibr_8h_a4808496fb27344af3afdf9d8bb6f44c3}\index{calibr.h@{calibr.h}!HV\_SCALE5\_0@{HV\_SCALE5\_0}}
-\index{HV\_SCALE5\_0@{HV\_SCALE5\_0}!calibr.h@{calibr.h}}
-\doxysubsubsection{\texorpdfstring{HV\_SCALE5\_0}{HV\_SCALE5\_0}}
-{\footnotesize\ttfamily \label{calibr_8h_a4808496fb27344af3afdf9d8bb6f44c3} 
-\#define HV\+\_\+\+SCALE5\+\_\+0~64.\+2600f}
-
-
-
-Definition at line \mbox{\hyperlink{calibr_8h_source_l00019}{19}} of file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
-
-\Hypertarget{calibr_8h_adde533d6e547a890e476596c04e58979}\index{calibr.h@{calibr.h}!HV\_SCALE5\_1@{HV\_SCALE5\_1}}
-\index{HV\_SCALE5\_1@{HV\_SCALE5\_1}!calibr.h@{calibr.h}}
-\doxysubsubsection{\texorpdfstring{HV\_SCALE5\_1}{HV\_SCALE5\_1}}
-{\footnotesize\ttfamily \label{calibr_8h_adde533d6e547a890e476596c04e58979} 
-\#define HV\+\_\+\+SCALE5\+\_\+1~64.\+1415f}
+\Hypertarget{calibr_8h_a027874cb31b7257cd1bae1de3d7a087e}\index{calibr.h@{calibr.h}!spi\_stat\_ss@{spi\_stat\_ss}}
+\index{spi\_stat\_ss@{spi\_stat\_ss}!calibr.h@{calibr.h}}
+\doxysubsubsection{\texorpdfstring{spi\_stat\_ss}{spi\_stat\_ss}}
+{\footnotesize\ttfamily \label{calibr_8h_a027874cb31b7257cd1bae1de3d7a087e} 
+volatile struct \mbox{\hyperlink{structspi__stat__type__ss}{spi\+\_\+stat\+\_\+type\+\_\+ss}} spi\+\_\+stat\+\_\+ss\hspace{0.3cm}{\ttfamily [extern]}}
 
 
 
-Definition at line \mbox{\hyperlink{calibr_8h_source_l00021}{21}} of file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
-
-\Hypertarget{calibr_8h_a078ab58df9d58cbec73cba6e9eeadd10}\index{calibr.h@{calibr.h}!HV\_SCALE5\_2@{HV\_SCALE5\_2}}
-\index{HV\_SCALE5\_2@{HV\_SCALE5\_2}!calibr.h@{calibr.h}}
-\doxysubsubsection{\texorpdfstring{HV\_SCALE5\_2}{HV\_SCALE5\_2}}
-{\footnotesize\ttfamily \label{calibr_8h_a078ab58df9d58cbec73cba6e9eeadd10} 
-\#define HV\+\_\+\+SCALE5\+\_\+2~54.\+1415f}
-
-
-
-Definition at line \mbox{\hyperlink{calibr_8h_source_l00023}{23}} of file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
-
-\Hypertarget{calibr_8h_a7f2b6c9cedec75a75b39e75b2222d61c}\index{calibr.h@{calibr.h}!HV\_SCALE5\_3@{HV\_SCALE5\_3}}
-\index{HV\_SCALE5\_3@{HV\_SCALE5\_3}!calibr.h@{calibr.h}}
-\doxysubsubsection{\texorpdfstring{HV\_SCALE5\_3}{HV\_SCALE5\_3}}
-{\footnotesize\ttfamily \label{calibr_8h_a7f2b6c9cedec75a75b39e75b2222d61c} 
-\#define HV\+\_\+\+SCALE5\+\_\+3~64.\+1415f}
-
-
-
-Definition at line \mbox{\hyperlink{calibr_8h_source_l00025}{25}} of file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
-
-\Hypertarget{calibr_8h_acb49ae8a6d7cffa2a9e1a83f29aa28f3}\index{calibr.h@{calibr.h}!HV\_SCALE\_OFFSET@{HV\_SCALE\_OFFSET}}
-\index{HV\_SCALE\_OFFSET@{HV\_SCALE\_OFFSET}!calibr.h@{calibr.h}}
-\doxysubsubsection{\texorpdfstring{HV\_SCALE\_OFFSET}{HV\_SCALE\_OFFSET}}
-{\footnotesize\ttfamily \label{calibr_8h_acb49ae8a6d7cffa2a9e1a83f29aa28f3} 
-\#define HV\+\_\+\+SCALE\+\_\+\+OFFSET~0.\+0f}
-
-
-
-Definition at line \mbox{\hyperlink{calibr_8h_source_l00014}{14}} of file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l00264}{264}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 

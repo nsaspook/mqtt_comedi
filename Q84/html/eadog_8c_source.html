@@ -682,29 +682,34 @@ $(function(){initNavTree('eadog_8c_source.html','',''); initResizable(true); });
 <div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>        BM.dim_delay = 0;</div>
 <div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span><span class="preprocessor">#ifdef USE_LCD_DMA</span></div>
 <div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>        send_lcd_cmd_dma(LCD_CMD_BRI); <span class="comment">// set back-light level</span></div>
-<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>        send_lcd_data_dma(NHD_BL_LOW);</div>
-<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>        send_lcd_cmd(LCD_CMD_BRI); <span class="comment">// set back-light level</span></div>
-<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>        send_lcd_data(NHD_BL_LOW);</div>
-<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>    }</div>
-<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>}</div>
-<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span> </div>
-<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span><span class="comment"> * busy loop delay with WDT reset</span></div>
-<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span><span class="keywordtype">void</span> wdtdelay(<span class="keyword">const</span> uint32_t delay)</div>
-<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>{</div>
-<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>    uint32_t dcount;</div>
-<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span> </div>
-<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>    <span class="keywordflow">for</span> (dcount = 0; dcount &lt;= delay; dcount++) { <span class="comment">// delay a bit</span></div>
-<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>        ClrWdt(); <span class="comment">// reset the WDT timer</span></div>
-<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>    };</div>
-<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>}</div>
+<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>        <span class="keywordflow">if</span> (cc_mode == STATUS_SLEEPING) {</div>
+<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>            send_lcd_data_dma(NHD_BL_OFF);</div>
+<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>            send_lcd_data_dma(NHD_BL_LOW);</div>
+<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>        }</div>
+<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>        send_lcd_cmd(LCD_CMD_BRI); <span class="comment">// set back-light level</span></div>
+<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>        send_lcd_data(NHD_BL_LOW);</div>
+<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>    }</div>
+<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>}</div>
+<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span> </div>
+<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span><span class="comment"> * busy loop delay with WDT reset</span></div>
+<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span><span class="keywordtype">void</span> wdtdelay(<span class="keyword">const</span> uint32_t delay)</div>
+<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>{</div>
+<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>    uint32_t dcount;</div>
+<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span> </div>
+<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>    <span class="keywordflow">for</span> (dcount = 0; dcount &lt;= delay; dcount++) { <span class="comment">// delay a bit</span></div>
+<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span>        Nop();</div>
+<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span>        Nop();</div>
+<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>    };</div>
+<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>}</div>
 <div class="ttc" id="aeadog_8h_html"><div class="ttname"><a href="eadog_8h.html">eadog.h</a></div></div>
 <div class="ttc" id="amxcmd_8h_html"><div class="ttname"><a href="mxcmd_8h.html">mxcmd.h</a></div></div>
 <div class="ttc" id="astructspi1__configuration__t_html"><div class="ttname"><a href="structspi1__configuration__t.html">spi1_configuration_t</a></div><div class="ttdef"><b>Definition</b> <a href="eadog_8h_source.html#l00051">eadog.h:51</a></div></div>
-<div class="ttc" id="astructspi__link__type_html"><div class="ttname"><a href="structspi__link__type.html">spi_link_type</a></div><div class="ttdef"><b>Definition</b> <a href="vconfig_8h_source.html#l00160">vconfig.h:160</a></div></div>
+<div class="ttc" id="astructspi__link__type_html"><div class="ttname"><a href="structspi__link__type.html">spi_link_type</a></div><div class="ttdef"><b>Definition</b> <a href="vconfig_8h_source.html#l00179">vconfig.h:179</a></div></div>
 <div class="ttc" id="avconfig_8h_html"><div class="ttname"><a href="vconfig_8h.html">vconfig.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
