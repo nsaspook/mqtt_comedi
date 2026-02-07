@@ -90,9 +90,9 @@ for the FMx0 charge controller and for the modbus EM540 power meter
  *  echo | clang -dM -E -
  */
 
+#if __GNUC__ >= 14
 #define RPI2B
-
-#ifdef __ARM_ARCH_8A // running old 6.1.31 kernel
+#else
 #define OPIZ3
 #endif
 
@@ -317,6 +317,8 @@ module_param(lsamp_size, int, S_IRUGO);
 MODULE_PARM_DESC(lsamp_size, "16 or 32 bit lsampl size: 0=16 bit");
 static int32_t use_hunking = 0;
 module_param(use_hunking, int, S_IRUGO);
+
+struct spi_statistics bmc_statistics;
 
 struct bmc_packet_type {
 	uint8_t bmc_byte_t[Q84_BYTES];
