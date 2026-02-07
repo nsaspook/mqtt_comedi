@@ -817,10 +817,10 @@ void main(void)
 				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%s %s %d.%01dA %dA              ", FM80_name[BM.FM80_online], state_name[cc_mode], bat_amp_whole - 128, bat_amp_frac - 128, bat_amp_panel - 128);
 				snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "BAT %d.%01dV PV %d.%01dV                 ", vw, vf, pvw, pvf);
 
-				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "%2.1fKWh float %3.1fH                       ", (float) BM.log.kilowatt_hours / 0.1f, (float) BM.log.float_time / 60.0f);
+				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "%2.1fKWh float %3.1fh                       ", (float) BM.log.kilowatt_hours / 10.0f, (float) BM.log.float_time / 60.0f);
 				snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "Bmax %uV Bmin %uV                      ", BM.log.bat_max / 10, BM.log.bat_min / 10);
-				snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%ldV %3.2fA                        ", em.vl1l2, ((float) em.al1) / 1000.0f);
-				snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%ldW %ldVA %dPF             ", em.wl1, em.val1, em.pfsys);
+				snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.2fA                        ", (float) emt.hz / 1000.0f, ((float) em.al1) / 1000.0f);
+				snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVA %3.1fPF             ", (float) em.wl1 / 10.0f, (float) em.val1 / 10.f, (float) em.pfsys / 10.0f);
 
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
 				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3fV,5 %6.3fV                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));

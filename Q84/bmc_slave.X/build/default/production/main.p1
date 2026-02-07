@@ -283,6 +283,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S3400 EM_data1 vl1n vl2n vl3n vl1l2 vl2l3 vl3l1 al1 al2 al3 wl1 wl2 wl3 val1 val2 val3 varl1 varl2 varl3 vlnsys vllsys wsys vasys varsys pfl1 pfl2 pfl3 pfsys phaseseq hz ]
 "345
 [v _em `QS3400 ~T0 @X0 0 e ]
+"219
+[s S3402 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 ]
+[n S3402 EM_data2 kwhpt kvarhpt kwhpp kvarhpp kwhpl1 kwhpl2 kwhpl3 kwhnt kvarhnt kwhnp kvarhnp kvaht kvahp rhm rhmk rhmp rhmkp hz rhlc ]
+"347
+[v _emt `QS3402 ~T0 @X0 0 e ]
 "53 ./calibr.h
 [v _phy_chan4 `(f ~T0 @X0 0 ef1`us ]
 "54
@@ -349,11 +354,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S3401 EM_tmp vl1n vl2n vl3n vl1l2 vl2l3 vl3l1 al1 al2 al3 wl1 wl2 wl3 val1 val2 val3 varl1 varl2 varl3 vlnsys vllsys wsys vasys varsys pfl1 pfl2 pfl3 pfsys phaseseq hz ]
 "346
 [v _em_tmp `S3401 ~T0 @X0 0 e ]
-"219
-[s S3402 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 ]
-[n S3402 EM_data2 kwhpt kvarhpt kwhpp kvarhpp kwhpl1 kwhpl2 kwhpl3 kwhnt kvarhnt kwhnp kvarhnp kvaht kvahp rhm rhmk rhmp rhmkp hz rhlc ]
-"347
-[v _emt `QS3402 ~T0 @X0 0 e ]
 "135 ./slaveo.h
 [v _bmc_string_ready `Va ~T0 @X0 0 e ]
 "78 /ldrv/microchip/xc8/v3.10/pic/include/c99/stdlib.h
@@ -6923,13 +6923,13 @@ Version 4.0 HI-TECH Software Intermediate Code
 "818
 [e ( _snprintf (2 , , , , (. , , ( _get_vterm_ptr (2 , -> -> 3 `i `uc -> -> 0 `i `uc -> + -> 20 `i -> 1 `i `ui :s 44C -> _vw `ui -> _vf `ui -> _pvw `ui -> _pvf `ui ]
 "820
-[e ( _snprintf (2 , , (. , , ( _get_vterm_ptr (2 , -> -> 0 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 45C -> / -> . . _BM 30 3 `f -> .0.1 `f `d -> / -> . . _BM 30 10 `f -> .60.0 `f `d ]
+[e ( _snprintf (2 , , (. , , ( _get_vterm_ptr (2 , -> -> 0 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 45C -> / -> . . _BM 30 3 `f -> .10.0 `f `d -> / -> . . _BM 30 10 `f -> .60.0 `f `d ]
 "821
 [e ( _snprintf (2 , , (. , , ( _get_vterm_ptr (2 , -> -> 1 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 46C / -> . . _BM 30 8 `i -> 10 `i / -> . . _BM 30 7 `i -> 10 `i ]
 "822
-[e ( _snprintf (2 , , (. , , ( _get_vterm_ptr (2 , -> -> 2 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 47C . _em 3 -> / -> . _em 6 `f -> .1000.0 `f `d ]
+[e ( _snprintf (2 , , (. , , ( _get_vterm_ptr (2 , -> -> 2 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 47C -> / -> . _emt 17 `f -> .1000.0 `f `d -> / -> . _em 6 `f -> .1000.0 `f `d ]
 "823
-[e ( _snprintf (2 , , , (. , , ( _get_vterm_ptr (2 , -> -> 3 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 48C . _em 9 . _em 12 -> . _em 26 `i ]
+[e ( _snprintf (2 , , , (. , , ( _get_vterm_ptr (2 , -> -> 3 `i `uc -> -> 1 `i `uc -> + -> 20 `i -> 1 `i `ui :s 48C -> / -> . _em 9 `f -> .10.0 `f `d -> / -> . _em 12 `f -> .10. `f `d -> / -> . _em 26 `f -> .10.0 `f `d ]
 "825
 [e ( _snprintf (2 , , (. , , ( _get_vterm_ptr (2 , -> -> 0 `i `uc -> -> 2 `i `uc -> + -> 20 `i -> 1 `i `ui :s 49C . _spi_stat_ss 24 -> . _spi_stat_ss 22 `ui ]
 "826
@@ -7894,8 +7894,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [a 54C 37 115 0 ]
 [a 5C 79 70 70 76 73 78 69 0 ]
 [a 3C 68 73 83 65 66 76 69 0 ]
-[a 2C 49 52 58 51 55 58 51 56 0 ]
-[a 1C 70 101 98 32 32 53 32 50 48 50 54 0 ]
+[a 1C 70 101 98 32 32 54 32 50 48 50 54 0 ]
 [a 19C 53 55 81 56 52 0 ]
 [a 22C 53 55 81 56 52 0 ]
 [a 20C 52 55 81 56 52 0 ]
@@ -7906,6 +7905,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [a 33C 86 48 46 53 50 0 ]
 [a 40C 86 48 46 53 50 0 ]
 [a 53C 86 48 46 53 50 0 ]
+[a 2C 48 57 58 52 56 58 51 49 0 ]
 [a 7C 82 69 77 79 84 69 32 0 ]
 [a 6C 79 78 76 73 78 69 32 0 ]
 [a 8C 69 82 82 79 82 32 32 0 ]
@@ -7924,7 +7924,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [a 12C 80 111 114 116 32 37 115 32 32 32 32 32 32 32 32 32 32 32 32 32 0 ]
 [a 13C 80 111 114 116 32 37 115 32 32 32 32 32 32 32 32 32 32 32 32 32 0 ]
 [a 17C 32 37 108 108 88 32 82 117 110 32 68 105 115 112 108 97 121 32 48 88 37 46 50 88 32 32 32 32 32 32 32 32 32 32 32 32 32 0 ]
-[a 48C 37 108 100 87 32 37 108 100 86 65 32 37 100 80 70 32 32 32 32 32 32 32 32 32 32 32 32 32 0 ]
+[a 48C 37 52 46 49 102 87 32 37 52 46 49 102 86 65 32 37 51 46 49 102 80 70 32 32 32 32 32 32 32 32 32 32 32 32 32 0 ]
 [a 43C 37 115 32 37 115 32 37 100 46 37 48 49 100 65 32 37 100 65 32 32 32 32 32 32 32 32 32 32 32 32 32 32 0 ]
 [a 14C 32 84 101 114 109 105 110 97 108 32 73 110 102 111 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 0 ]
 [a 36C 77 85 73 32 37 108 108 88 32 80 73 67 32 37 88 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 0 ]
@@ -7938,9 +7938,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [a 50C 52 32 37 54 46 51 102 86 44 53 32 37 54 46 51 102 86 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 0 ]
 [a 52C 37 115 32 37 115 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 0 ]
 [a 39C 37 115 32 86 101 114 32 37 115 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 0 ]
-[a 45C 37 50 46 49 102 75 87 104 32 102 108 111 97 116 32 37 51 46 49 102 72 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 0 ]
+[a 45C 37 50 46 49 102 75 87 104 32 102 108 111 97 116 32 37 51 46 49 102 104 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 0 ]
 [a 37C 79 70 32 37 108 117 32 69 82 82 32 37 108 117 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 0 ]
-[a 47C 37 108 100 86 32 37 51 46 50 102 65 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 0 ]
+[a 47C 37 52 46 50 102 72 122 32 37 51 46 50 102 65 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 0 ]
 [a 41C 37 115 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 0 ]
 [a 51C 66 77 67 32 37 108 117 32 32 48 88 37 46 50 88 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 0 ]
 [a 38C 66 77 67 32 37 108 117 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 0 ]
