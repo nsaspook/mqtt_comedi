@@ -82,11 +82,66 @@ ports [4..7] are data-streams for connected device data
 #include <linux/list.h>
 #include <linux/completion.h>
 
-#define bmc_version "version 1.00 "
+#define bmc_version "version 1.01 "
 #define spibmc_version "version 1.4 "
 
 static const uint32_t CHECKMARK = 0x1957;
 static const uint32_t CHECKBYTE = 0x57;
+
+/*
+ * Look for Soc board types using C preprocessor defines
+ *  echo | gcc -dM -E -
+ *  echo | clang -dM -E -
+ */
+
+enum daqbmc_platform_index {
+	BMC_Soc_0 = 0,
+	BMC_Soc_1,
+	BMC_RPI2B,
+	BMC_OPIZ3,
+};
+
+/* 40 pin connector	headers		test cable colors, RPI2B
+ * RPi pin		daq_bmc pin
+ * 6  GND		1 - SPI2 VSS	green/brown
+ * 26 SPI0 CE1		2 - SPI2 SS2	burgandy
+ * 23 SPI0 SCLK		3 - SPI2 SCK	blue
+ * 19 SPI0 MOSI		4 - SPI2 MOSI	green
+ * 21 SPI0 MISO		5 - SPI2 MISO	yellow
+ * 30 GND		6 - 3.3V VSS	orange NC
+ *
+ *
+ * 4  5V power		4 - SV1 5V VDD
+ *
+ *
+ * 2  5V power		2 - GLORY 5V VDD
+ * 9  GND		1 - GLORY VSS
+ */
+
+/* 26 pin connector	headers		test cable colors, OPIZ3
+ * OPi pin		daq_bmc pin
+ * 6  GND		1 - SPI2 VSS	green/brown
+ * 24 SPI1 CE0		2 - SPI2 SS2	burgandy
+ * 23 SPI1 SCLK		3 - SPI2 SCK	blue
+ * 19 SPI1 MOSI		4 - SPI2 MOSI	green
+ * 21 SPI1 MISO		5 - SPI2 MISO	yellow
+ * 18 GPIO 14		6 - SPI2 REQ	orange NC
+ *
+ * 2  5V power		4 - SV1 5V VDD
+ *
+ * 13 pin connector	headers		test cable colors
+ * 1  5V power		2 - GLORY 5V VDD
+ * 2  GND		1 - GLORY VSS
+ */
+
+/*
+ * stop date/time in binary warning
+ */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdate-time"
+static const char *const FW_Date = __DATE__;
+static const char *const FW_Time = __TIME__;
+#pragma GCC diagnostic pop
 
 /*
  * SPI transfer buffer size
@@ -497,18 +552,12 @@ static int32_t bmc_spi_exchange(struct comedi_device *, struct bmc_packet_type *
 /*
  * piBoardRev:
  *	Return a number representing the hardware revision of the board.
- *	Revision is currently 3 only. -1 is returned on error.
  *********************************************************************
  */
 static int32_t piBoardRev(struct comedi_device *dev)
 {
-	int32_t boardRev = 3; // hardwired for now
-	//	uint32_t *efuse = (uint32_t *) 0x01c14200;
+	int32_t boardRev = BMC_OPIZ3; // hardwired for now
 
-	/*
-	 * set module param
-	 */
-	//	dev_info(dev->class_dev, "board SID 0X%X\n", *efuse);
 	bmc_rev = boardRev;
 	return boardRev;
 }
@@ -654,7 +703,6 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 
 	return ret;
 }
-
 
 /*
  * A client must be connected with a valid comedi cmd
@@ -1565,7 +1613,12 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		goto daqbmc_kfree_exit;
 	}
 
-	dev_info(dev->class_dev, "bmc protocol %s\n", bmc_version);
+//	dev_info(dev->class_dev, "bmc protocol %s\n", bmc_version);
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdate-time"
+	dev_info(dev->class_dev, "bmc protocol %s %s %s\n", bmc_version, FW_Date, FW_Time);
+#pragma GCC diagnostic pop
 
 	devpriv->checkmark = CHECKMARK;
 	devpriv->dev = dev;
@@ -1769,9 +1822,9 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	 * Probe the BMCboard existence and for configuration data
 	 */
 	ret = daqbmc_bmc_get_config(dev);
-        if (ret == 0xff) {
-            ret = daqbmc_bmc_get_config(dev);
-        }
+	if (ret == 0xff) {
+		ret = daqbmc_bmc_get_config(dev);
+	}
 
 	if (ret == 0xff) { // no SPI comms with daq_bmc board
 		dev_err(dev->class_dev,
@@ -1783,7 +1836,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	if (ret == CHECKBYTE) { // bad ID from daq_bmc board
 		dev_err(dev->class_dev,
 			"BMCBoard CPU not detected 0X%X, force board ID 0x00 \n", ret);
-		ret=0x00;
+		ret = 0x00;
 	}
 
 	dev_info(dev->class_dev,
