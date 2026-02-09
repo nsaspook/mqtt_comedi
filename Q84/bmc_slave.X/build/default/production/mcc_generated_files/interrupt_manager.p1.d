@@ -21,5 +21,6 @@ mcc_generated_files/clc1.h  \
 mcc_generated_files/uart3.h  \
 mcc_generated_files/uart2.h  \
 mcc_generated_files/uart1.h  \
+mcc_generated_files/crc.h  \
 mcc_generated_files/spi1.h  \
 mcc_generated_files/spi2.h 

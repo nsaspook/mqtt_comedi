@@ -70,6 +70,7 @@
 #include "uart3.h"
 #include "uart2.h"
 #include "uart1.h"
+#include "crc.h"
 #include "spi1.h"
 #include "spi2.h"
 

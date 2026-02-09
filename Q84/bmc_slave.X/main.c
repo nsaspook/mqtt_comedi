@@ -276,13 +276,15 @@ volatile struct serial_buffer_type_ss serial_buffer_ss = {
 };
 
 struct ha_daq_calib_type ha_daq_calib = {
-	.checkmark = CHECKMARK,
+	.checkmark = EE_CHECKMARK,
 	.scaler4 = HV_SCALAR4,
 	.scaler5 = HV_SCALAR5,
 	.offset4 = HV_SCALE_OFFSET,
 	.offset5 = HV_SCALE_OFFSET,
 	.A200_Z = A200_0_ZERO,
 	.A200_S = A200_0_SCALAR,
+	.done = false,
+	.crc = TATE,
 };
 
 volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0, channel = 0, upper;
@@ -570,7 +572,16 @@ void main(void)
 			eaDogM_CursorOff();
 
 			set_vterm(V.vterm); // set to buffer 0
-			snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "Port %s             ", speed_text);
+
+			if (read_cal_data()) {
+				update_cal_data();
+				sprintf(get_vterm_ptr(0, MAIN_VTERM), "Read EEPROM DATA    ");
+			} else {
+				sprintf(get_vterm_ptr(0, MAIN_VTERM), "Invalid EEPROM DATA ");
+				write_cal_data();
+				timeout = true;
+			}
+			
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "Port %s             ", speed_text);
 			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "Port %s             ", speed_text);
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "Port %s             ", speed_text);

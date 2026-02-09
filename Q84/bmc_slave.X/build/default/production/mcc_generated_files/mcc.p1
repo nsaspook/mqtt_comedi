@@ -3,17 +3,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v F24484 `(v ~T0 @X0 0 tf ]
 [v F24559 `(v ~T0 @X0 0 tf ]
 [v F24561 `(v ~T0 @X0 0 tf ]
-[v F24617 `(v ~T0 @X0 0 tf ]
-[v F24623 `(v ~T0 @X0 0 tf ]
+[v F24636 `(v ~T0 @X0 0 tf ]
+[v F24642 `(v ~T0 @X0 0 tf ]
 "109 mcc_generated_files/interrupt_manager.h
 [v _INTERRUPT_Initialize `(v ~T0 @X0 0 ef ]
-"115 mcc_generated_files/mcc.h
+"116 mcc_generated_files/mcc.h
 [v _PMD_Initialize `(v ~T0 @X0 0 ef ]
 "120 mcc_generated_files/adc.h
 [v _ADC_Initialize `(v ~T0 @X0 0 ef ]
 "750 mcc_generated_files/pin_manager.h
 [v _PIN_MANAGER_Initialize `(v ~T0 @X0 0 ef ]
-"102 mcc_generated_files/mcc.h
+"103 mcc_generated_files/mcc.h
 [v _OSCILLATOR_Initialize `(v ~T0 @X0 0 ef ]
 "63 mcc_generated_files/dma2.h
 [v _DMA2_Initialize `(v ~T0 @X0 0 ef ]
@@ -47,9 +47,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _UART2_Initialize `(v ~T0 @X0 0 ef ]
 "63 mcc_generated_files/spi1.h
 [v _SPI1_Initialize `(v ~T0 @X0 0 ef ]
+"94 mcc_generated_files/crc.h
+[v _CRC_Initialize `(v ~T0 @X0 0 ef ]
 "65 mcc_generated_files/spi2.h
 [v _SPI2_Initialize `(v ~T0 @X0 0 ef ]
-"127 mcc_generated_files/mcc.h
+"128 mcc_generated_files/mcc.h
 [v _SystemArbiter_Initialize `(v ~T0 @X0 0 ef ]
 "5263 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.29.481/xc8/pic/include/proc/pic18f57q84.h
 [v _OSCCON1 `Vuc ~T0 @X0 0 e@173 ]
@@ -2534,9 +2536,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 "535
 [v _UART1_TxInterruptHandler `*F24561 ~T0 @X0 1 e ]
 "75 mcc_generated_files/spi2.h
-[v _SPI2_InterruptHandler `*F24617 ~T0 @X0 1 e ]
+[v _SPI2_InterruptHandler `*F24636 ~T0 @X0 1 e ]
 "77
-[v _SPI2_RxInterruptHandler `*F24623 ~T0 @X0 1 e ]
+[v _SPI2_RxInterruptHandler `*F24642 ~T0 @X0 1 e ]
 "50 mcc_generated_files/mcc.c
 [v _SYSTEM_Initialize `(v ~T0 @X0 1 ef ]
 "51
@@ -2586,81 +2588,83 @@ Version 4.0 HI-TECH Software Intermediate Code
 "72
 [e ( _SPI1_Initialize ..  ]
 "73
-[e ( _SPI2_Initialize ..  ]
+[e ( _CRC_Initialize ..  ]
 "74
-[e ( _SystemArbiter_Initialize ..  ]
+[e ( _SPI2_Initialize ..  ]
 "75
+[e ( _SystemArbiter_Initialize ..  ]
+"76
 [e :UE 3385 ]
 }
-"77
-[v _OSCILLATOR_Initialize `(v ~T0 @X0 1 ef ]
 "78
+[v _OSCILLATOR_Initialize `(v ~T0 @X0 1 ef ]
+"79
 {
 [e :U _OSCILLATOR_Initialize ]
 [f ]
-"80
+"81
 [e = _OSCCON1 -> -> 32 `i `uc ]
-"82
+"83
 [e = _OSCCON3 -> -> 0 `i `uc ]
-"84
+"85
 [e = _OSCEN -> -> 1 `i `uc ]
-"86
+"87
 [e = _OSCFRQ -> -> 8 `i `uc ]
-"88
+"89
 [e = _OSCTUNE -> -> 0 `i `uc ]
-"90
+"91
 [e $U 3387  ]
 [e :U 3388 ]
-"91
-{
 "92
+{
+"93
 }
 [e :U 3387 ]
-"90
+"91
 [e $ == -> _PLLR `i -> 0 `i 3388  ]
 [e :U 3389 ]
-"93
+"94
 [e :UE 3386 ]
 }
-"95
-[v _PMD_Initialize `(v ~T0 @X0 1 ef ]
 "96
+[v _PMD_Initialize `(v ~T0 @X0 1 ef ]
+"97
 {
 [e :U _PMD_Initialize ]
 [f ]
-"98
+"99
 [e = _PMD0 -> -> 0 `i `uc ]
-"100
+"101
 [e = _PMD1 -> -> 0 `i `uc ]
-"102
+"103
 [e = _PMD2 -> -> 0 `i `uc ]
-"104
+"105
 [e = _PMD3 -> -> 0 `i `uc ]
-"106
+"107
 [e = _PMD4 -> -> 0 `i `uc ]
-"108
+"109
 [e = _PMD5 -> -> 0 `i `uc ]
-"110
+"111
 [e = _PMD6 -> -> 0 `i `uc ]
-"112
+"113
 [e = _PMD7 -> -> 0 `i `uc ]
-"114
-[e = _PMD8 -> -> 0 `i `uc ]
 "115
+[e = _PMD8 -> -> 0 `i `uc ]
+"116
 [e :UE 3390 ]
 }
-"118
-[v _SystemArbiter_Initialize `(v ~T0 @X0 1 ef ]
 "119
+[v _SystemArbiter_Initialize `(v ~T0 @X0 1 ef ]
+"120
 {
 [e :U _SystemArbiter_Initialize ]
 [f ]
-"121
-[e = _PRLOCK -> -> 85 `i `uc ]
 "122
-[e = _PRLOCK -> -> 170 `i `uc ]
+[e = _PRLOCK -> -> 85 `i `uc ]
 "123
-[e = . . _PRLOCKbits 0 0 -> -> 1 `i `uc ]
+[e = _PRLOCK -> -> 170 `i `uc ]
 "124
+[e = . . _PRLOCKbits 0 0 -> -> 1 `i `uc ]
+"125
 [e :UE 3391 ]
 }

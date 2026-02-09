@@ -62,7 +62,7 @@ ports [4..7] are data-streams for connected device data
  * The transfer array is currently static but can easily be made into
  * a config size parameter runtime value if needed with kmalloc for the required space
 
- *  PIC Slave Info:
+ *  BMC Slave Info:
  *
  * bits 3..0 select of ADC channel in the lower nibble
  *
@@ -193,11 +193,9 @@ static const uint32_t SUBDEV_DO = 3;
 static const uint32_t SUBDEV_MEM = 4;
 static const uint32_t SMP_CORES = 4;
 static const uint32_t CONF_Q84 = 3;
-static const uint32_t MEM_BLOCKS = 8; // 0..3 CLCD display lines, 4..7 serial comms for FM80, MODBUS, etc ...
+static const uint32_t MEM_BLOCKS = 8; // 0..3 CLCD display lines, 4..7 serial comms for FMx0, MODBUS, etc ...
 static const uint32_t SPI_GAP = 7000; // time for the Q84 to process each received SPI byte
 static const uint32_t SPI_GAP_LONG = 12000; // time for the Q84 to process each received SPI byte
-
-static const uint32_t I8254_MAX_COUNT = 0x10000;
 
 static const uint32_t PIC18_CONVD_57Q84 = 24;
 static const uint32_t PIC18_CMDD_57Q84 = 4;
@@ -205,11 +203,6 @@ static const uint32_t SPI_BUFF_SIZE = 128000; // normally 5000
 static const uint32_t SPI_BUFF_SIZE_NOHUNK = 4096; // normally 64
 static const uint32_t MAX_CHANLIST_LEN = 256;
 static const uint32_t CONV_SPEED = 50000; /* 10s of nsecs: the true rate is ~3000/5000 so we need a fixup,  two conversions per result */
-static const uint32_t CONV_SPEED_FIX = 19; /* usecs: round it up to ~50usecs total with this */
-static const uint32_t CONV_SPEED_FIX_Q84 = 39; /* usecs: round it up to ~50usecs total with this */
-static const uint32_t CONV_SPEED_FIX_FREERUN = 1; /* usecs: round it up to ~30usecs total with this */
-static const uint32_t CONV_SPEED_FIX_FAST = 9; /* used for the MCP3002 ADC */
-static const uint32_t CONV_ADS8330 = 0; /* used for the ADS8330 ADC */
 static const uint32_t MAX_BOARD_RATE = 1000000000;
 static const struct spi_delay CS_CHANGE_DELAY_USECS0 = {
 	.value = 1,
@@ -303,7 +296,7 @@ module_param(bmc_type, int, S_IRUGO);
 MODULE_PARM_DESC(bmc_type, "i/o board type: default 0=BMCboard");
 static int32_t bmc_rev = 3;
 module_param(bmc_rev, int, S_IRUGO);
-MODULE_PARM_DESC(bmc_rev, "board revision: default 3=OPI Zero 3 4G");
+MODULE_PARM_DESC(bmc_rev, "board revision: default 3 = PI boards");
 static int32_t speed_test = 0;
 module_param(speed_test, int, S_IRUGO);
 MODULE_PARM_DESC(speed_test, "sample timing test: 1=enable");
@@ -315,6 +308,8 @@ module_param(lsamp_size, int, S_IRUGO);
 MODULE_PARM_DESC(lsamp_size, "16 or 32 bit lsampl size: 0=16 bit");
 static int32_t use_hunking = 0;
 module_param(use_hunking, int, S_IRUGO);
+
+struct spi_statistics bmc_statistics;
 
 struct bmc_packet_type {
 	uint8_t bmc_byte_t[Q84_BYTES];
@@ -394,8 +389,7 @@ struct daqbmc_board {
 	uint8_t n_aochan_bits;
 	uint32_t ai_ns_min_calc;
 	uint32_t ao_ns_min_calc;
-	uint32_t ai_cs;
-	uint32_t ao_cs;
+	uint32_t bmc_cs;
 	int32_t ai_node;
 	int32_t ao_node;
 };
@@ -411,8 +405,7 @@ static const struct daqbmc_board daqbmc_boards[] = {
 		.n_aochan_bits = 8,
 		.ai_ns_min_calc = 20000000,
 		.ao_ns_min_calc = 20000000,
-		.ai_cs = 1,
-		.ao_cs = 1,
+		.bmc_cs = 1,
 		.ai_node = 1,
 		.ao_node = 2,
 	},
@@ -426,8 +419,7 @@ static const struct daqbmc_board daqbmc_boards[] = {
 		.n_aochan_bits = 12,
 		.ai_ns_min_calc = 1000000,
 		.ao_ns_min_calc = 1000000,
-		.ai_cs = 1,
-		.ao_cs = 1,
+		.bmc_cs = 1,
 		.ai_node = 1,
 		.ao_node = 2,
 	},
@@ -1613,8 +1605,6 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		goto daqbmc_kfree_exit;
 	}
 
-//	dev_info(dev->class_dev, "bmc protocol %s\n", bmc_version);
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdate-time"
 	dev_info(dev->class_dev, "bmc protocol %s %s %s\n", bmc_version, FW_Date, FW_Time);
@@ -1679,7 +1669,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		 * probe/init hardware for special cases that may need
 		 * many SPI transfers
 		 */
-		if (pdata->slave.spi->chip_select == thisboard->ai_cs) {
+		if (pdata->slave.spi->chip_select == thisboard->bmc_cs) {
 			devpriv->ai_spi = &pdata->slave;
 			devpriv->ao_spi = &pdata->slave;
 			pdata->one_t.tx_buf = pdata->tx_buff;
@@ -1687,7 +1677,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			if (daqbmc_conf == PICSL12 || daqbmc_conf == PICSL12_AO) {
 				mutex_lock(&devpriv->drvdata_lock);
 				dev_info(dev->class_dev, "BMCBoard using chip select : 0x%2x\n",
-					thisboard->ai_cs);
+					thisboard->bmc_cs);
 				mutex_unlock(&devpriv->drvdata_lock);
 				smp_mb__after_atomic();
 			}
@@ -2165,42 +2155,42 @@ static int32_t daqbmc_spi_setup(struct spi_param_type * spi)
  * setup driver defaults using config variables and modules conf files
  */
 static int32_t daqbmc_spi_probe(struct comedi_device * dev,
-	struct spi_param_type * spi_adc)
+	struct spi_param_type * spi_bmc)
 {
 	const struct daqbmc_board *thisboard = dev->board_ptr;
 
-	if (!spi_adc->spi) {
+	if (!spi_bmc->spi) {
 		dev_err(dev->class_dev, "no ADC spi channel detected\n");
-		spi_adc->chan = 0;
+		spi_bmc->chan = 0;
 		return 0;
 	}
 
 	switch (daqbmc_conf) {
 	case 0:
-		spi_adc->device_type = PICSL12;
+		spi_bmc->device_type = PICSL12;
 		break;
 	case 1:
-		spi_adc->device_type = PICSL12_AO;
+		spi_bmc->device_type = PICSL12_AO;
 		break;
 	default:
-		spi_adc->device_type = PICSL12_AO;
+		spi_bmc->device_type = PICSL12_AO;
 	}
-	spi_adc->device_spi = &daqbmc_devices[spi_adc->device_type];
+	spi_bmc->device_spi = &daqbmc_devices[spi_bmc->device_type];
 
 	/* default setup */
-	spi_adc->pic18 = CONF_Q84; /* Q84 mode 12 bits */
-	spi_adc->chan = thisboard->n_aichan;
+	spi_bmc->pic18 = CONF_Q84; /* Q84 mode 12 bits */
+	spi_bmc->chan = thisboard->n_aichan;
 
 	/*
 	 * SPI link data hardware setup
 	 */
-	daqbmc_spi_setup(spi_adc);
+	daqbmc_spi_setup(spi_bmc);
 	dev_info(dev->class_dev, "Probing for PIC18Fx7Q84 DAQ device, SPI slave mode\n");
-	daqbmc_spi_setup(spi_adc);
-	spi_adc->device_type = daqbmc_conf;
-	spi_adc->chan = spi_adc->device_spi->n_chan;
-	spi_adc->range = 0; // 4.096 default
-	spi_adc->bits = spi_adc->device_spi->n_chan_bits;
+	daqbmc_spi_setup(spi_bmc);
+	spi_bmc->device_type = daqbmc_conf;
+	spi_bmc->chan = spi_bmc->device_spi->n_chan;
+	spi_bmc->range = 0; // 4.096 default
+	spi_bmc->bits = spi_bmc->device_spi->n_chan_bits;
 
 	if ((daqbmc_conf == PICSL12_AO) || (do_conf == 0) || (di_conf == 0)) { // no DI DO board version
 		do_conf = 0;
@@ -2208,14 +2198,14 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	}
 
 	dev_info(dev->class_dev,
-		"BMCboard SPI setup: spi cs %d: %d Hz: mode 0x%x: "
+		"BMCboard SPI setup: spi cs %d: %d Hz: spi mode 0x%x: "
 		"probing for controller device %s\n",
-		spi_adc->spi->chip_select,
-		spi_adc->spi->max_speed_hz,
-		spi_adc->spi->mode,
-		spi_adc->device_spi->name);
+		spi_bmc->spi->chip_select,
+		spi_bmc->spi->max_speed_hz,
+		spi_bmc->spi->mode,
+		spi_bmc->device_spi->name);
 
-	return spi_adc->chan;
+	return spi_bmc->chan;
 }
 
 /*
@@ -2248,7 +2238,7 @@ module_exit(daqbmc_exit);
 
 MODULE_AUTHOR("NSASPOOK <nsaspooksma2@gmail.com");
 MODULE_DESCRIPTION("OPi DI/DO/AI/AO SPI Driver");
-MODULE_VERSION("6.1.31");
+MODULE_VERSION("6.1.31+");
 MODULE_LICENSE("GPL");
 MODULE_ALIAS("spi:spibmc");
 

@@ -15241,11 +15241,11 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <part name="C19" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-US" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="0.1uf"/>
 <part name="VSS53" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="VSS54" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
-<part name="R20" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="56ohm"/>
-<part name="R21" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="56ohm"/>
-<part name="R22" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="56ohm"/>
-<part name="R23" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="56ohm"/>
-<part name="R24" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="56ohm"/>
+<part name="R20" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="22 ohm"/>
+<part name="R21" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="22 ohm"/>
+<part name="R22" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="22 ohm"/>
+<part name="R23" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="22 ohm"/>
+<part name="R24" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="22 ohm"/>
 <part name="IC5" library="MCZ33996EK" deviceset="MCZ33996EK" device=""/>
 <part name="VSS14" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 <part name="VSS36" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
@@ -15369,6 +15369,8 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <part name="LED5" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIP-LED0603" package3d_urn="urn:adsk.eagle:package:15819/3" value="FM80 POWER"/>
 <part name="R38" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
 <part name="GND5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="0V" device=""/>
+<part name="R39" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="120"/>
+<part name="VSS91" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VSS" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -16325,6 +16327,13 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <instance part="GND5" gate="1" x="398.78" y="-101.6" smashed="yes">
 <attribute name="VALUE" x="396.875" y="-104.14" size="1.778" layer="96"/>
 </instance>
+<instance part="R39" gate="G$1" x="322.58" y="-60.96" smashed="yes" rot="R90">
+<attribute name="NAME" x="321.0814" y="-64.77" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="325.882" y="-64.77" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="VSS91" gate="G$1" x="322.58" y="-68.58" smashed="yes">
+<attribute name="VALUE" x="330.2" y="-66.04" size="1.778" layer="96" rot="R180"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -16863,10 +16872,12 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <segment>
 <pinref part="C16" gate="G$1" pin="2"/>
 <pinref part="VSS40" gate="G$1" pin="VSS"/>
+<junction x="332.74" y="-63.5"/>
 </segment>
 <segment>
 <pinref part="C17" gate="G$1" pin="2"/>
 <pinref part="VSS41" gate="G$1" pin="VSS"/>
+<junction x="340.36" y="-63.5"/>
 </segment>
 <segment>
 <pinref part="IC6" gate="G$1" pin="1!G"/>
@@ -17183,6 +17194,11 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <pinref part="C36" gate="G$1" pin="2"/>
 <pinref part="VSS90" gate="G$1" pin="VSS"/>
 <junction x="388.62" y="-116.84"/>
+</segment>
+<segment>
+<pinref part="R39" gate="G$1" pin="1"/>
+<pinref part="VSS91" gate="G$1" pin="VSS"/>
+<junction x="322.58" y="-66.04"/>
 </segment>
 </net>
 <net name="CPU_CLK" class="0">
@@ -18668,6 +18684,9 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <pinref part="C17" gate="G$1" pin="1"/>
 <junction x="332.74" y="-55.88"/>
 <junction x="340.36" y="-55.88"/>
+<pinref part="R39" gate="G$1" pin="2"/>
+<wire x1="322.58" y1="-55.88" x2="332.74" y2="-55.88" width="0.1524" layer="91"/>
+<junction x="322.58" y="-55.88"/>
 </segment>
 <segment>
 <pinref part="IC3" gate="G$1" pin="VOUT"/>

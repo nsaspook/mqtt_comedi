@@ -68,7 +68,7 @@ extern "C" {
 	/*
 	 * internal variables and states debug screens
 	 */
-	//	#define DIS_DEBUG	// active debug status display, disable during normal operation
+#define DIS_DEBUG	// active debug status display, disable during normal operation
 
 	/*
 	 * TP1 sync triggers enable
@@ -138,7 +138,7 @@ extern "C" {
 
 	static const uint16_t TDELAY = 3000;
 	static const uint16_t SEQDELAY = 10000;
-	static const uint16_t LDELAY = 100;
+	static const uint16_t LDELAY = 500;
 	static const uint16_t WLDELAY = 1500;
 	static const uint16_t SDELAY = 100;
 	static const uint16_t DDELAY = 500; // display update spacing

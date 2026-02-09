@@ -70,6 +70,7 @@ void SYSTEM_Initialize(void)
     UART3_Initialize();
     UART2_Initialize();
     SPI1_Initialize();
+    CRC_Initialize();
     SPI2_Initialize();
     SystemArbiter_Initialize();
 }

@@ -14,6 +14,12 @@ extern "C" {
 #include <xc.h>
 
 #include "vconfig.h"
+#include "mcc_generated_files/crc.h"
+
+#define TATE		0x42
+#define EE_CHECKMARK	0x1957
+#define  NORMAL  0
+#define  REVERSE 1
 
 	static const float HV_SCALE_OFFSET = 0.0f;
 	static const float HV_SCALAR4 = 64.2600f; // defaults
@@ -31,12 +37,13 @@ extern "C" {
 	static const float HV_SCALE5_4 = 64.3850f;
 	static const float HV_SCALE4_5 = 64.3590f;
 	static const float HV_SCALE5_5 = 64.3800f;
+	static const float HV_SCALE4_6 = 64.3590f;
+	static const float HV_SCALE5_6 = 64.3800f;
 
 	static const float A200_0_ZERO = 2.5216f; // Battery sensor zero ADC value
 	static const float A200_0_SCALAR = 133.05f; // Battery Amp scalar to +- 200A
 
 	struct ha_daq_calib_type {
-		uint16_t checkmark;
 		unsigned long long bmc_id;
 		double offset4;
 		double scaler4;
@@ -44,6 +51,11 @@ extern "C" {
 		double scaler5;
 		double A200_Z;
 		double A200_S;
+		bool done;
+		uint8_t c_zero_cal : 1;
+		uint8_t c_scale_cal : 1;
+		uint16_t checkmark;
+		uint8_t crc; // must be last item in the structure
 	};
 
 	extern volatile struct spi_stat_type_ss spi_stat_ss;
@@ -52,6 +64,10 @@ extern "C" {
 	void set_calibration(unsigned long long);
 	float phy_chan4(uint16_t);
 	float phy_chan5(uint16_t);
+
+	bool read_cal_data(void);
+	void write_cal_data(void);
+	void update_cal_data(void);
 
 #ifdef	__cplusplus
 }

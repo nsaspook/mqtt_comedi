@@ -3,8 +3,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v F24678 `(v ~T0 @X0 0 tf ]
 [v F24753 `(v ~T0 @X0 0 tf ]
 [v F24755 `(v ~T0 @X0 0 tf ]
-[v F24811 `(v ~T0 @X0 0 tf ]
-[v F24817 `(v ~T0 @X0 0 tf ]
+[v F24830 `(v ~T0 @X0 0 tf ]
+[v F24836 `(v ~T0 @X0 0 tf ]
 "164 ./modbus_master.h
 [s S3391 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 `uc 1 `uc 1 `uc 1 `us 1 `us 1 `us 1 `ul 1 `ul 1 `ul 1 `Va 1 ]
 [n S3391 M_data blink_lock config stable boot_code power_on send_count recv_count pwm_volts error crc_data crc_calc crc_error to_error sends rx ]
@@ -12,12 +12,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 [s S3398 `ul 1 `ul 1 `ul 1 ]
 [n S3398 M_time_data clock_500hz clock_500ahz clock_2hz ]
 "26
-[c E24834 0 1 2 3 .. ]
-[n E24834 comm_type CLEAR INIT SEND RECV  ]
-[c E24840 0 1 2 3 4 5 6 7 8 .. ]
-[n E24840 cmd_type G_ID G_DATA1 G_DATA2 G_CONFIG G_PASSWD G_LIGHT G_VERSION G_SERIAL G_LAST  ]
+[c E24853 0 1 2 3 .. ]
+[n E24853 comm_type CLEAR INIT SEND RECV  ]
+[c E24859 0 1 2 3 4 5 6 7 8 .. ]
+[n E24859 cmd_type G_ID G_DATA1 G_DATA2 G_CONFIG G_PASSWD G_LIGHT G_VERSION G_SERIAL G_LAST  ]
 "178 ./modbus_master.h
-[s S3392 `uc 1 `E24834 1 `E24840 1 `us 1 `c 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `ul 1 `ul 1 `VS3391 1 ]
+[s S3392 `uc 1 `E24853 1 `E24859 1 `us 1 `c 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `ul 1 `ul 1 `VS3391 1 ]
 [n S3392 C_data mcmd cstate modbus_command req_length trace id_ok passwd_ok config_ok data_ok light_ok serial_ok version_ok tm_ok data_count data_prev M ]
 "137
 [s S3386 `ul 1 `ul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `l 1 `Va 1 `Va 1 ]
@@ -64,8 +64,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [u S3388 `s 1 `uc -> 2 `i ]
 [n S3388 MREG value bytes ]
 "270 modbus_master.c
-[c E24851 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 .. ]
-[n E24851 trace_type T_begin T_clear T_passwd T_config T_data T_id T_serial T_version T_init T_init_d T_send T_send_d T_recv T_recv_r T_misc1 T_misc2 T_misc3 T_spacing T_light  ]
+[c E24870 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 .. ]
+[n E24870 trace_type T_begin T_clear T_passwd T_config T_data T_id T_serial T_version T_init T_init_d T_send T_send_d T_recv T_recv_r T_misc1 T_misc2 T_misc3 T_spacing T_light  ]
 "86
 [v _clear_2hz `(v ~T0 @X0 0 sf ]
 "87
@@ -82,9 +82,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _serial_trmt `(a ~T0 @X0 0 sf ]
 "106
 [v _modbus_write_check `(a ~T0 @X0 0 sf3`*S3392`*a`us ]
-[v F25132 `(v ~T0 @X0 0 tf ]
+[v F25151 `(v ~T0 @X0 0 tf ]
 "107
-[v _modbus_read_check `(a ~T0 @X0 0 sf4`*S3392`*a`us`*F25132 ]
+[v _modbus_read_check `(a ~T0 @X0 0 sf4`*S3392`*a`us`*F25151 ]
 "110
 [v _em_data_handler `(v ~T0 @X0 0 sf ]
 "111
@@ -97,7 +97,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _modbus_read_id_check `(a ~T0 @X0 0 sf3`*S3392`*a`us ]
 "258 ./mcc_generated_files/uart3.h
 [v _UART3_is_tx_done `(a ~T0 @X0 0 ef ]
-[v F25210 `(a ~T0 @X0 0 tf ]
+[v F25229 `(a ~T0 @X0 0 tf ]
 [v F24066 `(a ~T0 @X0 1 tf1`uc ]
 "34 ./timers.h
 [v _TimerDone `TF24066 ~T0 @X0 0 e ]
@@ -126,8 +126,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v F24672 `(v ~T0 @X0 0 tf ]
 "497
 [v _UART3_SetErrorHandler `(v ~T0 @X0 0 ef1`*F24672 ]
-[v F25228 `(v ~T0 @X0 0 tf ]
-[v F25233 `(v ~T0 @X0 0 tf ]
+[v F25247 `(v ~T0 @X0 0 tf ]
+[v F25252 `(v ~T0 @X0 0 tf ]
 "290 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.29.481/xc8/pic/include/proc/pic18f57q84.h
 [; <" BOOTREG equ 038h ;# ">
 "322
@@ -2571,9 +2571,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 "535
 [v _UART1_TxInterruptHandler `*F24755 ~T0 @X0 1 e ]
 "75 ./mcc_generated_files/spi2.h
-[v _SPI2_InterruptHandler `*F24811 ~T0 @X0 1 e ]
+[v _SPI2_InterruptHandler `*F24830 ~T0 @X0 1 e ]
 "77
-[v _SPI2_RxInterruptHandler `*F24817 ~T0 @X0 1 e ]
+[v _SPI2_RxInterruptHandler `*F24836 ~T0 @X0 1 e ]
 "70 ./modbus_master.h
 [v _TMDELAY `Cuc ~T0 @X0 1 s ]
 [i _TMDELAY
@@ -3183,9 +3183,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _C
 :U ..
 :U ..
--> . `E24840 0 `uc
-. `E24834 0
-. `E24840 0
+-> . `E24859 0 `uc
+. `E24853 0
+. `E24859 0
 -> -> 0 `i `us
 -> -> 0 `i `c
 -> -> 0 `i `a
@@ -3527,8 +3527,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _my_modbus_rx_32 ]
 [f ]
 "168
-[v F25162 `uc ~T0 @X0 1 s m_data ]
-[i F25162
+[v F25181 `uc ~T0 @X0 1 s m_data ]
+[i F25181
 -> -> 0 `i `uc
 ]
 "170
@@ -3536,9 +3536,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 "171
 [e = . _M 14 -> -> 1 `i `a ]
 "175
-[e = F25162 _U3RXB ]
+[e = F25181 _U3RXB ]
 "176
-[e = *U + _cc_buffer * -> . _M 6 `ux -> -> # *U _cc_buffer `ui `ux F25162 ]
+[e = *U + _cc_buffer * -> . _M 6 `ux -> -> # *U _cc_buffer `ui `ux F25181 ]
 "177
 [e $ ! >= -> =+ . _M 6 -> -> 1 `i `Vuc `i -> 240 `i 3406  ]
 {
@@ -3695,83 +3695,83 @@ Version 4.0 HI-TECH Software Intermediate Code
 "266
 [f ]
 "267
-[v F25183 `ul ~T0 @X0 1 s spacing ]
-[i F25183
+[v F25202 `ul ~T0 @X0 1 s spacing ]
+[i F25202
 -> -> -> 0 `i `l `ul
 ]
 "269
-[e $ ! && < ++ F25183 -> -> -> 1 `i `l `ul -> _SPACING `ul ! != -> . _M 14 `i -> 0 `i 3414  ]
+[e $ ! && < ++ F25202 -> -> -> 1 `i `l `ul -> _SPACING `ul ! != -> . _M 14 `i -> 0 `i 3414  ]
 {
 "270
-[e ) -> . `E24851 17 `c ]
+[e ) -> . `E24870 17 `c ]
 [e $UE 3413  ]
 "271
 }
 [e :U 3414 ]
 "273
-[e = F25183 -> -> -> 0 `i `l `ul ]
+[e = F25202 -> -> -> 0 `i `l `ul ]
 "275
-[e = . *U _client 4 -> . `E24851 0 `c ]
+[e = . *U _client 4 -> . `E24870 0 `c ]
 "276
 [e $U 3416  ]
 {
 "277
 [e :U 3417 ]
 "278
-[e = . *U _client 4 -> . `E24851 1 `c ]
+[e = . *U _client 4 -> . `E24870 1 `c ]
 "279
 [e ( _clear_2hz ..  ]
 "280
 [e ( _clear_500ahz ..  ]
 "281
-[e = . *U _client 1 . `E24834 1 ]
+[e = . *U _client 1 . `E24853 1 ]
 "282
-[e = . *U _client 2 -> ++ . *U _client 0 -> -> 1 `i `uc `E24840 ]
+[e = . *U _client 2 -> ++ . *U _client 0 -> -> 1 `i `uc `E24859 ]
 "283
-[e $ ! && == -> . *U _client 2 `ui -> . `E24840 3 `ui != -> . *U _client 7 `i -> 0 `i 3418  ]
+[e $ ! && == -> . *U _client 2 `ui -> . `E24859 3 `ui != -> . *U _client 7 `i -> 0 `i 3418  ]
 {
 "284
-[e = . *U _client 2 -> ++ . *U _client 0 -> -> 1 `i `uc `E24840 ]
+[e = . *U _client 2 -> ++ . *U _client 0 -> -> 1 `i `uc `E24859 ]
 "285
 }
 [e :U 3418 ]
 "286
-[e $ ! && == -> . *U _client 2 `ui -> . `E24840 4 `ui != -> . *U _client 6 `i -> 0 `i 3419  ]
+[e $ ! && == -> . *U _client 2 `ui -> . `E24859 4 `ui != -> . *U _client 6 `i -> 0 `i 3419  ]
 {
 "287
-[e = . *U _client 2 -> ++ . *U _client 0 -> -> 1 `i `uc `E24840 ]
+[e = . *U _client 2 -> ++ . *U _client 0 -> -> 1 `i `uc `E24859 ]
 "288
 }
 [e :U 3419 ]
 "289
-[e $ ! && == -> . *U _client 2 `ui -> . `E24840 5 `ui != -> . *U _client 9 `i -> 0 `i 3420  ]
+[e $ ! && == -> . *U _client 2 `ui -> . `E24859 5 `ui != -> . *U _client 9 `i -> 0 `i 3420  ]
 {
 "290
-[e = . *U _client 2 -> ++ . *U _client 0 -> -> 1 `i `uc `E24840 ]
+[e = . *U _client 2 -> ++ . *U _client 0 -> -> 1 `i `uc `E24859 ]
 "291
 }
 [e :U 3420 ]
 "292
-[e $ ! && == -> . *U _client 2 `ui -> . `E24840 6 `ui != -> . *U _client 11 `i -> 0 `i 3421  ]
+[e $ ! && == -> . *U _client 2 `ui -> . `E24859 6 `ui != -> . *U _client 11 `i -> 0 `i 3421  ]
 {
 "293
-[e = . *U _client 2 -> ++ . *U _client 0 -> -> 1 `i `uc `E24840 ]
+[e = . *U _client 2 -> ++ . *U _client 0 -> -> 1 `i `uc `E24859 ]
 "294
 }
 [e :U 3421 ]
 "295
-[e $ ! && == -> . *U _client 2 `ui -> . `E24840 7 `ui != -> . *U _client 10 `i -> 0 `i 3422  ]
+[e $ ! && == -> . *U _client 2 `ui -> . `E24859 7 `ui != -> . *U _client 10 `i -> 0 `i 3422  ]
 {
 "296
-[e = . *U _client 2 -> ++ . *U _client 0 -> -> 1 `i `uc `E24840 ]
+[e = . *U _client 2 -> ++ . *U _client 0 -> -> 1 `i `uc `E24859 ]
 "297
 }
 [e :U 3422 ]
 "298
-[e $ ! > -> . *U _client 0 `i -> . `E24840 8 `i 3423  ]
+[e $ ! > -> . *U _client 0 `i -> . `E24859 8 `i 3423  ]
 {
 "299
-[e = . *U _client 0 -> . `E24840 0 `uc ]
+[e = . *U _client 0 -> . `E24859 0 `uc ]
 "300
 }
 [e :U 3423 ]
@@ -3781,7 +3781,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "305
 [e :U 3426 ]
 "306
-[e = . *U _client 4 -> . `E24851 7 `c ]
+[e = . *U _client 4 -> . `E24870 7 `c ]
 "307
 [e = . *U _client 3 ( _modbus_rtu_send_msg (3 , , -> &U _cc_buffer_tx `*v -> &U _modbus_em_version `*Cv -> -> # _modbus_em_version `ui `us ]
 "308
@@ -3789,7 +3789,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "309
 [e :U 3427 ]
 "310
-[e = . *U _client 4 -> . `E24851 6 `c ]
+[e = . *U _client 4 -> . `E24870 6 `c ]
 "311
 [e = . *U _client 3 ( _modbus_rtu_send_msg (3 , , -> &U _cc_buffer_tx `*v -> &U _modbus_em_serial `*Cv -> -> # _modbus_em_serial `ui `us ]
 "312
@@ -3797,7 +3797,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "313
 [e :U 3428 ]
 "314
-[e = . *U _client 4 -> . `E24851 18 `c ]
+[e = . *U _client 4 -> . `E24870 18 `c ]
 "315
 [e = . *U _client 3 ( _modbus_rtu_send_msg (3 , , -> &U _cc_buffer_tx `*v -> &U _modbus_em_light `*Cv -> -> # _modbus_em_light `ui `us ]
 "316
@@ -3805,7 +3805,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "317
 [e :U 3429 ]
 "318
-[e = . *U _client 4 -> . `E24851 2 `c ]
+[e = . *U _client 4 -> . `E24870 2 `c ]
 "319
 [e = . *U _client 3 ( _modbus_rtu_send_msg (3 , , -> &U _cc_buffer_tx `*v -> &U _modbus_em_passwd `*Cv -> -> # _modbus_em_passwd `ui `us ]
 "320
@@ -3813,7 +3813,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "321
 [e :U 3430 ]
 "322
-[e = . *U _client 4 -> . `E24851 3 `c ]
+[e = . *U _client 4 -> . `E24870 3 `c ]
 "323
 [e = . *U _client 3 ( _modbus_rtu_send_msg (3 , , -> &U _cc_buffer_tx `*v -> &U _modbus_em_config `*Cv -> -> # _modbus_em_config `ui `us ]
 "324
@@ -3821,7 +3821,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "325
 [e :U 3431 ]
 "326
-[e = . *U _client 4 -> . `E24851 4 `c ]
+[e = . *U _client 4 -> . `E24870 4 `c ]
 "327
 [e = . *U _client 3 ( _modbus_rtu_send_msg (3 , , -> &U _cc_buffer_tx `*v -> &U _modbus_em_data1 `*Cv -> -> # _modbus_em_data1 `ui `us ]
 "328
@@ -3829,7 +3829,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "329
 [e :U 3432 ]
 "330
-[e = . *U _client 4 -> . `E24851 4 `c ]
+[e = . *U _client 4 -> . `E24870 4 `c ]
 "331
 [e = . *U _client 3 ( _modbus_rtu_send_msg (3 , , -> &U _cc_buffer_tx `*v -> &U _modbus_em_data2 `*Cv -> -> # _modbus_em_data2 `ui `us ]
 "332
@@ -3837,15 +3837,15 @@ Version 4.0 HI-TECH Software Intermediate Code
 "333
 [e :U 3433 ]
 "334
-[e = . *U _client 1 . `E24834 0 ]
+[e = . *U _client 1 . `E24853 0 ]
 "335
-[e = . *U _client 0 -> . `E24840 0 `uc ]
+[e = . *U _client 0 -> . `E24859 0 `uc ]
 "336
 [e $U 3424  ]
 "337
 [e :U 3434 ]
 "338
-[e = . *U _client 4 -> . `E24851 5 `c ]
+[e = . *U _client 4 -> . `E24870 5 `c ]
 "339
 [e :U 3435 ]
 "340
@@ -3856,15 +3856,15 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e $U 3424  ]
 [e :U 3425 ]
-[e [\ -> . *U _client 2 `ui , $ -> . `E24840 6 `ui 3426
- , $ -> . `E24840 7 `ui 3427
- , $ -> . `E24840 5 `ui 3428
- , $ -> . `E24840 4 `ui 3429
- , $ -> . `E24840 3 `ui 3430
- , $ -> . `E24840 1 `ui 3431
- , $ -> . `E24840 2 `ui 3432
- , $ -> . `E24840 8 `ui 3433
- , $ -> . `E24840 0 `ui 3434
+[e [\ -> . *U _client 2 `ui , $ -> . `E24859 6 `ui 3426
+ , $ -> . `E24859 7 `ui 3427
+ , $ -> . `E24859 5 `ui 3428
+ , $ -> . `E24859 4 `ui 3429
+ , $ -> . `E24859 3 `ui 3430
+ , $ -> . `E24859 1 `ui 3431
+ , $ -> . `E24859 2 `ui 3432
+ , $ -> . `E24859 8 `ui 3433
+ , $ -> . `E24859 0 `ui 3434
  3435 ]
 [e :U 3424 ]
 "343
@@ -3872,18 +3872,18 @@ Version 4.0 HI-TECH Software Intermediate Code
 "344
 [e :U 3436 ]
 "345
-[e = . *U _client 4 -> . `E24851 8 `c ]
+[e = . *U _client 4 -> . `E24870 8 `c ]
 "350
 [e $ ! >= ( _get_500ahz (1 -> -> 0 `i `uc -> _CDELAY `ul 3437  ]
 {
 "357
 [e = . _M 6 -> -> 0 `i `uc ]
 "358
-[e = . *U _client 1 . `E24834 2 ]
+[e = . *U _client 1 . `E24853 2 ]
 "359
 [e ( _clear_500hz ..  ]
 "360
-[e = . *U _client 4 -> . `E24851 9 `c ]
+[e = . *U _client 4 -> . `E24870 9 `c ]
 "361
 }
 [e :U 3437 ]
@@ -3892,7 +3892,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "363
 [e :U 3438 ]
 "364
-[e = . *U _client 4 -> . `E24851 10 `c ]
+[e = . *U _client 4 -> . `E24870 10 `c ]
 "365
 [e $ ! >= ( _get_500hz (1 -> -> 0 `i `uc -> _TEDELAY `ul 3439  ]
 {
@@ -3913,11 +3913,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 3441 ]
 }
 "369
-[e = . *U _client 1 . `E24834 3 ]
+[e = . *U _client 1 . `E24853 3 ]
 "370
 [e ( _clear_500hz ..  ]
 "371
-[e = . *U _client 4 -> . `E24851 11 `c ]
+[e = . *U _client 4 -> . `E24870 11 `c ]
 "372
 [e ++ . _M 13 -> -> 1 `i `Vul ]
 "373
@@ -3938,12 +3938,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 "382
 [e :U 3445 ]
 "383
-[e = . *U _client 4 -> . `E24851 12 `c ]
+[e = . *U _client 4 -> . `E24870 12 `c ]
 "384
 [e $ ! >= ( _get_500hz (1 -> -> 0 `i `uc -> _TEDELAY `ul 3446  ]
 {
 "386
-[e = . *U _client 4 -> . `E24851 13 `c ]
+[e = . *U _client 4 -> . `E24870 13 `c ]
 "394
 [e $U 3448  ]
 {
@@ -4001,14 +4001,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e $U 3447  ]
 [e :U 3448 ]
-[e [\ -> . *U _client 2 `ui , $ -> . `E24840 5 `ui 3449
- , $ -> . `E24840 4 `ui 3450
- , $ -> . `E24840 3 `ui 3451
- , $ -> . `E24840 1 `ui 3452
- , $ -> . `E24840 2 `ui 3453
- , $ -> . `E24840 6 `ui 3454
- , $ -> . `E24840 7 `ui 3455
- , $ -> . `E24840 0 `ui 3456
+[e [\ -> . *U _client 2 `ui , $ -> . `E24859 5 `ui 3449
+ , $ -> . `E24859 4 `ui 3450
+ , $ -> . `E24859 3 `ui 3451
+ , $ -> . `E24859 1 `ui 3452
+ , $ -> . `E24859 2 `ui 3453
+ , $ -> . `E24859 6 `ui 3454
+ , $ -> . `E24859 7 `ui 3455
+ , $ -> . `E24859 0 `ui 3456
  3457 ]
 [e :U 3447 ]
 "421
@@ -4024,10 +4024,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e $U 3415  ]
 [e :U 3416 ]
-[e [\ -> . *U _client 1 `ui , $ -> . `E24834 0 `ui 3417
- , $ -> . `E24834 1 `ui 3436
- , $ -> . `E24834 2 `ui 3438
- , $ -> . `E24834 3 `ui 3445
+[e [\ -> . *U _client 1 `ui , $ -> . `E24853 0 `ui 3417
+ , $ -> . `E24853 1 `ui 3436
+ , $ -> . `E24853 2 `ui 3438
+ , $ -> . `E24853 3 `ui 3445
  3458 ]
 [e :U 3415 ]
 "426
@@ -4079,23 +4079,23 @@ Version 4.0 HI-TECH Software Intermediate Code
 "448
 [f ]
 "449
-[v F25194 `ul ~T0 @X0 1 s tmp ]
-[i F25194
+[v F25213 `ul ~T0 @X0 1 s tmp ]
+[i F25213
 -> -> -> 0 `i `l `ul
 ]
 "451
 [e $ ! != -> _mode `i -> 0 `i 3463  ]
 {
 "452
-[e ) F25194 ]
+[e ) F25213 ]
 [e $UE 3462  ]
 "453
 }
 [e :U 3463 ]
 "455
-[e = F25194 . _MT 2 ]
+[e = F25213 . _MT 2 ]
 "456
-[e ) F25194 ]
+[e ) F25213 ]
 [e $UE 3462  ]
 "457
 [e :UE 3462 ]
@@ -4110,23 +4110,23 @@ Version 4.0 HI-TECH Software Intermediate Code
 "464
 [f ]
 "465
-[v F25197 `ul ~T0 @X0 1 s tmp ]
-[i F25197
+[v F25216 `ul ~T0 @X0 1 s tmp ]
+[i F25216
 -> -> -> 0 `i `l `ul
 ]
 "467
 [e $ ! != -> _mode `i -> 0 `i 3465  ]
 {
 "468
-[e ) F25197 ]
+[e ) F25216 ]
 [e $UE 3464  ]
 "469
 }
 [e :U 3465 ]
 "471
-[e = F25197 . _MT 1 ]
+[e = F25216 . _MT 1 ]
 "472
-[e ) F25197 ]
+[e ) F25216 ]
 [e $UE 3464  ]
 "473
 [e :UE 3464 ]
@@ -4141,23 +4141,23 @@ Version 4.0 HI-TECH Software Intermediate Code
 "476
 [f ]
 "477
-[v F25200 `ul ~T0 @X0 1 s tmp ]
-[i F25200
+[v F25219 `ul ~T0 @X0 1 s tmp ]
+[i F25219
 -> -> -> 0 `i `l `ul
 ]
 "479
 [e $ ! != -> _mode `i -> 0 `i 3467  ]
 {
 "480
-[e ) F25200 ]
+[e ) F25219 ]
 [e $UE 3466  ]
 "481
 }
 [e :U 3467 ]
 "483
-[e = F25200 . _MT 0 ]
+[e = F25219 . _MT 0 ]
 "484
-[e ) F25200 ]
+[e ) F25219 ]
 [e $UE 3466  ]
 "485
 [e :UE 3466 ]
@@ -4217,7 +4217,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _serial_trmt ]
 [f ]
 "548
-[e ) -> -> ! != &U _UART3_is_tx_done -> -> 0 `i `*F25210 `i `a ]
+[e ) -> -> ! != &U _UART3_is_tx_done -> -> 0 `i `*F25229 `i `a ]
 [e $UE 3472  ]
 "549
 [e :UE 3472 ]
@@ -4379,9 +4379,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 3499 ]
 "608
-[e = . *U _client 1 . `E24834 0 ]
+[e = . *U _client 1 . `E24853 0 ]
 "609
-[e = . *U _client 0 -> . `E24840 8 `uc ]
+[e = . *U _client 0 -> . `E24859 8 `uc ]
 "610
 }
 [e $U 3500  ]
@@ -4391,9 +4391,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! >= ( _get_500hz (1 -> -> 0 `i `uc -> _RDELAY `ul 3501  ]
 {
 "612
-[e = . *U _client 1 . `E24834 0 ]
+[e = . *U _client 1 . `E24853 0 ]
 "613
-[e = . *U _client 0 -> . `E24840 0 `uc ]
+[e = . *U _client 0 -> . `E24859 0 `uc ]
 "614
 [e ++ . _M 12 -> -> 1 `i `Vul ]
 "615
@@ -4423,7 +4423,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :UE 3493 ]
 }
 "625
-[v _modbus_read_check `(a ~T0 @X0 1 sf4`*S3392`*a`us`*F25228 ]
+[v _modbus_read_check `(a ~T0 @X0 1 sf4`*S3392`*a`us`*F25247 ]
 "626
 {
 [e :U _modbus_read_check ]
@@ -4431,7 +4431,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _client `*S3392 ~T0 @X0 1 r1 ]
 [v _cstate `*a ~T0 @X0 1 r2 ]
 [v _rec_length `Cus ~T0 @X0 1 r3 ]
-[v _DataHandler `*F25233 ~T0 @X0 1 r4 ]
+[v _DataHandler `*F25252 ~T0 @X0 1 r4 ]
 "626
 [f ]
 "627
@@ -4486,7 +4486,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 3512 ]
 "650
-[e = . *U _client 1 . `E24834 0 ]
+[e = . *U _client 1 . `E24853 0 ]
 "651
 }
 [e $U 3516  ]
@@ -4496,7 +4496,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! >= ( _get_500hz (1 -> -> 0 `i `uc -> _RDELAY `ul 3517  ]
 {
 "653
-[e = . *U _client 1 . `E24834 0 ]
+[e = . *U _client 1 . `E24853 0 ]
 "654
 [e :U 3520 ]
 {
@@ -4504,7 +4504,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 3519 ]
 "655
-[e = . *U _client 0 -> . `E24840 0 `uc ]
+[e = . *U _client 0 -> . `E24859 0 `uc ]
 "656
 [e ++ . _M 12 -> -> 1 `i `Vul ]
 "657
@@ -4590,7 +4590,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 3527 ]
 "689
-[e = . *U _client 1 . `E24834 0 ]
+[e = . *U _client 1 . `E24853 0 ]
 "690
 }
 [e $U 3531  ]
@@ -4600,9 +4600,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! >= ( _get_500hz (1 -> -> 0 `i `uc -> _RDELAY `ul 3532  ]
 {
 "692
-[e = . *U _client 1 . `E24834 0 ]
+[e = . *U _client 1 . `E24853 0 ]
 "693
-[e = . *U _client 0 -> . `E24840 0 `uc ]
+[e = . *U _client 0 -> . `E24859 0 `uc ]
 "694
 [e ++ . _M 12 -> -> 1 `i `Vul ]
 "695
