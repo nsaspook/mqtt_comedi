@@ -285,6 +285,9 @@ struct ha_daq_calib_type ha_daq_calib = {
 	.A200_S = A200_0_SCALAR,
 	.done = false,
 	.crc = TATE,
+	.c_scale_cal = true,
+	.c_zero_cal = true,
+	.c_do_cal = false,
 };
 
 volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0, channel = 0, upper;
@@ -463,6 +466,26 @@ void main(void)
 		 */
 		logging_cmds();
 
+		/*
+		 * Calibration commands
+		 */
+		if (ha_daq_calib.c_do_cal) {
+			ha_daq_calib.c_do_cal = false;
+			if (read_cal_data()) { // check for valid calibrations data in EEPROM
+				sprintf(get_vterm_ptr(0, MAIN_VTERM), "Read EEPROM DATA    ");
+				update_cal_data(); // do calibrations
+				sprintf(get_vterm_ptr(1, MAIN_VTERM), "Update EEPROM DATA  ");
+				write_cal_data(); // update the EEPROM
+				sprintf(get_vterm_ptr(1, MAIN_VTERM), "Write EEPROM DATA   ");
+			} else {
+				sprintf(get_vterm_ptr(0, MAIN_VTERM), "Invalid EEPROM DATA ");
+			}
+			sprintf(get_vterm_ptr(3, MAIN_VTERM), "Calibration Complete ");
+			set_vterm(V.vterm); // set to buffer 0
+			refresh_lcd();
+			WaitMs(WLDELAY);
+		}
+
 		if ((spi_stat_ss.daq_conf & 0x04) == 0x00) { // the 47Q84 board has no EM540 or FM80 support
 #ifdef MB_MASTER
 #ifdef MAIN_TRACE
@@ -581,7 +604,7 @@ void main(void)
 				write_cal_data();
 				timeout = true;
 			}
-			
+
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "Port %s             ", speed_text);
 			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "Port %s             ", speed_text);
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "Port %s             ", speed_text);

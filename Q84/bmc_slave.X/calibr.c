@@ -156,8 +156,10 @@ void update_cal_data(void)
 {
 	ha_daq_calib = r_cal;
 	if (!ha_daq_calib.c_zero_cal) {
+		ha_daq_calib.c_zero_cal = true;
 	}
 
 	if (!ha_daq_calib.c_scale_cal) {
+		ha_daq_calib.c_scale_cal = true;
 	}
 }

@@ -255,7 +255,7 @@ void slaveo_rx_isr(void)
 			data_in2 = 0;
 		} else {
 			switch (channel) {
-			case 0x04:
+			case ADC_HV0:
 				switch (serial_buffer_ss.raw_index) {
 				case BMC_D0:
 					SPI2TXB = (char) tmp_buf4[0];
@@ -274,7 +274,7 @@ void slaveo_rx_isr(void)
 					break;
 				}
 				break;
-			case 0x05:
+			case ADC_HV1:
 				switch (serial_buffer_ss.raw_index) {
 				case BMC_D0:
 					SPI2TXB = (char) tmp_buf5[0];
@@ -290,6 +290,16 @@ void slaveo_rx_isr(void)
 					break;
 				default:
 					SPI2TXB = CHECKBYTE;
+					break;
+				}
+				break;
+			case 0x0C: // do ADC calibration functions
+				SPI2TXB = CHECKBYTE;
+				switch (serial_buffer_ss.raw_index) {
+				case BMC_DUMMY: // on the last byte trigger a update cal data and a cal data write
+					ha_daq_calib.c_zero_cal = false;
+					ha_daq_calib.c_scale_cal = false;
+					ha_daq_calib.c_do_cal = true;
 					break;
 				}
 				break;

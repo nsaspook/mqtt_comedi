@@ -1,6 +1,6 @@
 /** \file calibr.h
  * Calibration values for host for HV inputs and 200A current sensor
- * 
+ *
  * return physical voltage units for channels 4 & 5
  */
 
@@ -41,6 +41,7 @@ extern "C" {
 		bool done;
 		uint8_t c_zero_cal : 1;
 		uint8_t c_scale_cal : 1;
+		uint8_t c_do_cal : 1;
 		uint16_t checkmark;
 		uint8_t crc; // must be last item in the structure
 	};
