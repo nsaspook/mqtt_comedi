@@ -124,4 +124,3 @@ extern "C" {
 #endif
 
 #endif	/* MXCMD_H */
-

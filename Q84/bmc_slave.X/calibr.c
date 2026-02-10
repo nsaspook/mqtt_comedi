@@ -2,6 +2,21 @@
 
 static struct ha_daq_calib_type r_cal;
 
+static const float HV_SCALE4_0 = 64.2695f;
+static const float HV_SCALE5_0 = 64.2695f;
+static const float HV_SCALE4_1 = 64.1890f;
+static const float HV_SCALE5_1 = 64.1415f;
+static const float HV_SCALE4_2 = 54.1890f;
+static const float HV_SCALE5_2 = 54.1415f;
+static const float HV_SCALE4_3 = 55.6000f;
+static const float HV_SCALE5_3 = 55.6500f;
+static const float HV_SCALE4_4 = 64.3590f;
+static const float HV_SCALE5_4 = 64.3850f;
+static const float HV_SCALE4_5 = 64.3520f;
+static const float HV_SCALE5_5 = 64.3480f;
+static const float HV_SCALE4_6 = 64.2500f;
+static const float HV_SCALE5_6 = 64.2500f;
+
 /*
  * use Q84 MUI to find calibration data for each board
  */
@@ -52,7 +67,7 @@ void set_calibration(unsigned long long mui)
 float phy_chan4(uint16_t value)
 {
 	if (value) {
-		return((((float) value)) / 4096.0f) * ha_daq_calib.scaler4;
+		return((((float) value)) / ADC_SCALE) * ha_daq_calib.scaler4;
 	} else {
 		return 0.00001f;
 	}
@@ -61,7 +76,7 @@ float phy_chan4(uint16_t value)
 float phy_chan5(uint16_t value)
 {
 	if (value) {
-		return((((float) value)) / 4096.0f) * ha_daq_calib.scaler5;
+		return((((float) value)) / ADC_SCALE) * ha_daq_calib.scaler5;
 	} else {
 		return 0.00001f;
 	}

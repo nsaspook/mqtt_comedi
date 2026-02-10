@@ -929,7 +929,7 @@ void main(void)
 
 			snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX                                  ", spi_stat_ss.mui);
 			snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "Dev %X Rev %X                            ", spi_stat_ss.deviceid, spi_stat_ss.devicerev);
-			snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "4 %6.3fV, 5 %6.3fV                      ", ((float) adc_buffer[channel_ANA4] / 4096.0f) * ha_daq_calib.scaler4, ((float) adc_buffer[channel_ANA5] / 4096.0f) * ha_daq_calib.scaler5);
+			snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "4 %6.3fV, 5 %6.3fV                      ", ((float) adc_buffer[channel_ANA4] / ADC_SCALE) * ha_daq_calib.scaler4, ((float) adc_buffer[channel_ANA5] / ADC_SCALE) * ha_daq_calib.scaler5);
 			snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "SPI2 errors 0x%.2lx                                 ",
 				spi_stat_ss.spi_error_count);
 #endif
