@@ -68,7 +68,7 @@ extern "C" {
 	/*
 	 * internal variables and states debug screens
 	 */
-#define DIS_DEBUG	// active debug status display, disable during normal operation
+//#define DIS_DEBUG	// active debug status display, disable during normal operation
 
 	/*
 	 * TP1 sync triggers enable

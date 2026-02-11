@@ -646,11 +646,12 @@ void main(void)
 				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, " MC 0x%X 0x%X 0x%X         ", mc_init.cmd[3], mc_init.cmd[4], mc_init.cmd[5]);
 			}
 #endif
-			if (failure) { // DO or DI not working or missing
+			if (V.di_fail || V.do_fail) { // DO or DI not working or missing
 				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " %s Analog Dev        ", (spi_stat_ss.deviceid == F57Q84) ? "57Q84" : "47Q84");
 			} else {
 				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " %s All Dev           ", (spi_stat_ss.deviceid == F57Q84) ? "57Q84" : "47Q84");
 			}
+
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, " %s                   ", (char *) build_date);
 			snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, " INFO                 ");
 			snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, " Version %s           ", VER);
@@ -928,7 +929,6 @@ void main(void)
 			// convert ADC values to char for display
 			update_rs232_line_status();
 #endif
-
 			if (V.vterm_switch++ > (SWITCH_VTERM)) {
 				set_vterm(switcher);
 				if (V.vterm_switch > (SWITCH_VTERM + V.ticker + SWITCH_DURATION)) {

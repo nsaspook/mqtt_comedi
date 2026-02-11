@@ -391,7 +391,7 @@ void slaveo_rx_isr(void)
 		TMR0_Reload();
 	}
 
-	if (!V.di_fail && command == CMD_PORT_GET) { // send the V.bmc_di buffer
+	if (command == CMD_PORT_GET) { // send the V.bmc_di buffer
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = true;
 		spi_comm_ss.CHAR_DATA = false;
@@ -401,7 +401,7 @@ void slaveo_rx_isr(void)
 		TMR0_Reload();
 	}
 
-	if (!V.do_fail && command == CMD_PORT_GO) { // Found a GO for a DO command
+	if (command == CMD_PORT_GO) { // Found a GO for a DO command
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = true;
 		spi_comm_ss.CHAR_DATA = false;
@@ -411,7 +411,7 @@ void slaveo_rx_isr(void)
 		TMR0_Reload();
 	}
 
-	if (!V.do_fail && command == CMD_CHAR_GET) { // send the serial buffer
+	if (command == CMD_CHAR_GET) { // send the serial buffer
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = false;
 		spi_comm_ss.CHAR_DATA = true;
@@ -422,7 +422,7 @@ void slaveo_rx_isr(void)
 		TMR0_Reload();
 	}
 
-	if (!V.do_fail && command == CMD_CHAR_GO) { // get data for the serial buffer
+	if (command == CMD_CHAR_GO) { // get data for the serial buffer
 		spi_comm_ss.ADC_RUN = false;
 		spi_comm_ss.PORT_DATA = false;
 		spi_comm_ss.CHAR_DATA = true;
