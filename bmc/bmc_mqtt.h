@@ -26,7 +26,7 @@ extern "C" {
 		double BENERGYV, BVOLTAGEV, PVENERGYV, PVVOLTAGEV, SOC_MODEV;
 	};
 
-#define HOST_SLOTS	6	//BMC host data slots
+#define HOST_SLOTS	12	//BMC host data slots
 #define BMC_MAXHOST      1025	// hosts buffer size
 #define BENERGY_INTEGRAL 1440.0f
 #define MQTT_RETRY 10
@@ -63,7 +63,7 @@ extern "C" {
 #define BSENSOR_MAX_POS  125.0f
 
 #define UPDATE_PACER  250 // MQTT and logging frequency to 0.01 seconds.
-#define UPDATE_PACER_RPI2B	350
+#define UPDATE_PACER_RPI2B	400
 #define BAT_RUN_MAX 140.0f  // max displayed run time at current load
 #define DRAIN_HOUR 1.0f
 #define IDLE_DRAIN      1.0f // system battery losses in W

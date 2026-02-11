@@ -31,13 +31,17 @@ extern "C" {
 #define JUST_BITS false
 	/*
 	 * scale adc result into calibrated units
-	 * for USB boards and BMC boards use MUI_id scales and offsets
+	 * for USB boards, BMC boards use MUI_ID downloaded scales and offsets
 	 */
+	// USB Boards
 #define HV_SCALE0               83.6f
 #define HV_SCALE1               74.4f
 #define HV_SCALE2               74.4f
 #define HV_SCALE3               83.6f
 #define HV_SCALE4               83.6f
+#define HV_SCALE5               83.6f
+#define HV_SCALE6               83.6f
+	// BMC Boards
 #define HV_SCALE4_0             64.2600f
 #define HV_SCALE5_0             64.2600f
 #define HV_SCALE4_1             64.1890f
@@ -48,14 +52,18 @@ extern "C" {
 #define HV_SCALE5_3             64.1415f
 #define HV_SCALE4_4             64.2600f
 #define HV_SCALE5_4             64.2600f
+#define HV_SCALE4_5             64.2600f
+#define HV_SCALE5_5             64.2600f
+#define HV_SCALE4_6             64.2600f
+#define HV_SCALE5_6             64.2600f
 #define HV_SCALE_RAW            4.096f
 #define HV_SCALE_OFFSET         0.0f
 
 	/*
-	 * make sure battery sensor power is connected to 24VDC supply
-	 * the sensor board has a precision 5VDC reference/supply
+	 * make sure battery sensor power is connected to 12/24VDC supply
+	 * the sensor board has a onboard precision 5VDC reference/supply
 	 */
-#define A200_0_ZERO    2.5216f
+#define A200_0_ZERO    2.5216f	// should be near 2.5VDC for zero Hall sensor current
 #define A200_0_SCALAR  133.05f // BATTERY Amp scalar
 #define BSENSOR0       0
 

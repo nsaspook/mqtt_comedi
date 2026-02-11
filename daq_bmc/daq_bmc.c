@@ -25,7 +25,7 @@
  * TODO: get some SoC board rev and other info from the Pi board
  *
 Driver: "experimental" daq_bmc in progress ...
- * for Linux kernels with device-tree enabled for Orange PI Zero 3 and RPi 2B
+ * for Linux kernels with device-tree enabled for RPi 2B
  * see README.md for install instructions
  *
 Description: BMCBOARD daq_bmc spibmc
@@ -192,14 +192,15 @@ static const uint32_t PICSL12 = 0; // index into chip config array
 static const uint32_t PICSL12_AO = 1;
 static const uint32_t PICSL12_47 = 1;
 
-static const uint32_t SUBDEV = 5; // with all sub-devices
-static const uint32_t SUBDEV_OAO = 2; // only analog sub-devices
+static const uint32_t SUBDEV = 5; // with all sub-devices for, ALL DEV
+static const uint32_t SUBDEV_OAO = 3; // only analog sub-devices and serial sub-device, ANALOG DEV
 
 static const uint32_t SUBDEV_AI = 0;
 static const uint32_t SUBDEV_AO = 1;
-static const uint32_t SUBDEV_DI = 2;
-static const uint32_t SUBDEV_DO = 3;
-static const uint32_t SUBDEV_MEM = 4;
+static const uint32_t SUBDEV_MEM = 2; // Comedi applications subdev search will stop at gaps in the subdevices array
+static const uint32_t SUBDEV_DI = 3;
+static const uint32_t SUBDEV_DO = 4;
+
 static const uint32_t SMP_CORES = 4;
 static const uint32_t CONF_Q84 = 3;
 static const uint32_t MEM_BLOCKS = 8; // 0..3 CLCD display lines, 4..7 serial comms for FMx0, MODBUS, etc ...
@@ -351,11 +352,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.name = "PICSL12",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
-#ifdef RPI2B
 		.max_speed_hz = 4000000,
-#else
-		.max_speed_hz = 8000000,
-#endif
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
 		.spi_mode = 3,
@@ -369,11 +366,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.name = "PICSL12_AO",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
-#ifdef RPI2B
 		.max_speed_hz = 4000000,
-#else
-		.max_speed_hz = 8000000,
-#endif
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
 		.spi_mode = 3,
@@ -406,8 +399,7 @@ struct daqbmc_board {
 	uint8_t n_aochan_bits;
 	uint32_t ai_ns_min_calc;
 	uint32_t ao_ns_min_calc;
-	uint32_t ai_cs;
-	uint32_t ao_cs;
+	uint32_t bmc_cs;
 	int32_t ai_node;
 	int32_t ao_node;
 };
@@ -423,8 +415,7 @@ static const struct daqbmc_board daqbmc_boards[] = {
 		.n_aochan_bits = 8,
 		.ai_ns_min_calc = 20000000,
 		.ao_ns_min_calc = 20000000,
-		.ai_cs = 1,
-		.ao_cs = 1,
+		.bmc_cs = 1,
 		.ai_node = 1,
 		.ao_node = 2,
 	},
@@ -438,8 +429,7 @@ static const struct daqbmc_board daqbmc_boards[] = {
 		.n_aochan_bits = 12,
 		.ai_ns_min_calc = 1000000,
 		.ao_ns_min_calc = 1000000,
-		.ai_cs = 1,
-		.ao_cs = 1,
+		.bmc_cs = 1,
 		.ai_node = 1,
 		.ao_node = 2,
 	},
@@ -565,16 +555,12 @@ static int32_t daqbmc_bmc_get_config(struct comedi_device *);
 /*
  * piBoardRev:
  *	Return a number representing the hardware revision of the PI board.
- *	3 = OPI, 2 = RPi2b, etc...
  *********************************************************************
  */
 static int32_t piBoardRev(struct comedi_device *dev)
 {
-	int32_t boardRev = BMC_OPIZ3; // default to OPi Zero3 4G board
+	int32_t boardRev = BMC_RPI2B;
 
-#ifdef RPI2B
-	boardRev = BMC_RPI2B;
-#endif
 	bmc_rev = boardRev;
 
 	return boardRev;
@@ -590,17 +576,9 @@ static int32_t bmc_spi_packet(struct spi_device *spi, struct bmc_packet_type * p
 	}
 
 	spi_message_init_with_transfers(packet->m, &packet->one_t, 1); //one transfer per message
-#ifndef OPIZ3
 	spi_bus_lock(spi->controller);
-#else
-	spi_bus_lock(spi->master);
-#endif
 	ret = spi_sync_locked(spi, packet->m);
-#ifndef OPIZ3
 	spi_bus_unlock(spi->controller);
-#else
-	spi_bus_unlock(spi->master);
-#endif
 	if (ret == 0) {
 		ret = packet->m->actual_length;
 	}
@@ -820,7 +798,7 @@ static void daqbmc_ao_put_sample(struct comedi_device *dev,
 }
 
 /*
- *
+ * Only one sample per call
  */
 static void daqbmc_ao_put_samples(struct comedi_device *dev,
 	struct comedi_subdevice *s,
@@ -906,6 +884,9 @@ static void daqbmc_handle_ao_eoc(struct comedi_device *dev,
 	}
 }
 
+/*
+ * DAQ triggers
+ */
 static int32_t daqbmc_ao_inttrig(struct comedi_device *dev,
 	struct comedi_subdevice *s,
 	uint32_t trig_num)
@@ -942,6 +923,9 @@ static int32_t daqbmc_ao_inttrig(struct comedi_device *dev,
 	return ret;
 }
 
+/*
+ * DAQ Comedi commands
+ */
 static int32_t daqbmc_ao_cmd(struct comedi_device *dev,
 	struct comedi_subdevice * s)
 {
@@ -1056,6 +1040,9 @@ static int32_t daqbmc_ao_delay_rate(struct comedi_device *dev,
 	return spacing_usecs;
 }
 
+/*
+ * Check for valid Comedi commands
+ */
 static int32_t daqbmc_ao_cmdtest(struct comedi_device *dev,
 	struct comedi_subdevice *s,
 	struct comedi_cmd * cmd)
@@ -1609,7 +1596,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 {
 	const struct daqbmc_board *thisboard = &daqbmc_boards[bmc_type & 0x01];
 	struct comedi_subdevice *s;
-	int32_t ret;
+	int32_t ret, retconf;
 	unsigned long spi_device_missing = 0;
 	int32_t num_do_chan = NUM_DO_CHAN;
 	int32_t num_di_chan = NUM_DI_CHAN;
@@ -1689,7 +1676,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		 * probe/init hardware for special cases that may need
 		 * many SPI transfers
 		 */
-		if (*pdata->slave.spi->chip_select == thisboard->ai_cs) {
+		if (*pdata->slave.spi->chip_select == thisboard->bmc_cs) {
 			devpriv->ai_spi = &pdata->slave;
 			devpriv->ao_spi = &pdata->slave;
 			pdata->one_t.tx_buf = pdata->tx_buff;
@@ -1697,7 +1684,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			if (daqbmc_conf == PICSL12 || daqbmc_conf == PICSL12_AO) {
 				mutex_lock(&devpriv->drvdata_lock);
 				dev_info(dev->class_dev, "BMCBoard using chip select : 0x%1x\n",
-					thisboard->ai_cs);
+					thisboard->bmc_cs);
 				mutex_unlock(&devpriv->drvdata_lock);
 				smp_mb__after_atomic();
 			}
@@ -1783,7 +1770,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	s->insn_read = daqbmc_ai_rinsn;
 	s->subdev_flags = devpriv->ai_spi->device_spi->ai_subdev_flags;
 
-	if (devpriv->ai_spi->device_type == PICSL12 || devpriv->ai_spi->device_type == PICSL12_AO) { // no async
+	if (devpriv->ai_spi->device_type == PICSL12 || devpriv->ai_spi->device_type == PICSL12_AO) {
 		s->maxdata = (1 << devpriv->ai_spi->device_spi->n_chan_bits) - 1;
 		s->range_table = &daqbmc_ai_rangeq84;
 		s->n_chan = devpriv->ai_spi->chan;
@@ -1829,51 +1816,49 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 
 	/*
 	 * Probe the BMCboard existence and for configuration data
+	 * set BMC board configuration in retconf
 	 */
-	ret = daqbmc_bmc_get_config(dev);
+	retconf = daqbmc_bmc_get_config(dev);
 
 	if (FORCE_57Q84_ALL) {
-		ret = 0x00;
+		retconf = 0x00;
 	}
 
-	if (ret == 0xff) {
-		ret = daqbmc_bmc_get_config(dev);
+	/*
+	 * Try again on first device detection failure
+	 */
+	if (retconf == 0xff) {
+		retconf = daqbmc_bmc_get_config(dev);
 	}
 
-	if (ret == 0xff) { // no SPI comms with daq_bmc board
+	if (retconf == 0xff) { // no SPI comms with daq_bmc board
 		dev_err(dev->class_dev,
-			"BMCBoard not detected 0X%X, unloading driver \n", ret);
+			"BMCBoard not detected 0X%X, unloading driver \n", retconf);
 		ret = -EINVAL;
 		goto daqbmc_kfree_rx_exit;
 	}
 
-	if (ret == CHECKBYTE) { // bad ID from daq_bmc board
+	if (retconf == CHECKBYTE) { // bad ID from daq_bmc board
 		dev_err(dev->class_dev,
-			"BMCBoard CPU not detected 0X%X, force board ID 0x00 \n", ret);
-		ret = 0x00;
+			"BMCBoard CPU not detected 0X%X, force board ID 0x00 \n", retconf);
+		retconf = 0x00;
 	}
 
 	dev_info(dev->class_dev,
 		"Analog Out channels %d, Analog In channels %d : Q84 config code 0x%x\n",
-		thisboard->n_aochan, devpriv->ai_spi->chan, ret);
+		thisboard->n_aochan, devpriv->ai_spi->chan, retconf);
 
 	/*
 	 * check Q84 board returned config codes for digital channels
+	 * using retconf value from the BMC board
 	 */
-	if ((ret & 0x3) != 0x00) { // sub-device codes from the Q84
+	if ((retconf & 0x3) != 0x00) { // sub-device codes from the Q84
 		di_conf = false;
 		do_conf = false;
 		daqbmc_conf = PICSL12_AO;
 		dev->n_subdevices = daqbmc_devices[daqbmc_conf].n_subdev; // only show the analog devices
 		dev_info(dev->class_dev,
 			"BMCBoard Digital DI DO Disabled, controller device %s \n", daqbmc_devices[daqbmc_conf].name);
-	}
-
-	if ((ret & 0x4) == 0x04 || FORCE_47Q84) { // 47Q84 processor
-		daqbmc_cpu = PICSL12_47;
-		dev_info(dev->class_dev, "PIC18F47Q84 DAQ device setup complete\n");
-	} else {
-		dev_info(dev->class_dev, "PIC18F57Q84 DAQ device setup complete\n");
 	}
 
 	if (daqbmc_cpu != PICSL12_47) {
@@ -1903,7 +1888,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	}
 
 	if (di_conf) {
-		s = &dev->subdevices[2];
+		s = &dev->subdevices[SUBDEV_DI];
 		s->type = COMEDI_SUBD_DI;
 		s->subdev_flags = SDF_READABLE;
 		s->n_chan = num_di_chan;
@@ -1913,6 +1898,13 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		s->insn_bits = daqbmc_di_insn_bits;
 		dev_info(dev->class_dev,
 			"Digital In channels %d\n", num_di_chan);
+	}
+
+	if ((retconf & 0x4) == 0x04 || FORCE_47Q84) { // 47Q84 processor
+		daqbmc_cpu = PICSL12_47;
+		dev_info(dev->class_dev, "PIC18F47Q84 DAQ device setup complete\n");
+	} else {
+		dev_info(dev->class_dev, "PIC18F57Q84 DAQ device setup complete\n");
 	}
 
 	/*
@@ -1930,7 +1922,8 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			goto daqbmc_kfree_rx_exit;
 		}
 	}
-	return 0; // complete without errors
+	ret = 0; // complete without errors
+	goto daqbmc_kfree_exit;
 
 	/*
 	 * memory cleanups
@@ -1974,7 +1967,7 @@ static struct comedi_driver daqbmc_driver = {
 };
 
 /*
- * called for each listed spibmc SPI device
+ * called for each device-tree listed spibmc SPI device
  * SO THIS RUNS FIRST, setup basic spi comm parameters here
  */
 static int32_t spibmc_spi_probe(struct spi_device * spi)
@@ -2080,13 +2073,8 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 		}
 
 		if (bmc_autoload) {
-#ifndef OPIZ3
 			ret = comedi_auto_config(&spi->controller->dev,
 				&daqbmc_driver, 0);
-#else
-			ret = comedi_auto_config(&spi->master->dev,
-				&daqbmc_driver, 0);
-#endif
 		}
 
 		if (ret < 0) {
@@ -2134,7 +2122,6 @@ static const struct class spibmc_class = {
 };
 
 static const struct spi_device_id spibmc_spi_ids[] = {
-#ifndef OPIZ3
 	{ .name = "bh2228fv"},
 	{ .name = "dh2228fv"},
 	{ .name = "jg10309-01"},
@@ -2149,18 +2136,6 @@ static const struct spi_device_id spibmc_spi_ids[] = {
 	{ .name = "si3210"},
 	{ .name = "spibmc"},
 	{},
-#else
-	{ .name = "spibmc"},
-	{ .name = "dh2228fv"},
-	{ .name = "ltc2488"},
-	{ .name = "sx1301"},
-	{ .name = "bk4"},
-	{ .name = "dhcom-board"},
-	{ .name = "m53cpld"},
-	{ .name = "spi-petra"},
-	{ .name = "spi-authenta"},
-	{},
-#endif
 };
 MODULE_DEVICE_TABLE(spi, spibmc_spi_ids);
 
@@ -2181,7 +2156,6 @@ static int spibmc_of_check(struct device *dev)
 }
 
 static const struct of_device_id spibmc_dt_ids[] = {
-#ifndef OPIZ3
 	{ .compatible = "cisco,spi-petra", .data = &spibmc_of_check},
 	{ .compatible = "dh,dhcom-board", .data = &spibmc_of_check},
 	{ .compatible = "elgin,jg10309-01", .data = &spibmc_of_check},
@@ -2195,18 +2169,6 @@ static const struct of_device_id spibmc_dt_ids[] = {
 	{ .compatible = "silabs,em3581", .data = &spibmc_of_check},
 	{ .compatible = "silabs,si3210", .data = &spibmc_of_check},
 	{},
-#else
-	{ .compatible = "orangepi,spibmc", .data = &spibmc_of_check},
-	{ .compatible = "rohm,dh2228fv", .data = &spibmc_of_check},
-	{ .compatible = "lineartechnology,ltc2488", .data = &spibmc_of_check},
-	{ .compatible = "semtech,sx1301", .data = &spibmc_of_check},
-	{ .compatible = "lwn,bk4", .data = &spibmc_of_check},
-	{ .compatible = "dh,dhcom-board", .data = &spibmc_of_check},
-	{ .compatible = "menlo,m53cpld", .data = &spibmc_of_check},
-	{ .compatible = "cisco,spi-petra", .data = &spibmc_of_check},
-	{ .compatible = "micron,spi-authenta", .data = &spibmc_of_check},
-	{},
-#endif
 };
 MODULE_DEVICE_TABLE(of, spibmc_dt_ids);
 
@@ -2248,40 +2210,40 @@ static struct spi_driver spibmc_spi_driver = {
  * setup driver defaults using config variables and modules conf files
  */
 static int32_t daqbmc_spi_probe(struct comedi_device * dev,
-	struct spi_param_type * spi_adc)
+	struct spi_param_type * spi_bmc)
 {
 	const struct daqbmc_board *thisboard = dev->board_ptr;
 
-	if (!spi_adc->spi) {
+	if (!spi_bmc->spi) {
 		dev_err(dev->class_dev, "no ADC spi channel detected\n");
-		spi_adc->chan = 0;
+		spi_bmc->chan = 0;
 		return 0;
 	}
 
 	switch (daqbmc_conf) {
 	case 0:
-		spi_adc->device_type = PICSL12;
+		spi_bmc->device_type = PICSL12;
 		break;
 	case 1:
-		spi_adc->device_type = PICSL12_AO;
+		spi_bmc->device_type = PICSL12_AO;
 		break;
 	default:
-		spi_adc->device_type = PICSL12_AO;
+		spi_bmc->device_type = PICSL12_AO;
 	}
-	spi_adc->device_spi = &daqbmc_devices[spi_adc->device_type];
+	spi_bmc->device_spi = &daqbmc_devices[spi_bmc->device_type];
 
 	/* default setup */
-	spi_adc->pic18 = CONF_Q84; /* Q84 mode 12 bits */
-	spi_adc->chan = thisboard->n_aichan;
+	spi_bmc->pic18 = CONF_Q84; /* Q84 mode 12 bits */
+	spi_bmc->chan = thisboard->n_aichan;
 
 	/*
 	 * SPI link data hardware setup
 	 */
 	dev_info(dev->class_dev, "Probing for PIC18Fx7Q84 DAQ device, SPI slave mode\n");
-	spi_adc->device_type = daqbmc_conf;
-	spi_adc->chan = spi_adc->device_spi->n_chan;
-	spi_adc->range = 0; // 4.096 default
-	spi_adc->bits = spi_adc->device_spi->n_chan_bits;
+	spi_bmc->device_type = daqbmc_conf;
+	spi_bmc->chan = spi_bmc->device_spi->n_chan;
+	spi_bmc->range = 0; // 4.096 default
+	spi_bmc->bits = spi_bmc->device_spi->n_chan_bits;
 
 	if ((daqbmc_conf == PICSL12_AO) || (do_conf == 0) || (di_conf == 0)) { // no DI DO board version
 		do_conf = 0;
@@ -2291,12 +2253,12 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	dev_info(dev->class_dev,
 		"BMCboard SPI setup: spi cs %d: %d Hz: spi mode 0x%x: "
 		"probing for controller device %s\n",
-		(int) *spi_adc->spi->chip_select,
-		spi_adc->spi->max_speed_hz,
-		spi_adc->spi->mode,
-		spi_adc->device_spi->name);
+		(int) *spi_bmc->spi->chip_select,
+		spi_bmc->spi->max_speed_hz,
+		spi_bmc->spi->mode,
+		spi_bmc->device_spi->name);
 
-	return spi_adc->chan;
+	return spi_bmc->chan;
 }
 
 /*
@@ -2321,24 +2283,15 @@ static void __exit daqbmc_exit(void)
 		slave_spi = &pdata->slave;
 	}
 
-#ifndef OPIZ3
 	comedi_auto_unconfig(&slave_spi->spi->controller->dev);
-#else
-	comedi_auto_unconfig(&slave_spi->spi->master->dev);
-#endif
 	comedi_driver_unregister(&daqbmc_driver);
 	spi_unregister_driver(&spibmc_spi_driver);
 }
 module_exit(daqbmc_exit);
 
 MODULE_AUTHOR("NSASPOOK <nsaspooksma2@gmail.com");
-MODULE_DESCRIPTION("RPI/OPI DI/DO/AI/AO SPI Driver for Comedi");
-#ifdef RPI2B
+MODULE_DESCRIPTION("RPI DI/DO/AI/AO SPI Driver for Comedi");
 MODULE_VERSION("6.12.62+");
-#endif
-#ifdef OPIZ3
-MODULE_VERSION("6.1.31");
-#endif
 MODULE_LICENSE("GPL");
 MODULE_ALIAS("spi:spibmc");
 
