@@ -27,6 +27,7 @@ extern "C" {
 	};
 
 #define HOST_SLOTS	12	//BMC host data slots
+#define OPEN_HOST	6	// BMC host without a known IP address
 #define BMC_MAXHOST      1025	// hosts buffer size
 #define BENERGY_INTEGRAL 1440.0f
 #define MQTT_RETRY 10
@@ -159,6 +160,7 @@ extern "C" {
 
 	void timer_callback(int32_t);
 	void comedi_push_mqtt(void);
+	bool get_bmc_serial(void);
 
 #ifdef __cplusplus
 }

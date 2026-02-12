@@ -81,8 +81,8 @@ for the FMx0 charge controller and for the modbus EM540 power meter
 #include <linux/list.h>
 #include <linux/completion.h>
 
-#define bmc_version "version 1.21 "
-#define spibmc_version "version 1.6 "
+#define bmc_version "version 1.22 "
+#define spibmc_version "version 1.7 "
 
 /*
  * Look for Soc board types using C preprocessor defines
@@ -225,7 +225,7 @@ static const struct spi_delay CS_CHANGE_DELAY_USECS10 = {
 /*
  * This selects the chip select, not the interface number like spi0, spi1
  */
-static const uint32_t CSnA = 0; /*  BMCboard Q84 not used CS, spi0 on the RPi, spi1 on OPi */
+//static const uint32_t CSnA = 0; /*  BMCboard Q84 not used CS, spi0 on the RPi, spi1 on OPi */
 static const uint32_t CS_BMC = 1; /*  BMCboard Q84 slave CS, spi0 on the RPi, spi1 on OPi  */
 
 /*
@@ -2009,33 +2009,33 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 		"BMCboard default: do_conf=%d, di_conf=%d, daqbmc_conf=%d, chip select %d\n",
 		do_conf, di_conf, daqbmc_conf, (uint32_t) * spi->chip_select);
 
-	if ((uint32_t) * spi->chip_select == CSnA) {
-		/*
-		 * get a copy of the slave device 0 to share with Comedi
-		 * we need a device to talk to the Q84
-		 *
-		 * create entry into the Comedi device list
-		 */
-
-		dev_info(&spi->dev,
-			"SPI device match: spi->chip_select == CSnA %d\n",
-			(uint32_t) * spi->chip_select);
-
-		INIT_LIST_HEAD(&pdata->device_entry);
-		pdata->slave.spi = spi;
-		/*
-		 * put entry into the Comedi device list
-		 */
-		list_add_tail(&pdata->device_entry, &device_list);
-		spi->mode = daqbmc_devices[daqbmc_conf].spi_mode;
-		spi->max_speed_hz = daqbmc_devices[daqbmc_conf].max_speed_hz;
-		spi->word_delay = CS_CHANGE_DELAY_USECS0;
-		spi->cs_setup = CS_CHANGE_DELAY_USECS0;
-		spi->cs_hold = CS_CHANGE_DELAY_USECS0;
-		spi->cs_inactive = CS_CHANGE_DELAY_USECS0;
-		spi->bits_per_word = daqbmc_devices[daqbmc_conf].spi_bpw;
-		spi_setup(spi);
-	}
+	//	if ((uint32_t) * spi->chip_select == CSnA) {
+	//		/*
+	//		 * get a copy of the slave device 0 to share with Comedi
+	//		 * we need a device to talk to the Q84
+	//		 *
+	//		 * create entry into the Comedi device list
+	//		 */
+	//
+	//		dev_info(&spi->dev,
+	//			"SPI device match: spi->chip_select == CSnA %d\n",
+	//			(uint32_t) * spi->chip_select);
+	//
+	//		INIT_LIST_HEAD(&pdata->device_entry);
+	//		pdata->slave.spi = spi;
+	//		/*
+	//		 * put entry into the Comedi device list
+	//		 */
+	//		list_add_tail(&pdata->device_entry, &device_list);
+	//		spi->mode = daqbmc_devices[daqbmc_conf].spi_mode;
+	//		spi->max_speed_hz = daqbmc_devices[daqbmc_conf].max_speed_hz;
+	//		spi->word_delay = CS_CHANGE_DELAY_USECS0;
+	//		spi->cs_setup = CS_CHANGE_DELAY_USECS0;
+	//		spi->cs_hold = CS_CHANGE_DELAY_USECS0;
+	//		spi->cs_inactive = CS_CHANGE_DELAY_USECS0;
+	//		spi->bits_per_word = daqbmc_devices[daqbmc_conf].spi_bpw;
+	//		spi_setup(spi);
+	//	}
 
 	if ((uint32_t) * spi->chip_select == CS_BMC) {
 		/*
@@ -2097,9 +2097,10 @@ static int spibmc_spi_remove(struct spi_device * spi)
 {
 	struct comedi_spibmc *pdata = spi->dev.platform_data;
 
-	dev_info(&spi->dev, "spibmc device link removed \n");
+	pdata->slave.spi = NULL;
 	if (!list_empty(&device_list)) {
 		list_del(&pdata->device_entry);
+		dev_info(&spi->dev, "spibmc device link removed \n");
 	}
 
 	if (pdata->rx_buff) {

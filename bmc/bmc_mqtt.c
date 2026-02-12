@@ -91,64 +91,70 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.hosts[3] = "10.1.1.45", // HA server and full devices
 	.hosts[4] = "10.1.1.40", // no HA server, rpi2B testing system
 	.hosts[5] = "10.1.1.255",
-	.hosts[6] = "10.1.1.255",
+	.hosts[OPEN_HOST] = "10.1.1.255",
 	.mqtt[0] = "10.1.1.30",
 	.mqtt[1] = "10.1.1.172", // no HA server
 	.mqtt[2] = "10.1.1.172", // no HA server
 	.mqtt[3] = "10.1.1.45",
 	.mqtt[4] = "10.1.1.40", // no HA server, has internal mqtt server
-	.mqtt[5] = "10.1.1.255",
-	.mqtt[6] = "10.1.1.255",
+	.mqtt[5] = "10.1.1.172",
+	.mqtt[OPEN_HOST] = "10.1.1.172",
 	.topics[0] = "comedi/bmc/data/bmc/1",
 	.topics[1] = "comedi/bmc/data/bmc/2",
 	.topics[2] = "comedi/bmc/data/bmc/3",
 	.topics[3] = "comedi/bmc/data/bmc/4",
 	.topics[4] = "comedi/bmc/data/bmc/5",
 	.topics[5] = "comedi/bmc/data/bmc/6",
-	.topics[6] = "comedi/bmc/data/bmc/7",
+	.topics[OPEN_HOST] = "comedi/bmc/data/bmc/OPEN_HOST",
 	.listen[0] = "comedi/bmc/listen/bmc/1",
 	.listen[1] = "comedi/bmc/listen/bmc/2",
 	.listen[2] = "comedi/bmc/listen/bmc/3",
 	.listen[3] = "comedi/bmc/listen/bmc/4",
 	.listen[4] = "comedi/bmc/listen/bmc/5",
 	.listen[5] = "comedi/bmc/listen/bmc/6",
-	.listen[6] = "comedi/bmc/listen/bmc/7",
+	.listen[OPEN_HOST] = "comedi/bmc/listen/bmc/OPEN_HOST",
 	.hname[0] = "RDAQ1",
 	.hname[1] = "RDAQ2",
 	.hname[2] = "RDAQ3",
 	.hname[3] = "RDAQ4",
 	.hname[4] = "RDAQ5",
-	.hname[5] = "RDAQ6",
-	.hname[6] = "RDAQ7",
+	.hname[5] = "RDAQ_OPEN_HOST",
+	.hname[OPEN_HOST] = "RDAQ7",
 	.clients[0] = "Energy_Mqtt_BMC1",
 	.clients[1] = "Energy_Mqtt_BMC2",
 	.clients[2] = "Energy_Mqtt_BMC3",
 	.clients[3] = "Energy_Mqtt_BMC4",
 	.clients[4] = "Energy_Mqtt_BMC5",
-	.clients[5] = "Energy_Mqtt_BMC6",
-	.clients[6] = "Energy_Mqtt_BMC7",
+	.clients[5] = "Energy_Mqtt_BMC_OPEN_HOST",
+	.clients[OPEN_HOST] = "Energy_Mqtt_BMC_OPEN_HOST",
 	.scalar[0] = HV_SCALE0,
 	.scalar[1] = HV_SCALE1,
 	.scalar[2] = HV_SCALE2,
 	.scalar[3] = HV_SCALE3,
 	.scalar[4] = HV_SCALE4,
 	.scalar[5] = HV_SCALE5,
-	.scalar[6] = HV_SCALE6,
+	.scalar[OPEN_HOST] = HV_SCALE_OPEN_HOST,
 	.scalar4[0] = HV_SCALE4_0,
 	.scalar4[1] = HV_SCALE4_1,
 	.scalar4[2] = HV_SCALE4_2,
 	.scalar4[3] = HV_SCALE4_3,
 	.scalar4[4] = HV_SCALE4_4,
+	.scalar4[5] = HV_SCALE4_5,
+	.scalar4[OPEN_HOST] = HV_SCALE4_OPEN_HOST,
 	.scalar5[0] = HV_SCALE5_0,
 	.scalar5[1] = HV_SCALE5_1,
 	.scalar5[2] = HV_SCALE5_2,
 	.scalar5[3] = HV_SCALE5_3,
 	.scalar5[4] = HV_SCALE5_4,
+	.scalar5[5] = HV_SCALE5_5,
+	.scalar5[OPEN_HOST] = HV_SCALE5_OPEN_HOST,
 	.pacer[0] = UPDATE_PACER, // opiha
 	.pacer[1] = UPDATE_PACER, // daq1
 	.pacer[2] = UPDATE_PACER, // daq2
 	.pacer[3] = UPDATE_PACER,
 	.pacer[4] = UPDATE_PACER_RPI2B,
+	.pacer[5] = UPDATE_PACER_RPI2B,
+	.pacer[OPEN_HOST] = UPDATE_PACER_RPI2B,
 	.hindex = 0,
 	.bindex = 0,
 	.calib.checkmark = CHECKMARK,
@@ -187,12 +193,35 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.scalar5[4] = HV_SCALE5_0,
 	.calib.A200_Z[4] = A200_0_ZERO,
 	.calib.A200_S[4] = A200_0_SCALAR,
+	.calib.bmc_id[5] = 0x00000, // 57Q84 BMC testing board
+	.calib.offset4[5] = HV_SCALE_OFFSET,
+	.calib.scalar4[5] = HV_SCALE4_0,
+	.calib.offset5[5] = HV_SCALE_OFFSET,
+	.calib.scalar5[5] = HV_SCALE5_0,
+	.calib.A200_Z[5] = A200_0_ZERO,
+	.calib.A200_S[5] = A200_0_SCALAR,
+	.calib.bmc_id[OPEN_HOST] = 0x00000, // BMC OPEN HOST
+	.calib.offset4[OPEN_HOST] = HV_SCALE_OFFSET,
+	.calib.scalar4[OPEN_HOST] = HV_SCALE4_0,
+	.calib.offset5[OPEN_HOST] = HV_SCALE_OFFSET,
+	.calib.scalar5[OPEN_HOST] = HV_SCALE5_0,
+	.calib.A200_Z[OPEN_HOST] = A200_0_ZERO,
+	.calib.A200_S[OPEN_HOST] = A200_0_SCALAR,
 };
 
 static double ac0_filter(const double);
 static double ac1_filter(const double);
 static double bsensor0_filter(const double);
 static double Volts_to_SOC(const double);
+
+static struct ha_csv_type R = {
+	.benergy = DBENERGY, // default running value, updates per run
+	.runtime = BAT_RUN_MAX,
+	.boot_wait = 0,
+	.boot_volts = true,
+}; // results from Q84 board
+static uint32_t goods = 0, bads = 0;
+static bool ok_data = false;
 
 /** \file bmc_mqtt.c
  * show all assigned networking addresses and types
@@ -225,6 +254,9 @@ void showIP(void)
 			/*
 			 * match IP address to clients and topics
 			 */
+			ha_daq_host.hindex = OPEN_HOST; // default to open daq host
+			strncpy((char *) &ha_daq_host.hosts[OPEN_HOST][0], host, BMC_MAXHOST);
+
 			if (strcmp(host, &ha_daq_host.hosts[0][0]) == 0) {
 				ha_daq_host.hindex = 0;
 			}
@@ -566,18 +598,11 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	cJSON *json;
 	time_t rawtime;
 	static uint32_t spam = 0;
-	static uint32_t pacer = 1001;
 	double Soc = 1.0f;
 
 	MQTTClient_message pubmsg = MQTTClient_message_initializer;
 	MQTTClient_deliveryToken token;
 	ha_flag_vars_ss.deliveredtoken = 0;
-	static struct ha_csv_type R = {
-		.benergy = DBENERGY, // default running value, updates per run
-		.runtime = BAT_RUN_MAX,
-		.boot_wait = 0,
-		.boot_volts = true,
-	}; // results from Q84 board
 
 	//#define DIGITAL_ONLY
 
@@ -629,95 +654,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	E.do_16b = bmc.dataout.dio_buf;
 	E.di_16b = datain;
 
-	if (pacer++ > ha_daq_host.pacer[ha_daq_host.hindex]) {
-		bool ok_data = false;
-		static uint32_t goods = 0, bads = 0;
-		char *tmp_ptr, *jtoken;
-
-		pacer = 0;
-		strncpy(tmp_test_ptr, daq_bmc_data_buf, SYSLOG_SIZ);
-		tmp_ptr = validate_bmc_text(daq_bmc_data_buf, &ok_data);
-		strncpy(daq_bmc_data_buf, tmp_ptr, SYSLOG_SIZ - 1);
-		if (ok_data) {
-			goods++;
-			jtoken = strtok(daq_bmc_data_buf, ",");
-			if (jtoken != NULL) {
-				/*
-				 * parse the string for variable values
-				 */
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.d_id = atoi(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.acvolts = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.acamps = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.acwatts = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.acwatts_gti = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.acva = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.acvar = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.acpf = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.achz = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.bvolts = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.pvolts = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.bamps = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.pamps = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.panel_watts = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.fm_online = atoi(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.fm_mode = atoi(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.em540_online = atoi(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL) { // get the Q84 MUI
-					R.bmc_id = atoll(jtoken);
-				}
-				jtoken = strtok(NULL, ","); // set the calibration data from the Q84
-				if (jtoken != NULL)
-					ha_daq_host.calib.scalar4[ha_daq_host.bindex] = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					ha_daq_host.calib.scalar5[ha_daq_host.bindex] = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					ha_daq_host.calib.A200_Z[ha_daq_host.bindex] = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					ha_daq_host.calib.A200_S[ha_daq_host.bindex] = atof(jtoken);
-			}
-		} else {
-			if (bmc.BOARD != bmcboard) {
-				ha_daq_host.bindex = 1; // default to K8055 (VM110) device on USB
-			}
-		}
+	if (get_bmc_serial()) {
 
 		/*
 		 * various data fix-ups and sanity checks
@@ -1091,4 +1028,104 @@ double Volts_to_SOC(const double bvoltage)
 		}
 	}
 	return soc;
+}
+
+/*
+ * parse data from the Comedi MEMORY serial stream
+ */
+bool get_bmc_serial(void)
+{
+	static uint32_t pacer = 1001;
+	bool ret = false;
+
+	if (pacer++ > ha_daq_host.pacer[ha_daq_host.hindex]) {
+		char *tmp_ptr, *jtoken;
+
+		pacer = 0;
+		ret = true;
+		strncpy(tmp_test_ptr, daq_bmc_data_buf, SYSLOG_SIZ);
+		tmp_ptr = validate_bmc_text(daq_bmc_data_buf, &ok_data);
+		strncpy(daq_bmc_data_buf, tmp_ptr, SYSLOG_SIZ - 1);
+		if (ok_data) {
+			goods++;
+			jtoken = strtok(daq_bmc_data_buf, ",");
+			if (jtoken != NULL) {
+				/*
+				 * parse the string for variable values
+				 */
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.d_id = atoi(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.acvolts = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.acamps = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.acwatts = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.acwatts_gti = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.acva = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.acvar = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.acpf = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.achz = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.bvolts = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.pvolts = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.bamps = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.pamps = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.panel_watts = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.fm_online = atoi(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.fm_mode = atoi(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.em540_online = atoi(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL) { // get the Q84 MUI
+					R.bmc_id = atoll(jtoken);
+				}
+				jtoken = strtok(NULL, ","); // set the calibration data from the Q84
+				if (jtoken != NULL)
+					ha_daq_host.calib.scalar4[ha_daq_host.bindex] = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					ha_daq_host.calib.scalar5[ha_daq_host.bindex] = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					ha_daq_host.calib.A200_Z[ha_daq_host.bindex] = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					ha_daq_host.calib.A200_S[ha_daq_host.bindex] = atof(jtoken);
+			}
+		} else {
+			if (bmc.BOARD != bmcboard) {
+				ha_daq_host.bindex = 1; // default to K8055 (VM110) device on USB
+			}
+		}
+	}
+	return ret;
 }
