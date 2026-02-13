@@ -56,7 +56,7 @@ bool ADC_OPEN = true, DIO_OPEN = true, ADC_ERROR = false, DEV_OPEN = true,
 bool DO_OPEN = true, DI_OPEN = true, DO_ERROR = false;
 union dio_buf_type obits, ibits;
 
-uint32_t datain, serial_buf, daq_bmc_data[SYSLOG_SIZ], overrun = 0;
+uint32_t datain = 0x3fffff, serial_buf, daq_bmc_data[SYSLOG_SIZ], overrun = 0;
 const char text_test[] = {"the quick brown fox jumps over the lazy dogs back"};
 
 char *daq_text[] = {

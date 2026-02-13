@@ -207,6 +207,7 @@ int main(int argc, char *argv[])
 	int do_ao_only = false;
 	uint32_t i = 0, j = 75;
 
+
 	/*
 	 * read configuration file settings
 	 */
@@ -222,7 +223,6 @@ int main(int argc, char *argv[])
 			fprintf(fout, "Missing Analog AO subdevice\n");
 			return -1;
 		}
-
 
 		while (true) {
 			set_dac_raw(0, sine_wave[255 - i++] << 4);

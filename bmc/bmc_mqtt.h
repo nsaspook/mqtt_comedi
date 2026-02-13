@@ -26,9 +26,9 @@ extern "C" {
 		double BENERGYV, BVOLTAGEV, PVENERGYV, PVVOLTAGEV, SOC_MODEV;
 	};
 
-#define HOST_SLOTS	12	//BMC host data slots
-#define OPEN_HOST	6	// BMC host without a known IP address
-#define BMC_MAXHOST      1025	// hosts buffer size
+#define HOST_SLOTS 12 //BMC host data slots
+#define OPEN_HOST 6 // BMC host without a known IP address
+#define BMC_MAXHOST      1024 // hosts buffer size
 #define BENERGY_INTEGRAL 1440.0f
 #define MQTT_RETRY 10
 
@@ -64,7 +64,7 @@ extern "C" {
 #define BSENSOR_MAX_POS  125.0f
 
 #define UPDATE_PACER  250 // MQTT and logging frequency to 0.01 seconds.
-#define UPDATE_PACER_RPI2B	400
+#define UPDATE_PACER_RPI2B 400
 #define BAT_RUN_MAX 140.0f  // max displayed run time at current load
 #define DRAIN_HOUR 1.0f
 #define IDLE_DRAIN      1.0f // system battery losses in W
@@ -138,7 +138,7 @@ extern "C" {
 		const char listen[HOST_SLOTS][BMC_MAXHOST];
 		char hname[HOST_SLOTS][BMC_MAXHOST];
 		double scalar[HOST_SLOTS], scalar4[HOST_SLOTS], scalar5[HOST_SLOTS];
-		uint8_t hindex, bindex;
+		uint8_t hindex, bindex;  // host array, calibration array
 		uint32_t pacer[HOST_SLOTS];
 		struct ha_daq_calib_type calib;
 	};
@@ -161,6 +161,8 @@ extern "C" {
 	void timer_callback(int32_t);
 	void comedi_push_mqtt(void);
 	bool get_bmc_serial(void);
+	bool validate_ok(void);
+	void set_bmc_timer(void);
 
 #ifdef __cplusplus
 }
