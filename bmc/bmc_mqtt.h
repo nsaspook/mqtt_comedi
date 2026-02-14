@@ -26,8 +26,8 @@ extern "C" {
 		double BENERGYV, BVOLTAGEV, PVENERGYV, PVVOLTAGEV, SOC_MODEV;
 	};
 
-#define HOST_SLOTS 12 //BMC host data slots
-#define OPEN_HOST 6 // BMC host without a known IP address
+#define HOST_SLOTS 10 //BMC host data slots
+#define OPEN_HOST 9 // BMC host array index for those without a known IP address or MUI
 #define BMC_MAXHOST      1024 // hosts buffer size
 #define BENERGY_INTEGRAL 1440.0f
 #define MQTT_RETRY 10
@@ -133,9 +133,9 @@ extern "C" {
 	struct ha_daq_hosts_type {
 		const char hosts[HOST_SLOTS][BMC_MAXHOST];
 		const char mqtt[HOST_SLOTS][BMC_MAXHOST];
-		const char clients[HOST_SLOTS][BMC_MAXHOST];
-		const char topics[HOST_SLOTS][BMC_MAXHOST];
-		const char listen[HOST_SLOTS][BMC_MAXHOST];
+		char clients[HOST_SLOTS][BMC_MAXHOST];
+		char topics[HOST_SLOTS][BMC_MAXHOST];
+		char listen[HOST_SLOTS][BMC_MAXHOST];
 		char hname[HOST_SLOTS][BMC_MAXHOST];
 		double scalar[HOST_SLOTS], scalar4[HOST_SLOTS], scalar5[HOST_SLOTS];
 		uint8_t hindex, bindex;  // host array, calibration array

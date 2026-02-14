@@ -105,14 +105,14 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.topics[3] = "comedi/bmc/data/bmc/4",
 	.topics[4] = "comedi/bmc/data/bmc/5",
 	.topics[5] = "comedi/bmc/data/bmc/6",
-	.topics[OPEN_HOST] = "comedi/bmc/data/bmc/OPEN_HOST",
+	.topics[OPEN_HOST] = "comedi/bmc/data/bmc/OH",
 	.listen[0] = "comedi/bmc/listen/bmc/1",
 	.listen[1] = "comedi/bmc/listen/bmc/2",
 	.listen[2] = "comedi/bmc/listen/bmc/3",
 	.listen[3] = "comedi/bmc/listen/bmc/4",
 	.listen[4] = "comedi/bmc/listen/bmc/5",
 	.listen[5] = "comedi/bmc/listen/bmc/6",
-	.listen[OPEN_HOST] = "comedi/bmc/listen/bmc/OPEN_HOST",
+	.listen[OPEN_HOST] = "comedi/bmc/listen/bmc/OH",
 	.hname[0] = "RDAQ1",
 	.hname[1] = "RDAQ2",
 	.hname[2] = "RDAQ3",
@@ -126,7 +126,7 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.clients[3] = "Energy_Mqtt_BMC4",
 	.clients[4] = "Energy_Mqtt_BMC5",
 	.clients[5] = "Energy_Mqtt_BMC6",
-	.clients[OPEN_HOST] = "Energy_Mqtt_BMC_OPEN_HOST",
+	.clients[OPEN_HOST] = "Energy_Mqtt_BMC_OH",
 	.scalar[0] = HV_SCALE0,
 	.scalar[1] = HV_SCALE1,
 	.scalar[2] = HV_SCALE2,
@@ -698,6 +698,12 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][0], tmp_str, MAX_STRLEN);
 				mqtt_id = strlen(&ha_daq_host.hname[ha_daq_host.hindex][0]);
 				fprintf(fout, "MQTT OPENHOST : %s : %06llX\n", &ha_daq_host.hname[ha_daq_host.hindex][0], (uint64_t) R.bmc_id);
+				snprintf(tmp_str, MAX_STRLEN, "Energy_Mqtt_BMC%06llX", (uint64_t) R.bmc_id);
+				strncpy(&ha_daq_host.clients[ha_daq_host.hindex][0], tmp_str, MAX_STRLEN);
+				snprintf(tmp_str, MAX_STRLEN, "comedi/bmc/data/bmc/%06llX", (uint64_t) R.bmc_id);
+				strncpy(&ha_daq_host.topics[ha_daq_host.hindex][0], tmp_str, MAX_STRLEN);
+				snprintf(tmp_str, MAX_STRLEN, "comedi/bmc/listen/bmc/%06llX", (uint64_t) R.bmc_id);
+				strncpy(&ha_daq_host.listen[ha_daq_host.hindex][0], tmp_str, MAX_STRLEN);
 			}
 		}
 
@@ -710,13 +716,13 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		}
 
 		if (ok_data) {
-			fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, goods %d, bads %d, d_id %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, goods, bads, R.d_id);
+			fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.4x DI 0x%.6x, goods %d, bads %d, d_id %d\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, goods, bads, R.d_id);
 		} else {
 			if ((bmc.BOARD == bmcboard) && SERIAL_OPEN) {
 				bads++;
-				fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, bads %d, Overruns %d validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, tmp_test_ptr, ok_data, bads, overrun, validate_failure);
+				fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, bads %d, Overruns %d validate failure code %d\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, tmp_test_ptr, ok_data, bads, overrun, validate_failure);
 			} else {
-				fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain);
+				fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.4x DI 0x%.6x\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, datain);
 			}
 		}
 		memset(daq_bmc_data_text, 0, MAX_STRLEN);
