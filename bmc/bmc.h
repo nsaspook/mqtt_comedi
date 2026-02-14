@@ -45,6 +45,8 @@ extern "C" {
 #else
 #define ADDRESS         "tcp://10.1.1.172:1883"
 #endif
+	
+#define MQTT_HOST	"10.1.1.172"
 #define TOPIC_P
 #define TOPIC_SPAM      "comedi/bmc/data/spam"
 #define TOPIC_PACA      "home-assistant/comedi/bmc"
