@@ -36,7 +36,7 @@ extern "C" {
 #include "MQTTClient.h"
 #include "bmc_mqtt.h"
 
-#define LOG_VERSION     "V0.25"
+#define LOG_VERSION     "V0.28"
 #define MQTT_VERSION    "V3.11"
 #define TNAME  "maint9"
 #define LADDRESS        "tcp://127.0.0.1:1883"
@@ -45,6 +45,8 @@ extern "C" {
 #else
 #define ADDRESS         "tcp://10.1.1.172:1883"
 #endif
+
+#define MQTT_HOST	"10.1.1.172"
 #define TOPIC_P
 #define TOPIC_SPAM      "comedi/bmc/data/spam"
 #define TOPIC_PACA      "home-assistant/comedi/bmc"
@@ -70,10 +72,10 @@ extern "C" {
 #define KAI             60
 
 #define ANA_BUFFERS     0x40
-	
+
 #define EXIT_CONFIG_WRITE_FAIL
-	
-//#define USE_RELAYS
+
+	//#define USE_RELAYS
 
 	/*
 	 * system testing defines

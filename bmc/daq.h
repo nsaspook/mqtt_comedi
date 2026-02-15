@@ -26,19 +26,22 @@ extern "C" {
 
 #define SLOW_TEXT 1
 #define SLOW_DATA 1
-#define MAX_STRLEN      128
+#define MAX_STRLEN      256
 
 #define JUST_BITS false
 	/*
 	 * scale adc result into calibrated units
-	 * for USB boards and BMC boards use MUI_id scales and offsets
+	 * for USB boards, BMC boards use MUI_ID downloaded scales and offsets
 	 */
+	// USB Boards
 #define HV_SCALE0               83.6f
 #define HV_SCALE1               74.4f
 #define HV_SCALE2               74.4f
 #define HV_SCALE3               83.6f
-#define HV_SCALE4               64.1890f
-#define HV_SCALE5               64.1415f
+#define HV_SCALE4               83.6f
+#define HV_SCALE5               83.6f
+#define HV_SCALE_OPEN_HOST      83.6f
+	// BMC Boards
 #define HV_SCALE4_0             64.2600f
 #define HV_SCALE5_0             64.2600f
 #define HV_SCALE4_1             64.1890f
@@ -47,21 +50,28 @@ extern "C" {
 #define HV_SCALE5_2             54.1415f
 #define HV_SCALE4_3             64.1890f
 #define HV_SCALE5_3             64.1415f
+#define HV_SCALE4_4             64.2600f
+#define HV_SCALE5_4             64.2600f
+#define HV_SCALE4_5             64.2600f
+#define HV_SCALE5_5             64.2600f
+#define HV_SCALE4_OPEN_HOST     64.2600f
+#define HV_SCALE5_OPEN_HOST     64.2600f
 #define HV_SCALE_RAW            4.096f
 #define HV_SCALE_OFFSET         0.0f
 
 	/*
-	 * make sure battery sensor power is connected to 24VDC supply
-	 * the sensor board has a precision 5VDC reference/supply
+	 * make sure battery sensor power is connected to 12/24VDC supply
+	 * the sensor board has a onboard precision 5VDC reference/supply
 	 */
-#define A200_0_ZERO  2.5216f
+#define A200_0_ZERO    2.5216f	// should be near 2.5VDC for zero Hall sensor current
 #define A200_0_SCALAR  133.05f // BATTERY Amp scalar
-#define BSENSOR0 0
+#define BSENSOR0       0
 
-#define OVER_SAMP       4
+#define OVER_SAMP      4
 
-#define BMCBoard        "BMCboard (Q84)"
-#define USBBoard        "K8055 (VM110)"
+#define BMCBoard       "BMCboard (Q84)"
+#define BMC_CHAN       4
+#define USBBoard       "K8055 (VM110)"
 
 	typedef enum {
 		bmcboard = 0,
@@ -83,6 +93,7 @@ extern "C" {
 		B_2 = 0x04,
 		B_3 = 0x08,
 		B_15 = 0x8000,
+		B_16 = 0x208040,
 	} B_CODES;
 
 	typedef enum { // need to keep all ADC channels in the 4-bit 0x0f range
@@ -127,7 +138,7 @@ extern "C" {
 	};
 
 	extern volatile struct bmcdata bmc;
-	extern uint32_t datain, serial_buf;
+	extern uint32_t datain, serial_buf, overrun;
 	extern union dio_buf_type obits;
 	extern uint32_t daq_bmc_data[SYSLOG_SIZ];
 	extern char daq_bmc_data_text[SYSLOG_SIZ];
