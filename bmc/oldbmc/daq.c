@@ -56,7 +56,7 @@ bool ADC_OPEN = true, DIO_OPEN = true, ADC_ERROR = false, DEV_OPEN = true,
 bool DO_OPEN = true, DI_OPEN = true, DO_ERROR = false;
 union dio_buf_type obits, ibits;
 
-uint32_t datain=0x3fffff, serial_buf, daq_bmc_data[SYSLOG_SIZ], overrun = 0;
+uint32_t datain, serial_buf, daq_bmc_data[SYSLOG_SIZ];
 const char text_test[] = {"the quick brown fox jumps over the lazy dogs back"};
 
 char *daq_text[] = {
@@ -66,7 +66,7 @@ char *daq_text[] = {
 	"daq_bmc text 3           ",
 }, *daq_text_ptr, daq_bmc_data_text[SYSLOG_SIZ], daq_bmc_data_buf[SYSLOG_SIZ];
 
-uint32_t daq_data_index = 0;
+uint8_t daq_text_index = 0, line_index = 0, daq_data_index = 0;
 static uint32_t slow_data = 0;
 
 struct bmc_buffer_type BMC4 = {
@@ -98,11 +98,6 @@ int init_daq(double min_range, double max_range, int range_update)
 		HAS_AO = false;
 	} else {
 		HAS_AO = true;
-	}
-
-	subdev_serial0 = comedi_find_subdevice_by_type(it, COMEDI_SUBD_MEMORY, subdev_serial0);
-	if (subdev_serial0 < 0) {
-		SERIAL_OPEN = false;
 	}
 
 	fprintf(fout, "Comedi DAQ Board Name: %s, Driver: %s\r\n", comedi_get_board_name(it), comedi_get_driver_name(it));
@@ -147,16 +142,6 @@ int init_daq(double min_range, double max_range, int range_update)
 	comedi_set_global_oor_behavior(COMEDI_OOR_NUMBER);
 
 	daq_text_ptr = daq_text[0];
-
-	if (SERIAL_OPEN) {
-		fprintf(fout, "Subdev SER %i ", subdev_serial0);
-		channels_serial0 = comedi_get_n_channels(it, subdev_serial0);
-		fprintf(fout, "Digital Channels %i ", channels_serial0);
-		maxdata_serial0 = comedi_get_maxdata(it, subdev_serial0, i);
-		fprintf(fout, "Maxdata %i ", maxdata_serial0);
-		ranges_serial0 = comedi_get_n_ranges(it, subdev_serial0, i);
-		fprintf(fout, "Ranges %i \r\n", ranges_serial0);
-	}
 	return 0;
 }
 
@@ -338,6 +323,7 @@ int init_dio(void)
 			DI_OPEN = false;
 			DEV_OPEN = false;
 			PWM_OPEN = false;
+			SERIAL_OPEN = false;
 			RX_OPEN = false;
 			return -1;
 		}
@@ -362,6 +348,11 @@ int init_dio(void)
 	subdev_counter = comedi_find_subdevice_by_type(it, COMEDI_SUBD_COUNTER, subdev_counter);
 	if (subdev_counter < 0) {
 		PWM_OPEN = false;
+	}
+
+	subdev_serial0 = comedi_find_subdevice_by_type(it, COMEDI_SUBD_MEMORY, subdev_serial0);
+	if (subdev_serial0 < 0) {
+		SERIAL_OPEN = false;
 	}
 
 	if (DO_OPEN) {
@@ -405,6 +396,15 @@ int init_dio(void)
 		fprintf(fout, "Ranges %i \r\n", ranges_counter);
 	}
 
+	if (SERIAL_OPEN) {
+		fprintf(fout, "Subdev SER %i ", subdev_serial0);
+		channels_serial0 = comedi_get_n_channels(it, subdev_serial0);
+		fprintf(fout, "Digital Channels %i ", channels_serial0);
+		maxdata_serial0 = comedi_get_maxdata(it, subdev_serial0, i);
+		fprintf(fout, "Maxdata %i ", maxdata_serial0);
+		ranges_serial0 = comedi_get_n_ranges(it, subdev_serial0, i);
+		fprintf(fout, "Ranges %i \r\n", ranges_serial0);
+	}
 	return 0;
 }
 
@@ -423,26 +423,26 @@ int get_data_sample(void)
 
 		// send I/O as a byte mask
 		if (bmc.BOARD == bmcboard) {
-			if (tmp_data == B_NONE) {
-				obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
-				obits.bytes[1] = ~bmc.dataout.bytes[0];
-				obits.bytes[2] = ~bmc.dataout.bytes[0];
-				obits.bytes[3] = ~bmc.dataout.bytes[0];
-			} else {
-				if ((tmp_data == B_0) || (tmp_data == B_15)) {
-					obits.bytes[0] = ~bmc.dataout.bytes[0]; // buffer output
-					obits.bytes[1] = bmc.dataout.bytes[0];
-					obits.bytes[2] = bmc.dataout.bytes[0];
-					obits.bytes[3] = bmc.dataout.bytes[0];
-				} else {
+				if (tmp_data == B_NONE) {
 					obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
-					obits.bytes[1] = bmc.dataout.bytes[0];
-					obits.bytes[2] = bmc.dataout.bytes[0];
-					obits.bytes[3] = bmc.dataout.bytes[0];
+					obits.bytes[1] = ~bmc.dataout.bytes[0];
+					obits.bytes[2] = ~bmc.dataout.bytes[0];
+					obits.bytes[3] = ~bmc.dataout.bytes[0];
+				} else {
+					if ((tmp_data == B_0) || (tmp_data == B_15)) {
+						obits.bytes[0] = ~bmc.dataout.bytes[0]; // buffer output
+						obits.bytes[1] = bmc.dataout.bytes[0];
+						obits.bytes[2] = bmc.dataout.bytes[0];
+						obits.bytes[3] = bmc.dataout.bytes[0];
+					} else {
+						obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
+						obits.bytes[1] = bmc.dataout.bytes[0];
+						obits.bytes[2] = bmc.dataout.bytes[0];
+						obits.bytes[3] = bmc.dataout.bytes[0];
+					}
 				}
-			}
-			comedi_dio_bitfield2(it, subdev_do, obits.dio_buf, &obits.dio_buf, 0);
-		} else {
+				comedi_dio_bitfield2(it, subdev_do, obits.dio_buf, &obits.dio_buf, 0);
+			} else {
 			obits.bytes[0] = bmc.dataout.bytes[0]; // buffer output
 			comedi_dio_bitfield2(it, subdev_do, 0xff, &obits.dio_buf, 0);
 		}
@@ -454,15 +454,14 @@ int get_data_sample(void)
 				slow_data = 0;
 
 				if ((daq_data_index > MAX_STRLEN) || (daq_bmc_data_text[BMC4.pos] == '^')) {
-					overrun = daq_data_index;
-					comedi_data_write(it, subdev_serial0, BMC_CHAN, range_ao, AREF_GROUND, STX); // update daq_bmc data buffer
-					comedi_data_write(it, subdev_serial0, BMC_CHAN, range_ao, AREF_GROUND, STX);
+					comedi_data_write(it, subdev_serial0, 4, range_ao, AREF_GROUND, STX); // update daq_bmc data buffer
+					comedi_data_write(it, subdev_serial0, 4, range_ao, AREF_GROUND, STX);
 					daq_data_index = 0;
 					strncpy(daq_bmc_data_buf, daq_bmc_data_text, SYSLOG_SIZ);
 					BMC4.pos = 0;
 					BMC4.bmc_flag = false;
 				} else {
-					comedi_data_read(it, subdev_serial0, BMC_CHAN, range_ao, AREF_GROUND, &daq_bmc_data[BMC4.pos]);
+					comedi_data_read(it, subdev_serial0, 4, range_ao, AREF_GROUND, &daq_bmc_data[BMC4.pos]);
 					daq_bmc_data_text[BMC4.pos] = (char) (daq_bmc_data[BMC4.pos] >> 8);
 					serial_buf = daq_bmc_data_text[BMC4.pos];
 					BMC4.pos++;

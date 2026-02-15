@@ -20,7 +20,7 @@ MQTTClient_connectOptions conn_opts_p = MQTTClient_connectOptions_initializer,
 MQTTClient_message pubmsg = MQTTClient_message_initializer;
 MQTTClient_deliveryToken token;
 char hname[256], *hname_ptr = hname;
-size_t hname_len = 12, mqtt_id = 5;
+size_t hname_len = 12;
 int32_t validate_failure;
 
 /*
@@ -32,7 +32,6 @@ struct bmc_settings S = {
 	.PVENERGYV = DPVENERGY,
 	.PVVOLTAGEV = DPVVOLTAGE,
 	.SOC_MODEV = DSOC_MODE,
-	.MQTT_HOSTIP = MQTT_HOST,
 };
 
 struct ha_csv_type {
@@ -86,80 +85,50 @@ static const float bsoc_soc[BVSOC_SLOTS] = {
 }; // Battery SoC guess
 
 struct ha_daq_hosts_type ha_daq_host = {
-	.hosts[0] = "10.1.1.30", // HA server and full devices
-	.hosts[1] = "10.1.1.39", // no HA server comedi_usb,vmk80xx
-	.hosts[2] = "10.1.1.46", // no HA server
-	.hosts[3] = "10.1.1.45", // HA server and full devices
-	.hosts[4] = "10.1.1.40", // no HA server, rpi2B testing system
-	.hosts[5] = "10.1.1.255",
-	.hosts[OPEN_HOST] = "10.1.1.255",
+	.hosts[0] = "10.1.1.30",
+	.hosts[1] = "10.1.1.39", // no HA server
+	.hosts[2] = "10.1.1.46", //
+	.hosts[3] = "10.1.1.45",
 	.mqtt[0] = "10.1.1.30",
-	.mqtt[1] = MQTT_HOST, // no HA server
-	.mqtt[2] = MQTT_HOST, // no HA server
+	.mqtt[1] = "10.1.1.172", // no HA server
+	.mqtt[2] = "10.1.1.172", //
 	.mqtt[3] = "10.1.1.45",
-	.mqtt[4] = "10.1.1.40", // no HA server, has internal mqtt server
-	.mqtt[5] = MQTT_HOST,
-	.mqtt[OPEN_HOST] = MQTT_HOST,
 	.topics[0] = "comedi/bmc/data/bmc/1",
 	.topics[1] = "comedi/bmc/data/bmc/2",
 	.topics[2] = "comedi/bmc/data/bmc/3",
 	.topics[3] = "comedi/bmc/data/bmc/4",
-	.topics[4] = "comedi/bmc/data/bmc/5",
-	.topics[5] = "comedi/bmc/data/bmc/6",
-	.topics[OPEN_HOST] = "comedi/bmc/data/bmc/OH",
 	.listen[0] = "comedi/bmc/listen/bmc/1",
 	.listen[1] = "comedi/bmc/listen/bmc/2",
 	.listen[2] = "comedi/bmc/listen/bmc/3",
 	.listen[3] = "comedi/bmc/listen/bmc/4",
-	.listen[4] = "comedi/bmc/listen/bmc/5",
-	.listen[5] = "comedi/bmc/listen/bmc/6",
-	.listen[OPEN_HOST] = "comedi/bmc/listen/bmc/OH",
 	.hname[0] = "RDAQ1",
 	.hname[1] = "RDAQ2",
 	.hname[2] = "RDAQ3",
 	.hname[3] = "RDAQ4",
-	.hname[4] = "RDAQ5",
-	.hname[5] = "RDAQ6",
-	.hname[OPEN_HOST] = "RDAQ_OH",
 	.clients[0] = "Energy_Mqtt_BMC1",
 	.clients[1] = "Energy_Mqtt_BMC2",
 	.clients[2] = "Energy_Mqtt_BMC3",
 	.clients[3] = "Energy_Mqtt_BMC4",
-	.clients[4] = "Energy_Mqtt_BMC5",
-	.clients[5] = "Energy_Mqtt_BMC6",
-	.clients[OPEN_HOST] = "Energy_Mqtt_BMC_OH",
 	.scalar[0] = HV_SCALE0,
 	.scalar[1] = HV_SCALE1,
 	.scalar[2] = HV_SCALE2,
 	.scalar[3] = HV_SCALE3,
-	.scalar[4] = HV_SCALE4,
-	.scalar[5] = HV_SCALE5,
-	.scalar[OPEN_HOST] = HV_SCALE_OPEN_HOST,
 	.scalar4[0] = HV_SCALE4_0,
 	.scalar4[1] = HV_SCALE4_1,
 	.scalar4[2] = HV_SCALE4_2,
 	.scalar4[3] = HV_SCALE4_3,
-	.scalar4[4] = HV_SCALE4_4,
-	.scalar4[5] = HV_SCALE4_5,
-	.scalar4[OPEN_HOST] = HV_SCALE4_OPEN_HOST,
 	.scalar5[0] = HV_SCALE5_0,
 	.scalar5[1] = HV_SCALE5_1,
 	.scalar5[2] = HV_SCALE5_2,
 	.scalar5[3] = HV_SCALE5_3,
-	.scalar5[4] = HV_SCALE5_4,
-	.scalar5[5] = HV_SCALE5_5,
-	.scalar5[OPEN_HOST] = HV_SCALE5_OPEN_HOST,
 	.pacer[0] = UPDATE_PACER, // opiha
 	.pacer[1] = UPDATE_PACER, // daq1
 	.pacer[2] = UPDATE_PACER, // daq2
 	.pacer[3] = UPDATE_PACER,
-	.pacer[4] = UPDATE_PACER_RPI2B,
-	.pacer[5] = UPDATE_PACER_RPI2B,
-	.pacer[OPEN_HOST] = UPDATE_PACER_RPI2B,
 	.hindex = 0,
 	.bindex = 0,
 	.calib.checkmark = CHECKMARK,
-	.calib.bmc_id[0] = 0x0589B6, // bmc Q84 MUI online system board
+	.calib.bmc_id[0] = 0x589B6, // bmc Q84 MUI testing board
 	.calib.offset4[0] = HV_SCALE_OFFSET,
 	.calib.scalar4[0] = HV_SCALE4_0,
 	.calib.offset5[0] = HV_SCALE_OFFSET,
@@ -173,56 +142,26 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.scalar5[1] = HV_SCALE5_1,
 	.calib.A200_Z[1] = A200_0_ZERO,
 	.calib.A200_S[1] = A200_0_SCALAR,
-	.calib.bmc_id[2] = 0x055AF3, // bmc Q84 MUI
+	.calib.bmc_id[2] = 0x55AF3, // bmc Q84 MUI
 	.calib.offset4[2] = HV_SCALE_OFFSET,
 	.calib.scalar4[2] = HV_SCALE4_2,
 	.calib.offset5[2] = HV_SCALE_OFFSET,
 	.calib.scalar5[2] = HV_SCALE5_2,
 	.calib.A200_Z[2] = A200_0_ZERO,
 	.calib.A200_S[2] = A200_0_SCALAR,
-	.calib.bmc_id[3] = 0x05ABB6, // bmc Q84 MUI enclosure board
+	.calib.bmc_id[3] = 0x5ABB6, // bmc Q84 MUI enclosure board
 	.calib.offset4[3] = HV_SCALE_OFFSET,
 	.calib.scalar4[3] = HV_SCALE4_3,
 	.calib.offset5[3] = HV_SCALE_OFFSET,
 	.calib.scalar5[3] = HV_SCALE5_3,
 	.calib.A200_Z[3] = A200_0_ZERO,
 	.calib.A200_S[3] = A200_0_SCALAR,
-	.calib.bmc_id[4] = 0x061DB5, // 57Q84 BMC testing board
-	.calib.offset4[4] = HV_SCALE_OFFSET,
-	.calib.scalar4[4] = HV_SCALE4_0,
-	.calib.offset5[4] = HV_SCALE_OFFSET,
-	.calib.scalar5[4] = HV_SCALE5_0,
-	.calib.A200_Z[4] = A200_0_ZERO,
-	.calib.A200_S[4] = A200_0_SCALAR,
-	.calib.bmc_id[5] = 0x000000, // 57Q84 BMC testing board
-	.calib.offset4[5] = HV_SCALE_OFFSET,
-	.calib.scalar4[5] = HV_SCALE4_0,
-	.calib.offset5[5] = HV_SCALE_OFFSET,
-	.calib.scalar5[5] = HV_SCALE5_0,
-	.calib.A200_Z[5] = A200_0_ZERO,
-	.calib.A200_S[5] = A200_0_SCALAR,
-	.calib.bmc_id[OPEN_HOST] = 0x000000, // BMC OPEN HOST
-	.calib.offset4[OPEN_HOST] = HV_SCALE_OFFSET,
-	.calib.scalar4[OPEN_HOST] = HV_SCALE4_0,
-	.calib.offset5[OPEN_HOST] = HV_SCALE_OFFSET,
-	.calib.scalar5[OPEN_HOST] = HV_SCALE5_0,
-	.calib.A200_Z[OPEN_HOST] = A200_0_ZERO,
-	.calib.A200_S[OPEN_HOST] = A200_0_SCALAR,
 };
 
 static double ac0_filter(const double);
 static double ac1_filter(const double);
 static double bsensor0_filter(const double);
 static double Volts_to_SOC(const double);
-
-static struct ha_csv_type R = {
-	.benergy = DBENERGY, // default running value, updates per run
-	.runtime = BAT_RUN_MAX,
-	.boot_wait = 0,
-	.boot_volts = true,
-}; // results from Q84 board
-static uint32_t goods = 0, bads = 0;
-static bool ok_data = false, got_cal_data = false;
 
 /** \file bmc_mqtt.c
  * show all assigned networking addresses and types
@@ -233,7 +172,6 @@ void showIP(void)
 	struct ifaddrs *ifaddr, *ifa;
 	int s;
 	char host[BMC_MAXHOST];
-	bool got_ipaddr = false;
 
 	if (getifaddrs(&ifaddr) == -1) {
 		perror("getifaddrs");
@@ -256,41 +194,21 @@ void showIP(void)
 			/*
 			 * match IP address to clients and topics
 			 */
-			ha_daq_host.hindex = OPEN_HOST; // default to open daq host
-			strncpy((char *) &ha_daq_host.hosts[OPEN_HOST][0], host, BMC_MAXHOST);
-			strncpy((char *) &ha_daq_host.mqtt[OPEN_HOST][0], S.MQTT_HOSTIP, BMC_MAXHOST);
-
 			if (strcmp(host, &ha_daq_host.hosts[0][0]) == 0) {
 				ha_daq_host.hindex = 0;
-				got_ipaddr = true;
 			}
 			if (strcmp(host, &ha_daq_host.hosts[1][0]) == 0) {
 				ha_daq_host.hindex = 1;
-				got_ipaddr = true;
 			}
 			if (strcmp(host, &ha_daq_host.hosts[2][0]) == 0) {
 				ha_daq_host.hindex = 2;
-				got_ipaddr = true;
 			}
 			if (strcmp(host, &ha_daq_host.hosts[3][0]) == 0) {
 				ha_daq_host.hindex = 3;
-				got_ipaddr = true;
-			}
-			if (strcmp(host, &ha_daq_host.hosts[4][0]) == 0) {
-				ha_daq_host.hindex = 4;
-				got_ipaddr = true;
-			}
-			if (strcmp(host, &ha_daq_host.hosts[5][0]) == 0) {
-				ha_daq_host.hindex = 5;
-				got_ipaddr = true;
 			}
 			ha_daq_host.bindex = ha_daq_host.hindex;
-			if (got_ipaddr) {
-				goto showip_exit;
-			}
 		}
 	}
-showip_exit:
 	freeifaddrs(ifaddr);
 }
 
@@ -489,7 +407,12 @@ void bmc_mqtt_init(void)
 	fprintf(fout, "\r\n%s LOG Version %s : MQTT Version %s : Host Name %s", log_time(false), LOG_VERSION, MQTT_VERSION, hname);
 	fflush(fout);
 
-	set_bmc_timer();
+	/*
+	 * set the timer for MQTT publishing sample speed
+	 * CMD_SEC sets the time in seconds
+	 */
+	setitimer(ITIMER_REAL, &new_timer, &old_timer);
+	signal(SIGALRM, timer_callback);
 
 	if (strncmp(hname, TNAME, 6) == 0) {
 		MQTTClient_create(&E.client_p, LADDRESS, (const char *) &ha_daq_host.topics[ha_daq_host.hindex],
@@ -522,16 +445,6 @@ void bmc_mqtt_init(void)
 	pubmsg.qos = QOS;
 	pubmsg.retained = 0;
 	ha_flag_vars_ss.deliveredtoken = 0;
-}
-
-/*
- * set the timer for MQTT publishing sample speed
- * CMD_SEC sets the time in seconds
- */
-void set_bmc_timer(void)
-{
-	setitimer(ITIMER_REAL, &new_timer, &old_timer);
-	signal(SIGALRM, timer_callback);
 }
 
 int32_t msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message)
@@ -609,18 +522,25 @@ null_exit:
 }
 
 /*
- * send Comedi variables to MQTT host
+ * send Comedi variables MQTT host
  */
 void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 {
 	cJSON *json;
 	time_t rawtime;
 	static uint32_t spam = 0;
+	static uint32_t pacer = 1001;
 	double Soc = 1.0f;
 
 	MQTTClient_message pubmsg = MQTTClient_message_initializer;
 	MQTTClient_deliveryToken token;
 	ha_flag_vars_ss.deliveredtoken = 0;
+	static struct ha_csv_type R = {
+		.benergy = DBENERGY, // default running value, updates per run
+		.runtime = BAT_RUN_MAX,
+		.boot_wait = 0,
+		.boot_volts = true,
+	}; // results from Q84 board
 
 	//#define DIGITAL_ONLY
 
@@ -672,7 +592,96 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	E.do_16b = bmc.dataout.dio_buf;
 	E.di_16b = datain;
 
-	if (get_bmc_serial()) {
+	if (pacer++ > ha_daq_host.pacer[ha_daq_host.hindex]) {
+		bool ok_data = false;
+		static uint32_t goods = 0, bads = 0;
+		char *tmp_ptr, *jtoken;
+
+		pacer = 0;
+		strncpy(tmp_test_ptr, daq_bmc_data_buf, SYSLOG_SIZ);
+		tmp_ptr = validate_bmc_text(daq_bmc_data_buf, &ok_data);
+		strncpy(daq_bmc_data_buf, tmp_ptr, SYSLOG_SIZ - 1);
+		if (ok_data) {
+			goods++;
+			jtoken = strtok(daq_bmc_data_buf, ",");
+			if (jtoken != NULL) {
+				/*
+				 * parse the string for variable values
+				 */
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.d_id = atoi(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.acvolts = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.acamps = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.acwatts = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.acwatts_gti = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.acva = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.acvar = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.acpf = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.achz = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.bvolts = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.pvolts = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.bamps = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.pamps = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.panel_watts = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.fm_online = atoi(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.fm_mode = atoi(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					R.em540_online = atoi(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL) { // get the Q84 MUI
+					R.bmc_id = atoll(jtoken);
+				}
+				jtoken = strtok(NULL, ","); // set the calibration data from the Q84
+				if (jtoken != NULL)
+					ha_daq_host.calib.scalar4[ha_daq_host.bindex] = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					ha_daq_host.calib.scalar5[ha_daq_host.bindex] = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					ha_daq_host.calib.A200_Z[ha_daq_host.bindex] = atof(jtoken);
+				jtoken = strtok(NULL, ",");
+				if (jtoken != NULL)
+					ha_daq_host.calib.A200_S[ha_daq_host.bindex] = atof(jtoken);
+			}
+		} else {
+			if (bmc.BOARD != bmcboard) {
+				ha_daq_host.bindex = 1; // default to K8055 (VM110) device on USB
+			}
+		}
+
 		/*
 		 * various data fix-ups and sanity checks
 		 */
@@ -700,26 +709,6 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			R.achz = MAINS_HZ;
 		}
 
-		/*
-		 *
-		 */
-		if (!got_cal_data && (R.bmc_id > 1.0f)) {
-			char tmp_str[MAX_STRLEN];
-			got_cal_data = true;
-			if (ha_daq_host.bindex == OPEN_HOST) {
-				snprintf(tmp_str, MAX_STRLEN, "%06llX", (long long unsigned int) R.bmc_id);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][0], tmp_str, MAX_STRLEN);
-				mqtt_id = strlen(&ha_daq_host.hname[ha_daq_host.hindex][0]);
-				fprintf(fout, "MQTT OPENHOST : %s : %06llX\n", &ha_daq_host.hname[ha_daq_host.hindex][0], (long long unsigned int) R.bmc_id);
-				snprintf(tmp_str, MAX_STRLEN, "Energy_Mqtt_BMC%06llX", (long long unsigned int) R.bmc_id);
-				strncpy(&ha_daq_host.clients[ha_daq_host.hindex][0], tmp_str, MAX_STRLEN);
-				snprintf(tmp_str, MAX_STRLEN, "comedi/bmc/data/bmc/%06llX", (long long unsigned int) R.bmc_id);
-				strncpy(&ha_daq_host.topics[ha_daq_host.hindex][0], tmp_str, MAX_STRLEN);
-				snprintf(tmp_str, MAX_STRLEN, "comedi/bmc/listen/bmc/%06llX", (long long unsigned int) R.bmc_id);
-				strncpy(&ha_daq_host.listen[ha_daq_host.hindex][0], tmp_str, MAX_STRLEN);
-			}
-		}
-
 		// sanity checks for scalars
 		if (ha_daq_host.calib.scalar4[ha_daq_host.bindex] > CALIB_HV_HIGH || ha_daq_host.calib.scalar4[ha_daq_host.bindex] < CALIB_HV_LOW) {
 			ha_daq_host.calib.scalar4[ha_daq_host.bindex] = HV_SCALE4_0;
@@ -729,13 +718,13 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		}
 
 		if (ok_data) {
-			fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.4x DI 0x%.6x, goods %d, bads %d, d_id %d\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, goods, bads, R.d_id);
+			fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, goods %d, bads %d, d_id %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, goods, bads, R.d_id);
 		} else {
 			if ((bmc.BOARD == bmcboard) && SERIAL_OPEN) {
 				bads++;
-				fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, bads %d, Overruns %d validate failure code %d\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, tmp_test_ptr, ok_data, bads, overrun, validate_failure);
+				fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, bads %d, validate failure code %d\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain, tmp_test_ptr, ok_data, bads, validate_failure);
 			} else {
-				fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.4x DI 0x%.6x\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, datain);
+				fprintf(fout, "%s Sending Comedi data to MQTT server, Topic %s DO 0x%.4x DI 0x%.6x\n", log_time(false), topic_p, bmc.dataout.dio_buf, datain);
 			}
 		}
 		memset(daq_bmc_data_text, 0, MAX_STRLEN);
@@ -743,7 +732,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV, ANA2 %6.3fV, ANA4 %6.3fV, ANA5 %6.3fV, AND5 %6.3fV, Battery Sensor %6.3fA, : Host Index %d, Scalar Index %d, Scalar ANA4 %6.4f, Scalar ANA5 %6.4f Serial 0X%X\n",
 				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2),
 				E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], R.bsensor0, ha_daq_host.hindex, ha_daq_host.bindex, ha_daq_host.calib.scalar4[ha_daq_host.bindex], ha_daq_host.calib.scalar5[ha_daq_host.bindex],
-				(uint8_t) daq_bmc_data[0]);
+				daq_bmc_data[0]);
 		} else {
 			fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV : Scalar Index %d, Scalar ANA4 %6.4f, Scalar ANA5 %6.4f\n",
 				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1),
@@ -752,6 +741,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		fflush(fout);
 		E.mqtt_count++;
 		E.sequence++;
+
 
 		/*
 		 * Battery energy calculations and fixes
@@ -791,39 +781,35 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		}
 
 		json = cJSON_CreateObject();
-		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "name", BMC_MAXHOST);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "name", 64);
 		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (const char *) &ha_daq_host.clients[ha_daq_host.hindex]);
-		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "board", BMC_MAXHOST);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "board", 64);
 		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (const char *) bmc.BNAME);
-
-		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "ipaddr", BMC_MAXHOST);
-		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (const char *) &ha_daq_host.hosts[ha_daq_host.hindex]);
-
-		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "sequence", BMC_MAXHOST);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "sequence", 64);
 		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.sequence);
-		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "d_id", BMC_MAXHOST);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "d_id", 64);
 		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.d_id); // data stream ID
-		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "mqtt_do_16b", BMC_MAXHOST);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "mqtt_do_16b", 64);
 		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (double) E.do_16b);
 		if (bmc.BOARD == bmcboard) {
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "mqtt_di_24b", BMC_MAXHOST);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "mqtt_di_24b", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (double) datain);
 		} else {
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "mqtt_di_16b", BMC_MAXHOST);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "mqtt_di_16b", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (double) E.di_16b);
 		}
-		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc0", BMC_MAXHOST);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_adc0", 64);
 		if (bmc.BOARD == bmcboard) {
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA4]);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc1", BMC_MAXHOST);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_adc1", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA5]);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_bsamps0", BMC_MAXHOST);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bsamps0", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.bsensor0);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_bswatts0", BMC_MAXHOST);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bswatts0", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.bsensor0 * R.bvolts);
 		} else {
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA0]);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc1", BMC_MAXHOST);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_adc1", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA1]);
 		}
 		/*
@@ -833,91 +819,91 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		if (bmc.BOARD == bmcboard) { // EM540 and FM80 data
 			switch (R.d_id) {
 			case DC2_CMD:
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_vl1n", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_vl1n", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acvolts);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_vl2n", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_vl2n", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acamps);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_vl3n", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_vl3n", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwatts);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_al2", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_al2", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwatts_gti);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_wl3", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_wl3", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acva);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_wsys", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_wsys", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acvar);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_pfl1", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_pfl1", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acpf);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_pfl2", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_pfl2", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.achz);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_bank_energy", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bank_energy", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], S.BENERGYV);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_bank_voltage", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bank_voltage", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], S.BVOLTAGEV);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_pv_energy", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_pv_energy", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], S.PVENERGYV);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_pv_voltage", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_pv_voltage", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], S.PVVOLTAGEV);
 				break;
 			case DC1_CMD:
 			default:
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_acvolts", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acvolts", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acvolts);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_acamps", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acamps", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acamps);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_acwatts", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwatts", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwatts);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_acwatts_gti", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwatts_gti", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwatts_gti);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_acwatts_gti_abs", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwatts_gti_abs", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwatts_gti_abs);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_acva", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acva", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acva);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_acvar", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acvar", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acvar);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_acpf", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acpf", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acpf);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_achz", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_achz", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.achz);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_acwin", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwin", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwin);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_acwout", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_acwout", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.acwout);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_dcwin", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_dcwin", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.dcwin);
-				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_dcwout", BMC_MAXHOST);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_dcwout", 64);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.dcwout);
 				break;
 			}
 
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_bvolts", BMC_MAXHOST);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bvolts", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.bvolts);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_pvolts", BMC_MAXHOST);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_pvolts", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.pvolts);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_bamps", BMC_MAXHOST);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bamps", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.bamps);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_pamps", BMC_MAXHOST);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_pamps", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.pamps);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_panel_watts", BMC_MAXHOST);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_panel_watts", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.panel_watts);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_fm_online", BMC_MAXHOST);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_fm_online", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.fm_online);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_fm_mode", BMC_MAXHOST);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_fm_mode", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.fm_mode);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_em540_online", BMC_MAXHOST);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_em540_online", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.em540_online);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_bmc_id", BMC_MAXHOST);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_bmc_id", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.bmc_id);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_benergy", BMC_MAXHOST);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_benergy", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.benergy);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_runtime", BMC_MAXHOST);
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "bmc_runtime", 64);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.runtime);
 		}
-		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "build_date", BMC_MAXHOST);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "build_date", 64);
 		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], FW_Date);
-		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "build_time", BMC_MAXHOST);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "build_time", 64);
 		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], FW_Time);
 		time(&rawtime);
-		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "sequence_time", BMC_MAXHOST);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][5], "sequence_time", 64);
 		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (double) rawtime);
 		// convert the cJSON object to a JSON string
 		char *json_str = cJSON_Print(json);
@@ -1041,19 +1027,14 @@ char * validate_bmc_text(const char * text, bool * valid)
 			}
 		} else {
 			valid[0] = false;
-			validate_failure = 2; // data frame length error
+			validate_failure = 2;
 		}
 	} else {
 		valid[0] = false;
-		validate_failure = 1; // no/incorrect ASCII data-frame character
+		validate_failure = 1;
 	}
 
 	return tmp_p;
-}
-
-bool validate_ok(void)
-{
-	return ok_data;
 }
 
 /*
@@ -1061,7 +1042,7 @@ bool validate_ok(void)
  */
 double Volts_to_SOC(const double bvoltage)
 {
-	uint32_t slot;
+	uint8_t slot;
 	double soc = 0.80f;
 
 	/*
@@ -1073,104 +1054,4 @@ double Volts_to_SOC(const double bvoltage)
 		}
 	}
 	return soc;
-}
-
-/*
- * parse data from the Comedi MEMORY serial stream
- */
-bool get_bmc_serial(void)
-{
-	static uint32_t pacer = 1001;
-	bool ret = false;
-
-	if (pacer++ > ha_daq_host.pacer[ha_daq_host.hindex]) {
-		char *tmp_ptr, *jtoken;
-
-		pacer = 0;
-		ret = true;
-		strncpy(tmp_test_ptr, daq_bmc_data_buf, SYSLOG_SIZ);
-		tmp_ptr = validate_bmc_text(daq_bmc_data_buf, &ok_data);
-		strncpy(daq_bmc_data_buf, tmp_ptr, SYSLOG_SIZ - 1);
-		if (ok_data) {
-			goods++;
-			jtoken = strtok(daq_bmc_data_buf, ",");
-			if (jtoken != NULL) {
-				/*
-				 * parse the string for variable values
-				 */
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.d_id = atoi(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.acvolts = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.acamps = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.acwatts = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.acwatts_gti = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.acva = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.acvar = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.acpf = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.achz = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.bvolts = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.pvolts = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.bamps = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.pamps = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.panel_watts = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.fm_online = atoi(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.fm_mode = atoi(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					R.em540_online = atoi(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL) { // get the Q84 MUI
-					R.bmc_id = atoll(jtoken);
-				}
-				jtoken = strtok(NULL, ","); // set the calibration data from the Q84
-				if (jtoken != NULL)
-					ha_daq_host.calib.scalar4[ha_daq_host.bindex] = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					ha_daq_host.calib.scalar5[ha_daq_host.bindex] = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					ha_daq_host.calib.A200_Z[ha_daq_host.bindex] = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					ha_daq_host.calib.A200_S[ha_daq_host.bindex] = atof(jtoken);
-			}
-		} else {
-			if (bmc.BOARD != bmcboard) {
-				ha_daq_host.bindex = 1; // default to K8055 (VM110) device on USB
-			}
-		}
-	}
-	return ret;
 }

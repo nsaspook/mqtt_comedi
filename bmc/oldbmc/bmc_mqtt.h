@@ -16,8 +16,6 @@ extern "C" {
 	/*
 	 * configuration data for Home Assistant
 	 */
-#define BMC_MAXHOST      1024 // hosts buffer size	
-
 #define DBENERGY  3100.0f
 #define DBVOLTAGE 12.6f
 #define DPVENERGY 300.0f
@@ -26,11 +24,9 @@ extern "C" {
 
 	struct bmc_settings {
 		double BENERGYV, BVOLTAGEV, PVENERGYV, PVVOLTAGEV, SOC_MODEV;
-		char MQTT_HOSTIP[BMC_MAXHOST];
 	};
 
-#define HOST_SLOTS 10 //BMC host data slots
-#define OPEN_HOST 9 // BMC host array index for those without a known IP address or MUI
+#define BMC_MAXHOST      1025
 #define BENERGY_INTEGRAL 1440.0f
 #define MQTT_RETRY 10
 
@@ -65,8 +61,7 @@ extern "C" {
 #define BSENSOR_MAX_NEG  -125.0f
 #define BSENSOR_MAX_POS  125.0f
 
-#define UPDATE_PACER  400 // MQTT and logging frequency to 0.01 seconds.
-#define UPDATE_PACER_RPI2B 400
+#define UPDATE_PACER  250 // MQTT and logging frequency to 0.01 seconds.
 #define BAT_RUN_MAX 140.0f  // max displayed run time at current load
 #define DRAIN_HOUR 1.0f
 #define IDLE_DRAIN      1.0f // system battery losses in W
@@ -123,25 +118,25 @@ extern "C" {
 		uint16_t checkmark;
 		bool newfile;
 		bool oldfile, fileok;
-		uint64_t bmc_id[HOST_SLOTS];
-		double offset4[HOST_SLOTS];
-		double scalar4[HOST_SLOTS];
-		double offset5[HOST_SLOTS];
-		double scalar5[HOST_SLOTS];
-		double A200_Z[HOST_SLOTS];
-		double A200_S[HOST_SLOTS];
+		uint64_t bmc_id[4];
+		double offset4[4];
+		double scalar4[4];
+		double offset5[4];
+		double scalar5[4];
+		double A200_Z[4];
+		double A200_S[4];
 	};
 
 	struct ha_daq_hosts_type {
-		char hosts[HOST_SLOTS][BMC_MAXHOST];
-		char mqtt[HOST_SLOTS][BMC_MAXHOST];
-		char clients[HOST_SLOTS][BMC_MAXHOST];
-		char topics[HOST_SLOTS][BMC_MAXHOST];
-		char listen[HOST_SLOTS][BMC_MAXHOST];
-		char hname[HOST_SLOTS][BMC_MAXHOST];
-		double scalar[HOST_SLOTS], scalar4[HOST_SLOTS], scalar5[HOST_SLOTS];
-		uint8_t hindex, bindex;  // host array, calibration array
-		uint32_t pacer[HOST_SLOTS];
+		const char hosts[4][BMC_MAXHOST];
+		const char mqtt[4][BMC_MAXHOST];
+		const char clients[4][BMC_MAXHOST];
+		const char topics[4][BMC_MAXHOST];
+		const char listen[4][BMC_MAXHOST];
+		char hname[4][BMC_MAXHOST];
+		double scalar[4], scalar4[4], scalar5[4];
+		uint8_t hindex, bindex;
+		uint32_t pacer[4];
 		struct ha_daq_calib_type calib;
 	};
 
@@ -162,9 +157,6 @@ extern "C" {
 
 	void timer_callback(int32_t);
 	void comedi_push_mqtt(void);
-	bool get_bmc_serial(void);
-	bool validate_ok(void);
-	void set_bmc_timer(void);
 
 #ifdef __cplusplus
 }
