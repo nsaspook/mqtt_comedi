@@ -20,7 +20,7 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.52"
+#define VER	"V0.53"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -63,12 +63,13 @@ extern "C" {
 	 * V0.50 add High VoC check for night switching from FMXX_STATE
 	 * V0.51 re-enable WDT reboots
 	 * V0.52 add WDT clears to analog conversion sequence
+	 * V0.53 fix serial data logic so we can get interface data without having DI or DO
 	 */
 
 	/*
 	 * internal variables and states debug screens
 	 */
-//#define DIS_DEBUG	// active debug status display, disable during normal operation
+	//#define DIS_DEBUG	// active debug status display, disable during normal operation
 
 	/*
 	 * TP1 sync triggers enable

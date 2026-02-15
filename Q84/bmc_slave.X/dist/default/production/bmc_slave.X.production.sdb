@@ -240,7 +240,7 @@ TMR4_UART5_RX_EDGE 34
 TMR4_UART5_TX_EDGE 35
 TMR4_RESERVED_4 36
 ]
-"206 /public/bmc/Q84/bmc_slave.X/main.c
+"263 /public/bmc/Q84/bmc_slave.X/main.c
 [e E25437 . `uc
 SEQ_STATE_INIT 0
 SEQ_STATE_RX 1
@@ -271,7 +271,7 @@ DIS_ERR 9
 DIS_FREE 10
 DIS_CLEAR 11
 ]
-"242
+"299
 [e E25927 status_type `uc
 STATUS_SLEEPING 0
 STATUS_FLOATING 1
@@ -280,7 +280,7 @@ STATUS_ABSORB 3
 STATUS_EQUALIZE 4
 STATUS_LAST 5
 ]
-"270
+"327
 [e E25763 daqbmc_packet_index `uc
 BMC_CMD 0
 BMC_D0 1
@@ -292,7 +292,7 @@ BMC_EXT 6
 BMC_CKSUM 7
 BMC_DUMMY 8
 ]
-"330
+"387
 [e E26007 state_type `uc
 state_init 0
 state_status 1
@@ -308,7 +308,7 @@ state_misc 10
 state_mx_status 11
 state_last 12
 ]
-"429
+"486
 [e E25027 APP_TIMERS `uc
 TMR_INTERNAL 0
 TMR_ADC 1
@@ -325,7 +325,7 @@ TMR_DERE 11
 TMR_RESTART 12
 TMR_COUNT 13
 ]
-"494
+"551
 [e E25062 comm_type `uc
 CLEAR 0
 INIT 1
@@ -343,7 +343,7 @@ G_VERSION 6
 G_SERIAL 7
 G_LAST 8
 ]
-"716
+"773
 [e E24208 . `uc
 channel_ANA0 0
 channel_ANA1 1
@@ -359,7 +359,7 @@ channel_DAC1 61
 channel_FVR_Buffer1 62
 channel_FVR_Buffer2 63
 ]
-"1380
+"1437
 [e E25251 filter_type `uc
 F_ac 0
 F_wac 1
@@ -493,12 +493,12 @@ BMC_DUMMY 8
 [e E23905 . `uc
 CONTEXT_1 0
 ]
-"94
+"95
 [e E25838 daqbmc_data_index `uc
 BMC_EM540_DATA 4
 BMC_DATA_DUMMY 5
 ]
-"143
+"144
 [e E25437 . `uc
 SEQ_STATE_INIT 0
 SEQ_STATE_RX 1
@@ -529,7 +529,7 @@ DIS_ERR 9
 DIS_FREE 10
 DIS_CLEAR 11
 ]
-"351
+"352
 [e E23890 . `uc
 channel_ANA0 0
 channel_ANA1 1
@@ -545,7 +545,7 @@ channel_DAC1 61
 channel_FVR_Buffer1 62
 channel_FVR_Buffer2 63
 ]
-"452
+"453
 [e E25027 APP_TIMERS `uc
 TMR_INTERNAL 0
 TMR_ADC 1
@@ -619,51 +619,51 @@ TMR_DERE 11
 TMR_RESTART 12
 TMR_COUNT 13
 ]
-"367 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"424 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _main main `(v  1 e 1 0 ]
-"1002
+"1059
 [v _onesec_io onesec_io `(v  1 e 1 0 ]
-"1012
+"1069
 [v _spinners spinners `(uc  1 e 1 0 ]
-"1031
+"1088
 [v _test_slave test_slave `(v  1 e 1 0 ]
-"1040
+"1097
 [v _SetBMCPriority SetBMCPriority `(v  1 e 1 0 ]
-"1057
+"1114
 [v _DeviceID_Read DeviceID_Read `(us  1 e 2 0 ]
-"1107
+"1164
 [v _send_mx_cmd send_mx_cmd `(v  1 s 1 send_mx_cmd ]
-"1120
+"1177
 [v _rec_mx_cmd rec_mx_cmd `(v  1 s 1 rec_mx_cmd ]
-"1158
+"1215
 [v _bmc_logger bmc_logger `(v  1 e 1 0 ]
-"1206
+"1263
 [v _volt_f volt_f `(v  1 s 1 volt_f ]
-"1222
-[v _state_init_cb state_init_cb `(v  1 e 1 0 ]
-"1240
-[v _state_batteryv_cb state_batteryv_cb `(v  1 e 1 0 ]
-"1249
-[v _state_batterya_cb state_batterya_cb `(v  1 e 1 0 ]
-"1258
-[v _state_fwrev_cb state_fwrev_cb `(v  1 s 1 state_fwrev_cb ]
-"1269
-[v _state_time_cb state_time_cb `(v  1 s 1 state_time_cb ]
 "1279
+[v _state_init_cb state_init_cb `(v  1 e 1 0 ]
+"1297
+[v _state_batteryv_cb state_batteryv_cb `(v  1 e 1 0 ]
+"1306
+[v _state_batterya_cb state_batterya_cb `(v  1 e 1 0 ]
+"1315
+[v _state_fwrev_cb state_fwrev_cb `(v  1 s 1 state_fwrev_cb ]
+"1326
+[v _state_time_cb state_time_cb `(v  1 s 1 state_time_cb ]
+"1336
 [v _state_date_cb state_date_cb `(v  1 s 1 state_date_cb ]
-"1289
+"1346
 [v _state_restart_cb state_restart_cb `(v  1 s 1 state_restart_cb ]
-"1302
+"1359
 [v _state_misc_cb state_misc_cb `(v  1 e 1 0 ]
-"1318
+"1375
 [v _state_mx_log_cb state_mx_log_cb `(v  1 e 1 0 ]
-"1337
+"1394
 [v _state_watts_cb state_watts_cb `(v  1 e 1 0 ]
-"1350
+"1407
 [v _state_mx_status_cb state_mx_status_cb `(v  1 e 1 0 ]
-"1386
+"1443
 [v _state_status_cb state_status_cb `(v  1 e 1 0 ]
-"1441
+"1498
 [v _state_panelv_cb state_panelv_cb `(v  1 e 1 0 ]
 "4 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/__fpclassifyf.c
 [v ___fpclassifyf __fpclassifyf `(i  1 e 2 0 ]
@@ -811,17 +811,17 @@ TMR_COUNT 13
 [v _SPI_MC33996 SPI_MC33996 `(v  1 e 1 0 ]
 "90
 [v _SPI2_PI SPI2_PI `(v  1 e 1 0 ]
-"23 /public/bmc/Q84/bmc_slave.X/calibr.c
+"26 /public/bmc/Q84/bmc_slave.X/calibr.c
 [v _set_calibration set_calibration `(v  1 e 1 0 ]
-"67
+"70
 [v _phy_chan4 phy_chan4 `(f  1 e 4 0 ]
-"76
+"79
 [v _phy_chan5 phy_chan5 `(f  1 e 4 0 ]
-"88
+"91
 [v _read_cal_data read_cal_data `(a  1 e 1 0 ]
-"126
+"129
 [v _write_cal_data write_cal_data `(v  1 e 1 0 ]
-"155
+"158
 [v _update_cal_data update_cal_data `(v  1 e 1 0 ]
 "50 /public/bmc/Q84/bmc_slave.X/eadog.c
 [v _init_display init_display `(a  1 e 1 0 ]
@@ -1331,7 +1331,7 @@ TMR_COUNT 13
 [v _init_slaveo init_slaveo `(v  1 e 1 0 ]
 "65
 [v _slaveo_rx_isr slaveo_rx_isr `(v  1 e 1 0 ]
-"459
+"461
 [v _slaveo_spi_isr slaveo_spi_isr `(v  1 e 1 0 ]
 "134 /public/bmc/Q84/bmc_slave.X/tic12400.c
 [v _tic12400_reset tic12400_reset `(v  1 e 1 0 ]
@@ -1352,15 +1352,15 @@ TMR_COUNT 13
 [v _WaitMs WaitMs `(v  1 e 1 0 ]
 "48
 [v _timer_ms_tick timer_ms_tick `(v  1 e 1 0 ]
-"27 /public/bmc/Q84/bmc_slave.X/calibr.h
+"32 /public/bmc/Q84/bmc_slave.X/calibr.h
 [v _HV_SCALAR4 HV_SCALAR4 `Cf  1 s 4 HV_SCALAR4 ]
 [v _HV_SCALAR4@calibr$F10340 HV_SCALAR4 `Cf  1 s 4 HV_SCALAR4 ]
-"28
+"33
 [v _HV_SCALAR5 HV_SCALAR5 `Cf  1 s 4 HV_SCALAR5 ]
 [v _HV_SCALAR5@calibr$F10341 HV_SCALAR5 `Cf  1 s 4 HV_SCALAR5 ]
-"30
+"34
 [v _A200_0_ZERO A200_0_ZERO `Cf  1 s 4 A200_0_ZERO ]
-"31
+"35
 [v _A200_0_SCALAR A200_0_SCALAR `Cf  1 s 4 A200_0_SCALAR ]
 "55 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/dma1.h
 [v _lcd_dma_buf lcd_dma_buf `[32]uc  1 e 32 0 ]
@@ -1432,46 +1432,46 @@ TMR_COUNT 13
 [v _FM80_name FM80_name `C[2][12]uc  1 e 24 0 ]
 "94
 [v _modbus_name modbus_name `C[2][12]uc  1 e 24 0 ]
-"296
+"353
 [v _fw_state fw_state `uc  1 e 1 0 ]
-"298
+"355
 [v _tickCount tickCount `VE[13]us  1 e 26 0 ]
-"299
+"356
 [v _mode_sw mode_sw `VEuc  1 e 1 0 ]
 [v _faker faker `VEuc  1 e 1 0 ]
-"329
+"386
 [v _abuf abuf `[32]us  1 s 64 abuf ]
 [v _cbuf cbuf `[34]us  1 s 68 cbuf ]
-"330
+"387
 [v _state state `VEE26007  1 e 1 0 ]
-"331
+"388
 [v _cc_mode cc_mode `VEus  1 e 2 0 ]
 [v _mx_code mx_code `VEus  1 e 2 0 ]
-"332
+"389
 [v _buffer buffer `VE[512]uc  1 e 512 0 ]
 [v _log_buffer log_buffer `VE[512]uc  1 e 512 0 ]
 [v _boot_char boot_char `VEuc  1 e 1 0 ]
 [s S5433 bmc_buffer_type 10 `*.39VEuc 1 buffer 2 0 `*.39VEuc 1 log_buffer 2 2 `VEus 1 len 2 4 `VEus 1 pos 2 6 `VEa 1 bmc_flag 1 8 `VEuc 1 d_id 1 9 ]
-"333
+"390
 [v _BMC4 BMC4 `VES5433  1 e 10 0 ]
-"338
+"395
 [v _timeout timeout `VEa  1 e 1 0 ]
 [s S5440 tm 24 `i 1 tm_sec 2 0 `i 1 tm_min 2 2 `i 1 tm_hour 2 4 `i 1 tm_mday 2 6 `i 1 tm_mon 2 8 `i 1 tm_year 2 10 `i 1 tm_wday 2 12 `i 1 tm_yday 2 14 `i 1 tm_isdst 2 16 `l 1 __tm_gmtoff 4 18 `*.32Cuc 1 __tm_zone 2 22 ]
-"340
+"397
 [v _bmc_newtime bmc_newtime `*.39S5440  1 e 2 0 ]
 "134 /public/bmc/Q84/bmc_slave.X/slaveo.h
 [v _failure failure `VEa  1 e 1 0 ]
 "88 /public/bmc/Q84/bmc_slave.X/tic12400.h
 [v _b_read b_read `VEuc  1 e 1 0 ]
-"155 /public/bmc/Q84/bmc_slave.X/vconfig.h
+"156 /public/bmc/Q84/bmc_slave.X/vconfig.h
 [v _log_format1 log_format1 `C[183]uc  1 e 183 0 ]
-"161
+"162
 [v _log_format2 log_format2 `C[183]uc  1 e 183 0 ]
-"167
+"168
 [v _log_format3 log_format3 `C[183]uc  1 e 183 0 ]
-"173
+"174
 [v _log_format4 log_format4 `C[183]uc  1 e 183 0 ]
-"329
+"330
 [v _spin spin `C[6][20]uc  1 e 120 0 ]
 "153 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/doprnt.c
 [v _prec prec `i  1 s 2 prec ]
@@ -3151,33 +3151,33 @@ TMR_COUNT 13
 `us 1 checkmark 2 34 `uc 1 crc 1 36 ]
 "3 /public/bmc/Q84/bmc_slave.X/calibr.c
 [v _r_cal r_cal `S5405  1 s 37 r_cal ]
-"5
-[v _HV_SCALE4_0 HV_SCALE4_0 `Cf  1 s 4 HV_SCALE4_0 ]
-"6
-[v _HV_SCALE5_0 HV_SCALE5_0 `Cf  1 s 4 HV_SCALE5_0 ]
-"7
-[v _HV_SCALE4_1 HV_SCALE4_1 `Cf  1 s 4 HV_SCALE4_1 ]
 "8
-[v _HV_SCALE5_1 HV_SCALE5_1 `Cf  1 s 4 HV_SCALE5_1 ]
+[v _HV_SCALE4_0 HV_SCALE4_0 `Cf  1 s 4 HV_SCALE4_0 ]
 "9
-[v _HV_SCALE4_2 HV_SCALE4_2 `Cf  1 s 4 HV_SCALE4_2 ]
+[v _HV_SCALE5_0 HV_SCALE5_0 `Cf  1 s 4 HV_SCALE5_0 ]
 "10
-[v _HV_SCALE5_2 HV_SCALE5_2 `Cf  1 s 4 HV_SCALE5_2 ]
+[v _HV_SCALE4_1 HV_SCALE4_1 `Cf  1 s 4 HV_SCALE4_1 ]
 "11
-[v _HV_SCALE4_3 HV_SCALE4_3 `Cf  1 s 4 HV_SCALE4_3 ]
+[v _HV_SCALE5_1 HV_SCALE5_1 `Cf  1 s 4 HV_SCALE5_1 ]
 "12
-[v _HV_SCALE5_3 HV_SCALE5_3 `Cf  1 s 4 HV_SCALE5_3 ]
+[v _HV_SCALE4_2 HV_SCALE4_2 `Cf  1 s 4 HV_SCALE4_2 ]
 "13
-[v _HV_SCALE4_4 HV_SCALE4_4 `Cf  1 s 4 HV_SCALE4_4 ]
+[v _HV_SCALE5_2 HV_SCALE5_2 `Cf  1 s 4 HV_SCALE5_2 ]
 "14
-[v _HV_SCALE5_4 HV_SCALE5_4 `Cf  1 s 4 HV_SCALE5_4 ]
+[v _HV_SCALE4_3 HV_SCALE4_3 `Cf  1 s 4 HV_SCALE4_3 ]
 "15
-[v _HV_SCALE4_5 HV_SCALE4_5 `Cf  1 s 4 HV_SCALE4_5 ]
+[v _HV_SCALE5_3 HV_SCALE5_3 `Cf  1 s 4 HV_SCALE5_3 ]
 "16
-[v _HV_SCALE5_5 HV_SCALE5_5 `Cf  1 s 4 HV_SCALE5_5 ]
+[v _HV_SCALE4_4 HV_SCALE4_4 `Cf  1 s 4 HV_SCALE4_4 ]
 "17
-[v _HV_SCALE4_6 HV_SCALE4_6 `Cf  1 s 4 HV_SCALE4_6 ]
+[v _HV_SCALE5_4 HV_SCALE5_4 `Cf  1 s 4 HV_SCALE5_4 ]
 "18
+[v _HV_SCALE4_5 HV_SCALE4_5 `Cf  1 s 4 HV_SCALE4_5 ]
+"19
+[v _HV_SCALE5_5 HV_SCALE5_5 `Cf  1 s 4 HV_SCALE5_5 ]
+"20
+[v _HV_SCALE4_6 HV_SCALE4_6 `Cf  1 s 4 HV_SCALE4_6 ]
+"21
 [v _HV_SCALE5_6 HV_SCALE5_6 `Cf  1 s 4 HV_SCALE5_6 ]
 [s S5964 spi_link_type 28 `uc 1 SPI_LCD 1 0 :1:0 
 `uc 1 SPI_AUX 1 0 :1:1 
@@ -3202,7 +3202,7 @@ TMR_COUNT 13
 [v _c2 c2 `VEuc  1 e 1 0 ]
 [s S5200 terminal_type 45 `[32]uc 1 ack 32 0 `uc 1 mesgid 1 32 `uc 1 TID 1 33 `uc 1 mcode 1 34 `uc 1 mparm 1 35 `uc 1 cmdlen 1 36 `uc 1 log_seq 1 37 `uc 1 host_display_ack 1 38 :1:0 
 `E25409 1 info 1 39 `E25409 1 help_temp 1 40 `us 1 ceid 2 41 `us 1 log_num 2 43 ]
-"206 /public/bmc/Q84/bmc_slave.X/main.c
+"263 /public/bmc/Q84/bmc_slave.X/main.c
 [s S5213 V_data 527 `E25437 1 s_state 1 0 `E25446 1 ui_state 1 1 `[128]uc 1 buf 128 2 `[160]uc 1 terminal 160 130 `[64]uc 1 info 64 290 `VEul 1 ticks 4 354 `VEul 1 systemb 4 358 `VEul 1 tx_total 4 362 `VEul 1 rx_total 4 366 `VEul 1 bt_total 4 370 `VEul 1 br_total 4 374 `VEul 1 brn_total 4 378 `VEul 1 btn_total 4 382 `VEul 1 bmc_do 4 386 `VEul 1 bmc_di 4 390 `VEul 1 utc_ticks 4 394 `l 1 testing 4 398 `uc 1 stream 1 402 `uc 1 function 1 403 `uc 1 error 1 404 `uc 1 abort 1 405 `uc 1 msg_error 1 406 `uc 1 msg_ret 1 407 `uc 1 alarm 1 408 `uc 1 event 1 409 `E25446 1 ui_sw 1 410 `us 1 r_checksum 2 411 `us 1 t_checksum 2 413 `us 1 checksum_error 2 415 `us 1 timer_error 2 417 `us 1 ping 2 419 `us 1 mode_pwm 2 421 `us 1 equip_timeout 2 423 `us 1 sequences 2 425 `us 1 all_errors 2 427 `us 1 ceid 2 429 `VEus 1 bmc_ao 2 431 `uc 1 rbit 1 433 :1:0 
 `uc 1 wbit 1 433 :1:1 
 `uc 1 ebit 1 433 :1:2 
@@ -3211,7 +3211,7 @@ TMR_COUNT 13
 `S5200 1 response 45 435 `uc 1 uart 1 480 `uc 1 llid 1 481 `uc 1 sid 1 482 `uc 1 ping_count 1 483 `uc 1 euart 1 484 `uc 1 vterm 1 485 `uc 1 vterm_switch 1 486 `uc 1 uart_speed_fast 1 487 `VEuc 1 ticker 1 488 `a 1 flipper 1 489 `a 1 queue 1 490 `a 1 debug 1 491 `a 1 help 1 492 `a 1 stack 1 493 `a 1 help_id 1 494 `a 1 rerror 1 495 `a 1 speed_spin 1 496 `a 1 set_sequ 1 497 `a 1 log_s6f11 1 498 `a 1 log_abort 1 499 `a 1 log_char 1 500 `us 1 v_tx_line 2 501 `us 1 v_rx_line 2 503 `s 1 tx_volts 2 505 `s 1 rx_volts 2 507 `uc 1 tx_rs232 1 509 `uc 1 rx_rs232 1 510 `s 1 secs_value 2 511 `s 1 cmd_value 2 513 `ul 1 utc_cmd_value 4 515 `ul 1 di_fail 4 519 `ul 1 do_fail 4 523 ]
 [v _V V `VES5213  1 e 527 0 ]
 [s S5289 . 22 `uc 1 type 1 0 `s 1 day 2 1 `s 1 amp_hours 2 3 `s 1 kilowatt_hours 2 5 `s 1 volts_peak 2 7 `s 1 amps_peak 2 9 `s 1 kilowatts_peak 2 11 `s 1 bat_min 2 13 `s 1 bat_max 2 15 `s 1 absorb_time 2 17 `s 1 float_time 2 19 `uc 1 select 1 21 ]
-"242
+"299
 [s S5302 BM_type 104 `VEa 1 ten_sec_flag 1 0 `VEa 1 one_sec_flag 1 1 `VEa 1 FM80_charged 1 2 `VEa 1 pv_high 1 3 `VEa 1 pv_update 1 4 `VEa 1 once 1 5 `VE[3]a 1 a_switch 3 6 `VE[3]a 1 a_trigger 3 9 `VE[3]a 1 a_type 3 12 `VEus 1 pacing 2 15 `VEus 1 rx_count 2 17 `VEus 1 flush 2 19 `VEus 1 pv_prev 2 21 `VEus 1 day_check 2 23 `VEus 1 dim_delay 2 25 `VEa 1 FM80_online 1 27 `VEa 1 FM80_io 1 28 `VEa 1 LOG 1 29 `VEa 1 display_dim 1 30 `VEa 1 display_update 1 31 `VEa 1 display_on 1 32 `VEa 1 fm80_restart 1 33 `VEuc 1 canbus_online 1 34 `VEuc 1 modbus_online 1 35 `VEuc 1 alt_display 1 36 `VE[3]uc 1 a_pin 3 37 `f 1 run_time 4 40 `f 1 net_balance 4 44 `[10]us 1 mui 20 48 `[3]us 1 fwrev 6 68 `S5289 1 log 22 74 `VEuo 1 node_id 8 96 ]
 [v _BM BM `VES5302  1 e 104 0 ]
 [s S5342 spi_link_type_ss 1 `uc 1 SPI_DATA 1 0 :1:0 
@@ -3223,31 +3223,31 @@ TMR_COUNT 13
 `uc 1 LOW_BITS 1 0 :1:6 
 `uc 1 ADC_RUN 1 0 :1:7 
 ]
-"263
+"320
 [v _spi_comm_ss spi_comm_ss `VES5342  1 e 1 0 ]
 [s S5351 spi_stat_type_ss 91 `VEul 1 adc_count 4 0 `VEul 1 dac_count 4 4 `VEul 1 bmc_counts 4 8 `VEul 1 port_count 4 12 `VEul 1 port_error_count 4 16 `VEul 1 port_data_count 4 20 `VEul 1 zombie_count 4 24 `VEul 1 char_count 4 28 `VEul 1 char_error_count 4 32 `VEul 1 rxof_bit 4 36 `VEul 1 txdone_bit 4 40 `VEul 1 txuf_bit 4 44 `VEul 1 slave_int_count 4 48 `VEul 1 last_slave_int_count 4 52 `VEul 1 slave_tx_count 4 56 `VEul 1 comm_count 4 60 `VEul 1 idle_count 4 64 `VEul 1 spi_error_count 4 68 `VEul 1 spi_noerror_count 4 72 `VEuc 1 daq_conf 1 76 `VEuc 1 comm_ok 1 77 `VEuc 1 raw_index 1 78 `us 1 deviceid 2 79 `us 1 devicerev 2 81 `VEuo 1 mui 8 83 ]
-"264
+"321
 [v _spi_stat_ss spi_stat_ss `VES5351  1 e 91 0 ]
 [s S5377 serial_buffer_type_ss 115 `VE[16]uc 1 data 16 0 `VE[81]uc 1 r_string 81 16 `VEuc 1 adcl 1 97 `VEuc 1 adc2 1 98 `VEuc 1 adch 1 99 `VEuc 1 command 1 100 `VEuc 1 raw_index 1 101 `VEuc 1 r_string_index 1 102 `VEuc 1 r_string_chan 1 103 `VEul 1 place 4 104 `VEa 1 make_value 1 108 `VEa 1 get_value 1 109 `VEa 1 dac_value 1 110 `VEa 1 adc_value 1 111 `VEa 1 cfg_value 1 112 `VEa 1 cmake_value 1 113 `VEa 1 cget_value 1 114 ]
-"270
+"327
 [v _serial_buffer_ss serial_buffer_ss `VES5377  1 e 115 0 ]
 [s S5405 ha_daq_calib_type 37 `uo 1 bmc_id 8 0 `d 1 offset4 4 8 `d 1 scaler4 4 12 `d 1 offset5 4 16 `d 1 scaler5 4 20 `d 1 A200_Z 4 24 `d 1 A200_S 4 28 `a 1 done 1 32 `uc 1 c_zero_cal 1 33 :1:0 
 `uc 1 c_scale_cal 1 33 :1:1 
 `uc 1 c_do_cal 1 33 :1:2 
 `us 1 checkmark 2 34 `uc 1 crc 1 36 ]
-"278
+"335
 [v _ha_daq_calib ha_daq_calib `S5405  1 e 37 0 ]
-"293
+"350
 [v _data_in2 data_in2 `VEuc  1 e 1 0 ]
 [v _adc_buffer_ptr adc_buffer_ptr `VEuc  1 e 1 0 ]
 [v _adc_channel adc_channel `VEuc  1 e 1 0 ]
 [v _channel channel `VEuc  1 e 1 0 ]
 [v _upper upper `VEuc  1 e 1 0 ]
-"294
+"351
 [v _adc_buffer adc_buffer `VE[64]us  1 e 128 0 ]
 [v _adc_data_in adc_data_in `VEus  1 e 2 0 ]
 [v _out_buf out_buf `VEus  1 e 2 0 ]
-"295
+"352
 [v _volt_whole volt_whole `us  1 e 2 0 ]
 [v _bat_amp_whole bat_amp_whole `us  1 e 2 0 ]
 [s S8979 . 3 `Cuc 1 cmd 1 0 `us 1 out 2 1 ]
@@ -3511,30 +3511,30 @@ TMR_COUNT 13
 [v _tic12400_fail_value tic12400_fail_value `VEl  1 e 4 0 ]
 "115
 [v _tic_rw tic_rw `S7118  1 e 16 0 ]
-"367 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"424 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _main main `(v  1 e 1 0 ]
 {
-"402
+"459
 [v main@i i `uc  1 a 1 247 ]
-"369
+"426
 [v main@speed_text speed_text `*.32uc  1 a 2 237 ]
 [v main@s s `*.39uc  1 a 2 235 ]
-"836
+"893
 [v main@switcher switcher `uc  1 s 1 switcher ]
-"997
+"1054
 } 0
-"126 /public/bmc/Q84/bmc_slave.X/calibr.c
+"129 /public/bmc/Q84/bmc_slave.X/calibr.c
 [v _write_cal_data write_cal_data `(v  1 e 1 0 ]
 {
-"128
+"131
 [v write_cal_data@x x `us  1 a 2 62 ]
-"129
+"132
 [v write_cal_data@r_cal_ptr r_cal_ptr `*.39uc  1 a 2 60 ]
-"128
+"131
 [v write_cal_data@y y `us  1 a 2 57 ]
-"129
+"132
 [v write_cal_data@crcVal crcVal `uc  1 a 1 59 ]
-"150
+"153
 } 0
 "231 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/memory.c
 [v _DATAEE_WriteByte DATAEE_WriteByte `(v  1 e 1 0 ]
@@ -3546,10 +3546,10 @@ TMR_COUNT 13
 [v DATAEE_WriteByte@bData bData `uc  1 p 1 32 ]
 "262
 } 0
-"155 /public/bmc/Q84/bmc_slave.X/calibr.c
+"158 /public/bmc/Q84/bmc_slave.X/calibr.c
 [v _update_cal_data update_cal_data `(v  1 e 1 0 ]
 {
-"165
+"168
 } 0
 "134 /public/bmc/Q84/bmc_slave.X/tic12400.c
 [v _tic12400_reset tic12400_reset `(v  1 e 1 0 ]
@@ -3624,20 +3624,20 @@ TMR_COUNT 13
 [v sprintf@fmt fmt `*.32Cuc  1 p 2 85 ]
 "23
 } 0
-"1012 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"1069 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _spinners spinners `(uc  1 e 1 0 ]
 {
 [v spinners@shape shape `uc  1 p 1 wreg ]
-"1015
+"1072
 [v spinners@c c `uc  1 a 1 38 ]
-"1012
+"1069
 [v spinners@shape shape `uc  1 p 1 wreg ]
 [v spinners@reset reset `Cuc  1 p 1 34 ]
-"1014
+"1071
 [v spinners@s s `[6]uc  1 s 6 s ]
-"1017
+"1074
 [v spinners@shape shape `uc  1 p 1 39 ]
-"1026
+"1083
 } 1
 "101 /public/bmc/Q84/bmc_slave.X/mconfig.c
 [v _set_vterm set_vterm `(uc  1 e 1 0 ]
@@ -3677,17 +3677,17 @@ TMR_COUNT 13
 [v TimerDone@timer timer `Cuc  1 p 1 32 ]
 "29
 } 1
-"23 /public/bmc/Q84/bmc_slave.X/calibr.c
+"26 /public/bmc/Q84/bmc_slave.X/calibr.c
 [v _set_calibration set_calibration `(v  1 e 1 0 ]
 {
 [v set_calibration@mui mui `uo  1 p 8 30 ]
-"62
+"65
 } 0
-"1107 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"1164 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _send_mx_cmd send_mx_cmd `(v  1 s 1 send_mx_cmd ]
 {
 [v send_mx_cmd@cmd cmd `*.34Cus  1 p 2 44 ]
-"1115
+"1172
 } 0
 "23 /public/bmc/Q84/bmc_slave.X/mxcmd.c
 [v _FM_tx_empty FM_tx_empty `(a  1 e 1 0 ]
@@ -3747,83 +3747,83 @@ TMR_COUNT 13
 [v eaDogM_WriteString@strPtr strPtr `*.39Cuc  1 p 2 41 ]
 "187
 } 0
-"1120 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"1177 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _rec_mx_cmd rec_mx_cmd `(v  1 s 1 rec_mx_cmd ]
 {
 [v rec_mx_cmd@DataHandler DataHandler `*.38(v  1 p 3 110 ]
 [v rec_mx_cmd@rec_len rec_len `Cuc  1 p 1 113 ]
-"1122
+"1179
 [v rec_mx_cmd@online_count online_count `us  1 s 2 online_count ]
-"1153
+"1210
 } 0
-"1302
+"1359
 [v _state_misc_cb state_misc_cb `(v  1 e 1 0 ]
 {
-"1316
+"1373
 } 0
-"1279
+"1336
 [v _state_date_cb state_date_cb `(v  1 s 1 state_date_cb ]
 {
-"1287
+"1344
 } 0
-"1269
+"1326
 [v _state_time_cb state_time_cb `(v  1 s 1 state_time_cb ]
 {
-"1277
+"1334
 } 0
-"1318
+"1375
 [v _state_mx_log_cb state_mx_log_cb `(v  1 e 1 0 ]
 {
-"1335
+"1392
 } 0
-"1258
+"1315
 [v _state_fwrev_cb state_fwrev_cb `(v  1 s 1 state_fwrev_cb ]
 {
-"1267
+"1324
 } 0
-"1350
+"1407
 [v _state_mx_status_cb state_mx_status_cb `(v  1 e 1 0 ]
 {
-"1384
+"1441
 } 0
-"1249
+"1306
 [v _state_batterya_cb state_batterya_cb `(v  1 e 1 0 ]
 {
-"1256
+"1313
 } 0
-"1240
+"1297
 [v _state_batteryv_cb state_batteryv_cb `(v  1 e 1 0 ]
 {
-"1247
+"1304
 } 0
-"1441
+"1498
 [v _state_panelv_cb state_panelv_cb `(v  1 e 1 0 ]
 {
-"1447
+"1504
 } 0
-"1289
+"1346
 [v _state_restart_cb state_restart_cb `(v  1 s 1 state_restart_cb ]
 {
-"1297
+"1354
 } 0
-"1386
+"1443
 [v _state_status_cb state_status_cb `(v  1 e 1 0 ]
 {
-"1388
+"1445
 [v state_status_cb@day_clocks day_clocks `us  1 s 2 day_clocks ]
-"1439
+"1496
 } 0
-"1222
+"1279
 [v _state_init_cb state_init_cb `(v  1 e 1 0 ]
 {
-"1225
+"1282
 [v state_init_cb@off_delay off_delay `uc  1 s 1 off_delay ]
-"1238
+"1295
 } 0
-"1337
+"1394
 [v _state_watts_cb state_watts_cb `(v  1 e 1 0 ]
 {
-"1348
+"1405
 } 0
 "148 /public/bmc/Q84/bmc_slave.X/mxcmd.c
 [v _lp_filter lp_filter `(f  1 e 4 0 ]
@@ -3838,11 +3838,11 @@ TMR_COUNT 13
 [v lp_filter@smooth smooth `[9]f  1 s 36 smooth ]
 "168
 } 0
-"1206 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"1263 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _volt_f volt_f `(v  1 s 1 volt_f ]
 {
 [v volt_f@voltage voltage `Cus  1 p 2 52 ]
-"1210
+"1267
 } 0
 "7 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/lwmod.c
 [v ___lwmod __lwmod `(ui  1 e 2 0 ]
@@ -3887,18 +3887,18 @@ TMR_COUNT 13
 [v FM_rx@data data `*.39us  1 p 2 41 ]
 "115
 } 0
-"88 /public/bmc/Q84/bmc_slave.X/calibr.c
+"91 /public/bmc/Q84/bmc_slave.X/calibr.c
 [v _read_cal_data read_cal_data `(a  1 e 1 0 ]
 {
-"90
+"93
 [v read_cal_data@x x `us  1 a 2 65 ]
-"91
+"94
 [v read_cal_data@r_cal_ptr r_cal_ptr `*.39uc  1 a 2 62 ]
-"90
+"93
 [v read_cal_data@y y `us  1 a 2 60 ]
-"91
+"94
 [v read_cal_data@crcVal_save crcVal_save `uc  1 a 1 64 ]
-"121
+"124
 } 0
 "264 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/memory.c
 [v _DATAEE_ReadByte DATAEE_ReadByte `(uc  1 e 1 0 ]
@@ -3945,17 +3945,17 @@ TMR_COUNT 13
 [v CRC_ReverseValue@crc crc `ul  1 p 4 30 ]
 "168
 } 0
-"76 /public/bmc/Q84/bmc_slave.X/calibr.c
+"79 /public/bmc/Q84/bmc_slave.X/calibr.c
 [v _phy_chan5 phy_chan5 `(f  1 e 4 0 ]
 {
 [v phy_chan5@value value `us  1 p 2 94 ]
-"83
+"86
 } 0
-"67
+"70
 [v _phy_chan4 phy_chan4 `(f  1 e 4 0 ]
 {
 [v phy_chan4@value value `us  1 p 2 94 ]
-"74
+"77
 } 0
 "19 /public/bmc/Q84/bmc_slave.X/mconfig.c
 [v _mconfig_init mconfig_init `(v  1 e 1 0 ]
@@ -4405,12 +4405,12 @@ TMR_COUNT 13
 [v get_vterm_ptr@line line `uc  1 p 1 42 ]
 "114
 } 1
-"1158 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"1215 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _bmc_logger bmc_logger `(v  1 e 1 0 ]
 {
-"1160
+"1217
 [v bmc_logger@d_id d_id `uc  1 s 1 d_id ]
-"1200
+"1257
 } 0
 "13 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/nf_snprintf.c
 [v _snprintf snprintf `(i  1 e 2 0 ]
@@ -5117,10 +5117,10 @@ TMR_COUNT 13
 {
 "100
 } 0
-"1040 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"1097 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _SetBMCPriority SetBMCPriority `(v  1 e 1 0 ]
 {
-"1055
+"1112
 } 0
 "50 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/mcc.c
 [v _SYSTEM_Initialize SYSTEM_Initialize `(v  1 e 1 0 ]
@@ -5474,16 +5474,16 @@ TMR_COUNT 13
 {
 "92
 } 0
-"1057 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"1114 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _DeviceID_Read DeviceID_Read `(us  1 e 2 0 ]
 {
-"1062
+"1119
 [v DeviceID_Read@tablePointer tablePointer `ul  1 a 4 47 ]
-"1059
+"1116
 [v DeviceID_Read@deviceID deviceID `us  1 a 2 45 ]
-"1057
+"1114
 [v DeviceID_Read@address address `um  1 p 3 30 ]
-"1085
+"1142
 } 0
 "223 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/adc.c
 [v _ADC_StartConversion ADC_StartConversion `(v  1 e 1 0 ]
@@ -5701,10 +5701,10 @@ TMR_COUNT 13
 {
 "200
 } 0
-"1002 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"1059 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _onesec_io onesec_io `(v  1 e 1 0 ]
 {
-"1009
+"1066
 } 0
 "396 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/adc.c
 [v _ADC_ADI_ISR ADC_ADI_ISR `IIH(v  1 e 1 0 ]
@@ -5746,10 +5746,10 @@ TMR_COUNT 13
 {
 "157
 } 0
-"459 /public/bmc/Q84/bmc_slave.X/slaveo.c
+"461 /public/bmc/Q84/bmc_slave.X/slaveo.c
 [v _slaveo_spi_isr slaveo_spi_isr `(v  1 e 1 0 ]
 {
-"463
+"465
 } 0
 "182 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/spi2.c
 [v _SPI2_RxIsr SPI2_RxIsr `IIH(v  1 e 1 0 ]
@@ -5768,7 +5768,7 @@ TMR_COUNT 13
 [v slaveo_rx_isr@tmp_buf tmp_buf `uc  1 a 1 52 ]
 "67
 [v slaveo_rx_isr@command command `uc  1 a 1 51 ]
-"457
+"459
 } 0
 "15 /public/bmc/Q84/bmc_slave.X/timers.c
 [v i2_StartTimer StartTimer `T(v  1 e 1 0 ]
@@ -5827,10 +5827,10 @@ TMR_COUNT 13
 {
 "175
 } 0
-"1031 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"1088 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _test_slave test_slave `(v  1 e 1 0 ]
 {
-"1034
+"1091
 } 0
 "188 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/dma2.c
 [v _DMA2_DMASCNTI_ISR DMA2_DMASCNTI_ISR `IIH(v  1 e 1 0 ]

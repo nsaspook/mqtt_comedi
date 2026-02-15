@@ -24,9 +24,13 @@ extern "C" {
 
 	static const float ADC_SCALE = 4096.0f;
 	static const float HV_SCALE_OFFSET = 0.0f;
-	static const float HV_SCALAR4 = 64.2600f; // defaults
-	static const float HV_SCALAR5 = 64.2600f;
 
+	/*
+	 * if the board is not listed in the MUI cal table, then use this for cal values
+	 * OPEN HOST
+	 */
+	static const float HV_SCALAR4 = 64.2500f; // defaults
+	static const float HV_SCALAR5 = 64.2500f;
 	static const float A200_0_ZERO = 2.5216f; // Battery sensor zero ADC value
 	static const float A200_0_SCALAR = 133.05f; // Battery Amp scalar to +- 200A
 

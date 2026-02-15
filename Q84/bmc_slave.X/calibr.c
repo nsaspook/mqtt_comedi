@@ -2,6 +2,9 @@
 
 static struct ha_daq_calib_type r_cal;
 
+/*
+ * BMC dev boards calibration settings
+ */
 static const float HV_SCALE4_0 = 64.2695f;
 static const float HV_SCALE5_0 = 64.2695f;
 static const float HV_SCALE4_1 = 64.1890f;

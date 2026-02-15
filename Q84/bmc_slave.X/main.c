@@ -10,6 +10,63 @@
  */
 
 /*
+ * RPi pinouts
+ * https://pinout.xyz/
+ */
+/* 40 pin connector	headers		cable colors, RPI2B
+ * RPi pin		daq_bmc pin
+ * Signal
+ * 30 GND/VSS		1 - SPI2 VSS	brown
+ * 26 SPI0 CE1		2 - SPI2 SS2	green
+ * 23 SPI0 SCLK		3 - SPI2 SCK	yellow
+ * 19 SPI0 MOSI		4 - SPI2 MOSI	orange
+ * 21 SPI0 MISO		5 - SPI2 MISO	red
+ *       		6 - SPI2 REQ	N/C
+ *
+ * Power
+ * 2  5V power		4 - SV1 5VDD    grey
+ * 6  GND/VSS		9   ANA VSS	purple
+ * 14 GND/VSS		9   DIGA VSS	black
+ *
+ * 2  5V power		2 - GLORY 5VDD  white
+ * 9  GND/VSS		1 - GLORY VSS   blue
+ * 
+ * DC to DC converter
+ * 24V DC-DC VOUT	2 - VS TIC PWR	blue
+ * 24V GND/VSS		1 - VS TIC CND	green
+ * 
+ * 4  5V power		5V DC-DC VIN	red
+ * 5  GND/VSS		5V GND/VSS	brown
+ */
+
+/* 26 pin connector	headers		cable colors, OPIZ3
+ * OPi pin		daq_bmc pin
+ * Signal
+ * 25 GND		1 - SPI2 VSS	brown
+ * 24 SPI1 CE0		2 - SPI2 SS2	green
+ * 23 SPI1 SCLK		3 - SPI2 SCK	yellow
+ * 19 SPI1 MOSI		4 - SPI2 MOSI	orange
+ * 21 SPI1 MISO		5 - SPI2 MISO	red
+ *      		6 - SPI2 REQ	N/C
+ *
+ * Power
+ * 2  5V power		4 - SV1 5VDD    grey
+ * 9  GND		9   ANA VSS	purple
+ * 14 GND		9   DIGA VSS	black
+ *
+ * 13 pin connector	headers		cable colors
+ * 1  5V power		2 - GLORY 5VDD  white
+ * 2  GND		1 - GLORY VSS   blue
+ *
+ * DC to DC converter
+ * 24V DC-DC VOUT	2 - VS TIC PWR	blue
+ * 24V GND/VSS		1 - VS TIC CND	green
+ * 
+ * 4  5V power		5V DC-DC VIN	red
+ * 5  GND/VSS		5V GND/VSS	brown
+ */
+
+/*
  * UART1 MODBUS comms, ANALOG header, TX-PIN 7 , RX-PIN 6 , SV1 serial bus, TX-PIN 8, RX-PIN 7, interrupts, 9600 bps
  * UART2 FMx0 serial comms 9-bits async OPTO isolated, polled. 96--bps
  * UART3 logging/debug comms, TTL serial HEADER, TX-PIN 2 , RX-PIN 3 , SV1 serial bus, TX-PIN 10, RX-PIN 9, interrupts, 115200 bps
