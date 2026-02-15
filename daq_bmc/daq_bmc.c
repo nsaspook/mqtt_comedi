@@ -82,8 +82,20 @@ ports [4..7] are data-streams for connected device data
 #include <linux/list.h>
 #include <linux/completion.h>
 
-#define bmc_version "version 1.01 "
+#define bmc_version "version 1.02 "
 #define spibmc_version "version 1.4 "
+
+/*
+ * Look for Soc board types using C preprocessor defines
+ *  echo | gcc -dM -E -
+ *  echo | clang -dM -E -
+ */
+
+#if __GNUC__ >= 14
+#define RPI2B
+#else
+#define OPIZ3
+#endif
 
 static const uint32_t CHECKMARK = 0x1957;
 static const uint32_t CHECKBYTE = 0x57;
@@ -101,37 +113,61 @@ enum daqbmc_platform_index {
 	BMC_OPIZ3,
 };
 
-/* 40 pin connector	headers		test cable colors, RPI2B
+/*
+ * RPi pinouts
+ * https://pinout.xyz/
+ */
+/* 40 pin connector	headers		cable colors, RPI2B
  * RPi pin		daq_bmc pin
- * 6  GND		1 - SPI2 VSS	green/brown
- * 26 SPI0 CE1		2 - SPI2 SS2	burgandy
- * 23 SPI0 SCLK		3 - SPI2 SCK	blue
- * 19 SPI0 MOSI		4 - SPI2 MOSI	green
- * 21 SPI0 MISO		5 - SPI2 MISO	yellow
- * 30 GND		6 - 3.3V VSS	orange NC
+ * Signal
+ * 30 GND/VSS		1 - SPI2 VSS	brown
+ * 26 SPI0 CE1		2 - SPI2 SS2	green
+ * 23 SPI0 SCLK		3 - SPI2 SCK	yellow
+ * 19 SPI0 MOSI		4 - SPI2 MOSI	orange
+ * 21 SPI0 MISO		5 - SPI2 MISO	red
+ *       		6 - SPI2 REQ	N/C
  *
+ * Power
+ * 2  5V power		4 - SV1 5VDD    grey
+ * 6  GND/VSS		9   ANA VSS	purple
+ * 14 GND/VSS		9   DIGA VSS	black
  *
- * 4  5V power		4 - SV1 5V VDD
- *
- *
- * 2  5V power		2 - GLORY 5V VDD
- * 9  GND		1 - GLORY VSS
+ * 2  5V power		2 - GLORY 5VDD  white
+ * 9  GND/VSS		1 - GLORY VSS   blue
+ * 
+ * DC to DC converter
+ * 24V DC-DC VOUT	2 - VS TIC PWR	blue
+ * 24V GND/VSS		1 - VS TIC CND	green
+ * 
+ * 4  5V power		5V DC-DC VIN	red
+ * 5  GND/VSS		5V GND/VSS	brown
  */
 
-/* 26 pin connector	headers		test cable colors, OPIZ3
+/* 26 pin connector	headers		cable colors, OPIZ3
  * OPi pin		daq_bmc pin
- * 6  GND		1 - SPI2 VSS	green/brown
- * 24 SPI1 CE0		2 - SPI2 SS2	burgandy
- * 23 SPI1 SCLK		3 - SPI2 SCK	blue
- * 19 SPI1 MOSI		4 - SPI2 MOSI	green
- * 21 SPI1 MISO		5 - SPI2 MISO	yellow
- * 18 GPIO 14		6 - SPI2 REQ	orange NC
+ * Signal
+ * 25 GND		1 - SPI2 VSS	brown
+ * 24 SPI1 CE0		2 - SPI2 SS2	green
+ * 23 SPI1 SCLK		3 - SPI2 SCK	yellow
+ * 19 SPI1 MOSI		4 - SPI2 MOSI	orange
+ * 21 SPI1 MISO		5 - SPI2 MISO	red
+ *      		6 - SPI2 REQ	N/C
  *
- * 2  5V power		4 - SV1 5V VDD
+ * Power
+ * 2  5V power		4 - SV1 5VDD    grey
+ * 9  GND		9   ANA VSS	purple
+ * 14 GND		9   DIGA VSS	black
  *
- * 13 pin connector	headers		test cable colors
- * 1  5V power		2 - GLORY 5V VDD
- * 2  GND		1 - GLORY VSS
+ * 13 pin connector	headers		cable colors
+ * 1  5V power		2 - GLORY 5VDD  white
+ * 2  GND		1 - GLORY VSS   blue
+ *
+ * DC to DC converter
+ * 24V DC-DC VOUT	2 - VS TIC PWR	blue
+ * 24V GND/VSS		1 - VS TIC CND	green
+ * 
+ * 4  5V power		5V DC-DC VIN	red
+ * 5  GND/VSS		5V GND/VSS	brown
  */
 
 /*
