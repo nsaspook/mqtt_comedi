@@ -27,6 +27,7 @@ extern "C" {
 	struct bmc_settings {
 		double BENERGYV, BVOLTAGEV, PVENERGYV, PVVOLTAGEV, SOC_MODEV;
 		char MQTT_HOSTIP[BMC_MAXHOST];
+		char MY_IP[BMC_MAXHOST];
 	};
 
 #define HOST_SLOTS 10 //BMC host data slots

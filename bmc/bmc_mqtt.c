@@ -33,6 +33,7 @@ struct bmc_settings S = {
 	.PVVOLTAGEV = DPVVOLTAGE,
 	.SOC_MODEV = DSOC_MODE,
 	.MQTT_HOSTIP = MQTT_HOST,
+	.MY_IP = "10.1.1.255",
 };
 
 struct ha_csv_type {
@@ -784,6 +785,8 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (const char *) &ha_daq_host.clients[ha_daq_host.hindex]);
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "board", BMC_MAXHOST);
 		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (const char *) bmc.BNAME);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "ipaddr", BMC_MAXHOST);
+		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (const char *) &ha_daq_host.hosts[ha_daq_host.hindex]);
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "sequence", BMC_MAXHOST);
 		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.sequence);
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "d_id", BMC_MAXHOST);
