@@ -16,6 +16,8 @@ extern "C" {
 	/*
 	 * configuration data for Home Assistant
 	 */
+#define BMC_MAXHOST      1024 // hosts buffer size	
+
 #define DBENERGY  3100.0f
 #define DBVOLTAGE 12.6f
 #define DPVENERGY 300.0f
@@ -24,11 +26,11 @@ extern "C" {
 
 	struct bmc_settings {
 		double BENERGYV, BVOLTAGEV, PVENERGYV, PVVOLTAGEV, SOC_MODEV;
+		char MQTT_HOSTIP[BMC_MAXHOST];
 	};
 
 #define HOST_SLOTS 10 //BMC host data slots
 #define OPEN_HOST 9 // BMC host array index for those without a known IP address or MUI
-#define BMC_MAXHOST      1024 // hosts buffer size
 #define BENERGY_INTEGRAL 1440.0f
 #define MQTT_RETRY 10
 
@@ -132,7 +134,7 @@ extern "C" {
 
 	struct ha_daq_hosts_type {
 		const char hosts[HOST_SLOTS][BMC_MAXHOST];
-		const char mqtt[HOST_SLOTS][BMC_MAXHOST];
+		char mqtt[HOST_SLOTS][BMC_MAXHOST];
 		char clients[HOST_SLOTS][BMC_MAXHOST];
 		char topics[HOST_SLOTS][BMC_MAXHOST];
 		char listen[HOST_SLOTS][BMC_MAXHOST];

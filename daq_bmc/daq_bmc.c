@@ -1846,8 +1846,8 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 
 	if (retconf == CHECKBYTE) { // bad ID from daq_bmc board
 		dev_err(dev->class_dev,
-			"BMCBoard CPU not detected 0X%X, force board ID 0x00 \n", retconf);
-		retconf = 0x00;
+			"BMCBoard config not detected 0X%X, force board ID to 0x03 \n", retconf);
+		retconf = 0x03;
 	}
 
 	dev_info(dev->class_dev,
@@ -2015,34 +2015,6 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 		"BMCboard default: do_conf=%d, di_conf=%d, daqbmc_conf=%d, chip select %d\n",
 		do_conf, di_conf, daqbmc_conf, (uint32_t) * spi->chip_select);
 
-	//	if ((uint32_t) * spi->chip_select == CSnA) {
-	//		/*
-	//		 * get a copy of the slave device 0 to share with Comedi
-	//		 * we need a device to talk to the Q84
-	//		 *
-	//		 * create entry into the Comedi device list
-	//		 */
-	//
-	//		dev_info(&spi->dev,
-	//			"SPI device match: spi->chip_select == CSnA %d\n",
-	//			(uint32_t) * spi->chip_select);
-	//
-	//		INIT_LIST_HEAD(&pdata->device_entry);
-	//		pdata->slave.spi = spi;
-	//		/*
-	//		 * put entry into the Comedi device list
-	//		 */
-	//		list_add_tail(&pdata->device_entry, &device_list);
-	//		spi->mode = daqbmc_devices[daqbmc_conf].spi_mode;
-	//		spi->max_speed_hz = daqbmc_devices[daqbmc_conf].max_speed_hz;
-	//		spi->word_delay = CS_CHANGE_DELAY_USECS0;
-	//		spi->cs_setup = CS_CHANGE_DELAY_USECS0;
-	//		spi->cs_hold = CS_CHANGE_DELAY_USECS0;
-	//		spi->cs_inactive = CS_CHANGE_DELAY_USECS0;
-	//		spi->bits_per_word = daqbmc_devices[daqbmc_conf].spi_bpw;
-	//		spi_setup(spi);
-	//	}
-
 	if ((uint32_t) * spi->chip_select == CS_BMC) {
 		/*
 		 * get a copy of the slave device 0 to share with Comedi
@@ -2069,6 +2041,9 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 		spi->cs_inactive = CS_CHANGE_DELAY_USECS0;
 		spi->bits_per_word = daqbmc_devices[daqbmc_conf].spi_bpw;
 		spi_setup(spi);
+		for (int i = 0; i < 10; i++) {
+			spi_w8r8(spi, CMD_DUMMY_CFG);
+		}
 	}
 
 	/* setup Comedi part of driver */

@@ -93,6 +93,7 @@ struct energy_type E = {
 
 // Comedi I/O device type
 const char *board_name = "NO_BOARD", *driver_name = "NO_DRIVER";
+static const char MQTT_HOST_STR[] = "MQTT_HOST";
 
 FILE *fout, *calfile; // logging stream and calibration data
 
@@ -178,6 +179,7 @@ bool get_set_config(void)
 {
 	static const char *output_file = "/etc/daq_bmc/bmc_config.cfg"; // will only read data from here
 	static const char *output_file_tmp = "/tmp/bmc_config.cfg"; // if the correct directory is missing
+	const char *tmp_mqtt;
 	config_t cfg;
 	config_setting_t *setting, *group;
 	bool config_status = false;
@@ -186,6 +188,11 @@ bool get_set_config(void)
 	 * read configuration file settings
 	 */
 	config_init(&cfg);
+	config_set_options(&cfg,
+		(CONFIG_OPTION_FSYNC
+		| CONFIG_OPTION_SEMICOLON_SEPARATORS
+		| CONFIG_OPTION_COLON_ASSIGNMENT_FOR_GROUPS
+		| CONFIG_OPTION_OPEN_BRACE_ON_SEPARATE_LINE));
 	/* Read the file. If there is an error, create a new file */
 	if (!config_read_file(&cfg, output_file)) {
 		fprintf(stderr, "%s:%d - %s\n", config_error_file(&cfg),
@@ -204,6 +211,8 @@ bool get_set_config(void)
 		config_setting_set_float(setting, S.PVVOLTAGEV);
 		setting = config_setting_add(group, "SOC_MODEV", CONFIG_TYPE_FLOAT);
 		config_setting_set_float(setting, S.SOC_MODEV);
+		setting = config_setting_add(group, MQTT_HOST_STR, CONFIG_TYPE_STRING);
+		config_setting_set_string(setting, MQTT_HOST);
 
 		/* Write out the new configuration. */
 		if (!config_write_file(&cfg, output_file)) {
@@ -224,14 +233,15 @@ bool get_set_config(void)
 		}
 		config_destroy(&cfg);
 	} else {
-
 		if (config_lookup_float(&cfg, "BENERGYV", &S.BENERGYV)
 			&& config_lookup_float(&cfg, "BVOLTAGEV", &S.BVOLTAGEV)
 			&& config_lookup_float(&cfg, "PVENERGYV", &S.PVENERGYV)
 			&& config_lookup_float(&cfg, "PVVOLTAGEV", &S.PVVOLTAGEV)
-			&& config_lookup_float(&cfg, "SOC_MODEV", &S.SOC_MODEV)) {
-			fprintf(stderr, "Configuration successfully read %4.1f %4.1f %4.1f %4.1f %4.1f from: %s\n",
-				S.BENERGYV, S.BVOLTAGEV, S.PVENERGYV, S.PVVOLTAGEV, S.SOC_MODEV, output_file);
+			&& config_lookup_float(&cfg, "SOC_MODEV", &S.SOC_MODEV)
+			&& config_lookup_string(&cfg, MQTT_HOST_STR, &tmp_mqtt)) {
+			fprintf(stderr, "Configuration successfully read: %4.1f, %4.1f, %4.1f, %4.1f, %4.1f, %s from: %s\n",
+				S.BENERGYV, S.BVOLTAGEV, S.PVENERGYV, S.PVVOLTAGEV, S.SOC_MODEV, tmp_mqtt, output_file);
+			strncpy(S.MQTT_HOSTIP, tmp_mqtt, BMC_MAXHOST-1);
 			config_status = true;
 		} else {
 			fprintf(stderr, "No/Incorrect settings in configuration file.\n");

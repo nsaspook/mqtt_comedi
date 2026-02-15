@@ -32,6 +32,7 @@ struct bmc_settings S = {
 	.PVENERGYV = DPVENERGY,
 	.PVVOLTAGEV = DPVVOLTAGE,
 	.SOC_MODEV = DSOC_MODE,
+	.MQTT_HOSTIP = MQTT_HOST,
 };
 
 struct ha_csv_type {
@@ -256,6 +257,7 @@ void showIP(void)
 			 */
 			ha_daq_host.hindex = OPEN_HOST; // default to open daq host
 			strncpy((char *) &ha_daq_host.hosts[OPEN_HOST][0], host, BMC_MAXHOST);
+			strncpy((char *) &ha_daq_host.mqtt[OPEN_HOST][0], S.MQTT_HOSTIP, BMC_MAXHOST);
 
 			if (strcmp(host, &ha_daq_host.hosts[0][0]) == 0) {
 				ha_daq_host.hindex = 0;
