@@ -159,7 +159,7 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.hindex = 0,
 	.bindex = 0,
 	.calib.checkmark = CHECKMARK,
-	.calib.bmc_id[0] = 0x589B6, // bmc Q84 MUI online system board
+	.calib.bmc_id[0] = 0x0589B6, // bmc Q84 MUI online system board
 	.calib.offset4[0] = HV_SCALE_OFFSET,
 	.calib.scalar4[0] = HV_SCALE4_0,
 	.calib.offset5[0] = HV_SCALE_OFFSET,
@@ -173,35 +173,35 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.scalar5[1] = HV_SCALE5_1,
 	.calib.A200_Z[1] = A200_0_ZERO,
 	.calib.A200_S[1] = A200_0_SCALAR,
-	.calib.bmc_id[2] = 0x55AF3, // bmc Q84 MUI
+	.calib.bmc_id[2] = 0x055AF3, // bmc Q84 MUI
 	.calib.offset4[2] = HV_SCALE_OFFSET,
 	.calib.scalar4[2] = HV_SCALE4_2,
 	.calib.offset5[2] = HV_SCALE_OFFSET,
 	.calib.scalar5[2] = HV_SCALE5_2,
 	.calib.A200_Z[2] = A200_0_ZERO,
 	.calib.A200_S[2] = A200_0_SCALAR,
-	.calib.bmc_id[3] = 0x5ABB6, // bmc Q84 MUI enclosure board
+	.calib.bmc_id[3] = 0x05ABB6, // bmc Q84 MUI enclosure board
 	.calib.offset4[3] = HV_SCALE_OFFSET,
 	.calib.scalar4[3] = HV_SCALE4_3,
 	.calib.offset5[3] = HV_SCALE_OFFSET,
 	.calib.scalar5[3] = HV_SCALE5_3,
 	.calib.A200_Z[3] = A200_0_ZERO,
 	.calib.A200_S[3] = A200_0_SCALAR,
-	.calib.bmc_id[4] = 0x61DB5, // 57Q84 BMC testing board
+	.calib.bmc_id[4] = 0x061DB5, // 57Q84 BMC testing board
 	.calib.offset4[4] = HV_SCALE_OFFSET,
 	.calib.scalar4[4] = HV_SCALE4_0,
 	.calib.offset5[4] = HV_SCALE_OFFSET,
 	.calib.scalar5[4] = HV_SCALE5_0,
 	.calib.A200_Z[4] = A200_0_ZERO,
 	.calib.A200_S[4] = A200_0_SCALAR,
-	.calib.bmc_id[5] = 0x00000, // 57Q84 BMC testing board
+	.calib.bmc_id[5] = 0x000000, // 57Q84 BMC testing board
 	.calib.offset4[5] = HV_SCALE_OFFSET,
 	.calib.scalar4[5] = HV_SCALE4_0,
 	.calib.offset5[5] = HV_SCALE_OFFSET,
 	.calib.scalar5[5] = HV_SCALE5_0,
 	.calib.A200_Z[5] = A200_0_ZERO,
 	.calib.A200_S[5] = A200_0_SCALAR,
-	.calib.bmc_id[OPEN_HOST] = 0x00000, // BMC OPEN HOST
+	.calib.bmc_id[OPEN_HOST] = 0x000000, // BMC OPEN HOST
 	.calib.offset4[OPEN_HOST] = HV_SCALE_OFFSET,
 	.calib.scalar4[OPEN_HOST] = HV_SCALE4_0,
 	.calib.offset5[OPEN_HOST] = HV_SCALE_OFFSET,
@@ -233,6 +233,7 @@ void showIP(void)
 	struct ifaddrs *ifaddr, *ifa;
 	int s;
 	char host[BMC_MAXHOST];
+	bool got_ipaddr = false;
 
 	if (getifaddrs(&ifaddr) == -1) {
 		perror("getifaddrs");
@@ -261,25 +262,35 @@ void showIP(void)
 
 			if (strcmp(host, &ha_daq_host.hosts[0][0]) == 0) {
 				ha_daq_host.hindex = 0;
+				got_ipaddr = true;
 			}
 			if (strcmp(host, &ha_daq_host.hosts[1][0]) == 0) {
 				ha_daq_host.hindex = 1;
+				got_ipaddr = true;
 			}
 			if (strcmp(host, &ha_daq_host.hosts[2][0]) == 0) {
 				ha_daq_host.hindex = 2;
+				got_ipaddr = true;
 			}
 			if (strcmp(host, &ha_daq_host.hosts[3][0]) == 0) {
 				ha_daq_host.hindex = 3;
+				got_ipaddr = true;
 			}
 			if (strcmp(host, &ha_daq_host.hosts[4][0]) == 0) {
 				ha_daq_host.hindex = 4;
+				got_ipaddr = true;
 			}
 			if (strcmp(host, &ha_daq_host.hosts[5][0]) == 0) {
 				ha_daq_host.hindex = 5;
+				got_ipaddr = true;
 			}
 			ha_daq_host.bindex = ha_daq_host.hindex;
+			if (got_ipaddr) {
+				goto showip_exit;
+			}
 		}
 	}
+showip_exit:
 	freeifaddrs(ifaddr);
 }
 
@@ -690,7 +701,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		}
 
 		/*
-		 * 
+		 *
 		 */
 		if (!got_cal_data && (R.bmc_id > 1.0f)) {
 			char tmp_str[MAX_STRLEN];
@@ -784,10 +795,10 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (const char *) &ha_daq_host.clients[ha_daq_host.hindex]);
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "board", BMC_MAXHOST);
 		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (const char *) bmc.BNAME);
-		
+
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "ipaddr", BMC_MAXHOST);
 		cJSON_AddStringToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (const char *) &ha_daq_host.hosts[ha_daq_host.hindex]);
-		
+
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "sequence", BMC_MAXHOST);
 		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.sequence);
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "d_id", BMC_MAXHOST);

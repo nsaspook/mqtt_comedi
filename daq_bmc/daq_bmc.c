@@ -91,7 +91,7 @@ for the FMx0 charge controller and for the modbus EM540 power meter
  */
 
 #if __GNUC__ >= 14
-#define RPI2B
+#define RPIDAQ
 #else
 #define OPIZ3
 #endif
@@ -99,7 +99,7 @@ for the FMx0 charge controller and for the modbus EM540 power meter
 enum daqbmc_platform_index {
 	BMC_Soc_0 = 0,
 	BMC_Soc_1,
-	BMC_RPI2B,
+	BMC_RPIDAQ,
 	BMC_OPIZ3,
 };
 
@@ -107,7 +107,7 @@ enum daqbmc_platform_index {
  * RPi pinouts
  * https://pinout.xyz/
  */
-/* 40 pin connector	headers		cable colors, RPI2B
+/* 40 pin connector	headers		cable colors, RPIDAQ
  * RPi pin		daq_bmc pin
  * Signal
  * 30 GND/VSS		1 - SPI2 VSS	brown
@@ -124,11 +124,11 @@ enum daqbmc_platform_index {
  *
  * 2  5V power		2 - GLORY 5VDD  white
  * 9  GND/VSS		1 - GLORY VSS   blue
- * 
+ *
  * DC to DC converter
  * 24V DC-DC VOUT	2 - VS TIC PWR	blue
  * 24V GND/VSS		1 - VS TIC CND	green
- * 
+ *
  * 4  5V power		5V DC-DC VIN	red
  * 5  GND/VSS		5V GND/VSS	brown
  */
@@ -155,7 +155,7 @@ enum daqbmc_platform_index {
  * DC to DC converter
  * 24V DC-DC VOUT	2 - VS TIC PWR	blue
  * 24V GND/VSS		1 - VS TIC CND	green
- * 
+ *
  * 4  5V power		5V DC-DC VIN	red
  * 5  GND/VSS		5V GND/VSS	brown
  */
@@ -583,7 +583,7 @@ static int32_t daqbmc_bmc_get_config(struct comedi_device *);
  */
 static int32_t piBoardRev(struct comedi_device *dev)
 {
-	int32_t boardRev = BMC_RPI2B;
+	int32_t boardRev = BMC_RPIDAQ;
 
 	bmc_rev = boardRev;
 
@@ -1744,7 +1744,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	 * need to get SoC board info
 	 */
 	devpriv->board_rev = piBoardRev(dev); /* what board are we running on? */
-	if (devpriv->board_rev < BMC_RPI2B) {
+	if (devpriv->board_rev < BMC_RPIDAQ) {
 		dev_err(dev->class_dev, "invalid Pi board revision! %u\n",
 			devpriv->board_rev);
 		ret = -EINVAL;

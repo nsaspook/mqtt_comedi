@@ -175,6 +175,12 @@ void relay_set(uint16_t relays)
 	bmc.dataout.dio_buf = relays;
 }
 
+#if __GNUC__ >= 14
+#define RPIDAQ
+#else
+#define OPIZ3
+#endif
+
 bool get_set_config(void)
 {
 	static const char *output_file = "/etc/daq_bmc/bmc_config.cfg"; // will only read data from here
@@ -189,8 +195,12 @@ bool get_set_config(void)
 	 */
 	config_init(&cfg);
 	config_set_options(&cfg,
+#ifdef RPIDAQ
 		(CONFIG_OPTION_FSYNC
 		| CONFIG_OPTION_SEMICOLON_SEPARATORS
+#else
+		(CONFIG_OPTION_SEMICOLON_SEPARATORS
+#endif
 		| CONFIG_OPTION_COLON_ASSIGNMENT_FOR_GROUPS
 		| CONFIG_OPTION_OPEN_BRACE_ON_SEPARATE_LINE));
 	/* Read the file. If there is an error, create a new file */
