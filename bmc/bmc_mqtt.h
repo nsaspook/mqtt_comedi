@@ -65,7 +65,7 @@ extern "C" {
 #define BSENSOR_MAX_NEG  -125.0f
 #define BSENSOR_MAX_POS  125.0f
 
-#define UPDATE_PACER  400 // MQTT and logging frequency to 0.01 seconds.
+#define UPDATE_PACER  1000 // MQTT and logging frequency to 0.01 seconds.
 #define UPDATE_PACER_RPI2B 400
 #define BAT_RUN_MAX 140.0f  // max displayed run time at current load
 #define DRAIN_HOUR 1.0f
@@ -115,7 +115,7 @@ extern "C" {
 	struct ha_flag_type {
 		volatile MQTTClient_deliveryToken deliveredtoken, receivedtoken;
 		volatile bool runner, rec_ok;
-		int32_t ha_id;
+		volatile int32_t ha_id;
 		volatile int32_t var_update, energy_mode;
 	};
 

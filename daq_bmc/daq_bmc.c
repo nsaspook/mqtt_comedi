@@ -584,7 +584,11 @@ static int32_t bmc_spi_exchange(struct comedi_device *, struct bmc_packet_type *
  */
 static int32_t piBoardRev(struct comedi_device *dev)
 {
+#ifdef OPIZ3
 	int32_t boardRev = BMC_OPIZ3; // hardwired for now
+#else
+	int32_t boardRev = BMC_RPIDAQ; // hardwired for now
+#endif
 
 	bmc_rev = boardRev;
 	return boardRev;

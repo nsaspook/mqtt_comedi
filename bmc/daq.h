@@ -140,9 +140,9 @@ extern "C" {
 	extern volatile struct bmcdata bmc;
 	extern uint32_t datain, serial_buf, overrun;
 	extern union dio_buf_type obits;
-	extern uint32_t daq_bmc_data[SYSLOG_SIZ];
-	extern char daq_bmc_data_text[SYSLOG_SIZ];
-	extern char daq_bmc_data_buf[SYSLOG_SIZ];
+	extern uint32_t daq_bmc_data[];
+	extern char daq_bmc_data_text[];
+	extern char daq_bmc_data_buf[];
 	extern struct bmc_buffer_type BMC4;
 
 	extern int maxdata_ai, ranges_ai, channels_ai;

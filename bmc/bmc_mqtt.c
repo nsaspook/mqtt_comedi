@@ -43,7 +43,7 @@ struct ha_csv_type {
 	bool boot_volts;
 };
 
-char tmp_test_ptr[SYSLOG_SIZ];
+char tmp_test_ptr[SBUF_SIZ];
 
 struct ha_flag_type ha_flag_vars_ss = {
 	.runner = false,
@@ -989,13 +989,13 @@ static double bsensor0_filter(const double raw)
  */
 char * validate_bmc_text(const char * text, bool * valid)
 {
-	char tmp_test_ptr[SYSLOG_SIZ], *tmp_p = (char *) text;
+	char tmp_test_ptr[SBUF_SIZ], *tmp_p = (char *) text;
 	uint32_t len = 0, starts = 0, checkmark = 0;
 	bool end_data = false;
 	char *jtoken;
 
 	validate_failure = 0;
-	strncpy(tmp_test_ptr, text, SYSLOG_SIZ - 1);
+	strncpy(tmp_test_ptr, text, SBUF_SIZ - 1);
 	valid[0] = true;
 	if (tmp_test_ptr[0] == '^') {
 		starts++;
@@ -1017,7 +1017,7 @@ char * validate_bmc_text(const char * text, bool * valid)
 				valid[0] = false;
 				validate_failure = 3;
 			}
-			strncpy(tmp_test_ptr, tmp_p, SYSLOG_SIZ - 1);
+			strncpy(tmp_test_ptr, tmp_p, SBUF_SIZ - 1);
 			jtoken = strtok(tmp_test_ptr, ",");
 			if (jtoken != NULL) {
 				for (int i = 0; i < CSV_COUNT; i++) {
@@ -1088,9 +1088,9 @@ bool get_bmc_serial(void)
 
 		pacer = 0;
 		ret = true;
-		strncpy(tmp_test_ptr, daq_bmc_data_buf, SYSLOG_SIZ);
+		strncpy(tmp_test_ptr, daq_bmc_data_buf, SBUF_SIZ-1);
 		tmp_ptr = validate_bmc_text(daq_bmc_data_buf, &ok_data);
-		strncpy(daq_bmc_data_buf, tmp_ptr, SYSLOG_SIZ - 1);
+		strncpy(daq_bmc_data_buf, tmp_ptr, SBUF_SIZ - 1);
 		if (ok_data) {
 			goods++;
 			jtoken = strtok(daq_bmc_data_buf, ",");
