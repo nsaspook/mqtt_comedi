@@ -376,7 +376,11 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.name = "PICSL12",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
+#ifdef OPIZ3
+		.max_speed_hz = 4000000,
+#else
 		.max_speed_hz = 3000000,
+#endif
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
 		.spi_mode = 3,
@@ -390,7 +394,11 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.name = "PICSL12_AO",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
+#ifdef OPIZ3
+		.max_speed_hz = 4000000,
+#else
 		.max_speed_hz = 3000000,
+#endif
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
 		.spi_mode = 3,
@@ -583,10 +591,13 @@ static int32_t daqbmc_bmc_get_config(struct comedi_device *);
  */
 static int32_t piBoardRev(struct comedi_device *dev)
 {
-	int32_t boardRev = BMC_RPIDAQ;
+#ifdef OPIZ3
+	int32_t boardRev = BMC_OPIZ3; // hardwired for now
+#else
+	int32_t boardRev = BMC_RPIDAQ; // hardwired for now
+#endif
 
 	bmc_rev = boardRev;
-
 	return boardRev;
 }
 
@@ -1700,7 +1711,11 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		 * probe/init hardware for special cases that may need
 		 * many SPI transfers
 		 */
+#ifdef OPIZ3
+		if (pdata->slave.spi->chip_select == thisboard->bmc_cs) {
+#else
 		if (*pdata->slave.spi->chip_select == thisboard->bmc_cs) {
+#endif
 			devpriv->ai_spi = &pdata->slave;
 			devpriv->ao_spi = &pdata->slave;
 			pdata->one_t.tx_buf = pdata->tx_buff;
@@ -2031,9 +2046,17 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 	 */
 	dev_info(&spi->dev,
 		"BMCboard default: do_conf=%d, di_conf=%d, daqbmc_conf=%d, chip select %d\n",
+#ifdef OPIZ3
+		do_conf, di_conf, daqbmc_conf, (uint32_t) spi->chip_select);
+#else
 		do_conf, di_conf, daqbmc_conf, (uint32_t) * spi->chip_select);
+#endif
 
+#ifdef OPIZ3
+	if ((uint32_t) spi->chip_select == CS_BMC) {
+#else
 	if ((uint32_t) * spi->chip_select == CS_BMC) {
+#endif
 		/*
 		 * get a copy of the slave device 0 to share with Comedi
 		 * we need a device to talk to the Q84
@@ -2043,7 +2066,11 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 
 		dev_info(&spi->dev,
 			"SPI device match: spi->chip_select == CS_BMC %d\n",
+#ifdef OPIZ3
+			(uint32_t) spi->chip_select);
+#else
 			(uint32_t) * spi->chip_select);
+#endif
 
 		INIT_LIST_HEAD(&pdata->device_entry);
 		pdata->slave.spi = spi;
@@ -2065,7 +2092,11 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 	}
 
 	/* setup Comedi part of driver */
+#ifdef OPIZ3
+	if ((uint32_t) spi->chip_select == CS_BMC) {
+#else
 	if ((uint32_t) * spi->chip_select == CS_BMC) {
+#endif
 		ret = comedi_driver_register(&daqbmc_driver);
 		if (ret < 0) {
 			goto kfree_rx_exit;
@@ -2135,6 +2166,7 @@ static const struct spi_device_id spibmc_spi_ids[] = {
 	{ .name = "em3581"},
 	{ .name = "si3210"},
 	{ .name = "spibmc"},
+	{ .name = "spi-bmc"},
 	{},
 };
 MODULE_DEVICE_TABLE(spi, spibmc_spi_ids);
@@ -2156,6 +2188,7 @@ static int spibmc_of_check(struct device *dev)
 }
 
 static const struct of_device_id spibmc_dt_ids[] = {
+	{ .compatible = "orangepi,spi-bmc", .data = &spibmc_of_check},
 	{ .compatible = "cisco,spi-petra", .data = &spibmc_of_check},
 	{ .compatible = "dh,dhcom-board", .data = &spibmc_of_check},
 	{ .compatible = "elgin,jg10309-01", .data = &spibmc_of_check},
@@ -2253,7 +2286,11 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	dev_info(dev->class_dev,
 		"BMCboard SPI setup: spi cs %d: %d Hz: spi mode 0x%x: "
 		"probing for controller device %s\n",
+#ifdef OPIZ3
+		(int) spi_bmc->spi->chip_select,
+#else
 		(int) *spi_bmc->spi->chip_select,
+#endif
 		spi_bmc->spi->max_speed_hz,
 		spi_bmc->spi->mode,
 		spi_bmc->device_spi->name);
