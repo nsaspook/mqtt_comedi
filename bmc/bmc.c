@@ -175,6 +175,12 @@ void relay_set(uint16_t relays)
 	bmc.dataout.dio_buf = relays;
 }
 
+#if __GNUC__ >= 14
+#define RPIDAQ
+#else
+#define OPIZ3
+#endif
+
 bool get_set_config(void)
 {
 	static const char *output_file = "/etc/daq_bmc/bmc_config.cfg"; // will only read data from here
