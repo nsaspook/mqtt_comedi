@@ -555,6 +555,13 @@ int32_t msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_messag
 	 * move the received message into a processing holding buffer
 	 */
 	payloadptr = message->payload;
+	if (message->payloadlen > MBMQTT - 1) {
+		fprintf(fout, "%s Error: The received MQTT message is long than the local message buffer %d\n", log_time(false), MBMQTT);
+		ret = -1;
+		ha_flag->rec_ok = false;
+		E.comedi = false;
+		goto null_exit;
+	}
 	for (i = 0; i < message->payloadlen; i++) {
 		buffer[i] = *payloadptr++;
 	}
@@ -1088,7 +1095,7 @@ bool get_bmc_serial(void)
 
 		pacer = 0;
 		ret = true;
-		strncpy(tmp_test_ptr, daq_bmc_data_buf, SBUF_SIZ-1);
+		strncpy(tmp_test_ptr, daq_bmc_data_buf, SBUF_SIZ - 1);
 		tmp_ptr = validate_bmc_text(daq_bmc_data_buf, &ok_data);
 		strncpy(daq_bmc_data_buf, tmp_ptr, SBUF_SIZ - 1);
 		if (ok_data) {
