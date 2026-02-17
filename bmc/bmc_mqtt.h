@@ -47,7 +47,7 @@ extern "C" {
 #define SLEEP_CODE      0
 #define FLOAT_CODE      1
 
-#define MBMQTT  1024
+#define MBMQTT  4096
 #define CHECKMARK 1957
 #define CHECKBYTE 0x57
 	/*
