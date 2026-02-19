@@ -511,7 +511,7 @@ void bmc_mqtt_init(void)
 	if ((E.rc = MQTTClient_connect(E.client_p, &conn_opts_p)) != MQTTCLIENT_SUCCESS) {
 		fprintf(fout, "%s Failed to connect MQTT server, return code %d %s, %s\n", log_time(false), E.rc, hname_ptr, (const char *) &ha_daq_host.clients[ha_daq_host.hindex]);
 		fflush(fout);
-		pthread_mutex_destroy(&E.ha_lock);
+//		pthread_mutex_destroy(&E.ha_lock);
 		exit(EXIT_FAILURE);
 	}
 

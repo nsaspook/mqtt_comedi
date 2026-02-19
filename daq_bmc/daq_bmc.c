@@ -81,7 +81,7 @@ for the FMx0 charge controller and for the modbus EM540 power meter
 #include <linux/list.h>
 #include <linux/completion.h>
 
-#define bmc_version "version 1.22 "
+#define bmc_version "version 1.23 "
 #define spibmc_version "version 1.7 "
 
 /*
@@ -238,7 +238,7 @@ static const uint32_t MAX_CHANLIST_LEN = 256;
 static const uint32_t CONV_SPEED = 50000; /* 10s of nsecs: the true rate is ~3000/5000 so we need a fixup,  two conversions per result */
 static const uint32_t MAX_BOARD_RATE = 1000000000;
 static const struct spi_delay CS_CHANGE_DELAY_USECS0 = {
-	.value = 1,
+	.value = 0,
 	.unit = SPI_DELAY_UNIT_USECS,
 };
 static const struct spi_delay CS_CHANGE_DELAY_USECS10 = {
@@ -249,7 +249,6 @@ static const struct spi_delay CS_CHANGE_DELAY_USECS10 = {
 /*
  * This selects the chip select, not the interface number like spi0, spi1
  */
-//static const uint32_t CSnA = 0; /*  BMCboard Q84 not used CS, spi0 on the RPi, spi1 on OPi */
 static const uint32_t CS_BMC = 1; /*  BMCboard Q84 slave CS, spi0 on the RPi, spi1 on OPi  */
 
 /*
@@ -2087,7 +2086,7 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 		spi->bits_per_word = daqbmc_devices[daqbmc_conf].spi_bpw;
 		spi_setup(spi);
 		for (int i = 0; i < 10; i++) {
-			spi_w8r8(spi, CMD_DUMMY_CFG);
+			spi_w8r8(spi, CMD_ZERO);
 		}
 	}
 
