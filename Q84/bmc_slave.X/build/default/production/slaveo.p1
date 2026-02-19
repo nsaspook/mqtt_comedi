@@ -5327,52 +5327,85 @@ Version 4.0 HI-TECH Software Intermediate Code
 "453
 }
 [e :U 3543 ]
-"455
-[e :U 3517 ]
 "456
+[e $ ! == -> _command `i -> _CMD_ZERO `i 3555  ]
+{
+"457
+[v F25892 `uc ~T0 @X0 1 s val_zero ]
+[i F25892
+-> -> 87 `i `uc
+]
+"459
+[e $U 3556  ]
 [e :U 3557 ]
 {
-[e = . . _LATBbits 0 3 -> -> 0 `i `uc ]
+"460
+[e = F25892 _SPI2RXB ]
+"461
 }
 [e :U 3556 ]
-"457
-[e :UE 3431 ]
-}
 "459
-[v _slaveo_spi_isr `(v ~T0 @X0 1 ef ]
-"460
-{
-[e :U _slaveo_spi_isr ]
-[f ]
-"461
-[e ++ . _spi_stat_ss 17 -> -> 1 `i `Vul ]
+[e $ ! != -> . . _SPI2STATUSbits 0 3 `i -> 0 `i 3557  ]
+[e :U 3558 ]
 "462
-[e = _SPI2INTF -> -> 0 `i `uc ]
+[e = . . _SPI2STATUSbits 0 3 -> -> 0 `i `uc ]
 "463
-[e :UE 3558 ]
-}
+[e . _spi_stat_ss 19 ]
+"464
+[e = . _spi_comm_ss 4 -> -> 1 `i `uc ]
 "465
-[v _slaveo_time_isr `(v ~T0 @X0 1 ef ]
+[e ( _TMR0_Reload ..  ]
 "466
-{
-[e :U _slaveo_time_isr ]
-[f ]
+[e ( _StartTimer (2 , -> . `E25027 1 `uc -> _ADCDELAY `us ]
 "467
-[e = . . _SPI2CON0bits 0 4 -> -> 0 `i `uc ]
-"468
-[e = . . _SPI2CON0bits 0 4 -> -> 1 `i `uc ]
+}
+[e :U 3555 ]
 "469
-[e $ ! || != -> . . _SPI2STATUSbits 0 7 `i -> 0 `i != -> . . _SPI2STATUSbits 0 3 `i -> 0 `i 3560  ]
-{
+[e :U 3517 ]
 "470
+[e :U 3561 ]
+{
+[e = . . _LATBbits 0 3 -> -> 0 `i `uc ]
 }
 [e :U 3560 ]
 "471
-[e :U 3563 ]
+[e :UE 3431 ]
+}
+"473
+[v _slaveo_spi_isr `(v ~T0 @X0 1 ef ]
+"474
+{
+[e :U _slaveo_spi_isr ]
+[f ]
+"475
+[e ++ . _spi_stat_ss 17 -> -> 1 `i `Vul ]
+"476
+[e = _SPI2INTF -> -> 0 `i `uc ]
+"477
+[e :UE 3562 ]
+}
+"479
+[v _slaveo_time_isr `(v ~T0 @X0 1 ef ]
+"480
+{
+[e :U _slaveo_time_isr ]
+[f ]
+"481
+[e = . . _SPI2CON0bits 0 4 -> -> 0 `i `uc ]
+"482
+[e = . . _SPI2CON0bits 0 4 -> -> 1 `i `uc ]
+"483
+[e $ ! || != -> . . _SPI2STATUSbits 0 7 `i -> 0 `i != -> . . _SPI2STATUSbits 0 3 `i -> 0 `i 3564  ]
+{
+"484
+}
+[e :U 3564 ]
+"485
+[e :U 3567 ]
 {
 [e = . . _LATBbits 0 3 -> -> 0 `i `uc ]
 }
-[e :U 3562 ]
-"472
-[e :UE 3559 ]
+[e :U 3566 ]
+"486
+[e :UE 3563 ]
 }

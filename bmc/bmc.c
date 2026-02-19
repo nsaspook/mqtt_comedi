@@ -201,7 +201,7 @@ bool get_set_config(void)
 		| CONFIG_OPTION_COLON_ASSIGNMENT_FOR_GROUPS
 		| CONFIG_OPTION_OPEN_BRACE_ON_SEPARATE_LINE));
 #else
-		config_set_options(&cfg,
+	config_set_options(&cfg,
 		(CONFIG_OPTION_SEMICOLON_SEPARATORS
 		| CONFIG_OPTION_COLON_ASSIGNMENT_FOR_GROUPS
 		| CONFIG_OPTION_OPEN_BRACE_ON_SEPARATE_LINE));
@@ -209,8 +209,12 @@ bool get_set_config(void)
 
 	/* Read the file. If there is an error, create a new file */
 	if (!config_read_file(&cfg, output_file)) {
+#ifdef CFG_DEBUG
 		fprintf(stderr, "%s:%d - %s\n", config_error_file(&cfg),
 			config_error_line(&cfg), config_error_text(&cfg));
+#else
+		fprintf(stderr, "%s%s\n", (char*) "Unable to open BMC configuration file ", (char*) output_file);
+#endif
 		config_destroy(&cfg);
 
 		config_init(&cfg);
@@ -231,14 +235,16 @@ bool get_set_config(void)
 		/* Write out the new configuration. */
 		if (!config_write_file(&cfg, output_file)) {
 			if (!config_write_file(&cfg, output_file_tmp)) {
-				fprintf(stderr, "Error while writing file to %s and %s.\n", output_file, output_file_tmp);
+				fprintf(stderr, "Error while writing file to %s or %s.\n", output_file, output_file_tmp);
 #ifdef EXIT_CONFIG_WRITE_FAIL
 				config_destroy(&cfg);
 				return(EXIT_FAILURE);
 #endif
 			} else {
-				fprintf(stderr, "Testing configuration successfully written to: %s\n",
+				fprintf(stderr, "Default configuration successfully written to: %s,\n",
 					output_file_tmp);
+				fprintf(stderr, "review for correctness of all parameters and check the MQTT host %s\n",
+					(char*) MQTT_HOST_STR);
 			}
 		} else {
 			fprintf(stderr, "New configuration successfully written to: %s\n",
@@ -259,7 +265,7 @@ bool get_set_config(void)
 			config_status = true;
 		} else {
 
-			fprintf(stderr, "No/Incorrect settings in configuration file.\n");
+			fprintf(stderr, "No/Incorrect settings in configuration file, please review file contents.\n");
 		}
 		config_destroy(&cfg);
 	}

@@ -705,8 +705,10 @@ void main(void)
 #endif
 			if (V.di_fail || V.do_fail) { // DO or DI not working or missing
 				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " %s Analog Dev        ", (spi_stat_ss.deviceid == F57Q84) ? "57Q84" : "47Q84");
+				spi_stat_ss.daq_conf=0x03;
 			} else {
 				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " %s All Dev           ", (spi_stat_ss.deviceid == F57Q84) ? "57Q84" : "47Q84");
+				spi_stat_ss.daq_conf=0x00;
 			}
 
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, " %s                   ", (char *) build_date);

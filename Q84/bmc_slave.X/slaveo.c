@@ -452,6 +452,20 @@ void slaveo_rx_isr(void)
 		StartTimer(TMR_ADC, ADCDELAY);
 	}
 
+
+	if (command == CMD_ZERO) {
+		static uint8_t val_zero = CHECKBYTE;
+
+		while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
+			val_zero = SPI2RXB;
+		}
+		SPI2STATUSbits.RXRE = 0;
+		spi_stat_ss.daq_conf; // respond with DAQ configuration bits
+		spi_comm_ss.REMOTE_LINK = true;
+		TMR0_Reload();
+		StartTimer(TMR_ADC, ADCDELAY);
+	}
+
 isr_end:
 	DLED_SetLow();
 }

@@ -82,7 +82,7 @@ ports [4..7] are data-streams for connected device data
 #include <linux/list.h>
 #include <linux/completion.h>
 
-#define bmc_version "version 1.02 "
+#define bmc_version "version 1.03 "
 #define spibmc_version "version 1.4 "
 
 /*
@@ -371,7 +371,7 @@ struct daqbmc_device {
 
 /*
  * Use only MODE 3 for Orange PI SPI connections, MODE 0 seems to have issues on this board
- * Max SCK 12MHz, normally runs at 8MHz
+ * Max SCK 12MHz, normally runs at 8MHz using this driver
  */
 static const struct daqbmc_device daqbmc_devices[] = {
 	{
@@ -2054,6 +2054,9 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 
 	spi->bits_per_word = daqbmc_devices[daqbmc_conf].spi_bpw;
 	spi_setup(spi);
+	for (int i = 0; i < 10; i++) {
+		spi_w8r8(spi, CMD_ZERO);
+	}
 
 	/* setup Comedi part of driver */
 	if (spi->chip_select == CSnA) {

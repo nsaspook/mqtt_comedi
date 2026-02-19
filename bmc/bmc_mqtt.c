@@ -511,7 +511,7 @@ void bmc_mqtt_init(void)
 	if ((E.rc = MQTTClient_connect(E.client_p, &conn_opts_p)) != MQTTCLIENT_SUCCESS) {
 		fprintf(fout, "%s Failed to connect MQTT server, return code %d %s, %s\n", log_time(false), E.rc, hname_ptr, (const char *) &ha_daq_host.clients[ha_daq_host.hindex]);
 		fflush(fout);
-		pthread_mutex_destroy(&E.ha_lock);
+		//		pthread_mutex_destroy(&E.ha_lock);
 		exit(EXIT_FAILURE);
 	}
 
@@ -714,15 +714,15 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			char tmp_str[MAX_STRLEN];
 			got_cal_data = true;
 			if (ha_daq_host.bindex == OPEN_HOST) {
-				snprintf(tmp_str, MAX_STRLEN, "%06llX", (long long unsigned int) R.bmc_id);
+				snprintf(tmp_str, MAX_STRLEN, "%06"PRIX64"", (uint64_t) R.bmc_id);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][0], tmp_str, MAX_STRLEN);
 				mqtt_id = strlen(&ha_daq_host.hname[ha_daq_host.hindex][0]);
-				fprintf(fout, "MQTT OPENHOST : %s : %06llX\n", &ha_daq_host.hname[ha_daq_host.hindex][0], (long long unsigned int) R.bmc_id);
-				snprintf(tmp_str, MAX_STRLEN, "Energy_Mqtt_BMC%06llX", (long long unsigned int) R.bmc_id);
+				fprintf(fout, "MQTT OPENHOST : %s : %06"PRIX64"\n", &ha_daq_host.hname[ha_daq_host.hindex][0], (uint64_t) R.bmc_id);
+				snprintf(tmp_str, MAX_STRLEN, "Energy_Mqtt_BMC%06"PRIX64"", (uint64_t) R.bmc_id);
 				strncpy(&ha_daq_host.clients[ha_daq_host.hindex][0], tmp_str, MAX_STRLEN);
-				snprintf(tmp_str, MAX_STRLEN, "comedi/bmc/data/bmc/%06llX", (long long unsigned int) R.bmc_id);
+				snprintf(tmp_str, MAX_STRLEN, "comedi/bmc/data/bmc/%06"PRIX64"", (uint64_t) R.bmc_id);
 				strncpy(&ha_daq_host.topics[ha_daq_host.hindex][0], tmp_str, MAX_STRLEN);
-				snprintf(tmp_str, MAX_STRLEN, "comedi/bmc/listen/bmc/%06llX", (long long unsigned int) R.bmc_id);
+				snprintf(tmp_str, MAX_STRLEN, "comedi/bmc/listen/bmc/%06"PRIX64"", (uint64_t) R.bmc_id);
 				strncpy(&ha_daq_host.listen[ha_daq_host.hindex][0], tmp_str, MAX_STRLEN);
 			}
 		}

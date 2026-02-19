@@ -12,6 +12,7 @@ extern "C" {
 #include <sys/socket.h>
 #include <netdb.h>
 #include <libconfig.h>
+#include <inttypes.h>
 
 	/*
 	 * configuration data for Home Assistant
@@ -66,7 +67,7 @@ extern "C" {
 #define BSENSOR_MAX_POS  125.0f
 
 #define UPDATE_PACER  1000 // MQTT and logging frequency to 0.01 seconds.
-#define UPDATE_PACER_RPI2B 400
+#define UPDATE_PACER_RPI2B 1000
 #define BAT_RUN_MAX 140.0f  // max displayed run time at current load
 #define DRAIN_HOUR 1.0f
 #define IDLE_DRAIN      1.0f // system battery losses in W
