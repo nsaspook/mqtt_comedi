@@ -12,6 +12,7 @@ extern "C" {
 #include <sys/socket.h>
 #include <netdb.h>
 #include <libconfig.h>
+#include <inttypes.h>
 
 	/*
 	 * configuration data for Home Assistant
