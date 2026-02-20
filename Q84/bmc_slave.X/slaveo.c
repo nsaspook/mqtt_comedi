@@ -91,7 +91,7 @@ void slaveo_rx_isr(void)
 	// use r_string array to buffer ascii data
 	if (serial_buffer_ss.cmake_value) {
 		if (serial_buffer_ss.raw_index == CHAR_GO_BYTES) {
-			if ((serial_buffer_ss.data[BMC_D1] & 0x07) < BMC_EM540_DATA) { // [0..3]
+			if ((serial_buffer_ss.data[BMC_D1] & 0x07) < BMC_EM540_DATA) { // [0..3] UART1
 				/*
 				 * uart1 only
 				 */
@@ -111,13 +111,13 @@ void slaveo_rx_isr(void)
 						}
 					}
 				}
-			} else { // [4..7] sync character for type of data requested, only using channel 4 for comedi link to data
+			} else { // [4..7] MEMORY device, sync character for type of data requested, only using channel 4 for comedi link to data
 				switch (serial_buffer_ss.data[BMC_D0]) {
 				case STX:
 				case DC1_CMD:
 				case DC2_CMD:
 				case DC3_CMD:
-				case DC4_CMD:
+				case DC4_CMD: // reset the ASCII CSV buffer
 					serial_buffer_ss.r_string_index = 0;
 					serial_buffer_ss.r_string[serial_buffer_ss.r_string_index] = 0;
 					update_bmc_string = true; // print to log_buffer
@@ -179,8 +179,8 @@ void slaveo_rx_isr(void)
 					tmp_buf = 0;
 				}
 				SPI2TXB = tmp_buf;
-			} else { // [4..7]
-				tmp_buf = 0x57;
+			} else { // [4..7] MEMORY device
+				tmp_buf = spi_stat_ss.daq_conf;
 				if (update_bmc_string == true) { // log_buffer has been updated
 					tmp_buf = log_buffer[BMC4.pos++];
 				}
@@ -199,7 +199,7 @@ void slaveo_rx_isr(void)
 				} else {
 					tmp_buf = UART1_is_rx_ready(); // new data is ready
 				}
-			} else {
+			} else { // MEMORY device
 				tmp_buf = log_buffer[BMC4.pos];
 			}
 			SPI2TXB = tmp_buf;
@@ -460,7 +460,7 @@ void slaveo_rx_isr(void)
 			val_zero = SPI2RXB;
 		}
 		SPI2STATUSbits.RXRE = 0;
-		spi_stat_ss.daq_conf; // respond with DAQ configuration bits
+		SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits
 		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
 		StartTimer(TMR_ADC, ADCDELAY);
