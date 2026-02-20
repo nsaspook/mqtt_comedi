@@ -378,7 +378,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 #ifdef OPIZ3
 		.max_speed_hz = 4000000,
 #else
-		.max_speed_hz = 3000000,
+		.max_speed_hz = 6000000,
 #endif
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
@@ -396,7 +396,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 #ifdef OPIZ3
 		.max_speed_hz = 4000000,
 #else
-		.max_speed_hz = 3000000,
+		.max_speed_hz = 6000000,
 #endif
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
@@ -2011,7 +2011,7 @@ static struct comedi_driver daqbmc_driver = {
 static int32_t spibmc_spi_probe(struct spi_device * spi)
 {
 	struct comedi_spibmc *pdata;
-	int32_t ret;
+	int32_t ret, retconf;
 
 	pdata = kzalloc(sizeof(struct comedi_spibmc), GFP_KERNEL | GFP_DMA);
 	if (!pdata)
@@ -2085,8 +2085,28 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 		spi->cs_inactive = CS_CHANGE_DELAY_USECS0;
 		spi->bits_per_word = daqbmc_devices[daqbmc_conf].spi_bpw;
 		spi_setup(spi);
-		for (int i = 0; i < 10; i++) {
-			spi_w8r8(spi, CMD_ZERO);
+
+		{
+			struct bmc_packet_type *packet = kzalloc(sizeof(*packet), GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC | GFP_DMA);
+			ktime_t slower = SPI_GAP_LONG;
+			if (!packet) {
+				/* use single transfer for all bytes of the complete SPI transaction */
+				packet->bmc_byte_t[BMC_CMD] = CMD_ZERO;
+				packet->bmc_byte_t[BMC_D0] = CMD_ZERO;
+				packet->bmc_byte_t[BMC_D1] = CMD_ZERO;
+				packet->bmc_byte_t[BMC_D2] = CMD_ZERO;
+				packet->bmc_byte_t[BMC_D3] = CMD_ZERO;
+				packet->bmc_byte_t[BMC_D4] = CMD_ZERO;
+				packet->bmc_byte_t[BMC_EXT] = CMD_ZERO;
+				packet->bmc_byte_t[BMC_CKSUM] = CMD_ZERO;
+				packet->bmc_byte_t[BMC_DUMMY] = CMD_ZERO;
+				packet->one_t.cs_change = false;
+				packet->one_t.len = 1;
+				ret = bmc_spi_packet(spi, packet, slower);
+				retconf = packet->bmc_byte_r[BMC_D0];
+				kfree(packet);
+			}
+			dev_info(&spi->dev, "spi I/O test returns %X\n", retconf);
 		}
 	}
 
@@ -2174,7 +2194,7 @@ MODULE_DEVICE_TABLE(spi, spibmc_spi_ids);
  * spibmc should never be referenced in DT without a specific compatible string,
  * it is a Linux implementation thing rather than a description of the hardware.
  */
-static int spibmc_of_check(struct device *dev)
+static int spibmc_of_check(struct device * dev)
 {
 	if (device_property_match_string(dev, "compatible", "spibmc") < 0) {
 		return 0;
@@ -2205,7 +2225,7 @@ static const struct of_device_id spibmc_dt_ids[] = {
 MODULE_DEVICE_TABLE(of, spibmc_dt_ids);
 
 /* Dummy SPI devices not to be used in production systems */
-static int spibmc_acpi_check(struct device *dev)
+static int spibmc_acpi_check(struct device * dev)
 {
 	dev_warn(dev, "do not use this driver in production systems!\n");
 

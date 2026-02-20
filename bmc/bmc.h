@@ -95,7 +95,6 @@ extern "C" {
 		volatile uint32_t speed_go, im_delay, im_display, gti_delay, sequence, mqtt_count;
 		volatile int32_t rc, sane;
 		volatile uint32_t thirty_sec_clock, log_spam, log_time_reset;
-//		pthread_mutex_t ha_lock;
 		volatile int16_t di_16b, do_16b;
 		double adc[ANA_BUFFERS], dac[ANA_BUFFERS];
 		MQTTClient client_p, client_sd, client_ha;
