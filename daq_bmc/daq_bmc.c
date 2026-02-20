@@ -2100,13 +2100,15 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 				packet->bmc_byte_t[BMC_EXT] = CMD_ZERO;
 				packet->bmc_byte_t[BMC_CKSUM] = CMD_ZERO;
 				packet->bmc_byte_t[BMC_DUMMY] = CMD_ZERO;
+				packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_CMD];
+				packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_CMD];
 				packet->one_t.cs_change = false;
-				packet->one_t.len = 1;
+				packet->one_t.len = 4;
 				ret = bmc_spi_packet(spi, packet, slower);
 				retconf = packet->bmc_byte_r[BMC_D0];
 				kfree(packet);
+				dev_info(&spi->dev, "spi I/O test returns %X\n", retconf);
 			}
-			dev_info(&spi->dev, "spi I/O test returns %X\n", retconf);
 		}
 	}
 
