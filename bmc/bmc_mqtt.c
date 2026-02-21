@@ -40,7 +40,7 @@ struct ha_csv_type {
 	uint32_t d_id;
 	double benergy, runtime;
 	uint32_t boot_wait;
-	bool boot_volts;
+	bool boot_volts, boot_once;
 };
 
 char tmp_test_ptr[SYSLOG_SIZ];
@@ -57,13 +57,13 @@ struct ha_flag_type ha_flag_vars_ss = {
 // 24V LiFePO4 Battery to SOC data table slots, scale battery voltage to match
 static const float bsoc_voltage[BVSOC_SLOTS] = {
 	20.000f,
-	25.200f,
-	25.400f,
-	25.600f,
+	25.000f,
+	25.100f,
+	25.300f,
+	25.500f,
 	25.800f,
 	26.000f,
 	26.200f,
-	26.400f,
 	26.600f,
 	26.800f,
 	27.200f,
@@ -219,7 +219,8 @@ static struct ha_csv_type R = {
 	.benergy = DBENERGY, // default running value, updates per run
 	.runtime = BAT_RUN_MAX,
 	.boot_wait = 0,
-	.boot_volts = true,
+	.boot_volts = false,
+	.boot_once = true,
 }; // results from Q84 board
 static uint32_t goods = 0, bads = 0;
 static bool ok_data = false, got_cal_data = false;
@@ -1133,8 +1134,12 @@ bool get_bmc_serial(void)
 				if (jtoken != NULL)
 					R.achz = atof(jtoken);
 				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
+				if (jtoken != NULL) {
 					R.bvolts = atof(jtoken);
+					if (R.boot_once) {
+						R.boot_volts = true;
+					}
+				}
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
 					R.pvolts = atof(jtoken);
@@ -1172,6 +1177,7 @@ bool get_bmc_serial(void)
 				jtoken = strtok(NULL, ",");
 				if (jtoken != NULL)
 					ha_daq_host.calib.A200_S[ha_daq_host.bindex] = atof(jtoken);
+				R.boot_once = false;
 			}
 		} else {
 			if (bmc.BOARD != bmcboard) {

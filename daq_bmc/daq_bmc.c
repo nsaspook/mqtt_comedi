@@ -81,7 +81,7 @@ for the FMx0 charge controller and for the modbus EM540 power meter
 #include <linux/list.h>
 #include <linux/completion.h>
 
-#define bmc_version "version 1.23 "
+#define bmc_version "version 1.24 "
 #define spibmc_version "version 1.7 "
 
 /*
@@ -341,6 +341,9 @@ module_param(lsamp_size, int, S_IRUGO);
 MODULE_PARM_DESC(lsamp_size, "16 or 32 bit lsampl size: 0=16 bit");
 static int32_t use_hunking = 0;
 module_param(use_hunking, int, S_IRUGO);
+static volatile int32_t daq_code = 0;
+//module_param(daq_code, int, S_IRUGO);
+//MODULE_PARM_DESC((daq_code, "DAQ Board configuration code");
 
 struct spi_statistics bmc_statistics;
 
@@ -1856,7 +1859,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	 * Probe the BMCboard existence and for configuration data
 	 * set BMC board configuration in retconf
 	 */
-	retconf = daqbmc_bmc_get_config(dev);
+	retconf = daq_code;
 
 	if (FORCE_57Q84_ALL) {
 		retconf = 0x00;
@@ -1899,17 +1902,18 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			"BMCBoard Digital DI DO Disabled, controller device %s \n", daqbmc_devices[daqbmc_conf].name);
 	}
 
-	if (daqbmc_cpu != PICSL12_47) {
-		s = &dev->subdevices[SUBDEV_MEM];
-		s->type = COMEDI_SUBD_MEMORY;
-		s->subdev_flags = SDF_READABLE | SDF_WRITABLE;
-		s->n_chan = MEM_BLOCKS;
-		s->maxdata = 0xffff;
-		s->insn_write = daqbmc_sio_insn_write;
-		s->insn_read = daqbmc_sio_insn_read;
-		dev_info(dev->class_dev,
-			"DISPLAY, RS232/TTL and device serial TX/RX channels %d\n", MEM_BLOCKS);
-	}
+	/*
+	 * All DAQ_BMC boards have the memory device interface
+	 */
+	s = &dev->subdevices[SUBDEV_MEM];
+	s->type = COMEDI_SUBD_MEMORY;
+	s->subdev_flags = SDF_READABLE | SDF_WRITABLE;
+	s->n_chan = MEM_BLOCKS;
+	s->maxdata = 0xffff;
+	s->insn_write = daqbmc_sio_insn_write;
+	s->insn_read = daqbmc_sio_insn_read;
+	dev_info(dev->class_dev,
+		"DISPLAY, RS232/TTL and device serial TX/RX channels %d\n", MEM_BLOCKS);
 
 	if (do_conf) { // add the extra sub-devices
 		s = &dev->subdevices[SUBDEV_DO];
@@ -1979,7 +1983,6 @@ static void daqbmc_detach(struct comedi_device * dev)
 {
 	struct daqbmc_private *devpriv = dev->private;
 
-	dev->n_subdevices = SUBDEV; // set to correct number of sub-devices allocated
 	/* wakeup and kill the threads */
 	if (devpriv->smp) {
 		if (devpriv->ao_spi->daqbmc_task) {
@@ -2011,9 +2014,12 @@ static struct comedi_driver daqbmc_driver = {
 static int32_t spibmc_spi_probe(struct spi_device * spi)
 {
 	struct comedi_spibmc *pdata;
-	int32_t ret, retconf;
+	int32_t ret;
+	struct bmc_packet_type packet_data, *packet = &packet_data;
+	ktime_t slower = SPI_GAP_LONG;
 
 	pdata = kzalloc(sizeof(struct comedi_spibmc), GFP_KERNEL | GFP_DMA);
+
 	if (!pdata)
 		return -ENOMEM;
 
@@ -2086,30 +2092,17 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 		spi->bits_per_word = daqbmc_devices[daqbmc_conf].spi_bpw;
 		spi_setup(spi);
 
-		{
-			struct bmc_packet_type *packet = kzalloc(sizeof(*packet), GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC | GFP_DMA);
-			ktime_t slower = SPI_GAP_LONG;
-			if (!packet) {
-				/* use single transfer for all bytes of the complete SPI transaction */
-				packet->bmc_byte_t[BMC_CMD] = CMD_ZERO;
-				packet->bmc_byte_t[BMC_D0] = CMD_ZERO;
-				packet->bmc_byte_t[BMC_D1] = CMD_ZERO;
-				packet->bmc_byte_t[BMC_D2] = CMD_ZERO;
-				packet->bmc_byte_t[BMC_D3] = CMD_ZERO;
-				packet->bmc_byte_t[BMC_D4] = CMD_ZERO;
-				packet->bmc_byte_t[BMC_EXT] = CMD_ZERO;
-				packet->bmc_byte_t[BMC_CKSUM] = CMD_ZERO;
-				packet->bmc_byte_t[BMC_DUMMY] = CMD_ZERO;
-				packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_CMD];
-				packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_CMD];
-				packet->one_t.cs_change = false;
-				packet->one_t.len = 4;
-				ret = bmc_spi_packet(spi, packet, slower);
-				retconf = packet->bmc_byte_r[BMC_D0];
-				kfree(packet);
-				dev_info(&spi->dev, "spi I/O test returns %X\n", retconf);
-			}
+		/* cycle some bytes to clear the FIFO or junk */
+		packet->bmc_byte_t[BMC_CMD] = CMD_ZERO;
+		packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_CMD];
+		packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_CMD];
+		packet->one_t.cs_change = false;
+		packet->one_t.len = 1;
+		for (int i = BMC_CMD; i < BMC_DUMMY; i++) {
+			ret = bmc_spi_packet(spi, packet, slower); // only one byte is transmitted
 		}
+		daq_code = packet->bmc_byte_r[BMC_CMD];
+		dev_info(&spi->dev, "spi I/O test returns %X\n", daq_code);
 	}
 
 	/* setup Comedi part of driver */
