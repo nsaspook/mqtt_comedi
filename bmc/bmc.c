@@ -220,6 +220,8 @@ bool get_set_config(void)
 		config_setting_set_float(setting, S.BENERGYV);
 		setting = config_setting_add(group, "BVOLTAGEV", CONFIG_TYPE_FLOAT);
 		config_setting_set_float(setting, S.BVOLTAGEV);
+		setting = config_setting_add(group, "BVFLOATV", CONFIG_TYPE_FLOAT);
+		config_setting_set_float(setting, S.BVFLOATV);
 		setting = config_setting_add(group, "PVENERGYV", CONFIG_TYPE_FLOAT);
 		config_setting_set_float(setting, S.PVENERGYV);
 		setting = config_setting_add(group, "PVVOLTAGEV", CONFIG_TYPE_FLOAT);
@@ -252,12 +254,13 @@ bool get_set_config(void)
 	} else {
 		if (config_lookup_float(&cfg, "BENERGYV", &S.BENERGYV)
 			&& config_lookup_float(&cfg, "BVOLTAGEV", &S.BVOLTAGEV)
+			&& config_lookup_float(&cfg, "BVFLOATV", &S.BVFLOATV)
 			&& config_lookup_float(&cfg, "PVENERGYV", &S.PVENERGYV)
 			&& config_lookup_float(&cfg, "PVVOLTAGEV", &S.PVVOLTAGEV)
 			&& config_lookup_float(&cfg, "SOC_MODEV", &S.SOC_MODEV)
 			&& config_lookup_string(&cfg, MQTT_HOST_STR, &tmp_mqtt)) {
-			fprintf(stderr, "Configuration successfully read: %4.1f, %4.1f, %4.1f, %4.1f, %4.1f, %s from: %s\n",
-				S.BENERGYV, S.BVOLTAGEV, S.PVENERGYV, S.PVVOLTAGEV, S.SOC_MODEV, tmp_mqtt, output_file);
+			fprintf(stderr, "Configuration successfully read: %4.1f, %4.1f, %4.1f, %4.1f, %4.1f, %4.1f, %s from: %s\n",
+				S.BENERGYV, S.BVOLTAGEV, S.BVFLOATV, S.PVENERGYV, S.PVVOLTAGEV, S.SOC_MODEV, tmp_mqtt, output_file);
 			strncpy(S.MQTT_HOSTIP, tmp_mqtt, BMC_MAXHOST - 1);
 			config_status = true;
 		} else {
