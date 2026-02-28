@@ -37,7 +37,7 @@ struct bmc_settings S = {
 
 struct ha_csv_type {
 	double acvolts, acamps, acwatts, acwatts_gti, acwatts_gti_abs, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, panel_watts, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
-	uint32_t d_id;
+	uint32_t d_id, boot_updates;
 	double benergy, runtime;
 	uint32_t boot_wait;
 	bool boot_volts, boot_once;
@@ -718,7 +718,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				snprintf(tmp_str, MAX_STRLEN, "%06"PRIX64"", (uint64_t) R.bmc_id);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][0], tmp_str, MAX_STRLEN);
 				mqtt_id = strlen(&ha_daq_host.hname[ha_daq_host.hindex][0]);
-				fprintf(fout, "MQTT OPENHOST : %s : %06"PRIX64"\n", &ha_daq_host.hname[ha_daq_host.hindex][0], (uint64_t) R.bmc_id);
+				fprintf(fout, "%s MQTT OPENHOST : %s : %06"PRIX64"\n", log_time(false), &ha_daq_host.hname[ha_daq_host.hindex][0], (uint64_t) R.bmc_id);
 				snprintf(tmp_str, MAX_STRLEN, "Energy_Mqtt_BMC%06"PRIX64"", (uint64_t) R.bmc_id);
 				strncpy(&ha_daq_host.clients[ha_daq_host.hindex][0], tmp_str, MAX_STRLEN);
 				snprintf(tmp_str, MAX_STRLEN, "comedi/bmc/data/bmc/%06"PRIX64"", (uint64_t) R.bmc_id);
@@ -726,6 +726,13 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				snprintf(tmp_str, MAX_STRLEN, "comedi/bmc/listen/bmc/%06"PRIX64"", (uint64_t) R.bmc_id);
 				strncpy(&ha_daq_host.listen[ha_daq_host.hindex][0], tmp_str, MAX_STRLEN);
 			}
+		}
+		
+		/*
+		 * set to max battery energy if floating and battery is full
+		 */
+		if (got_cal_data &&  (R.fm_mode == 1) && ( R.bvolts > DBFLOAT) && (fabs(R.bsensor0) < 0.5f) && (R.pvolts > 90.0f)) {
+			R.benergy = S.BENERGYV;
 		}
 
 		// sanity checks for scalars
@@ -1138,6 +1145,7 @@ bool get_bmc_serial(void)
 					R.bvolts = atof(jtoken);
 					if (R.boot_once) {
 						R.boot_volts = true;
+						R.boot_updates++;
 					}
 				}
 				jtoken = strtok(NULL, ",");
@@ -1175,9 +1183,15 @@ bool get_bmc_serial(void)
 				if (jtoken != NULL)
 					ha_daq_host.calib.A200_Z[ha_daq_host.bindex] = atof(jtoken);
 				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
+				if (jtoken != NULL) {
 					ha_daq_host.calib.A200_S[ha_daq_host.bindex] = atof(jtoken);
-				R.boot_once = false;
+				}
+				/*
+				 * check for several possible CSV data updates to variables
+				 */
+				if (R.boot_updates >= BOOT_UPDATE) {
+					R.boot_once = false;
+				}
 			}
 		} else {
 			if (bmc.BOARD != bmcboard) {
