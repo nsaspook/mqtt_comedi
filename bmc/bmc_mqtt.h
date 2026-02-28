@@ -17,13 +17,14 @@ extern "C" {
 	/*
 	 * configuration data for Home Assistant
 	 */
-#define BMC_MAXHOST      1024 // hosts buffer size	
+#define BMC_MAXHOST      1024 // hosts buffer size
 
-#define DBENERGY  3100.0f
-#define DBVOLTAGE 12.6f
-#define DPVENERGY 300.0f
-#define DPVVOLTAGE 12.6f
-#define DSOC_MODE 2.0f
+#define DBENERGY	3100.0f
+#define DBVOLTAGE	12.6f
+#define DBFLOAT		14.3f
+#define DPVENERGY	300.0f
+#define DPVVOLTAGE	12.6f
+#define DSOC_MODE	2.0f
 
 	struct bmc_settings {
 		double BENERGYV, BVOLTAGEV, PVENERGYV, PVVOLTAGEV, SOC_MODEV;
@@ -73,6 +74,7 @@ extern "C" {
 #define IDLE_DRAIN      1.0f // system battery losses in W
 
 #define VALIDATE_LEN 55
+#define BOOT_UPDATE 1 // number of CSV values to program values to update on system boot
 
 #define BVSOC_SLOTS     12      // 24V LiFePO4 Battery to SOC data table slots
 
@@ -141,7 +143,7 @@ extern "C" {
 		char listen[HOST_SLOTS][BMC_MAXHOST];
 		char hname[HOST_SLOTS][BMC_MAXHOST];
 		double scalar[HOST_SLOTS], scalar4[HOST_SLOTS], scalar5[HOST_SLOTS];
-		uint8_t hindex, bindex;  // host array, calibration array
+		uint8_t hindex, bindex; // host array, calibration array
 		uint32_t pacer[HOST_SLOTS];
 		struct ha_daq_calib_type calib;
 	};
