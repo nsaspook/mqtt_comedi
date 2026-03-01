@@ -36,11 +36,12 @@ struct bmc_settings S = {
 };
 
 struct ha_csv_type {
-	double acvolts, acamps, acwatts, acwatts_gti, acwatts_gti_abs, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, panel_watts, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
+	double acvolts, acamps, acwatts, acwatts_gti, acwatts_gti_abs, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, panel_watts, fm_online, fm_mode, em540_online, dcwin, dcwout, bmc_id;
 	uint32_t d_id, boot_updates;
 	double benergy, runtime;
 	uint32_t boot_wait;
 	bool boot_volts, boot_once;
+	double  bsensor0;
 };
 
 char tmp_test_ptr[SBUF_SIZ];
@@ -668,11 +669,12 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	}
 
 	if (bmc.BOARD == bmcboard) {
-		E.adc[channel_ANA0] = get_adc_volts(channel_ANA0);
+		E.adc[channel_ANA0] = get_adc_volts(channel_ANA4);
 		/*
 		 * Battery 200A current sensor
 		 */
-		R.bsensor0 = lp_filter((E.adc[channel_ANA0] - ha_daq_host.calib.A200_Z[ha_daq_host.bindex]) * ha_daq_host.calib.A200_S[ha_daq_host.bindex], BSENSOR0, true);
+//		R.bsensor0 = lp_filter((E.adc[channel_ANA0] - ha_daq_host.calib.A200_Z[ha_daq_host.bindex]) * ha_daq_host.calib.A200_S[ha_daq_host.bindex], BSENSOR0, true);
+		R.bsensor0 = lp_filter((E.adc[channel_ANA0] - A200_0_ZERO) * A200_0_SCALAR, BSENSOR0, true);
 		E.adc[channel_ANA1] = get_adc_volts(channel_ANA1);
 		E.adc[channel_ANA2] = get_adc_volts(channel_ANA2);
 		E.adc[channel_ANC6] = get_adc_volts(channel_ANC6);
@@ -697,7 +699,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		}
 
 		if (R.bsensor0 < BSENSOR_MAX_NEG || R.bsensor0 > BSENSOR_MAX_POS) {
-			R.bsensor0 = 0.0f;
+			R.bsensor0 = 0.01234f;
 		}
 
 		if (R.bsensor0 * R.bvolts > 0.0f) {

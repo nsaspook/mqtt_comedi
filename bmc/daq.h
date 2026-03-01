@@ -63,7 +63,7 @@ extern "C" {
 	 * make sure battery sensor power is connected to 12/24VDC supply
 	 * the sensor board has a onboard precision 5VDC reference/supply
 	 */
-#define A200_0_ZERO    2.5216f	// should be near 2.5VDC for zero Hall sensor current
+#define A200_0_ZERO    2.4600f	// should be near 2.5VDC for zero Hall sensor current
 #define A200_0_SCALAR  133.05f // BATTERY Amp scalar
 #define BSENSOR0       0
 
