@@ -697,7 +697,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		}
 
 		if (R.bsensor0 < BSENSOR_MAX_NEG || R.bsensor0 > BSENSOR_MAX_POS) {
-			R.bsensor0 = 0.0f;
+			R.bsensor0 = 0.01234f;
 		}
 
 		if (R.bsensor0 * R.bvolts > 0.0f) {
