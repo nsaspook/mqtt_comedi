@@ -34,6 +34,8 @@ extern "C" {
 	static const float A200_0_ZERO = 2.5216f; // Battery sensor zero ADC value
 	static const float A200_0_SCALAR = 133.05f; // Battery Amp scalar to +- 200A
 
+	static const float MAX_12V_SYSTEMV = 17.0f; // max system volts for 12VDC systems
+
 	struct ha_daq_calib_type {
 		unsigned long long bmc_id;
 		double offset4;
@@ -50,8 +52,13 @@ extern "C" {
 		uint8_t crc; // must be last item in the structure
 	};
 
+	struct bmc_settings {
+		double BENERGYV, BVOLTAGEV, BVFLOATV, PVENERGYV, PVVOLTAGEV, SOC_MODEV;
+	};
+
 	extern volatile struct spi_stat_type_ss spi_stat_ss;
 	extern struct ha_daq_calib_type ha_daq_calib;
+	extern struct bmc_settings S;
 
 	void set_calibration(unsigned long long);
 	float phy_chan4(uint16_t);
@@ -60,6 +67,7 @@ extern "C" {
 	bool read_cal_data(void);
 	void write_cal_data(void);
 	void update_cal_data(void);
+	double Volts_to_SOC(const double);
 
 #ifdef	__cplusplus
 }

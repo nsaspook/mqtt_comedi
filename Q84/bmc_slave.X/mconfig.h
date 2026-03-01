@@ -35,6 +35,9 @@
 #include "vconfig.h"
 #include "bmcdio.h"
 
+#define DEF_TIME_SIZE	11
+#define SECS_MAX	32000
+
 void mconfig_init(void);
 
 void mode_lamp_dim(void);

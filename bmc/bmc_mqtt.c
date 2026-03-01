@@ -492,6 +492,10 @@ void bmc_mqtt_init(void)
 
 	set_bmc_timer();
 
+	if (ha_daq_host.hindex == OPEN_HOST) {
+		strncpy((char *) &ha_daq_host.clients[OPEN_HOST][strlen(ha_daq_host.clients[OPEN_HOST])], (char *) &ha_daq_host.hosts[OPEN_HOST][0], BMC_MAXHOST);
+	}
+
 	if (strncmp(hname, TNAME, 6) == 0) {
 		MQTTClient_create(&E.client_p, LADDRESS, (const char *) &ha_daq_host.topics[ha_daq_host.hindex],
 			MQTTCLIENT_PERSISTENCE_NONE, NULL);
@@ -727,11 +731,11 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				strncpy(&ha_daq_host.listen[ha_daq_host.hindex][0], tmp_str, MAX_STRLEN);
 			}
 		}
-		
+
 		/*
 		 * set to max battery energy if floating and battery is full
 		 */
-		if (got_cal_data &&  (R.fm_mode == 1) && ( R.bvolts > DBFLOAT) && (fabs(R.bsensor0) < 0.5f) && (R.pvolts > 90.0f)) {
+		if (got_cal_data && (R.fm_mode == 1) && (R.bvolts > DBFLOAT) && (fabs(R.bsensor0) < 0.5f) && (R.pvolts > 90.0f)) {
 			R.benergy = S.BENERGYV;
 		}
 
@@ -776,7 +780,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			Soc = Volts_to_SOC(R.bvolts * S.SOC_MODEV); // convert to 24vdc standard Soc table
 			R.benergy = S.BENERGYV*Soc;
 		}
-		R.benergy = R.benergy + ((bsensor0_filter(R.bsensor0) * R.bvolts) / BENERGY_INTEGRAL); // 2.5 seconds per sample interval
+		R.benergy = R.benergy + ((bsensor0_filter(R.bsensor0) * R.bvolts) / BENERGY_INTEGRAL); // 5 seconds per sample interval
 		if (R.benergy > S.BENERGYV) {
 			R.benergy = S.BENERGYV;
 		}
@@ -872,6 +876,8 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], S.PVENERGYV);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_pv_voltage", BMC_MAXHOST);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], S.PVVOLTAGEV);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_bank_daq_energy", BMC_MAXHOST);
+				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.panel_watts);
 				break;
 			case DC1_CMD:
 			default:
@@ -901,6 +907,8 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.dcwin);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_dcwout", BMC_MAXHOST);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.dcwout);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_panel_watts", BMC_MAXHOST);
+				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.panel_watts);
 				break;
 			}
 
@@ -912,8 +920,6 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.bamps);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_pamps", BMC_MAXHOST);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.pamps);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_panel_watts", BMC_MAXHOST);
-			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.panel_watts);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_fm_online", BMC_MAXHOST);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.fm_online);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_fm_mode", BMC_MAXHOST);

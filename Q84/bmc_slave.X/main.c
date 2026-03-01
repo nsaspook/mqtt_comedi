@@ -30,11 +30,11 @@
  *
  * 2  5V power		2 - GLORY 5VDD  white
  * 9  GND/VSS		1 - GLORY VSS   blue
- * 
+ *
  * DC to DC converter
  * 24V DC-DC VOUT	2 - VS TIC PWR	blue
  * 24V GND/VSS		1 - VS TIC CND	green
- * 
+ *
  * 4  5V power		5V DC-DC VIN	red
  * 5  GND/VSS		5V GND/VSS	brown
  */
@@ -61,17 +61,17 @@
  * DC to DC converter
  * 24V DC-DC VOUT	2 - VS TIC PWR	blue
  * 24V GND/VSS		1 - VS TIC CND	green
- * 
+ *
  * 4  5V power		5V DC-DC VIN	red
  * 5  GND/VSS		5V GND/VSS	brown
  */
 
 /*
  * UART3 MODBUS serial comms, MODBUS header:: A-PIN 3 , B-PIN 2 , DERE-PIN 6, VSS-PIN 1 and 4, VDD-PIN 5, interrupts, 9600 bps
- * 
+ *
  * UART2 FMx0 serial comms 9-bits async OPTO isolated MATE header:: FM_RX-PIN 4, FM_TX-PIN 3, FM_0V-PIN 2, FM_24V-PIN 1,
  * UART2 TTL serial HEADER:: RX-PIN 3, TX-PIN 2, VSS-PIN 1, VDD-PIN 4, SV1 serial header:: TX-PIN 10, RX-PIN 9, VSS-PIN 6, interrupts, polled. 9600 bps
- * 
+ *
  * UART1 general serial comms, PVP JACK connector:: RS232 TX-PIN 5, RX-PIN 4 VSS-PIN 6,  SV1 serial header::, TX-PIN 8, RX-PIN 7, VSS-PIN 6,
  * UART1 PVP JACK connector:: TTL TX-PIN 5, RX-PIN 7 VSS-PIN 6, interrupts, 115200 bps
  */
@@ -319,6 +319,8 @@ BM_type BM = {
 	.dim_delay = DIM_DELAY,
 	.display_on = true,
 	.fm80_restart = false,
+	.fm80_soc_once = true,
+	.benergy = 0,
 };
 
 volatile struct spi_link_type_ss spi_comm_ss = {false, false, false, false, false, false, false, false};
@@ -709,10 +711,10 @@ void main(void)
 #endif
 			if (V.di_fail || V.do_fail) { // DO or DI not working or missing
 				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " %s Analog Dev        ", (spi_stat_ss.deviceid == F57Q84) ? "57Q84" : "47Q84");
-				spi_stat_ss.daq_conf=0x03;
+				spi_stat_ss.daq_conf = 0x03;
 			} else {
 				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, " %s All Dev           ", (spi_stat_ss.deviceid == F57Q84) ? "57Q84" : "47Q84");
-				spi_stat_ss.daq_conf=0x00;
+				spi_stat_ss.daq_conf = 0x00;
 			}
 
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, " %s                   ", (char *) build_date);
@@ -917,7 +919,7 @@ void main(void)
 
 				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "%2.1fKWh float %3.1fh                       ", (float) BM.log.kilowatt_hours / 10.0f, (float) BM.log.float_time / 60.0f);
 				snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "Bmax %uV Bmin %uV                      ", BM.log.bat_max / 10, BM.log.bat_min / 10);
-				snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.2fA                        ", (float) emt.hz / 1000.0f, ((float) em.al1) / 1000.0f);
+				snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.2fA %d                       ", (float) emt.hz / 1000.0f, ((float) em.al1) / 1000.0f, BM.benergy);
 				snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVA %3.1fPF             ", (float) em.wl1 / 10.0f, (float) em.val1 / 10.f, (float) em.pfsys / 10.0f);
 
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
@@ -1426,6 +1428,16 @@ void state_mx_status_cb(void)
 		bat_amp_whole = abuf[3];
 		bat_amp_panel = abuf[2];
 		bat_amp_frac = abuf[1];
+
+		if (BM.fm80_soc_once) {
+			BM.fm80_soc_once = false;
+			BM.bvolts = (float) vw + ((float) vf / 0.1f);
+			if (BM.bvolts > MAX_12V_SYSTEMV) {
+				S.SOC_MODEV = 1.0f; // setup SoC calculations for 24v system
+			}
+			BM.Soc = Volts_to_SOC(BM.bvolts * S.SOC_MODEV); // convert to 24vdc standard Soc table
+			BM.benergy = (uint16_t) (S.BENERGYV * BM.Soc);
+		}
 	}
 #ifdef debug_data
 	printf("%5d: %3x %3x %3x %3x %3x  SDATA: FM80 Data mode %3x %3x %3x %3x %3x %3x %3x %3x %3x\r\n",

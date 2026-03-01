@@ -253,7 +253,7 @@ D_CODES set_temp_display_help(const D_CODES new_response_info)
 
 /** \file mconfig.c
  * send to logging TTL serial port, busy wait until port buffer has space
- * use UART3
+ * use UART1
  */
 void log_serial(uint8_t * data, uint16_t len)
 {
@@ -264,12 +264,12 @@ void log_serial(uint8_t * data, uint16_t len)
 	}
 
 	while (len--) {
-		if (UART3_is_tx_ready()) {
-			UART3_Write(data[idx++]);
+		if (UART1_is_tx_ready()) {
+			UART1_Write(data[idx++]);
 		} else {
-			while (!UART3_is_tx_ready()) {
+			while (!UART1_is_tx_ready()) {
 			};
-			UART3_Write(data[idx++]);
+			UART1_Write(data[idx++]);
 		}
 	}
 }
@@ -277,21 +277,20 @@ void log_serial(uint8_t * data, uint16_t len)
 /**
  *
  * check for incoming data on the logging TTL serial port
- * use UART3
+ * use UART1
  *
  * cmd_value is the buffer variable
  */
 void logging_cmds(void)
 {
-#ifdef DDDD
 	static uint8_t value[] = {0, 0, 0, 0}, vi = 0;
 	static uint8_t utc_value[DEF_TIME_SIZE] = {0};
 	static bool utc = false;
 	uint8_t vcmd_size = sizeof(value), rxData = 0;
 	uint8_t utc_vcmd_size = DEF_TIME_SIZE - 1;
 
-	if (UART3_is_rx_ready()) {
-		rxData = UART3_Read();
+	if (UART1_is_rx_ready()) {
+		rxData = UART1_Read();
 
 		switch (rxData) {
 		case '0':
@@ -382,13 +381,12 @@ void logging_cmds(void)
 			break;
 		default: // eat extra characters
 			utc = false;
-			while (UART3_is_rx_ready()) {
-				rxData = UART3_Read();
+			while (UART1_is_rx_ready()) {
+				rxData = UART1_Read();
 			}
 			break;
 		}
 	}
-#endif
 }
 
 void set_time(const time_t t)

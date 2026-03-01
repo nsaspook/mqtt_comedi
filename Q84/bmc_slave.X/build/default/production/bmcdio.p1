@@ -2542,6 +2542,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _A200_0_SCALAR
 -> .133.05 `f
 ]
+"37
+[v _MAX_12V_SYSTEMV `Cf ~T0 @X0 1 s ]
+[i _MAX_12V_SYSTEMV
+-> .17.0 `f
+]
 "70 ./modbus_master.h
 [v _TMDELAY `Cuc ~T0 @X0 1 s ]
 [i _TMDELAY
@@ -3116,82 +3121,82 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _BON
 -> -> 255 `i `uc
 ]
-"140 ./vconfig.h
+"141 ./vconfig.h
 [v _TDELAY `Cus ~T0 @X0 1 s ]
 [i _TDELAY
 -> -> 3000 `i `us
 ]
-"141
+"142
 [v _SEQDELAY `Cus ~T0 @X0 1 s ]
 [i _SEQDELAY
 -> -> 10000 `i `us
 ]
-"142
+"143
 [v _LDELAY `Cus ~T0 @X0 1 s ]
 [i _LDELAY
 -> -> 500 `i `us
 ]
-"143
+"144
 [v _WLDELAY `Cus ~T0 @X0 1 s ]
 [i _WLDELAY
 -> -> 1500 `i `us
 ]
-"144
+"145
 [v _SDELAY `Cus ~T0 @X0 1 s ]
 [i _SDELAY
 -> -> 100 `i `us
 ]
-"145
+"146
 [v _DDELAY `Cus ~T0 @X0 1 s ]
 [i _DDELAY
 -> -> 500 `i `us
 ]
-"146
+"147
 [v _DFLIP `Cus ~T0 @X0 1 s ]
 [i _DFLIP
 -> -> 1500 `i `us
 ]
-"147
+"148
 [v _ADCDELAY `Cuc ~T0 @X0 1 s ]
 [i _ADCDELAY
 -> -> 1 `i `uc
 ]
-"148
+"149
 [v _SWITCH_VTERM `Cuc ~T0 @X0 1 s ]
 [i _SWITCH_VTERM
 -> -> 70 `i `uc
 ]
-"149
+"150
 [v _SWITCH_DURATION `Cuc ~T0 @X0 1 s ]
 [i _SWITCH_DURATION
 -> -> 32 `i `uc
 ]
-"150
+"151
 [v _HOST_UART `Cuc ~T0 @X0 1 s ]
 [i _HOST_UART
 -> -> 1 `i `uc
 ]
-"151
+"152
 [v _CHK_DAY_TIME `Cus ~T0 @X0 1 s ]
 [i _CHK_DAY_TIME
 -> -> 1200 `i `us
 ]
-"152
+"153
 [v _BAT_DAY_COUNT `Cuc ~T0 @X0 1 s ]
 [i _BAT_DAY_COUNT
 -> -> 45 `i `uc
 ]
-"153
+"154
 [v _BAT_NIGHT_COUNT `Cuc ~T0 @X0 1 s ]
 [i _BAT_NIGHT_COUNT
 -> -> 90 `i `uc
 ]
-"154
+"155
 [v _PV_VOLTS_HIGH `Cuc ~T0 @X0 1 s ]
 [i _PV_VOLTS_HIGH
 -> -> 70 `i `uc
 ]
-"156
+"164
 [v _log_format1 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format1
 :U ..
@@ -3380,7 +3385,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"162
+"170
 [v _log_format2 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format2
 :U ..
@@ -3569,7 +3574,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"168
+"176
 [v _log_format3 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format3
 :U ..
@@ -3758,7 +3763,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"174
+"182
 [v _log_format4 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format4
 :U ..
@@ -3947,9 +3952,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-[v F25548 `Cuc ~T0 @X0 -> 20 `i t ]
-"330
-[v _spin `F25548 ~T0 @X0 -> 6 `i e ]
+[v F25563 `Cuc ~T0 @X0 -> 20 `i t ]
+"338
+[v _spin `F25563 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
 :U ..
@@ -4214,17 +4219,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 "14
 [e ( _wait_lcd_done ..  ]
 "15
-[e :U 3427 ]
+[e :U 3428 ]
 {
 [e = . . _LATEbits 0 0 -> -> 1 `i `uc ]
 }
-[e :U 3426 ]
+[e :U 3427 ]
 "16
-[e :U 3430 ]
+[e :U 3431 ]
 {
 [e = . . _LATEbits 0 1 -> -> 1 `i `uc ]
 }
-[e :U 3429 ]
+[e :U 3430 ]
 "17
 [e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
 "19
@@ -4240,7 +4245,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "26
 [e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
 "27
-[e :UE 3424 ]
+[e :UE 3425 ]
 }
 "32
 [v _SPI_TIC12400 `(v ~T0 @X0 1 ef ]
@@ -4251,23 +4256,23 @@ Version 4.0 HI-TECH Software Intermediate Code
 "34
 [e ( _wait_lcd_done ..  ]
 "35
-[e :U 3434 ]
+[e :U 3435 ]
 {
 [e = . . _LATEbits 0 0 -> -> 1 `i `uc ]
 }
-[e :U 3433 ]
+[e :U 3434 ]
 "36
-[e :U 3437 ]
+[e :U 3438 ]
 {
 [e = . . _LATEbits 0 1 -> -> 1 `i `uc ]
 }
-[e :U 3436 ]
+[e :U 3437 ]
 "37
-[e :U 3440 ]
+[e :U 3441 ]
 {
 [e = . . _LATDbits 0 3 -> -> 1 `i `uc ]
 }
-[e :U 3439 ]
+[e :U 3440 ]
 "38
 [e = . . _SPI1STATUSbits 0 2 -> -> 1 `i `uc ]
 "39
@@ -4297,7 +4302,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "55
 [e = . . _SPI1STATUSbits 0 2 -> -> 0 `i `uc ]
 "56
-[e :UE 3431 ]
+[e :UE 3432 ]
 }
 "61
 [v _SPI_MC33996 `(v ~T0 @X0 1 ef ]
@@ -4308,23 +4313,23 @@ Version 4.0 HI-TECH Software Intermediate Code
 "63
 [e ( _wait_lcd_done ..  ]
 "64
-[e :U 3444 ]
+[e :U 3445 ]
 {
 [e = . . _LATEbits 0 0 -> -> 1 `i `uc ]
 }
-[e :U 3443 ]
+[e :U 3444 ]
 "65
-[e :U 3447 ]
+[e :U 3448 ]
 {
 [e = . . _LATEbits 0 1 -> -> 1 `i `uc ]
 }
-[e :U 3446 ]
+[e :U 3447 ]
 "66
-[e :U 3450 ]
+[e :U 3451 ]
 {
 [e = . . _LATDbits 0 3 -> -> 1 `i `uc ]
 }
-[e :U 3449 ]
+[e :U 3450 ]
 "67
 [e = . . _SPI1STATUSbits 0 2 -> -> 1 `i `uc ]
 "68
@@ -4354,7 +4359,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "84
 [e = . . _SPI1STATUSbits 0 2 -> -> 0 `i `uc ]
 "85
-[e :UE 3441 ]
+[e :UE 3442 ]
 }
 "90
 [v _SPI2_PI `(v ~T0 @X0 1 ef ]
@@ -4363,7 +4368,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _SPI2_PI ]
 [f ]
 "92
-[e :UE 3451 ]
+[e :UE 3452 ]
 }
-[a 2C 49 55 58 48 53 58 49 57 0 ]
-[a 1C 70 101 98 32 50 52 32 50 48 50 54 0 ]
+[a 1C 70 101 98 32 50 56 32 50 48 50 54 0 ]
+[a 2C 49 54 58 49 55 58 51 51 0 ]

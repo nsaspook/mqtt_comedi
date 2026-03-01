@@ -20,7 +20,7 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.53"
+#define VER	"V0.54"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -64,6 +64,7 @@ extern "C" {
 	 * V0.51 re-enable WDT reboots
 	 * V0.52 add WDT clears to analog conversion sequence
 	 * V0.53 fix serial data logic so we can get interface data without having DI or DO
+	 * V0.54 calculate battery SoC and energy
 	 */
 
 	/*
@@ -153,6 +154,13 @@ extern "C" {
 	static const uint8_t BAT_NIGHT_COUNT = 90;
 	static const uint8_t PV_VOLTS_HIGH = 70;
 
+#define DBENERGY	3100.0f
+#define DBVOLTAGE	12.6f
+#define DBFLOAT		14.3f
+#define DPVENERGY	300.0f
+#define DPVVOLTAGE	12.6f
+#define DSOC_MODE	2.0f // voltage scaler, 2.0f for 12 volt systems, 1.0f for 24V systems
+
 	const char log_format1[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%6.3f,%6.3f,%6.3f,%6.3f,1957,~EOT                                                  \r\n";
 #define LOG_VARS1	BMC4.d_id,((float) em.vl3l1) / 10.0f,em_tmp.al1, ((float) em.wl1) / 10.0f, ((float) em.wl2) / 10.0f, \
 	((float) em.val1) / 10.0f, ((float) em.varl1) / 10.0f,  ((float) em.pfsys) / 10.0f, em_tmp.hz,vw, vf, pvw, pvf, bat_amp_whole - 128, \
@@ -162,7 +170,7 @@ extern "C" {
 	const char log_format2[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%6.4f,%6.4f,%6.4f,%6.4f,1957,~EOT                                                  \r\n";
 #define LOG_VARS2	BMC4.d_id,((float) em.vl1n) / 10.0f,((float) em.vl2n) / 10.0f, ((float) em.vl3n) / 10.0f, ((float) em.al2) / 1000.0f, \
 	((float) em.wl3) / 10.0f, ((float) em.wsys) / 10.0f,  ((float) em.pfl1) / 10.0f, ((float) em.pfl2) / 10.0f,vw, vf, pvw, pvf, bat_amp_whole - 128, \
-	bat_amp_frac - 128, bat_amp_panel - 128, panel_watts, BM.FM80_online, cc_mode, C.data_ok,BM.node_id, ha_daq_calib.scaler4, \
+	bat_amp_frac - 128, bat_amp_panel - 128, BM.benergy, BM.FM80_online, cc_mode, C.data_ok,BM.node_id, ha_daq_calib.scaler4, \
 	ha_daq_calib.scaler5, ha_daq_calib.A200_Z, ha_daq_calib.A200_S
 
 	const char log_format3[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%7.4f,%7.4f,%6.4f,%7.4f,1957,~EOT                                                  \r\n";
@@ -222,10 +230,10 @@ extern "C" {
 
 	typedef struct BM_type {
 		volatile bool ten_sec_flag, one_sec_flag, FM80_charged, pv_high, pv_update, once, a_switch[D_SW_COUNT], a_trigger[D_SW_COUNT], a_type[D_SW_COUNT];
-		volatile uint16_t pacing, rx_count, flush, pv_prev, day_check, dim_delay;
-		volatile bool FM80_online, FM80_io, LOG, display_dim, display_update, display_on, fm80_restart;
+		volatile uint16_t pacing, rx_count, flush, pv_prev, day_check, dim_delay, benergy;
+		volatile bool FM80_online, FM80_io, LOG, display_dim, display_update, display_on, fm80_restart, fm80_soc_once;
 		volatile uint8_t canbus_online, modbus_online, alt_display, a_pin[D_SW_COUNT];
-		float run_time, net_balance;
+		float run_time, net_balance, Soc, bvolts;
 		uint16_t mui[10];
 		uint16_t fwrev[3];
 		mx_logpage_t log;

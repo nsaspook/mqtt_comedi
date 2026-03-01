@@ -20,6 +20,48 @@ static const float HV_SCALE5_5 = 64.3480f;
 static const float HV_SCALE4_6 = 64.2500f;
 static const float HV_SCALE5_6 = 64.2500f;
 
+
+#define BVSOC_SLOTS     12      // 24V LiFePO4 Battery to SOC data table slots
+
+// 24V LiFePO4 Battery to SOC data table slots, scale battery voltage to match
+static const float bsoc_voltage[BVSOC_SLOTS] = {
+	20.000f,
+	25.000f,
+	25.100f,
+	25.300f,
+	25.500f,
+	25.800f,
+	26.000f,
+	26.200f,
+	26.600f,
+	26.800f,
+	27.200f,
+	35.000f,
+}; // SoC voltage guess
+
+static const float bsoc_soc[BVSOC_SLOTS] = {
+	0.01f,
+	0.10f,
+	0.20f,
+	0.30f,
+	0.50f,
+	0.60f,
+	0.65f,
+	0.70f,
+	0.90f,
+	0.99f,
+	1.00f,
+	1.00f
+}; // Battery SoC guess
+
+struct bmc_settings S = {
+	.BENERGYV = DBENERGY,
+	.BVOLTAGEV = DBVOLTAGE,
+	.PVENERGYV = DPVENERGY,
+	.PVVOLTAGEV = DPVVOLTAGE,
+	.SOC_MODEV = DSOC_MODE,
+};
+
 /*
  * use Q84 MUI to find calibration data for each board
  */
@@ -165,4 +207,23 @@ void update_cal_data(void)
 	if (!ha_daq_calib.c_scale_cal) {
 		ha_daq_calib.c_scale_cal = true;
 	}
+}
+
+/*
+ * static SOC table for 24vdc LiFePO4, scale bvoltage to the correct voltage range
+ */
+double Volts_to_SOC(const double bvoltage)
+{
+	uint32_t slot;
+	double soc = 0.80f;
+
+	/*
+	 * walk up the table
+	 */
+	for (slot = 0; slot < BVSOC_SLOTS; slot++) {
+		if (bvoltage > bsoc_voltage[slot]) {
+			soc = bsoc_soc[slot];
+		}
+	}
+	return soc;
 }

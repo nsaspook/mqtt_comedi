@@ -54,7 +54,7 @@ volatile struct VM_type VM = {
  * https://www.gavazzionline.com/pdf/EM540_DS_ENG.pdf
  * https://gavazzi.se/app/uploads/2022/03/em500-cp-v1r3-eng.pdf
  */
-const uint8_t
+static const uint8_t
 // transmit frames for commands
 modbus_em_id[] = {MADDR, READ_HOLDING_REGISTERS, 0x00, 0x0b, 0x00, 0x01}, // Carlo Gavazzi Controls identification code
 modbus_em_version[] = {MADDR, READ_HOLDING_REGISTERS, 0x03, 0x02, 0x00, 0x01}, // Firmware version and revision code
