@@ -33,7 +33,7 @@ extern "C" {
 
 #define HOST_SLOTS 10 //BMC host data slots
 #define OPEN_HOST 9 // BMC host array index for those without a known IP address or MUI
-#define BENERGY_INTEGRAL 1440.0f
+#define BENERGY_INTEGRAL 720.0f // seconds per hour (3600) divided by BMC_DAQ CSV datastream update rate in seconds: currently 5 second update rate
 #define MQTT_RETRY 10
 
 #define HA_SW_DELAY     400000  // usecs
