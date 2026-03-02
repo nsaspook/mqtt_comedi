@@ -5,8 +5,8 @@ vconfig.h  \
 mcc_generated_files/adc.h  \
 mcc_generated_files/spi1.h  \
 mcc_generated_files/pin_manager.h  \
-calibr.h  \
 mcc_generated_files/crc.h  \
+calibr.h  \
 modbus_master.h  \
 timers.h  \
 mcc_generated_files/mcc.h  \

@@ -17,10 +17,11 @@ extern "C" {
 #include "mcc_generated_files/adc.h"
 #include "mcc_generated_files/spi1.h"
 #include "mcc_generated_files/pin_manager.h"
+#include "mcc_generated_files/crc.h"
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.54"
+#define VER	"V0.55"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -65,6 +66,7 @@ extern "C" {
 	 * V0.52 add WDT clears to analog conversion sequence
 	 * V0.53 fix serial data logic so we can get interface data without having DI or DO
 	 * V0.54 calculate battery SoC and energy
+	 * V0.55 SoC fixes
 	 */
 
 	/*
