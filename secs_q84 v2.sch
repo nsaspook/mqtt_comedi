@@ -15402,7 +15402,7 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <attribute name="VALUE" x="21.59" y="67.818" size="1.778" layer="96"/>
 </instance>
 <instance part="R6" gate="G$1" x="10.16" y="86.36" smashed="yes" rot="R90">
-<attribute name="NAME" x="8.6614" y="82.55" size="1.778" layer="95" rot="R90"/>
+<attribute name="NAME" x="16.2814" y="82.55" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="13.462" y="82.55" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="VDD5" gate="G$1" x="10.16" y="93.98" smashed="yes">

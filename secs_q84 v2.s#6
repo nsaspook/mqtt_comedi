@@ -19540,6 +19540,13 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <pinref part="TXDE3" gate="1" pin="1"/>
 <junction x="203.2" y="-30.48"/>
 </segment>
+<segment>
+<wire x1="279.4" y1="-20.32" x2="279.4" y2="-33.02" width="0.1524" layer="91"/>
+<pinref part="MODBUS" gate="1" pin="6"/>
+<junction x="279.4" y="-33.02"/>
+<junction x="279.4" y="-20.32"/>
+<label x="281.94" y="-27.94" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="MOD_TX" class="0">
 <segment>
@@ -19635,13 +19642,6 @@ Source: http://www.fairchildsemi.com/ds/4N/4N35-M.pdf</description>
 <junction x="287.02" y="-109.22"/>
 <junction x="287.02" y="-96.52"/>
 <label x="287.02" y="-106.68" size="1.778" layer="95" rot="R90"/>
-</segment>
-<segment>
-<wire x1="279.4" y1="-33.02" x2="279.4" y2="-20.32" width="0.1524" layer="91"/>
-<pinref part="MODBUS" gate="1" pin="6"/>
-<junction x="279.4" y="-20.32"/>
-<junction x="279.4" y="-33.02"/>
-<label x="281.94" y="-30.48" size="1.778" layer="95" rot="R90"/>
 </segment>
 <segment>
 <wire x1="193.04" y1="-53.34" x2="193.04" y2="-40.64" width="0.1524" layer="91"/>
