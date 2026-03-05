@@ -54,3 +54,8 @@ void timer_ms_tick(const uint32_t status, const uintptr_t context)
 		}
 	}
 }
+
+void delay_ms(const uint16_t ms)
+{
+	WaitMs(ms);
+}

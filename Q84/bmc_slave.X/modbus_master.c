@@ -36,6 +36,7 @@ C_data C = {
 	.M.blink_lock = false,
 	.M.power_on = true,
 	.tm_ok = false,
+	.link_ok = false,
 };
 
 volatile struct VM_type VM = {
@@ -83,22 +84,15 @@ EM_data2 emt;
 EM_serial ems;
 EM_version emv;
 
-static void clear_2hz(void);
-static void clear_500ahz(void);
-static void clear_500hz(void);
-static uint32_t get_2hz(const uint8_t);
-static uint32_t get_500ahz(const uint8_t);
-static uint32_t get_500hz(const uint8_t);
 static void timer_500ms_tick(void);
 static void timer_2ms_tick(void);
 
 static void half_dup_tx(const bool);
 static void half_dup_rx(const bool);
-static bool serial_trmt(void);
+
 static uint16_t modbus_rtu_send_msg(void *, const void *, uint16_t);
 static uint16_t modbus_rtu_send_msg_crc(volatile uint8_t *, uint16_t);
-static uint16_t crc16_receive(const C_data *);
-static void log_crc_error(const uint16_t, const uint16_t);
+
 static void UART3_DefaultFramingErrorHandler_mb(void);
 static void UART3_DefaultOverrunErrorHandler_mb(void);
 static void UART3_DefaultErrorHandler_mb(void);
@@ -202,7 +196,7 @@ void init_mb_master_timers(void)
  * helper functions
  * received CRC16 bytes from client
  */
-static uint16_t crc16_receive(const C_data * client)
+uint16_t crc16_receive(const C_data * client)
 {
 	uint16_t crc16r;
 
@@ -210,7 +204,7 @@ static uint16_t crc16_receive(const C_data * client)
 	return crc16r;
 }
 
-static void log_crc_error(const uint16_t c_crc, const uint16_t c_crc_rec)
+void log_crc_error(const uint16_t c_crc, const uint16_t c_crc_rec)
 {
 	M.crc_calc = c_crc;
 	M.crc_data = c_crc_rec;
@@ -543,7 +537,7 @@ void timer_2ms_tick(void)
  * so this will return 'true' after the buffer is empty 'interrupt' and after the last bit is on the wire
  */
 
-static bool serial_trmt(void)
+bool serial_trmt(void)
 {
 	return !(Strmt); // note, we invert the TRMT bit so it's true while transmitting
 }

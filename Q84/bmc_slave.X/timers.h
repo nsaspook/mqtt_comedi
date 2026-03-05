@@ -34,5 +34,6 @@ inline void StartTimer(uint8_t timer, uint16_t count);
 inline bool TimerDone(uint8_t timer);
 void WaitMs(uint16_t numMilliseconds);
 void timer_ms_tick(const uint32_t, const uintptr_t);
+void delay_ms(const uint16_t);
 
 #endif //TIMERS_H

@@ -179,9 +179,9 @@ extern "C" {
 		uint8_t mcmd;
 		comm_type cstate;
 		cmd_type modbus_command;
-		uint16_t req_length;
-		int8_t trace;
-		bool id_ok, passwd_ok, config_ok, data_ok, light_ok, serial_ok, version_ok, tm_ok;
+		uint16_t req_length, iam_count;
+		int8_t trace, resets;
+		bool id_ok, passwd_ok, config_ok, data_ok, light_ok, serial_ok, link_ok, version_ok, tm_ok;
 		uint32_t data_count, data_prev;
 		volatile M_data M;
 	} C_data;
@@ -335,14 +335,25 @@ extern "C" {
 	int8_t master_controller_work(C_data *);
 	int32_t mb32_swap(const int32_t);
 	int16_t mb16_swap(const int16_t);
+	void clear_2hz(void);
+	void clear_500ahz(void);
+	void clear_500hz(void);
+	uint32_t get_2hz(const uint8_t);
+	uint32_t get_500ahz(const uint8_t);
+	uint32_t get_500hz(const uint8_t);
+
+	bool serial_trmt(void);
 
 	void mb_tx_test(C_data *);
 
 	void mb_setup(void);
 
+	uint16_t crc16_receive(const C_data *);
+	void log_crc_error(const uint16_t, const uint16_t);
+
 	extern volatile struct VM_type VM;
 	extern C_data C; // MODBUS client state data
-	extern EM_data1 em; // converted results data
+	extern EM_data1 em, *em_ptr; // converted results data
 	extern EM_tmp em_tmp; // converted results data
 	extern EM_data2 emt; // converted results data
 	extern EM_serial ems; // converted results data

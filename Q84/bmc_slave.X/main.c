@@ -240,6 +240,7 @@ typedef signed long long int24_t;
 #include "bmcdio.h"
 #include "mxcmd.h"
 #include "modbus_master.h"
+#include "iammeter_rtu.h"
 #include "calibr.h"
 
 #ifdef TRACE
