@@ -170,7 +170,7 @@ static const char *const FW_Time = __TIME__;
 #pragma GCC diagnostic pop
 
 static const uint32_t CHECKMARK = 0x1957;
-static const uint32_t CHECKBYTE = 0x57;
+static const uint8_t CHECKBYTE = 0x57;
 
 /*
  * SPI transfer buffer size
@@ -266,6 +266,7 @@ static const uint8_t CMD_PORT_GET = 0xf0; /* read data from input DI buffer */
 static const uint8_t CMD_CHAR_GET = 0x10; /* Get RX buffer */
 static const uint8_t CMD_DUMMY_CFG = 0x40; /* stuff config data in SPI buffer */
 static const uint8_t CMD_DEAD = 0xff; /* This is usually a bad response */
+static const uint8_t GET_MUI = 0x0D; // read the 57Q84 chip id
 
 /*
  * SPI packet link BYTE id's
@@ -585,6 +586,8 @@ static void daqbmc_ao_put_samples(struct comedi_device *,
 static int32_t bmc_spi_exchange(struct comedi_device *, struct bmc_packet_type *);
 static int32_t bmc_spi_packet(struct spi_device *, struct bmc_packet_type *, ktime_t);
 static int32_t daqbmc_bmc_get_config(struct comedi_device *);
+static uint32_t daqbmc_bmc_get_mui(struct comedi_device *);
+static bool bmc_spi_checkbyte_fail(const uint8_t);
 
 /*
  * piBoardRev:
@@ -625,6 +628,16 @@ static int32_t bmc_spi_packet(struct spi_device *spi, struct bmc_packet_type * p
 	return ret;
 }
 
+static bool bmc_spi_checkbyte_fail(const uint8_t checkbyte)
+{
+	bool check = false;
+
+	if ((uint8_t) checkbyte != (uint8_t) CHECKBYTE) {
+		check = true;
+	}
+	return check;
+}
+
 /*
  * My standard 9 byte SPI data packet with ~20us spacing between bytes
  */
@@ -663,31 +676,31 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D0];
 	packet->one_t.cs_change = false;
 	packet->one_t.len = 1;
-	ret = bmc_spi_packet(spi, packet, slower);
+	ret += bmc_spi_packet(spi, packet, slower);
 
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D1];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D1];
 	packet->one_t.cs_change = false;
 	packet->one_t.len = 1;
-	ret = bmc_spi_packet(spi, packet, slower);
+	ret += bmc_spi_packet(spi, packet, slower);
 
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D2];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D2];
 	packet->one_t.cs_change = false;
 	packet->one_t.len = 1;
-	ret = bmc_spi_packet(spi, packet, slower);
+	ret += bmc_spi_packet(spi, packet, slower);
 
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D3];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D3];
 	packet->one_t.cs_change = false;
 	packet->one_t.len = 1;
-	ret = bmc_spi_packet(spi, packet, slower);
+	ret += bmc_spi_packet(spi, packet, slower);
 
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D4];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D4];
 	packet->one_t.cs_change = false;
 	packet->one_t.len = 1;
-	ret = bmc_spi_packet(spi, packet, slower);
+	ret += bmc_spi_packet(spi, packet, slower);
 
 	/*
 	 * extended channel data
@@ -696,7 +709,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_EXT];
 	packet->one_t.cs_change = false;
 	packet->one_t.len = 1;
-	ret = bmc_spi_packet(spi, packet, slower);
+	ret += bmc_spi_packet(spi, packet, slower);
 	/*
 	 * packet [0..6] 8-bit added checksum
 	 */
@@ -704,7 +717,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_CKSUM];
 	packet->one_t.cs_change = false;
 	packet->one_t.len = 1;
-	ret = bmc_spi_packet(spi, packet, slower);
+	ret += bmc_spi_packet(spi, packet, slower);
 
 	/*
 	 * dummy byte to transfer last byte of data
@@ -713,7 +726,13 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_DUMMY];
 	packet->one_t.cs_change = false;
 	packet->one_t.len = 1;
-	ret = bmc_spi_packet(spi, packet, slower);
+	ret += bmc_spi_packet(spi, packet, slower);
+
+//	if (bmc_spi_checkbyte_fail(packet->bmc_byte_r[BMC_DUMMY])) {
+//		dev_info(dev->class_dev, "spi CHECKBYTE mismatch 0X%X\n", packet->bmc_byte_r[BMC_DUMMY]);
+//	} else {
+//		dev_info(dev->class_dev, "spi CHECKBYTE good 0X%X\n", packet->bmc_byte_r[BMC_DUMMY]);
+//	}
 
 	return ret;
 }
@@ -1626,6 +1645,47 @@ static int32_t daqbmc_bmc_get_config(struct comedi_device *dev)
 }
 
 /*
+ * read the 57Q84 chip id 32-bit number
+ */
+static uint32_t daqbmc_bmc_get_mui(struct comedi_device *dev)
+{
+	struct daqbmc_private *devpriv = dev->private;
+	uint32_t val = 0;
+
+	struct bmc_packet_type *packet = kzalloc(sizeof(*packet), GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC | GFP_DMA);
+	if (!packet) {
+		return CHECKBYTE;
+	}
+
+	mutex_lock(&devpriv->drvdata_lock);
+
+	packet->bmc_byte_t[BMC_CMD] = CMD_DUMMY_CFG + GET_MUI;
+	packet->bmc_byte_t[BMC_D0] = BMC_D0;
+	packet->bmc_byte_t[BMC_D1] = BMC_D1;
+	packet->bmc_byte_t[BMC_D2] = BMC_D2;
+	packet->bmc_byte_t[BMC_D3] = CMD_DUMMY_CFG + GET_MUI;
+	packet->bmc_byte_t[BMC_D4] = CMD_DUMMY_CFG + GET_MUI;
+	packet->bmc_byte_t[BMC_EXT] = CMD_DUMMY_CFG + GET_MUI;
+	packet->bmc_byte_t[BMC_CKSUM] = CHECKBYTE;
+	packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
+	bmc_spi_exchange(dev, packet);
+	val = (packet->bmc_byte_r[BMC_D1]);
+	val += (packet->bmc_byte_r[BMC_D2] << 8);
+	val += (packet->bmc_byte_r[BMC_D3] << 16);
+	val += (packet->bmc_byte_r[BMC_D4] << 24);
+
+	devpriv->ai_count++;
+	dev_info(dev->class_dev, "Calibration data downloaded from board\n");
+	mutex_unlock(&devpriv->drvdata_lock);
+	clear_bit(SPI_AI_RUN, &devpriv->state_bits);
+	smp_mb__after_atomic();
+
+	kfree(packet);
+
+	return val;
+}
+
+/*
  * setup driver resources from spi bus probes from board devices for sub-device configurations
  */
 static int32_t daqbmc_auto_attach(struct comedi_device *dev,
@@ -1902,6 +1962,13 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			"BMCBoard Digital DI DO Disabled, controller device %s \n", daqbmc_devices[daqbmc_conf].name);
 	}
 
+	retconf = daqbmc_bmc_get_mui(dev);
+	if (retconf > 0x050000) {
+		dev_info(dev->class_dev, "BMCBoard : MUI 0X%X \n", retconf);
+	} else {
+		dev_info(dev->class_dev, "BMCBoard : INVALID : MUI 0X%X \n", retconf);
+	}
+
 	/*
 	 * All DAQ_BMC boards have the memory device interface
 	 */
@@ -2098,11 +2165,13 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 		packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_CMD];
 		packet->one_t.cs_change = false;
 		packet->one_t.len = 1;
+
+		ret = 0;
 		for (int i = BMC_CMD; i < BMC_DUMMY; i++) {
-			ret = bmc_spi_packet(spi, packet, slower); // only one byte is transmitted
+			ret += bmc_spi_packet(spi, packet, slower); // only one byte is transmitted
 		}
 		daq_code = packet->bmc_byte_r[BMC_CMD];
-		dev_info(&spi->dev, "spi I/O test returns %X\n", daq_code);
+		dev_info(&spi->dev, "spi I/O CMD_ZERO test returns %X, spi transfer return code %x\n", daq_code, ret);
 	}
 
 	/* setup Comedi part of driver */
