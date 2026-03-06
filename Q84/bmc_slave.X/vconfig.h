@@ -21,7 +21,7 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.55"
+#define VER	"V0.56"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -67,12 +67,15 @@ extern "C" {
 	 * V0.53 fix serial data logic so we can get interface data without having DI or DO
 	 * V0.54 calculate battery SoC and energy
 	 * V0.55 SoC fixes
+	 * V0.56 alternative energy meters via MODBUS
 	 */
 
 	/*
 	 * internal variables and states debug screens
 	 */
-//	#define DIS_DEBUG	// active debug status display, disable during normal operation
+	//	#define DIS_DEBUG	// active debug status display, disable during normal operation
+
+	//#define IAMMETER_MODBUS	// use IAMMETER MODBUS connection to WEM3080T instead of default EM540
 
 	/*
 	 * TP1 sync triggers enable
@@ -142,8 +145,8 @@ extern "C" {
 
 	static const uint16_t TDELAY = 3000;
 	static const uint16_t SEQDELAY = 10000;
-	static const uint16_t LDELAY = 500;
-	static const uint16_t WLDELAY = 1500;
+	static const uint16_t LDELAY = 2400;
+	static const uint16_t WLDELAY = 1600;
 	static const uint16_t SDELAY = 100;
 	static const uint16_t DDELAY = 500; // display update spacing
 	static const uint16_t DFLIP = 1500; // display info flipping spacing
@@ -328,6 +331,7 @@ extern "C" {
 		int16_t secs_value, cmd_value;
 		time_t utc_cmd_value,
 		di_fail, do_fail;
+		op_t op;
 	} V_data;
 
 	typedef struct V_help {

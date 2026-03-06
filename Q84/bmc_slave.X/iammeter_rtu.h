@@ -17,6 +17,7 @@ extern "C" {
 	int8_t iammeter_controller_work(C_data *);
 	int8_t reset_iammeter_kwh(C_data *);
 	uint16_t modbus_dcu_send_msg_im(void *, const void *, const uint16_t);
+	void iammeter_version(void);
 
 #ifdef	__cplusplus
 }

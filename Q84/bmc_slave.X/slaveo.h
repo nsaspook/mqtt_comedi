@@ -64,6 +64,7 @@ extern "C" {
 	static const uint8_t UART_DUMMY_MASK = 0b01000000;
 	static const uint8_t ADC_HV0 = 0x04; // 60+ volt ADC channel
 	static const uint8_t ADC_HV1 = 0x05; // 60+ volt ADC channel
+	static const uint8_t GET_MUI = 0x0D; // 60+ volt ADC channel
 
 	static const uint8_t PORT_GET_BYTES = 7;
 	static const uint8_t CHAR_GET_BYTES = 7;

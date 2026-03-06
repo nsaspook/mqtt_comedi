@@ -299,6 +299,8 @@ V_data V = {
 	.bmc_ao = 0,
 	.di_fail = false,
 	.do_fail = false,
+	.op.master_controller_work = &master_controller_work,
+	.op.info_ptr = &em540_version,
 };
 
 BM_type BM = {
@@ -492,11 +494,18 @@ void main(void)
 
 	StartTimer(TMR_MBTEST, 20);
 	StartTimer(TMR_RESTART, 20000);
+#ifdef IAMMETER_MODBUS
+	V.op.master_controller_work = &iammeter_controller_work;
+	V.op.info_ptr = &iammeter_version;
+	iammeter_version();
+#else
+	em540_version();
+#endif
 
 #ifdef NO_NODE_ID
-	BM.node_id = 0; // set to zero to only use EMON type number as the CAN packet ID
+		BM.node_id = 0; // set to zero to only use EMON type number as the CAN packet ID
 #else
-	BM.node_id = BM.node_id & 0xffffffff; // using full number
+		BM.node_id = BM.node_id & 0xffffffff; // using full number
 #endif
 
 #endif
@@ -510,8 +519,10 @@ void main(void)
 	TMR1_SetInterruptHandler(FM_tensec_io); // really TWO seconds
 	TMR1_StartTimer();
 
-	speed_text = "Locked 115200bps";
+	speed_text = em_info;
+#ifndef IAMMETER_MODBUS
 	UART1_Initialize115200();
+#endif
 	WaitMs(SDELAY);
 	RLED_SetLow(); // start complete power-up serial speed setups, LEDS OFF
 	MLED_SetLow();
@@ -555,7 +566,7 @@ void main(void)
 #ifdef MAIN_TRACE
 			TP1_SetLow();
 #endif
-			master_controller_work(&C); // master MODBUS processing
+			V.op.master_controller_work(&C); // master MODBUS processing;
 #ifdef MAIN_TRACE
 			TP1_SetHigh();
 #endif
@@ -669,9 +680,9 @@ void main(void)
 				timeout = true;
 			}
 
-			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "Port %s             ", speed_text);
+			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s             ", "BMCBoard Driver     ");
 			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "Port %s             ", speed_text);
-			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "Port %s             ", speed_text);
+			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%s Ver %s            ", (char *) build_date, VER);
 			refresh_lcd();
 			if (timeout) {
 				WaitMs(WLDELAY);

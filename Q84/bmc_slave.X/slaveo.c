@@ -178,13 +178,21 @@ void slaveo_rx_isr(void)
 				} else {
 					tmp_buf = 0;
 				}
-				SPI2TXB = tmp_buf;
+				if (serial_buffer_ss.raw_index == BMC_CKSUM) {
+					SPI2TXB = CHECKBYTE;
+				} else {
+					SPI2TXB = tmp_buf;
+				}
 			} else { // [4..7] MEMORY device
 				tmp_buf = spi_stat_ss.daq_conf;
 				if (update_bmc_string == true) { // log_buffer has been updated
 					tmp_buf = log_buffer[BMC4.pos++];
 				}
-				SPI2TXB = tmp_buf;
+				if (serial_buffer_ss.raw_index == BMC_CKSUM) {
+					SPI2TXB = CHECKBYTE;
+				} else {
+					SPI2TXB = tmp_buf;
+				}
 				spi_stat_ss.bmc_counts++;
 			}
 			serial_buffer_ss.cget_value = false;
@@ -202,7 +210,11 @@ void slaveo_rx_isr(void)
 			} else { // MEMORY device
 				tmp_buf = log_buffer[BMC4.pos];
 			}
-			SPI2TXB = tmp_buf;
+			if (serial_buffer_ss.raw_index == BMC_CKSUM) {
+				SPI2TXB = CHECKBYTE;
+			} else {
+				SPI2TXB = tmp_buf;
+			}
 			data_in2 = 0;
 		}
 	}
@@ -222,7 +234,11 @@ void slaveo_rx_isr(void)
 			} else {
 				tmp_buf = (uint8_t) in_buf2;
 			}
-			SPI2TXB = tmp_buf;
+			if (serial_buffer_ss.raw_index == BMC_CKSUM) {
+				SPI2TXB = CHECKBYTE;
+			} else {
+				SPI2TXB = tmp_buf;
+			}
 			data_in2 = 0;
 		}
 	}
@@ -239,7 +255,11 @@ void slaveo_rx_isr(void)
 			if (serial_buffer_ss.raw_index == BMC_D0) {
 				SPI2TXB = (adc_buffer[channel] &0x00ff);
 			} else {
-				SPI2TXB = ((adc_buffer[channel] >> 8)&0x00ff);
+				if (serial_buffer_ss.raw_index == BMC_CKSUM) {
+					SPI2TXB = CHECKBYTE;
+				} else {
+					SPI2TXB = ((adc_buffer[channel] >> 8)&0x00ff);
+				}
 			}
 			data_in2 = 0;
 		}
@@ -293,6 +313,29 @@ void slaveo_rx_isr(void)
 					break;
 				}
 				break;
+			case GET_MUI:
+				switch (serial_buffer_ss.raw_index) {
+				case BMC_D0:
+					tmp_buf5[0] = (uint8_t) spi_stat_ss.mui;
+					SPI2TXB = (uint8_t) tmp_buf5[0];
+					break;
+				case BMC_D1:
+					tmp_buf5[1] = (uint8_t) (spi_stat_ss.mui >> 8);
+					SPI2TXB = (uint8_t) tmp_buf5[1];
+					break;
+				case BMC_D2:
+					tmp_buf5[2] = (uint8_t) (spi_stat_ss.mui >> 16);
+					SPI2TXB = (uint8_t) tmp_buf5[2];
+					break;
+				case BMC_D3:
+					tmp_buf5[3] = (uint8_t) (spi_stat_ss.mui >> 24);
+					SPI2TXB = (uint8_t) tmp_buf5[3];
+					break;
+				default:
+					SPI2TXB = CHECKBYTE;
+					break;
+				}
+				break;
 			case 0x0C: // do ADC calibration functions
 				SPI2TXB = CHECKBYTE;
 				switch (serial_buffer_ss.raw_index) {
@@ -310,7 +353,11 @@ void slaveo_rx_isr(void)
 					SPI2TXB = CHECKBYTE;
 					break;
 				default:
-					SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits
+					if (serial_buffer_ss.raw_index == BMC_CKSUM) {
+						SPI2TXB = CHECKBYTE;
+					} else {
+						SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits
+					}
 					break;
 				}
 				break;

@@ -56,6 +56,8 @@ extern "C" {
 #include "mcc_generated_files/mcc.h"
 #include "mcc_generated_files/uart3.h"
 
+	extern char em_info[];
+
 #ifdef TRACE
 #define INT_TRACE	INT_TRACE_Toggle() // EXT_IO pin 5
 #else
@@ -134,6 +136,40 @@ extern "C" {
 		T_light,
 	} trace_type;
 
+	typedef struct M_data { // ISR used, mainly for non-atomic mod problems
+		uint8_t blink_lock : 1;
+		uint8_t config : 1;
+		uint8_t stable : 1;
+		uint8_t boot_code : 1;
+		uint8_t power_on : 1;
+		uint8_t send_count, recv_count, pwm_volts;
+		uint16_t error, crc_data, crc_calc;
+		uint32_t crc_error;
+		uint32_t to_error;
+		uint32_t sends;
+		volatile bool rx;
+	} M_data;
+
+	typedef struct C_data { // client state machine data
+		uint8_t mcmd;
+		comm_type cstate;
+		cmd_type modbus_command;
+		uint16_t req_length, iam_count;
+		int8_t trace, resets;
+		bool id_ok, passwd_ok, config_ok, data_ok, light_ok, serial_ok, link_ok, version_ok, tm_ok;
+		uint32_t data_count, data_prev;
+		volatile M_data M;
+	} C_data;
+
+	/*
+	 * function pointer templates structure
+	 * for the device I/O routines and data
+	 */
+	typedef struct _op_t {
+		void (*info_ptr)(void);
+		int8_t(*master_controller_work)(C_data *);
+	} op_t;
+
 	struct VM_type {
 		uint32_t StartTime, TimeUsed;
 		volatile uint32_t pacing, pwm_update, pwm_stop, fault_count, fault_ticks, fault_source, modbus_rx, modbus_tx;
@@ -160,31 +196,6 @@ extern "C" {
 		int64_t value;
 		char bytes[8];
 	};
-
-	typedef struct M_data { // ISR used, mainly for non-atomic mod problems
-		uint8_t blink_lock : 1;
-		uint8_t config : 1;
-		uint8_t stable : 1;
-		uint8_t boot_code : 1;
-		uint8_t power_on : 1;
-		uint8_t send_count, recv_count, pwm_volts;
-		uint16_t error, crc_data, crc_calc;
-		uint32_t crc_error;
-		uint32_t to_error;
-		uint32_t sends;
-		volatile bool rx;
-	} M_data;
-
-	typedef struct C_data { // client state machine data
-		uint8_t mcmd;
-		comm_type cstate;
-		cmd_type modbus_command;
-		uint16_t req_length, iam_count;
-		int8_t trace, resets;
-		bool id_ok, passwd_ok, config_ok, data_ok, light_ok, serial_ok, link_ok, version_ok, tm_ok;
-		uint32_t data_count, data_prev;
-		volatile M_data M;
-	} C_data;
 
 	/*
 	 * maps the EM540 modbus registers to int32_t and uint16_t values
@@ -350,6 +361,8 @@ extern "C" {
 
 	uint16_t crc16_receive(const C_data *);
 	void log_crc_error(const uint16_t, const uint16_t);
+
+	void em540_version(void);
 
 	extern volatile struct VM_type VM;
 	extern C_data C; // MODBUS client state data

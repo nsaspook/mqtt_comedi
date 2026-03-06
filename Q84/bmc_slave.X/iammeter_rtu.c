@@ -364,3 +364,8 @@ static bool modbus_read_dcu_check_im(C_data * client, bool* cstate, const uint16
 	}
 	return *cstate;
 }
+
+void iammeter_version(void)
+{
+	strncpy(em_info, "WEM3080T Driver     ", 32);
+}

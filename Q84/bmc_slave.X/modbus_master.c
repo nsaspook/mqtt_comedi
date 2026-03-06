@@ -50,6 +50,8 @@ volatile struct VM_type VM = {
 	.dmt_sosc_flag = false,
 };
 
+char em_info[32];
+
 /*
  * send and receive MODBUS templates for 3-phase energy monitor EM540
  * https://www.gavazzionline.com/pdf/EM540_DS_ENG.pdf
@@ -733,8 +735,8 @@ static void em_data_handler(void)
 	em.pfl2 = mb16_swap(em_ptr->pfl2);
 	em.pfsys = mb16_swap(em_ptr->pfsys);
 	em.hz = mb16_swap(em_ptr->hz);
-	
-	em_tmp.al1=((float) em.al1) / 1000.0f;
+
+	em_tmp.al1 = ((float) em.al1) / 1000.0f;
 #ifndef MB_EM540_ONE
 #endif
 }
@@ -747,7 +749,7 @@ static void emt_data_handler(void)
 #ifdef	 MB_EM540_EMT
 	memcpy((void*) &emt, (void*) &cc_buffer[3], sizeof(emt));
 	emt.hz = mb32_swap(emt.hz);
-	
+
 	em_tmp.hz = ((float) emt.hz) / 1000.0f;
 #endif
 }
@@ -769,4 +771,9 @@ static void emv_data_handler(void)
 	 */
 	memcpy((void*) &emv, (void*) &cc_buffer[3], sizeof(emv));
 	emv.firmware = mb16_swap(emv.firmware);
+}
+
+void em540_version(void)
+{
+	strncpy(em_info, "EM540 Driver       ", 32);
 }

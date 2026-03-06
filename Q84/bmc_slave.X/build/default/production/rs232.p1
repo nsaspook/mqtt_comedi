@@ -6,20 +6,36 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v F25026 `(v ~T0 @X0 0 tf ]
 [v F25032 `(v ~T0 @X0 0 tf ]
 "11 rs232.c
-[c E25447 0 1 2 3 4 5 6 .. ]
-[n E25447 . SEQ_STATE_INIT SEQ_STATE_RX SEQ_STATE_TX SEQ_STATE_TRIGGER SEQ_STATE_QUEUE SEQ_STATE_DONE SEQ_STATE_ERROR  ]
-[c E25456 0 1 2 3 4 .. ]
-[n E25456 . UI_STATE_INIT UI_STATE_HOST UI_STATE_DEBUG UI_STATE_LOG UI_STATE_ERROR  ]
-[c E25419 0 1 2 3 4 5 6 7 8 9 10 11 .. ]
-[n E25419 . DIS_STR DIS_TERM DIS_LOG DIS_LOAD DIS_UNLOAD DIS_PUMP DIS_HELP DIS_SEQUENCE DIS_SEQUENCE_M DIS_ERR DIS_FREE DIS_CLEAR  ]
-"271 ./vconfig.h
-[s S3409 `uc -> 32 `i `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 :1 `uc 1 `E25419 1 `E25419 1 `us 1 `us 1 ]
-[n S3409 terminal_type ack mesgid TID mcode mparm cmdlen log_seq host_display_ack info help_temp ceid log_num ]
-"309
-[s S3410 `E25447 1 `E25456 1 `uc -> 128 `i `uc -> 160 `i `uc -> 64 `i `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `l 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `E25456 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `Vus 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :4 `uc 1 :4 `uc 1 `S3409 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `Vuc 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `us 1 `us 1 `s 1 `s 1 `uc 1 `uc 1 `s 1 `s 1 `ul 1 `ul 1 `ul 1 ]
-[n S3410 V_data s_state ui_state buf terminal info ticks systemb tx_total rx_total bt_total br_total brn_total btn_total bmc_do bmc_di utc_ticks testing stream function error abort msg_error msg_ret alarm event ui_sw r_checksum t_checksum checksum_error timer_error ping mode_pwm equip_timeout sequences all_errors ceid bmc_ao rbit wbit ebit failed_send failed_receive response uart llid sid ping_count euart vterm vterm_switch uart_speed_fast ticker flipper queue debug help stack help_id rerror speed_spin set_sequ log_s6f11 log_abort log_char v_tx_line v_rx_line tx_volts rx_volts tx_rs232 rx_rs232 secs_value cmd_value utc_cmd_value di_fail do_fail ]
+[c E25456 0 1 2 3 4 5 6 .. ]
+[n E25456 . SEQ_STATE_INIT SEQ_STATE_RX SEQ_STATE_TX SEQ_STATE_TRIGGER SEQ_STATE_QUEUE SEQ_STATE_DONE SEQ_STATE_ERROR  ]
+[c E25465 0 1 2 3 4 .. ]
+[n E25465 . UI_STATE_INIT UI_STATE_HOST UI_STATE_DEBUG UI_STATE_LOG UI_STATE_ERROR  ]
+[c E25428 0 1 2 3 4 5 6 7 8 9 10 11 .. ]
+[n E25428 . DIS_STR DIS_TERM DIS_LOG DIS_LOAD DIS_UNLOAD DIS_PUMP DIS_HELP DIS_SEQUENCE DIS_SEQUENCE_M DIS_ERR DIS_FREE DIS_CLEAR  ]
+"274 ./vconfig.h
+[s S3410 `uc -> 32 `i `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 :1 `uc 1 `E25428 1 `E25428 1 `us 1 `us 1 ]
+[n S3410 terminal_type ack mesgid TID mcode mparm cmdlen log_seq host_display_ack info help_temp ceid log_num ]
+[v F25128 `(v ~T0 @X0 0 tf ]
+"11 rs232.c
+[c E25050 0 1 2 3 .. ]
+[n E25050 comm_type CLEAR INIT SEND RECV  ]
+[c E25056 0 1 2 3 4 5 6 7 8 .. ]
+[n E25056 cmd_type G_ID G_DATA1 G_DATA2 G_CONFIG G_PASSWD G_LIGHT G_VERSION G_SERIAL G_LAST  ]
+"139 ./modbus_master.h
+[s S3393 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 `uc 1 `uc 1 `uc 1 `us 1 `us 1 `us 1 `ul 1 `ul 1 `ul 1 `Va 1 ]
+[n S3393 M_data blink_lock config stable boot_code power_on send_count recv_count pwm_volts error crc_data crc_calc crc_error to_error sends rx ]
+"153
+[s S3394 `uc 1 `E25050 1 `E25056 1 `us 1 `us 1 `c 1 `c 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `ul 1 `ul 1 `VS3393 1 ]
+[n S3394 C_data mcmd cstate modbus_command req_length iam_count trace resets id_ok passwd_ok config_ok data_ok light_ok serial_ok link_ok version_ok tm_ok data_count data_prev M ]
+[v F25130 `(c ~T0 @X0 0 tf1`*S3394 ]
+"168
+[s S3395 `*F25128 1 `*F25130 1 ]
+[n S3395 _op_t info_ptr master_controller_work ]
+"312 ./vconfig.h
+[s S3411 `E25456 1 `E25465 1 `uc -> 128 `i `uc -> 160 `i `uc -> 64 `i `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `l 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `E25465 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `Vus 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :4 `uc 1 :4 `uc 1 `S3410 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `Vuc 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `us 1 `us 1 `s 1 `s 1 `uc 1 `uc 1 `s 1 `s 1 `ul 1 `ul 1 `ul 1 `S3395 1 ]
+[n S3411 V_data s_state ui_state buf terminal info ticks systemb tx_total rx_total bt_total br_total brn_total btn_total bmc_do bmc_di utc_ticks testing stream function error abort msg_error msg_ret alarm event ui_sw r_checksum t_checksum checksum_error timer_error ping mode_pwm equip_timeout sequences all_errors ceid bmc_ao rbit wbit ebit failed_send failed_receive response uart llid sid ping_count euart vterm vterm_switch uart_speed_fast ticker flipper queue debug help stack help_id rerror speed_spin set_sequ log_s6f11 log_abort log_char v_tx_line v_rx_line tx_volts rx_volts tx_rs232 rx_rs232 secs_value cmd_value utc_cmd_value di_fail do_fail op ]
 "4 rs232.c
-[v _V `S3410 ~T0 @X0 0 e ]
+[v _V `S3411 ~T0 @X0 0 e ]
 "3
 [v _line_status `(uc ~T0 @X0 0 sf1`Cus ]
 "290 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.29.481/xc8/pic/include/proc/pic18f57q84.h
@@ -2503,47 +2519,47 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _SPI2_InterruptHandler `*F25026 ~T0 @X0 1 e ]
 "77
 [v _SPI2_RxInterruptHandler `*F25032 ~T0 @X0 1 e ]
-"70 ./modbus_master.h
+"72 ./modbus_master.h
 [v _TMDELAY `Cuc ~T0 @X0 1 s ]
 [i _TMDELAY
 -> -> 2 `i `uc
 ]
-"71
+"73
 [v _TEDELAY `Cuc ~T0 @X0 1 s ]
 [i _TEDELAY
 -> -> 1 `i `uc
 ]
-"72
+"74
 [v _RDELAY `Cuc ~T0 @X0 1 s ]
 [i _RDELAY
 -> -> 200 `i `uc
 ]
-"73
+"75
 [v _CDELAY `Cuc ~T0 @X0 1 s ]
 [i _CDELAY
 -> -> 40 `i `uc
 ]
-"74
+"76
 [v _QDELAY `Cuc ~T0 @X0 1 s ]
 [i _QDELAY
 -> -> 2 `i `uc
 ]
-"75
+"77
 [v _TODELAY `Cuc ~T0 @X0 1 s ]
 [i _TODELAY
 -> -> 4 `i `uc
 ]
-"76
+"78
 [v _SPACING `Cuc ~T0 @X0 1 s ]
 [i _SPACING
 -> -> 40 `i `uc
 ]
-"77
+"79
 [v _DUPL_DELAY `Cuc ~T0 @X0 1 s ]
 [i _DUPL_DELAY
 -> -> 2 `i `uc
 ]
-"254
+"265
 [v _table_crc_hi `Cuc ~T0 @X0 -> 256 `i s ]
 [i _table_crc_hi
 :U ..
@@ -2805,7 +2821,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 64 `i `uc
 ..
 ]
-"284
+"295
 [v _table_crc_lo `Cuc ~T0 @X0 -> 256 `i s ]
 [i _table_crc_lo
 :U ..
@@ -3067,92 +3083,92 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 64 `i `uc
 ..
 ]
-"324
+"335
 [v _BOFF `Cuc ~T0 @X0 1 s ]
 [i _BOFF
 -> -> 0 `i `uc
 ]
-"325
+"336
 [v _BON `Cuc ~T0 @X0 1 s ]
 [i _BON
 -> -> 255 `i `uc
 ]
-"143 ./vconfig.h
+"146 ./vconfig.h
 [v _TDELAY `Cus ~T0 @X0 1 s ]
 [i _TDELAY
 -> -> 3000 `i `us
 ]
-"144
+"147
 [v _SEQDELAY `Cus ~T0 @X0 1 s ]
 [i _SEQDELAY
 -> -> 10000 `i `us
 ]
-"145
+"148
 [v _LDELAY `Cus ~T0 @X0 1 s ]
 [i _LDELAY
--> -> 500 `i `us
+-> -> 2400 `i `us
 ]
-"146
+"149
 [v _WLDELAY `Cus ~T0 @X0 1 s ]
 [i _WLDELAY
--> -> 1500 `i `us
+-> -> 1600 `i `us
 ]
-"147
+"150
 [v _SDELAY `Cus ~T0 @X0 1 s ]
 [i _SDELAY
 -> -> 100 `i `us
 ]
-"148
+"151
 [v _DDELAY `Cus ~T0 @X0 1 s ]
 [i _DDELAY
 -> -> 500 `i `us
 ]
-"149
+"152
 [v _DFLIP `Cus ~T0 @X0 1 s ]
 [i _DFLIP
 -> -> 1500 `i `us
 ]
-"150
+"153
 [v _ADCDELAY `Cuc ~T0 @X0 1 s ]
 [i _ADCDELAY
 -> -> 1 `i `uc
 ]
-"151
+"154
 [v _SWITCH_VTERM `Cuc ~T0 @X0 1 s ]
 [i _SWITCH_VTERM
 -> -> 70 `i `uc
 ]
-"152
+"155
 [v _SWITCH_DURATION `Cuc ~T0 @X0 1 s ]
 [i _SWITCH_DURATION
 -> -> 32 `i `uc
 ]
-"153
+"156
 [v _HOST_UART `Cuc ~T0 @X0 1 s ]
 [i _HOST_UART
 -> -> 1 `i `uc
 ]
-"154
+"157
 [v _CHK_DAY_TIME `Cus ~T0 @X0 1 s ]
 [i _CHK_DAY_TIME
 -> -> 1200 `i `us
 ]
-"155
+"158
 [v _BAT_DAY_COUNT `Cuc ~T0 @X0 1 s ]
 [i _BAT_DAY_COUNT
 -> -> 45 `i `uc
 ]
-"156
+"159
 [v _BAT_NIGHT_COUNT `Cuc ~T0 @X0 1 s ]
 [i _BAT_NIGHT_COUNT
 -> -> 90 `i `uc
 ]
-"157
+"160
 [v _PV_VOLTS_HIGH `Cuc ~T0 @X0 1 s ]
 [i _PV_VOLTS_HIGH
 -> -> 70 `i `uc
 ]
-"166
+"169
 [v _log_format1 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format1
 :U ..
@@ -3341,7 +3357,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"172
+"175
 [v _log_format2 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format2
 :U ..
@@ -3530,7 +3546,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"178
+"181
 [v _log_format3 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format3
 :U ..
@@ -3719,7 +3735,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"184
+"187
 [v _log_format4 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format4
 :U ..
@@ -3908,9 +3924,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-[v F25558 `Cuc ~T0 @X0 -> 20 `i t ]
-"340
-[v _spin `F25558 ~T0 @X0 -> 6 `i e ]
+[v F25568 `Cuc ~T0 @X0 -> 20 `i t ]
+"344
+[v _spin `F25568 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
 :U ..
@@ -4021,51 +4037,51 @@ Version 4.0 HI-TECH Software Intermediate Code
 "14
 [e = . _V 66 -> / + -> _adc_scale_zero `i -> -> . _V 64 `s `i -> _neg_scale `i `s ]
 "15
-[e $ ! > -> . _V 66 `i -> 0 `i 3414  ]
+[e $ ! > -> . _V 66 `i -> 0 `i 3415  ]
 {
 "16
 [e = . _V 66 -> / + -> _adc_scale_zero `i -> -> . _V 64 `s `i -> _pos_scale `i `s ]
 "17
 }
-[e $U 3415  ]
-[e :U 3414 ]
+[e $U 3416  ]
+[e :U 3415 ]
 {
 "18
-[e $ ! < -> . _V 66 `i -> _line_zero_limit `i 3416  ]
+[e $ ! < -> . _V 66 `i -> _line_zero_limit `i 3417  ]
 {
 "19
 [e = . _V 66 -> -> 0 `i `s ]
 "20
 }
-[e :U 3416 ]
+[e :U 3417 ]
 "21
 }
-[e :U 3415 ]
+[e :U 3416 ]
 "23
 [e = . _V 67 -> / + -> _adc_scale_zero `i -> -> . _V 65 `s `i -> _neg_scale `i `s ]
 "24
-[e $ ! > -> . _V 67 `i -> 0 `i 3417  ]
+[e $ ! > -> . _V 67 `i -> 0 `i 3418  ]
 {
 "25
 [e = . _V 67 -> / + -> _adc_scale_zero `i -> -> . _V 65 `s `i -> _pos_scale `i `s ]
 "26
 }
-[e $U 3418  ]
-[e :U 3417 ]
+[e $U 3419  ]
+[e :U 3418 ]
 {
 "27
-[e $ ! < -> . _V 67 `i -> _line_zero_limit `i 3419  ]
+[e $ ! < -> . _V 67 `i -> _line_zero_limit `i 3420  ]
 {
 "28
 [e = . _V 67 -> -> 0 `i `s ]
 "29
 }
-[e :U 3419 ]
+[e :U 3420 ]
 "30
 }
-[e :U 3418 ]
+[e :U 3419 ]
 "32
-[e :UE 3413 ]
+[e :UE 3414 ]
 }
 "42
 [v _line_status `(uc ~T0 @X0 1 sf1`Cus ]
@@ -4080,32 +4096,32 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _status_c `uc ~T0 @X0 1 a ]
 [e = _status_c -> -> 68 `ui `uc ]
 "46
-[e $ ! && < -> _value `ui -> - -> 2240 `i -> 50 `i `ui > -> _value `ui -> - -> 2240 `i -> 50 `i `ui 3421  ]
+[e $ ! && < -> _value `ui -> - -> 2240 `i -> 50 `i `ui > -> _value `ui -> - -> 2240 `i -> 50 `i `ui 3422  ]
 {
 "47
 [e = _status_c -> -> 79 `ui `uc ]
 "48
 }
-[e :U 3421 ]
+[e :U 3422 ]
 "50
-[e $ ! && > -> _value `ui -> + -> 2240 `i -> 100 `i `ui < -> _value `ui -> + -> 2390 `i -> 500 `i `ui 3422  ]
+[e $ ! && > -> _value `ui -> + -> 2240 `i -> 100 `i `ui < -> _value `ui -> + -> 2390 `i -> 500 `i `ui 3423  ]
 {
 "51
 [e = _status_c -> -> 83 `ui `uc ]
 "52
 }
-[e :U 3422 ]
+[e :U 3423 ]
 "54
-[e $ ! && < -> _value `ui -> - -> 2240 `i -> 300 `i `ui > -> _value `ui -> - -> 1425 `i -> 500 `i `ui 3423  ]
+[e $ ! && < -> _value `ui -> - -> 2240 `i -> 300 `i `ui > -> _value `ui -> - -> 1425 `i -> 500 `i `ui 3424  ]
 {
 "55
 [e = _status_c -> -> 77 `ui `uc ]
 "56
 }
-[e :U 3423 ]
+[e :U 3424 ]
 "58
 [e ) _status_c ]
-[e $UE 3420  ]
+[e $UE 3421  ]
 "59
-[e :UE 3420 ]
+[e :UE 3421 ]
 }
