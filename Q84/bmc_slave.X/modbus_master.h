@@ -166,6 +166,7 @@ extern "C" {
 	 * for the device I/O routines and data
 	 */
 	typedef struct _op_t {
+		void (*init_mb_master_timers)(void);
 		void (*info_ptr)(void);
 		int8_t(*master_controller_work)(C_data *);
 	} op_t;
@@ -352,6 +353,9 @@ extern "C" {
 	uint32_t get_2hz(const uint8_t);
 	uint32_t get_500ahz(const uint8_t);
 	uint32_t get_500hz(const uint8_t);
+	
+	void timer_500ms_tick(void);
+	void timer_2ms_tick(void);
 
 	bool serial_trmt(void);
 

@@ -2,7 +2,7 @@
 
 #define TDELAY		3	// half-duplex delay
 
-typedef struct M_time_data { // ISR used, mainly for non-atomic mod problems
+typedef struct M_time_data { // ISR used, mainly for non-atomic mod problims
 	uint32_t clock_500hz;
 	uint32_t clock_500ahz;
 	uint32_t clock_2hz;
@@ -34,9 +34,31 @@ static void iammeterv_data_handler(void);
 static void half_dup_tx(const bool);
 static void half_dup_rx(const bool);
 
-static uint8_t wem_single[] = {0x01, 0x10, 0x00, 0x0C, 0x00, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00, 0xF3, 0xFA},
-wem_three_forward[] = {0x01, 0x10, 0x00, 0x63, 0x00, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00, 0xB5, 0x92},
-wem_three_reverse[] = {0x01, 0x10, 0x00, 0x66, 0x00, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00, 0x75, 0xAD};
+static uint8_t wim_single[] = {0x01, 0x10, 0x00, 0x0C, 0x00, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00, 0xF3, 0xFA},
+wim_three_forward[] = {0x01, 0x10, 0x00, 0x63, 0x00, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00, 0xB5, 0x92},
+wim_three_reverse[] = {0x01, 0x10, 0x00, 0x66, 0x00, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00, 0x75, 0xAD};
+
+/*
+ * register data frames
+ */
+IM_data1 im, *im_ptr;
+IM_tmp im_tmp;
+IM_data2 imt;
+IM_serial ims;
+IM_version imv;
+
+/*
+ * state machine hardware timers interrupt ISR functions setup
+ */
+void init_im_mb_master_timers(void)
+{
+	cc_buffer = cc_buffer_0;
+	im_ptr = (IM_data1*) & cc_buffer[3];
+	TMR4_SetInterruptHandler(timer_500ms_tick);
+	TMR4_StartTimer();
+	TMR3_SetInterruptHandler(timer_2ms_tick);
+	TMR3_StartTimer();
+}
 
 int8_t iammeter_controller_work(C_data * client)
 {
@@ -68,16 +90,16 @@ int8_t reset_iammeter_kwh(C_data * client)
 		 */
 		switch (client->resets++) {
 		case 0:
-			client->req_length = modbus_dcu_send_msg_im((void*) cc_buffer_tx, (const void *) &wem_single, sizeof(wem_single));
+			client->req_length = modbus_dcu_send_msg_im((void*) cc_buffer_tx, (const void *) &wim_single, sizeof(wim_single));
 			break;
 		case 1:
-			client->req_length = modbus_dcu_send_msg_im((void*) cc_buffer_tx, (const void *) &wem_three_forward, sizeof(wem_three_forward));
+			client->req_length = modbus_dcu_send_msg_im((void*) cc_buffer_tx, (const void *) &wim_three_forward, sizeof(wim_three_forward));
 			break;
 		case 2:
-			client->req_length = modbus_dcu_send_msg_im((void*) cc_buffer_tx, (const void *) &wem_three_reverse, sizeof(wem_three_reverse));
+			client->req_length = modbus_dcu_send_msg_im((void*) cc_buffer_tx, (const void *) &wim_three_reverse, sizeof(wim_three_reverse));
 			break;
 		default:
-			client->req_length = modbus_dcu_send_msg_im((void*) cc_buffer_tx, (const void *) &wem_single, sizeof(wem_single));
+			client->req_length = modbus_dcu_send_msg_im((void*) cc_buffer_tx, (const void *) &wim_single, sizeof(wim_single));
 			client->resets = 0;
 			break;
 		}
@@ -130,37 +152,37 @@ int8_t reset_iammeter_kwh(C_data * client)
 static void iammeter_data_handler(void)
 {
 	/*
-	 * load EM540 data pointer with receive buffer to data structure
+	 * load IAMMETER data pointer with receive buffer to data structure
 	 * and munge the data into the correct local formats for client
 	 */
 	em_ptr = (EM_data1*) & cc_buffer[3];
-	em.vl1n = mb32_swap(em_ptr->vl1n);
-	em.vl2n = mb32_swap(em_ptr->vl2n);
-	em.vl3n = mb32_swap(em_ptr->vl3n);
-	em.vl1l2 = mb32_swap(em_ptr->vl1l2);
-	em.vl2l3 = mb32_swap(em_ptr->vl2l3);
-	em.vl3l1 = mb32_swap(em_ptr->vl3l1);
-	em.al1 = mb32_swap(em_ptr->al1);
-	em.al2 = mb32_swap(em_ptr->al2);
-	em.al3 = mb32_swap(em_ptr->al3);
-	em.wl1 = mb32_swap(em_ptr->wl1);
-	em.wl2 = mb32_swap(em_ptr->wl2);
-	em.wl3 = mb32_swap(em_ptr->wl3);
-	em.val1 = mb32_swap(em_ptr->val1);
-	em.val2 = mb32_swap(em_ptr->val2);
-	em.val3 = mb32_swap(em_ptr->val3);
-	em.varl1 = mb32_swap(em_ptr->varl1);
-	em.varl2 = mb32_swap(em_ptr->varl2);
-	em.varl3 = mb32_swap(em_ptr->varl3);
-	em.wsys = mb32_swap(em_ptr->wsys);
-	em.vasys = mb32_swap(em_ptr->vasys);
-	em.varsys = mb32_swap(em_ptr->varsys);
-	em.pfl1 = mb16_swap(em_ptr->pfl1);
-	em.pfl2 = mb16_swap(em_ptr->pfl2);
-	em.pfsys = mb16_swap(em_ptr->pfsys);
-	em.hz = mb16_swap(em_ptr->hz);
+	em.vl1n = mb32_swap(im_ptr->vl1n);
+	em.vl2n = mb32_swap(im_ptr->vl2n);
+	em.vl3n = mb32_swap(im_ptr->vl3n);
+	em.vl1l2 = mb32_swap(im_ptr->vl1n);
+	em.vl2l3 = mb32_swap(im_ptr->vl2n);
+	em.vl3l1 = mb32_swap(im_ptr->vl3n);
+	em.al1 = mb32_swap(im_ptr->al1);
+	em.al2 = mb32_swap(im_ptr->al2);
+	em.al3 = mb32_swap(im_ptr->al3);
+	em.wl1 = mb32_swap(im_ptr->wl1);
+	em.wl2 = mb32_swap(im_ptr->wl2);
+	em.wl3 = mb32_swap(im_ptr->wl3);
+	em.val1 = mb32_swap(im_ptr->rpp1s);
+	em.val2 = mb32_swap(im_ptr->rpp2s);
+	em.val3 = mb32_swap(im_ptr->rpp3s);
+	em.varl1 = mb32_swap(im_ptr->rpp1s);
+	em.varl2 = mb32_swap(im_ptr->rpp2s);
+	em.varl3 = mb32_swap(im_ptr->rpp3s);
+	em.wsys = mb32_swap(im_ptr->tps);
+	em.vasys = mb32_swap(im_ptr->tps);
+	em.varsys = mb32_swap(im_ptr->tps);
+	em.pfl1 = mb16_swap((const int16_t) im_ptr->pfl1);
+	em.pfl2 = mb16_swap((const int16_t) im_ptr->pfl2);
+	em.pfsys = mb16_swap((const int16_t) im_ptr->pfl3);
+	em.hz = mb16_swap((const int16_t) im_ptr->hz);
 
-	em_tmp.al1 = ((float) em.al1) / 1000.0f;
+	em_tmp.al1 = ((float) im.al1) / 1000.0f;
 }
 
 static void iammetert_data_handler(void)
@@ -168,10 +190,10 @@ static void iammetert_data_handler(void)
 	/*
 	 * move from receive buffer to data structure and munge the data into the correct local formats from MODBUS client
 	 */
-	memcpy((void*) &emt, (void*) &cc_buffer[3], sizeof(emt));
-	emt.hz = mb32_swap(emt.hz);
+	memcpy((void*) &imt, (void*) &cc_buffer[3], sizeof(imt));
+	imt.hz = mb32_swap(imt.hz);
 
-	em_tmp.hz = ((float) emt.hz) / 1000.0f;
+	em_tmp.hz = ((float) imt.hz) / 1000.0f;
 }
 
 static void iammmeters_data_handler(void)
@@ -179,9 +201,9 @@ static void iammmeters_data_handler(void)
 	/*
 	 * move from receive buffer to data structure and munge the data into the correct local formats from MODBUS client
 	 */
-	memcpy((void*) &ems, (void*) &cc_buffer[3], sizeof(ems));
-	ems.serial[13] = 0; // terminate serial string data
-	ems.year = mb16_swap(ems.year);
+	memcpy((void*) &ims, (void*) &cc_buffer[3], sizeof(ims));
+	ims.serial[13] = 0; // terminate serial string data
+	ims.year = mb16_swap(ims.year);
 }
 
 static void iammeterv_data_handler(void)
@@ -189,8 +211,8 @@ static void iammeterv_data_handler(void)
 	/*
 	 * move from receive buffer to data structure and munge the data into the correct local formats from MODBUS client
 	 */
-	memcpy((void*) &emv, (void*) &cc_buffer[3], sizeof(emv));
-	emv.firmware = mb16_swap(emv.firmware);
+	memcpy((void*) &imv, (void*) &cc_buffer[3], sizeof(imv));
+	imv.firmware = mb16_swap(imv.firmware);
 }
 
 static bool iammeter_modbus_write_check(C_data * client, bool* cstate, const uint16_t rec_length)
@@ -367,5 +389,5 @@ static bool modbus_read_dcu_check_im(C_data * client, bool* cstate, const uint16
 
 void iammeter_version(void)
 {
-	strncpy(em_info, "WEM3080T Driver     ", 32);
+	strncpy(em_info, "WEM3080 Driver      ", 32);
 }

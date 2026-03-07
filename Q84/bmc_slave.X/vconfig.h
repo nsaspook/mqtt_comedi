@@ -75,7 +75,7 @@ extern "C" {
 	 */
 	//	#define DIS_DEBUG	// active debug status display, disable during normal operation
 
-	//#define IAMMETER_MODBUS	// use IAMMETER MODBUS connection to WEM3080T instead of default EM540
+//#define IAMMETER_MODBUS	// use IAMMETER MODBUS connection to WEM3080T instead of default EM540
 
 	/*
 	 * TP1 sync triggers enable

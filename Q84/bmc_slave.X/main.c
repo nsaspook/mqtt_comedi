@@ -299,6 +299,7 @@ V_data V = {
 	.bmc_ao = 0,
 	.di_fail = false,
 	.do_fail = false,
+	.op.init_mb_master_timers = &init_mb_master_timers,
 	.op.master_controller_work = &master_controller_work,
 	.op.info_ptr = &em540_version,
 };
@@ -489,23 +490,23 @@ void main(void)
 	set_calibration(spi_stat_ss.mui);
 
 #ifdef MB_MASTER
+#ifdef IAMMETER_MODBUS // use immmeter functions instead of EM540 functions
+	V.op.init_mb_master_timers = &init_im_mb_master_timers;
+	V.op.master_controller_work = &iammeter_controller_work;
+	V.op.info_ptr = &iammeter_version;
+#endif
 	UART3_SetRxInterruptHandler(my_modbus_rx_32); // install custom serial receive ISR
-	init_mb_master_timers(); // pacing, spacing and timeouts
+	V.op.init_mb_master_timers(); // MODBUS pacing, spacing and timeouts
 
 	StartTimer(TMR_MBTEST, 20);
 	StartTimer(TMR_RESTART, 20000);
-#ifdef IAMMETER_MODBUS
-	V.op.master_controller_work = &iammeter_controller_work;
-	V.op.info_ptr = &iammeter_version;
-	iammeter_version();
-#else
-	em540_version();
-#endif
+
+	V.op.info_ptr(); // MODBUS energy meter type string
 
 #ifdef NO_NODE_ID
-		BM.node_id = 0; // set to zero to only use EMON type number as the CAN packet ID
+	BM.node_id = 0; // set to zero to only use EMON type number as the CAN packet ID
 #else
-		BM.node_id = BM.node_id & 0xffffffff; // using full number
+	BM.node_id = BM.node_id & 0xffffffff; // using full number
 #endif
 
 #endif

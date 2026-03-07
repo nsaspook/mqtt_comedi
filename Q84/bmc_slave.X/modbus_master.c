@@ -86,8 +86,8 @@ EM_data2 emt;
 EM_serial ems;
 EM_version emv;
 
-static void timer_500ms_tick(void);
-static void timer_2ms_tick(void);
+void timer_500ms_tick(void);
+void timer_2ms_tick(void);
 
 static void half_dup_tx(const bool);
 static void half_dup_rx(const bool);
@@ -578,6 +578,9 @@ static void UART3_DefaultErrorHandler_mb(void)
 	MM_ERROR_S;
 }
 
+/*
+ * MODBUS tranmission error tracing
+ */
 void mb_setup(void)
 {
 	UART3_SetFramingErrorHandler(UART3_DefaultFramingErrorHandler_mb);
