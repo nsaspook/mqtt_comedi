@@ -17,8 +17,11 @@ extern "C" {
 #define IM_DATA_LEN1	74	// 16-bit words returned
 #define IM_DATA_LEN2	64	// 16-bit words returned
 
+#define MB_IAMMETER_ID_H	0x01	// slave ID
+#define MB_IAMMETER_ID_L	0x06	// slabe baudrate
+
 	/*
-	 * maps the IAMMETER modbus registers to int32_t, uint32_t and uint16_t values
+	 * maps the IAMMETER MODBUS registers to int32_t, uint32_t and uint16_t values
 	 */
 	typedef __pack struct IM_data1 {
 		volatile uint16_t vl1n, al1, wl1;

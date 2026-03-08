@@ -93,7 +93,7 @@ extern "C" {
 
 	const char modbus_name [][12] = {
 		"Offline",
-		"EM540",
+		"E METER",
 	};
 
 	typedef struct {

@@ -353,7 +353,7 @@ extern "C" {
 	uint32_t get_2hz(const uint8_t);
 	uint32_t get_500ahz(const uint8_t);
 	uint32_t get_500hz(const uint8_t);
-	
+
 	void timer_500ms_tick(void);
 	void timer_2ms_tick(void);
 
@@ -367,6 +367,8 @@ extern "C" {
 	void log_crc_error(const uint16_t, const uint16_t);
 
 	void em540_version(void);
+
+	uint16_t modbus_rtu_send_msg(void *, const void *, uint16_t);
 
 	extern volatile struct VM_type VM;
 	extern C_data C; // MODBUS client state data

@@ -92,7 +92,6 @@ void timer_2ms_tick(void);
 static void half_dup_tx(const bool);
 static void half_dup_rx(const bool);
 
-static uint16_t modbus_rtu_send_msg(void *, const void *, uint16_t);
 static uint16_t modbus_rtu_send_msg_crc(volatile uint8_t *, uint16_t);
 
 static void UART3_DefaultFramingErrorHandler_mb(void);
@@ -275,7 +274,7 @@ int8_t master_controller_work(C_data * client)
 		clear_2hz();
 		clear_500ahz();
 		client->cstate = INIT;
-		client->modbus_command = client->mcmd++; // sequence modbus commands to client
+		client->modbus_command = client->mcmd++; // sequence MODBUS commands to client
 		if (client->modbus_command == G_CONFIG && client->config_ok) { // skip if we have valid data from client
 			client->modbus_command = client->mcmd++;
 		}
@@ -295,7 +294,7 @@ int8_t master_controller_work(C_data * client)
 			client->mcmd = G_ID;
 		}
 		/*
-		 * command specific tx buffer setup
+		 * command specific TX buffer setup
 		 */
 		switch (client->modbus_command) {
 		case G_VERSION: // write code request
@@ -371,7 +370,7 @@ int8_t master_controller_work(C_data * client)
 				clear_500hz(); // clear timer until buffer empty
 			}
 #ifndef AUTO_DERE
-			DERE_SetLow(); // enable modbus receiver
+			DERE_SetLow(); // enable MODBUS receiver
 #endif
 		}
 		break;
@@ -480,7 +479,7 @@ uint32_t get_500hz(const uint8_t mode)
 	return tmp;
 }
 
-// switch RS transceiver to transmit mode and wait if not tx
+// switch RS transceiver to transmit mode and wait if not TX
 
 static void half_dup_tx(const bool delay)
 {
@@ -496,7 +495,7 @@ static void half_dup_tx(const bool delay)
 #endif
 }
 
-// switch RS transceiver to receive mode and wait if not rx
+// switch RS transceiver to receive mode and wait if not RX
 
 static void half_dup_rx(const bool delay)
 {
