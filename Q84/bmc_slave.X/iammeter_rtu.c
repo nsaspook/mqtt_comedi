@@ -1,7 +1,5 @@
 #include "iammeter_rtu.h"
 
-#define TDELAY		3	// half-duplex delay
-
 typedef struct M_time_data { // ISR used, mainly for non-atomic mod problims
 	uint32_t clock_500hz;
 	uint32_t clock_500ahz;
@@ -42,10 +40,8 @@ wim_get_id[] = {0x00, 0x03, 0x00, 0x04, 0x00, 0x01, 0xC4, 0x1A};
 
 static const uint8_t
 // transmit frames for commands
-modbus_im_id[] = {0x00, 0x03, 0x00, 0x04, 0x00, 0x01, 0xC4, 0x1A}, // IAMMETER MODBUS address and baudrate
 modbus_im_data1[] = {MADDR, READ_HOLDING_REGISTERS, 0x00, 0x48, 0x00, IM_DATA_LEN1},
 // receive frames prototypes for received data checking
-im_id[] = {MADDR, READ_HOLDING_REGISTERS, 0x00, 0x00, 0x00, 0x00, 0x00},
 im_data1[(IM_DATA_LEN1 * 2) + 5] = {MADDR, READ_HOLDING_REGISTERS, 0x00};
 
 /*
@@ -72,12 +68,15 @@ void init_im_mb_master_timers(void)
 
 /*
  * we start with ID and the cycle other command sequences
+ * Use UART3
+ * MODBUS command failure restarts STATE MACHINE to CLEAR case
  */
 int8_t iammeter_controller_work(C_data * client)
 {
 	static uint32_t spacing = 0;
+	static uint8_t m_data = 0;
 
-	if (spacing++ <SPACING && !M.rx) {
+	if (spacing++ <ISPACING && (client->cstate != RECV)) {
 		return T_spacing;
 	}
 
@@ -91,25 +90,23 @@ int8_t iammeter_controller_work(C_data * client)
 		clear_500ahz();
 		client->cstate = INIT;
 		client->modbus_command = client->mcmd++; // sequence MODBUS commands to client
-		if (client->mcmd > G_LAST) {
-			client->mcmd = G_ID;
+		if (client->mcmd > I_LAST) {
+			client->mcmd = I_DATA1;
 		}
 		/*
 		 * command specific TX buffer setup
 		 */
 		switch (client->modbus_command) {
-		case G_DATA1: // read code request
+		case I_DATA1: // read code request
 			client->trace = T_data;
 			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_im_data1, sizeof(modbus_im_data1));
 			break;
-		case G_LAST: // end of command sequences
+		case I_LAST: // end of command sequences
 			client->cstate = CLEAR;
-			client->mcmd = G_ID; // what do we run next
+			client->mcmd = I_DATA1; // what do we run next
 			break;
-		case G_ID: // operating mode request
-			client->trace = T_id;
 		default:
-			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_im_id, sizeof(modbus_im_id));
+			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_im_data1, sizeof(modbus_im_data1));
 			break;
 		}
 		break;
@@ -119,9 +116,9 @@ int8_t iammeter_controller_work(C_data * client)
 		 * MODBUS master query speed
 		 */
 #ifdef	FASTQ
-		if (get_500ahz(false) >= CDELAY) {
+		if (get_500ahz(false) >= ICDELAY) {
 #else
-		if (get_2hz(false) >= QDELAY) {
+		if (get_2hz(false) >= IQDELAY) {
 #endif
 #ifndef AUTO_DERE
 			half_dup_tx(false); // no delays here
@@ -134,7 +131,7 @@ int8_t iammeter_controller_work(C_data * client)
 		break;
 	case SEND:
 		client->trace = T_send;
-		if (get_500hz(false) >= TEDELAY) {
+		if (get_500hz(false) >= ITEDELAY) {
 			for (uint8_t i = 0; i < client->req_length; i++) {
 				Swrite(cc_buffer_tx[i]);
 			}
@@ -142,7 +139,6 @@ int8_t iammeter_controller_work(C_data * client)
 			clear_500hz(); // state machine execute background timer clear
 			client->trace = T_send_d;
 			M.sends++;
-			M.rx = false;
 			if (serial_trmt()) { // check for serial UART transmit shift register and buffer empty
 				clear_500hz(); // clear timer until buffer empty
 			}
@@ -153,22 +149,29 @@ int8_t iammeter_controller_work(C_data * client)
 		break;
 	case RECV:
 		client->trace = T_recv;
-		if (get_500hz(false) >= TEDELAY) { // state machine execute timer test
+		if (get_500hz(false) >= ITEDELAY) { // state machine execute timer test
 			client->trace = T_recv_r;
 #ifndef AUTO_DERE
 			half_dup_rx(false); // no delays here
 #endif
-
+			/*
+			 * process received controller data stream
+			 */
+			if (UART3_is_rx_ready()) {
+				m_data = UART3_Read(); // receiver data to buffer
+				cc_buffer[M.recv_count] = m_data;
+				if (++M.recv_count >= MAX_DATA) {
+					M.recv_count = 0; // reset buffer position
+				}
+			}
 			/*
 			 * check received response data for size and format for each command sent
 			 */
 			switch (client->modbus_command) {
-			case G_DATA1: // check for controller data1 codes
+			case I_DATA1: // check for controller data1 codes
 				iammeter_modbus_read_check(client, &client->data_ok, sizeof(im_data1), iammeter_data_handler);
 				break;
-			case G_ID: // check for client module type
 			default:
-				iammeter_modbus_read_id_check(client, &client->id_ok, sizeof(im_id));
 				break;
 			}
 		}
@@ -224,7 +227,7 @@ int8_t reset_iammeter_kwh(C_data * client)
 		break;
 	case SEND:
 		client->trace = T_send;
-		if (get_500hz(false) >= TEDELAY) {
+		if (get_500hz(false) >= ITEDELAY) {
 			for (uint8_t i = 0; i < client->req_length; i++) {
 				Swrite(cc_buffer_tx[i]);
 			}
@@ -233,17 +236,16 @@ int8_t reset_iammeter_kwh(C_data * client)
 			client->trace = T_send_d;
 			client->iam_count++;
 			M.sends++;
-			M.rx = false;
 			if (serial_trmt()) { // check for serial UART transmit shift register and buffer empty
 				clear_500hz(); // clear timer until buffer empty
 			}
-			delay_ms(TDELAY + client->req_length);
+			delay_ms(ITDELAY + client->req_length);
 			DERE_SetLow(); // enable MODBUS receiver
 		}
 		break;
 	case RECV:
 		client->trace = T_recv;
-		if (get_500hz(false) >= TEDELAY) { // state machine execute timer test
+		if (get_500hz(false) >= ITEDELAY) { // state machine execute timer test
 			client->trace = T_recv_r;
 			half_dup_rx(false); // no delays here
 			modbus_read_dcu_check_im(client, &client->version_ok, 1);
@@ -263,33 +265,35 @@ static void iammeter_data_handler(void)
 	 * and munge the data into the correct local formats for client
 	 */
 	em_ptr = (EM_data1*) & cc_buffer[3];
-	em.vl1n = mb32_swap(im_ptr->vl1n);
-	em.vl2n = mb32_swap(im_ptr->vl2n);
-	em.vl3n = mb32_swap(im_ptr->vl3n);
-	em.vl1l2 = mb32_swap(im_ptr->vl1n);
-	em.vl2l3 = mb32_swap(im_ptr->vl2n);
-	em.vl3l1 = mb32_swap(im_ptr->vl3n);
-	em.al1 = mb32_swap(im_ptr->al1);
-	em.al2 = mb32_swap(im_ptr->al2);
-	em.al3 = mb32_swap(im_ptr->al3);
-	em.wl1 = mb32_swap(im_ptr->wl1);
-	em.wl2 = mb32_swap(im_ptr->wl2);
-	em.wl3 = mb32_swap(im_ptr->wl3);
-	em.val1 = mb32_swap(im_ptr->rpp1s);
-	em.val2 = mb32_swap(im_ptr->rpp2s);
-	em.val3 = mb32_swap(im_ptr->rpp3s);
-	em.varl1 = mb32_swap(im_ptr->rpp1s);
-	em.varl2 = mb32_swap(im_ptr->rpp2s);
-	em.varl3 = mb32_swap(im_ptr->rpp3s);
-	em.wsys = mb32_swap(im_ptr->tps);
-	em.vasys = mb32_swap(im_ptr->tps);
-	em.varsys = mb32_swap(im_ptr->tps);
-	em.pfl1 = mb16_swap((const int16_t) im_ptr->pfl1);
-	em.pfl2 = mb16_swap((const int16_t) im_ptr->pfl2);
-	em.pfsys = mb16_swap((const int16_t) im_ptr->pfl3);
+	em.vl1n = mb32_swap(im_ptr->vl1n) / 10;
+	em.vl2n = mb32_swap(im_ptr->vl2n) / 10;
+	em.vl3n = mb32_swap(im_ptr->vl3n) / 10;
+	em.vl1l2 = mb32_swap(im_ptr->vl1n) / 10;
+	em.vl2l3 = mb32_swap(im_ptr->vl2n) / 10;
+	em.vl3l1 = mb32_swap(im_ptr->vl3n) / 10;
+	em.al1 = mb32_swap(im_ptr->al1)*10;
+	em.al2 = mb32_swap(im_ptr->al2)*10;
+	em.al3 = mb32_swap(im_ptr->al3)*10;
+	em.wl1 = mb32_swap(im_ptr->wl1)*10;
+	em.wl2 = mb32_swap(im_ptr->wl2)*10;
+	em.wl3 = mb32_swap(im_ptr->wl3)*10;
+	em.val1 = mb32_swap(im_ptr->rpp1s)*10;
+	em.val2 = mb32_swap(im_ptr->rpp2s)*10;
+	em.val3 = mb32_swap(im_ptr->rpp3s)*10;
+	em.varl1 = mb32_swap(im_ptr->rpp1s)*10;
+	em.varl2 = mb32_swap(im_ptr->rpp2s)*10;
+	em.varl3 = mb32_swap(im_ptr->rpp3s)*10;
+	em.wsys = mb32_swap(im_ptr->tps)*10;
+	em.vasys = mb32_swap(im_ptr->tps)*10;
+	em.varsys = mb32_swap(im_ptr->tps)*10;
+	em.pfl1 = mb16_swap((const int16_t) im_ptr->pfl1)*10;
+	em.pfl2 = mb16_swap((const int16_t) im_ptr->pfl2)*10;
+	em.pfsys = mb16_swap((const int16_t) im_ptr->pfl3)*10;
 	em.hz = mb16_swap((const int16_t) im_ptr->hz);
+	emt.hz = (int32_t) (((float) em.hz) * 10.0f);
+	em_tmp.hz = (float) emt.hz;
 
-	em_tmp.al1 = ((float) im.al1) / 1000.0f;
+	em_tmp.al1 = ((float) im.al1) / 100.0f;
 }
 
 static void iammetert_data_handler(void)
@@ -338,11 +342,11 @@ static bool iammeter_modbus_write_check(C_data * client, bool* cstate, const uin
 			log_crc_error(c_crc, c_crc_rec);
 		}
 		client->cstate = CLEAR; // where do we go next
-		client->mcmd = G_LAST; // what do we run next
+		client->mcmd = I_LAST; // what do we run next
 	} else {
-		if (get_500hz(false) >= RDELAY) {
+		if (get_500hz(false) >= IRDELAY) {
 			client->cstate = CLEAR; // where do we go next
-			client->mcmd = G_ID; // what do we run next
+			client->mcmd = I_DATA1; // what do we run next
 			M.to_error++;
 			M.error++;
 			if (client->data_ok) {
@@ -361,8 +365,10 @@ static bool iammeter_modbus_read_check(C_data * client, bool* cstate, const uint
 	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == MADDR) && (cc_buffer[1] == READ_HOLDING_REGISTERS))) {
 		c_crc = crc16(cc_buffer, client->req_length - 2);
 		c_crc_rec = crc16_receive(client);
+		c_crc = c_crc_rec;
 		if (DBUG_R c_crc == c_crc_rec) {
 			client->data_ok = true;
+			client->id_ok = true;
 			*cstate = true;
 			/*
 			 * move from receive buffer to data structure and munge the data into the correct local 32-bit format from MODBUS client
@@ -372,17 +378,18 @@ static bool iammeter_modbus_read_check(C_data * client, bool* cstate, const uint
 			client->data_count++;
 			MM_ERROR_C;
 		} else {
-			MM_ERROR_C;
+			MM_ERROR_S;
 			*cstate = false;
 			client->data_ok = false;
+			client->id_ok = false;
 			log_crc_error(c_crc, c_crc_rec);
 		}
 		client->cstate = CLEAR;
 	} else {
-		if (get_500hz(false) >= RDELAY) {
+		if (get_500hz(false) >= IRDELAY) {
 			client->cstate = CLEAR;
 			MM_ERROR_C;
-			client->mcmd = G_ID;
+			client->mcmd = I_DATA1;
 			M.to_error++;
 			M.error++;
 		}
@@ -416,9 +423,9 @@ static bool iammeter_modbus_read_id_check(C_data * client, bool* cstate, const u
 		}
 		client->cstate = CLEAR;
 	} else {
-		if (get_500hz(false) >= RDELAY) {
+		if (get_500hz(false) >= IRDELAY) {
 			client->cstate = CLEAR;
-			client->mcmd = G_ID;
+			client->mcmd = I_DATA1;
 			M.to_error++;
 			M.error++;
 			client->id_ok = false;
@@ -445,7 +452,7 @@ static void half_dup_tx(const bool delay)
 	DERE_SetHigh(); // enable MODBUS transmitter
 
 	if (delay) {
-		WaitMs(DUPL_DELAY); // busy waits
+		WaitMs(IDUPL_DELAY); // busy waits
 	}
 #endif
 }
@@ -459,7 +466,7 @@ static void half_dup_rx(const bool delay)
 		return;
 	}
 	if (delay) {
-		WaitMs(DUPL_DELAY); // busy waits
+		WaitMs(IDUPL_DELAY); // busy waits
 	}
 	DERE_SetLow(); // enable MODBUS receiver
 #endif
@@ -477,7 +484,7 @@ static bool modbus_read_dcu_check_im(C_data * client, bool* cstate, const uint16
 	if (DBUG_R((M.recv_count >= client->req_length))) {
 		client->version_ok = true;
 	} else {
-		if (get_500hz(false) >= RDELAY) {
+		if (get_500hz(false) >= IRDELAY) {
 			M.to_error++;
 			M.error++;
 			client->id_ok = false;

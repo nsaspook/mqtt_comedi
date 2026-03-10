@@ -2556,9 +2556,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 0 `i `uc
 ]
 "71
-[v _uart3RxBuffer `Vuc ~T0 @X0 -> 64 `i s ]
+[v _uart3RxBuffer `Vuc ~T0 @X0 -> 255 `i s ]
 "72
-[v _uart3RxStatusBuffer `VS3377 ~T0 @X0 -> 64 `i s ]
+[v _uart3RxStatusBuffer `VS3377 ~T0 @X0 -> 255 `i s ]
 "73
 [v _uart3RxCount `Vuc ~T0 @X0 1 e ]
 "74
@@ -2596,9 +2596,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 "113
 [e = _U3CON2 -> -> 2 `i `uc ]
 "116
-[e = _U3BRGL -> -> 138 `i `uc ]
+[e = _U3BRGL -> -> 130 `i `uc ]
 "119
-[e = _U3BRGH -> -> 0 `i `uc ]
+[e = _U3BRGH -> -> 6 `i `uc ]
 "122
 [e = _U3FIFO -> -> 0 `i `uc ]
 "125
@@ -3001,4 +3001,67 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _UART3_TxInterruptHandler _InterruptHandler ]
 "316
 [e :UE 3418 ]
+}
+"318
+[v _UART3_Initialize115200 `(v ~T0 @X0 1 ef ]
+"319
+{
+[e :U _UART3_Initialize115200 ]
+[f ]
+"321
+[e = . . _PIE9bits 0 0 -> -> 0 `i `uc ]
+"322
+[e ( _UART3_SetRxInterruptHandler (1 &U _UART3_Receive_ISR ]
+"323
+[e = . . _PIE9bits 0 1 -> -> 0 `i `uc ]
+"324
+[e ( _UART3_SetTxInterruptHandler (1 &U _UART3_Transmit_ISR ]
+"329
+[e = _U3P1L -> -> 0 `i `uc ]
+"332
+[e = _U3P2L -> -> 0 `i `uc ]
+"335
+[e = _U3P3L -> -> 0 `i `uc ]
+"338
+[e = _U3CON0 -> -> 176 `i `uc ]
+"341
+[e = _U3CON1 -> -> 128 `i `uc ]
+"344
+[e = _U3CON2 -> -> 2 `i `uc ]
+"347
+[e = _U3BRGL -> -> 138 `i `uc ]
+"350
+[e = _U3BRGH -> -> 0 `i `uc ]
+"353
+[e = _U3FIFO -> -> 0 `i `uc ]
+"356
+[e = _U3UIR -> -> 0 `i `uc ]
+"359
+[e = _U3ERRIR -> -> 0 `i `uc ]
+"362
+[e = _U3ERRIE -> -> 0 `i `uc ]
+"365
+[e ( _UART3_SetFramingErrorHandler (1 &U _UART3_DefaultFramingErrorHandler ]
+"366
+[e ( _UART3_SetOverrunErrorHandler (1 &U _UART3_DefaultOverrunErrorHandler ]
+"367
+[e ( _UART3_SetErrorHandler (1 &U _UART3_DefaultErrorHandler ]
+"369
+[e = . _uart3RxLastError 1 -> -> 0 `i `uc ]
+"372
+[e = _uart3TxHead -> -> 0 `i `uc ]
+"373
+[e = _uart3TxTail -> -> 0 `i `uc ]
+"374
+[e = _uart3TxBufferRemaining -> -> # _uart3TxBuffer `ui `uc ]
+"375
+[e = _uart3RxHead -> -> 0 `i `uc ]
+"376
+[e = _uart3RxTail -> -> 0 `i `uc ]
+"377
+[e = _uart3RxCount -> -> 0 `i `uc ]
+"380
+[e = . . _PIE9bits 0 0 -> -> 1 `i `uc ]
+"381
+[e :UE 3419 ]
 }

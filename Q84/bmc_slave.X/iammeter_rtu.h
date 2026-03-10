@@ -14,11 +14,26 @@ extern "C" {
 
 #include "modbus_master.h"
 
-#define IM_DATA_LEN1	74	// 16-bit words returned
+#define IM_DATA_LEN1	74	// 16-bit words returned 74
 #define IM_DATA_LEN2	64	// 16-bit words returned
 
 #define MB_IAMMETER_ID_H	0x01	// slave ID
 #define MB_IAMMETER_ID_L	0x06	// slabe baudrate
+
+	static const uint16_t ITDELAY = 3; // KWH half-duplex delay
+	static const uint16_t ITMDELAY = 2; // half-duplex delay
+	static const uint16_t ITEDELAY = 2; // half-duplex delay
+	static const uint16_t IRDELAY = 1200; // receive timeout
+	static const uint16_t ICDELAY = 40; // fast query delay 100ms
+	static const uint16_t IQDELAY = 2; // slow query delay 1s
+	static const uint16_t ITODELAY = 4; // misc delay
+	static const uint16_t ISPACING = 5000; // control loop cpu usage factor
+	static const uint16_t IDUPL_DELAY = 2; // extra duplex delay mode
+
+	typedef enum cmd_im_type {
+		I_DATA1 = 0,
+		I_LAST,
+	} cmd_im_type;
 
 	/*
 	 * maps the IAMMETER MODBUS registers to int32_t, uint32_t and uint16_t values

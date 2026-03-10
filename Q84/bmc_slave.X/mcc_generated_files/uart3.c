@@ -55,7 +55,7 @@
   Section: Macro Declarations
 */
 #define UART3_TX_BUFFER_SIZE 64
-#define UART3_RX_BUFFER_SIZE 64
+#define UART3_RX_BUFFER_SIZE 255
 
 /**
   Section: Global Variables
@@ -112,11 +112,11 @@ void UART3_Initialize(void)
     // TXPOL not inverted; FLO off; RXPOL not inverted; RUNOVF RX input shifter stops all activity; STP Transmit 1Stop bit, receiver verifies first Stop bit; 
     U3CON2 = 0x02;
 
-    // BRGL 138; 
-    U3BRGL = 0x8A;
+    // BRGL 130; 
+    U3BRGL = 0x82;
 
-    // BRGH 0; 
-    U3BRGH = 0x00;
+    // BRGH 6; 
+    U3BRGH = 0x06;
 
     // STPMD in middle of first Stop bit; TXWRE No error; 
     U3FIFO = 0x00;
@@ -315,6 +315,70 @@ void UART3_SetTxInterruptHandler(void (* InterruptHandler)(void)){
     UART3_TxInterruptHandler = InterruptHandler;
 }
 
+void UART3_Initialize115200(void)
+{
+    // Disable interrupts before changing states
+    PIE9bits.U3RXIE = 0;
+    UART3_SetRxInterruptHandler(UART3_Receive_ISR);
+    PIE9bits.U3TXIE = 0;
+    UART3_SetTxInterruptHandler(UART3_Transmit_ISR);
+
+    // Set the UART3 module to the options selected in the user interface.
+
+    // P1L 0; 
+    U3P1L = 0x00;
+
+    // P2L 0; 
+    U3P2L = 0x00;
+
+    // P3L 0; 
+    U3P3L = 0x00;
+
+    // BRGS high speed; MODE Asynchronous 8-bit mode; RXEN enabled; TXEN enabled; ABDEN disabled; 
+    U3CON0 = 0xB0;
+
+    // RXBIMD Set RXBKIF on rising RX input; BRKOVR disabled; WUE disabled; SENDB disabled; ON enabled; 
+    U3CON1 = 0x80;
+
+    // TXPOL not inverted; FLO off; RXPOL not inverted; RUNOVF RX input shifter stops all activity; STP Transmit 1Stop bit, receiver verifies first Stop bit; 
+    U3CON2 = 0x02;
+
+    // BRGL 138; 
+    U3BRGL = 0x8A;
+
+    // BRGH 0; 
+    U3BRGH = 0x00;
+
+    // STPMD in middle of first Stop bit; TXWRE No error; 
+    U3FIFO = 0x00;
+
+    // ABDIF Auto-baud not enabled or not complete; WUIF WUE not enabled by software; ABDIE disabled; 
+    U3UIR = 0x00;
+
+    // ABDOVF Not overflowed; TXCIF 0; RXBKIF No Break detected; RXFOIF not overflowed; CERIF No Checksum error; 
+    U3ERRIR = 0x00;
+
+    // TXCIE disabled; FERIE disabled; TXMTIE disabled; ABDOVE disabled; CERIE disabled; RXFOIE disabled; PERIE disabled; RXBKIE disabled; 
+    U3ERRIE = 0x00;
+
+
+    UART3_SetFramingErrorHandler(UART3_DefaultFramingErrorHandler);
+    UART3_SetOverrunErrorHandler(UART3_DefaultOverrunErrorHandler);
+    UART3_SetErrorHandler(UART3_DefaultErrorHandler);
+
+    uart3RxLastError.status = 0;
+
+    // initializing the driver state
+    uart3TxHead = 0;
+    uart3TxTail = 0;
+    uart3TxBufferRemaining = sizeof(uart3TxBuffer);
+    uart3RxHead = 0;
+    uart3RxTail = 0;
+    uart3RxCount = 0;
+
+    // enable receive interrupt
+    PIE9bits.U3RXIE = 1;
+}
 
 /**
   End of File

@@ -256,6 +256,7 @@ int16_t mb16_swap(const int16_t value)
  * Simple MODBUS master state machine
  * this needs to run in the main programming loop
  * to handle RS485 serial I/O exchanges
+ * Use UART3
  */
 int8_t master_controller_work(C_data * client)
 {

@@ -66,7 +66,7 @@ extern "C" {
 	/*
 	 * 5Hz data updates in FASTQ mode
 	 */
-#define MAX_DATA        240
+#define MAX_DATA        250
 	//#define LOCAL_ECHO	1
 #define FASTQ			// MODBUS query speed, define for faster sampling rates
 	static const uint8_t TMDELAY = 2; // half-duplex delay
@@ -142,9 +142,9 @@ extern "C" {
 		uint8_t stable : 1;
 		uint8_t boot_code : 1;
 		uint8_t power_on : 1;
-		uint8_t send_count, recv_count, pwm_volts;
+		uint8_t pwm_volts;
 		uint16_t error, crc_data, crc_calc;
-		uint32_t crc_error;
+		uint32_t send_count, recv_count, crc_error;
 		uint32_t to_error;
 		uint32_t sends;
 		volatile bool rx;

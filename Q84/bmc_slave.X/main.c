@@ -484,18 +484,25 @@ void main(void)
 		}
 	}
 
+#ifdef IAMMETER_TEST
+	spi_stat_ss.daq_conf = 0x00; // testing mode
+#endif
+
 	/*
 	 * calibration scalar selection using MUI from controller
 	 */
 	set_calibration(spi_stat_ss.mui);
 
 #ifdef MB_MASTER
+#ifndef IAMMETER_MODBUS
+	UART3_Initialize115200(); // MODBUS port
+	UART3_SetRxInterruptHandler(my_modbus_rx_32); // install custom serial receive ISR
+#endif
 #ifdef IAMMETER_MODBUS // use immmeter functions instead of EM540 functions
 	V.op.init_mb_master_timers = &init_im_mb_master_timers;
 	V.op.master_controller_work = &iammeter_controller_work;
 	V.op.info_ptr = &iammeter_version;
 #endif
-	UART3_SetRxInterruptHandler(my_modbus_rx_32); // install custom serial receive ISR
 	V.op.init_mb_master_timers(); // MODBUS pacing, spacing and timeouts
 
 	StartTimer(TMR_MBTEST, 20);
@@ -521,9 +528,7 @@ void main(void)
 	TMR1_StartTimer();
 
 	speed_text = em_info;
-#ifndef IAMMETER_MODBUS
-	UART1_Initialize115200();
-#endif
+
 	WaitMs(SDELAY);
 	RLED_SetLow(); // start complete power-up serial speed setups, LEDS OFF
 	MLED_SetLow();

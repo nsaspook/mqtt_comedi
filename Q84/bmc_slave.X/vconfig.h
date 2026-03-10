@@ -73,9 +73,11 @@ extern "C" {
 	/*
 	 * internal variables and states debug screens
 	 */
-	//	#define DIS_DEBUG	// active debug status display, disable during normal operation
+	//		#define DIS_DEBUG	// active debug status display, disable during normal operation
 
 #define IAMMETER_MODBUS	// use IAMMETER MODBUS connection to WEM3080T instead of default EM540
+
+	//#define IAMMETER_TEST
 
 	/*
 	 * TP1 sync triggers enable
@@ -371,11 +373,16 @@ extern "C" {
 
 	extern BM_type BM;
 
+	// DATA PORT
 	extern void UART1_Initialize19200(void);
-	extern void UART2_Initialize19200(void);
-
 	extern void UART1_Initialize115200(void);
+
+	// FM80 PORT
+	extern void UART2_Initialize19200(void);
 	extern void UART2_Initialize115200(void);
+
+	// MODBUS PORT
+	extern void UART3_Initialize115200(void);
 
 	void update_time(const struct tm *, EB_data *);
 	int16_t num_fract(const int16_t);
