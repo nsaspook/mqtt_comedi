@@ -110,6 +110,7 @@ extern "C" {
 		volatile int16_t firmware;
 	} IM_version;
 
+	void im_my_modbus_rx_32(void);
 	void init_im_mb_master_timers(void);
 	int8_t iammeter_controller_work(C_data *);
 	int8_t reset_iammeter_kwh(C_data *);

@@ -101,6 +101,7 @@ static void UART3_DefaultErrorHandler_mb(void);
 static bool modbus_write_check(C_data *, bool*, uint16_t);
 static bool modbus_read_check(C_data *, bool*, uint16_t, void (* DataHandler)(void));
 static bool modbus_read_id_check(C_data *, bool*, uint16_t);
+static uint16_t crc16_receive(const C_data *);
 
 static void em_data_handler(void);
 static void emt_data_handler(void);
@@ -157,6 +158,7 @@ uint16_t crc16(volatile uint8_t *buffer, uint16_t buffer_length)
 /*
  * callback for UART received character from MODBUS client
  * for each RX byte received on the RS485 serial port
+ * don't share with other drivers
  */
 void my_modbus_rx_32(void)
 {
@@ -168,7 +170,7 @@ void my_modbus_rx_32(void)
 	 * process received controller data stream
 	 */
 	m_data = Srbuffer; // receiver data buffer
-	cc_buffer[M.recv_count] = m_data;
+	cc_buffer[M.recv_count] = m_data; // review the scope of global cc_buffer
 	if (++M.recv_count >= MAX_DATA) {
 		M.recv_count = 0; // reset buffer position
 	}
@@ -197,7 +199,7 @@ void init_mb_master_timers(void)
  * helper functions
  * received CRC16 bytes from client
  */
-uint16_t crc16_receive(const C_data * client)
+static uint16_t crc16_receive(const C_data * client)
 {
 	uint16_t crc16r;
 
@@ -630,6 +632,11 @@ static bool modbus_read_check(C_data * client, bool* cstate, const uint16_t rec_
 	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == MADDR) && (cc_buffer[1] == READ_HOLDING_REGISTERS))) {
 		c_crc = crc16(cc_buffer, client->req_length - 2);
 		c_crc_rec = crc16_receive(client);
+#ifdef CRC_ERRORS
+		client->c_crc = c_crc;
+		client->c_crc_rec = c_crc_rec;
+		client->c_crc_length = M.recv_count;
+#endif
 		if (DBUG_R c_crc == c_crc_rec) {
 			client->data_ok = true;
 			*cstate = true;

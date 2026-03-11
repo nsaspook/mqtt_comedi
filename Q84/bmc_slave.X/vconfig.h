@@ -21,7 +21,7 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.56"
+#define VER	"V0.57"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -68,6 +68,7 @@ extern "C" {
 	 * V0.54 calculate battery SoC and energy
 	 * V0.55 SoC fixes
 	 * V0.56 alternative energy meters via MODBUS
+	 * V0.57 cleanup MODBUS functions
 	 */
 
 	/*

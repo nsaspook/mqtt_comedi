@@ -157,8 +157,9 @@ extern "C" {
 		uint16_t req_length, iam_count;
 		int8_t trace, resets;
 		bool id_ok, passwd_ok, config_ok, data_ok, light_ok, serial_ok, link_ok, version_ok, tm_ok;
-		uint32_t data_count, data_prev;
+		uint32_t data_count, data_prev, c_crc_length;
 		volatile M_data M;
+		uint16_t c_crc, c_crc_rec;
 	} C_data;
 
 	/*
@@ -363,7 +364,6 @@ extern "C" {
 
 	void mb_setup(void);
 
-	uint16_t crc16_receive(const C_data *);
 	void log_crc_error(const uint16_t, const uint16_t);
 
 	void em540_version(void);

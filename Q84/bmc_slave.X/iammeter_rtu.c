@@ -23,6 +23,7 @@ static bool iammeter_modbus_write_check(C_data *, bool*, uint16_t);
 static bool iammeter_modbus_read_check(C_data *, bool*, uint16_t, void (* DataHandler)(void));
 static bool iammeter_modbus_read_id_check(C_data *, bool*, uint16_t);
 static bool modbus_read_dcu_check_im(C_data *, bool*, uint16_t);
+static uint16_t im_crc16_receive(const C_data *);
 
 static void iammeter_data_handler(void);
 static void iammetert_data_handler(void);
@@ -277,18 +278,18 @@ static void iammeter_data_handler(void)
 	em.wl1 = mb32_swap(im_ptr->wl1)*10;
 	em.wl2 = mb32_swap(im_ptr->wl2)*10;
 	em.wl3 = mb32_swap(im_ptr->wl3)*10;
-	em.val1 = mb32_swap(im_ptr->rpp1s)*10;
-	em.val2 = mb32_swap(im_ptr->rpp2s)*10;
-	em.val3 = mb32_swap(im_ptr->rpp3s)*10;
-	em.varl1 = mb32_swap(im_ptr->rpp1s)*10;
-	em.varl2 = mb32_swap(im_ptr->rpp2s)*10;
-	em.varl3 = mb32_swap(im_ptr->rpp3s)*10;
+	em.val1 = mb32_swap(im_ptr->rpp1s) / 10000;
+	em.val2 = mb32_swap(im_ptr->rpp2s) / 10000;
+	em.val3 = mb32_swap(im_ptr->rpp3s) / 10000;
+	em.varl1 = mb32_swap(im_ptr->rpp1s) / 10000;
+	em.varl2 = mb32_swap(im_ptr->rpp2s) / 10000;
+	em.varl3 = mb32_swap(im_ptr->rpp3s) / 10000;
 	em.wsys = mb32_swap(im_ptr->tps)*10;
 	em.vasys = mb32_swap(im_ptr->tps)*10;
 	em.varsys = mb32_swap(im_ptr->tps)*10;
-	em.pfl1 = mb16_swap((const int16_t) im_ptr->pfl1)*10;
-	em.pfl2 = mb16_swap((const int16_t) im_ptr->pfl2)*10;
-	em.pfsys = mb16_swap((const int16_t) im_ptr->pfl3)*10;
+	em.pfl1 = mb16_swap((const int16_t) im_ptr->pfl1);
+	em.pfl2 = mb16_swap((const int16_t) im_ptr->pfl2);
+	em.pfsys = mb16_swap((const int16_t) im_ptr->pfl1);
 	em.hz = mb16_swap((const int16_t) im_ptr->hz);
 	emt.hz = (int32_t) (((float) em.hz) * 10.0f);
 	em_tmp.hz = (float) emt.hz;
@@ -333,7 +334,7 @@ static bool iammeter_modbus_write_check(C_data * client, bool* cstate, const uin
 	client->req_length = rec_length;
 	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == MADDR) && (cc_buffer[1] == WRITE_SINGLE_REGISTER))) {
 		c_crc = crc16(cc_buffer, client->req_length - 2);
-		c_crc_rec = crc16_receive(client);
+		c_crc_rec = im_crc16_receive(client);
 		if (DBUG_R c_crc == c_crc_rec) {
 			*cstate = true;
 			MM_ERROR_C;
@@ -357,6 +358,18 @@ static bool iammeter_modbus_write_check(C_data * client, bool* cstate, const uin
 	return *cstate;
 }
 
+/*
+ * helper functions
+ * received CRC16 bytes from client
+ */
+static uint16_t im_crc16_receive(const C_data * client) // void *cc_buffer ::: add this to eliminate global variable problems
+{
+	uint16_t crc16r;
+
+	crc16r = ((uint16_t) cc_buffer[client->req_length - 2] << (uint16_t) 8) | ((uint16_t) cc_buffer[client->req_length - 1] & 0x00ff);
+	return crc16r;
+}
+
 static bool iammeter_modbus_read_check(C_data * client, bool* cstate, const uint16_t rec_length, void (* DataHandler)(void))
 {
 	uint16_t c_crc, c_crc_rec;
@@ -364,8 +377,12 @@ static bool iammeter_modbus_read_check(C_data * client, bool* cstate, const uint
 	client->req_length = rec_length;
 	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == MADDR) && (cc_buffer[1] == READ_HOLDING_REGISTERS))) {
 		c_crc = crc16(cc_buffer, client->req_length - 2);
-		c_crc_rec = crc16_receive(client);
-		c_crc = c_crc_rec;
+		c_crc_rec = im_crc16_receive(client);
+#ifdef CRC_ERRORS
+		client->c_crc = c_crc;
+		client->c_crc_rec = c_crc_rec;
+		client->c_crc_length = M.recv_count;
+#endif
 		if (DBUG_R c_crc == c_crc_rec) {
 			client->data_ok = true;
 			client->id_ok = true;
@@ -392,6 +409,14 @@ static bool iammeter_modbus_read_check(C_data * client, bool* cstate, const uint
 			client->mcmd = I_DATA1;
 			M.to_error++;
 			M.error++;
+			client->id_ok = false;
+			*cstate = false;
+			client->config_ok = false;
+			client->passwd_ok = false;
+			client->data_ok = false;
+			client->light_ok = false;
+			client->version_ok = false;
+			client->serial_ok = false;
 		}
 	}
 	return *cstate;
@@ -404,7 +429,7 @@ static bool iammeter_modbus_read_id_check(C_data * client, bool* cstate, const u
 	client->req_length = rec_length;
 	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == MADDR) && (cc_buffer[1] == READ_HOLDING_REGISTERS))) {
 		c_crc = crc16(cc_buffer, client->req_length - 2);
-		c_crc_rec = crc16_receive(client);
+		c_crc_rec = im_crc16_receive(client);
 		if ((DBUG_R c_crc == c_crc_rec) && (cc_buffer[3] == MB_IAMMETER_ID_H) && (cc_buffer[4] == MB_IAMMETER_ID_L)) {
 			MM_ERROR_C;
 			client->id_ok = true;
@@ -499,6 +524,27 @@ static bool modbus_read_dcu_check_im(C_data * client, bool* cstate, const uint16
 		}
 	}
 	return *cstate;
+}
+
+/*
+ * callback for UART received character from MODBUS client
+ * for each RX byte received on the RS485 serial port
+ * don't share with other drivers
+ */
+void im_my_modbus_rx_32(void)
+{
+	static uint8_t m_data = 0;
+
+	INT_TRACE;
+	M.rx = true;
+	/*
+	 * process received controller data stream
+	 */
+	m_data = Srbuffer; // receiver data buffer
+	cc_buffer[M.recv_count] = m_data; // review the scope of global cc_buffer
+	if (++M.recv_count >= MAX_DATA) {
+		M.recv_count = 0; // reset buffer position
+	}
 }
 
 void iammeter_version(void)

@@ -685,10 +685,10 @@ void main(void)
 				write_cal_data();
 				timeout = true;
 			}
-
-			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s             ", "BMCBoard Driver     ");
+  
+			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s                  ", "BMCBoard Driver     ");
 			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "Port %s             ", speed_text);
-			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%s Ver %s            ", (char *) build_date, VER);
+			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%s %s               ", (char *) build_date, VER);
 			refresh_lcd();
 			if (timeout) {
 				WaitMs(WLDELAY);
@@ -933,7 +933,11 @@ void main(void)
 				snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%s                         ", &BMC4.log_buffer[2]);
 				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %ldVAC %3.2fA           ", modbus_name[C.id_ok], em.vl3l1 / 10, ((float) em.al1) / 1000.0f);
 				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%s %s %d.%01dA %dA              ", FM80_name[BM.FM80_online], state_name[cc_mode], bat_amp_whole - 128, bat_amp_frac - 128, bat_amp_panel - 128);
+#ifdef CRC_ERRORS
+				snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "C %x CR %x L %lu                ", C.c_crc, C.c_crc_rec, C.c_crc_length);
+#else
 				snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "BAT %d.%01dV PV %d.%01dV                 ", vw, vf, pvw, pvf);
+#endif
 
 				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "%2.1fKWh float %3.1fh                       ", (float) BM.log.kilowatt_hours / 10.0f, (float) BM.log.float_time / 60.0f);
 				snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "Bmax %uV Bmin %uV                      ", BM.log.bat_max / 10, BM.log.bat_min / 10);
