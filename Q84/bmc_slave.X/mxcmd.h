@@ -91,11 +91,6 @@ extern "C" {
 		"CANBUS",
 	};
 
-	const char modbus_name [][12] = {
-		"Offline",
-		"E METER",
-	};
-
 	typedef struct {
 		uint8_t a[16]; // raw_ah(part2)
 	} mx_status_packed_t;

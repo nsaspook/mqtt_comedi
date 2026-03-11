@@ -341,7 +341,7 @@ extern "C" {
 #define MM_ERROR_C	MLED_SetLow()  // RED LED
 
 	uint16_t crc16(volatile uint8_t *, uint16_t);
-
+	uint16_t crc16_receive(const C_data *, volatile uint8_t *);
 	void my_modbus_rx_32(void);
 	uint8_t init_stream_params(void);
 	void init_mb_master_timers(void);
@@ -354,20 +354,13 @@ extern "C" {
 	uint32_t get_2hz(const uint8_t);
 	uint32_t get_500ahz(const uint8_t);
 	uint32_t get_500hz(const uint8_t);
-
 	void timer_500ms_tick(void);
 	void timer_2ms_tick(void);
-
 	bool serial_trmt(void);
-
 	void mb_tx_test(C_data *);
-
 	void mb_setup(void);
-
 	void log_crc_error(const uint16_t, const uint16_t);
-
 	void em540_version(void);
-
 	uint16_t modbus_rtu_send_msg(void *, const void *, uint16_t);
 
 	extern volatile struct VM_type VM;
@@ -377,6 +370,7 @@ extern "C" {
 	extern EM_data2 emt; // converted results data
 	extern EM_serial ems; // converted results data
 	extern EM_version emv; // converted results data
+	extern char modbus_name [][12];
 
 #ifdef	__cplusplus
 }

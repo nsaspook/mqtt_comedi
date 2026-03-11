@@ -10,7 +10,7 @@ typedef struct M_time_data { // ISR used, mainly for non-atomic mod problems
 	uint32_t clock_2hz;
 } M_time_data;
 
-static volatile uint8_t cc_stream_file, *cc_buffer, cc_buffer_0[MAX_DATA], cc_buffer_1[MAX_DATA], cc_buffer_tx[MAX_DATA]; // RX and TX command buffers
+static volatile uint8_t cc_stream_file, *cc_buffer, cc_buffer_0[MAX_DATA], cc_buffer_tx[MAX_DATA]; // RX and TX command buffers
 
 static volatile M_data M = {
 	.blink_lock = false,
@@ -86,6 +86,11 @@ EM_data2 emt;
 EM_serial ems;
 EM_version emv;
 
+char modbus_name [][12] = {
+	"Offline",
+	"EM540",
+};
+
 void timer_500ms_tick(void);
 void timer_2ms_tick(void);
 
@@ -101,7 +106,6 @@ static void UART3_DefaultErrorHandler_mb(void);
 static bool modbus_write_check(C_data *, bool*, uint16_t);
 static bool modbus_read_check(C_data *, bool*, uint16_t, void (* DataHandler)(void));
 static bool modbus_read_id_check(C_data *, bool*, uint16_t);
-static uint16_t crc16_receive(const C_data *);
 
 static void em_data_handler(void);
 static void emt_data_handler(void);
@@ -199,7 +203,7 @@ void init_mb_master_timers(void)
  * helper functions
  * received CRC16 bytes from client
  */
-static uint16_t crc16_receive(const C_data * client)
+uint16_t crc16_receive(const C_data * client, volatile uint8_t *cc_buffer)
 {
 	uint16_t crc16r;
 
@@ -598,7 +602,7 @@ static bool modbus_write_check(C_data * client, bool* cstate, const uint16_t rec
 	client->req_length = rec_length;
 	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == MADDR) && (cc_buffer[1] == WRITE_SINGLE_REGISTER))) {
 		c_crc = crc16(cc_buffer, client->req_length - 2);
-		c_crc_rec = crc16_receive(client);
+		c_crc_rec = crc16_receive(client, cc_buffer);
 		if (DBUG_R c_crc == c_crc_rec) {
 			*cstate = true;
 			MM_ERROR_C;
@@ -631,7 +635,7 @@ static bool modbus_read_check(C_data * client, bool* cstate, const uint16_t rec_
 	client->req_length = rec_length;
 	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == MADDR) && (cc_buffer[1] == READ_HOLDING_REGISTERS))) {
 		c_crc = crc16(cc_buffer, client->req_length - 2);
-		c_crc_rec = crc16_receive(client);
+		c_crc_rec = crc16_receive(client, cc_buffer);
 #ifdef CRC_ERRORS
 		client->c_crc = c_crc;
 		client->c_crc_rec = c_crc_rec;
@@ -675,7 +679,7 @@ static bool modbus_read_id_check(C_data * client, bool* cstate, const uint16_t r
 	client->req_length = rec_length;
 	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == MADDR) && (cc_buffer[1] == READ_HOLDING_REGISTERS))) {
 		c_crc = crc16(cc_buffer, client->req_length - 2);
-		c_crc_rec = crc16_receive(client);
+		c_crc_rec = crc16_receive(client, cc_buffer);
 		if ((DBUG_R c_crc == c_crc_rec) && (cc_buffer[3] == MB_EM540_ID_H) && (cc_buffer[4] == MB_EM540_ID_L)) {
 			MM_ERROR_C;
 			client->id_ok = true;

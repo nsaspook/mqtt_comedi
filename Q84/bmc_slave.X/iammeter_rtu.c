@@ -6,7 +6,7 @@ typedef struct M_time_data { // ISR used, mainly for non-atomic mod problims
 	uint32_t clock_2hz;
 } M_time_data;
 
-static volatile uint8_t cc_stream_file, *cc_buffer, cc_buffer_0[MAX_DATA], cc_buffer_1[MAX_DATA], cc_buffer_tx[MAX_DATA]; // RX and TX command buffers
+static volatile uint8_t cc_stream_file, *cc_buffer, cc_buffer_0[MAX_DATA], cc_buffer_tx[MAX_DATA]; // RX and TX command buffers
 
 static volatile M_data M = {
 	.blink_lock = false,
@@ -23,7 +23,6 @@ static bool iammeter_modbus_write_check(C_data *, bool*, uint16_t);
 static bool iammeter_modbus_read_check(C_data *, bool*, uint16_t, void (* DataHandler)(void));
 static bool iammeter_modbus_read_id_check(C_data *, bool*, uint16_t);
 static bool modbus_read_dcu_check_im(C_data *, bool*, uint16_t);
-static uint16_t im_crc16_receive(const C_data *);
 
 static void iammeter_data_handler(void);
 static void iammetert_data_handler(void);
@@ -186,6 +185,8 @@ int8_t iammeter_controller_work(C_data * client)
 
 int8_t reset_iammeter_kwh(C_data * client)
 {
+	static uint8_t m_data = 0;
+
 	client->trace = T_begin;
 	switch (client->cstate) {
 	case CLEAR:
@@ -246,6 +247,13 @@ int8_t reset_iammeter_kwh(C_data * client)
 		break;
 	case RECV:
 		client->trace = T_recv;
+		if (UART3_is_rx_ready()) {
+			m_data = UART3_Read(); // receiver data to buffer
+			cc_buffer[M.recv_count] = m_data;
+			if (++M.recv_count >= MAX_DATA) {
+				M.recv_count = 0; // reset buffer position
+			}
+		}
 		if (get_500hz(false) >= ITEDELAY) { // state machine execute timer test
 			client->trace = T_recv_r;
 			half_dup_rx(false); // no delays here
@@ -334,7 +342,7 @@ static bool iammeter_modbus_write_check(C_data * client, bool* cstate, const uin
 	client->req_length = rec_length;
 	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == MADDR) && (cc_buffer[1] == WRITE_SINGLE_REGISTER))) {
 		c_crc = crc16(cc_buffer, client->req_length - 2);
-		c_crc_rec = im_crc16_receive(client);
+		c_crc_rec = crc16_receive(client, cc_buffer);
 		if (DBUG_R c_crc == c_crc_rec) {
 			*cstate = true;
 			MM_ERROR_C;
@@ -358,18 +366,6 @@ static bool iammeter_modbus_write_check(C_data * client, bool* cstate, const uin
 	return *cstate;
 }
 
-/*
- * helper functions
- * received CRC16 bytes from client
- */
-static uint16_t im_crc16_receive(const C_data * client) // void *cc_buffer ::: add this to eliminate global variable problems
-{
-	uint16_t crc16r;
-
-	crc16r = ((uint16_t) cc_buffer[client->req_length - 2] << (uint16_t) 8) | ((uint16_t) cc_buffer[client->req_length - 1] & 0x00ff);
-	return crc16r;
-}
-
 static bool iammeter_modbus_read_check(C_data * client, bool* cstate, const uint16_t rec_length, void (* DataHandler)(void))
 {
 	uint16_t c_crc, c_crc_rec;
@@ -377,7 +373,7 @@ static bool iammeter_modbus_read_check(C_data * client, bool* cstate, const uint
 	client->req_length = rec_length;
 	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == MADDR) && (cc_buffer[1] == READ_HOLDING_REGISTERS))) {
 		c_crc = crc16(cc_buffer, client->req_length - 2);
-		c_crc_rec = im_crc16_receive(client);
+		c_crc_rec = crc16_receive(client, cc_buffer);
 #ifdef CRC_ERRORS
 		client->c_crc = c_crc;
 		client->c_crc_rec = c_crc_rec;
@@ -429,7 +425,7 @@ static bool iammeter_modbus_read_id_check(C_data * client, bool* cstate, const u
 	client->req_length = rec_length;
 	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == MADDR) && (cc_buffer[1] == READ_HOLDING_REGISTERS))) {
 		c_crc = crc16(cc_buffer, client->req_length - 2);
-		c_crc_rec = im_crc16_receive(client);
+		c_crc_rec = crc16_receive(client, cc_buffer);
 		if ((DBUG_R c_crc == c_crc_rec) && (cc_buffer[3] == MB_IAMMETER_ID_H) && (cc_buffer[4] == MB_IAMMETER_ID_L)) {
 			MM_ERROR_C;
 			client->id_ok = true;
@@ -550,4 +546,5 @@ void im_my_modbus_rx_32(void)
 void iammeter_version(void)
 {
 	strncpy(em_info, "WEM3080 Driver      ", 32);
+	strncpy(modbus_name [1], "WEM30", 12);
 }
