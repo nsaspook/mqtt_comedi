@@ -325,6 +325,7 @@ BM_type BM = {
 	.fm80_restart = false,
 	.fm80_soc_once = true,
 	.benergy = 0,
+	.spi_reset = 0,
 };
 
 volatile struct spi_link_type_ss spi_comm_ss = {false, false, false, false, false, false, false, false};
@@ -685,7 +686,7 @@ void main(void)
 				write_cal_data();
 				timeout = true;
 			}
-  
+
 			snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s                  ", "BMCBoard Driver     ");
 			snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "Port %s             ", speed_text);
 			snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%s %s               ", (char *) build_date, VER);
@@ -745,7 +746,7 @@ void main(void)
 			snprintf(get_vterm_ptr(2, HELP_VTERM), MAX_TEXT, " VTERM HELP           ");
 			snprintf(get_vterm_ptr(3, HELP_VTERM), MAX_TEXT, " %s                   ", (char *) build_date);
 			snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
-			snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "OF %lu ERR %lu                        ", spi_stat_ss.rxof_bit, spi_stat_ss.spi_error_count);
+			snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "OF %lu ERR %lu                        ", spi_stat_ss.rxof_bit, spi_stat_ss.spi_resets);
 			snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu                               ", spi_stat_ss.bmc_counts);
 			snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "%s Ver %s                       ", (char *) build_date, VER);
 			refresh_lcd();
@@ -947,7 +948,7 @@ void main(void)
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
 				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3fV,5 %6.3fV                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));
 				snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu  0X%.2X                             ", spi_stat_ss.bmc_counts, spi_stat_ss.daq_conf);
-				snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "%s %s                       ", (char *) build_date, VER);
+				snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "OF %lu ERR %lu                        ", spi_stat_ss.rxof_bit, spi_stat_ss.spi_resets);
 
 				refresh_lcd();
 				serial_buffer_ss.r_string_index = 0;
@@ -1093,6 +1094,10 @@ void onesec_io(void)
 	DLED_SetLow();
 	V.utc_ticks++;
 	BM.one_sec_flag = true;
+	if (BM.spi_reset++ > 3) {
+		slaveo_time_isr();
+		BM.spi_reset = 0;
+	}
 }
 
 /* Misc ACSII spinner character generator, stores position for each shape */

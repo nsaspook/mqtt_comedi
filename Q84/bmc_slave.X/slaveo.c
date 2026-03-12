@@ -71,7 +71,14 @@ void slaveo_rx_isr(void)
 	// SPI port #2 SLAVE receiver
 
 	DLED_SetHigh();
-	Nop();
+	if (SPI2STATUSbits.TXWE || SPI2STATUSbits.RXRE) { // check for overruns/collisions
+		SPI2CON0bits.EN = 0; // reset OPi SPI link module
+		SPI2CON0bits.EN = 1;
+		spi_stat_ss.spi_resets++;
+	} else {
+		BM.spi_reset = 0;
+	}
+
 #ifdef SLAVE_DEBUG
 	if (SPI2INTFbits.RXOIF) {
 		spi_stat_ss.rxof_bit++;
@@ -528,6 +535,7 @@ void slaveo_time_isr(void)
 	SPI2CON0bits.EN = 0; // reset OPi SPI link module
 	SPI2CON0bits.EN = 1;
 	if (SPI2STATUSbits.TXWE || SPI2STATUSbits.RXRE) { // check for overruns/collisions
+		spi_stat_ss.spi_resets++;
 	}
 	DLED_SetLow();
 }
