@@ -17,7 +17,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _send_spi1_tic12400_dma `(v ~T0 @X0 0 ef2`*uc`Cuc ]
 "35 ./timers.h
 [v _WaitMs `(v ~T0 @X0 0 ef1`us ]
-"196 ./vconfig.h
+"197 ./vconfig.h
 [s S3407 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 `us 1 `uc 1 `*uc 1 `*uc 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 ]
 [n S3407 spi_link_type SPI_LCD SPI_AUX LCD_TIMER LCD_DATA READ_DATA delay config txbuf rxbuf int_count int_read des_bytes src_bytes or_bytes ]
 "46 ./tic12400.h
@@ -52,13 +52,13 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _in_buf1 `Vuc ~T0 @X0 0 e ]
 [v _in_buf2 `Vuc ~T0 @X0 0 e ]
 [v _in_buf3 `Vuc ~T0 @X0 0 e ]
-"224 ./vconfig.h
+"225 ./vconfig.h
 [s S3408 `uc 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `uc 1 ]
 [n S3408 . type day amp_hours kilowatt_hours volts_peak amps_peak kilowatts_peak bat_min bat_max absorb_time float_time select ]
-"239
+"240
 [s S3409 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va -> 3 `i `Va -> 3 `i `Va -> 3 `i `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Vuc 1 `Vuc 1 `Vuc 1 `Vuc -> 3 `i `Vuc 1 `f 1 `f 1 `f 1 `f 1 `us -> 10 `i `us -> 3 `i `S3408 1 `Vuo 1 ]
 [n S3409 BM_type ten_sec_flag one_sec_flag FM80_charged pv_high pv_update once a_switch a_trigger a_type pacing rx_count flush pv_prev day_check dim_delay benergy FM80_online FM80_io LOG display_dim display_update display_on fm80_restart fm80_soc_once canbus_online modbus_online alt_display a_pin spi_reset run_time net_balance Soc bvolts mui fwrev log node_id ]
-"375
+"376
 [v _BM `S3409 ~T0 @X0 0 e ]
 "70363 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.29.481/xc8/pic/include/proc/pic18f57q84.h
 [v _PORTB `Vuc ~T0 @X0 0 e@1231 ]
@@ -3192,7 +3192,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _PV_VOLTS_HIGH
 -> -> 70 `i `uc
 ]
-"172
+"164
+[v _SPI_RESET_COUNTS `Cuc ~T0 @X0 1 s ]
+[i _SPI_RESET_COUNTS
+-> -> 6 `i `uc
+]
+"173
 [v _log_format1 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format1
 :U ..
@@ -3381,7 +3386,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"178
+"179
 [v _log_format2 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format2
 :U ..
@@ -3570,7 +3575,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"184
+"185
 [v _log_format3 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format3
 :U ..
@@ -3759,7 +3764,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"190
+"191
 [v _log_format4 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format4
 :U ..
@@ -3948,9 +3953,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-[v F25610 `Cuc ~T0 @X0 -> 20 `i t ]
-"347
-[v _spin `F25610 ~T0 @X0 -> 6 `i e ]
+[v F25611 `Cuc ~T0 @X0 -> 20 `i t ]
+"348
+[v _spin `F25611 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
 :U ..
@@ -4656,8 +4661,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "231
 [f ]
 "232
-[v F26007 `ul ~T0 @X0 1 s last_sw_value ]
-[i F26007
+[v F26008 `ul ~T0 @X0 1 s last_sw_value ]
+[i F26008
 -> -> -> 0 `i `l `ul
 ]
 "234
@@ -4681,12 +4686,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 "243
 [e =+ _ticvalue -> & << -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul -> -> 24 `i `ul -> 4278190080 `ul `Vul ]
 "244
-[e $ ! != _ticvalue F26007 3444  ]
+[e $ ! != _ticvalue F26008 3444  ]
 {
 "245
 [e = . _BM 20 -> -> 1 `i `a ]
 "246
-[e = F26007 _ticvalue ]
+[e = F26008 _ticvalue ]
 "247
 }
 [e :U 3444 ]
@@ -4856,6 +4861,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [p f _printf 8650752 ]
 [a 4C 86 48 46 56 0 ]
-[a 2C 49 49 58 49 49 58 50 55 0 ]
-[a 1C 77 97 114 32 49 50 32 50 48 50 54 0 ]
+[a 1C 77 97 114 32 49 51 32 50 48 50 54 0 ]
+[a 2C 48 57 58 50 48 58 51 49 0 ]
 [a 3C 13 45 45 45 32 84 73 67 49 50 52 48 48 32 68 114 105 118 101 114 32 86 101 114 115 105 111 110 32 37 115 32 37 115 32 37 115 32 45 45 45 13 10 0 ]

@@ -25,9 +25,6 @@ static bool iammeter_modbus_read_id_check(C_data *, bool*, uint16_t);
 static bool modbus_read_dcu_check_im(C_data *, bool*, uint16_t);
 
 static void iammeter_data_handler(void);
-static void iammetert_data_handler(void);
-static void iammeters_data_handler(void);
-static void iammeterv_data_handler(void);
 
 static void half_dup_tx(const bool);
 static void half_dup_rx(const bool);
@@ -50,8 +47,6 @@ im_data1[(IM_DATA_LEN1 * 2) + 5] = {MADDR, READ_HOLDING_REGISTERS, 0x00};
 IM_data1 im, *im_ptr;
 IM_tmp im_tmp;
 IM_data2 imt;
-IM_serial ims;
-IM_version imv;
 
 /*
  * state machine hardware timers interrupt ISR functions setup
@@ -301,38 +296,7 @@ static void iammeter_data_handler(void)
 	em.hz = mb16_swap((const int16_t) im_ptr->hz);
 	emt.hz = (int32_t) (((float) em.hz) * 10.0f);
 	em_tmp.hz = (float) emt.hz;
-
 	em_tmp.al1 = ((float) im.al1) / 100.0f;
-}
-
-static void iammetert_data_handler(void)
-{
-	/*
-	 * move from receive buffer to data structure and munge the data into the correct local formats from MODBUS client
-	 */
-	memcpy((void*) &imt, (void*) &cc_buffer[3], sizeof(imt));
-	imt.hz = mb32_swap(imt.hz);
-
-	em_tmp.hz = ((float) imt.hz) / 1000.0f;
-}
-
-static void iammmeters_data_handler(void)
-{
-	/*
-	 * move from receive buffer to data structure and munge the data into the correct local formats from MODBUS client
-	 */
-	memcpy((void*) &ims, (void*) &cc_buffer[3], sizeof(ims));
-	ims.serial[13] = 0; // terminate serial string data
-	ims.year = mb16_swap(ims.year);
-}
-
-static void iammeterv_data_handler(void)
-{
-	/*
-	 * move from receive buffer to data structure and munge the data into the correct local formats from MODBUS client
-	 */
-	memcpy((void*) &imv, (void*) &cc_buffer[3], sizeof(imv));
-	imv.firmware = mb16_swap(imv.firmware);
 }
 
 static bool iammeter_modbus_write_check(C_data * client, bool* cstate, const uint16_t rec_length)

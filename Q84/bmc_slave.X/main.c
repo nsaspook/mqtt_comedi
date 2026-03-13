@@ -1094,7 +1094,7 @@ void onesec_io(void)
 	DLED_SetLow();
 	V.utc_ticks++;
 	BM.one_sec_flag = true;
-	if (BM.spi_reset++ > 3) {
+	if (BM.spi_reset++ >= SPI_RESET_COUNTS) {
 		slaveo_time_isr();
 		BM.spi_reset = 0;
 	}

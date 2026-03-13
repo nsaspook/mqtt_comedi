@@ -161,6 +161,7 @@ extern "C" {
 	static const uint8_t BAT_DAY_COUNT = 45; // number of reports before updates
 	static const uint8_t BAT_NIGHT_COUNT = 90;
 	static const uint8_t PV_VOLTS_HIGH = 70;
+	static const uint8_t SPI_RESET_COUNTS = 6;
 
 #define DBENERGY	3100.0f
 #define DBVOLTAGE	12.6f

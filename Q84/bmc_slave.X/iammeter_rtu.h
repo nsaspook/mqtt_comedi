@@ -101,15 +101,6 @@ extern "C" {
 		hz, rhlc;
 	} IM_data2;
 
-	typedef __pack struct IM_serial {
-		volatile char serial[14];
-		volatile int16_t year;
-	} IM_serial;
-
-	typedef __pack struct IM_version {
-		volatile int16_t firmware;
-	} IM_version;
-
 	void im_my_modbus_rx_32(void);
 	void init_im_mb_master_timers(void);
 	int8_t iammeter_controller_work(C_data *);

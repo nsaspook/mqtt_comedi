@@ -64,8 +64,8 @@ void init_slaveo(void)
  */
 void slaveo_rx_isr(void)
 {
-	uint8_t command;
-	uint8_t tmp_buf;
+	uint8_t command = 0;
+	uint8_t tmp_buf = 0;
 
 	/* we only get this when the master wants data, the slave never generates one */
 	// SPI port #2 SLAVE receiver
@@ -77,11 +77,6 @@ void slaveo_rx_isr(void)
 		spi_stat_ss.rxof_bit++;
 	}
 
-	if (SPI2STATUSbits.SPI2RXRE) {
-	} else {
-		if (spi_comm_ss.PORT_DATA) {
-		}
-	}
 #endif
 
 	data_in2 = SPI2RXB;
@@ -91,6 +86,7 @@ void slaveo_rx_isr(void)
 	// use r_string array to buffer ascii data
 	if (serial_buffer_ss.cmake_value) {
 		if (serial_buffer_ss.raw_index == CHAR_GO_BYTES) {
+			BM.spi_reset = 0;
 			if ((serial_buffer_ss.data[BMC_D1] & 0x07) < BMC_EM540_DATA) { // [0..3] UART1
 				/*
 				 * uart1 only
@@ -529,6 +525,6 @@ void slaveo_time_isr(void)
 	SPI2CON0bits.EN = 1;
 	if (SPI2STATUSbits.TXWE || SPI2STATUSbits.RXRE) { // check for overruns/collisions
 		spi_stat_ss.spi_resets++;
+		MM_ERROR_S;
 	}
-	DLED_SetLow();
 }
