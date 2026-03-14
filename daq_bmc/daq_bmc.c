@@ -81,8 +81,8 @@ for the FMx0 charge controller and for the modbus EM540 power meter
 #include <linux/list.h>
 #include <linux/completion.h>
 
-#define bmc_version "version 1.24 "
-#define spibmc_version "version 1.7 "
+#define bmc_version "version 1.25 "
+#define spibmc_version "version 1.8 "
 
 /*
  * Look for Soc board types using C preprocessor defines
