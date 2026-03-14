@@ -343,10 +343,8 @@ MODULE_PARM_DESC(lsamp_size, "16 or 32 bit lsampl size: 0=16 bit");
 static int32_t use_hunking = 0;
 module_param(use_hunking, int, S_IRUGO);
 static volatile int32_t daq_code = 0;
-//module_param(daq_code, int, S_IRUGO);
-//MODULE_PARM_DESC((daq_code, "DAQ Board configuration code");
 
-struct spi_statistics bmc_statistics;
+//struct spi_statistics bmc_statistics;
 
 struct bmc_packet_type {
 	uint8_t bmc_byte_t[Q84_BYTES];
@@ -587,7 +585,6 @@ static int32_t bmc_spi_exchange(struct comedi_device *, struct bmc_packet_type *
 static int32_t bmc_spi_packet(struct spi_device *, struct bmc_packet_type *, ktime_t);
 static int32_t daqbmc_bmc_get_config(struct comedi_device *);
 static uint32_t daqbmc_bmc_get_mui(struct comedi_device *);
-static bool bmc_spi_checkbyte_fail(const uint8_t);
 
 /*
  * piBoardRev:
@@ -626,16 +623,6 @@ static int32_t bmc_spi_packet(struct spi_device *spi, struct bmc_packet_type * p
 	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
 
 	return ret;
-}
-
-static bool bmc_spi_checkbyte_fail(const uint8_t checkbyte)
-{
-	bool check = false;
-
-	if ((uint8_t) checkbyte != (uint8_t) CHECKBYTE) {
-		check = true;
-	}
-	return check;
 }
 
 /*
@@ -728,11 +715,11 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	packet->one_t.len = 1;
 	ret += bmc_spi_packet(spi, packet, slower);
 
-//	if (bmc_spi_checkbyte_fail(packet->bmc_byte_r[BMC_DUMMY])) {
-//		dev_info(dev->class_dev, "spi CHECKBYTE mismatch 0X%X\n", packet->bmc_byte_r[BMC_DUMMY]);
-//	} else {
-//		dev_info(dev->class_dev, "spi CHECKBYTE good 0X%X\n", packet->bmc_byte_r[BMC_DUMMY]);
-//	}
+	//	if (bmc_spi_checkbyte_fail(packet->bmc_byte_r[BMC_DUMMY])) {
+	//		dev_info(dev->class_dev, "spi CHECKBYTE mismatch 0X%X\n", packet->bmc_byte_r[BMC_DUMMY]);
+	//	} else {
+	//		dev_info(dev->class_dev, "spi CHECKBYTE good 0X%X\n", packet->bmc_byte_r[BMC_DUMMY]);
+	//	}
 
 	return ret;
 }
@@ -1941,8 +1928,9 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 
 	if (retconf == CHECKBYTE) { // bad ID from daq_bmc board
 		dev_err(dev->class_dev,
-			"BMCBoard config not detected 0X%X, force board ID to 0x03 \n", retconf);
-		retconf = 0x03;
+			"BMCBoard config not detected 0X%X, unloading driver \n", retconf);
+		ret = -EINVAL;
+		goto daqbmc_kfree_rx_exit;
 	}
 
 	dev_info(dev->class_dev,
@@ -2027,7 +2015,8 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	if (devpriv->smp) {
 		ret = daqbmc_create_thread(dev, devpriv);
 		if (ret) {
-			dev_err(dev->class_dev, "cpu thread creation failed\n");
+			dev_err(dev->class_dev, "cpu thread creation failed, unloading driver \n");
+			ret = -EINVAL;
 			goto daqbmc_kfree_rx_exit;
 		}
 	}
@@ -2401,9 +2390,9 @@ static void __exit daqbmc_exit(void)
 	list_for_each_entry(pdata, &device_list, device_entry)
 	{
 		slave_spi = &pdata->slave;
+		comedi_auto_unconfig(&slave_spi->spi->controller->dev);
 	}
 
-	comedi_auto_unconfig(&slave_spi->spi->controller->dev);
 	comedi_driver_unregister(&daqbmc_driver);
 	spi_unregister_driver(&spibmc_spi_driver);
 }
