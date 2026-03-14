@@ -932,18 +932,17 @@ void main(void)
 			if (r_string_ready) {
 				bmc_logger();
 				snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%s                         ", &BMC4.log_buffer[2]);
-				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %ldVAC %3.2fA           ", modbus_name[C.id_ok], em.vl3l1 / 10, ((float) em.al1) / 1000.0f);
+				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %ldVAC %3.0fW           ", modbus_name[C.id_ok], em.vl3l1 / 10, (em_tmp.wl1 / 100.0f));
 				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%s %s %d.%01dA %dA              ", FM80_name[BM.FM80_online], state_name[cc_mode], bat_amp_whole - 128, bat_amp_frac - 128, bat_amp_panel - 128);
 #ifdef CRC_ERRORS
 				snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "C %x CR %x L %lu                ", C.c_crc, C.c_crc_rec, C.c_crc_length);
 #else
 				snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "BAT %d.%01dV PV %d.%01dV                 ", vw, vf, pvw, pvf);
 #endif
-
 				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "%2.1fKWh float %3.1fh                       ", (float) BM.log.kilowatt_hours / 10.0f, (float) BM.log.float_time / 60.0f);
 				snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "Bmax %uV Bmin %uV                      ", BM.log.bat_max / 10, BM.log.bat_min / 10);
-				snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.2fA %d                       ", (float) emt.hz / 1000.0f, ((float) em.al1) / 1000.0f, BM.benergy);
-				snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVA %3.1fPF             ", (float) em.wl1 / 10.0f, (float) em.val1 / 10.f, (float) em.pfsys / 10.0f);
+				snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.2fA %3.0fW                       ", (float) emt.hz / 1000.0f, ((float) em.al1) / 1000.0f, (em_tmp.wl1 / 100.0f));
+				snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVA %3.1fPF             ", (float) em.wl1 / 10.0f, (float) em.val1 / 10.f, (float) em.pfl1 / 10.0f);
 
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
 				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3fV,5 %6.3fV                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));
@@ -1073,6 +1072,7 @@ void main(void)
 		}
 
 		if (V.help && TimerDone(TMR_SEQ)) {
+
 			StartTimer(TMR_SEQ, SEQDELAY);
 			StartTimer(TMR_HELP, TDELAY);
 			V.set_sequ = true;
@@ -1095,6 +1095,7 @@ void onesec_io(void)
 	V.utc_ticks++;
 	BM.one_sec_flag = true;
 	if (BM.spi_reset++ >= SPI_RESET_COUNTS) {
+
 		slaveo_time_isr();
 		BM.spi_reset = 0;
 	}
@@ -1122,6 +1123,7 @@ char spinners(uint8_t shape, const uint8_t reset)
  */
 void test_slave(void)
 {
+
 	MCZ_PWM_SetLow();
 }
 
@@ -1131,6 +1133,7 @@ void test_slave(void)
  */
 void SetBMCPriority(void)
 {
+
 	INTCON0bits.GIE = 0; // Disable Interrupts;
 	PRLOCK = 0x55;
 	PRLOCK = 0xAA;
@@ -1181,6 +1184,7 @@ device_id_data_t DeviceID_Read(device_id_address_t address)
  */
 void update_time(const struct tm * ts, EB_data * EB)
 {
+
 	EB->time = (
 		(uint16_t) ((ts->tm_hour & 0x1F) << 11) |
 		(uint16_t) ((ts->tm_min & 0x3F) << 5) |
@@ -1200,6 +1204,7 @@ static void send_mx_cmd(const uint16_t * cmd)
 {
 	if (FM_tx_empty()) {
 		if (BM.pacing++ > PACE) {
+
 			FM_tx(cmd, CMD_LEN); // send 9-bit command data stream
 			BM.pacing = 0;
 		}
@@ -1234,6 +1239,7 @@ static void rec_mx_cmd(void (* DataHandler)(void), const uint8_t rec_len)
 		}
 	}
 	if ((BM.FM80_online == false) && online_count++ > ONLINE_TIMEOUT) {
+
 		online_count = 0;
 		BM.FM80_online = false;
 		BM.FM80_io = false;
@@ -1281,6 +1287,7 @@ void bmc_logger(void)
 		d_id = DC1_CMD;
 		BMC4.d_id = d_id;
 		snprintf((char*) log_buffer, MAX_B_BUF, log_format1, LOG_VARS1);
+
 		break;
 	}
 
@@ -1297,17 +1304,20 @@ void bmc_logger(void)
  */
 static void volt_f(const uint16_t voltage)
 {
+
 	volt_fract = (uint16_t) abs(voltage % 10);
 	volt_whole = voltage / 10;
 }
 
 int16_t num_fract(const int16_t num_10x)
 {
+
 	return num_10x % 10;
 }
 
 int16_t num_whole(const int16_t num_10x)
 {
+
 	return num_10x / 10;
 }
 
@@ -1322,6 +1332,7 @@ void state_init_cb(void)
 		off_delay = 0;
 	} else {
 		if (off_delay++ > 3) {
+
 			BM.FM80_online = false;
 			cc_mode = STATUS_LAST;
 		}
@@ -1331,6 +1342,7 @@ void state_init_cb(void)
 
 void state_batteryv_cb(void)
 {
+
 	volt_f((abuf[2] + (abuf[1] << 8)));
 #ifdef debug_data
 	printf("%5d: %3x %3x %3x %3x %3x   DATA: Battery Voltage %d.%01dVDC\r\n", rx_count++, abuf[0], abuf[1], abuf[2], abuf[3], abuf[4], volt_whole, volt_fract);
@@ -1340,6 +1352,7 @@ void state_batteryv_cb(void)
 
 void state_batterya_cb(void)
 {
+
 	volt_f((abuf[2] + (abuf[1] << 8)));
 #ifdef debug_data
 	printf("%5d: %3x %3x %3x %3x %3x   DATA: Battery Amps %dADC\r\n", rx_count++, abuf[0], abuf[1], abuf[2], abuf[3], abuf[4], abuf[2] - 128);
@@ -1353,6 +1366,7 @@ static void state_fwrev_cb(void)
 	if (!C.tm_ok) {
 		state = state_misc;
 	} else {
+
 		C.tm_ok = false;
 		state = state_time;
 	}
@@ -1361,6 +1375,7 @@ static void state_fwrev_cb(void)
 static void state_time_cb(void)
 {
 #ifdef SDEBUG
+
 	char s_buffer[22];
 	snprintf(s_buffer, 21, "Time CSum %X        ", calc_checksum((uint8_t *) & cmd_time[1], 10));
 	eaDogM_Scroll_String(s_buffer);
@@ -1371,6 +1386,7 @@ static void state_time_cb(void)
 static void state_date_cb(void)
 {
 #ifdef SDEBUG
+
 	char s_buffer[22];
 	snprintf(s_buffer, 21, "Date CSum %X        ", calc_checksum((uint8_t *) & cmd_date[1], 10));
 	eaDogM_Scroll_String(s_buffer);
@@ -1381,6 +1397,7 @@ static void state_date_cb(void)
 static void state_restart_cb(void)
 {
 #ifdef SDEBUG
+
 	char s_buffer[22];
 	snprintf(s_buffer, 21, "Date CSum %X        ", calc_checksum((uint8_t *) & cmd_date[1], 10));
 	eaDogM_Scroll_String(s_buffer);
@@ -1403,12 +1420,14 @@ void state_misc_cb(void)
 	if (!BM.ten_sec_flag) {
 		state = state_misc;
 	} else {
+
 		state = state_status;
 	}
 }
 
 void state_mx_log_cb(void)
 {
+
 	BM.log.volts_peak = (int16_t) cbuf[5];
 	BM.log.day = (int16_t) cbuf[14];
 	BM.log.kilowatt_hours = (int16_t) (((uint16_t) (cbuf[3] & 0xF0) >> 4) | (uint16_t) (cbuf[4] << 4));
@@ -1435,6 +1454,7 @@ void state_watts_cb(void)
 	if (BM.FM80_online) {
 		state = state_mx_log; // only get log data once state_init_cb has run
 	} else {
+
 		state = state_mx_status;
 	}
 }
@@ -1474,6 +1494,7 @@ void state_mx_status_cb(void)
 	if (BM.ten_sec_flag) {
 		BM.ten_sec_flag = false;
 		if (BM.FM80_online || BM.modbus_online) { // log for MX80 and EM540
+
 			MM_ERROR_C;
 			/*
 			 * not used
@@ -1535,6 +1556,7 @@ void state_status_cb(void)
 	if (BM.FM80_online) { // don't update when offline
 		cc_mode = FMxx_STATE;
 	} else {
+
 		cc_mode = STATUS_LAST;
 	}
 	state = state_watts;

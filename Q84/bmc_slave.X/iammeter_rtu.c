@@ -278,25 +278,30 @@ static void iammeter_data_handler(void)
 	em.al1 = mb32_swap(im_ptr->al1)*10;
 	em.al2 = mb32_swap(im_ptr->al2)*10;
 	em.al3 = mb32_swap(im_ptr->al3)*10;
-	em.wl1 = mb32_swap(im_ptr->wl1)*10;
-	em.wl2 = mb32_swap(im_ptr->wl2)*10;
-	em.wl3 = mb32_swap(im_ptr->wl3)*10;
+	em.wl1 = mb32_swap(im_ptr->ap1s) / 10000;
+	em.wl2 = mb32_swap(im_ptr->ap2s) / 10000;
+	em.wl3 = mb32_swap(im_ptr->ap3s) / 10000;
 	em.val1 = mb32_swap(im_ptr->rpp1s) / 10000;
 	em.val2 = mb32_swap(im_ptr->rpp2s) / 10000;
 	em.val3 = mb32_swap(im_ptr->rpp3s) / 10000;
 	em.varl1 = mb32_swap(im_ptr->rpp1s) / 10000;
 	em.varl2 = mb32_swap(im_ptr->rpp2s) / 10000;
 	em.varl3 = mb32_swap(im_ptr->rpp3s) / 10000;
-	em.wsys = mb32_swap(im_ptr->tps)*10;
-	em.vasys = mb32_swap(im_ptr->tps)*10;
-	em.varsys = mb32_swap(im_ptr->tps)*10;
+	em.wsys = mb32_swap(im_ptr->tps);
+	em.vasys = mb32_swap(im_ptr->tps);
+	em.varsys = mb32_swap(im_ptr->tps);
 	em.pfl1 = mb16_swap((const int16_t) im_ptr->pfl1);
 	em.pfl2 = mb16_swap((const int16_t) im_ptr->pfl2);
+	em.pfl3 = mb16_swap((const int16_t) im_ptr->pfl3);
 	em.pfsys = mb16_swap((const int16_t) im_ptr->pfl1);
 	em.hz = mb16_swap((const int16_t) im_ptr->hz);
 	emt.hz = (int32_t) (((float) em.hz) * 10.0f);
 	em_tmp.hz = (float) emt.hz;
 	em_tmp.al1 = ((float) im.al1) / 100.0f;
+	em_tmp.wl1 = (float) mb32_swap(im_ptr->wl1)*100;
+	em_tmp.wl2 = (float) mb32_swap(im_ptr->wl2)*100;
+	em_tmp.wl3 = (float) mb32_swap(im_ptr->wl3)*100;
+	;
 }
 
 static bool iammeter_modbus_write_check(C_data * client, bool* cstate, const uint16_t rec_length)
