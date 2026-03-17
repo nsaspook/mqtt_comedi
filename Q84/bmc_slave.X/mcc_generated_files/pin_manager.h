@@ -697,25 +697,25 @@
 #define IO_RF4_SetAnalogMode()      do { ANSELFbits.ANSELF4 = 1; } while(0)
 #define IO_RF4_SetDigitalMode()     do { ANSELFbits.ANSELF4 = 0; } while(0)
 
-// get/set IO_RF5 aliases
-#define IO_RF5_TRIS                 TRISFbits.TRISF5
-#define IO_RF5_LAT                  LATFbits.LATF5
-#define IO_RF5_PORT                 PORTFbits.RF5
-#define IO_RF5_WPU                  WPUFbits.WPUF5
-#define IO_RF5_OD                   ODCONFbits.ODCF5
-#define IO_RF5_ANS                  ANSELFbits.ANSELF5
-#define IO_RF5_SetHigh()            do { LATFbits.LATF5 = 1; } while(0)
-#define IO_RF5_SetLow()             do { LATFbits.LATF5 = 0; } while(0)
-#define IO_RF5_Toggle()             do { LATFbits.LATF5 = ~LATFbits.LATF5; } while(0)
-#define IO_RF5_GetValue()           PORTFbits.RF5
-#define IO_RF5_SetDigitalInput()    do { TRISFbits.TRISF5 = 1; } while(0)
-#define IO_RF5_SetDigitalOutput()   do { TRISFbits.TRISF5 = 0; } while(0)
-#define IO_RF5_SetPullup()          do { WPUFbits.WPUF5 = 1; } while(0)
-#define IO_RF5_ResetPullup()        do { WPUFbits.WPUF5 = 0; } while(0)
-#define IO_RF5_SetPushPull()        do { ODCONFbits.ODCF5 = 0; } while(0)
-#define IO_RF5_SetOpenDrain()       do { ODCONFbits.ODCF5 = 1; } while(0)
-#define IO_RF5_SetAnalogMode()      do { ANSELFbits.ANSELF5 = 1; } while(0)
-#define IO_RF5_SetDigitalMode()     do { ANSELFbits.ANSELF5 = 0; } while(0)
+// get/set EMETER_CONF aliases
+#define EMETER_CONF_TRIS                 TRISFbits.TRISF5
+#define EMETER_CONF_LAT                  LATFbits.LATF5
+#define EMETER_CONF_PORT                 PORTFbits.RF5
+#define EMETER_CONF_WPU                  WPUFbits.WPUF5
+#define EMETER_CONF_OD                   ODCONFbits.ODCF5
+#define EMETER_CONF_ANS                  ANSELFbits.ANSELF5
+#define EMETER_CONF_SetHigh()            do { LATFbits.LATF5 = 1; } while(0)
+#define EMETER_CONF_SetLow()             do { LATFbits.LATF5 = 0; } while(0)
+#define EMETER_CONF_Toggle()             do { LATFbits.LATF5 = ~LATFbits.LATF5; } while(0)
+#define EMETER_CONF_GetValue()           PORTFbits.RF5
+#define EMETER_CONF_SetDigitalInput()    do { TRISFbits.TRISF5 = 1; } while(0)
+#define EMETER_CONF_SetDigitalOutput()   do { TRISFbits.TRISF5 = 0; } while(0)
+#define EMETER_CONF_SetPullup()          do { WPUFbits.WPUF5 = 1; } while(0)
+#define EMETER_CONF_ResetPullup()        do { WPUFbits.WPUF5 = 0; } while(0)
+#define EMETER_CONF_SetPushPull()        do { ODCONFbits.ODCF5 = 0; } while(0)
+#define EMETER_CONF_SetOpenDrain()       do { ODCONFbits.ODCF5 = 1; } while(0)
+#define EMETER_CONF_SetAnalogMode()      do { ANSELFbits.ANSELF5 = 1; } while(0)
+#define EMETER_CONF_SetDigitalMode()     do { ANSELFbits.ANSELF5 = 0; } while(0)
 
 // get/set RF6 procedures
 #define RF6_SetHigh()            do { LATFbits.LATF6 = 1; } while(0)
@@ -729,25 +729,25 @@
 #define RF6_SetAnalogMode()         do { ANSELFbits.ANSELF6 = 1; } while(0)
 #define RF6_SetDigitalMode()        do { ANSELFbits.ANSELF6 = 0; } while(0)
 
-// get/set IO_RF7 aliases
-#define IO_RF7_TRIS                 TRISFbits.TRISF7
-#define IO_RF7_LAT                  LATFbits.LATF7
-#define IO_RF7_PORT                 PORTFbits.RF7
-#define IO_RF7_WPU                  WPUFbits.WPUF7
-#define IO_RF7_OD                   ODCONFbits.ODCF7
-#define IO_RF7_ANS                  ANSELFbits.ANSELF7
-#define IO_RF7_SetHigh()            do { LATFbits.LATF7 = 1; } while(0)
-#define IO_RF7_SetLow()             do { LATFbits.LATF7 = 0; } while(0)
-#define IO_RF7_Toggle()             do { LATFbits.LATF7 = ~LATFbits.LATF7; } while(0)
-#define IO_RF7_GetValue()           PORTFbits.RF7
-#define IO_RF7_SetDigitalInput()    do { TRISFbits.TRISF7 = 1; } while(0)
-#define IO_RF7_SetDigitalOutput()   do { TRISFbits.TRISF7 = 0; } while(0)
-#define IO_RF7_SetPullup()          do { WPUFbits.WPUF7 = 1; } while(0)
-#define IO_RF7_ResetPullup()        do { WPUFbits.WPUF7 = 0; } while(0)
-#define IO_RF7_SetPushPull()        do { ODCONFbits.ODCF7 = 0; } while(0)
-#define IO_RF7_SetOpenDrain()       do { ODCONFbits.ODCF7 = 1; } while(0)
-#define IO_RF7_SetAnalogMode()      do { ANSELFbits.ANSELF7 = 1; } while(0)
-#define IO_RF7_SetDigitalMode()     do { ANSELFbits.ANSELF7 = 0; } while(0)
+// get/set SAVE_EEPROM aliases
+#define SAVE_EEPROM_TRIS                 TRISFbits.TRISF7
+#define SAVE_EEPROM_LAT                  LATFbits.LATF7
+#define SAVE_EEPROM_PORT                 PORTFbits.RF7
+#define SAVE_EEPROM_WPU                  WPUFbits.WPUF7
+#define SAVE_EEPROM_OD                   ODCONFbits.ODCF7
+#define SAVE_EEPROM_ANS                  ANSELFbits.ANSELF7
+#define SAVE_EEPROM_SetHigh()            do { LATFbits.LATF7 = 1; } while(0)
+#define SAVE_EEPROM_SetLow()             do { LATFbits.LATF7 = 0; } while(0)
+#define SAVE_EEPROM_Toggle()             do { LATFbits.LATF7 = ~LATFbits.LATF7; } while(0)
+#define SAVE_EEPROM_GetValue()           PORTFbits.RF7
+#define SAVE_EEPROM_SetDigitalInput()    do { TRISFbits.TRISF7 = 1; } while(0)
+#define SAVE_EEPROM_SetDigitalOutput()   do { TRISFbits.TRISF7 = 0; } while(0)
+#define SAVE_EEPROM_SetPullup()          do { WPUFbits.WPUF7 = 1; } while(0)
+#define SAVE_EEPROM_ResetPullup()        do { WPUFbits.WPUF7 = 0; } while(0)
+#define SAVE_EEPROM_SetPushPull()        do { ODCONFbits.ODCF7 = 0; } while(0)
+#define SAVE_EEPROM_SetOpenDrain()       do { ODCONFbits.ODCF7 = 1; } while(0)
+#define SAVE_EEPROM_SetAnalogMode()      do { ANSELFbits.ANSELF7 = 1; } while(0)
+#define SAVE_EEPROM_SetDigitalMode()     do { ANSELFbits.ANSELF7 = 0; } while(0)
 
 /**
    @Param

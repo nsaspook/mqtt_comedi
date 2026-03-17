@@ -65,8 +65,9 @@ struct bmc_settings S = {
 /*
  * use Q84 MUI to find calibration data for each board
  */
-void set_calibration(unsigned long long mui)
+enum EMETER_MODEL set_calibration(unsigned long long mui)
 {
+	enum EMETER_MODEL em_model = EM540_M;
 	/*
 	 * calibration scalar selection using MUI from controller
 	 */
@@ -104,6 +105,23 @@ void set_calibration(unsigned long long mui)
 		ha_daq_calib.scaler5 = HV_SCALAR5;
 		break;
 	}
+
+	/*
+	 * written at boot after device flash, looks for emeter_conf port for model type to save
+	 * updates triggered by ADC calibration functions from user program
+	 */
+	if (read_cal_data()) {
+		em_model = r_cal.em_model;
+	}
+
+	/*
+	 * override and setup jumper
+	 */
+	if (EMETER_CONF_PORT == 0x00) {
+		em_model = WEM30_M;
+	}
+
+	return em_model;
 }
 
 /*

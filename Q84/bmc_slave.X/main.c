@@ -74,6 +74,10 @@
  *
  * UART1 general serial comms, PVP JACK connector:: RS232 TX-PIN 5, RX-PIN 4 VSS-PIN 6,  SV1 serial header::, TX-PIN 8, RX-PIN 7, VSS-PIN 6,
  * UART1 PVP JACK connector:: TTL TX-PIN 5, RX-PIN 7 VSS-PIN 6, interrupts, 115200 bps
+ * 
+ * Energy Meter Model
+ * AUX IO pin 4, RF5
+ * jumper to low/common for WEM30 meters or open for EM540 meters
  */
 
 // PIC18F57Q84 Configuration Bit Settings
@@ -356,6 +360,7 @@ struct ha_daq_calib_type ha_daq_calib = {
 	.c_scale_cal = true,
 	.c_zero_cal = true,
 	.c_do_cal = false,
+	.em_model = EM540_M,
 };
 
 volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0, channel = 0, upper;
@@ -492,18 +497,33 @@ void main(void)
 	/*
 	 * calibration scalar selection using MUI from controller
 	 */
-	set_calibration(spi_stat_ss.mui);
+	ha_daq_calib.em_model = set_calibration(spi_stat_ss.mui);
 
 #ifdef MB_MASTER
-#ifndef IAMMETER_MODBUS
-	UART3_Initialize115200(); // MODBUS port
-	UART3_SetRxInterruptHandler(my_modbus_rx_32); // install custom serial receive ISR
-#endif
-#ifdef IAMMETER_MODBUS // use immmeter functions instead of EM540 functions
-	V.op.init_mb_master_timers = &init_im_mb_master_timers;
-	V.op.master_controller_work = &iammeter_controller_work;
-	V.op.info_ptr = &iammeter_version;
-#endif
+	switch (ha_daq_calib.em_model) {
+	case WEM30_M: // use IAMMETER MODBUS connection to WEM3080T instead of default EM540
+		V.op.init_mb_master_timers = &init_im_mb_master_timers;
+		V.op.master_controller_work = &iammeter_controller_work;
+		V.op.info_ptr = &iammeter_version;
+		break;
+	case EM540_M:
+	default:
+		UART3_Initialize115200(); // MODBUS port
+		UART3_SetRxInterruptHandler(my_modbus_rx_32); // install custom serial receive ISR
+		break;
+	}
+	
+	V.op.info_ptr();
+
+	//#ifndef IAMMETER_MODBUS
+	//	UART3_Initialize115200(); // MODBUS port
+	//	UART3_SetRxInterruptHandler(my_modbus_rx_32); // install custom serial receive ISR
+	//#endif
+	//#ifdef IAMMETER_MODBUS // use immmeter functions instead of EM540 functions
+	//	V.op.init_mb_master_timers = &init_im_mb_master_timers;
+	//	V.op.master_controller_work = &iammeter_controller_work;
+	//	V.op.info_ptr = &iammeter_version;
+	//#endif
 	V.op.init_mb_master_timers(); // MODBUS pacing, spacing and timeouts
 
 	StartTimer(TMR_MBTEST, 20);
@@ -942,7 +962,7 @@ void main(void)
 				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "%2.1fKWh float %3.1fh                       ", (float) BM.log.kilowatt_hours / 10.0f, (float) BM.log.float_time / 60.0f);
 				snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "Bmax %uV Bmin %uV                      ", BM.log.bat_max / 10, BM.log.bat_min / 10);
 				snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.2fA %3.0fW                       ", (float) emt.hz / 1000.0f, ((float) em.al1) / 1000.0f, (em_tmp.wl1 / 100.0f));
-				snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVA %3.1fPF             ", (float) em.wl1 / 10.0f, (float) em.val1 / 10.f, (float) em.pfl1 / 10.0f);
+				snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVA %3.2fPF             ", (float) em.wl1 / 10.0f, (float) em.val1 / 10.f, (float) em.pfl1 / 1000.0f);
 
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
 				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3fV,5 %6.3fV                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));

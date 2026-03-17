@@ -36,6 +36,11 @@ extern "C" {
 
 	static const float MAX_12V_SYSTEMV = 17.0f; // max system volts for 12VDC systems
 
+	enum EMETER_MODEL { // energy meter driver types
+		EM540_M = 0,
+		WEM30_M,
+	};
+
 	struct ha_daq_calib_type {
 		unsigned long long bmc_id;
 		double offset4;
@@ -48,6 +53,7 @@ extern "C" {
 		uint8_t c_zero_cal : 1;
 		uint8_t c_scale_cal : 1;
 		uint8_t c_do_cal : 1;
+		enum EMETER_MODEL em_model;
 		uint16_t checkmark;
 		uint8_t crc; // must be last item in the structure
 	};
@@ -60,7 +66,7 @@ extern "C" {
 	extern struct ha_daq_calib_type ha_daq_calib;
 	extern struct bmc_settings S;
 
-	void set_calibration(unsigned long long);
+	enum EMETER_MODEL set_calibration(unsigned long long);
 	float phy_chan4(uint16_t);
 	float phy_chan5(uint16_t);
 
