@@ -88,7 +88,7 @@ enum EMETER_MODEL set_calibration(unsigned long long mui)
 		ha_daq_calib.scaler4 = HV_SCALE4_3;
 		ha_daq_calib.scaler5 = HV_SCALE5_3;
 		break;
-	case 0x4DE66:
+	case 0x5972B:
 		ha_daq_calib.scaler4 = HV_SCALE4_4;
 		ha_daq_calib.scaler5 = HV_SCALE5_4;
 		break;
