@@ -71,7 +71,7 @@ void slaveo_rx_isr(void)
 	// SPI port #2 SLAVE receiver
 
 	DLED_SetHigh();
-
+	Nop();
 #ifdef SLAVE_DEBUG
 	if (SPI2INTFbits.RXOIF) {
 		spi_stat_ss.rxof_bit++;
@@ -174,21 +174,13 @@ void slaveo_rx_isr(void)
 				} else {
 					tmp_buf = 0;
 				}
-				if (serial_buffer_ss.raw_index == BMC_CKSUM) {
-					SPI2TXB = CHECKBYTE;
-				} else {
 					SPI2TXB = tmp_buf;
-				}
-			} else { // [4..7] MEMORY device
-				tmp_buf = spi_stat_ss.daq_conf;
+			} else { // [4..7]
+				tmp_buf = 0x57;
 				if (update_bmc_string == true) { // log_buffer has been updated
 					tmp_buf = log_buffer[BMC4.pos++];
 				}
-				if (serial_buffer_ss.raw_index == BMC_CKSUM) {
-					SPI2TXB = CHECKBYTE;
-				} else {
 					SPI2TXB = tmp_buf;
-				}
 				spi_stat_ss.bmc_counts++;
 			}
 			serial_buffer_ss.cget_value = false;
@@ -206,11 +198,7 @@ void slaveo_rx_isr(void)
 			} else { // MEMORY device
 				tmp_buf = log_buffer[BMC4.pos];
 			}
-			if (serial_buffer_ss.raw_index == BMC_CKSUM) {
-				SPI2TXB = CHECKBYTE;
-			} else {
 				SPI2TXB = tmp_buf;
-			}
 			data_in2 = 0;
 		}
 	}
@@ -230,11 +218,7 @@ void slaveo_rx_isr(void)
 			} else {
 				tmp_buf = (uint8_t) in_buf2;
 			}
-			if (serial_buffer_ss.raw_index == BMC_CKSUM) {
-				SPI2TXB = CHECKBYTE;
-			} else {
 				SPI2TXB = tmp_buf;
-			}
 			data_in2 = 0;
 		}
 	}
@@ -251,12 +235,8 @@ void slaveo_rx_isr(void)
 			if (serial_buffer_ss.raw_index == BMC_D0) {
 				SPI2TXB = (adc_buffer[channel] &0x00ff);
 			} else {
-				if (serial_buffer_ss.raw_index == BMC_CKSUM) {
-					SPI2TXB = CHECKBYTE;
-				} else {
 					SPI2TXB = ((adc_buffer[channel] >> 8)&0x00ff);
 				}
-			}
 			data_in2 = 0;
 		}
 	}
@@ -349,11 +329,7 @@ void slaveo_rx_isr(void)
 					SPI2TXB = CHECKBYTE;
 					break;
 				default:
-					if (serial_buffer_ss.raw_index == BMC_CKSUM) {
-						SPI2TXB = CHECKBYTE;
-					} else {
 						SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits
-					}
 					break;
 				}
 				break;
@@ -503,7 +479,6 @@ void slaveo_rx_isr(void)
 			val_zero = SPI2RXB;
 		}
 		SPI2STATUSbits.RXRE = 0;
-		SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits
 		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
 		StartTimer(TMR_ADC, ADCDELAY);

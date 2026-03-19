@@ -669,12 +669,12 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	}
 
 	if (bmc.BOARD == bmcboard) {
-		E.adc[channel_ANA0] = get_adc_volts(channel_ANA4);
+		E.adc[channel_ANA0] = get_adc_volts(channel_ANA0); // need to change to ANA0, ADC issues have been fixed
 		/*
 		 * Battery 200A current sensor
 		 */
-//		R.bsensor0 = lp_filter((E.adc[channel_ANA0] - ha_daq_host.calib.A200_Z[ha_daq_host.bindex]) * ha_daq_host.calib.A200_S[ha_daq_host.bindex], BSENSOR0, true);
-		R.bsensor0 = lp_filter((E.adc[channel_ANA0] - A200_0_ZERO) * A200_0_SCALAR, BSENSOR0, true);
+		R.bsensor0 = lp_filter((E.adc[channel_ANA0] - ha_daq_host.calib.A200_Z[ha_daq_host.bindex]) * ha_daq_host.calib.A200_S[ha_daq_host.bindex], BSENSOR0, true);
+//		R.bsensor0 = lp_filter((E.adc[channel_ANA0] - A200_0_ZERO) * A200_0_SCALAR, BSENSOR0, true);
 		E.adc[channel_ANA1] = get_adc_volts(channel_ANA1);
 		E.adc[channel_ANA2] = get_adc_volts(channel_ANA2);
 		E.adc[channel_ANC6] = get_adc_volts(channel_ANC6);
