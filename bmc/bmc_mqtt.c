@@ -174,7 +174,7 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.scalar5[1] = HV_SCALE5_1,
 	.calib.A200_Z[1] = A200_0_ZERO,
 	.calib.A200_S[1] = A200_0_SCALAR,
-	.calib.bmc_id[2] = 0x055AF3, // bmc Q84 MUI
+	.calib.bmc_id[2] = 0x05AE2B, // bmc Q84 MUI for shed monitor
 	.calib.offset4[2] = HV_SCALE_OFFSET,
 	.calib.scalar4[2] = HV_SCALE4_2,
 	.calib.offset5[2] = HV_SCALE_OFFSET,
@@ -674,7 +674,6 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		 * Battery 200A current sensor
 		 */
 		R.bsensor0 = lp_filter((E.adc[channel_ANA0] - ha_daq_host.calib.A200_Z[ha_daq_host.bindex]) * ha_daq_host.calib.A200_S[ha_daq_host.bindex], BSENSOR0, true);
-//		R.bsensor0 = lp_filter((E.adc[channel_ANA0] - A200_0_ZERO) * A200_0_SCALAR, BSENSOR0, true);
 		E.adc[channel_ANA1] = get_adc_volts(channel_ANA1);
 		E.adc[channel_ANA2] = get_adc_volts(channel_ANA2);
 		E.adc[channel_ANC6] = get_adc_volts(channel_ANC6);
