@@ -616,9 +616,6 @@ static int32_t bmc_spi_packet(struct spi_device *spi, struct bmc_packet_type * p
 	spi_bus_lock(spi->controller);
 	ret = spi_sync_locked(spi, packet->m);
 	spi_bus_unlock(spi->controller);
-	if (ret == 0) {
-		ret = packet->m->actual_length;
-	}
 	__set_current_state(TASK_UNINTERRUPTIBLE);
 	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
 
@@ -1999,10 +1996,8 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 
 	if ((retconf & 0x4) == 0x04 || FORCE_47Q84) { // 47Q84 processor
 		daqbmc_cpu = PICSL12_47;
-		dev_info(dev->class_dev, "PIC18F47Q84 DAQ device setup complete\n");
-	} else {
-		dev_info(dev->class_dev, "PIC18F57Q84 DAQ device setup complete\n");
 	}
+	dev_info(dev->class_dev, "PIC18F57Q84 DAQ device setup complete\n");
 
 	/*
 	 * setup the timer to call my_timer_ai_callback
@@ -2157,10 +2152,10 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 
 		ret = 0;
 		for (int i = BMC_CMD; i < BMC_DUMMY; i++) {
-			ret += bmc_spi_packet(spi, packet, slower); // only one byte is transmitted
+			ret = bmc_spi_packet(spi, packet, slower); // only one byte is transmitted
 		}
 		daq_code = packet->bmc_byte_r[BMC_CMD];
-		dev_info(&spi->dev, "spi I/O CMD_ZERO test returns %X, spi transfer return code %x\n", daq_code, ret);
+		dev_info(&spi->dev, "spi I/O CMD_ZERO test returns %X, spi transfer return code %d\n", daq_code, ret);
 	}
 
 	/* setup Comedi part of driver */
