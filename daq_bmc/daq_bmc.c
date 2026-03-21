@@ -1938,6 +1938,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	 * check Q84 board returned config codes for digital channels
 	 * using retconf value from the BMC board
 	 */
+	retconf = daqbmc_bmc_get_config(dev);
 	if ((retconf & 0x3) != 0x00) { // sub-device codes from the Q84
 		di_conf = false;
 		do_conf = false;
@@ -1948,7 +1949,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	}
 
 	retconf = daqbmc_bmc_get_mui(dev);
-	if (retconf > 0x050000) {
+	if ((retconf > 0x050000) && (retconf < 0x250000)) {
 		dev_info(dev->class_dev, "BMCBoard : MUI 0X%X \n", retconf);
 	} else {
 		dev_info(dev->class_dev, "BMCBoard : INVALID : MUI 0X%X \n", retconf);
