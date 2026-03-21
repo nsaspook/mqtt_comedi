@@ -21,7 +21,7 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.58"
+#define VER	"V0.59"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -70,12 +70,13 @@ extern "C" {
 	 * V0.56 alternative energy meters via MODBUS
 	 * V0.57 cleanup MODBUS functions
 	 * V0.58 add energy meter configuration jumper and EEPROM setting
+	 * V0.59 get firmware version, model name and serial number from WEM80 devices
 	 */
 
 	/*
 	 * internal variables and states debug screens
 	 */
-//#define DIS_DEBUG	// active debug status display, disable during normal operation
+	//#define DIS_DEBUG	// active debug status display, disable during normal operation
 
 
 	//#define IAMMETER_TEST

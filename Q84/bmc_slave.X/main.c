@@ -952,7 +952,7 @@ void main(void)
 			if (r_string_ready) {
 				bmc_logger();
 				snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%s                         ", &BMC4.log_buffer[2]);
-				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %ldVAC %3.0fW           ", modbus_name[C.id_ok], em.vl3l1 / 10, (em_tmp.wl1 / 100.0f));
+				snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %ldVAC %3.0fW           ", modbus_name[C.id_ok], em.vl3l1 / 10, (em_tmp.wl3 / 100.0f));
 				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%s %s %d.%01dA %dA              ", FM80_name[BM.FM80_online], state_name[cc_mode], bat_amp_whole - 128, bat_amp_frac - 128, bat_amp_panel - 128);
 #ifdef CRC_ERRORS
 				snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "C %x CR %x L %lu                ", C.c_crc, C.c_crc_rec, C.c_crc_length);
@@ -961,8 +961,8 @@ void main(void)
 #endif
 				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "%2.1fKWh float %3.1fh                       ", (float) BM.log.kilowatt_hours / 10.0f, (float) BM.log.float_time / 60.0f);
 				snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "Bmax %uV Bmin %uV                      ", BM.log.bat_max / 10, BM.log.bat_min / 10);
-				snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.2fA %3.0fW                       ", (float) emt.hz / 1000.0f, ((float) em.al1) / 1000.0f, (em_tmp.wl1 / 100.0f));
-				snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVA %3.2fPF             ", (float) em.wl1 / 10.0f, (float) em.val1 / 10.f, (float) em.pfl1 / 1000.0f);
+				snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.2fA %3.0fW                       ", (float) emt.hz / 1000.0f, ((float) em.al2) / 1000.0f, (em_tmp.wl2 / 100.0f));
+				snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVA %3.2fPF             ", imd_tmp.ap1s / 10.0f, imd_tmp.rpp1s / 10.f, (float) em.pfl1 / 1000.0f);
 
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
 				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3fV,5 %6.3fV                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));

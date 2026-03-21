@@ -15,7 +15,7 @@ extern "C" {
 #include "modbus_master.h"
 
 #define IM_DATA_LEN1	74	// 16-bit words returned 74
-#define IM_DATA_LEN2	64	// 16-bit words returned
+#define IM_DATA_DIR1	14	// 16-bit words returned
 
 #define MB_IAMMETER_ID_H	0x01	// slave ID
 #define MB_IAMMETER_ID_L	0x06	// slabe baudrate
@@ -32,6 +32,7 @@ extern "C" {
 
 	typedef enum cmd_im_type {
 		I_DATA1 = 0,
+		I_DIR1,
 		I_LAST,
 	} cmd_im_type;
 
@@ -90,6 +91,12 @@ extern "C" {
 		phaseseq, hz;
 	} IM_tmp;
 
+	typedef struct IMD_tmp {
+		volatile float
+		tps, ap1s, ap2s, ap3s,
+		rpp1s, rpp2s, rpp3s;
+	} IMD_tmp;
+
 	typedef __pack struct IM_data2 {
 		volatile int64_t
 		kwhpt, kvarhpt, kwhpp, kvarhpp,
@@ -100,6 +107,20 @@ extern "C" {
 		rhm, rhmk, rhmp, rhmkp,
 		hz, rhlc;
 	} IM_data2;
+
+	/*
+	 * map 16-bit registers to bytes to extract information
+	 */
+	typedef __pack struct IM_dir1 {
+		volatile int32_t
+		tps, ap1s, ap2s, ap3s,
+		rpp1s, rpp2s, rpp3s;
+		//		volatile uint8_t
+		//		firmware_version[0x20], model_name[0x20], serial_number[0x20];
+	} IM_dir1;
+	
+	extern IM_tmp im_tmp;
+	extern IMD_tmp imd_tmp;
 
 	void im_my_modbus_rx_32(void);
 	void init_im_mb_master_timers(void);

@@ -21,10 +21,11 @@ static volatile M_time_data MT = {
 
 static bool iammeter_modbus_write_check(C_data *, bool*, uint16_t);
 static bool iammeter_modbus_read_check(C_data *, bool*, uint16_t, void (* DataHandler)(void));
-static bool iammeter_modbus_read_id_check(C_data *, bool*, uint16_t);
+static bool iammeter_modbus_read_dir_check(C_data *, bool*, uint16_t, void (* DataHandler)(void));
 static bool modbus_read_dcu_check_im(C_data *, bool*, uint16_t);
 
 static void iammeter_data_handler(void);
+static void iammeter_dir_handler(void);
 
 static void half_dup_tx(const bool);
 static void half_dup_rx(const bool);
@@ -38,14 +39,18 @@ wim_get_id[] = {0x00, 0x03, 0x00, 0x04, 0x00, 0x01, 0xC4, 0x1A};
 static const uint8_t
 // transmit frames for commands
 modbus_im_data1[] = {MADDR, READ_HOLDING_REGISTERS, 0x00, 0x48, 0x00, IM_DATA_LEN1},
+modbus_im_dir1[] = {MADDR, READ_HOLDING_REGISTERS, 0x00, 0x78, 0x00, IM_DATA_DIR1},
 // receive frames prototypes for received data checking
-im_data1[(IM_DATA_LEN1 * 2) + 5] = {MADDR, READ_HOLDING_REGISTERS, 0x00};
+im_data1[(IM_DATA_LEN1 * 2) + 5] = {MADDR, READ_HOLDING_REGISTERS, 0x00},
+im_dir1[(IM_DATA_DIR1 * 2) + 5] = {MADDR, READ_HOLDING_REGISTERS, 0x00};
 
 /*
  * register data frames
  */
 IM_data1 im, *im_ptr;
+IM_dir1 imd, *imd_ptr;
 IM_tmp im_tmp;
+IMD_tmp imd_tmp;
 IM_data2 imt;
 
 /*
@@ -55,6 +60,7 @@ void init_im_mb_master_timers(void)
 {
 	cc_buffer = cc_buffer_0;
 	im_ptr = (IM_data1*) & cc_buffer[3];
+	imd_ptr = (IM_dir1*) & cc_buffer[3];
 	TMR4_SetInterruptHandler(timer_500ms_tick);
 	TMR4_StartTimer();
 	TMR3_SetInterruptHandler(timer_2ms_tick);
@@ -92,9 +98,13 @@ int8_t iammeter_controller_work(C_data * client)
 		 * command specific TX buffer setup
 		 */
 		switch (client->modbus_command) {
-		case I_DATA1: // read code request
+		case I_DATA1: // read data request
 			client->trace = T_data;
 			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_im_data1, sizeof(modbus_im_data1));
+			break;
+		case I_DIR1: // read info request
+			client->trace = T_id;
+			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_im_dir1, sizeof(modbus_im_dir1));
 			break;
 		case I_LAST: // end of command sequences
 			client->cstate = CLEAR;
@@ -165,6 +175,9 @@ int8_t iammeter_controller_work(C_data * client)
 			switch (client->modbus_command) {
 			case I_DATA1: // check for controller data1 codes
 				iammeter_modbus_read_check(client, &client->data_ok, sizeof(im_data1), iammeter_data_handler);
+				break;
+			case I_DIR1: // check for controller dir1 codes
+				iammeter_modbus_read_dir_check(client, &client->id_ok, sizeof(im_dir1), iammeter_dir_handler);
 				break;
 			default:
 				break;
@@ -301,7 +314,21 @@ static void iammeter_data_handler(void)
 	em_tmp.wl1 = (float) mb32_swap(im_ptr->wl1)*100;
 	em_tmp.wl2 = (float) mb32_swap(im_ptr->wl2)*100;
 	em_tmp.wl3 = (float) mb32_swap(im_ptr->wl3)*100;
-	;
+	//	em_tmp.wl1 = (float) mb32_swap(im_ptr->ap1s)*1;
+	//	em_tmp.wl2 = (float) mb32_swap(im_ptr->ap2s)*1;
+	//	em_tmp.wl3 = (float) mb32_swap(im_ptr->ap3s)*1;
+}
+
+static void iammeter_dir_handler(void)
+{
+	imd_ptr = (IM_dir1*) & cc_buffer[3];
+	imd_tmp.ap1s = (float) mb32_swap(imd_ptr->ap1s)/10000;
+	imd_tmp.ap2s = (float) mb32_swap(imd_ptr->ap2s)/10000;
+	imd_tmp.ap3s = (float) mb32_swap(imd_ptr->ap3s)/10000;
+	imd_tmp.rpp1s = (float) mb32_swap(imd_ptr->rpp1s)/10000;
+	imd_tmp.rpp2s = (float) mb32_swap(imd_ptr->rpp2s)/10000;
+	imd_tmp.rpp3s = (float) mb32_swap(imd_ptr->rpp3s)/10000;
+	imd_tmp.tps = (float) mb32_swap(imd_ptr->tps)/10000;
 }
 
 static bool iammeter_modbus_write_check(C_data * client, bool* cstate, const uint16_t rec_length)
@@ -350,7 +377,6 @@ static bool iammeter_modbus_read_check(C_data * client, bool* cstate, const uint
 #endif
 		if (DBUG_R c_crc == c_crc_rec) {
 			client->data_ok = true;
-			client->id_ok = true;
 			*cstate = true;
 			/*
 			 * move from receive buffer to data structure and munge the data into the correct local 32-bit format from MODBUS client
@@ -363,7 +389,6 @@ static bool iammeter_modbus_read_check(C_data * client, bool* cstate, const uint
 			MM_ERROR_S;
 			*cstate = false;
 			client->data_ok = false;
-			client->id_ok = false;
 			log_crc_error(c_crc, c_crc_rec);
 		}
 		client->cstate = CLEAR;
@@ -374,20 +399,14 @@ static bool iammeter_modbus_read_check(C_data * client, bool* cstate, const uint
 			client->mcmd = I_DATA1;
 			M.to_error++;
 			M.error++;
-			client->id_ok = false;
 			*cstate = false;
-			client->config_ok = false;
-			client->passwd_ok = false;
 			client->data_ok = false;
-			client->light_ok = false;
-			client->version_ok = false;
-			client->serial_ok = false;
 		}
 	}
 	return *cstate;
 }
 
-static bool iammeter_modbus_read_id_check(C_data * client, bool* cstate, const uint16_t rec_length)
+static bool iammeter_modbus_read_dir_check(C_data * client, bool* cstate, const uint16_t rec_length, void (* DataHandler)(void))
 {
 	uint16_t c_crc, c_crc_rec;
 
@@ -395,37 +414,31 @@ static bool iammeter_modbus_read_id_check(C_data * client, bool* cstate, const u
 	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == MADDR) && (cc_buffer[1] == READ_HOLDING_REGISTERS))) {
 		c_crc = crc16(cc_buffer, client->req_length - 2);
 		c_crc_rec = crc16_receive(client, cc_buffer);
-		if ((DBUG_R c_crc == c_crc_rec) && (cc_buffer[3] == MB_IAMMETER_ID_H) && (cc_buffer[4] == MB_IAMMETER_ID_L)) {
+		if (DBUG_R c_crc == c_crc_rec) {
 			MM_ERROR_C;
 			client->id_ok = true;
 			*cstate = true;
+			/*
+			 * move from receive buffer to data structure and munge the data into the correct local 32-bit format from MODBUS client
+			 */
+			DataHandler();
+			client->data_prev = client->data_count;
+			client->data_count++;
 		} else {
 			MM_ERROR_S;
 			*cstate = false;
 			client->id_ok = false;
-			client->config_ok = false;
-			client->passwd_ok = false;
-			client->data_ok = false;
-			client->light_ok = false;
-			client->version_ok = false;
-			client->serial_ok = false;
 			log_crc_error(c_crc, c_crc_rec);
 		}
 		client->cstate = CLEAR;
 	} else {
 		if (get_500hz(false) >= IRDELAY) {
 			client->cstate = CLEAR;
-			client->mcmd = I_DATA1;
+			client->mcmd = I_DIR1;
 			M.to_error++;
 			M.error++;
-			client->id_ok = false;
 			*cstate = false;
-			client->config_ok = false;
-			client->passwd_ok = false;
-			client->data_ok = false;
-			client->light_ok = false;
-			client->version_ok = false;
-			client->serial_ok = false;
+			client->id_ok = false;
 		}
 	}
 	return *cstate;
