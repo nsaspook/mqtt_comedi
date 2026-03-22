@@ -322,13 +322,13 @@ static void iammeter_data_handler(void)
 static void iammeter_dir_handler(void)
 {
 	imd_ptr = (IM_dir1*) & cc_buffer[3];
-	imd_tmp.ap1s = (float) mb32_swap(imd_ptr->ap1s)/10000;
-	imd_tmp.ap2s = (float) mb32_swap(imd_ptr->ap2s)/10000;
-	imd_tmp.ap3s = (float) mb32_swap(imd_ptr->ap3s)/10000;
-	imd_tmp.rpp1s = (float) mb32_swap(imd_ptr->rpp1s)/10000;
-	imd_tmp.rpp2s = (float) mb32_swap(imd_ptr->rpp2s)/10000;
-	imd_tmp.rpp3s = (float) mb32_swap(imd_ptr->rpp3s)/10000;
-	imd_tmp.tps = (float) mb32_swap(imd_ptr->tps)/10000;
+	imd_tmp.ap1s = (float) mb32_swap(imd_ptr->ap1s)/100000; // phase A:1 GTI power
+	imd_tmp.ap2s = (float) mb32_swap(imd_ptr->ap2s)/100000; // Phase B:2 Utility power flow
+	imd_tmp.ap3s = (float) mb32_swap(imd_ptr->ap3s)/100000; // Phase C:3 Load power
+	imd_tmp.rpp1s = (float) mb32_swap(imd_ptr->rpp1s)/100000; // Reactive power for each Phase input
+	imd_tmp.rpp2s = (float) mb32_swap(imd_ptr->rpp2s)/100000;
+	imd_tmp.rpp3s = (float) mb32_swap(imd_ptr->rpp3s)/100000;
+	imd_tmp.tps = (float) mb32_swap(imd_ptr->tps)/100000; // Total power
 }
 
 static bool iammeter_modbus_write_check(C_data * client, bool* cstate, const uint16_t rec_length)

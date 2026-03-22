@@ -21,7 +21,7 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.59"
+#define VER	"V0.60"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -71,6 +71,7 @@ extern "C" {
 	 * V0.57 cleanup MODBUS functions
 	 * V0.58 add energy meter configuration jumper and EEPROM setting
 	 * V0.59 get firmware version, model name and serial number from WEM80 devices
+	 * V0.60 optimize LCD display for energy meter data
 	 */
 
 	/*
