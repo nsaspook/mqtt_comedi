@@ -240,7 +240,7 @@ TMR4_UART5_RX_EDGE 34
 TMR4_UART5_TX_EDGE 35
 TMR4_RESERVED_4 36
 ]
-"272 /public/bmc/Q84/bmc_slave.X/main.c
+"273 /public/bmc/Q84/bmc_slave.X/main.c
 [e E25503 . `uc
 SEQ_STATE_INIT 0
 SEQ_STATE_RX 1
@@ -288,7 +288,7 @@ G_VERSION 6
 G_SERIAL 7
 G_LAST 8
 ]
-"311
+"312
 [e E25997 status_type `uc
 STATUS_SLEEPING 0
 STATUS_FLOATING 1
@@ -297,7 +297,7 @@ STATUS_ABSORB 3
 STATUS_EQUALIZE 4
 STATUS_LAST 5
 ]
-"342
+"343
 [e E25833 daqbmc_packet_index `uc
 BMC_CMD 0
 BMC_D0 1
@@ -309,13 +309,13 @@ BMC_EXT 6
 BMC_CKSUM 7
 BMC_DUMMY 8
 ]
-"350
+"351
 [e E24976 EMETER_MODEL `uc
 EM540_M 0
 WEM30_M 1
 ]
-"403
-[e E26223 state_type `uc
+"404
+[e E26352 state_type `uc
 state_init 0
 state_status 1
 state_panel 2
@@ -330,7 +330,7 @@ state_misc 10
 state_mx_status 11
 state_last 12
 ]
-"529
+"530
 [e E25043 APP_TIMERS `uc
 TMR_INTERNAL 0
 TMR_ADC 1
@@ -347,7 +347,7 @@ TMR_DERE 11
 TMR_RESTART 12
 TMR_COUNT 13
 ]
-"820
+"821
 [e E24208 . `uc
 channel_ANA0 0
 channel_ANA1 1
@@ -363,7 +363,7 @@ channel_DAC1 61
 channel_FVR_Buffer1 62
 channel_FVR_Buffer2 63
 ]
-"1535
+"1536
 [e E25285 filter_type `uc
 F_ac 0
 F_wac 1
@@ -730,51 +730,97 @@ I_DATA1 0
 I_DIR1 1
 I_LAST 2
 ]
-"440 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"78 /public/bmc/Q84/bmc_slave.X/pzem_rtu.c
+[e E24856 comm_type `uc
+CLEAR 0
+INIT 1
+SEND 2
+RECV 3
+]
+[e E24862 cmd_type `uc
+G_ID 0
+G_DATA1 1
+G_DATA2 2
+G_CONFIG 3
+G_PASSWD 4
+G_LIGHT 5
+G_VERSION 6
+G_SERIAL 7
+G_LAST 8
+]
+"84
+[e E24873 trace_type `uc
+T_begin 1
+T_clear 2
+T_passwd 3
+T_config 4
+T_data 5
+T_id 6
+T_serial 7
+T_version 8
+T_init 9
+T_init_d 10
+T_send 11
+T_send_d 12
+T_recv 13
+T_recv_r 14
+T_misc1 15
+T_misc2 16
+T_misc3 17
+T_spacing 18
+T_light 19
+]
+"97
+[e E25123 cmd_pz_type `uc
+P_DATA1 0
+P_DIR1 1
+P_LAST 2
+]
+"441 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _main main `(v  1 e 1 0 ]
-"1122
+"1123
 [v _onesec_io onesec_io `(v  1 e 1 0 ]
-"1137
+"1138
 [v _spinners spinners `(uc  1 e 1 0 ]
-"1156
+"1157
 [v _test_slave test_slave `(v  1 e 1 0 ]
-"1166
+"1167
 [v _SetBMCPriority SetBMCPriority `(v  1 e 1 0 ]
-"1184
+"1185
 [v _DeviceID_Read DeviceID_Read `(us  1 e 2 0 ]
-"1235
+"1236
 [v _send_mx_cmd send_mx_cmd `(v  1 s 1 send_mx_cmd ]
-"1249
+"1250
 [v _rec_mx_cmd rec_mx_cmd `(v  1 s 1 rec_mx_cmd ]
-"1288
+"1289
 [v _bmc_logger bmc_logger `(v  1 e 1 0 ]
-"1337
+"1338
 [v _volt_f volt_f `(v  1 s 1 volt_f ]
-"1356
+"1357
 [v _state_init_cb state_init_cb `(v  1 e 1 0 ]
-"1375
+"1376
 [v _state_batteryv_cb state_batteryv_cb `(v  1 e 1 0 ]
-"1385
+"1386
 [v _state_batterya_cb state_batterya_cb `(v  1 e 1 0 ]
-"1395
+"1396
 [v _state_fwrev_cb state_fwrev_cb `(v  1 s 1 state_fwrev_cb ]
-"1407
+"1408
 [v _state_time_cb state_time_cb `(v  1 s 1 state_time_cb ]
-"1418
+"1419
 [v _state_date_cb state_date_cb `(v  1 s 1 state_date_cb ]
-"1429
+"1430
 [v _state_restart_cb state_restart_cb `(v  1 s 1 state_restart_cb ]
-"1443
+"1444
 [v _state_misc_cb state_misc_cb `(v  1 e 1 0 ]
-"1460
+"1461
 [v _state_mx_log_cb state_mx_log_cb `(v  1 e 1 0 ]
-"1480
+"1481
 [v _state_watts_cb state_watts_cb `(v  1 e 1 0 ]
-"1494
+"1495
 [v _state_mx_status_cb state_mx_status_cb `(v  1 e 1 0 ]
-"1541
+"1542
 [v _state_status_cb state_status_cb `(v  1 e 1 0 ]
-"1597
+"1598
 [v _state_panelv_cb state_panelv_cb `(v  1 e 1 0 ]
 "4 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/__fpclassifyf.c
 [v ___fpclassifyf __fpclassifyf `(i  1 e 2 0 ]
@@ -1474,6 +1520,14 @@ I_LAST 2
 [v _FM_tensec_io FM_tensec_io `(v  1 e 1 0 ]
 "148
 [v _lp_filter lp_filter `(f  1 e 4 0 ]
+"197 /public/bmc/Q84/bmc_slave.X/pzem_rtu.c
+[v _pzem_data_handler pzem_data_handler `(v  1 s 1 pzem_data_handler ]
+"241
+[v _pzem_dir_handler pzem_dir_handler `(v  1 s 1 pzem_dir_handler ]
+"284
+[v _pzem_modbus_read_check pzem_modbus_read_check `(a  1 s 1 pzem_modbus_read_check ]
+"328
+[v _pzem_modbus_read_dir_check pzem_modbus_read_dir_check `(a  1 s 1 pzem_modbus_read_dir_check ]
 "42 /public/bmc/Q84/bmc_slave.X/rs232.c
 [v _line_status line_status `(uc  1 s 1 line_status ]
 "30 /public/bmc/Q84/bmc_slave.X/slaveo.c
@@ -1585,32 +1639,32 @@ I_LAST 2
 [v _state_name state_name `C[6][12]uc  1 e 72 0 ]
 "84
 [v _FM80_name FM80_name `C[2][12]uc  1 e 24 0 ]
-"369
+"370
 [v _fw_state fw_state `uc  1 e 1 0 ]
-"371
-[v _tickCount tickCount `VE[13]us  1 e 26 0 ]
 "372
+[v _tickCount tickCount `VE[13]us  1 e 26 0 ]
+"373
 [v _mode_sw mode_sw `VEuc  1 e 1 0 ]
 [v _faker faker `VEuc  1 e 1 0 ]
-"402
+"403
 [v _abuf abuf `[32]us  1 s 64 abuf ]
 [v _cbuf cbuf `[34]us  1 s 68 cbuf ]
-"403
-[v _state state `VEE26223  1 e 1 0 ]
 "404
+[v _state state `VEE26352  1 e 1 0 ]
+"405
 [v _cc_mode cc_mode `VEus  1 e 2 0 ]
 [v _mx_code mx_code `VEus  1 e 2 0 ]
-"405
+"406
 [v _buffer buffer `VE[512]uc  1 e 512 0 ]
 [v _log_buffer log_buffer `VE[512]uc  1 e 512 0 ]
 [v _boot_char boot_char `VEuc  1 e 1 0 ]
 [s S5524 bmc_buffer_type 10 `*.39VEuc 1 buffer 2 0 `*.39VEuc 1 log_buffer 2 2 `VEus 1 len 2 4 `VEus 1 pos 2 6 `VEa 1 bmc_flag 1 8 `VEuc 1 d_id 1 9 ]
-"406
+"407
 [v _BMC4 BMC4 `VES5524  1 e 10 0 ]
-"411
+"412
 [v _timeout timeout `VEa  1 e 1 0 ]
 [s S5531 tm 24 `i 1 tm_sec 2 0 `i 1 tm_min 2 2 `i 1 tm_hour 2 4 `i 1 tm_mday 2 6 `i 1 tm_mon 2 8 `i 1 tm_year 2 10 `i 1 tm_wday 2 12 `i 1 tm_yday 2 14 `i 1 tm_isdst 2 16 `l 1 __tm_gmtoff 4 18 `*.32Cuc 1 __tm_zone 2 22 ]
-"413
+"414
 [v _bmc_newtime bmc_newtime `*.39S5531  1 e 2 0 ]
 "135 /public/bmc/Q84/bmc_slave.X/slaveo.h
 [v _failure failure `VEa  1 e 1 0 ]
@@ -3421,7 +3475,7 @@ I_LAST 2
 [v _imt imt `VQES11115  1 e 128 0 ]
 [s S5202 terminal_type 45 `[32]uc 1 ack 32 0 `uc 1 mesgid 1 32 `uc 1 TID 1 33 `uc 1 mcode 1 34 `uc 1 mparm 1 35 `uc 1 cmdlen 1 36 `uc 1 log_seq 1 37 `uc 1 host_display_ack 1 38 :1:0 
 `E25475 1 info 1 39 `E25475 1 help_temp 1 40 `us 1 ceid 2 41 `us 1 log_num 2 43 ]
-"272 /public/bmc/Q84/bmc_slave.X/main.c
+"273 /public/bmc/Q84/bmc_slave.X/main.c
 [s S5272 _op_t 9 `*.38(v 1 init_mb_master_timers 3 0 `*.38(v 1 info_ptr 3 3 `*.38(c 1 master_controller_work 3 6 ]
 [s S5280 V_data 536 `E25503 1 s_state 1 0 `E25512 1 ui_state 1 1 `[128]uc 1 buf 128 2 `[160]uc 1 terminal 160 130 `[64]uc 1 info 64 290 `VEul 1 ticks 4 354 `VEul 1 systemb 4 358 `VEul 1 tx_total 4 362 `VEul 1 rx_total 4 366 `VEul 1 bt_total 4 370 `VEul 1 br_total 4 374 `VEul 1 brn_total 4 378 `VEul 1 btn_total 4 382 `VEul 1 bmc_do 4 386 `VEul 1 bmc_di 4 390 `VEul 1 utc_ticks 4 394 `l 1 testing 4 398 `uc 1 stream 1 402 `uc 1 function 1 403 `uc 1 error 1 404 `uc 1 abort 1 405 `uc 1 msg_error 1 406 `uc 1 msg_ret 1 407 `uc 1 alarm 1 408 `uc 1 event 1 409 `E25512 1 ui_sw 1 410 `us 1 r_checksum 2 411 `us 1 t_checksum 2 413 `us 1 checksum_error 2 415 `us 1 timer_error 2 417 `us 1 ping 2 419 `us 1 mode_pwm 2 421 `us 1 equip_timeout 2 423 `us 1 sequences 2 425 `us 1 all_errors 2 427 `us 1 ceid 2 429 `VEus 1 bmc_ao 2 431 `uc 1 rbit 1 433 :1:0 
 `uc 1 wbit 1 433 :1:1 
@@ -3431,7 +3485,7 @@ I_LAST 2
 `S5202 1 response 45 435 `uc 1 uart 1 480 `uc 1 llid 1 481 `uc 1 sid 1 482 `uc 1 ping_count 1 483 `uc 1 euart 1 484 `uc 1 vterm 1 485 `uc 1 vterm_switch 1 486 `uc 1 uart_speed_fast 1 487 `VEuc 1 ticker 1 488 `a 1 flipper 1 489 `a 1 queue 1 490 `a 1 debug 1 491 `a 1 help 1 492 `a 1 stack 1 493 `a 1 help_id 1 494 `a 1 rerror 1 495 `a 1 speed_spin 1 496 `a 1 set_sequ 1 497 `a 1 log_s6f11 1 498 `a 1 log_abort 1 499 `a 1 log_char 1 500 `us 1 v_tx_line 2 501 `us 1 v_rx_line 2 503 `s 1 tx_volts 2 505 `s 1 rx_volts 2 507 `uc 1 tx_rs232 1 509 `uc 1 rx_rs232 1 510 `s 1 secs_value 2 511 `s 1 cmd_value 2 513 `ul 1 utc_cmd_value 4 515 `ul 1 di_fail 4 519 `ul 1 do_fail 4 523 `S5272 1 op 9 527 ]
 [v _V V `VES5280  1 e 536 0 ]
 [s S5370 . 22 `uc 1 type 1 0 `s 1 day 2 1 `s 1 amp_hours 2 3 `s 1 kilowatt_hours 2 5 `s 1 volts_peak 2 7 `s 1 amps_peak 2 9 `s 1 kilowatts_peak 2 11 `s 1 bat_min 2 13 `s 1 bat_max 2 15 `s 1 absorb_time 2 17 `s 1 float_time 2 19 `uc 1 select 1 21 ]
-"311
+"312
 [s S5383 BM_type 116 `VEa 1 ten_sec_flag 1 0 `VEa 1 one_sec_flag 1 1 `VEa 1 FM80_charged 1 2 `VEa 1 pv_high 1 3 `VEa 1 pv_update 1 4 `VEa 1 once 1 5 `VE[3]a 1 a_switch 3 6 `VE[3]a 1 a_trigger 3 9 `VE[3]a 1 a_type 3 12 `VEus 1 pacing 2 15 `VEus 1 rx_count 2 17 `VEus 1 flush 2 19 `VEus 1 pv_prev 2 21 `VEus 1 day_check 2 23 `VEus 1 dim_delay 2 25 `VEus 1 benergy 2 27 `VEa 1 FM80_online 1 29 `VEa 1 FM80_io 1 30 `VEa 1 LOG 1 31 `VEa 1 display_dim 1 32 `VEa 1 display_update 1 33 `VEa 1 display_on 1 34 `VEa 1 fm80_restart 1 35 `VEa 1 fm80_soc_once 1 36 `VEuc 1 canbus_online 1 37 `VEuc 1 modbus_online 1 38 `VEuc 1 alt_display 1 39 `VE[3]uc 1 a_pin 3 40 `VEuc 1 spi_reset 1 43 `f 1 run_time 4 44 `f 1 net_balance 4 48 `f 1 Soc 4 52 `f 1 bvolts 4 56 `[10]us 1 mui 20 60 `[3]us 1 fwrev 6 80 `S5370 1 log 22 86 `VEuo 1 node_id 8 108 ]
 [v _BM BM `VES5383  1 e 116 0 ]
 [s S5428 spi_link_type_ss 1 `uc 1 SPI_DATA 1 0 :1:0 
@@ -3443,31 +3497,31 @@ I_LAST 2
 `uc 1 LOW_BITS 1 0 :1:6 
 `uc 1 ADC_RUN 1 0 :1:7 
 ]
-"335
+"336
 [v _spi_comm_ss spi_comm_ss `VES5428  1 e 1 0 ]
 [s S5437 spi_stat_type_ss 95 `VEul 1 adc_count 4 0 `VEul 1 dac_count 4 4 `VEul 1 bmc_counts 4 8 `VEul 1 spi_resets 4 12 `VEul 1 port_count 4 16 `VEul 1 port_error_count 4 20 `VEul 1 port_data_count 4 24 `VEul 1 zombie_count 4 28 `VEul 1 char_count 4 32 `VEul 1 char_error_count 4 36 `VEul 1 rxof_bit 4 40 `VEul 1 txdone_bit 4 44 `VEul 1 txuf_bit 4 48 `VEul 1 slave_int_count 4 52 `VEul 1 last_slave_int_count 4 56 `VEul 1 slave_tx_count 4 60 `VEul 1 comm_count 4 64 `VEul 1 idle_count 4 68 `VEul 1 spi_error_count 4 72 `VEul 1 spi_noerror_count 4 76 `VEuc 1 daq_conf 1 80 `VEuc 1 comm_ok 1 81 `VEuc 1 raw_index 1 82 `us 1 deviceid 2 83 `us 1 devicerev 2 85 `VEuo 1 mui 8 87 ]
-"336
+"337
 [v _spi_stat_ss spi_stat_ss `VES5437  1 e 95 0 ]
 [s S5464 serial_buffer_type_ss 115 `VE[16]uc 1 data 16 0 `VE[81]uc 1 r_string 81 16 `VEuc 1 adcl 1 97 `VEuc 1 adc2 1 98 `VEuc 1 adch 1 99 `VEuc 1 command 1 100 `VEuc 1 raw_index 1 101 `VEuc 1 r_string_index 1 102 `VEuc 1 r_string_chan 1 103 `VEul 1 place 4 104 `VEa 1 make_value 1 108 `VEa 1 get_value 1 109 `VEa 1 dac_value 1 110 `VEa 1 adc_value 1 111 `VEa 1 cfg_value 1 112 `VEa 1 cmake_value 1 113 `VEa 1 cget_value 1 114 ]
-"342
+"343
 [v _serial_buffer_ss serial_buffer_ss `VES5464  1 e 115 0 ]
 [s S5495 ha_daq_calib_type 38 `uo 1 bmc_id 8 0 `d 1 offset4 4 8 `d 1 scaler4 4 12 `d 1 offset5 4 16 `d 1 scaler5 4 20 `d 1 A200_Z 4 24 `d 1 A200_S 4 28 `a 1 done 1 32 `uc 1 c_zero_cal 1 33 :1:0 
 `uc 1 c_scale_cal 1 33 :1:1 
 `uc 1 c_do_cal 1 33 :1:2 
 `E24976 1 em_model 1 34 `us 1 checkmark 2 35 `uc 1 crc 1 37 ]
-"350
+"351
 [v _ha_daq_calib ha_daq_calib `S5495  1 e 38 0 ]
-"366
+"367
 [v _data_in2 data_in2 `VEuc  1 e 1 0 ]
 [v _adc_buffer_ptr adc_buffer_ptr `VEuc  1 e 1 0 ]
 [v _adc_channel adc_channel `VEuc  1 e 1 0 ]
 [v _channel channel `VEuc  1 e 1 0 ]
 [v _upper upper `VEuc  1 e 1 0 ]
-"367
+"368
 [v _adc_buffer adc_buffer `VE[64]us  1 e 128 0 ]
 [v _adc_data_in adc_data_in `VEus  1 e 2 0 ]
 [v _out_buf out_buf `VEus  1 e 2 0 ]
-"368
+"369
 [v _volt_whole volt_whole `us  1 e 2 0 ]
 [v _bat_amp_whole bat_amp_whole `us  1 e 2 0 ]
 [s S9419 . 3 `Cuc 1 cmd 1 0 `us 1 out 2 1 ]
@@ -3676,6 +3730,39 @@ I_LAST 2
 [v _rbuf rbuf `VE[33]us  1 s 66 rbuf ]
 "9
 [v _pace pace `VEuc  1 s 1 pace ]
+"9 /public/bmc/Q84/bmc_slave.X/pzem_rtu.c
+[v _cc_stream_file@pzem_rtu$F12279 cc_stream_file `VEuc  1 s 1 cc_stream_file ]
+[v _cc_buffer_0@pzem_rtu$F12281 cc_buffer_0 `VE[250]uc  1 s 250 cc_buffer_0 ]
+[v _cc_buffer_tx@pzem_rtu$F12282 cc_buffer_tx `VE[250]uc  1 s 250 cc_buffer_tx ]
+[s S11910 M_data 29 `uc 1 blink_lock 1 0 :1:0 
+`uc 1 config 1 0 :1:1 
+`uc 1 stable 1 0 :1:2 
+`uc 1 boot_code 1 0 :1:3 
+`uc 1 power_on 1 0 :1:4 
+`uc 1 pwm_volts 1 1 `us 1 error 2 2 `us 1 crc_data 2 4 `us 1 crc_calc 2 6 `ul 1 send_count 4 8 `ul 1 recv_count 4 12 `ul 1 crc_error 4 16 `ul 1 to_error 4 20 `ul 1 sends 4 24 `VEa 1 rx 1 28 ]
+"11
+[v _M@pzem_rtu$F12283 M `VES11910  1 s 29 M ]
+"16
+[v _MT@pzem_rtu$F12299 MT `VES10023  1 s 12 MT ]
+"44
+[v _modbus_pz_data1 modbus_pz_data1 `C[6]uc  1 s 6 modbus_pz_data1 ]
+"45
+[v _modbus_pz_dir1 modbus_pz_dir1 `C[6]uc  1 s 6 modbus_pz_dir1 ]
+[s S11930 PZ_data1 148 `VEus 1 vl1n 2 0 `VEus 1 al1 2 2 `VEus 1 wl1 2 4 `VEul 1 aef1 4 6 `VEus 1 pfl1 2 10 `VEul 1 aer1 4 12 `VEus 1 pdi1 2 16 `VEus 1 vl2n 2 18 `VEus 1 al2 2 20 `VEus 1 wl2 2 22 `VEul 1 aef2 4 24 `VEus 1 pfl2 2 28 `VEul 1 aer2 4 30 `VEus 1 pdi2 2 34 `VEus 1 vl3n 2 36 `VEus 1 al3 2 38 `VEus 1 wl3 2 40 `VEul 1 aef3 4 42 `VEus 1 pfl3 2 46 `VEul 1 aer3 4 48 `VEus 1 pdi3 2 52 `VEul 1 taef 4 54 `VEus 1 hz 2 58 `VEul 1 taer 4 60 `VEul 1 aep1f 4 64 `VEul 1 aep1r 4 68 `VEul 1 aep2f 4 72 `VEul 1 aep2r 4 76 `VEul 1 aep3f 4 80 `VEul 1 aep3r 4 84 `VEul 1 taefd 4 88 `VEul 1 taerd 4 92 `VEl 1 tps 4 96 `VEl 1 ap1s 4 100 `VEl 1 ap2s 4 104 `VEl 1 ap3s 4 108 `VEl 1 rpp1s 4 112 `VEl 1 rpp2s 4 116 `VEl 1 rpp3s 4 120 `VEul 1 frei1 4 124 `VEul 1 rrec1 4 128 `VEul 1 frei2 4 132 `VEul 1 rrec2 4 136 `VEul 1 frei3 4 140 `VEul 1 rrec3 4 144 ]
+"53
+[v _pz pz `VQES11930  1 e 148 0 ]
+[s S11976 PZ_dir1 28 `VEl 1 tps 4 0 `VEl 1 ap1s 4 4 `VEl 1 ap2s 4 8 `VEl 1 ap3s 4 12 `VEl 1 rpp1s 4 16 `VEl 1 rpp2s 4 20 `VEl 1 rpp3s 4 24 ]
+"54
+[v _pzd pzd `VQES11976  1 e 28 0 ]
+[s S11984 PZ_tmp 116 `VEf 1 vl1n 4 0 `VEf 1 vl2n 4 4 `VEf 1 vl3n 4 8 `VEf 1 vl1l2 4 12 `VEf 1 vl2l3 4 16 `VEf 1 vl3l1 4 20 `VEf 1 al1 4 24 `VEf 1 al2 4 28 `VEf 1 al3 4 32 `VEf 1 wl1 4 36 `VEf 1 wl2 4 40 `VEf 1 wl3 4 44 `VEf 1 val1 4 48 `VEf 1 val2 4 52 `VEf 1 val3 4 56 `VEf 1 varl1 4 60 `VEf 1 varl2 4 64 `VEf 1 varl3 4 68 `VEf 1 vlnsys 4 72 `VEf 1 vllsys 4 76 `VEf 1 wsys 4 80 `VEf 1 vasys 4 84 `VEf 1 varsys 4 88 `VEf 1 pfl1 4 92 `VEf 1 pfl2 4 96 `VEf 1 pfl3 4 100 `VEf 1 pfsys 4 104 `VEf 1 phaseseq 4 108 `VEf 1 hz 4 112 ]
+"55
+[v _pz_tmp pz_tmp `VES11984  1 e 116 0 ]
+[s S12014 PZD_tmp 28 `VEf 1 tps 4 0 `VEf 1 ap1s 4 4 `VEf 1 ap2s 4 8 `VEf 1 ap3s 4 12 `VEf 1 rpp1s 4 16 `VEf 1 rpp2s 4 20 `VEf 1 rpp3s 4 24 ]
+"56
+[v _pzd_tmp pzd_tmp `VES12014  1 e 28 0 ]
+[s S12022 PZ_data2 128 `VEo 1 kwhpt 8 0 `VEo 1 kvarhpt 8 8 `VEo 1 kwhpp 8 16 `VEo 1 kvarhpp 8 24 `VEo 1 kwhpl1 8 32 `VEo 1 kwhpl2 8 40 `VEo 1 kwhpl3 8 48 `VEo 1 kwhnt 8 56 `VEo 1 kvarhnt 8 64 `VEo 1 kwhnp 8 72 `VEo 1 kvarhnp 8 80 `VEo 1 kvaht 8 88 `VEo 1 kvahp 8 96 `VEl 1 rhm 4 104 `VEl 1 rhmk 4 108 `VEl 1 rhmp 4 112 `VEl 1 rhmkp 4 116 `VEl 1 hz 4 120 `VEl 1 rhlc 4 124 ]
+"57
+[v _pzt pzt `VQES12022  1 e 128 0 ]
 "17 /public/bmc/Q84/bmc_slave.X/slaveo.c
 [v _in_buf1 in_buf1 `VEuc  1 e 1 0 ]
 [v _in_buf2 in_buf2 `VEuc  1 e 1 0 ]
@@ -3733,17 +3820,17 @@ I_LAST 2
 [v _tic12400_fail_value tic12400_fail_value `VEl  1 e 4 0 ]
 "115
 [v _tic_rw tic_rw `S7243  1 e 16 0 ]
-"440 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"441 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _main main `(v  1 e 1 0 ]
 {
-"475
+"476
 [v main@i i `uc  1 a 1 20 ]
-"442
+"443
 [v main@s s `*.39uc  1 a 2 10 ]
 [v main@speed_text speed_text `*.39uc  1 a 2 0 ]
-"940
+"941
 [v main@switcher switcher `uc  1 s 1 switcher ]
-"1117
+"1118
 } 0
 "193 /public/bmc/Q84/bmc_slave.X/calibr.c
 [v _write_cal_data write_cal_data `(v  1 e 1 0 ]
@@ -3835,10 +3922,10 @@ I_LAST 2
 "9 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/nf_sprintf.c
 [v _sprintf sprintf `(i  1 e 2 0 ]
 {
-[u S12677 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
+[u S13443 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
 "13
-[s S12680 _IO_FILE 11 `S12677 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
-[v sprintf@f f `S12680  1 a 11 117 ]
+[s S13446 _IO_FILE 11 `S13443 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
+[v sprintf@f f `S13446  1 a 11 117 ]
 "12
 [v sprintf@ap ap `[1]*.39v  1 a 2 128 ]
 "9
@@ -3846,20 +3933,20 @@ I_LAST 2
 [v sprintf@fmt fmt `*.32Cuc  1 p 2 115 ]
 "23
 } 0
-"1137 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"1138 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _spinners spinners `(uc  1 e 1 0 ]
 {
 [v spinners@shape shape `uc  1 p 1 wreg ]
-"1140
+"1141
 [v spinners@c c `uc  1 a 1 38 ]
-"1137
+"1138
 [v spinners@shape shape `uc  1 p 1 wreg ]
 [v spinners@reset reset `Cuc  1 p 1 34 ]
-"1139
+"1140
 [v spinners@s s `[6]uc  1 s 6 s ]
-"1142
+"1143
 [v spinners@shape shape `uc  1 p 1 39 ]
-"1151
+"1152
 } 1
 "101 /public/bmc/Q84/bmc_slave.X/mconfig.c
 [v _set_vterm set_vterm `(uc  1 e 1 0 ]
@@ -3966,11 +4053,11 @@ I_LAST 2
 [v CRC_ReverseValue@crc crc `ul  1 p 4 30 ]
 "168
 } 0
-"1235 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"1236 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _send_mx_cmd send_mx_cmd `(v  1 s 1 send_mx_cmd ]
 {
 [v send_mx_cmd@cmd cmd `*.34Cus  1 p 2 44 ]
-"1244
+"1245
 } 0
 "23 /public/bmc/Q84/bmc_slave.X/mxcmd.c
 [v _FM_tx_empty FM_tx_empty `(a  1 e 1 0 ]
@@ -4030,83 +4117,83 @@ I_LAST 2
 [v eaDogM_WriteString@strPtr strPtr `*.39Cuc  1 p 2 41 ]
 "187
 } 0
-"1249 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"1250 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _rec_mx_cmd rec_mx_cmd `(v  1 s 1 rec_mx_cmd ]
 {
 [v rec_mx_cmd@DataHandler DataHandler `*.38(v  1 p 3 26 ]
 [v rec_mx_cmd@rec_len rec_len `Cuc  1 p 1 29 ]
-"1251
+"1252
 [v rec_mx_cmd@online_count online_count `us  1 s 2 online_count ]
-"1283
+"1284
 } 0
-"1443
+"1444
 [v _state_misc_cb state_misc_cb `(v  1 e 1 0 ]
 {
-"1458
+"1459
 } 0
-"1418
+"1419
 [v _state_date_cb state_date_cb `(v  1 s 1 state_date_cb ]
 {
-"1427
+"1428
 } 0
-"1407
+"1408
 [v _state_time_cb state_time_cb `(v  1 s 1 state_time_cb ]
 {
-"1416
+"1417
 } 0
-"1460
+"1461
 [v _state_mx_log_cb state_mx_log_cb `(v  1 e 1 0 ]
 {
-"1478
+"1479
 } 0
-"1395
+"1396
 [v _state_fwrev_cb state_fwrev_cb `(v  1 s 1 state_fwrev_cb ]
 {
-"1405
+"1406
 } 0
-"1494
+"1495
 [v _state_mx_status_cb state_mx_status_cb `(v  1 e 1 0 ]
 {
-"1539
+"1540
 } 0
-"1385
+"1386
 [v _state_batterya_cb state_batterya_cb `(v  1 e 1 0 ]
 {
-"1393
+"1394
 } 0
-"1375
+"1376
 [v _state_batteryv_cb state_batteryv_cb `(v  1 e 1 0 ]
 {
-"1383
+"1384
 } 0
-"1597
+"1598
 [v _state_panelv_cb state_panelv_cb `(v  1 e 1 0 ]
 {
-"1603
+"1604
 } 0
-"1429
+"1430
 [v _state_restart_cb state_restart_cb `(v  1 s 1 state_restart_cb ]
 {
-"1438
+"1439
 } 0
-"1541
+"1542
 [v _state_status_cb state_status_cb `(v  1 e 1 0 ]
 {
-"1543
+"1544
 [v state_status_cb@day_clocks day_clocks `us  1 s 2 day_clocks ]
-"1595
+"1596
 } 0
-"1356
+"1357
 [v _state_init_cb state_init_cb `(v  1 e 1 0 ]
 {
-"1359
+"1360
 [v state_init_cb@off_delay off_delay `uc  1 s 1 off_delay ]
-"1373
+"1374
 } 0
-"1480
+"1481
 [v _state_watts_cb state_watts_cb `(v  1 e 1 0 ]
 {
-"1492
+"1493
 } 0
 "148 /public/bmc/Q84/bmc_slave.X/mxcmd.c
 [v _lp_filter lp_filter `(f  1 e 4 0 ]
@@ -4132,11 +4219,11 @@ I_LAST 2
 [v Volts_to_SOC@bvoltage bvoltage `Cd  1 p 4 12 ]
 "251
 } 0
-"1337 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"1338 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _volt_f volt_f `(v  1 s 1 volt_f ]
 {
 [v volt_f@voltage voltage `Cus  1 p 2 52 ]
-"1342
+"1343
 } 0
 "7 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/lwmod.c
 [v ___lwmod __lwmod `(ui  1 e 2 0 ]
@@ -4790,20 +4877,20 @@ I_LAST 2
 [v get_vterm_ptr@line line `uc  1 p 1 42 ]
 "114
 } 1
-"1288 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"1289 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _bmc_logger bmc_logger `(v  1 e 1 0 ]
 {
-"1290
+"1291
 [v bmc_logger@d_id d_id `uc  1 s 1 d_id ]
-"1331
+"1332
 } 0
 "13 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/nf_snprintf.c
 [v _snprintf snprintf `(i  1 e 2 0 ]
 {
-[u S12677 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
+[u S13443 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
 "17
-[s S12680 _IO_FILE 11 `S12677 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
-[v snprintf@f f `S12680  1 a 11 206 ]
+[s S13446 _IO_FILE 11 `S13443 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
+[v snprintf@f f `S13446  1 a 11 206 ]
 "16
 [v snprintf@ap ap `[1]*.39v  1 a 2 217 ]
 "15
@@ -4819,9 +4906,9 @@ I_LAST 2
 {
 "1820
 [v vfprintf@cfmt cfmt `*.32uc  1 a 2 111 ]
-[s S12715 _IO_FILE 0 ]
+[s S13481 _IO_FILE 0 ]
 "1817
-[v vfprintf@fp fp `*.39S12715  1 p 2 105 ]
+[v vfprintf@fp fp `*.39S13481  1 p 2 105 ]
 [v vfprintf@fmt fmt `*.32Cuc  1 p 2 107 ]
 [v vfprintf@ap ap `*.39*.39v  1 p 2 109 ]
 "1840
@@ -4829,17 +4916,17 @@ I_LAST 2
 "1177
 [v _vfpfcnvrt vfpfcnvrt `(i  1 s 2 vfpfcnvrt ]
 {
-[u S12761 . 8 `o 1 sint 8 0 `uo 1 uint 8 0 `d 1 f 4 0 ]
+[u S13527 . 8 `o 1 sint 8 0 `uo 1 uint 8 0 `d 1 f 4 0 ]
 "1188
-[v vfpfcnvrt@convarg convarg `S12761  1 a 8 95 ]
+[v vfpfcnvrt@convarg convarg `S13527  1 a 8 95 ]
 "1179
 [v vfpfcnvrt@cp cp `*.32uc  1 a 2 103 ]
 [v vfpfcnvrt@c c `uc  1 a 1 94 ]
 "1180
 [v vfpfcnvrt@done done `a  1 a 1 93 ]
-[s S12715 _IO_FILE 0 ]
+[s S13481 _IO_FILE 0 ]
 "1177
-[v vfpfcnvrt@fp fp `*.39S12715  1 p 2 73 ]
+[v vfpfcnvrt@fp fp `*.39S13481  1 p 2 73 ]
 [v vfpfcnvrt@fmt fmt `*.39*.32uc  1 p 2 75 ]
 [v vfpfcnvrt@ap ap `*.39*.39v  1 p 2 77 ]
 "1814
@@ -4858,9 +4945,9 @@ I_LAST 2
 [v xtoa@d_nonzero d_nonzero `a  1 a 1 79 ]
 "1061
 [v xtoa@a a `uc  1 a 1 74 ]
-[s S12715 _IO_FILE 0 ]
+[s S13481 _IO_FILE 0 ]
 "1052
-[v xtoa@fp fp `*.39S12715  1 p 2 55 ]
+[v xtoa@fp fp `*.39S13481  1 p 2 55 ]
 [v xtoa@d d `uo  1 p 8 57 ]
 [v xtoa@x x `uc  1 p 1 65 ]
 "1153
@@ -4873,9 +4960,9 @@ I_LAST 2
 [v utoa@w w `i  1 a 2 75 ]
 "1005
 [v utoa@p p `i  1 a 2 73 ]
-[s S12715 _IO_FILE 0 ]
+[s S13481 _IO_FILE 0 ]
 "1001
-[v utoa@fp fp `*.39S12715  1 p 2 55 ]
+[v utoa@fp fp `*.39S13481  1 p 2 55 ]
 [v utoa@d d `uo  1 p 8 57 ]
 "1047
 } 0
@@ -4912,9 +4999,9 @@ I_LAST 2
 [v stoa@w w `i  1 a 2 47 ]
 "945
 [v stoa@p p `i  1 a 2 45 ]
-[s S12715 _IO_FILE 0 ]
+[s S13481 _IO_FILE 0 ]
 "942
-[v stoa@fp fp `*.39S12715  1 p 2 39 ]
+[v stoa@fp fp `*.39S13481  1 p 2 39 ]
 [v stoa@s s `*.34uc  1 p 2 41 ]
 "997
 } 0
@@ -4940,24 +5027,24 @@ I_LAST 2
 [v otoa@p p `i  1 a 2 73 ]
 "875
 [v otoa@t t `uc  1 a 1 75 ]
-[s S12715 _IO_FILE 0 ]
+[s S13481 _IO_FILE 0 ]
 "872
-[v otoa@fp fp `*.39S12715  1 p 2 55 ]
+[v otoa@fp fp `*.39S13481  1 p 2 55 ]
 [v otoa@d d `uo  1 p 8 57 ]
 "938
 } 0
 "587
 [v _efgtoa efgtoa `(i  1 s 2 efgtoa ]
 {
-[u S12747 flui 4 `d 1 f 4 0 `l 1 u 4 0 ]
+[u S13513 flui 4 `d 1 f 4 0 `l 1 u 4 0 ]
 "592
-[v efgtoa@u u `S12747  1 a 4 67 ]
-[v efgtoa@g g `S12747  1 a 4 59 ]
+[v efgtoa@u u `S13513  1 a 4 67 ]
+[v efgtoa@g g `S13513  1 a 4 59 ]
 "591
 [v efgtoa@l l `d  1 a 4 54 ]
 [v efgtoa@h h `d  1 a 4 50 ]
 "592
-[v efgtoa@ou ou `S12747  1 a 4 44 ]
+[v efgtoa@ou ou `S13513  1 a 4 44 ]
 "590
 [v efgtoa@n n `i  1 a 2 71 ]
 [v efgtoa@i i `i  1 a 2 65 ]
@@ -4974,9 +5061,9 @@ I_LAST 2
 [v efgtoa@nmode nmode `uc  1 a 1 42 ]
 [v efgtoa@pp pp `uc  1 a 1 33 ]
 [v efgtoa@esign esign `uc  1 a 1 30 ]
-[s S12715 _IO_FILE 0 ]
+[s S13481 _IO_FILE 0 ]
 "587
-[v efgtoa@fp fp `*.39S12715  1 p 2 12 ]
+[v efgtoa@fp fp `*.39S13481  1 p 2 12 ]
 [v efgtoa@f f `d  1 p 4 14 ]
 [v efgtoa@c c `uc  1 p 1 18 ]
 "868
@@ -4997,9 +5084,9 @@ I_LAST 2
 [v dtoa@p p `i  1 a 2 76 ]
 "515
 [v dtoa@s s `uc  1 a 1 80 ]
-[s S12715 _IO_FILE 0 ]
+[s S13481 _IO_FILE 0 ]
 "513
-[v dtoa@fp fp `*.39S12715  1 p 2 56 ]
+[v dtoa@fp fp `*.39S13481  1 p 2 56 ]
 [v dtoa@d d `o  1 p 8 58 ]
 "583
 } 0
@@ -5039,9 +5126,9 @@ I_LAST 2
 "478
 [v ctoa@w w `i  1 a 2 45 ]
 [v ctoa@l l `i  1 a 2 43 ]
-[s S12715 _IO_FILE 0 ]
+[s S13481 _IO_FILE 0 ]
 "476
-[v ctoa@fp fp `*.39S12715  1 p 2 39 ]
+[v ctoa@fp fp `*.39S13481  1 p 2 39 ]
 [v ctoa@c c `uc  1 p 1 41 ]
 "509
 } 0
@@ -5068,9 +5155,9 @@ I_LAST 2
 [v atoa@sign sign `uc  1 a 1 59 ]
 [v atoa@pp pp `uc  1 a 1 40 ]
 [v atoa@esign esign `uc  1 a 1 33 ]
-[s S12715 _IO_FILE 0 ]
+[s S13481 _IO_FILE 0 ]
 "231
-[v atoa@fp fp `*.39S12715  1 p 2 12 ]
+[v atoa@fp fp `*.39S13481  1 p 2 12 ]
 [v atoa@f f `d  1 p 4 14 ]
 [v atoa@c c `uc  1 p 1 18 ]
 "472
@@ -5090,9 +5177,9 @@ I_LAST 2
 {
 "195
 [v pad@i i `i  1 a 2 53 ]
-[s S12715 _IO_FILE 0 ]
+[s S13481 _IO_FILE 0 ]
 "193
-[v pad@fp fp `*.39S12715  1 p 2 46 ]
+[v pad@fp fp `*.39S13481  1 p 2 46 ]
 [v pad@buf buf `*.39uc  1 p 2 48 ]
 [v pad@p p `i  1 p 2 50 ]
 "226
@@ -5115,18 +5202,18 @@ I_LAST 2
 [v fputs@c c `uc  1 a 1 43 ]
 "8
 [v fputs@s s `*.39Cuc  1 p 2 39 ]
-[u S12677 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
-[s S12680 _IO_FILE 11 `S12677 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
-[v fputs@fp fp `*.39S12680  1 p 2 41 ]
+[u S13443 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
+[s S13446 _IO_FILE 11 `S13443 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
+[v fputs@fp fp `*.39S13446  1 p 2 41 ]
 "19
 } 0
 "8 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/nf_fputc.c
 [v _fputc fputc `(i  1 e 2 0 ]
 {
 [v fputc@c c `i  1 p 2 30 ]
-[u S12677 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
-[s S12680 _IO_FILE 11 `S12677 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
-[v fputc@fp fp `*.39S12680  1 p 2 32 ]
+[u S13443 . 2 `*.39uc 1 buffer 2 0 `*.39Cuc 1 source 2 0 ]
+[s S13446 _IO_FILE 11 `S13443 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
+[v fputc@fp fp `*.39S13446  1 p 2 32 ]
 "24
 } 0
 "7 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/putch.c
@@ -5152,9 +5239,9 @@ I_LAST 2
 "3 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/floorf.c
 [v _floorf floorf `(f  1 e 4 0 ]
 {
-[u S12929 . 4 `f 1 f 4 0 `ul 1 i 4 0 ]
+[u S13695 . 4 `f 1 f 4 0 `ul 1 i 4 0 ]
 "5
-[v floorf@u u `S12929  1 a 4 94 ]
+[v floorf@u u `S13695  1 a 4 94 ]
 "7
 [v floorf@m m `ul  1 a 4 88 ]
 "6
@@ -5162,21 +5249,21 @@ I_LAST 2
 "3
 [v floorf@x x `f  1 p 4 78 ]
 "4
-[v floorf@F521 F521 `S12929  1 s 4 F521 ]
+[v floorf@F521 F521 `S13695  1 s 4 F521 ]
 "27
 } 0
 "4 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/__fpclassifyf.c
 [v ___fpclassifyf __fpclassifyf `(i  1 e 2 0 ]
 {
-[u S12929 . 4 `f 1 f 4 0 `ul 1 i 4 0 ]
+[u S13695 . 4 `f 1 f 4 0 `ul 1 i 4 0 ]
 "6
-[v ___fpclassifyf@u u `S12929  1 a 4 40 ]
+[v ___fpclassifyf@u u `S13695  1 a 4 40 ]
 "7
 [v ___fpclassifyf@e e `i  1 a 2 38 ]
 "4
 [v ___fpclassifyf@x x `f  1 p 4 30 ]
 "5
-[v ___fpclassifyf@F465 F465 `S12929  1 s 4 F465 ]
+[v ___fpclassifyf@F465 F465 `S13695  1 s 4 F465 ]
 "11
 } 0
 "43 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/fltol.c
@@ -5221,17 +5308,17 @@ I_LAST 2
 "8 /ldrv/microchip/xc8/v3.10/pic/sources/c99/common/sprcmul.c
 [v ___flmul __flmul `(d  1 e 4 0 ]
 {
-[s S12356 . 4 `uc 1 a 1 0 `uc 1 b 1 1 `uc 1 c 1 2 `uc 1 d 1 3 ]
+[s S13122 . 4 `uc 1 a 1 0 `uc 1 b 1 1 `uc 1 c 1 2 `uc 1 d 1 3 ]
 "13
-[s S12361 . 4 `s 1 wordA 2 0 `s 1 wordB 2 2 ]
-[u S12364 . 4 `l 1 i 4 0 `d 1 f 4 0 `S12356 1 fAsBytes 4 0 `S12361 1 fAsWords 4 0 ]
-[v ___flmul@prod prod `S12364  1 a 4 121 ]
+[s S13127 . 4 `s 1 wordA 2 0 `s 1 wordB 2 2 ]
+[u S13130 . 4 `l 1 i 4 0 `d 1 f 4 0 `S13122 1 fAsBytes 4 0 `S13127 1 fAsWords 4 0 ]
+[v ___flmul@prod prod `S13130  1 a 4 121 ]
 "12
 [v ___flmul@grs grs `ul  1 a 4 117 ]
-[s S12432 . 2 `uc 1 a 1 0 `uc 1 b 1 1 ]
+[s S13198 . 2 `uc 1 a 1 0 `uc 1 b 1 1 ]
 "14
-[u S12435 . 2 `s 1 i 2 0 `us 1 n 2 0 `S12432 1 nAsBytes 2 0 ]
-[v ___flmul@temp temp `S12435  1 a 2 125 ]
+[u S13201 . 2 `s 1 i 2 0 `us 1 n 2 0 `S13198 1 nAsBytes 2 0 ]
+[v ___flmul@temp temp `S13201  1 a 2 125 ]
 "10
 [v ___flmul@bexp bexp `uc  1 a 1 116 ]
 "11
@@ -5502,10 +5589,10 @@ I_LAST 2
 {
 "100
 } 0
-"1166 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"1167 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _SetBMCPriority SetBMCPriority `(v  1 e 1 0 ]
 {
-"1182
+"1183
 } 0
 "50 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/mcc.c
 [v _SYSTEM_Initialize SYSTEM_Initialize `(v  1 e 1 0 ]
@@ -5859,16 +5946,16 @@ I_LAST 2
 {
 "92
 } 0
-"1184 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"1185 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _DeviceID_Read DeviceID_Read `(us  1 e 2 0 ]
 {
-"1189
+"1190
 [v DeviceID_Read@tablePointer tablePointer `ul  1 a 4 47 ]
-"1186
+"1187
 [v DeviceID_Read@deviceID deviceID `us  1 a 2 45 ]
-"1184
+"1185
 [v DeviceID_Read@address address `um  1 p 3 30 ]
-"1212
+"1213
 } 0
 "223 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/adc.c
 [v _ADC_StartConversion ADC_StartConversion `(v  1 e 1 0 ]
@@ -6086,10 +6173,10 @@ I_LAST 2
 {
 "200
 } 0
-"1122 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"1123 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _onesec_io onesec_io `(v  1 e 1 0 ]
 {
-"1134
+"1135
 } 0
 "497 /public/bmc/Q84/bmc_slave.X/slaveo.c
 [v _slaveo_time_isr slaveo_time_isr `(v  1 e 1 0 ]
@@ -6219,10 +6306,10 @@ I_LAST 2
 {
 "175
 } 0
-"1156 /public/bmc/Q84/bmc_slave.X/mxcmd.h
+"1157 /public/bmc/Q84/bmc_slave.X/mxcmd.h
 [v _test_slave test_slave `(v  1 e 1 0 ]
 {
-"1160
+"1161
 } 0
 "188 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/dma2.c
 [v _DMA2_DMASCNTI_ISR DMA2_DMASCNTI_ISR `IIH(v  1 e 1 0 ]

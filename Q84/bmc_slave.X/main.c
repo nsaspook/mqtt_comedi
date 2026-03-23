@@ -245,6 +245,7 @@ typedef signed long long int24_t;
 #include "mxcmd.h"
 #include "modbus_master.h"
 #include "iammeter_rtu.h"
+#include "pzem_rtu.h"
 #include "calibr.h"
 
 #ifdef TRACE

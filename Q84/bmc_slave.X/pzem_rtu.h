@@ -1,12 +1,12 @@
 /*
- * File:   iammeter_rtu.h
+ * File:   pzem_rtu.h
  * Author: root
  *
- * Created on March 4, 2026, 8:59 PM
+ * Created on March 23, 2026, 8:59 PM
  */
 
-#ifndef IAMMETER_RTU_H
-#define	IAMMETER_RTU_H
+#ifndef PZEM_RTU_H
+#define	PZEM_RTU_H
 
 #ifdef	__cplusplus
 extern "C" {
@@ -14,32 +14,22 @@ extern "C" {
 
 #include "modbus_master.h"
 
-#define IM_DATA_LEN1	74	// 16-bit words returned 74
-#define IM_DATA_DIR1	14	// 16-bit words returned
+#define PZ_DATA_LEN1	0X3F	// 16-bit words returned
+#define PZ_DATA_DIR1	0X3F	// 16-bit words returned
 
-#define MB_IAMMETER_ID_H	0x01	// slave ID
-#define MB_IAMMETER_ID_L	0x06	// slabe baudrate
+#define MB_PZEM_ID_H	0x01	// slave ID
+#define MB_PZEM_ID_L	0x06	// slave baudrate
 
-	static const uint16_t ITDELAY = 3; // KWH half-duplex delay
-	static const uint16_t ITMDELAY = 2; // half-duplex delay
-	static const uint16_t ITEDELAY = 2; // half-duplex delay
-	static const uint16_t IRDELAY = 1200; // receive timeout
-	static const uint16_t ICDELAY = 40; // fast query delay 100ms
-	static const uint16_t IQDELAY = 2; // slow query delay 1s
-	static const uint16_t ITODELAY = 4; // misc delay
-	static const uint16_t ISPACING = 5000; // control loop cpu usage factor
-	static const uint16_t IDUPL_DELAY = 2; // extra duplex delay mode
-
-	typedef enum cmd_im_type {
-		I_DATA1 = 0,
-		I_DIR1,
-		I_LAST,
-	} cmd_im_type;
+	typedef enum cmd_pz_type {
+		P_DATA1 = 0,
+		P_DIR1,
+		P_LAST,
+	} cmd_pz_type;
 
 	/*
-	 * maps the IAMMETER MODBUS registers to int32_t, uint32_t and uint16_t values
+	 * maps the PZEM MODBUS registers to int32_t, uint32_t and uint16_t values
 	 */
-	typedef __pack struct IM_data1 {
+	typedef __pack struct PZ_data1 {
 		volatile uint16_t vl1n, al1, wl1;
 		volatile uint32_t aef1;
 		volatile uint16_t pfl1;
@@ -76,9 +66,9 @@ extern "C" {
 		frei1, rrec1,
 		frei2, rrec2,
 		frei3, rrec3;
-	} IM_data1;
+	} PZ_data1;
 
-	typedef struct IM_tmp {
+	typedef struct PZ_tmp {
 		volatile float
 		vl1n, vl2n, vl3n,
 		vl1l2, vl2l3, vl3l1,
@@ -89,15 +79,15 @@ extern "C" {
 		vlnsys, vllsys, wsys, vasys, varsys,
 		pfl1, pfl2, pfl3, pfsys,
 		phaseseq, hz;
-	} IM_tmp;
+	} PZ_tmp;
 
-	typedef struct IMD_tmp {
+	typedef struct PZD_tmp {
 		volatile float
 		tps, ap1s, ap2s, ap3s,
 		rpp1s, rpp2s, rpp3s;
-	} IMD_tmp;
+	} PZD_tmp;
 
-	typedef __pack struct IM_data2 {
+	typedef __pack struct PZ_data2 {
 		volatile int64_t
 		kwhpt, kvarhpt, kwhpp, kvarhpp,
 		kwhpl1, kwhpl2, kwhpl3,
@@ -106,32 +96,28 @@ extern "C" {
 		volatile int32_t
 		rhm, rhmk, rhmp, rhmkp,
 		hz, rhlc;
-	} IM_data2;
+	} PZ_data2;
 
 	/*
 	 * map 16-bit registers to bytes to extract information
 	 */
-	typedef __pack struct IM_dir1 {
+	typedef __pack struct PZ_dir1 {
 		volatile int32_t
 		tps, ap1s, ap2s, ap3s,
 		rpp1s, rpp2s, rpp3s;
-		//		volatile uint8_t
-		//		firmware_version[0x20], model_name[0x20], serial_number[0x20];
-	} IM_dir1;
+	} PZ_dir1;
 	
-	extern IM_tmp im_tmp;
-	extern IMD_tmp imd_tmp;
+	extern PZ_tmp pz_tmp;
+	extern PZD_tmp pzd_tmp;
 
-	void im_my_modbus_rx_32(void);
-	void init_im_mb_master_timers(void);
-	int8_t iammeter_controller_work(C_data *);
-	int8_t reset_iammeter_kwh(C_data *);
-	uint16_t modbus_dcu_send_msg_im(void *, const void *, const uint16_t);
-	void iammeter_version(void);
+	void pz_my_modbus_rx_32(void);
+	void init_pz_mb_master_timers(void);
+	int8_t pzem_controller_work(C_data *);
+	void pzem_version(void);
 
 #ifdef	__cplusplus
 }
 #endif
 
-#endif	/* IAMMETER_RTU_H */
+#endif	/* PZEM_RTU_H */
 

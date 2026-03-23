@@ -18,7 +18,7 @@ extern "C" {
 #define IM_DATA_DIR1	14	// 16-bit words returned
 
 #define MB_IAMMETER_ID_H	0x01	// slave ID
-#define MB_IAMMETER_ID_L	0x06	// slabe baudrate
+#define MB_IAMMETER_ID_L	0x06	// slave baudrate
 
 	static const uint16_t ITDELAY = 3; // KWH half-duplex delay
 	static const uint16_t ITMDELAY = 2; // half-duplex delay
