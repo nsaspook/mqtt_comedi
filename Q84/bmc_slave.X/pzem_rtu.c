@@ -201,53 +201,50 @@ static void pzem_data_handler(void)
 	 * and munge the data into the correct local formats for client
 	 */
 	em_ptr = (EM_data1*) & cc_buffer[3];
-	em.vl1n = mb32_swap(pz_ptr->vl1n) / 10;
-	em.vl2n = mb32_swap(pz_ptr->vl2n) / 10;
-	em.vl3n = mb32_swap(pz_ptr->vl3n) / 10;
-	em.vl1l2 = mb32_swap(pz_ptr->vl1n) / 10;
-	em.vl2l3 = mb32_swap(pz_ptr->vl2n) / 10;
-	em.vl3l1 = mb32_swap(pz_ptr->vl3n) / 10;
-	em.al1 = mb32_swap(pz_ptr->al1)*10;
-	em.al2 = mb32_swap(pz_ptr->al2)*10;
-	em.al3 = mb32_swap(pz_ptr->al3)*10;
-	em.wl1 = mb32_swap(pz_ptr->ap1s) / 10000;
-	em.wl2 = mb32_swap(pz_ptr->ap2s) / 10000;
-	em.wl3 = mb32_swap(pz_ptr->ap3s) / 10000;
-	em.val1 = mb32_swap(pz_ptr->rpp1s) / 10000;
-	em.val2 = mb32_swap(pz_ptr->rpp2s) / 10000;
-	em.val3 = mb32_swap(pz_ptr->rpp3s) / 10000;
-	em.varl1 = mb32_swap(pz_ptr->rpp1s) / 10000;
-	em.varl2 = mb32_swap(pz_ptr->rpp2s) / 10000;
-	em.varl3 = mb32_swap(pz_ptr->rpp3s) / 10000;
-	em.wsys = mb32_swap(pz_ptr->tps);
-	em.vasys = mb32_swap(pz_ptr->tps);
-	em.varsys = mb32_swap(pz_ptr->tps);
-	em.pfl1 = mb16_swap((const int16_t) pz_ptr->pfl1);
-	em.pfl2 = mb16_swap((const int16_t) pz_ptr->pfl2);
-	em.pfl3 = mb16_swap((const int16_t) pz_ptr->pfl3);
-	em.pfsys = mb16_swap((const int16_t) pz_ptr->pfl1);
-	em.hz = mb16_swap((const int16_t) pz_ptr->hz);
-	emt.hz = (int32_t) (((float) em.hz) * 10.0f);
+	em.vl1n = mb16_swap((int16_t) pz_ptr->vl1n) / 10;
+	em.vl2n = mb16_swap((int16_t) pz_ptr->vl2n) / 10;
+	em.vl3n = mb16_swap((int16_t) pz_ptr->vl3n) / 10;
+	em.vl1l2 = mb16_swap((int16_t) pz_ptr->vl1n) / 10;
+	em.vl2l3 = mb16_swap((int16_t) pz_ptr->vl2n) / 10;
+	em.vl3l1 = mb16_swap((int16_t) pz_ptr->vl3n) / 10;
+	em.al1 = mb16_swap((int16_t) pz_ptr->al1)*10;
+	em.al2 = mb16_swap((int16_t) pz_ptr->al2)*10;
+	em.al3 = mb16_swap((int16_t) pz_ptr->al3)*10;
+	em.wl1 = mb32_swap(pz_ptr->pap1s) / 10000;
+	em.wl2 = mb32_swap(pz_ptr->pap2s) / 10000;
+	em.wl3 = mb32_swap(pz_ptr->pap3s) / 10000;
+	em.val1 = mb32_swap(pz_ptr->prp1s) / 10000;
+	em.val2 = mb32_swap(pz_ptr->prp2s) / 10000;
+	em.val3 = mb32_swap(pz_ptr->prp3s) / 10000;
+	em.varl1 = mb32_swap(pz_ptr->prp1s) / 10000;
+	em.varl2 = mb32_swap(pz_ptr->prp2s) / 10000;
+	em.varl3 = mb32_swap(pz_ptr->prp3s) / 10000;
+	em.wsys = mb32_swap(pz_ptr->caes);
+	em.vasys = mb32_swap(pz_ptr->cres);
+	em.varsys = mb32_swap(pz_ptr->cappes);
+	em.pfl1 = mb16_swap((const int16_t) pz_ptr->p1p2pf);
+	em.pfl2 = mb16_swap((const int16_t) pz_ptr->p1p2pf);
+	em.pfl3 = mb16_swap((const int16_t) pz_ptr->p1p2pf);
+	em.pfsys = mb16_swap((const int16_t) pz_ptr->p3cpf);
+	em.hz = mb16_swap((const int16_t) pz_ptr->hz1);
+	emt.hz = (int32_t) (((float) em.hz) * 100.0f);
 	em_tmp.hz = (float) emt.hz;
-	em_tmp.al1 = ((float) pz.al1) / 100.0f;
-	em_tmp.wl1 = (float) mb32_swap(pz_ptr->wl1)*100;
-	em_tmp.wl2 = (float) mb32_swap(pz_ptr->wl2)*100;
-	em_tmp.wl3 = (float) mb32_swap(pz_ptr->wl3)*100;
-	//	em_tmp.wl1 = (float) mb32_swap(pz_ptr->ap1s)*1;
-	//	em_tmp.wl2 = (float) mb32_swap(pz_ptr->ap2s)*1;
-	//	em_tmp.wl3 = (float) mb32_swap(pz_ptr->ap3s)*1;
+	em_tmp.al1 = ((float) em.al1) / 100.0f;
+	em_tmp.wl1 = (float) mb32_swap(pz_ptr->pap1s)*100;
+	em_tmp.wl2 = (float) mb32_swap(pz_ptr->pap2s)*100;
+	em_tmp.wl3 = (float) mb32_swap(pz_ptr->pap3s)*100;
 }
 
 static void pzem_dir_handler(void)
 {
 	pzd_ptr = (PZ_dir1*) & cc_buffer[3];
-	pzd_tmp.ap1s = (float) mb32_swap(pzd_ptr->ap1s) / 100000; // phase A:1 GTI power
-	pzd_tmp.ap2s = (float) mb32_swap(pzd_ptr->ap2s) / 100000; // Phase B:2 Utility power flow
-	pzd_tmp.ap3s = (float) mb32_swap(pzd_ptr->ap3s) / 100000; // Phase C:3 Load power
-	pzd_tmp.rpp1s = (float) mb32_swap(pzd_ptr->rpp1s) / 100000; // Reactive power for each Phase input
-	pzd_tmp.rpp2s = (float) mb32_swap(pzd_ptr->rpp2s) / 100000;
-	pzd_tmp.rpp3s = (float) mb32_swap(pzd_ptr->rpp3s) / 100000;
-	pzd_tmp.tps = (float) mb32_swap(pzd_ptr->tps) / 100000; // Total power
+	//	pzd_tmp.ap1s = (float) mb32_swap(pzd_ptr->ap1s) / 100000; // phase A:1 GTI power
+	//	pzd_tmp.ap2s = (float) mb32_swap(pzd_ptr->ap2s) / 100000; // Phase B:2 Utility power flow
+	//	pzd_tmp.ap3s = (float) mb32_swap(pzd_ptr->ap3s) / 100000; // Phase C:3 Load power
+	//	pzd_tmp.rpp1s = (float) mb32_swap(pzd_ptr->rpp1s) / 100000; // Reactive power for each Phase input
+	//	pzd_tmp.rpp2s = (float) mb32_swap(pzd_ptr->rpp2s) / 100000;
+	//	pzd_tmp.rpp3s = (float) mb32_swap(pzd_ptr->rpp3s) / 100000;
+	//	pzd_tmp.tps = (float) mb32_swap(pzd_ptr->tps) / 100000; // Total power
 }
 
 static bool pzem_modbus_write_check(C_data * client, bool* cstate, const uint16_t rec_length)

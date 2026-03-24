@@ -30,28 +30,12 @@ extern "C" {
 	 * maps the PZEM MODBUS registers to int32_t, uint32_t and uint16_t values
 	 */
 	typedef __pack struct PZ_data1 {
-		volatile uint16_t vl1n, al1, wl1;
-		volatile uint32_t aef1;
-		volatile uint16_t pfl1;
-		volatile uint32_t aer1;
-		volatile uint16_t pdi1;
-
-		volatile uint16_t vl2n, al2, wl2;
-		volatile uint32_t aef2;
-		volatile uint16_t pfl2;
-		volatile uint32_t aer2;
-		volatile uint16_t pdi2;
-
-		volatile uint16_t vl3n, al3, wl3;
-		volatile uint32_t aef3;
-		volatile uint16_t pfl3;
-		volatile uint32_t aer3;
-		volatile uint16_t pdi3;
-
-		volatile uint32_t taef;
-		volatile uint16_t hz;
-		volatile uint32_t taer;
-
+		volatile uint16_t
+		vl1n, vl2n, vl3n,
+		al1, al2, al3,
+		hz1, hz2, hz3,
+		pvp2, pvp3,
+		pcp1, pcp2, pcp3;
 		volatile uint32_t
 		aep1f, aep1r,
 		aep2f, aep2r,
@@ -59,13 +43,19 @@ extern "C" {
 		taefd, taerd;
 
 		volatile int32_t
-		tps, ap1s, ap2s, ap3s,
-		rpp1s, rpp2s, rpp3s;
+		pap1s, pap2s, pap3s,
+		prp1s, prp2s, prp3s,
+		papp1, papp2, papp3s,
+		caps, c1ps, capps;
 
-		volatile uint32_t
-		frei1, rrec1,
-		frei2, rrec2,
-		frei3, rrec3;
+		volatile uint16_t
+		p1p2pf, p3cpf;
+
+		volatile int32_t
+		pae1s, pae2s, pae3s,
+		pre1s, pre2s, pre3s,
+		pappe1s, pappe2s, pappe3s,
+		caes, cres, cappes;
 	} PZ_data1;
 
 	typedef struct PZ_tmp {
@@ -88,25 +78,22 @@ extern "C" {
 	} PZD_tmp;
 
 	typedef __pack struct PZ_data2 {
-		volatile int64_t
-		kwhpt, kvarhpt, kwhpp, kvarhpp,
-		kwhpl1, kwhpl2, kwhpl3,
-		kwhnt, kvarhnt, kwhnp, kvarhnp,
-		kvaht, kvahp;
 		volatile int32_t
-		rhm, rhmk, rhmp, rhmkp,
-		hz, rhlc;
+		hz;
 	} PZ_data2;
 
 	/*
 	 * map 16-bit registers to bytes to extract information
 	 */
 	typedef __pack struct PZ_dir1 {
-		volatile int32_t
-		tps, ap1s, ap2s, ap3s,
-		rpp1s, rpp2s, rpp3s;
+		volatile uint16_t
+		vl1n, vl2n, vl3n,
+		al1, al2, al3,
+		hz1, hz2, hz3,
+		pvp2, pvp3,
+		pcp1, pcp2, pcp3;
 	} PZ_dir1;
-	
+
 	extern PZ_tmp pz_tmp;
 	extern PZD_tmp pzd_tmp;
 
