@@ -21,7 +21,7 @@ static volatile M_time_data MT = {
 
 static bool iammeter_modbus_write_check(C_data *, bool*, uint16_t);
 static bool iammeter_modbus_read_check(C_data *, bool*, uint16_t, void (* DataHandler)(void));
-static bool iammeter_modbus_read_dir_check(C_data *, bool*, uint16_t, void (* DataHandler)(void));
+static bool iammeter_modbus_read_dir_check(C_data *, bool*, uint16_t, void (* DataHandler)(void), const uint8_t);
 static bool modbus_read_dcu_check_im(C_data *, bool*, uint16_t);
 
 static void iammeter_data_handler(void);
@@ -177,7 +177,7 @@ int8_t iammeter_controller_work(C_data * client)
 				iammeter_modbus_read_check(client, &client->data_ok, sizeof(im_data1), iammeter_data_handler);
 				break;
 			case I_DIR1: // check for controller dir1 codes
-				iammeter_modbus_read_dir_check(client, &client->id_ok, sizeof(im_dir1), iammeter_dir_handler);
+				iammeter_modbus_read_dir_check(client, &client->id_ok, sizeof(im_dir1), iammeter_dir_handler, READ_HOLDING_REGISTERS);
 				break;
 			default:
 				break;
@@ -282,15 +282,15 @@ static void iammeter_data_handler(void)
 	 * and munge the data into the correct local formats for client
 	 */
 	em_ptr = (EM_data1*) & cc_buffer[3];
-	em.vl1n = mb32_swap(im_ptr->vl1n) / 10;
-	em.vl2n = mb32_swap(im_ptr->vl2n) / 10;
-	em.vl3n = mb32_swap(im_ptr->vl3n) / 10;
-	em.vl1l2 = mb32_swap(im_ptr->vl1n) / 10;
-	em.vl2l3 = mb32_swap(im_ptr->vl2n) / 10;
-	em.vl3l1 = mb32_swap(im_ptr->vl3n) / 10;
-	em.al1 = mb32_swap(im_ptr->al1)*10;
-	em.al2 = mb32_swap(im_ptr->al2)*10;
-	em.al3 = mb32_swap(im_ptr->al3)*10;
+	em.vl1n = mb16_swap((const int16_t) im_ptr->vl1n) / 10;
+	em.vl2n = mb16_swap((const int16_t) im_ptr->vl2n) / 10;
+	em.vl3n = mb16_swap((const int16_t) im_ptr->vl3n) / 10;
+	em.vl1l2 = mb16_swap((const int16_t) im_ptr->vl1n) / 10;
+	em.vl2l3 = mb16_swap((const int16_t) im_ptr->vl2n) / 10;
+	em.vl3l1 = mb16_swap((const int16_t) im_ptr->vl3n) / 10;
+	em.al1 = mb16_swap((const int16_t) im_ptr->al1)*10;
+	em.al2 = mb16_swap((const int16_t) im_ptr->al2)*10;
+	em.al3 = mb16_swap((const int16_t) im_ptr->al3)*10;
 	em.wl1 = mb32_swap(im_ptr->ap1s) / 10000;
 	em.wl2 = mb32_swap(im_ptr->ap2s) / 10000;
 	em.wl3 = mb32_swap(im_ptr->ap3s) / 10000;
@@ -314,21 +314,18 @@ static void iammeter_data_handler(void)
 	em_tmp.wl1 = (float) mb32_swap(im_ptr->wl1)*100;
 	em_tmp.wl2 = (float) mb32_swap(im_ptr->wl2)*100;
 	em_tmp.wl3 = (float) mb32_swap(im_ptr->wl3)*100;
-	//	em_tmp.wl1 = (float) mb32_swap(im_ptr->ap1s)*1;
-	//	em_tmp.wl2 = (float) mb32_swap(im_ptr->ap2s)*1;
-	//	em_tmp.wl3 = (float) mb32_swap(im_ptr->ap3s)*1;
 }
 
 static void iammeter_dir_handler(void)
 {
 	imd_ptr = (IM_dir1*) & cc_buffer[3];
-	imd_tmp.ap1s = (float) mb32_swap(imd_ptr->ap1s)/100000; // phase A:1 GTI power
-	imd_tmp.ap2s = (float) mb32_swap(imd_ptr->ap2s)/100000; // Phase B:2 Utility power flow
-	imd_tmp.ap3s = (float) mb32_swap(imd_ptr->ap3s)/100000; // Phase C:3 Load power
-	imd_tmp.rpp1s = (float) mb32_swap(imd_ptr->rpp1s)/100000; // Reactive power for each Phase input
-	imd_tmp.rpp2s = (float) mb32_swap(imd_ptr->rpp2s)/100000;
-	imd_tmp.rpp3s = (float) mb32_swap(imd_ptr->rpp3s)/100000;
-	imd_tmp.tps = (float) mb32_swap(imd_ptr->tps)/100000; // Total power
+	imd_tmp.ap1s = (float) mb32_swap(imd_ptr->ap1s) / 100000; // phase A:1 GTI power
+	imd_tmp.ap2s = (float) mb32_swap(imd_ptr->ap2s) / 100000; // Phase B:2 Utility power flow
+	imd_tmp.ap3s = (float) mb32_swap(imd_ptr->ap3s) / 100000; // Phase C:3 Load power
+	imd_tmp.rpp1s = (float) mb32_swap(imd_ptr->rpp1s) / 100000; // Reactive power for each Phase input
+	imd_tmp.rpp2s = (float) mb32_swap(imd_ptr->rpp2s) / 100000;
+	imd_tmp.rpp3s = (float) mb32_swap(imd_ptr->rpp3s) / 100000;
+	imd_tmp.tps = (float) mb32_swap(imd_ptr->tps) / 100000; // Total power
 }
 
 static bool iammeter_modbus_write_check(C_data * client, bool* cstate, const uint16_t rec_length)
@@ -406,12 +403,12 @@ static bool iammeter_modbus_read_check(C_data * client, bool* cstate, const uint
 	return *cstate;
 }
 
-static bool iammeter_modbus_read_dir_check(C_data * client, bool* cstate, const uint16_t rec_length, void (* DataHandler)(void))
+static bool iammeter_modbus_read_dir_check(C_data * client, bool* cstate, const uint16_t rec_length, void (* DataHandler)(void), const uint8_t command)
 {
 	uint16_t c_crc, c_crc_rec;
 
 	client->req_length = rec_length;
-	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == MADDR) && (cc_buffer[1] == READ_HOLDING_REGISTERS))) {
+	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == MADDR) && (cc_buffer[1] == command))) {
 		c_crc = crc16(cc_buffer, client->req_length - 2);
 		c_crc_rec = crc16_receive(client, cc_buffer);
 		if (DBUG_R c_crc == c_crc_rec) {

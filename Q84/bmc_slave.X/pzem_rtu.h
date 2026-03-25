@@ -14,8 +14,8 @@ extern "C" {
 
 #include "modbus_master.h"
 
-#define PZ_DATA_LEN1	0X3F	// 16-bit words returned
-#define PZ_DATA_DIR1	0X3F	// 16-bit words returned
+#define PZ_DATA_LEN1	0X40	// 16-bit words returned
+#define PZ_DATA_DIR1	0X40	// 16-bit words returned
 
 #define MB_PZEM_ID_H	0x01	// slave ID
 #define MB_PZEM_ID_L	0x06	// slave baudrate

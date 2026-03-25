@@ -31,7 +31,7 @@ static const uint16_t IDUPL_DELAY = 2; // extra duplex delay mode
 
 static bool pzem_modbus_write_check(C_data *, bool*, uint16_t);
 static bool pzem_modbus_read_check(C_data *, bool*, uint16_t, void (* DataHandler)(void));
-static bool pzem_modbus_read_dir_check(C_data *, bool*, uint16_t, void (* DataHandler)(void));
+static bool pzem_modbus_read_dir_check(C_data *, bool*, uint16_t, void (* DataHandler)(void), const uint8_t);
 
 static void pzem_data_handler(void);
 static void pzem_dir_handler(void);
@@ -180,7 +180,7 @@ int8_t pzem_controller_work(C_data * client)
 				pzem_modbus_read_check(client, &client->data_ok, sizeof(im_data1), pzem_data_handler);
 				break;
 			case P_DIR1: // check for controller dir1 codes
-				pzem_modbus_read_dir_check(client, &client->id_ok, sizeof(im_dir1), pzem_dir_handler);
+				pzem_modbus_read_dir_check(client, &client->id_ok, sizeof(im_dir1), pzem_dir_handler, READ_HOLDING_REGISTERS);
 				break;
 			default:
 				break;
@@ -322,12 +322,12 @@ static bool pzem_modbus_read_check(C_data * client, bool* cstate, const uint16_t
 	return *cstate;
 }
 
-static bool pzem_modbus_read_dir_check(C_data * client, bool* cstate, const uint16_t rec_length, void (* DataHandler)(void))
+static bool pzem_modbus_read_dir_check(C_data * client, bool* cstate, const uint16_t rec_length, void (* DataHandler)(void), const uint8_t command)
 {
 	uint16_t c_crc, c_crc_rec;
 
 	client->req_length = rec_length;
-	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == MADDR) && (cc_buffer[1] == READ_HOLDING_REGISTERS))) {
+	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == MADDR) && (cc_buffer[1] == command))) {
 		c_crc = crc16(cc_buffer, client->req_length - 2);
 		c_crc_rec = crc16_receive(client, cc_buffer);
 		if (DBUG_R c_crc == c_crc_rec) {

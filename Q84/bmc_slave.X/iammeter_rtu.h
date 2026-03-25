@@ -16,6 +16,7 @@ extern "C" {
 
 #define IM_DATA_LEN1	74	// 16-bit words returned 74
 #define IM_DATA_DIR1	14	// 16-bit words returned
+#define IM_DATA_DIR2	8
 
 #define MB_IAMMETER_ID_H	0x01	// slave ID
 #define MB_IAMMETER_ID_L	0x06	// slave baudrate
