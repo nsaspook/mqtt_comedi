@@ -37,8 +37,9 @@ extern "C" {
 	static const float MAX_12V_SYSTEMV = 17.0f; // max system volts for 12VDC systems
 
 	enum EMETER_MODEL { // energy meter driver types
-		EM540_M = 0,
-		WEM30_M,
+		EM540_M = 0,	// E Meter jumpers high/high
+		WEM30_M,	// low/high
+		PZEM_M,		// low/low
 	};
 
 	struct ha_daq_calib_type {

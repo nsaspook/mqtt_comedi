@@ -41,11 +41,11 @@ static void half_dup_rx(const bool);
 
 static const uint8_t
 // transmit frames for commands
-modbus_pz_data1[] = {MADDR, READ_HOLDING_REGISTERS, 0x00, 0x00, 0x00, PZ_DATA_LEN1},
-modbus_pz_dir1[] = {MADDR, READ_HOLDING_REGISTERS, 0x00, 0x00, 0x00, PZ_DATA_DIR1},
+modbus_pz_data1[] = {PZMADDR, READ_HOLDING_REGISTERS, 0x00, 0x00, 0x00, PZ_DATA_LEN1},
+modbus_pz_dir1[] = {PZMADDR, READ_HOLDING_REGISTERS, 0x00, 0x00, 0x00, PZ_DATA_DIR1},
 // receive frames prototypes for received data checking
-im_data1[(PZ_DATA_LEN1 * 2) + 5] = {MADDR, READ_HOLDING_REGISTERS, 0x00},
-im_dir1[(PZ_DATA_DIR1 * 2) + 5] = {MADDR, READ_HOLDING_REGISTERS, 0x00};
+im_data1[(PZ_DATA_LEN1 * 2) + 5] = {PZMADDR, READ_HOLDING_REGISTERS, 0x00},
+im_dir1[(PZ_DATA_DIR1 * 2) + 5] = {PZMADDR, READ_HOLDING_REGISTERS, 0x00};
 
 /*
  * register data frames
@@ -252,7 +252,7 @@ static bool pzem_modbus_write_check(C_data * client, bool* cstate, const uint16_
 	uint16_t c_crc, c_crc_rec;
 
 	client->req_length = rec_length;
-	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == MADDR) && (cc_buffer[1] == WRITE_SINGLE_REGISTER))) {
+	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == PZMADDR) && (cc_buffer[1] == WRITE_SINGLE_REGISTER))) {
 		c_crc = crc16(cc_buffer, client->req_length - 2);
 		c_crc_rec = crc16_receive(client, cc_buffer);
 		if (DBUG_R c_crc == c_crc_rec) {
@@ -283,7 +283,7 @@ static bool pzem_modbus_read_check(C_data * client, bool* cstate, const uint16_t
 	uint16_t c_crc, c_crc_rec;
 
 	client->req_length = rec_length;
-	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == MADDR) && (cc_buffer[1] == READ_HOLDING_REGISTERS))) {
+	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == PZMADDR) && (cc_buffer[1] == READ_HOLDING_REGISTERS))) {
 		c_crc = crc16(cc_buffer, client->req_length - 2);
 		c_crc_rec = crc16_receive(client, cc_buffer);
 #ifdef CRC_ERRORS
@@ -327,7 +327,7 @@ static bool pzem_modbus_read_dir_check(C_data * client, bool* cstate, const uint
 	uint16_t c_crc, c_crc_rec;
 
 	client->req_length = rec_length;
-	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == MADDR) && (cc_buffer[1] == command))) {
+	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == PZMADDR) && (cc_buffer[1] == command))) {
 		c_crc = crc16(cc_buffer, client->req_length - 2);
 		c_crc_rec = crc16_receive(client, cc_buffer);
 		if (DBUG_R c_crc == c_crc_rec) {

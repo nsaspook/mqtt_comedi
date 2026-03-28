@@ -121,8 +121,11 @@ enum EMETER_MODEL set_calibration(unsigned long long mui)
 	/*
 	 * override and setup jumper
 	 */
-	if (EMETER_CONF_PORT == 0x00) {
+	if ((EMETER_CONF_PORT == 0x00) && (EMETER_CONF_PORT == 0x01)) {
 		em_model = WEM30_M;
+	}
+	if ((EMETER_CONF_PORT == 0x00) && (EMETER_CONF_PORT == 0x00)) {
+		em_model = PZEM_M;
 	}
 
 	return em_model;

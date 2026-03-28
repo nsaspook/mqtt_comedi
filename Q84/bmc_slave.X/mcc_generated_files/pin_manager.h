@@ -677,25 +677,25 @@
 #define DERE_SetAnalogMode()      do { ANSELFbits.ANSELF3 = 1; } while(0)
 #define DERE_SetDigitalMode()     do { ANSELFbits.ANSELF3 = 0; } while(0)
 
-// get/set IO_RF4 aliases
-#define IO_RF4_TRIS                 TRISFbits.TRISF4
-#define IO_RF4_LAT                  LATFbits.LATF4
-#define IO_RF4_PORT                 PORTFbits.RF4
-#define IO_RF4_WPU                  WPUFbits.WPUF4
-#define IO_RF4_OD                   ODCONFbits.ODCF4
-#define IO_RF4_ANS                  ANSELFbits.ANSELF4
-#define IO_RF4_SetHigh()            do { LATFbits.LATF4 = 1; } while(0)
-#define IO_RF4_SetLow()             do { LATFbits.LATF4 = 0; } while(0)
-#define IO_RF4_Toggle()             do { LATFbits.LATF4 = ~LATFbits.LATF4; } while(0)
-#define IO_RF4_GetValue()           PORTFbits.RF4
-#define IO_RF4_SetDigitalInput()    do { TRISFbits.TRISF4 = 1; } while(0)
-#define IO_RF4_SetDigitalOutput()   do { TRISFbits.TRISF4 = 0; } while(0)
-#define IO_RF4_SetPullup()          do { WPUFbits.WPUF4 = 1; } while(0)
-#define IO_RF4_ResetPullup()        do { WPUFbits.WPUF4 = 0; } while(0)
-#define IO_RF4_SetPushPull()        do { ODCONFbits.ODCF4 = 0; } while(0)
-#define IO_RF4_SetOpenDrain()       do { ODCONFbits.ODCF4 = 1; } while(0)
-#define IO_RF4_SetAnalogMode()      do { ANSELFbits.ANSELF4 = 1; } while(0)
-#define IO_RF4_SetDigitalMode()     do { ANSELFbits.ANSELF4 = 0; } while(0)
+// get/set EMETER_CONF_TYPE aliases
+#define EMETER_CONF_TYPE_TRIS                 TRISFbits.TRISF4
+#define EMETER_CONF_TYPE_LAT                  LATFbits.LATF4
+#define EMETER_CONF_TYPE_PORT                 PORTFbits.RF4
+#define EMETER_CONF_TYPE_WPU                  WPUFbits.WPUF4
+#define EMETER_CONF_TYPE_OD                   ODCONFbits.ODCF4
+#define EMETER_CONF_TYPE_ANS                  ANSELFbits.ANSELF4
+#define EMETER_CONF_TYPE_SetHigh()            do { LATFbits.LATF4 = 1; } while(0)
+#define EMETER_CONF_TYPE_SetLow()             do { LATFbits.LATF4 = 0; } while(0)
+#define EMETER_CONF_TYPE_Toggle()             do { LATFbits.LATF4 = ~LATFbits.LATF4; } while(0)
+#define EMETER_CONF_TYPE_GetValue()           PORTFbits.RF4
+#define EMETER_CONF_TYPE_SetDigitalInput()    do { TRISFbits.TRISF4 = 1; } while(0)
+#define EMETER_CONF_TYPE_SetDigitalOutput()   do { TRISFbits.TRISF4 = 0; } while(0)
+#define EMETER_CONF_TYPE_SetPullup()          do { WPUFbits.WPUF4 = 1; } while(0)
+#define EMETER_CONF_TYPE_ResetPullup()        do { WPUFbits.WPUF4 = 0; } while(0)
+#define EMETER_CONF_TYPE_SetPushPull()        do { ODCONFbits.ODCF4 = 0; } while(0)
+#define EMETER_CONF_TYPE_SetOpenDrain()       do { ODCONFbits.ODCF4 = 1; } while(0)
+#define EMETER_CONF_TYPE_SetAnalogMode()      do { ANSELFbits.ANSELF4 = 1; } while(0)
+#define EMETER_CONF_TYPE_SetDigitalMode()     do { ANSELFbits.ANSELF4 = 0; } while(0)
 
 // get/set EMETER_CONF aliases
 #define EMETER_CONF_TRIS                 TRISFbits.TRISF5

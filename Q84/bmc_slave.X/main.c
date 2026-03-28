@@ -117,7 +117,7 @@
 // CONFIG7
 #pragma config BBSIZE = BBSIZE_512// Boot Block Size selection bits (Boot Block size is 512 words)
 #pragma config BBEN = OFF       // Boot Block enable bit (Boot block disabled)
-#pragma config SAFEN = ON      // Storage Area Flash enable bit (SAF disabled)
+#pragma config SAFEN = OFF      // Storage Area Flash enable bit (SAF disabled)
 #pragma config DEBUG = OFF      // Background Debugger (Background Debugger disabled)
 
 // CONFIG8
@@ -412,6 +412,7 @@ volatile struct bmc_buffer_type BMC4 = {
 volatile bool timeout = false;
 
 struct tm *bmc_newtime;
+static 	char * s, * speed_text;
 
 static void send_mx_cmd(const uint16_t *);
 static void rec_mx_cmd(void (* DataHandler)(void), const uint8_t);
@@ -440,8 +441,6 @@ void bmc_logger(void);
  */
 void main(void)
 {
-	char * s, * speed_text;
-
 	SPI2STATUSbits.SPI2CLRBF;
 
 	if (STATUSbits.TO == 0) {
@@ -507,24 +506,19 @@ void main(void)
 		V.op.master_controller_work = &iammeter_controller_work;
 		V.op.info_ptr = &iammeter_version;
 		break;
+	case PZEM_M: // use PZEM-6L24 MODBUS connection to PZEM-6L24 instead of default EM540
+		V.op.init_mb_master_timers = &init_pz_mb_master_timers;
+		V.op.master_controller_work = &pzem_controller_work;
+		V.op.info_ptr = &pzem_version;
+		break;
 	case EM540_M:
 	default:
-		UART3_Initialize115200(); // MODBUS port
+		UART3_Initialize115200(); // MODBUS port to EM540
 		UART3_SetRxInterruptHandler(my_modbus_rx_32); // install custom serial receive ISR
 		break;
 	}
 
 	V.op.info_ptr();
-
-	//#ifndef IAMMETER_MODBUS
-	//	UART3_Initialize115200(); // MODBUS port
-	//	UART3_SetRxInterruptHandler(my_modbus_rx_32); // install custom serial receive ISR
-	//#endif
-	//#ifdef IAMMETER_MODBUS // use immmeter functions instead of EM540 functions
-	//	V.op.init_mb_master_timers = &init_im_mb_master_timers;
-	//	V.op.master_controller_work = &iammeter_controller_work;
-	//	V.op.info_ptr = &iammeter_version;
-	//#endif
 	V.op.init_mb_master_timers(); // MODBUS pacing, spacing and timeouts
 
 	StartTimer(TMR_MBTEST, 20);
@@ -565,7 +559,7 @@ void main(void)
 #endif
 		/*
 		 * check and parse logging configuration commands
-		 * not used
+		 * not used, yet
 		 */
 		logging_cmds();
 
@@ -1105,7 +1099,6 @@ void main(void)
 		}
 
 		if (V.help && TimerDone(TMR_SEQ)) {
-
 			StartTimer(TMR_SEQ, SEQDELAY);
 			StartTimer(TMR_HELP, TDELAY);
 			V.set_sequ = true;
@@ -1128,7 +1121,6 @@ void onesec_io(void)
 	V.utc_ticks++;
 	BM.one_sec_flag = true;
 	if (BM.spi_reset++ >= SPI_RESET_COUNTS) {
-
 		slaveo_time_isr();
 		BM.spi_reset = 0;
 	}
@@ -1156,7 +1148,6 @@ char spinners(uint8_t shape, const uint8_t reset)
  */
 void test_slave(void)
 {
-
 	MCZ_PWM_SetLow();
 }
 
@@ -1166,7 +1157,6 @@ void test_slave(void)
  */
 void SetBMCPriority(void)
 {
-
 	INTCON0bits.GIE = 0; // Disable Interrupts;
 	PRLOCK = 0x55;
 	PRLOCK = 0xAA;
@@ -1217,7 +1207,6 @@ device_id_data_t DeviceID_Read(device_id_address_t address)
  */
 void update_time(const struct tm * ts, EB_data * EB)
 {
-
 	EB->time = (
 		(uint16_t) ((ts->tm_hour & 0x1F) << 11) |
 		(uint16_t) ((ts->tm_min & 0x3F) << 5) |
@@ -1237,7 +1226,6 @@ static void send_mx_cmd(const uint16_t * cmd)
 {
 	if (FM_tx_empty()) {
 		if (BM.pacing++ > PACE) {
-
 			FM_tx(cmd, CMD_LEN); // send 9-bit command data stream
 			BM.pacing = 0;
 		}
@@ -1272,7 +1260,6 @@ static void rec_mx_cmd(void (* DataHandler)(void), const uint8_t rec_len)
 		}
 	}
 	if ((BM.FM80_online == false) && online_count++ > ONLINE_TIMEOUT) {
-
 		online_count = 0;
 		BM.FM80_online = false;
 		BM.FM80_io = false;
@@ -1337,26 +1324,23 @@ void bmc_logger(void)
  */
 static void volt_f(const uint16_t voltage)
 {
-
 	volt_fract = (uint16_t) abs(voltage % 10);
 	volt_whole = voltage / 10;
 }
 
 int16_t num_fract(const int16_t num_10x)
 {
-
 	return num_10x % 10;
 }
 
 int16_t num_whole(const int16_t num_10x)
 {
-
 	return num_10x / 10;
 }
 
 void state_init_cb(void)
 {
-	float Soc;
+	//	float Soc;
 	static uint8_t off_delay = 0;
 
 	mx_code = abuf[2]&0xf;
@@ -1375,7 +1359,6 @@ void state_init_cb(void)
 
 void state_batteryv_cb(void)
 {
-
 	volt_f((abuf[2] + (abuf[1] << 8)));
 #ifdef debug_data
 	printf("%5d: %3x %3x %3x %3x %3x   DATA: Battery Voltage %d.%01dVDC\r\n", rx_count++, abuf[0], abuf[1], abuf[2], abuf[3], abuf[4], volt_whole, volt_fract);
@@ -1385,7 +1368,6 @@ void state_batteryv_cb(void)
 
 void state_batterya_cb(void)
 {
-
 	volt_f((abuf[2] + (abuf[1] << 8)));
 #ifdef debug_data
 	printf("%5d: %3x %3x %3x %3x %3x   DATA: Battery Amps %dADC\r\n", rx_count++, abuf[0], abuf[1], abuf[2], abuf[3], abuf[4], abuf[2] - 128);
@@ -1408,7 +1390,6 @@ static void state_fwrev_cb(void)
 static void state_time_cb(void)
 {
 #ifdef SDEBUG
-
 	char s_buffer[22];
 	snprintf(s_buffer, 21, "Time CSum %X        ", calc_checksum((uint8_t *) & cmd_time[1], 10));
 	eaDogM_Scroll_String(s_buffer);
@@ -1419,7 +1400,6 @@ static void state_time_cb(void)
 static void state_date_cb(void)
 {
 #ifdef SDEBUG
-
 	char s_buffer[22];
 	snprintf(s_buffer, 21, "Date CSum %X        ", calc_checksum((uint8_t *) & cmd_date[1], 10));
 	eaDogM_Scroll_String(s_buffer);
@@ -1430,7 +1410,6 @@ static void state_date_cb(void)
 static void state_restart_cb(void)
 {
 #ifdef SDEBUG
-
 	char s_buffer[22];
 	snprintf(s_buffer, 21, "Date CSum %X        ", calc_checksum((uint8_t *) & cmd_date[1], 10));
 	eaDogM_Scroll_String(s_buffer);
@@ -1460,7 +1439,6 @@ void state_misc_cb(void)
 
 void state_mx_log_cb(void)
 {
-
 	BM.log.volts_peak = (int16_t) cbuf[5];
 	BM.log.day = (int16_t) cbuf[14];
 	BM.log.kilowatt_hours = (int16_t) (((uint16_t) (cbuf[3] & 0xF0) >> 4) | (uint16_t) (cbuf[4] << 4));

@@ -17,7 +17,8 @@ extern "C" {
 #define PZ_DATA_LEN1	0X40	// 16-bit words returned
 #define PZ_DATA_DIR1	0X40	// 16-bit words returned
 
-#define MB_PZEM_ID_H	0x01	// slave ID
+#define PZMADDR		0x02 // modbus client address
+#define MB_PZEM_ID_H	PZMADDR	// slave ID
 #define MB_PZEM_ID_L	0x06	// slave baudrate
 
 	typedef enum cmd_pz_type {
