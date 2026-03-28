@@ -1,42 +1,104 @@
 Version 4.0 HI-TECH Software Intermediate Code
-[v F24482 `(v ~T0 @X0 0 tf ]
-[v F24484 `(v ~T0 @X0 0 tf ]
-[v F24559 `(v ~T0 @X0 0 tf ]
-[v F24561 `(v ~T0 @X0 0 tf ]
-[v F24636 `(v ~T0 @X0 0 tf ]
-[v F24642 `(v ~T0 @X0 0 tf ]
-"49 ./tic12400.h
-[s S3423 `uc 1 `uc 1 `uc 1 `uc 1 ]
-[n S3423 . data3 data2 data1 data0 ]
-"70
-[s S3425 `uc -> 16 `i ]
-[n S3425 . cmd ]
-"117 /opt/microchip/xc8/v3.10/pic/include/c99/stdio.h
-[v _printf `(i ~T0 @X0 0 ev`*Cuc ]
-"109 ./eadog.h
-[v _send_spi1_tic12400_dma `(v ~T0 @X0 0 ef2`*uc`Cuc ]
-"35 ./timers.h
-[v _WaitMs `(v ~T0 @X0 0 ef1`us ]
-"200 ./vconfig.h
-[s S3407 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 `us 1 `uc 1 `*uc 1 `*uc 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 ]
-[n S3407 spi_link_type SPI_LCD SPI_AUX LCD_TIMER LCD_DATA READ_DATA delay config txbuf rxbuf int_count int_read des_bytes src_bytes or_bytes ]
-"46 ./tic12400.h
-[v _spi_link `VS3407 ~T0 @X0 0 e ]
-"78
-[v _tic12400_wr `(ul ~T0 @X0 0 ef2`*CS3423`us ]
-[v F23561 `(v ~T0 @X0 0 tf ]
-"799 ./mcc_generated_files/pin_manager.h
-[v _IOCBF6_SetInterruptHandler `(v ~T0 @X0 0 ef1`*F23561 ]
-"119 tic12400.c
-[v _tic_int_handler `(v ~T0 @X0 0 sf ]
-"69685 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.30.487/xc8/pic/include/proc/pic18f57q84.h
-[s S3180 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S3180 . LATB0 LATB1 LATB2 LATB3 LATB4 LATB5 LATB6 LATB7 ]
-"69684
-[u S3179 `S3180 1 ]
-[n S3179 . . ]
-"69696
-[v _LATBbits `VS3179 ~T0 @X0 0 e@1215 ]
+"47575 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.30.487/xc8/pic/include/proc/pic18f57q84.h
+[v _CRCCON1 `Vuc ~T0 @X0 0 e@856 ]
+"47627
+[v _CRCCON2 `Vuc ~T0 @X0 0 e@857 ]
+"47480
+[s S2236 :1 `uc 1 :1 `uc 1 :2 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S2236 . FULL SHIFTM SETUP ACCMOD CRCBUSY CRCGO CRCEN ]
+"47489
+[s S2237 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S2237 . . LENDIAN SETUP0 SETUP1 ACCM BUSY GO EN ]
+"47479
+[u S2235 `S2236 1 `S2237 1 ]
+[n S2235 . . . ]
+"47500
+[v _CRCCON0bits `VS2235 ~T0 @X0 0 e@855 ]
+"47404
+[v _CRCXORT `Vuc ~T0 @X0 0 e@854 ]
+"47126
+[v _CRCXORU `Vuc ~T0 @X0 0 e@853 ]
+"46848
+[v _CRCXORH `Vuc ~T0 @X0 0 e@852 ]
+"46570
+[v _CRCXORL `Vuc ~T0 @X0 0 e@851 ]
+"47196
+[v _CRCOUTT `Vuc ~T0 @X0 0 e@854 ]
+"46918
+[v _CRCOUTU `Vuc ~T0 @X0 0 e@853 ]
+"46640
+[v _CRCOUTH `Vuc ~T0 @X0 0 e@852 ]
+"46362
+[v _CRCOUTL `Vuc ~T0 @X0 0 e@851 ]
+"46276
+[v _CRCDATAT `Vuc ~T0 @X0 0 e@850 ]
+"46206
+[v _CRCDATAU `Vuc ~T0 @X0 0 e@849 ]
+"46136
+[v _CRCDATAH `Vuc ~T0 @X0 0 e@848 ]
+"46066
+[v _CRCDATAL `Vuc ~T0 @X0 0 e@847 ]
+"48313
+[v _SCANHADRU `Vuc ~T0 @X0 0 e@863 ]
+"48185
+[v _SCANHADRH `Vuc ~T0 @X0 0 e@862 ]
+"48057
+[v _SCANHADRL `Vuc ~T0 @X0 0 e@861 ]
+"47944
+[v _SCANLADRU `Vuc ~T0 @X0 0 e@860 ]
+"47816
+[v _SCANLADRH `Vuc ~T0 @X0 0 e@859 ]
+"47688
+[v _SCANLADRL `Vuc ~T0 @X0 0 e@858 ]
+"48477
+[v _SCANTRIG `Vuc ~T0 @X0 0 e@865 ]
+"69561
+[s S3176 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S3176 . NVMIF CLC8IF CRCIF TMR6IF DMA8SCNTIF DMA8DCNTIF DMA8ORIF DMA8AIF ]
+"69560
+[u S3175 `S3176 1 ]
+[n S3175 . . ]
+"69572
+[v _PIR15bits `VS3175 ~T0 @X0 0 e@1213 ]
+"68576
+[s S3143 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S3143 . NVMIE CLC8IE CRCIE TMR6IE DMA8SCNTIE DMA8DCNTIE DMA8ORIE DMA8AIE ]
+"68575
+[u S3142 `S3143 1 ]
+[n S3142 . . ]
+"68587
+[v _PIE15bits `VS3142 ~T0 @X0 0 e@1197 ]
+"69137
+[s S3162 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S3162 . U2RXIF U2TXIF U2EIF U2IF TMR5IF TMR5GIF CCP2IF SCANIF ]
+"69136
+[u S3161 `S3162 1 ]
+[n S3161 . . ]
+"69148
+[v _PIR8bits `VS3161 ~T0 @X0 0 e@1206 ]
+"68152
+[s S3129 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S3129 . U2RXIE U2TXIE U2EIE U2IE TMR5IE TMR5GIE CCP2IE SCANIE ]
+"68151
+[u S3128 `S3129 1 ]
+[n S3128 . . ]
+"68163
+[v _PIE8bits `VS3128 ~T0 @X0 0 e@1190 ]
+"47474
+[v _CRCCON0 `Vuc ~T0 @X0 0 e@855 ]
+"48417
+[v _SCANCON0 `Vuc ~T0 @X0 0 e@864 ]
+"47581
+[s S2239 :5 `uc 1 ]
+[n S2239 . PLEN ]
+"47584
+[s S2240 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S2240 . PLEN0 PLEN1 PLEN2 PLEN3 PLEN4 ]
+"47580
+[u S2238 `S2239 1 `S2240 1 ]
+[n S2238 . . . ]
+"47592
+[v _CRCCON1bits `VS2238 ~T0 @X0 0 e@856 ]
 "70655
 [s S3214 :1 `uc 1 :1 `uc 1 :1 `uc 1 :2 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S3214 . INT0EDG INT1EDG INT2EDG . IPEN GIEL GIE ]
@@ -48,20 +110,27 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S3213 . . . ]
 "70669
 [v _INTCON0bits `VS3213 ~T0 @X0 0 e@1238 ]
-"90 ./tic12400.h
-[v _in_buf1 `Vuc ~T0 @X0 0 e ]
-[v _in_buf2 `Vuc ~T0 @X0 0 e ]
-[v _in_buf3 `Vuc ~T0 @X0 0 e ]
-"228 ./vconfig.h
-[s S3408 `uc 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `uc 1 ]
-[n S3408 . type day amp_hours kilowatt_hours volts_peak amps_peak kilowatts_peak bat_min bat_max absorb_time float_time select ]
-"243
-[s S3409 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va -> 3 `i `Va -> 3 `i `Va -> 3 `i `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Vus 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Va 1 `Vuc 1 `Vuc 1 `Vuc 1 `Vuc -> 3 `i `Vuc 1 `f 1 `f 1 `f 1 `f 1 `us -> 10 `i `us -> 3 `i `S3408 1 `Vuo 1 ]
-[n S3409 BM_type ten_sec_flag one_sec_flag FM80_charged pv_high pv_update once a_switch a_trigger a_type pacing rx_count flush pv_prev day_check dim_delay benergy FM80_online FM80_io LOG display_dim display_update display_on fm80_restart fm80_soc_once canbus_online modbus_online alt_display a_pin spi_reset run_time net_balance Soc bvolts mui fwrev log node_id ]
-"379
-[v _BM `S3409 ~T0 @X0 0 e ]
-"70363 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.30.487/xc8/pic/include/proc/pic18f57q84.h
-[v _PORTB `Vuc ~T0 @X0 0 e@1231 ]
+"5760
+[v _PRLOCK `Vuc ~T0 @X0 0 e@180 ]
+"5766
+[s S261 :1 `uc 1 ]
+[n S261 . PRLOCKED ]
+"5765
+[u S260 `S261 1 ]
+[n S260 . . ]
+"5770
+[v _PRLOCKbits `VS260 ~T0 @X0 0 e@180 ]
+"48423
+[s S2275 :1 `uc 1 :1 `uc 1 :1 `uc 1 :2 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S2275 . BUSY BURSTMD MREG . SGO TRIGEN EN ]
+"48432
+[s S2276 :7 `uc 1 :1 `uc 1 ]
+[n S2276 . . SCANEN ]
+"48422
+[u S2274 `S2275 1 `S2276 1 ]
+[n S2274 . . . ]
+"48437
+[v _SCANCON0bits `VS2274 ~T0 @X0 0 e@864 ]
 "290 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.30.487/xc8/pic/include/proc/pic18f57q84.h
 [; <" BOOTREG equ 038h ;# ">
 "322
@@ -2490,2377 +2559,320 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; <" TOSH equ 04FEh ;# ">
 "71911
 [; <" TOSU equ 04FFh ;# ">
-"55 ./mcc_generated_files/dma1.h
-[v _lcd_dma_buf `uc ~T0 @X0 -> 32 `i e ]
-"55 ./mcc_generated_files/dma3.h
-[v _spi1_rec_buf1 `Vuc ~T0 @X0 -> 32 `i e ]
-"55 ./mcc_generated_files/dma2.h
-[v _spi1_rec_buf `Vuc ~T0 @X0 -> 32 `i e ]
-"517 ./mcc_generated_files/uart3.h
-[v _UART3_RxInterruptHandler `*F24482 ~T0 @X0 1 e ]
-"535
-[v _UART3_TxInterruptHandler `*F24484 ~T0 @X0 1 e ]
-"517 ./mcc_generated_files/uart1.h
-[v _UART1_RxInterruptHandler `*F24559 ~T0 @X0 1 e ]
-"535
-[v _UART1_TxInterruptHandler `*F24561 ~T0 @X0 1 e ]
-"75 ./mcc_generated_files/spi2.h
-[v _SPI2_InterruptHandler `*F24636 ~T0 @X0 1 e ]
-"77
-[v _SPI2_RxInterruptHandler `*F24642 ~T0 @X0 1 e ]
-"25 ./calibr.h
-[v _ADC_SCALE `Cf ~T0 @X0 1 s ]
-[i _ADC_SCALE
--> .4096.0 `f
-]
-"26
-[v _HV_SCALE_OFFSET `Cf ~T0 @X0 1 s ]
-[i _HV_SCALE_OFFSET
--> .0.0 `f
-]
-"32
-[v _HV_SCALAR4 `Cf ~T0 @X0 1 s ]
-[i _HV_SCALAR4
--> .64.2500 `f
-]
-"33
-[v _HV_SCALAR5 `Cf ~T0 @X0 1 s ]
-[i _HV_SCALAR5
--> .64.2500 `f
-]
-"34
-[v _A200_0_ZERO `Cf ~T0 @X0 1 s ]
-[i _A200_0_ZERO
--> .2.5216 `f
-]
-"35
-[v _A200_0_SCALAR `Cf ~T0 @X0 1 s ]
-[i _A200_0_SCALAR
--> .133.05 `f
-]
-"37
-[v _MAX_12V_SYSTEMV `Cf ~T0 @X0 1 s ]
-[i _MAX_12V_SYSTEMV
--> .17.0 `f
-]
-"72 ./modbus_master.h
-[v _TMDELAY `Cuc ~T0 @X0 1 s ]
-[i _TMDELAY
--> -> 2 `i `uc
-]
-"73
-[v _TEDELAY `Cuc ~T0 @X0 1 s ]
-[i _TEDELAY
--> -> 1 `i `uc
-]
-"74
-[v _RDELAY `Cuc ~T0 @X0 1 s ]
-[i _RDELAY
--> -> 200 `i `uc
-]
-"75
-[v _CDELAY `Cuc ~T0 @X0 1 s ]
-[i _CDELAY
--> -> 40 `i `uc
-]
-"76
-[v _QDELAY `Cuc ~T0 @X0 1 s ]
-[i _QDELAY
--> -> 2 `i `uc
-]
-"77
-[v _TODELAY `Cuc ~T0 @X0 1 s ]
-[i _TODELAY
--> -> 4 `i `uc
-]
-"78
-[v _SPACING `Cuc ~T0 @X0 1 s ]
-[i _SPACING
--> -> 40 `i `uc
-]
-"79
-[v _DUPL_DELAY `Cuc ~T0 @X0 1 s ]
-[i _DUPL_DELAY
--> -> 2 `i `uc
-]
-"267
-[v _table_crc_hi `Cuc ~T0 @X0 -> 256 `i s ]
-[i _table_crc_hi
-:U ..
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 1 `i `uc
--> -> 192 `i `uc
--> -> 128 `i `uc
--> -> 65 `i `uc
--> -> 0 `i `uc
--> -> 193 `i `uc
--> -> 129 `i `uc
--> -> 64 `i `uc
-..
-]
-"297
-[v _table_crc_lo `Cuc ~T0 @X0 -> 256 `i s ]
-[i _table_crc_lo
-:U ..
--> -> 0 `i `uc
--> -> 192 `i `uc
--> -> 193 `i `uc
--> -> 1 `i `uc
--> -> 195 `i `uc
--> -> 3 `i `uc
--> -> 2 `i `uc
--> -> 194 `i `uc
--> -> 198 `i `uc
--> -> 6 `i `uc
--> -> 7 `i `uc
--> -> 199 `i `uc
--> -> 5 `i `uc
--> -> 197 `i `uc
--> -> 196 `i `uc
--> -> 4 `i `uc
--> -> 204 `i `uc
--> -> 12 `i `uc
--> -> 13 `i `uc
--> -> 205 `i `uc
--> -> 15 `i `uc
--> -> 207 `i `uc
--> -> 206 `i `uc
--> -> 14 `i `uc
--> -> 10 `i `uc
--> -> 202 `i `uc
--> -> 203 `i `uc
--> -> 11 `i `uc
--> -> 201 `i `uc
--> -> 9 `i `uc
--> -> 8 `i `uc
--> -> 200 `i `uc
--> -> 216 `i `uc
--> -> 24 `i `uc
--> -> 25 `i `uc
--> -> 217 `i `uc
--> -> 27 `i `uc
--> -> 219 `i `uc
--> -> 218 `i `uc
--> -> 26 `i `uc
--> -> 30 `i `uc
--> -> 222 `i `uc
--> -> 223 `i `uc
--> -> 31 `i `uc
--> -> 221 `i `uc
--> -> 29 `i `uc
--> -> 28 `i `uc
--> -> 220 `i `uc
--> -> 20 `i `uc
--> -> 212 `i `uc
--> -> 213 `i `uc
--> -> 21 `i `uc
--> -> 215 `i `uc
--> -> 23 `i `uc
--> -> 22 `i `uc
--> -> 214 `i `uc
--> -> 210 `i `uc
--> -> 18 `i `uc
--> -> 19 `i `uc
--> -> 211 `i `uc
--> -> 17 `i `uc
--> -> 209 `i `uc
--> -> 208 `i `uc
--> -> 16 `i `uc
--> -> 240 `i `uc
--> -> 48 `i `uc
--> -> 49 `i `uc
--> -> 241 `i `uc
--> -> 51 `i `uc
--> -> 243 `i `uc
--> -> 242 `i `uc
--> -> 50 `i `uc
--> -> 54 `i `uc
--> -> 246 `i `uc
--> -> 247 `i `uc
--> -> 55 `i `uc
--> -> 245 `i `uc
--> -> 53 `i `uc
--> -> 52 `i `uc
--> -> 244 `i `uc
--> -> 60 `i `uc
--> -> 252 `i `uc
--> -> 253 `i `uc
--> -> 61 `i `uc
--> -> 255 `i `uc
--> -> 63 `i `uc
--> -> 62 `i `uc
--> -> 254 `i `uc
--> -> 250 `i `uc
--> -> 58 `i `uc
--> -> 59 `i `uc
--> -> 251 `i `uc
--> -> 57 `i `uc
--> -> 249 `i `uc
--> -> 248 `i `uc
--> -> 56 `i `uc
--> -> 40 `i `uc
--> -> 232 `i `uc
--> -> 233 `i `uc
--> -> 41 `i `uc
--> -> 235 `i `uc
--> -> 43 `i `uc
--> -> 42 `i `uc
--> -> 234 `i `uc
--> -> 238 `i `uc
--> -> 46 `i `uc
--> -> 47 `i `uc
--> -> 239 `i `uc
--> -> 45 `i `uc
--> -> 237 `i `uc
--> -> 236 `i `uc
--> -> 44 `i `uc
--> -> 228 `i `uc
--> -> 36 `i `uc
--> -> 37 `i `uc
--> -> 229 `i `uc
--> -> 39 `i `uc
--> -> 231 `i `uc
--> -> 230 `i `uc
--> -> 38 `i `uc
--> -> 34 `i `uc
--> -> 226 `i `uc
--> -> 227 `i `uc
--> -> 35 `i `uc
--> -> 225 `i `uc
--> -> 33 `i `uc
--> -> 32 `i `uc
--> -> 224 `i `uc
--> -> 160 `i `uc
--> -> 96 `i `uc
--> -> 97 `i `uc
--> -> 161 `i `uc
--> -> 99 `i `uc
--> -> 163 `i `uc
--> -> 162 `i `uc
--> -> 98 `i `uc
--> -> 102 `i `uc
--> -> 166 `i `uc
--> -> 167 `i `uc
--> -> 103 `i `uc
--> -> 165 `i `uc
--> -> 101 `i `uc
--> -> 100 `i `uc
--> -> 164 `i `uc
--> -> 108 `i `uc
--> -> 172 `i `uc
--> -> 173 `i `uc
--> -> 109 `i `uc
--> -> 175 `i `uc
--> -> 111 `i `uc
--> -> 110 `i `uc
--> -> 174 `i `uc
--> -> 170 `i `uc
--> -> 106 `i `uc
--> -> 107 `i `uc
--> -> 171 `i `uc
--> -> 105 `i `uc
--> -> 169 `i `uc
--> -> 168 `i `uc
--> -> 104 `i `uc
--> -> 120 `i `uc
--> -> 184 `i `uc
--> -> 185 `i `uc
--> -> 121 `i `uc
--> -> 187 `i `uc
--> -> 123 `i `uc
--> -> 122 `i `uc
--> -> 186 `i `uc
--> -> 190 `i `uc
--> -> 126 `i `uc
--> -> 127 `i `uc
--> -> 191 `i `uc
--> -> 125 `i `uc
--> -> 189 `i `uc
--> -> 188 `i `uc
--> -> 124 `i `uc
--> -> 180 `i `uc
--> -> 116 `i `uc
--> -> 117 `i `uc
--> -> 181 `i `uc
--> -> 119 `i `uc
--> -> 183 `i `uc
--> -> 182 `i `uc
--> -> 118 `i `uc
--> -> 114 `i `uc
--> -> 178 `i `uc
--> -> 179 `i `uc
--> -> 115 `i `uc
--> -> 177 `i `uc
--> -> 113 `i `uc
--> -> 112 `i `uc
--> -> 176 `i `uc
--> -> 80 `i `uc
--> -> 144 `i `uc
--> -> 145 `i `uc
--> -> 81 `i `uc
--> -> 147 `i `uc
--> -> 83 `i `uc
--> -> 82 `i `uc
--> -> 146 `i `uc
--> -> 150 `i `uc
--> -> 86 `i `uc
--> -> 87 `i `uc
--> -> 151 `i `uc
--> -> 85 `i `uc
--> -> 149 `i `uc
--> -> 148 `i `uc
--> -> 84 `i `uc
--> -> 156 `i `uc
--> -> 92 `i `uc
--> -> 93 `i `uc
--> -> 157 `i `uc
--> -> 95 `i `uc
--> -> 159 `i `uc
--> -> 158 `i `uc
--> -> 94 `i `uc
--> -> 90 `i `uc
--> -> 154 `i `uc
--> -> 155 `i `uc
--> -> 91 `i `uc
--> -> 153 `i `uc
--> -> 89 `i `uc
--> -> 88 `i `uc
--> -> 152 `i `uc
--> -> 136 `i `uc
--> -> 72 `i `uc
--> -> 73 `i `uc
--> -> 137 `i `uc
--> -> 75 `i `uc
--> -> 139 `i `uc
--> -> 138 `i `uc
--> -> 74 `i `uc
--> -> 78 `i `uc
--> -> 142 `i `uc
--> -> 143 `i `uc
--> -> 79 `i `uc
--> -> 141 `i `uc
--> -> 77 `i `uc
--> -> 76 `i `uc
--> -> 140 `i `uc
--> -> 68 `i `uc
--> -> 132 `i `uc
--> -> 133 `i `uc
--> -> 69 `i `uc
--> -> 135 `i `uc
--> -> 71 `i `uc
--> -> 70 `i `uc
--> -> 134 `i `uc
--> -> 130 `i `uc
--> -> 66 `i `uc
--> -> 67 `i `uc
--> -> 131 `i `uc
--> -> 65 `i `uc
--> -> 129 `i `uc
--> -> 128 `i `uc
--> -> 64 `i `uc
-..
-]
-"337
-[v _BOFF `Cuc ~T0 @X0 1 s ]
-[i _BOFF
--> -> 0 `i `uc
-]
-"338
-[v _BON `Cuc ~T0 @X0 1 s ]
-[i _BON
--> -> 255 `i `uc
-]
-"152 ./vconfig.h
-[v _TDELAY `Cus ~T0 @X0 1 s ]
-[i _TDELAY
--> -> 3000 `i `us
-]
-"153
-[v _SEQDELAY `Cus ~T0 @X0 1 s ]
-[i _SEQDELAY
--> -> 10000 `i `us
-]
-"154
-[v _LDELAY `Cus ~T0 @X0 1 s ]
-[i _LDELAY
--> -> 2400 `i `us
-]
-"155
-[v _WLDELAY `Cus ~T0 @X0 1 s ]
-[i _WLDELAY
--> -> 1600 `i `us
-]
-"156
-[v _SDELAY `Cus ~T0 @X0 1 s ]
-[i _SDELAY
--> -> 100 `i `us
-]
-"157
-[v _DDELAY `Cus ~T0 @X0 1 s ]
-[i _DDELAY
--> -> 500 `i `us
-]
-"158
-[v _DFLIP `Cus ~T0 @X0 1 s ]
-[i _DFLIP
--> -> 1500 `i `us
-]
-"159
-[v _ADCDELAY `Cuc ~T0 @X0 1 s ]
-[i _ADCDELAY
--> -> 1 `i `uc
-]
-"160
-[v _SWITCH_VTERM `Cuc ~T0 @X0 1 s ]
-[i _SWITCH_VTERM
--> -> 70 `i `uc
-]
-"161
-[v _SWITCH_DURATION `Cuc ~T0 @X0 1 s ]
-[i _SWITCH_DURATION
--> -> 32 `i `uc
-]
-"162
-[v _HOST_UART `Cuc ~T0 @X0 1 s ]
-[i _HOST_UART
--> -> 1 `i `uc
-]
-"163
-[v _CHK_DAY_TIME `Cus ~T0 @X0 1 s ]
-[i _CHK_DAY_TIME
--> -> 1200 `i `us
-]
-"164
-[v _BAT_DAY_COUNT `Cuc ~T0 @X0 1 s ]
-[i _BAT_DAY_COUNT
--> -> 45 `i `uc
-]
-"165
-[v _BAT_NIGHT_COUNT `Cuc ~T0 @X0 1 s ]
-[i _BAT_NIGHT_COUNT
--> -> 90 `i `uc
-]
-"166
-[v _PV_VOLTS_HIGH `Cuc ~T0 @X0 1 s ]
-[i _PV_VOLTS_HIGH
--> -> 70 `i `uc
-]
-"167
-[v _SPI_RESET_COUNTS `Cuc ~T0 @X0 1 s ]
-[i _SPI_RESET_COUNTS
--> -> 6 `i `uc
-]
-"176
-[v _log_format1 `Cuc ~T0 @X0 -> 183 `i e ]
-[i _log_format1
-:U ..
--> 94 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 46 `c
--> 37 `c
--> 48 `c
--> 49 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 46 `c
--> 37 `c
--> 48 `c
--> 49 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 46 `c
--> 37 `c
--> 48 `c
--> 49 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 108 `c
--> 108 `c
--> 117 `c
--> 44 `c
--> 37 `c
--> 54 `c
--> 46 `c
--> 51 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 54 `c
--> 46 `c
--> 51 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 54 `c
--> 46 `c
--> 51 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 54 `c
--> 46 `c
--> 51 `c
--> 102 `c
--> 44 `c
--> 49 `c
--> 57 `c
--> 53 `c
--> 55 `c
--> 44 `c
--> 126 `c
--> 69 `c
--> 79 `c
--> 84 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 13 `c
--> 10 `c
--> 0 `c
-..
-]
-"182
-[v _log_format2 `Cuc ~T0 @X0 -> 183 `i e ]
-[i _log_format2
-:U ..
--> 94 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 46 `c
--> 37 `c
--> 48 `c
--> 49 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 46 `c
--> 37 `c
--> 48 `c
--> 49 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 46 `c
--> 37 `c
--> 48 `c
--> 49 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 108 `c
--> 108 `c
--> 117 `c
--> 44 `c
--> 37 `c
--> 54 `c
--> 46 `c
--> 52 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 54 `c
--> 46 `c
--> 52 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 54 `c
--> 46 `c
--> 52 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 54 `c
--> 46 `c
--> 52 `c
--> 102 `c
--> 44 `c
--> 49 `c
--> 57 `c
--> 53 `c
--> 55 `c
--> 44 `c
--> 126 `c
--> 69 `c
--> 79 `c
--> 84 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 13 `c
--> 10 `c
--> 0 `c
-..
-]
-"188
-[v _log_format3 `Cuc ~T0 @X0 -> 183 `i e ]
-[i _log_format3
-:U ..
--> 94 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 46 `c
--> 37 `c
--> 48 `c
--> 49 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 46 `c
--> 37 `c
--> 48 `c
--> 49 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 46 `c
--> 37 `c
--> 48 `c
--> 49 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 108 `c
--> 108 `c
--> 117 `c
--> 44 `c
--> 37 `c
--> 55 `c
--> 46 `c
--> 52 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 55 `c
--> 46 `c
--> 52 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 54 `c
--> 46 `c
--> 52 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 55 `c
--> 46 `c
--> 52 `c
--> 102 `c
--> 44 `c
--> 49 `c
--> 57 `c
--> 53 `c
--> 55 `c
--> 44 `c
--> 126 `c
--> 69 `c
--> 79 `c
--> 84 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 13 `c
--> 10 `c
--> 0 `c
-..
-]
-"194
-[v _log_format4 `Cuc ~T0 @X0 -> 183 `i e ]
-[i _log_format4
-:U ..
--> 94 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 51 `c
--> 46 `c
--> 50 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 46 `c
--> 37 `c
--> 48 `c
--> 49 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 46 `c
--> 37 `c
--> 48 `c
--> 49 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 46 `c
--> 37 `c
--> 48 `c
--> 49 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 100 `c
--> 44 `c
--> 37 `c
--> 108 `c
--> 108 `c
--> 117 `c
--> 44 `c
--> 37 `c
--> 55 `c
--> 46 `c
--> 52 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 55 `c
--> 46 `c
--> 52 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 54 `c
--> 46 `c
--> 52 `c
--> 102 `c
--> 44 `c
--> 37 `c
--> 55 `c
--> 46 `c
--> 52 `c
--> 102 `c
--> 44 `c
--> 49 `c
--> 57 `c
--> 53 `c
--> 55 `c
--> 44 `c
--> 126 `c
--> 69 `c
--> 79 `c
--> 84 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 32 `c
--> 13 `c
--> 10 `c
--> 0 `c
-..
-]
-[v F25616 `Cuc ~T0 @X0 -> 20 `i t ]
-"351
-[v _spin `F25616 ~T0 @X0 -> 6 `i e ]
-[i _spin
-:U ..
-:U ..
--> 124 `c
--> 124 `c
--> 47 `c
--> 47 `c
--> 45 `c
--> 45 `c
--> 0 `c
-..
-:U ..
--> 124 `c
--> 124 `c
--> 47 `c
--> 47 `c
--> 45 `c
--> 45 `c
--> 92 `c
--> 92 `c
--> 0 `c
-..
-:U ..
--> 79 `c
--> 79 `c
--> 79 `c
--> 79 `c
--> 79 `c
--> 79 `c
--> 45 `c
--> 45 `c
--> 95 `c
--> 95 `c
--> 45 `c
--> 0 `c
-..
-:U ..
--> 118 `c
--> 118 `c
--> 60 `c
--> 60 `c
--> 94 `c
--> 94 `c
--> 62 `c
--> 62 `c
--> 0 `c
-..
-:U ..
--> 46 `c
--> 46 `c
--> 42 `c
--> 42 `c
--> 120 `c
--> 35 `c
--> 120 `c
--> 35 `c
--> 88 `c
--> 88 `c
--> 124 `c
--> 124 `c
--> 45 `c
--> 45 `c
--> 0 `c
-..
-:U ..
--> 46 `c
--> 46 `c
--> 111 `c
--> 111 `c
--> 79 `c
--> 79 `c
--> 111 `c
--> 111 `c
--> 0 `c
-..
-..
-]
-"39 ./slaveo.h
-[v _F27Q84 `Cus ~T0 @X0 1 s ]
-[i _F27Q84
--> -> 39171 `ui `us
-]
-"40
-[v _F47Q84 `Cus ~T0 @X0 1 s ]
-[i _F47Q84
--> -> 39172 `ui `us
-]
-"41
-[v _F57Q84 `Cus ~T0 @X0 1 s ]
-[i _F57Q84
--> -> 39173 `ui `us
-]
-"44
-[v _CMD_ZERO `Cuc ~T0 @X0 1 s ]
-[i _CMD_ZERO
--> -> 0 `i `uc
-]
-"45
-[v _CMD_ADC_GO `Cuc ~T0 @X0 1 s ]
-[i _CMD_ADC_GO
--> -> 128 `i `uc
-]
-"46
-[v _CMD_DAC_GO `Cuc ~T0 @X0 1 s ]
-[i _CMD_DAC_GO
--> -> 144 `i `uc
-]
-"47
-[v _CMD_PORT_GO `Cuc ~T0 @X0 1 s ]
-[i _CMD_PORT_GO
--> -> 160 `i `uc
-]
-"48
-[v _CMD_CHAR_GO `Cuc ~T0 @X0 1 s ]
-[i _CMD_CHAR_GO
--> -> 176 `i `uc
-]
-"49
-[v _CMD_ADC_DATA `Cuc ~T0 @X0 1 s ]
-[i _CMD_ADC_DATA
--> -> 192 `i `uc
-]
-"50
-[v _CMD_PORT_DATA `Cuc ~T0 @X0 1 s ]
-[i _CMD_PORT_DATA
--> -> 208 `i `uc
-]
-"51
-[v _CMD_CHAR_DATA `Cuc ~T0 @X0 1 s ]
-[i _CMD_CHAR_DATA
--> -> 224 `i `uc
-]
-"52
-[v _CMD_PORT_GET `Cuc ~T0 @X0 1 s ]
-[i _CMD_PORT_GET
--> -> 240 `i `uc
-]
-"53
-[v _CMD_CHAR_GET `Cuc ~T0 @X0 1 s ]
-[i _CMD_CHAR_GET
--> -> 16 `i `uc
-]
-"54
-[v _CMD_DUMMY_CFG `Cuc ~T0 @X0 1 s ]
-[i _CMD_DUMMY_CFG
--> -> 64 `i `uc
-]
-"55
-[v _CMD_DEAD `Cuc ~T0 @X0 1 s ]
-[i _CMD_DEAD
--> -> 255 `i `uc
-]
-"56
-[v _CMD_DUMMY `Cuc ~T0 @X0 1 s ]
-[i _CMD_DUMMY
--> -> 103 `i `uc
-]
-"58
-[v _NUM_AI_CHAN `Cuc ~T0 @X0 1 s ]
-[i _NUM_AI_CHAN
--> -> 15 `i `uc
-]
-"59
-[v _AI_CHAN_FIX `Cuc ~T0 @X0 1 s ]
-[i _AI_CHAN_FIX
--> -> 5 `i `uc
-]
+"56 mcc_generated_files/crc.c
+[v _CRC_Initialize `(v ~T0 @X0 1 ef ]
+"57
+{
+[e :U _CRC_Initialize ]
+[f ]
 "60
-[v _NUM_AO_CHAN `Cuc ~T0 @X0 1 s ]
-[i _NUM_AO_CHAN
--> -> 1 `i `uc
-]
-"61
-[v _HI_NIBBLE `Cuc ~T0 @X0 1 s ]
-[i _HI_NIBBLE
--> -> 240 `i `uc
-]
+[e = _CRCCON1 -> -> 7 `i `uc ]
 "62
-[v _LO_NIBBLE `Cuc ~T0 @X0 1 s ]
-[i _LO_NIBBLE
--> -> 15 `i `uc
-]
-"63
-[v _ADC_SWAP_MASK `Cuc ~T0 @X0 1 s ]
-[i _ADC_SWAP_MASK
--> -> 64 `i `uc
-]
-"64
-[v _UART_DUMMY_MASK `Cuc ~T0 @X0 1 s ]
-[i _UART_DUMMY_MASK
--> -> 64 `i `uc
-]
+[e = _CRCCON2 -> -> 7 `i `uc ]
 "65
-[v _ADC_HV0 `Cuc ~T0 @X0 1 s ]
-[i _ADC_HV0
--> -> 4 `i `uc
-]
-"66
-[v _ADC_HV1 `Cuc ~T0 @X0 1 s ]
-[i _ADC_HV1
--> -> 5 `i `uc
-]
+[e = . . _CRCCON0bits 0 2 -> -> 2 `i `uc ]
 "67
-[v _GET_MUI `Cuc ~T0 @X0 1 s ]
-[i _GET_MUI
--> -> 13 `i `uc
-]
+[e = _CRCXORT -> -> 0 `i `uc ]
 "69
-[v _PORT_GET_BYTES `Cuc ~T0 @X0 1 s ]
-[i _PORT_GET_BYTES
--> -> 7 `i `uc
-]
-"70
-[v _CHAR_GET_BYTES `Cuc ~T0 @X0 1 s ]
-[i _CHAR_GET_BYTES
--> -> 7 `i `uc
-]
+[e = _CRCXORU -> -> 0 `i `uc ]
 "71
-[v _CFG_GET_BYTES `Cuc ~T0 @X0 1 s ]
-[i _CFG_GET_BYTES
--> -> 7 `i `uc
-]
-"72
-[v _ADC_GET_BYTES `Cuc ~T0 @X0 1 s ]
-[i _ADC_GET_BYTES
--> -> 7 `i `uc
-]
+[e = _CRCXORH -> -> 0 `i `uc ]
 "73
-[v _PORT_GO_BYTES `Cuc ~T0 @X0 1 s ]
-[i _PORT_GO_BYTES
--> -> 7 `i `uc
-]
-"74
-[v _CHAR_GO_BYTES `Cuc ~T0 @X0 1 s ]
-[i _CHAR_GO_BYTES
--> -> 7 `i `uc
-]
-"75
-[v _DAC_GO_BYTES `Cuc ~T0 @X0 1 s ]
-[i _DAC_GO_BYTES
--> -> 7 `i `uc
-]
-"135
-[v _failure `Va ~T0 @X0 1 e ]
-"88 ./tic12400.h
-[v _b_read `Vuc ~T0 @X0 1 e ]
-"14 tic12400.c
-[v _setup32 `CS3423 ~T0 @X0 1 e ]
-[i _setup32
-:U ..
-:U ..
--> + -> 100 `i -> 128 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
-..
-..
-]
-"20
-[v _setup21 `CS3423 ~T0 @X0 1 e ]
-[i _setup21
-:U ..
-:U ..
--> + -> 66 `i -> 128 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
-..
-]
-"26
-[v _setup1c `CS3423 ~T0 @X0 1 e ]
-[i _setup1c
-:U ..
-:U ..
--> + -> 56 `i -> 128 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
-..
-..
-]
-"32
-[v _setup1b `CS3423 ~T0 @X0 1 e ]
-[i _setup1b
-:U ..
-:U ..
--> + -> 55 `i -> 128 `i `uc
--> -> 127 `i `uc
--> -> 255 `i `uc
--> -> 255 `i `uc
-..
-..
-]
-"38
-[v _setup1a_trigger `CS3423 ~T0 @X0 1 e ]
-[i _setup1a_trigger
-:U ..
-:U ..
--> + -> 52 `i -> 128 `i `uc
--> -> 0 `i `uc
--> -> 16 `i `uc
--> -> 0 `i `uc
-..
-..
-]
-"44
-[v _setup1a_read `CS3423 ~T0 @X0 1 e ]
-[i _setup1a_read
-:U ..
-:U ..
--> -> 52 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
-..
-]
-"50
-[v _setup22 `CS3423 ~T0 @X0 1 e ]
-[i _setup22
-:U ..
-:U ..
--> + -> 69 `i -> 128 `i `uc
--> -> 127 `i `uc
--> -> 255 `i `uc
--> -> 255 `i `uc
-..
-..
-]
-"56
-[v _setup23 `CS3423 ~T0 @X0 1 e ]
-[i _setup23
-:U ..
-:U ..
--> + -> 71 `i -> 128 `i `uc
--> -> 127 `i `uc
--> -> 255 `i `uc
--> -> 255 `i `uc
-..
-..
-]
-"62
-[v _setup24 `CS3423 ~T0 @X0 1 e ]
-[i _setup24
-:U ..
-:U ..
--> + -> 72 `i -> 128 `i `uc
--> -> 0 `i `uc
--> -> 128 `i `uc
--> -> 0 `i `uc
-..
-..
-]
-"68
-[v _setup1d `CS3423 ~T0 @X0 1 e ]
-[i _setup1d
-:U ..
-:U ..
--> + -> 58 `i -> 128 `i `uc
--> -> 127 `i `uc
--> -> 255 `i `uc
--> -> 254 `i `uc
-..
-..
-]
-"74
-[v _setup1e `CS3423 ~T0 @X0 1 e ]
-[i _setup1e
-:U ..
-:U ..
--> + -> 60 `i -> 128 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
-..
-]
+[e = _CRCXORL -> -> 213 `i `uc ]
+"76
+[e = . . _CRCCON0bits 0 2 -> -> 0 `i `uc ]
+"78
+[e = _CRCOUTT -> -> 0 `i `uc ]
 "80
-[v _ticread05 `CS3423 ~T0 @X0 1 e ]
-[i _ticread05
-:U ..
-:U ..
--> -> 10 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
-..
-..
-]
-"86
-[v _ticdevid01 `CS3423 ~T0 @X0 1 e ]
-[i _ticdevid01
-:U ..
-:U ..
--> -> 2 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
-..
-..
-]
-"92
-[v _ticstat02 `CS3423 ~T0 @X0 1 e ]
-[i _ticstat02
-:U ..
-:U ..
--> -> 4 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
-..
-]
-"98
-[v _ticreset1a `CS3423 ~T0 @X0 1 e ]
-[i _ticreset1a
-:U ..
-:U ..
--> + -> 52 `i -> 128 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
--> -> 2 `i `uc
-..
-..
-]
-"108
-[v _tic12400_status `Vul ~T0 @X0 1 e ]
-[i _tic12400_status
--> -> -> 0 `i `l `ul
-]
-[v _tic12400_counts `Vul ~T0 @X0 1 e ]
-[i _tic12400_counts
--> -> -> 0 `i `l `ul
-]
-[v _tic12400_value_counts `Vul ~T0 @X0 1 e ]
-[i _tic12400_value_counts
--> -> -> 0 `i `l `ul
-]
-[v _tic12400_id `Vul ~T0 @X0 1 e ]
-[i _tic12400_id
--> -> -> 0 `i `l `ul
-]
-[v _tic12400_read_status `Vul ~T0 @X0 1 e ]
+[e = _CRCOUTU -> -> 0 `i `uc ]
+"82
+[e = _CRCOUTH -> -> 0 `i `uc ]
+"84
+[e = _CRCOUTL -> -> 0 `i `uc ]
+"87
+[e = _CRCDATAT -> -> 0 `i `uc ]
+"89
+[e = _CRCDATAU -> -> 0 `i `uc ]
+"91
+[e = _CRCDATAH -> -> 0 `i `uc ]
+"93
+[e = _CRCDATAL -> -> 0 `i `uc ]
+"97
+[e = _SCANHADRU -> -> 63 `i `uc ]
+"99
+[e = _SCANHADRH -> -> 255 `i `uc ]
+"101
+[e = _SCANHADRL -> -> 255 `i `uc ]
+"103
+[e = _SCANLADRU -> -> 0 `i `uc ]
+"105
+[e = _SCANLADRH -> -> 0 `i `uc ]
+"107
+[e = _SCANLADRL -> -> 0 `i `uc ]
 "109
-[v _tic12400_value `Vul ~T0 @X0 1 e ]
-[i _tic12400_value
--> -> -> 1957 `i `l `ul
-]
-[v _tic12400_switch `Vul ~T0 @X0 1 e ]
-[v _ticvalue `Vul ~T0 @X0 1 e ]
-[i _ticvalue
--> -> -> 0 `i `l `ul
-]
-[v _tic12400_fail_count `Vul ~T0 @X0 1 e ]
-[v _tic12400_parity_count `Vul ~T0 @X0 1 e ]
-"110
-[v _tic12400_init_ok `Va ~T0 @X0 1 e ]
-[i _tic12400_init_ok
--> -> 0 `i `a
-]
-[v _tic12400_event `Va ~T0 @X0 1 e ]
-[i _tic12400_event
--> -> 0 `i `a
-]
-"111
-[v _tic12400_parity_status `Va ~T0 @X0 1 e ]
-[i _tic12400_parity_status
--> -> 0 `i `a
-]
-[v _tic12400_read_error `Va ~T0 @X0 1 e ]
-[i _tic12400_read_error
--> -> 0 `i `a
-]
+[e = _SCANTRIG -> -> 0 `i `uc ]
 "112
-[v _tic12400_fail_value `Vl ~T0 @X0 1 e ]
-[i _tic12400_fail_value
--> -> 0 `i `l
-]
-"113
-[v _b_read `Vuc ~T0 @X0 1 e ]
-[i _b_read
--> -> 0 `i `uc
-]
-"115
-[v _tic_rw `S3425 ~T0 @X0 1 e ]
+[e = . . _PIR15bits 0 2 -> -> 0 `i `uc ]
+"114
+[e = . . _PIE15bits 0 2 -> -> 0 `i `uc ]
 "117
-[v _build_date `*Cuc ~T0 @X0 1 s ]
-[i _build_date
-:s 1C
-]
-[v _build_time `*Cuc ~T0 @X0 1 s ]
-[i _build_time
-:s 2C
-]
-"121
-[v _tic12400_version `(v ~T0 @X0 1 ef ]
+[e = . . _PIR8bits 0 7 -> -> 0 `i `uc ]
+"119
+[e = . . _PIE8bits 0 7 -> -> 0 `i `uc ]
 "122
-{
-[e :U _tic12400_version ]
-[f ]
-"123
-[e ( _printf , , , (. :s 3C :s 4C _build_date _build_time ]
+[e = _CRCCON0 -> -> 144 `i `uc ]
 "124
-[e :UE 3426 ]
+[e = _SCANCON0 -> -> 0 `i `uc ]
+"125
+[e :UE 3377 ]
 }
+[v F23579 `(v ~T0 @X0 1 tf ]
+"127
+[v _CRC_StartCrc `TF23579 ~T0 @X0 1 e ]
+"128
+{
+[e :U _CRC_StartCrc ]
+[f ]
+"130
+[e = . . _CRCCON0bits 0 5 -> -> 1 `i `uc ]
+"131
+[e :UE 3378 ]
+}
+"133
+[v _CRC_WriteData `(a ~T0 @X0 1 ef1`ul ]
 "134
-[v _tic12400_reset `(v ~T0 @X0 1 ef ]
+{
+[e :U _CRC_WriteData ]
+"133
+[v _data `ul ~T0 @X0 1 r1 ]
+"134
+[f ]
 "135
-{
-[e :U _tic12400_reset ]
-[f ]
+[e $ ! ! != -> . . _CRCCON0bits 0 0 `i -> 0 `i 3380  ]
 "136
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _ticreset1a `*v `*uc -> -> 4 `i `uc ]
+{
 "137
-[e ( _WaitMs (1 -> -> 10 `i `us ]
+[e = _CRCDATAT -> & >> _data -> 24 `i -> -> -> 255 `i `l `ul `uc ]
 "138
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _ticreset1a `*v `*uc -> -> 4 `i `uc ]
+[e = _CRCDATAU -> & >> _data -> 16 `i -> -> -> 255 `i `l `ul `uc ]
 "139
-[e ( _WaitMs (1 -> -> 10 `i `us ]
+[e = _CRCDATAH -> & >> _data -> 8 `i -> -> -> 255 `i `l `ul `uc ]
 "140
-[e = _tic12400_fail_value -> -> 0 `i `l ]
+[e = _CRCDATAL -> & _data -> -> -> 255 `i `l `ul `uc ]
 "141
-[e :UE 3427 ]
+[e ) -> -> 1 `i `a ]
+[e $UE 3379  ]
+"142
 }
-"152
-[v _tic12400_init `(a ~T0 @X0 1 ef ]
-"153
+[e $U 3381  ]
+"143
+[e :U 3380 ]
+"144
 {
-[e :U _tic12400_init ]
+"145
+[e ) -> -> 0 `i `a ]
+[e $UE 3379  ]
+"146
+}
+[e :U 3381 ]
+"147
+[e :UE 3379 ]
+}
+"149
+[v _CRC_ReverseValue `(ul ~T0 @X0 1 sf1`ul ]
+"150
+{
+[e :U _CRC_ReverseValue ]
+"149
+[v _crc `ul ~T0 @X0 1 r1 ]
+"150
 [f ]
+"151
+[v _mask `ul ~T0 @X0 1 a ]
+"152
+[v _reverse `ul ~T0 @X0 1 a ]
 "154
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _ticstat02 `*v `*uc -> -> 4 `i `uc ]
+[e = _mask -> -> -> 1 `i `l `ul ]
 "155
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _ticstat02 `*v `*uc -> -> 4 `i `uc ]
+[e =<< _mask -> . . _CRCCON1bits 0 0 `ul ]
 "156
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3429  ]
-{
-"157
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _ticreset1a `*v `*uc -> -> 4 `i `uc ]
+[e = _reverse -> -> -> 0 `i `l `ul ]
 "158
-[e ( _WaitMs (1 -> -> 10 `i `us ]
+[e $U 3383  ]
+[e :U 3384 ]
 "159
-[e = _tic12400_fail_value -> -U -> 1 `i `l ]
+{
 "160
-[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
+[e $ ! != & _crc -> -> -> 1 `i `l `ul -> -> -> 0 `i `l `ul 3386  ]
 "161
-[e = _tic12400_read_status -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul ]
+{
 "162
-}
-[e :U 3429 ]
+[e =| _reverse _mask ]
 "163
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _setup32 `*v `*uc -> -> 4 `i `uc ]
+}
+[e :U 3386 ]
 "164
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3430  ]
-{
+[e =>> _mask -> -> 1 `i `ul ]
 "165
-[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
+[e =>> _crc -> -> 1 `i `ul ]
 "166
-[e = _tic12400_fail_value -> -U -> 2 `i `l ]
+}
+[e :U 3383 ]
+"158
+[e $ != _crc -> -> -> 0 `i `l `ul 3384  ]
+[e :U 3385 ]
 "167
-[e = _tic12400_read_status -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul ]
+[e ) _reverse ]
+[e $UE 3382  ]
 "168
+[e :UE 3382 ]
 }
-[e :U 3430 ]
-"169
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _setup21 `*v `*uc -> -> 4 `i `uc ]
 "170
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3431  ]
-{
+[v _CRC_GetCalculatedResult `(ul ~T0 @X0 1 ef2`a`ul ]
 "171
-[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
+{
+[e :U _CRC_GetCalculatedResult ]
+"170
+[v _reverse `a ~T0 @X0 1 r1 ]
+[v _xorValue `ul ~T0 @X0 1 r2 ]
+"171
+[f ]
 "172
-[e = _tic12400_fail_value -> -U -> 3 `i `l ]
-"173
-[e = _tic12400_read_status -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul ]
+[v _result `ul ~T0 @X0 1 a ]
+[e = _result -> -> -> 0 `i `l `ul ]
 "174
-}
-[e :U 3431 ]
+[e = . . _CRCCON0bits 0 2 -> -> 0 `i `uc ]
 "175
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _setup1c `*v `*uc -> -> 4 `i `uc ]
+[e = _result -> _CRCOUTL `ul ]
 "176
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3432  ]
-{
+[e = _result | _result << -> _CRCOUTH `ul -> 8 `i ]
 "177
-[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
+[e = _result | _result << -> _CRCOUTU `ul -> 16 `i ]
 "178
-[e = _tic12400_fail_value -> -U -> 4 `i `l ]
+[e = _result | _result << -> _CRCOUTT `ul -> 24 `i ]
 "179
-[e = _tic12400_read_status -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul ]
+[e $ ! != -> _reverse `i -> 0 `i 3388  ]
 "180
-}
-[e :U 3432 ]
+{
 "181
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _setup1b `*v `*uc -> -> 4 `i `uc ]
+[e = _result ( _CRC_ReverseValue (1 _result ]
 "182
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3433  ]
-{
+}
+[e :U 3388 ]
 "183
-[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
+[e =^ _result _xorValue ]
 "184
-[e = _tic12400_fail_value -> -U -> 5 `i `l ]
+[e ) & _result -> -> -> 255 `i `l `ul ]
+[e $UE 3387  ]
 "185
-[e = _tic12400_read_status -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul ]
-"186
+[e :UE 3387 ]
 }
-[e :U 3433 ]
+[v F23591 `(a ~T0 @X0 1 tf ]
 "187
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _setup22 `*v `*uc -> -> 4 `i `uc ]
+[v _CRC_IsCrcBusy `TF23591 ~T0 @X0 1 e ]
 "188
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3434  ]
 {
+[e :U _CRC_IsCrcBusy ]
+[f ]
 "189
-[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
+[e ) -> . . _CRCCON0bits 0 4 `a ]
+[e $UE 3389  ]
 "190
-[e = _tic12400_fail_value -> -U -> 6 `i `l ]
-"191
-[e = _tic12400_read_status -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul ]
+[e :UE 3389 ]
+}
+[v F23593 `(v ~T0 @X0 1 tf ]
 "192
-}
-[e :U 3434 ]
+[v _CRC_StartScanner `TF23593 ~T0 @X0 1 e ]
 "193
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _setup23 `*v `*uc -> -> 4 `i `uc ]
+{
+[e :U _CRC_StartScanner ]
+[f ]
 "194
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3435  ]
-{
+[v _gIntFlagStatus `uc ~T0 @X0 1 a ]
+[e = _gIntFlagStatus -> -> 0 `i `uc ]
 "195
-[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
-"196
-[e = _tic12400_fail_value -> -U -> 7 `i `l ]
-"197
-[e = _tic12400_read_status -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul ]
+[e = _gIntFlagStatus . . _INTCON0bits 0 6 ]
 "198
-}
-[e :U 3435 ]
+[e = . . _INTCON0bits 0 6 -> -> 0 `i `uc ]
 "200
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _setup1a_trigger `*v `*uc -> -> 4 `i `uc ]
+[e = _PRLOCK -> -> 85 `i `uc ]
 "201
-[e ( _WaitMs (1 -> -> 2 `i `us ]
+[e = _PRLOCK -> -> 170 `i `uc ]
 "202
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 64 `i -> 0 `i 3436  ]
-{
+[e = . . _PRLOCKbits 0 0 -> -> 1 `i `uc ]
 "203
-[e = _tic12400_fail_value -> -U -> 12 `i `l ]
-"204
-[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
-"205
-[e = _tic12400_read_status -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul ]
+[e = . . _INTCON0bits 0 6 _gIntFlagStatus ]
 "206
-}
-[e :U 3436 ]
-"207
-[e = _tic12400_id >> ( _tic12400_wr (2 , &U _ticdevid01 -> -> 0 `i `us -> 1 `i ]
+[e = . . _CRCCON0bits 0 5 -> -> 1 `i `uc ]
 "208
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 64 `i -> 0 `i 3437  ]
-{
+[e = . . _SCANCON0bits 0 4 -> -> 1 `i `uc ]
 "209
-[e = _tic12400_fail_value -> -U -> 13 `i `l ]
-"210
-[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
+[e :UE 3390 ]
+}
+[v F23596 `(v ~T0 @X0 1 tf ]
 "211
-[e = _tic12400_read_status -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul ]
+[v _CRC_StopScanner `TF23596 ~T0 @X0 1 e ]
 "212
-}
-[e :U 3437 ]
+{
+[e :U _CRC_StopScanner ]
+[f ]
+"213
+[v _gIntFlagStatus `uc ~T0 @X0 1 a ]
+[e = _gIntFlagStatus -> -> 0 `i `uc ]
 "214
-[e ( _IOCBF6_SetInterruptHandler (1 &U _tic_int_handler ]
-"215
-[e $ ! > _tic12400_fail_count -> -> -> 1 `i `l `ul 3438  ]
-{
-"216
-[e = _tic12400_init_ok -> -> 0 `i `a ]
+[e = _gIntFlagStatus . . _INTCON0bits 0 6 ]
 "217
-[e :U 3441 ]
-{
-[e = . . _LATBbits 0 1 -> -> 1 `i `uc ]
-}
-[e :U 3440 ]
-"218
-}
-[e $U 3442  ]
-[e :U 3438 ]
-{
+[e = . . _INTCON0bits 0 6 -> -> 0 `i `uc ]
 "219
-[e = _tic12400_init_ok -> -> 1 `i `a ]
+[e = _PRLOCK -> -> 85 `i `uc ]
 "220
-}
-[e :U 3442 ]
+[e = _PRLOCK -> -> 170 `i `uc ]
+"221
+[e = . . _PRLOCKbits 0 0 -> -> 0 `i `uc ]
 "222
-[e ) _tic12400_init_ok ]
-[e $UE 3428  ]
-"223
-[e :UE 3428 ]
+[e = . . _INTCON0bits 0 6 _gIntFlagStatus ]
+"225
+[e = . . _CRCCON0bits 0 5 -> -> 0 `i `uc ]
+"227
+[e = . . _SCANCON0bits 0 4 -> -> 0 `i `uc ]
+"228
+[e :UE 3391 ]
 }
 "230
-[v _tic12400_wr `(ul ~T0 @X0 1 ef2`*CS3423`us ]
+[v _CRC_SetScannerAddressLimit `(v ~T0 @X0 1 ef2`um`um ]
 "231
 {
-[e :U _tic12400_wr ]
+[e :U _CRC_SetScannerAddressLimit ]
 "230
-[v _buffer `*CS3423 ~T0 @X0 1 r1 ]
-[v _del `us ~T0 @X0 1 r2 ]
+[v _startAddr `um ~T0 @X0 1 r1 ]
+[v _endAddr `um ~T0 @X0 1 r2 ]
 "231
 [f ]
 "232
-[v F26013 `ul ~T0 @X0 1 s last_sw_value ]
-[i F26013
--> -> -> 0 `i `l `ul
-]
+[e = _SCANHADRU -> & >> _endAddr -> 16 `i -> -> -> 255 `i `m `um `uc ]
+"233
+[e = _SCANHADRH -> & >> _endAddr -> 8 `i -> -> -> 255 `i `m `um `uc ]
 "234
-[e ( _send_spi1_tic12400_dma (2 , -> -> _buffer `*v `*uc -> -> 4 `i `uc ]
+[e = _SCANHADRL -> & _endAddr -> -> -> 255 `i `m `um `uc ]
 "235
-[e = _ticvalue & -> *U + . _spi_link 8 * -> -> 3 `i `x -> -> # *U . _spi_link 8 `i `x `ul -> -> -> 255 `i `l `ul ]
+[e = _SCANLADRU -> & >> _startAddr -> 16 `i -> -> -> 255 `i `m `um `uc ]
 "236
-[e = . . _INTCON0bits 1 1 -> -> 0 `i `uc ]
+[e = _SCANLADRH -> & >> _startAddr -> 8 `i -> -> -> 255 `i `m `um `uc ]
 "237
-[e = _in_buf1 *U + . _spi_link 8 * -> -> 3 `i `x -> -> # *U . _spi_link 8 `i `x ]
+[e = _SCANLADRL -> & _startAddr -> -> -> 255 `i `m `um `uc ]
 "238
-[e = _in_buf2 *U + . _spi_link 8 * -> -> 2 `i `x -> -> # *U . _spi_link 8 `i `x ]
-"239
-[e = _in_buf3 *U + . _spi_link 8 * -> -> 1 `i `x -> -> # *U . _spi_link 8 `i `x ]
+[e :UE 3392 ]
+}
+[v F23602 `(a ~T0 @X0 1 tf ]
 "240
-[e = . . _INTCON0bits 1 1 -> -> 1 `i `uc ]
+[v _CRC_IsScannerBusy `TF23602 ~T0 @X0 1 e ]
 "241
-[e =+ _ticvalue -> & -> << -> *U + . _spi_link 8 * -> -> 2 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 8 `i `ul -> -> 65280 `ui `ul `Vul ]
+{
+[e :U _CRC_IsScannerBusy ]
+[f ]
 "242
-[e =+ _ticvalue -> & << -> *U + . _spi_link 8 * -> -> 1 `i `x -> -> # *U . _spi_link 8 `i `x `ul -> -> 16 `i `ul -> -> 16711680 `l `ul `Vul ]
+[e ) -> . . _SCANCON0bits 0 0 `a ]
+[e $UE 3393  ]
 "243
-[e =+ _ticvalue -> & << -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `ul -> -> 24 `i `ul -> 4278190080 `ul `Vul ]
-"244
-[e $ ! != _ticvalue F26013 3444  ]
-{
-"245
-[e = . _BM 20 -> -> 1 `i `a ]
-"246
-[e = F26013 _ticvalue ]
-"247
+[e :UE 3393 ]
 }
-[e :U 3444 ]
-"248
-[e = _tic12400_read_error -> -> 0 `i `a ]
-"250
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 32 `i -> 0 `i 3445  ]
-{
-"251
-[e = _tic12400_parity_status -> -> 1 `i `a ]
-"252
-[e = _tic12400_read_error -> -> 1 `i `a ]
-"253
-[e ++ _tic12400_parity_count -> -> 1 `i `Vul ]
-"254
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _ticstat02 `*v `*uc -> -> 4 `i `uc ]
-"255
-}
-[e :U 3445 ]
-"256
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 64 `i -> 0 `i 3446  ]
-{
-"257
-[e = _tic12400_read_error -> -> 1 `i `a ]
-"258
-[e ++ _tic12400_fail_count -> -> 1 `i `Vul ]
-"259
-[e ( _send_spi1_tic12400_dma (2 , -> -> &U _ticstat02 `*v `*uc -> -> 4 `i `uc ]
-"260
-}
-[e :U 3446 ]
-"261
-[e $ ! != -> _del `ui -> -> 0 `i `ui 3447  ]
-{
-"262
-[e ( _WaitMs (1 _del ]
-"263
-}
-[e :U 3447 ]
-"264
-[e ) _ticvalue ]
-[e $UE 3443  ]
-"265
-[e :UE 3443 ]
-}
-"272
-[v _tic12400_get_sw `(ul ~T0 @X0 1 ef ]
-"273
-{
-[e :U _tic12400_get_sw ]
-[f ]
-"274
-[e $ ! == -> _tic12400_init_ok `i -> 0 `i 3449  ]
-{
-"275
-[e ) -> -> -> 0 `i `l `ul ]
-[e $UE 3448  ]
-"276
-}
-[e :U 3449 ]
-"277
-[e $ ! != & _tic12400_switch -> -> -> 2 `i `l `ul -> -> -> 0 `i `l `ul 3450  ]
-{
-"278
-}
-[e $U 3451  ]
-[e :U 3450 ]
-{
-"279
-}
-[e :U 3451 ]
-"280
-[e $ ! != & _tic12400_switch -> -> -> 16384 `i `l `ul -> -> -> 0 `i `l `ul 3452  ]
-{
-"281
-}
-[e $U 3453  ]
-[e :U 3452 ]
-{
-"282
-}
-[e :U 3453 ]
-"283
-[e = _tic12400_event -> -> 0 `i `a ]
-"284
-[e ) _tic12400_switch ]
-[e $UE 3448  ]
-"285
-[e :UE 3448 ]
-}
-"291
-[v _tic12400_parity `(a ~T0 @X0 1 ef1`ul ]
-"292
-{
-[e :U _tic12400_parity ]
-"291
-[v _v `ul ~T0 @X0 1 r1 ]
-"292
-[f ]
-"293
-[e =^ _v >> _v -> 16 `i ]
-"294
-[e =^ _v >> _v -> 8 `i ]
-"295
-[e =^ _v >> _v -> 4 `i ]
-"296
-[e =& _v -> -> -> 15 `i `l `ul ]
-"297
-[e ) -> & >> -> 27030 `i _v -> 1 `i `a ]
-[e $UE 3454  ]
-"298
-[e :UE 3454 ]
-}
-"304
-[v _tic12400_read_sw `(v ~T0 @X0 1 ef2`ul`um ]
-"305
-{
-[e :U _tic12400_read_sw ]
-"304
-[v _a `ul ~T0 @X0 1 r1 ]
-[v _b `um ~T0 @X0 1 r2 ]
-"305
-[f ]
-"306
-[e = _tic12400_value ( _tic12400_wr (2 , &U _ticread05 -> -> 0 `i `us ]
-"308
-[e $ ! != & -> *U + . _spi_link 8 * -> -> 0 `i `x -> -> # *U . _spi_link 8 `i `x `i -> 8 `i -> 0 `i 3456  ]
-{
-"309
-[e = _tic12400_event -> -> 1 `i `a ]
-"310
-[e ++ _tic12400_value_counts -> -> 1 `i `Vul ]
-"311
-}
-[e :U 3456 ]
-"312
-[e = _tic12400_switch & >> _tic12400_value -> 1 `i -> -> 16777215 `l `ul ]
-"313
-[e ++ _tic12400_counts -> -> 1 `i `Vul ]
-"314
-[e :UE 3455 ]
-}
-"316
-[v _tic_int_handler `(v ~T0 @X0 1 ef ]
-"317
-{
-[e :U _tic_int_handler ]
-[f ]
-"318
-[e $ ! != -> _tic12400_init_ok `i -> 0 `i 3458  ]
-{
-"319
-[e = _tic12400_event -> -> 1 `i `a ]
-"320
-[e :U 3461 ]
-{
-[e = . . _LATBbits 0 1 -> -> 1 `i `uc ]
-}
-[e :U 3460 ]
-"321
-}
-[e :U 3458 ]
-"322
-[e = _b_read _PORTB ]
-"323
-[e :UE 3457 ]
-}
-[p f _printf 8650752 ]
-[a 4C 86 48 46 56 0 ]
-[a 1C 77 97 114 32 50 56 32 50 48 50 54 0 ]
-[a 2C 49 49 58 53 49 58 49 51 0 ]
-[a 3C 13 45 45 45 32 84 73 67 49 50 52 48 48 32 68 114 105 118 101 114 32 86 101 114 115 105 111 110 32 37 115 32 37 115 32 37 115 32 45 45 45 13 10 0 ]

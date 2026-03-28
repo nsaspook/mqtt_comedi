@@ -6,10 +6,10 @@ Linker command line:
   --edf=/root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.30.487/xc8/pic/dat/20260311214434_en.msgs \
   -pivt0x8=08h -cn -h+dist/default/production/bmc_slave.X.production.sym \
   --cmf=dist/default/production/bmc_slave.X.production.cmf -z -Q18F57Q84 \
-  -o/tmp/xcXcnkMIk/driver_tmp_3.o --defsym=__MPLAB_BUILD=1 \
+  -o/tmp/xcXJjJmlE/driver_tmp_3.o --defsym=__MPLAB_BUILD=1 \
   --fixupoverflow=error \
   -Mdist/default/production/bmc_slave.X.production.map \
-  --md=/tmp/xcXcnkMIk/driver_tmp_0.dat -E1 -ver=XC8 Compiler \
+  --md=/tmp/xcXJjJmlE/driver_tmp_0.dat -E1 -ver=XC8 Compiler \
   -ACODE=00h-01FFFFh -ACONST=00h-01FFFFh \
   -ASMALLCONST=04000h-040FFhx192,014000h-0140FFhx192 \
   -AMEDIUMCONST=04000h-0FFFFh,014000h-01FFFFh -ACOMRAM=0501h-055Fh \
@@ -41,7 +41,7 @@ Linker command line:
   -pfarbss=FARRAM,fardata=FARRAM,nvFARRAM=FARRAM \
   -pintsave_regs=BIGRAM,bigbss=BIGRAM,bigdata=BIGRAM -pbss=RAM \
   -pidata=CODE,irdata=CODE,ibigdata=CODE,ifardata=CODE -pparam5=BANK5 \
-  /tmp/xcXcnkMIk/driver_tmp_12.o \
+  /tmp/xcXJjJmlE/driver_tmp_12.o \
   dist/default/production/bmc_slave.X.production.o 
 
 Object code version is 3.11
@@ -51,7 +51,7 @@ Machine type is 18F57Q84
 
 
                 Name                               Link     Load   Length Selector   Space Scale
-/tmp/xcXcnkMIk/driver_tmp_12.o
+/tmp/xcXJjJmlE/driver_tmp_12.o
                 config                           300000   300000       23        0       4
                 init                                10A      10A        4        4       0
                 reset_vec                             0        0        4        0       0
@@ -5386,10 +5386,20 @@ xtoa@x                                                    cstackBANK5  0005A1
 MODULE INFORMATION
 
 Module		Function		Class		Link	Load	Size
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/memset.c
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/strcpy.c
+		_strcpy        		CODE           	0172	0000	50
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/strcpy.c estimated size: 50
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/flneg.c
+		___flneg       		CODE           	0204	0000	48
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/flneg.c estimated size: 48
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/memset.c
 		_memset        		CODE           	0374	0000	44
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/memset.c estimated size: 44
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/memset.c estimated size: 44
 
 mcc_generated_files/uart2.c
 		_UART2_Write   		CODE           	0D44	0000	12
@@ -5419,30 +5429,15 @@ iammeter_rtu.c
 
 iammeter_rtu.c estimated size: 5148
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/sprcmul.c
-		___flmul       		CODE           	18BFE	0000	810
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/flge.c
+		___flge        		CODE           	1D14E	0000	210
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/sprcmul.c estimated size: 810
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/flge.c estimated size: 210
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/strncpy.c
-		_strncpy       		CODE           	1EBCE	0000	98
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/abs.c
+		_abs           		CODE           	056E	0000	40
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/strncpy.c estimated size: 98
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/__lldiv.c
-		___lldiv       		CODE           	1E4B8	0000	130
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/__lldiv.c estimated size: 130
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/localtime.c
-		_localtime     		CODE           	07EC	0000	30
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/localtime.c estimated size: 30
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/sprcdiv.c
-		___fldiv       		CODE           	19AC2	0000	646
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/sprcdiv.c estimated size: 646
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/abs.c estimated size: 40
 
 mcc_generated_files/tmr6.c
 		_TMR6_CallBack 		CODE           	062A	0000	36
@@ -5455,10 +5450,10 @@ mcc_generated_files/tmr6.c
 
 mcc_generated_files/tmr6.c estimated size: 186
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/lomod.c
-		___lomod       		CODE           	1D76E	0000	174
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/nf_fputc.c
+		_fputc         		CODE           	1D966	0000	160
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/lomod.c estimated size: 174
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/nf_fputc.c estimated size: 160
 
 calibr.c
 		_Volts_to_SOC  		CODE           	1CCE8	0000	234
@@ -5471,32 +5466,6 @@ calibr.c
 
 calibr.c estimated size: 1428
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/aomod.c
-		___aomod       		CODE           	1C8C0	0000	290
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/aomod.c estimated size: 290
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/doprnt.c
-		_read_prec_or_width		CODE           	1D604	0000	182
-		_vfpfcnvrt     		CODE           	12EFA	0000	3216
-		_efgtoa        		CODE           	13B8A	0000	2892
-		_pad           		CODE           	1E3B0	0000	134
-		_atoa          		CODE           	146D6	0000	2604
-		_ctoa          		CODE           	1DBD8	0000	150
-		_dtoa          		CODE           	1AEDC	0000	498
-		_vfprintf      		CODE           	1EDAE	0000	86
-		_otoa          		CODE           	1C136	0000	338
-		_stoa          		CODE           	1C288	0000	330
-		_utoa          		CODE           	1BB86	0000	388
-		_xtoa          		CODE           	1B826	0000	438
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/doprnt.c estimated size: 11256
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/__secs_to_tm.c
-		___secs_to_tm  		CODE           	17126	0000	1718
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/__secs_to_tm.c estimated size: 1718
-
 mcc_generated_files/tmr4.c
 		_TMR4_ISR      		CODE           	1F730	0000	64
 		_TMR4_Initialize		CODE           	03CC	0000	44
@@ -5507,6 +5476,21 @@ mcc_generated_files/tmr4.c
 
 mcc_generated_files/tmr4.c estimated size: 136
 
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/localtime.c
+		_localtime     		CODE           	07EC	0000	30
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/localtime.c estimated size: 30
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/lomod.c
+		___lomod       		CODE           	1D76E	0000	174
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/lomod.c estimated size: 174
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/aomod.c
+		___aomod       		CODE           	1C8C0	0000	290
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/aomod.c estimated size: 290
+
 mcc_generated_files/tmr2.c
 		_TMR2_Initialize		CODE           	09A4	0000	22
 		_TMR2_Start    		CODE           	0DE0	0000	6
@@ -5514,31 +5498,17 @@ mcc_generated_files/tmr2.c
 
 mcc_generated_files/tmr2.c estimated size: 34
 
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/sprcadd.c
+		___flsub       		CODE           	1F416	0000	72
+		___fladd       		CODE           	18F28	0000	778
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/sprcadd.c estimated size: 850
+
 mcc_generated_files/interrupt_manager.c
 		_INTERRUPT_Initialize		CODE           	1EB68	0000	102
 		_Default_ISR   		CODE           	0E2C	0000	2
 
 mcc_generated_files/interrupt_manager.c estimated size: 104
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/nf_fputs.c
-		_fputs         		CODE           	1FDF4	0000	54
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/nf_fputs.c estimated size: 54
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/gmtime_r.c
-		___gmtime_r    		CODE           	1E53A	0000	128
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/gmtime_r.c estimated size: 128
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/lwmod.c
-		___lwmod       		CODE           	1F56E	0000	66
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/lwmod.c estimated size: 66
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/awmod.c
-		___awmod       		CODE           	1E8EE	0000	110
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/awmod.c estimated size: 110
 
 mcc_generated_files/tmr0.c
 		_TMR0_SetInterruptHandler		CODE           	0C30	0000	14
@@ -5550,6 +5520,11 @@ mcc_generated_files/tmr0.c
 		_TMR0_Initialize		CODE           	1F6F0	0000	64
 
 mcc_generated_files/tmr0.c estimated size: 190
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/nf_sprintf.c
+		_sprintf       		CODE           	1F33E	0000	72
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/nf_sprintf.c estimated size: 72
 
 mxcmd.c
 		_FM_rx         		CODE           	0348	0000	44
@@ -5563,10 +5538,10 @@ mxcmd.c
 
 mxcmd.c estimated size: 722
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/putch.c
-		_putch         		CODE           	1FF42	0000	2
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/lwmod.c
+		___lwmod       		CODE           	1F56E	0000	66
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/putch.c estimated size: 2
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/lwmod.c estimated size: 66
 
 eadog.c
 		_clear_lcd_done		CODE           	0DF8	0000	6
@@ -5592,15 +5567,10 @@ eadog.c
 
 eadog.c estimated size: 1456
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/__fpclassifyf.c
-		___fpclassifyf 		CODE           	1D3B8	0000	200
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/awmod.c
+		___awmod       		CODE           	1E8EE	0000	110
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/__fpclassifyf.c estimated size: 200
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/llmod.c
-		___llmod       		CODE           	1EB02	0000	102
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/llmod.c estimated size: 102
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/awmod.c estimated size: 110
 
 mcc_generated_files/pin_manager.c
 		_IOCBF6_DefaultInterruptHandler		CODE           	1FE62	0000	2
@@ -5611,20 +5581,25 @@ mcc_generated_files/pin_manager.c
 
 mcc_generated_files/pin_manager.c estimated size: 306
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/labs.c
-		_labs          		CODE           	1F2F4	0000	74
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/putch.c
+		_putch         		CODE           	1FF42	0000	2
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/labs.c estimated size: 74
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/putch.c estimated size: 2
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/almod.c
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/__fpclassifyf.c
+		___fpclassifyf 		CODE           	1D3B8	0000	200
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/__fpclassifyf.c estimated size: 200
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/llmod.c
+		___llmod       		CODE           	1EB02	0000	102
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/llmod.c estimated size: 102
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/almod.c
 		___almod       		CODE           	1D81C	0000	170
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/almod.c estimated size: 170
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/atol.c
-		_atol          		CODE           	1C794	0000	300
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/atol.c estimated size: 300
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/almod.c estimated size: 170
 
 mcc_generated_files/spi1.c
 		_SPI1_ExchangeBlock		CODE           	1F4E8	0000	68
@@ -5632,10 +5607,21 @@ mcc_generated_files/spi1.c
 
 mcc_generated_files/spi1.c estimated size: 94
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/memcpy.c
-		_memcpy        		CODE           	1ED50	0000	94
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/doprnt.c
+		_read_prec_or_width		CODE           	1D604	0000	182
+		_vfpfcnvrt     		CODE           	12EFA	0000	3216
+		_efgtoa        		CODE           	13B8A	0000	2892
+		_pad           		CODE           	1E3B0	0000	134
+		_atoa          		CODE           	146D6	0000	2604
+		_ctoa          		CODE           	1DBD8	0000	150
+		_dtoa          		CODE           	1AEDC	0000	498
+		_vfprintf      		CODE           	1EDAE	0000	86
+		_otoa          		CODE           	1C136	0000	338
+		_stoa          		CODE           	1C288	0000	330
+		_utoa          		CODE           	1BB86	0000	388
+		_xtoa          		CODE           	1B826	0000	438
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/memcpy.c estimated size: 94
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/doprnt.c estimated size: 11256
 
 mcc_generated_files/dma3.c
 		_DMA3_SetDMAPriority		CODE           	0774	0000	30
@@ -5649,6 +5635,11 @@ mcc_generated_files/dma3.c
 		_DMA3_DefaultInterruptHandler		CODE           	0E3A	0000	2
 
 mcc_generated_files/dma3.c estimated size: 358
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/memcpy.c
+		_memcpy        		CODE           	1ED50	0000	94
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/memcpy.c estimated size: 94
 
 modbus_master.c
 		_modbus_rtu_send_msg_crc		CODE           	1F092	0000	78
@@ -5702,11 +5693,10 @@ mcc_generated_files/adc.c
 
 mcc_generated_files/adc.c estimated size: 432
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/sprcadd.c
-		___flsub       		CODE           	1F416	0000	72
-		___fladd       		CODE           	18F28	0000	778
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/rand.c
+		_srand         		CODE           	08A0	0000	28
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/sprcadd.c estimated size: 850
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/rand.c estimated size: 28
 
 bmcdio.c
 		_SPI2_PI       		CODE           	1FF0A	0000	2
@@ -5726,11 +5716,6 @@ mcc_generated_files/crc.c
 
 mcc_generated_files/crc.c estimated size: 484
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/lodiv.c
-		___lodiv       		CODE           	1D220	0000	206
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/lodiv.c estimated size: 206
-
 mcc_generated_files/dma1.c
 		_DMA1_Initialize		CODE           	1E95C	0000	110
 		_DMA1_StartTransferWithTrigger		CODE           	0DC8	0000	6
@@ -5745,21 +5730,6 @@ mcc_generated_files/dma1.c
 		_DMA1_SetORIInterruptHandler		CODE           	0CD8	0000	14
 
 mcc_generated_files/dma1.c estimated size: 326
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/flge.c
-		___flge        		CODE           	1D14E	0000	210
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/flge.c estimated size: 210
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/aodiv.c
-		___aodiv       		CODE           	1C3D2	0000	326
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/aodiv.c estimated size: 326
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/nf_snprintf.c
-		_snprintf      		CODE           	1D480	0000	196
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/nf_snprintf.c estimated size: 196
 
 mcc_generated_files/uart3.c
 		_UART3_Read    		CODE           	1F86A	0000	60
@@ -5782,6 +5752,21 @@ mcc_generated_files/uart3.c
 		_UART3_Transmit_ISR		CODE           	02C2	0000	46
 
 mcc_generated_files/uart3.c estimated size: 844
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/lodiv.c
+		___lodiv       		CODE           	1D220	0000	206
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/lodiv.c estimated size: 206
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/aodiv.c
+		___aodiv       		CODE           	1C3D2	0000	326
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/aodiv.c estimated size: 326
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/fleq.c
+		___fleq        		CODE           	1E102	0000	140
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/fleq.c estimated size: 140
 
 slaveo.c
 		_slaveo_rx_isr 		CODE           	1623E	0000	1944
@@ -5812,16 +5797,6 @@ mcc_generated_files/uart1.c
 		_UART1_DefaultOverrunErrorHandler		CODE           	1FE2A	0000	2
 
 mcc_generated_files/uart1.c estimated size: 688
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/lwdiv.c
-		___lwdiv       		CODE           	1EF02	0000	80
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/lwdiv.c estimated size: 80
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/awdiv.c
-		___awdiv       		CODE           	1E5BA	0000	128
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/awdiv.c estimated size: 128
 
 mc33996.c
 		_mc33996_init  		CODE           	1DB3E	0000	154
@@ -6676,11 +6651,6 @@ shared
 
 shared estimated size: 3223
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/fltol.c
-		___fltol       		CODE           	1D07C	0000	210
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/fltol.c estimated size: 210
-
 ./mxcmd.h
 		_state_misc_cb 		CODE           	01A4	0000	48
 		_state_watts_cb		CODE           	0140	0000	50
@@ -6708,15 +6678,15 @@ shared estimated size: 3223
 
 ./mxcmd.h estimated size: 14658
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/lbmod.c
-		___lbmod       		CODE           	03F8	0000	42
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/lwdiv.c
+		___lwdiv       		CODE           	1EF02	0000	80
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/lbmod.c estimated size: 42
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/lwdiv.c estimated size: 80
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/nf_fputc.c
-		_fputc         		CODE           	1D966	0000	160
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/awdiv.c
+		___awdiv       		CODE           	1E5BA	0000	128
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/nf_fputc.c estimated size: 160
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/awdiv.c estimated size: 128
 
 mcc_generated_files/mcc.c
 		_SystemArbiter_Initialize		CODE           	0C3E	0000	14
@@ -6725,6 +6695,16 @@ mcc_generated_files/mcc.c
 		_SYSTEM_Initialize		CODE           	1EC30	0000	98
 
 mcc_generated_files/mcc.c estimated size: 158
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/nf_fputs.c
+		_fputs         		CODE           	1FDF4	0000	54
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/nf_fputs.c estimated size: 54
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/gmtime_r.c
+		___gmtime_r    		CODE           	1E53A	0000	128
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/gmtime_r.c estimated size: 128
 
 mcc_generated_files/tmr3.c
 		_TMR3_ISR      		CODE           	1F214	0000	76
@@ -6736,15 +6716,15 @@ mcc_generated_files/tmr3.c
 
 mcc_generated_files/tmr3.c estimated size: 206
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/aldiv.c
-		___aldiv       		CODE           	1D2EE	0000	202
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/fltol.c
+		___fltol       		CODE           	1D07C	0000	210
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/aldiv.c estimated size: 202
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/fltol.c estimated size: 210
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/abs.c
-		_abs           		CODE           	056E	0000	40
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/lbmod.c
+		___lbmod       		CODE           	03F8	0000	42
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/abs.c estimated size: 40
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/lbmod.c estimated size: 42
 
 tic12400.c
 		_tic_int_handler		CODE           	0A36	0000	20
@@ -6755,15 +6735,10 @@ tic12400.c
 
 tic12400.c estimated size: 1696
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/nf_sprintf.c
-		_sprintf       		CODE           	1F33E	0000	72
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/aldiv.c
+		___aldiv       		CODE           	1D2EE	0000	202
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/nf_sprintf.c estimated size: 72
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/floorf.c
-		_floorf        		CODE           	1B9DC	0000	426
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/floorf.c estimated size: 426
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/aldiv.c estimated size: 202
 
 mcc_generated_files/tmr1.c
 		_TMR1_Initialize		CODE           	1F1C8	0000	76
@@ -6789,10 +6764,21 @@ mconfig.c
 
 mconfig.c estimated size: 1710
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/Umul32.c
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/asctime.c
+		_put2d         		CODE           	1E9CA	0000	108
+		_asctime       		CODE           	1A48A	0000	584
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/asctime.c estimated size: 692
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/__secs_to_tm.c
+		___secs_to_tm  		CODE           	17126	0000	1718
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/__secs_to_tm.c estimated size: 1718
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/Umul32.c
 		___lmul        		CODE           	1EE04	0000	86
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/Umul32.c estimated size: 86
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/Umul32.c estimated size: 86
 
 mcc_generated_files/memory.c
 		_DATAEE_WriteByte		CODE           	1F45E	0000	70
@@ -6801,10 +6787,25 @@ mcc_generated_files/memory.c
 
 mcc_generated_files/memory.c estimated size: 98
 
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/sprcmul.c
+		___flmul       		CODE           	18BFE	0000	810
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/sprcmul.c estimated size: 810
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/strncpy.c
+		_strncpy       		CODE           	1EBCE	0000	98
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/strncpy.c estimated size: 98
+
 mcc_generated_files/dac1.c
 		_DAC1_Initialize		CODE           	0D38	0000	12
 
 mcc_generated_files/dac1.c estimated size: 12
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/__lldiv.c
+		___lldiv       		CODE           	1E4B8	0000	130
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/__lldiv.c estimated size: 130
 
 mcc_generated_files/spi2.c
 		_SPI2_RxIsr    		CODE           	1FED4	0000	54
@@ -6817,20 +6818,25 @@ mcc_generated_files/spi2.c
 
 mcc_generated_files/spi2.c estimated size: 198
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/xxtofl.c
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/sprcdiv.c
+		___fldiv       		CODE           	19AC2	0000	646
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/sprcdiv.c estimated size: 646
+
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/xxtofl.c
 		___xxtofl      		CODE           	1C518	0000	324
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/xxtofl.c estimated size: 324
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/xxtofl.c estimated size: 324
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/rand.c
-		_srand         		CODE           	08A0	0000	28
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/labs.c
+		_labs          		CODE           	1F2F4	0000	74
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/rand.c estimated size: 28
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/labs.c estimated size: 74
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/strlen.c
-		_strlen        		CODE           	1F3CE	0000	72
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/atol.c
+		_atol          		CODE           	1C794	0000	300
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/strlen.c estimated size: 72
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/atol.c estimated size: 300
 
 pzem_rtu.c
 		_pzem_modbus_read_check		CODE           	1A8F0	0000	510
@@ -6857,26 +6863,20 @@ mcc_generated_files/dma2.c
 
 mcc_generated_files/dma2.c estimated size: 370
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/fleq.c
-		___fleq        		CODE           	1E102	0000	140
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/nf_snprintf.c
+		_snprintf      		CODE           	1D480	0000	196
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/fleq.c estimated size: 140
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/nf_snprintf.c estimated size: 196
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/strcpy.c
-		_strcpy        		CODE           	0172	0000	50
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/strlen.c
+		_strlen        		CODE           	1F3CE	0000	72
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/strcpy.c estimated size: 50
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/strlen.c estimated size: 72
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/flneg.c
-		___flneg       		CODE           	0204	0000	48
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/floorf.c
+		_floorf        		CODE           	1B9DC	0000	426
 
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/flneg.c estimated size: 48
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/asctime.c
-		_put2d         		CODE           	1E9CA	0000	108
-		_asctime       		CODE           	1A48A	0000	584
-
-/ldrv/microchip/xc8/v3.10/pic/sources/c99/common/asctime.c estimated size: 692
+/opt/microchip/xc8/v3.10/pic/sources/c99/common/floorf.c estimated size: 426
 
 mcc_generated_files/clc1.c
 		_CLC1_Initialize		CODE           	044C	0000	42
