@@ -45,6 +45,14 @@
  * 2  GND		1 - GLORY VSS   blue
  */
 
+/*
+ * for systemd systems, dup ipv6 addresses fix
+ * # rm /var/lib/NetworkManager/dhclient6-* or *.lease
+ * # rm /etc/machine-id
+ * # systemd-machine-id-setup
+ * # reboot
+ */
+
 #include <stdlib.h>
 #include <stdio.h> /* for printf() */
 #include <unistd.h>

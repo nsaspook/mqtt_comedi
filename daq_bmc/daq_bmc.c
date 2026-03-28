@@ -65,6 +65,11 @@ for the FMx0 charge controller and for the modbus EM540 power meter
  *
  * bits 3..0 select of ADC channel in the lower nibble
  *
+ * for systemd systems, dup ipv6 addresses fix
+ * # rm /var/lib/NetworkManager/dhclient6-* or *.lease
+ * # rm /etc/machine-id
+ * # systemd-machine-id-setup
+ * # reboot
  */
 
 #include <linux/module.h>
@@ -1618,7 +1623,6 @@ static int32_t daqbmc_bmc_get_config(struct comedi_device *dev)
 	memcpy(&devpriv->scalar5, devpriv->scalar5_ptr, 4);
 
 	devpriv->ai_count++;
-	dev_info(dev->class_dev, "Calibration data downloaded from board\n");
 	mutex_unlock(&devpriv->drvdata_lock);
 	clear_bit(SPI_AI_RUN, &devpriv->state_bits);
 	smp_mb__after_atomic();
@@ -1865,7 +1869,6 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 
 	if (lsamp_size != SDF_LSAMPL) {
 		lsamp_size = 0;
-		dev_info(dev->class_dev, "16 bit and less device buffers set to 16 bits\n");
 	}
 	dev->read_subdev = s;
 
@@ -1945,7 +1948,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		daqbmc_conf = PICSL12_AO;
 		dev->n_subdevices = daqbmc_devices[daqbmc_conf].n_subdev; // only show the analog devices
 		dev_info(dev->class_dev,
-			"BMCBoard Digital DI DO Disabled, controller device %s \n", daqbmc_devices[daqbmc_conf].name);
+			"BMCBoard Digital DI DO Disabled, controller device %s, retconf:0X%X \n", daqbmc_devices[daqbmc_conf].name, retconf);
 	}
 
 	retconf = daqbmc_bmc_get_mui(dev);
@@ -1965,8 +1968,6 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	s->maxdata = 0xffff;
 	s->insn_write = daqbmc_sio_insn_write;
 	s->insn_read = daqbmc_sio_insn_read;
-	dev_info(dev->class_dev,
-		"DISPLAY, RS232/TTL and device serial TX/RX channels %d\n", MEM_BLOCKS);
 
 	if (do_conf) { // add the extra sub-devices
 		s = &dev->subdevices[SUBDEV_DO];
@@ -2101,13 +2102,6 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 	/*
 	 * Do only one chip select for the BMCboard
 	 */
-	dev_info(&spi->dev,
-		"BMCboard default: do_conf=%d, di_conf=%d, daqbmc_conf=%d, chip select %d\n",
-#ifdef OPIZ3
-		do_conf, di_conf, daqbmc_conf, (uint32_t) spi->chip_select);
-#else
-		do_conf, di_conf, daqbmc_conf, (uint32_t) * spi->chip_select);
-#endif
 
 #ifdef OPIZ3
 	if ((uint32_t) spi->chip_select == CS_BMC) {
@@ -2120,14 +2114,6 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 		 *
 		 * create entry into the Comedi device list
 		 */
-
-		dev_info(&spi->dev,
-			"SPI device match: spi->chip_select == CS_BMC %d\n",
-#ifdef OPIZ3
-			(uint32_t) spi->chip_select);
-#else
-			(uint32_t) * spi->chip_select);
-#endif
 
 		INIT_LIST_HEAD(&pdata->device_entry);
 		pdata->slave.spi = spi;
@@ -2156,7 +2142,7 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 			ret = bmc_spi_packet(spi, packet, slower); // only one byte is transmitted
 		}
 		daq_code = packet->bmc_byte_r[BMC_CMD];
-		dev_info(&spi->dev, "spi I/O CMD_ZERO test returns %X, spi transfer return code %d\n", daq_code, ret);
+		//		dev_info(&spi->dev, "spi I/O CMD_ZERO test returns %X, spi transfer return code %d\n", daq_code, ret);
 	}
 
 	/* setup Comedi part of driver */
@@ -2340,7 +2326,9 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	/*
 	 * SPI link data hardware setup
 	 */
+#ifdef SPI_DEBUG
 	dev_info(dev->class_dev, "Probing for PIC18Fx7Q84 DAQ device, SPI slave mode\n");
+#endif
 	spi_bmc->device_type = daqbmc_conf;
 	spi_bmc->chan = spi_bmc->device_spi->n_chan;
 	spi_bmc->range = 0; // 4.096 default
@@ -2351,6 +2339,7 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 		di_conf = 0;
 	}
 
+#ifdef SPI_DEBUG
 	dev_info(dev->class_dev,
 		"BMCboard SPI setup: spi cs %d: %d Hz: spi mode 0x%x: "
 		"probing for controller device %s\n",
@@ -2362,6 +2351,7 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 		spi_bmc->spi->max_speed_hz,
 		spi_bmc->spi->mode,
 		spi_bmc->device_spi->name);
+#endif
 
 	return spi_bmc->chan;
 }
