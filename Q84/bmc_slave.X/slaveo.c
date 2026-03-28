@@ -76,9 +76,7 @@ void slaveo_rx_isr(void)
 	if (SPI2INTFbits.RXOIF) {
 		spi_stat_ss.rxof_bit++;
 	}
-
 #endif
-
 	data_in2 = SPI2RXB;
 	serial_buffer_ss.data[serial_buffer_ss.raw_index] = data_in2;
 
@@ -174,13 +172,13 @@ void slaveo_rx_isr(void)
 				} else {
 					tmp_buf = 0;
 				}
-					SPI2TXB = tmp_buf;
+				SPI2TXB = tmp_buf;
 			} else { // [4..7]
 				tmp_buf = 0x57;
 				if (update_bmc_string == true) { // log_buffer has been updated
 					tmp_buf = log_buffer[BMC4.pos++];
 				}
-					SPI2TXB = tmp_buf;
+				SPI2TXB = tmp_buf;
 				spi_stat_ss.bmc_counts++;
 			}
 			serial_buffer_ss.cget_value = false;
@@ -198,7 +196,7 @@ void slaveo_rx_isr(void)
 			} else { // MEMORY device
 				tmp_buf = log_buffer[BMC4.pos];
 			}
-				SPI2TXB = tmp_buf;
+			SPI2TXB = tmp_buf;
 			data_in2 = 0;
 		}
 	}
@@ -218,7 +216,7 @@ void slaveo_rx_isr(void)
 			} else {
 				tmp_buf = (uint8_t) in_buf2;
 			}
-				SPI2TXB = tmp_buf;
+			SPI2TXB = tmp_buf;
 			data_in2 = 0;
 		}
 	}
@@ -235,8 +233,8 @@ void slaveo_rx_isr(void)
 			if (serial_buffer_ss.raw_index == BMC_D0) {
 				SPI2TXB = (adc_buffer[channel] &0x00ff);
 			} else {
-					SPI2TXB = ((adc_buffer[channel] >> 8)&0x00ff);
-				}
+				SPI2TXB = ((adc_buffer[channel] >> 8)&0x00ff);
+			}
 			data_in2 = 0;
 		}
 	}
@@ -329,7 +327,7 @@ void slaveo_rx_isr(void)
 					SPI2TXB = CHECKBYTE;
 					break;
 				default:
-						SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits
+					SPI2TXB = spi_stat_ss.daq_conf; // respond with DAQ configuration bits
 					break;
 				}
 				break;
