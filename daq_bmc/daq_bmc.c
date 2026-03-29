@@ -25,7 +25,7 @@
  * TODO: get some SoC board rev and other info from the Pi board
  *
 Driver: "experimental" daq_bmc in progress ...
- * for Linux kernels with device-tree enabled for RPi 2B
+ * for Linux kernels with device-tree enabled for RPi 2B and OPiZ3
  * see README.md for install instructions
  *
 Description: BMCBOARD daq_bmc spibmc
@@ -45,7 +45,7 @@ Analog output subdevice with 1 channel with onboard dac
 Memory subdevice with serial r/w  ports [0..1], one RS232, the other TTL
 the TTL port is currently not used remotely on the Q84 by Comedi
 ports [4..7] are data-streams for connected device data in CSV format
-for the FMx0 charge controller and for the modbus EM540 power meter
+for the FMx0 charge controller and for MODBUS power meters
  *
  * Caveats:
  *
@@ -86,7 +86,7 @@ for the FMx0 charge controller and for the modbus EM540 power meter
 #include <linux/list.h>
 #include <linux/completion.h>
 
-#define bmc_version "version 1.25 "
+#define bmc_version "version 1.26 "
 #define spibmc_version "version 1.8 "
 
 /*
@@ -226,7 +226,7 @@ static const uint32_t SUBDEV_OAO = 3; // only analog sub-devices and serial sub-
 
 static const uint32_t SUBDEV_AI = 0;
 static const uint32_t SUBDEV_AO = 1;
-static const uint32_t SUBDEV_MEM = 2; // Comedi applications subdev search will stop at gaps in the subdevices array
+static const uint32_t SUBDEV_MEM = 2; // Comedi applications sub-dev search will stop at gaps in the sub-devices array
 static const uint32_t SUBDEV_DI = 3;
 static const uint32_t SUBDEV_DO = 4;
 
@@ -349,8 +349,6 @@ static int32_t use_hunking = 0;
 module_param(use_hunking, int, S_IRUGO);
 static volatile int32_t daq_code = 0;
 
-//struct spi_statistics bmc_statistics;
-
 struct bmc_packet_type {
 	uint8_t bmc_byte_t[Q84_BYTES];
 	uint8_t bmc_byte_r[Q84_BYTES];
@@ -375,7 +373,7 @@ struct daqbmc_device {
 
 /*
  * Use only MODE 3 for Orange PI SPI connections, MODE 0 seems to have issues on this board
- * Max SCK 12MHz, normally runs at 8MHz
+ * Max SCK 12MHz, normally runs at 4MHz or 6MHz for RPi
  */
 static const struct daqbmc_device daqbmc_devices[] = {
 	{
@@ -645,7 +643,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	/*
 	 * use nine spi transfers for the complete SPI transaction
 	 * we need the inter-byte processing time on the slave side
-	 * with only a two byte FIFO
+	 * with only a two byte FIFO on the Q84
 	 */
 	packet->one_t.speed_hz = spi->max_speed_hz;
 
@@ -717,12 +715,6 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	packet->one_t.len = 1;
 	ret += bmc_spi_packet(spi, packet, slower);
 
-	//	if (bmc_spi_checkbyte_fail(packet->bmc_byte_r[BMC_DUMMY])) {
-	//		dev_info(dev->class_dev, "spi CHECKBYTE mismatch 0X%X\n", packet->bmc_byte_r[BMC_DUMMY]);
-	//	} else {
-	//		dev_info(dev->class_dev, "spi CHECKBYTE good 0X%X\n", packet->bmc_byte_r[BMC_DUMMY]);
-	//	}
-
 	return ret;
 }
 
@@ -749,7 +741,9 @@ static int32_t daqbmc_ao_thread_function(void *data)
 	if (!dev) {
 		return -EFAULT;
 	}
+#ifdef SPI_DEBUG
 	dev_info(dev->class_dev, "ao device thread start\n");
+#endif
 
 	while (!kthread_should_stop()) {
 		if (likely(test_bit(AO_CMD_RUNNING, &devpriv->state_bits))) {
@@ -1080,7 +1074,9 @@ static int32_t daqbmc_ao_delay_rate(struct comedi_device *dev,
 	} else { /* or nothing */
 		spacing_usecs = 0;
 	}
+#ifdef SPI_DEBUG
 	dev_info(dev->class_dev, "ao rate %i, spacing usecs %i\n", rate, spacing_usecs);
+#endif
 
 	return spacing_usecs;
 }
@@ -1663,7 +1659,9 @@ static uint32_t daqbmc_bmc_get_mui(struct comedi_device *dev)
 	val += (packet->bmc_byte_r[BMC_D4] << 24);
 
 	devpriv->ai_count++;
+#ifdef SPI_DEBUG
 	dev_info(dev->class_dev, "Calibration data downloaded from board\n");
+#endif
 	mutex_unlock(&devpriv->drvdata_lock);
 	clear_bit(SPI_AI_RUN, &devpriv->state_bits);
 	smp_mb__after_atomic();
@@ -1710,8 +1708,10 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 
 	devpriv->cpu_nodes = num_online_cpus();
 	if (devpriv->cpu_nodes >= SMP_CORES) {
+#ifdef SPI_DEBUG
 		dev_info(dev->class_dev, "%d cpu(s) online for threads\n",
 			devpriv->cpu_nodes);
+#endif
 		devpriv->ai_node = thisboard->ai_node;
 		devpriv->ao_node = thisboard->ao_node;
 		devpriv->smp = true;
@@ -1772,8 +1772,10 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			pdata->one_t.rx_buf = pdata->rx_buff;
 			if (daqbmc_conf == PICSL12 || daqbmc_conf == PICSL12_AO) {
 				mutex_lock(&devpriv->drvdata_lock);
+#ifdef SPI_DEBUG
 				dev_info(dev->class_dev, "BMCBoard using chip select : 0x%1x\n",
 					thisboard->bmc_cs);
+#endif
 				mutex_unlock(&devpriv->drvdata_lock);
 				smp_mb__after_atomic();
 			}
@@ -1816,9 +1818,11 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		goto daqbmc_kfree_rx_exit;
 	}
 
+#ifdef SPI_DEBUG
 	dev_info(dev->class_dev,
 		"%s device detection started\n",
 		thisboard->name);
+#endif
 	devpriv->num_subdev = 0;
 	if (daqbmc_spi_probe(dev, devpriv->ai_spi)) {
 		devpriv->num_subdev += daqbmc_devices[PICSL12].n_subdev;
@@ -1932,10 +1936,11 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		ret = -EINVAL;
 		goto daqbmc_kfree_rx_exit;
 	}
-
+#ifdef SPI_DEBUG
 	dev_info(dev->class_dev,
 		"Analog Out channels %d, Analog In channels %d : Q84 config code 0x%x\n",
 		thisboard->n_aochan, devpriv->ai_spi->chan, retconf);
+#endif
 
 	/*
 	 * check Q84 board returned config codes for digital channels
@@ -1979,8 +1984,6 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		s->maxdata = 1;
 		s->insn_bits = daqbmc_do_insn_bits;
 		s->io_bits = 0x00ffffff;
-		dev_info(dev->class_dev,
-			"Digital Out channels %d\n", num_do_chan);
 	}
 
 	if (di_conf) {
@@ -1992,14 +1995,11 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		s->range_table = &range_digital;
 		s->maxdata = 1;
 		s->insn_bits = daqbmc_di_insn_bits;
-		dev_info(dev->class_dev,
-			"Digital In channels %d\n", num_di_chan);
 	}
 
 	if ((retconf & 0x4) == 0x04 || FORCE_47Q84) { // 47Q84 processor
 		daqbmc_cpu = PICSL12_47;
 	}
-	dev_info(dev->class_dev, "PIC18F57Q84 DAQ device setup complete\n");
 
 	/*
 	 * setup the timer to call my_timer_ai_callback
@@ -2098,7 +2098,7 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 		goto kfree_tx_exit;
 	}
 
-	dev_info(&spi->dev, "spi link %s\n", spibmc_version);
+	dev_info(&spi->dev, "spibmc link %s\n", spibmc_version);
 	/*
 	 * Do only one chip select for the BMCboard
 	 */
@@ -2142,7 +2142,9 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 			ret = bmc_spi_packet(spi, packet, slower); // only one byte is transmitted
 		}
 		daq_code = packet->bmc_byte_r[BMC_CMD];
-		//		dev_info(&spi->dev, "spi I/O CMD_ZERO test returns %X, spi transfer return code %d\n", daq_code, ret);
+#ifdef SPI_DEBUG
+		dev_info(&spi->dev, "spi I/O CMD_ZERO test returns %X, spi transfer return code %d\n", daq_code, ret);
+#endif
 	}
 
 	/* setup Comedi part of driver */
@@ -2184,7 +2186,6 @@ static int spibmc_spi_remove(struct spi_device * spi)
 	pdata->slave.spi = NULL;
 	if (!list_empty(&device_list)) {
 		list_del(&pdata->device_entry);
-		dev_info(&spi->dev, "spibmc device link removed \n");
 	}
 
 	if (pdata->rx_buff) {
