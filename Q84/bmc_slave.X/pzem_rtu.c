@@ -43,9 +43,11 @@ static const uint8_t
 // transmit frames for commands
 modbus_pz_data1[] = {PZMADDR, READ_HOLDING_REGISTERS, 0x00, 0x00, 0x00, PZ_DATA_LEN1},
 modbus_pz_dir1[] = {PZMADDR, READ_HOLDING_REGISTERS, 0x00, 0x00, 0x00, PZ_DATA_DIR1},
+modbus_pz_hz1[] = {PZMADDR, WRITE_SINGLE_REGISTER, 0x00, 0x02, 0x00, 0x01}, // register 0x0002, data 0x0001
 // receive frames prototypes for received data checking
-im_data1[(PZ_DATA_LEN1 * 2) + 5] = {PZMADDR, READ_HOLDING_REGISTERS, 0x00},
-im_dir1[(PZ_DATA_DIR1 * 2) + 5] = {PZMADDR, READ_HOLDING_REGISTERS, 0x00};
+pz_data1[(PZ_DATA_LEN1 * 2) + 5] = {PZMADDR, READ_HOLDING_REGISTERS, 0x00},
+pz_dir1[(PZ_DATA_DIR1 * 2) + 5] = {PZMADDR, READ_HOLDING_REGISTERS, 0x00},
+pz_hz1[(PZ_DATA_HZ1 * 2) + 5] = {PZMADDR, WRITE_SINGLE_REGISTER, 0x00};
 
 /*
  * register data frames
@@ -94,6 +96,9 @@ int8_t pzem_controller_work(C_data * client)
 		clear_500ahz();
 		client->cstate = INIT;
 		client->modbus_command = client->mcmd++; // sequence MODBUS commands to client
+		if ((client->modbus_command == (cmd_type) P_HZ1) && (client->config_ok)) { // skip if we have valid 60Hz set
+			client->modbus_command = client->mcmd++;
+		}
 		if (client->mcmd > P_LAST) {
 			client->mcmd = P_DATA1;
 		}
@@ -108,6 +113,10 @@ int8_t pzem_controller_work(C_data * client)
 		case P_DIR1: // read info request
 			client->trace = T_id;
 			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_pz_dir1, sizeof(modbus_pz_dir1));
+			break;
+		case P_HZ1: // read info request
+			client->trace = T_id;
+			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_pz_hz1, sizeof(modbus_pz_hz1));
 			break;
 		case P_LAST: // end of command sequences
 			client->cstate = CLEAR;
@@ -177,10 +186,13 @@ int8_t pzem_controller_work(C_data * client)
 			 */
 			switch (client->modbus_command) {
 			case P_DATA1: // check for controller data1 codes
-				pzem_modbus_read_check(client, &client->data_ok, sizeof(im_data1), pzem_data_handler);
+				pzem_modbus_read_check(client, &client->data_ok, sizeof(pz_data1), pzem_data_handler);
 				break;
 			case P_DIR1: // check for controller dir1 codes
-				pzem_modbus_read_dir_check(client, &client->id_ok, sizeof(im_dir1), pzem_dir_handler, READ_HOLDING_REGISTERS);
+				pzem_modbus_read_dir_check(client, &client->id_ok, sizeof(pz_dir1), pzem_dir_handler, READ_HOLDING_REGISTERS);
+				break;
+			case P_HZ1: // set controller hz1 code to 60Hz
+				pzem_modbus_write_check(client, &client->config_ok, sizeof(pz_hz1));
 				break;
 			default:
 				break;

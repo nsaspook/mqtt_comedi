@@ -20,7 +20,7 @@ extern "C" {
 
 #define MB_IAMMETER_ID_H	0x01	// slave ID
 #define MB_IAMMETER_ID_L	0x06	// slave baudrate
-
+	
 	static const uint16_t ITDELAY = 3; // KWH half-duplex delay
 	static const uint16_t ITMDELAY = 2; // half-duplex delay
 	static const uint16_t ITEDELAY = 2; // half-duplex delay
