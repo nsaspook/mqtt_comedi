@@ -43,7 +43,8 @@ static const uint8_t
 // transmit frames for commands
 modbus_pz_data1[] = {PZMADDR, READ_HOLDING_REGISTERS, 0x00, 0x00, 0x00, PZ_DATA_LEN1},
 modbus_pz_dir1[] = {PZMADDR, READ_HOLDING_REGISTERS, 0x00, 0x00, 0x00, PZ_DATA_DIR1},
-modbus_pz_hz1[] = {PZMADDR, WRITE_SINGLE_REGISTER, 0x00, 0x02, 0x00, 0x01}, // register 0x0002, data 0x0001
+modbus_pz_hz60[] = {PZMADDR, WRITE_SINGLE_REGISTER, 0x00, PZEM_FREQUENCY_SYSTEM_REG, 0x00, PZEM_FREQUENCY_60HZ}, // register 0x0002, data 0x0001
+modbus_pz_hz50[] = {PZMADDR, WRITE_SINGLE_REGISTER, 0x00, PZEM_FREQUENCY_SYSTEM_REG, 0x00, PZEM_FREQUENCY_50HZ},
 // receive frames prototypes for received data checking
 pz_data1[(PZ_DATA_LEN1 * 2) + 5] = {PZMADDR, READ_HOLDING_REGISTERS, 0x00},
 pz_dir1[(PZ_DATA_DIR1 * 2) + 5] = {PZMADDR, READ_HOLDING_REGISTERS, 0x00},
@@ -111,12 +112,16 @@ int8_t pzem_controller_work(C_data * client)
 			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_pz_data1, sizeof(modbus_pz_data1));
 			break;
 		case P_DIR1: // read info request
-			client->trace = T_id;
+			client->trace = T_data;
 			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_pz_dir1, sizeof(modbus_pz_dir1));
 			break;
-		case P_HZ1: // read info request
-			client->trace = T_id;
-			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_pz_hz1, sizeof(modbus_pz_hz1));
+		case P_HZ1: // set line frequency request
+			client->trace = T_config;
+#ifdef USE50HZ
+			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_pz_hz50, sizeof(modbus_pz_hz50));
+#else
+			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_pz_hz60, sizeof(modbus_pz_hz60));
+#endif
 			break;
 		case P_LAST: // end of command sequences
 			client->cstate = CLEAR;
