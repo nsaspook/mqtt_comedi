@@ -19,6 +19,8 @@ static const float HV_SCALE4_5 = 64.3520f;
 static const float HV_SCALE5_5 = 64.3480f;
 static const float HV_SCALE4_6 = 64.2500f;
 static const float HV_SCALE5_6 = 64.2500f;
+static const float HV_SCALE4_7 = 53.3000f;
+static const float HV_SCALE5_7 = 53.3000f;
 
 
 #define BVSOC_SLOTS     12      // 24V LiFePO4 Battery to SOC data table slots
@@ -92,10 +94,6 @@ enum EMETER_MODEL set_calibration(unsigned long long mui)
 		ha_daq_calib.scaler4 = HV_SCALE4_4;
 		ha_daq_calib.scaler5 = HV_SCALE5_4;
 		break;
-	case 0x5AE2B:
-		ha_daq_calib.scaler4 = HV_SCALE4_4;
-		ha_daq_calib.scaler5 = HV_SCALE5_4;
-		break;
 	case 0x61DB5:
 		ha_daq_calib.scaler4 = HV_SCALE4_5;
 		ha_daq_calib.scaler5 = HV_SCALE5_5;
@@ -103,6 +101,10 @@ enum EMETER_MODEL set_calibration(unsigned long long mui)
 	case 0x5B728:
 		ha_daq_calib.scaler4 = HV_SCALE4_6;
 		ha_daq_calib.scaler5 = HV_SCALE5_6;
+		break;
+	case 0x5AE2B:
+		ha_daq_calib.scaler4 = HV_SCALE4_7;
+		ha_daq_calib.scaler5 = HV_SCALE5_7;
 		break;
 	default:
 		ha_daq_calib.scaler4 = HV_SCALAR4;
