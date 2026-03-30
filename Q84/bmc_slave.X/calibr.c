@@ -19,8 +19,8 @@ static const float HV_SCALE4_5 = 64.3520f;
 static const float HV_SCALE5_5 = 64.3480f;
 static const float HV_SCALE4_6 = 64.2500f;
 static const float HV_SCALE5_6 = 64.2500f;
-static const float HV_SCALE4_7 = 53.3000f;
-static const float HV_SCALE5_7 = 53.3000f;
+static const float HV_SCALE4_7 = 53.0000f;
+static const float HV_SCALE5_7 = 53.0000f;
 
 
 #define BVSOC_SLOTS     12      // 24V LiFePO4 Battery to SOC data table slots

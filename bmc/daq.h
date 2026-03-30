@@ -46,8 +46,8 @@ extern "C" {
 #define HV_SCALE5_0             64.2600f
 #define HV_SCALE4_1             64.1890f
 #define HV_SCALE5_1             64.1415f
-#define HV_SCALE4_2             53.3000f
-#define HV_SCALE5_2             53.3000f
+#define HV_SCALE4_2             53.2000f
+#define HV_SCALE5_2             53.2000f
 #define HV_SCALE4_3             64.1890f
 #define HV_SCALE5_3             64.1415f
 #define HV_SCALE4_4             64.2600f
