@@ -41,14 +41,14 @@ static void half_dup_rx(const bool);
 
 static const uint8_t
 // transmit frames for commands
-modbus_pz_data1[] = {PZMADDR, READ_HOLDING_REGISTERS, 0x00, 0x00, 0x00, PZ_DATA_LEN1},
-modbus_pz_dir1[] = {PZMADDR, READ_HOLDING_REGISTERS, 0x00, 0x00, 0x00, PZ_DATA_DIR1},
-modbus_pz_hz60[] = {PZMADDR, WRITE_SINGLE_REGISTER, 0x00, PZEM_FREQUENCY_SYSTEM_REG, 0x00, PZEM_FREQUENCY_60HZ}, // register 0x0002, data 0x0001
-modbus_pz_hz50[] = {PZMADDR, WRITE_SINGLE_REGISTER, 0x00, PZEM_FREQUENCY_SYSTEM_REG, 0x00, PZEM_FREQUENCY_50HZ},
+modbus_pz_data1[] = {PZMADDR, READ_INPUT_REGISTERS, 0x00, 0x00, 0x00, PZ_DATA_LEN1},
+modbus_pz_dir1[] = {PZMADDR, READ_INPUT_REGISTERS, 0x00, 0x00, 0x00, PZ_DATA_DIR1},
+modbus_pz_hz60[] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00, PZEM_FREQUENCY_SYSTEM_REG, 0x00, PZEM_FREQUENCY_60HZ}, // register 0x0002, data 0x0001
+modbus_pz_hz50[] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00, PZEM_FREQUENCY_SYSTEM_REG, 0x00, PZEM_FREQUENCY_50HZ},
 // receive frames prototypes for received data checking
-pz_data1[(PZ_DATA_LEN1 * 2) + 5] = {PZMADDR, READ_HOLDING_REGISTERS, 0x00},
-pz_dir1[(PZ_DATA_DIR1 * 2) + 5] = {PZMADDR, READ_HOLDING_REGISTERS, 0x00},
-pz_hz1[(PZ_DATA_HZ1 * 2) + 5] = {PZMADDR, WRITE_SINGLE_REGISTER, 0x00};
+pz_data1[(PZ_DATA_LEN1 * 2) + 5] = {PZMADDR, READ_INPUT_REGISTERS, 0x00},
+pz_dir1[(PZ_DATA_DIR1 * 2) + 5] = {PZMADDR, READ_INPUT_REGISTERS, 0x00},
+pz_hz1[(PZ_DATA_HZ1 * 2) + 5] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00};
 
 /*
  * register data frames
@@ -56,8 +56,6 @@ pz_hz1[(PZ_DATA_HZ1 * 2) + 5] = {PZMADDR, WRITE_SINGLE_REGISTER, 0x00};
 PZ_data1 pz, *pz_ptr;
 PZ_dir1 pzd, *pzd_ptr;
 PZ_tmp pz_tmp;
-PZD_tmp pzd_tmp;
-PZ_data2 pzt;
 
 /*
  * state machine hardware timers interrupt ISR functions setup
@@ -255,13 +253,14 @@ static void pzem_data_handler(void)
 static void pzem_dir_handler(void)
 {
 	pzd_ptr = (PZ_dir1*) & cc_buffer[3];
-	//	pzd_tmp.ap1s = (float) mb32_swap(pzd_ptr->ap1s) / 100000; // phase A:1 GTI power
-	//	pzd_tmp.ap2s = (float) mb32_swap(pzd_ptr->ap2s) / 100000; // Phase B:2 Utility power flow
-	//	pzd_tmp.ap3s = (float) mb32_swap(pzd_ptr->ap3s) / 100000; // Phase C:3 Load power
-	//	pzd_tmp.rpp1s = (float) mb32_swap(pzd_ptr->rpp1s) / 100000; // Reactive power for each Phase input
-	//	pzd_tmp.rpp2s = (float) mb32_swap(pzd_ptr->rpp2s) / 100000;
-	//	pzd_tmp.rpp3s = (float) mb32_swap(pzd_ptr->rpp3s) / 100000;
-	//	pzd_tmp.tps = (float) mb32_swap(pzd_ptr->tps) / 100000; // Total power
+	pzem_data_handler();
+	imd_tmp.ap1s = (float) em.wl1; // phase A:1 GTI power
+	imd_tmp.ap2s = (float) em.wl2; // Phase B:2 Utility power flow
+	imd_tmp.ap3s = (float) em.wl3; // Phase C:3 Load power
+	imd_tmp.rpp1s = (float) em.varl1; // Reactive power for each Phase input
+	imd_tmp.rpp2s = (float) em.varl2;
+	imd_tmp.rpp3s = (float) em.varl3;
+	imd_tmp.tps = (float) em.wsys; // Total power
 }
 
 static bool pzem_modbus_write_check(C_data * client, bool* cstate, const uint16_t rec_length)

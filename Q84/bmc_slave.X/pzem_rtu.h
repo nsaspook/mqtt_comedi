@@ -13,6 +13,7 @@ extern "C" {
 #endif
 
 #include "modbus_master.h"
+#include "iammeter_rtu.h"
 
 #define PZ_DATA_LEN1	0X40	// 16-bit words returned
 #define PZ_DATA_DIR1	0X40	// 16-bit words returned
@@ -21,6 +22,8 @@ extern "C" {
 #define PZMADDR		0x02 // modbus client address
 #define MB_PZEM_ID_H	PZMADDR	// slave ID
 #define MB_PZEM_ID_L	0x06	// slave baudrate
+	
+#define WRITE_PZEM_REGISTER		10
 
 	// Input register addresses
 #define PZEM_VOLTAGE_REG                  0x0000 // A=0x0000, B=0x0001, C=0x0002
@@ -160,17 +163,6 @@ extern "C" {
 		phaseseq, hz;
 	} PZ_tmp;
 
-	typedef struct PZD_tmp {
-		volatile float
-		tps, ap1s, ap2s, ap3s,
-		rpp1s, rpp2s, rpp3s;
-	} PZD_tmp;
-
-	typedef __pack struct PZ_data2 {
-		volatile int32_t
-		hz;
-	} PZ_data2;
-
 	/*
 	 * map 16-bit registers to bytes to extract information
 	 */
@@ -184,7 +176,6 @@ extern "C" {
 	} PZ_dir1;
 
 	extern PZ_tmp pz_tmp;
-	extern PZD_tmp pzd_tmp;
 
 	void pz_my_modbus_rx_32(void);
 	void init_pz_mb_master_timers(void);

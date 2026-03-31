@@ -325,14 +325,14 @@ extern "C" {
 
 
 	/*******************************ModBus Functions*******************************/
-#define READ_COILS                  1
-#define READ_DISCRETE_INPUTS        2
-#define READ_HOLDING_REGISTERS      3
-#define READ_INPUT_REGISTERS        4
-#define WRITE_SINGLE_COIL           5
-#define WRITE_SINGLE_REGISTER       6
-#define WRITE_MULTIPLE_COILS        15
-#define WRITE_MULTIPLE_REGISTERS    16
+#define READ_COILS			1
+#define READ_DISCRETE_INPUTS		2
+#define READ_HOLDING_REGISTERS		3
+#define READ_INPUT_REGISTERS		4
+#define WRITE_SINGLE_COIL		5
+#define WRITE_SINGLE_REGISTER		6
+#define WRITE_MULTIPLE_COILS		15
+#define WRITE_MULTIPLE_REGISTERS	16
 
 	static const uint8_t BOFF = 0;
 	static const uint8_t BON = 255;

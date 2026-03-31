@@ -19,6 +19,16 @@ static volatile M_time_data MT = {
 	.clock_500hz = 0,
 };
 
+static const uint16_t ITDELAY = 3; // KWH half-duplex delay
+static const uint16_t ITMDELAY = 2; // half-duplex delay
+static const uint16_t ITEDELAY = 2; // half-duplex delay
+static const uint16_t IRDELAY = 1200; // receive timeout
+static const uint16_t ICDELAY = 40; // fast query delay 100ms
+static const uint16_t IQDELAY = 2; // slow query delay 1s
+static const uint16_t ITODELAY = 4; // misc delay
+static const uint16_t ISPACING = 5000; // control loop cpu usage factor
+static const uint16_t IDUPL_DELAY = 2; // extra duplex delay mode
+
 static bool iammeter_modbus_write_check(C_data *, bool*, uint16_t);
 static bool iammeter_modbus_read_check(C_data *, bool*, uint16_t, void (* DataHandler)(void));
 static bool iammeter_modbus_read_dir_check(C_data *, bool*, uint16_t, void (* DataHandler)(void), const uint8_t);

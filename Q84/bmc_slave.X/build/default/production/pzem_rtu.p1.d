@@ -26,4 +26,5 @@ mcc_generated_files/uart2.h  \
 mcc_generated_files/uart1.h  \
 mcc_generated_files/crc.h  \
 mcc_generated_files/spi1.h  \
-mcc_generated_files/spi2.h 
+mcc_generated_files/spi2.h  \
+iammeter_rtu.h 
