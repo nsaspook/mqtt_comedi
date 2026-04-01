@@ -967,7 +967,8 @@ void main(void)
 				snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "Bmax %uV Bmin %uV                      ", BM.log.bat_max / 10, BM.log.bat_min / 10);
 				snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.2fA %3.0fW                       ", (float) emt.hz / 1000.0f, ((float) em.al2) / 1000.0f, (em_tmp.wl2 / 100.0f));
 				if (spi_stat_ss.mui != 0x61DB5) {
-					snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVA %3.2fPF             ", (float) em.wl1 / 10.0f, (float) em.val1 / 10.f, (float) em.pfl1 / 1000.0f);
+					snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVA %3.2fPF             ", (float) em.wl1, (float) em.val1, (float) em.pfl1);
+// WEM30					snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVA %3.2fPF             ", (float) em.wl1 / 10.0f, (float) em.val1 / 10.f, (float) em.pfl1 / 1000.0f);
 				} else {
 					snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVA %3.2fPF             ", imd_tmp.ap1s / 10.0f, imd_tmp.rpp1s / 10.f, (float) em.pfl1 / 1000.0f);
 				}

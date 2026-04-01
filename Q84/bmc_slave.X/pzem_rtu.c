@@ -41,8 +41,10 @@ static void half_dup_rx(const bool);
 static const uint8_t
 // transmit frames for commands
 modbus_pz_data1[] = {PZMADDR, READ_INPUT_REGISTERS, 0x00, 0x00, 0x00, PZ_DATA_LEN1},
-modbus_pz_hz60[] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00, PZEM_FREQUENCY_SYSTEM_REG, 0x00, 0x01, 0x02, 0x00, PZEM_FREQUENCY_60HZ}, // register 0x0002, data 0x0001
-modbus_pz_hz50[] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00, PZEM_FREQUENCY_SYSTEM_REG, 0x00, 0x01, 0x02, 0x00, PZEM_FREQUENCY_50HZ},
+modbus_pz_hz60[] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00, PZEM_FREQUENCY_SYSTEM_REG, 0x00, 0x01, 0x02, PZEM_FREQUENCY_60HZ, 0x00}, // register 0x0002, data 0x0001
+modbus_pz_hz50[] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00, PZEM_FREQUENCY_SYSTEM_REG, 0x00, 0x01, 0x02, PZEM_FREQUENCY_50HZ, 0x00},
+modbus_pz_3wirehz60[] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00, PZEM_BAUDRATE_TYPE_REG, 0x00, 0x02, 0x04, PZEM_BAUDRATE_9600, PZEM_CONNECTION_3PHASE_3WIRE, PZEM_FREQUENCY_60HZ, 0x00},
+modbus_pz_3wirehz50[] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00, PZEM_BAUDRATE_TYPE_REG, 0x00, 0x02, 0x04, PZEM_BAUDRATE_9600, PZEM_CONNECTION_3PHASE_3WIRE, PZEM_FREQUENCY_50HZ, 0x00},
 // receive frames prototypes for received data checking
 pz_data1[(PZ_DATA_LEN1 * 2) + 5] = {PZMADDR, READ_INPUT_REGISTERS, 0x00},
 pz_hz1[(PZ_DATA_HZ1 * 2) + 6] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00};
@@ -107,9 +109,9 @@ int8_t pzem_controller_work(C_data * client)
 		case P_HZ1: // set line frequency request
 			client->trace = T_config;
 #ifdef USE50HZ
-			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_pz_hz50, sizeof(modbus_pz_hz50));
+			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_pz_3wirehz50, sizeof(modbus_pz_3wirehz50));
 #else
-			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_pz_hz60, sizeof(modbus_pz_hz60));
+			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_pz_3wirehz60, sizeof(modbus_pz_3wirehz60));
 #endif
 			break;
 		case P_LAST: // end of command sequences
@@ -182,7 +184,7 @@ int8_t pzem_controller_work(C_data * client)
 			case P_DATA1: // check for controller data1 codes
 				pzem_modbus_read_check(client, &client->data_ok, sizeof(pz_data1), pzem_data_handler);
 				break;
-			case P_HZ1: // set controller hz1 code to 50/60Hz
+			case P_HZ1: // set controller hz1 code to 50/60Hz and/or 3wire mode
 				pzem_modbus_write_check(client, &client->config_ok, sizeof(pz_hz1));
 				break;
 			default:
@@ -210,12 +212,12 @@ static void pzem_data_handler(void)
 	em.vl1l2 = (uint16_t) pz_ptr->vl1n;
 	em.vl2l3 = (uint16_t) pz_ptr->vl2n;
 	em.vl3l1 = (uint16_t) pz_ptr->vl3n;
-	em.al1 = (uint16_t) pz_ptr->al1;
-	em.al2 = (uint16_t) pz_ptr->al2;
-	em.al3 = (uint16_t) pz_ptr->al3;
-	em.wl1 = pz_ptr->pap1s;
-	em.wl2 = pz_ptr->pap2s;
-	em.wl3 = pz_ptr->pap3s;
+	em.al1 = (uint16_t) pz_ptr->al1 * 10;
+	em.al2 = (uint16_t) pz_ptr->al2 * 10;
+	em.al3 = (uint16_t) pz_ptr->al3 * 10;
+	em.wl1 = pz_ptr->pap1s / 10;
+	em.wl2 = pz_ptr->pap2s / 10;
+	em.wl3 = pz_ptr->pap3s / 10;
 	em.val1 = pz_ptr->papp1s;
 	em.val2 = pz_ptr->papp2s;
 	em.val3 = pz_ptr->papp3s;
@@ -233,9 +235,9 @@ static void pzem_data_handler(void)
 	emt.hz = (int32_t) (((float) em.hz) * 10.0f);
 	em_tmp.hz = (float) emt.hz;
 	em_tmp.al1 = ((float) em.al1);
-	em_tmp.wl1 = (float) em.wl1;
-	em_tmp.wl2 = (float) em.wl2;
-	em_tmp.wl3 = (float) em.wl3;
+	em_tmp.wl1 = (float) em.wl1 * 100.0f;
+	em_tmp.wl2 = (float) em.wl2 * 100.0f;
+	em_tmp.wl3 = (float) em.wl3 * 100.0f;
 	imd_tmp.ap1s = (float) em.wl1; // phase A:1 GTI power
 	imd_tmp.ap2s = (float) em.wl2; // Phase B:2 Utility power flow
 	imd_tmp.ap3s = (float) em.wl3; // Phase C:3 Load power
