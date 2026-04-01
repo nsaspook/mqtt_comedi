@@ -22,8 +22,8 @@ extern "C" {
 #define PZMADDR		0x02 // modbus client address
 #define MB_PZEM_ID_H	PZMADDR	// slave ID
 #define MB_PZEM_ID_L	0x06	// slave baudrate
-	
-#define WRITE_PZEM_REGISTER		10
+
+#define WRITE_PZEM_REGISTER		0x10
 
 	// Input register addresses
 #define PZEM_VOLTAGE_REG                  0x0000 // A=0x0000, B=0x0001, C=0x0002
@@ -113,8 +113,7 @@ extern "C" {
 
 	typedef enum cmd_pz_type {
 		P_DATA1 = 0,
-		P_DIR1 = 1,
-		P_HZ1 = 2,
+		P_HZ1,
 		P_LAST,
 	} cmd_pz_type;
 
@@ -128,6 +127,7 @@ extern "C" {
 		hz1, hz2, hz3,
 		pvp2, pvp3,
 		pcp1, pcp2, pcp3;
+
 		volatile uint32_t
 		aep1f, aep1r,
 		aep2f, aep2r,
@@ -137,13 +137,13 @@ extern "C" {
 		volatile int32_t
 		pap1s, pap2s, pap3s,
 		prp1s, prp2s, prp3s,
-		papp1, papp2, papp3s,
+		papp1s, papp2s, papp3s,
 		caps, c1ps, capps;
 
 		volatile uint16_t
 		p1p2pf, p3cpf;
 
-		volatile int32_t
+		volatile uint32_t
 		pae1s, pae2s, pae3s,
 		pre1s, pre2s, pre3s,
 		pappe1s, pappe2s, pappe3s,
@@ -162,18 +162,6 @@ extern "C" {
 		pfl1, pfl2, pfl3, pfsys,
 		phaseseq, hz;
 	} PZ_tmp;
-
-	/*
-	 * map 16-bit registers to bytes to extract information
-	 */
-	typedef __pack struct PZ_dir1 {
-		volatile uint16_t
-		vl1n, vl2n, vl3n,
-		al1, al2, al3,
-		hz1, hz2, hz3,
-		pvp2, pvp3,
-		pcp1, pcp2, pcp3;
-	} PZ_dir1;
 
 	extern PZ_tmp pz_tmp;
 

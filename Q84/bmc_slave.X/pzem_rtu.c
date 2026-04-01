@@ -31,7 +31,6 @@ static const uint16_t IDUPL_DELAY = 2; // extra duplex delay mode
 
 static bool pzem_modbus_write_check(C_data *, bool*, uint16_t);
 static bool pzem_modbus_read_check(C_data *, bool*, uint16_t, void (* DataHandler)(void));
-static bool pzem_modbus_read_dir_check(C_data *, bool*, uint16_t, void (* DataHandler)(void), const uint8_t);
 
 static void pzem_data_handler(void);
 static void pzem_dir_handler(void);
@@ -42,19 +41,16 @@ static void half_dup_rx(const bool);
 static const uint8_t
 // transmit frames for commands
 modbus_pz_data1[] = {PZMADDR, READ_INPUT_REGISTERS, 0x00, 0x00, 0x00, PZ_DATA_LEN1},
-modbus_pz_dir1[] = {PZMADDR, READ_INPUT_REGISTERS, 0x00, 0x00, 0x00, PZ_DATA_DIR1},
-modbus_pz_hz60[] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00, PZEM_FREQUENCY_SYSTEM_REG, 0x00, PZEM_FREQUENCY_60HZ}, // register 0x0002, data 0x0001
-modbus_pz_hz50[] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00, PZEM_FREQUENCY_SYSTEM_REG, 0x00, PZEM_FREQUENCY_50HZ},
+modbus_pz_hz60[] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00, PZEM_FREQUENCY_SYSTEM_REG, 0x00, 0x01, 0x02, 0x00, PZEM_FREQUENCY_60HZ}, // register 0x0002, data 0x0001
+modbus_pz_hz50[] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00, PZEM_FREQUENCY_SYSTEM_REG, 0x00, 0x01, 0x02, 0x00, PZEM_FREQUENCY_50HZ},
 // receive frames prototypes for received data checking
 pz_data1[(PZ_DATA_LEN1 * 2) + 5] = {PZMADDR, READ_INPUT_REGISTERS, 0x00},
-pz_dir1[(PZ_DATA_DIR1 * 2) + 5] = {PZMADDR, READ_INPUT_REGISTERS, 0x00},
-pz_hz1[(PZ_DATA_HZ1 * 2) + 5] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00};
+pz_hz1[(PZ_DATA_HZ1 * 2) + 6] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00};
 
 /*
  * register data frames
  */
 PZ_data1 pz, *pz_ptr;
-PZ_dir1 pzd, *pzd_ptr;
 PZ_tmp pz_tmp;
 
 /*
@@ -64,7 +60,6 @@ void init_pz_mb_master_timers(void)
 {
 	cc_buffer = cc_buffer_0;
 	pz_ptr = (PZ_data1*) & cc_buffer[3];
-	pzd_ptr = (PZ_dir1*) & cc_buffer[3];
 	TMR4_SetInterruptHandler(timer_500ms_tick);
 	TMR4_StartTimer();
 	TMR3_SetInterruptHandler(timer_2ms_tick);
@@ -108,10 +103,6 @@ int8_t pzem_controller_work(C_data * client)
 		case P_DATA1: // read data request
 			client->trace = T_data;
 			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_pz_data1, sizeof(modbus_pz_data1));
-			break;
-		case P_DIR1: // read info request
-			client->trace = T_data;
-			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_pz_dir1, sizeof(modbus_pz_dir1));
 			break;
 		case P_HZ1: // set line frequency request
 			client->trace = T_config;
@@ -191,10 +182,7 @@ int8_t pzem_controller_work(C_data * client)
 			case P_DATA1: // check for controller data1 codes
 				pzem_modbus_read_check(client, &client->data_ok, sizeof(pz_data1), pzem_data_handler);
 				break;
-			case P_DIR1: // check for controller dir1 codes
-				pzem_modbus_read_dir_check(client, &client->id_ok, sizeof(pz_dir1), pzem_dir_handler, READ_HOLDING_REGISTERS);
-				break;
-			case P_HZ1: // set controller hz1 code to 60Hz
+			case P_HZ1: // set controller hz1 code to 50/60Hz
 				pzem_modbus_write_check(client, &client->config_ok, sizeof(pz_hz1));
 				break;
 			default:
@@ -216,50 +204,44 @@ static void pzem_data_handler(void)
 	 * and munge the data into the correct local formats for client
 	 */
 	em_ptr = (EM_data1*) & cc_buffer[3];
-	em.vl1n = mb16_swap((int16_t) pz_ptr->vl1n) / 10;
-	em.vl2n = mb16_swap((int16_t) pz_ptr->vl2n) / 10;
-	em.vl3n = mb16_swap((int16_t) pz_ptr->vl3n) / 10;
-	em.vl1l2 = mb16_swap((int16_t) pz_ptr->vl1n) / 10;
-	em.vl2l3 = mb16_swap((int16_t) pz_ptr->vl2n) / 10;
-	em.vl3l1 = mb16_swap((int16_t) pz_ptr->vl3n) / 10;
-	em.al1 = mb16_swap((int16_t) pz_ptr->al1)*10;
-	em.al2 = mb16_swap((int16_t) pz_ptr->al2)*10;
-	em.al3 = mb16_swap((int16_t) pz_ptr->al3)*10;
-	em.wl1 = mb32_swap(pz_ptr->pap1s) / 10000;
-	em.wl2 = mb32_swap(pz_ptr->pap2s) / 10000;
-	em.wl3 = mb32_swap(pz_ptr->pap3s) / 10000;
-	em.val1 = mb32_swap(pz_ptr->prp1s) / 10000;
-	em.val2 = mb32_swap(pz_ptr->prp2s) / 10000;
-	em.val3 = mb32_swap(pz_ptr->prp3s) / 10000;
-	em.varl1 = mb32_swap(pz_ptr->prp1s) / 10000;
-	em.varl2 = mb32_swap(pz_ptr->prp2s) / 10000;
-	em.varl3 = mb32_swap(pz_ptr->prp3s) / 10000;
-	em.wsys = mb32_swap(pz_ptr->caes);
-	em.vasys = mb32_swap(pz_ptr->cres);
-	em.varsys = mb32_swap(pz_ptr->cappes);
-	em.pfl1 = mb16_swap((const int16_t) pz_ptr->p1p2pf);
-	em.pfl2 = mb16_swap((const int16_t) pz_ptr->p1p2pf);
-	em.pfl3 = mb16_swap((const int16_t) pz_ptr->p1p2pf);
-	em.pfsys = mb16_swap((const int16_t) pz_ptr->p3cpf);
-	em.hz = mb16_swap((const int16_t) pz_ptr->hz1);
-	emt.hz = (int32_t) (((float) em.hz) * 100.0f);
+	em.vl1n = (uint16_t) pz_ptr->vl1n;
+	em.vl2n = (uint16_t) pz_ptr->vl2n;
+	em.vl3n = (uint16_t) pz_ptr->vl3n;
+	em.vl1l2 = (uint16_t) pz_ptr->vl1n;
+	em.vl2l3 = (uint16_t) pz_ptr->vl2n;
+	em.vl3l1 = (uint16_t) pz_ptr->vl3n;
+	em.al1 = (uint16_t) pz_ptr->al1;
+	em.al2 = (uint16_t) pz_ptr->al2;
+	em.al3 = (uint16_t) pz_ptr->al3;
+	em.wl1 = pz_ptr->pap1s;
+	em.wl2 = pz_ptr->pap2s;
+	em.wl3 = pz_ptr->pap3s;
+	em.val1 = pz_ptr->papp1s;
+	em.val2 = pz_ptr->papp2s;
+	em.val3 = pz_ptr->papp3s;
+	em.varl1 = pz_ptr->prp1s;
+	em.varl2 = pz_ptr->prp2s;
+	em.varl3 = pz_ptr->prp3s;
+	em.wsys = (int32_t) pz_ptr->caes;
+	em.vasys = (int32_t) pz_ptr->cappes;
+	em.varsys = (int32_t) pz_ptr->cres;
+	em.pfl1 = (int16_t) pz_ptr->p1p2pf;
+	em.pfl2 = (int16_t) pz_ptr->p1p2pf;
+	em.pfl3 = (int16_t) pz_ptr->p1p2pf;
+	em.pfsys = (int16_t) pz_ptr->p3cpf;
+	em.hz = (int16_t) pz_ptr->hz1;
+	emt.hz = (int32_t) (((float) em.hz) * 10.0f);
 	em_tmp.hz = (float) emt.hz;
-	em_tmp.al1 = ((float) em.al1) / 100.0f;
-	em_tmp.wl1 = (float) mb32_swap(pz_ptr->pap1s)*100;
-	em_tmp.wl2 = (float) mb32_swap(pz_ptr->pap2s)*100;
-	em_tmp.wl3 = (float) mb32_swap(pz_ptr->pap3s)*100;
-}
-
-static void pzem_dir_handler(void)
-{
-	pzd_ptr = (PZ_dir1*) & cc_buffer[3];
-	pzem_data_handler();
+	em_tmp.al1 = ((float) em.al1);
+	em_tmp.wl1 = (float) em.wl1;
+	em_tmp.wl2 = (float) em.wl2;
+	em_tmp.wl3 = (float) em.wl3;
 	imd_tmp.ap1s = (float) em.wl1; // phase A:1 GTI power
 	imd_tmp.ap2s = (float) em.wl2; // Phase B:2 Utility power flow
 	imd_tmp.ap3s = (float) em.wl3; // Phase C:3 Load power
-	imd_tmp.rpp1s = (float) em.varl1; // Reactive power for each Phase input
-	imd_tmp.rpp2s = (float) em.varl2;
-	imd_tmp.rpp3s = (float) em.varl3;
+	imd_tmp.rpp1s = (float) em.val1; // Reactive power for each Phase input
+	imd_tmp.rpp2s = (float) em.val2;
+	imd_tmp.rpp3s = (float) em.val3;
 	imd_tmp.tps = (float) em.wsys; // Total power
 }
 
@@ -268,10 +250,11 @@ static bool pzem_modbus_write_check(C_data * client, bool* cstate, const uint16_
 	uint16_t c_crc, c_crc_rec;
 
 	client->req_length = rec_length;
-	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == PZMADDR) && (cc_buffer[1] == WRITE_SINGLE_REGISTER))) {
+	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == PZMADDR) && (cc_buffer[1] == WRITE_PZEM_REGISTER))) {
 		c_crc = crc16(cc_buffer, client->req_length - 2);
 		c_crc_rec = crc16_receive(client, cc_buffer);
 		if (DBUG_R c_crc == c_crc_rec) {
+			client->config_ok = true;
 			*cstate = true;
 			MM_ERROR_C;
 		} else {
@@ -299,7 +282,7 @@ static bool pzem_modbus_read_check(C_data * client, bool* cstate, const uint16_t
 	uint16_t c_crc, c_crc_rec;
 
 	client->req_length = rec_length;
-	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == PZMADDR) && (cc_buffer[1] == READ_HOLDING_REGISTERS))) {
+	if (DBUG_R((M.recv_count >= client->req_length) && (cc_buffer[0] == PZMADDR) && (cc_buffer[1] == READ_INPUT_REGISTERS))) {
 		c_crc = crc16(cc_buffer, client->req_length - 2);
 		c_crc_rec = crc16_receive(client, cc_buffer);
 #ifdef CRC_ERRORS
@@ -309,6 +292,7 @@ static bool pzem_modbus_read_check(C_data * client, bool* cstate, const uint16_t
 #endif
 		if (DBUG_R c_crc == c_crc_rec) {
 			client->data_ok = true;
+			client->id_ok = true;
 			*cstate = true;
 			/*
 			 * move from receive buffer to data structure and munge the data into the correct local 32-bit format from MODBUS client
@@ -321,6 +305,8 @@ static bool pzem_modbus_read_check(C_data * client, bool* cstate, const uint16_t
 			MM_ERROR_S;
 			*cstate = false;
 			client->data_ok = false;
+			client->id_ok = false;
+			client->config_ok = false;
 			log_crc_error(c_crc, c_crc_rec);
 		}
 		client->cstate = CLEAR;
@@ -333,6 +319,8 @@ static bool pzem_modbus_read_check(C_data * client, bool* cstate, const uint16_t
 			M.error++;
 			*cstate = false;
 			client->data_ok = false;
+			client->id_ok = false;
+			client->config_ok = false;
 		}
 	}
 	return *cstate;
@@ -360,17 +348,19 @@ static bool pzem_modbus_read_dir_check(C_data * client, bool* cstate, const uint
 			MM_ERROR_S;
 			*cstate = false;
 			client->id_ok = false;
+			client->config_ok = false;
 			log_crc_error(c_crc, c_crc_rec);
 		}
 		client->cstate = CLEAR;
 	} else {
 		if (get_500hz(false) >= IRDELAY) {
 			client->cstate = CLEAR;
-			client->mcmd = P_DIR1;
+			client->mcmd = P_DATA1;
 			M.to_error++;
 			M.error++;
 			*cstate = false;
 			client->id_ok = false;
+			client->config_ok = false;
 		}
 	}
 	return *cstate;
