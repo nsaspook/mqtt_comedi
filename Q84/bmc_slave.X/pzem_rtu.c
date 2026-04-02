@@ -19,15 +19,15 @@ static volatile M_time_data MT = {
 	.clock_500hz = 0,
 };
 
-static const uint16_t ITDELAY = 3; // KWH half-duplex delay
-static const uint16_t ITMDELAY = 2; // half-duplex delay
-static const uint16_t ITEDELAY = 2; // half-duplex delay
-static const uint16_t IRDELAY = 1200; // receive timeout
-static const uint16_t ICDELAY = 40; // fast query delay 100ms
-static const uint16_t IQDELAY = 2; // slow query delay 1s
-static const uint16_t ITODELAY = 4; // misc delay
-static const uint16_t ISPACING = 5000; // control loop cpu usage factor
-static const uint16_t IDUPL_DELAY = 2; // extra duplex delay mode
+static const uint16_t PTDELAY = 3; // KWH half-duplex delay
+static const uint16_t PTMDELAY = 2; // half-duplex delay
+static const uint16_t PTEDELAY = 2; // half-duplex delay
+static const uint16_t PRDELAY = 1200; // receive timeout
+static const uint16_t PCDELAY = 40; // fast query delay 100ms
+static const uint16_t PQDELAY = 2; // slow query delay 1s
+static const uint16_t PTODELAY = 4; // misc delay
+static const uint16_t PSPACING = 5000; // control loop cpu usage factor
+static const uint16_t PDUPL_DELAY = 2; // extra duplex delay mode
 
 static bool pzem_modbus_write_check(C_data *, bool*, uint16_t);
 static bool pzem_modbus_read_check(C_data *, bool*, uint16_t, void (* DataHandler)(void));
@@ -80,7 +80,7 @@ int8_t pzem_controller_work(C_data * client)
 	static uint32_t spacing = 0;
 	static uint8_t m_data = 0;
 
-	if (spacing++ <ISPACING && (client->cstate != RECV)) {
+	if (spacing++ <PSPACING && (client->cstate != RECV)) {
 		return T_spacing;
 	}
 
@@ -139,7 +139,7 @@ int8_t pzem_controller_work(C_data * client)
 		 * MODBUS master query speed
 		 */
 #ifdef	FASTQ
-		if (get_500ahz(false) >= ICDELAY) {
+		if (get_500ahz(false) >= PCDELAY) {
 #else
 		if (get_2hz(false) >= IQDELAY) {
 #endif
@@ -154,7 +154,7 @@ int8_t pzem_controller_work(C_data * client)
 		break;
 	case SEND:
 		client->trace = T_send;
-		if (get_500hz(false) >= ITEDELAY) {
+		if (get_500hz(false) >= PTEDELAY) {
 			for (uint8_t i = 0; i < client->req_length; i++) {
 				Swrite(cc_buffer_tx[i]);
 			}
@@ -172,7 +172,7 @@ int8_t pzem_controller_work(C_data * client)
 		break;
 	case RECV:
 		client->trace = T_recv;
-		if (get_500hz(false) >= ITEDELAY) { // state machine execute timer test
+		if (get_500hz(false) >= PTEDELAY) { // state machine execute timer test
 			client->trace = T_recv_r;
 #ifndef AUTO_DERE
 			half_dup_rx(false); // no delays here
@@ -276,7 +276,7 @@ static bool pzem_modbus_write_check(C_data * client, bool* cstate, const uint16_
 		client->cstate = CLEAR; // where do we go next
 		client->mcmd = P_LAST; // what do we run next
 	} else {
-		if (get_500hz(false) >= IRDELAY) {
+		if (get_500hz(false) >= PRDELAY) {
 			client->cstate = CLEAR; // where do we go next
 			client->mcmd = P_DATA1; // what do we run next
 			M.to_error++;
@@ -323,7 +323,7 @@ static bool pzem_modbus_read_check(C_data * client, bool* cstate, const uint16_t
 		}
 		client->cstate = CLEAR;
 	} else {
-		if (get_500hz(false) >= IRDELAY) {
+		if (get_500hz(false) >= PRDELAY) {
 			client->cstate = CLEAR;
 			MM_ERROR_C;
 			client->mcmd = P_DATA1;
@@ -365,7 +365,7 @@ static bool pzem_modbus_read_dir_check(C_data * client, bool* cstate, const uint
 		}
 		client->cstate = CLEAR;
 	} else {
-		if (get_500hz(false) >= IRDELAY) {
+		if (get_500hz(false) >= PRDELAY) {
 			client->cstate = CLEAR;
 			client->mcmd = P_DATA1;
 			M.to_error++;

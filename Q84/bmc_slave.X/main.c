@@ -501,15 +501,16 @@ void main(void)
 
 #ifdef MB_MASTER
 	switch (ha_daq_calib.em_model) {
-	case WEM30_M: // use IAMMETER MODBUS connection to WEM3080T instead of default EM540
-		V.op.init_mb_master_timers = &init_im_mb_master_timers;
-		V.op.master_controller_work = &iammeter_controller_work;
-		V.op.info_ptr = &iammeter_version;
-		break;
 	case PZEM_M: // use PZEM-6L24 MODBUS connection to PZEM-6L24 instead of default EM540
 		V.op.init_mb_master_timers = &init_pz_mb_master_timers;
 		V.op.master_controller_work = &pzem_controller_work;
 		V.op.info_ptr = &pzem_version;
+		break;
+	case NEXT_M:
+	case WEM30_M: // use IAMMETER MODBUS connection to WEM3080T instead of default EM540
+		V.op.init_mb_master_timers = &init_im_mb_master_timers;
+		V.op.master_controller_work = &iammeter_controller_work;
+		V.op.info_ptr = &iammeter_version;
 		break;
 	case EM540_M:
 	default:

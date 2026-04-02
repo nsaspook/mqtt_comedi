@@ -113,7 +113,7 @@ enum EMETER_MODEL set_calibration(unsigned long long mui)
 	}
 
 	/*
-	 * written at boot after device flash, looks for emeter_conf port for model type to save
+	 * written at boot after device flash, looks for emeter_conf ports for model type to save
 	 * updates triggered by ADC calibration functions from user program
 	 */
 	if (read_cal_data()) {
@@ -128,6 +128,10 @@ enum EMETER_MODEL set_calibration(unsigned long long mui)
 	}
 	if ((EMETER_CONF_PORT == 0x00) && (EMETER_CONF_TYPE_PORT == 0x00)) {
 		em_model = PZEM_M;
+	}
+
+	if ((EMETER_CONF_PORT == 0x01) && (EMETER_CONF_TYPE_PORT == 0x00)) {
+		em_model = NEXT_M;
 	}
 
 	return em_model;

@@ -40,6 +40,7 @@ extern "C" {
 		EM540_M = 0,	// E Meter jumpers high/high
 		WEM30_M,	// low/high
 		PZEM_M,		// low/low
+		NEXT_M,		// high/low
 	};
 
 	struct ha_daq_calib_type {
@@ -54,7 +55,7 @@ extern "C" {
 		uint8_t c_zero_cal : 1;
 		uint8_t c_scale_cal : 1;
 		uint8_t c_do_cal : 1;
-		enum EMETER_MODEL em_model;
+		volatile enum EMETER_MODEL em_model;
 		uint16_t checkmark;
 		uint8_t crc; // must be last item in the structure
 	};

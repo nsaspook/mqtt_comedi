@@ -1,22 +1,22 @@
 Version 4.0 HI-TECH Software Intermediate Code
-[v F24867 `(v ~T0 @X0 0 tf ]
-[v F24869 `(v ~T0 @X0 0 tf ]
-[v F24944 `(v ~T0 @X0 0 tf ]
-[v F24946 `(v ~T0 @X0 0 tf ]
-[v F24981 `(v ~T0 @X0 0 tf ]
+[v F24873 `(v ~T0 @X0 0 tf ]
+[v F24875 `(v ~T0 @X0 0 tf ]
+[v F24950 `(v ~T0 @X0 0 tf ]
+[v F24952 `(v ~T0 @X0 0 tf ]
 [v F24987 `(v ~T0 @X0 0 tf ]
+[v F24993 `(v ~T0 @X0 0 tf ]
 "3 calibr.c
-[c E25591 0 1 2 .. ]
-[n E25591 EMETER_MODEL EM540_M WEM30_M PZEM_M  ]
-"45 ./calibr.h
-[s S3411 `uo 1 `d 1 `d 1 `d 1 `d 1 `d 1 `d 1 `a 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 `E25591 1 `us 1 `uc 1 ]
+[c E25597 0 1 2 3 .. ]
+[n E25597 EMETER_MODEL EM540_M WEM30_M PZEM_M NEXT_M  ]
+"46 ./calibr.h
+[s S3411 `uo 1 `d 1 `d 1 `d 1 `d 1 `d 1 `d 1 `a 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 `VE25597 1 `us 1 `uc 1 ]
 [n S3411 ha_daq_calib_type bmc_id offset4 scaler4 offset5 scaler5 A200_Z A200_S done c_zero_cal c_scale_cal c_do_cal em_model checkmark crc ]
-"62
+"63
 [s S3412 `d 1 `d 1 `d 1 `d 1 `d 1 `d 1 ]
 [n S3412 bmc_settings BENERGYV BVOLTAGEV BVFLOATV PVENERGYV PVVOLTAGEV SOC_MODEV ]
-"67
+"68
 [v _ha_daq_calib `S3411 ~T0 @X0 0 e ]
-"74
+"75
 [v _read_cal_data `(a ~T0 @X0 0 ef ]
 "70593 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.30.487/xc8/pic/include/proc/pic18f57q84.h
 [s S3212 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
@@ -28,16 +28,16 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _PORTFbits `VS3211 ~T0 @X0 0 e@1235 ]
 "94 ./mcc_generated_files/crc.h
 [v _CRC_Initialize `(v ~T0 @X0 0 ef ]
-[v F24167 `(v ~T0 @X0 1 tf ]
+[v F24173 `(v ~T0 @X0 1 tf ]
 "135
-[v _CRC_StartCrc `TF24167 ~T0 @X0 0 e ]
+[v _CRC_StartCrc `TF24173 ~T0 @X0 0 e ]
 "225 ./mcc_generated_files/memory.h
 [v _DATAEE_ReadByte `(uc ~T0 @X0 0 ef1`us ]
 "174 ./mcc_generated_files/crc.h
 [v _CRC_WriteData `(a ~T0 @X0 0 ef1`ul ]
-[v F24174 `(a ~T0 @X0 1 tf ]
+[v F24180 `(a ~T0 @X0 1 tf ]
 "251
-[v _CRC_IsCrcBusy `TF24174 ~T0 @X0 0 e ]
+[v _CRC_IsCrcBusy `TF24180 ~T0 @X0 0 e ]
 "212
 [v _CRC_GetCalculatedResult `(ul ~T0 @X0 0 ef2`a`ul ]
 "212 ./mcc_generated_files/memory.h
@@ -2477,17 +2477,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 "55 ./mcc_generated_files/dma2.h
 [v _spi1_rec_buf `Vuc ~T0 @X0 -> 32 `i e ]
 "517 ./mcc_generated_files/uart3.h
-[v _UART3_RxInterruptHandler `*F24867 ~T0 @X0 1 e ]
+[v _UART3_RxInterruptHandler `*F24873 ~T0 @X0 1 e ]
 "535
-[v _UART3_TxInterruptHandler `*F24869 ~T0 @X0 1 e ]
+[v _UART3_TxInterruptHandler `*F24875 ~T0 @X0 1 e ]
 "517 ./mcc_generated_files/uart1.h
-[v _UART1_RxInterruptHandler `*F24944 ~T0 @X0 1 e ]
+[v _UART1_RxInterruptHandler `*F24950 ~T0 @X0 1 e ]
 "535
-[v _UART1_TxInterruptHandler `*F24946 ~T0 @X0 1 e ]
+[v _UART1_TxInterruptHandler `*F24952 ~T0 @X0 1 e ]
 "75 ./mcc_generated_files/spi2.h
-[v _SPI2_InterruptHandler `*F24981 ~T0 @X0 1 e ]
+[v _SPI2_InterruptHandler `*F24987 ~T0 @X0 1 e ]
 "77
-[v _SPI2_RxInterruptHandler `*F24987 ~T0 @X0 1 e ]
+[v _SPI2_RxInterruptHandler `*F24993 ~T0 @X0 1 e ]
 "72 ./modbus_master.h
 [v _TMDELAY `Cuc ~T0 @X0 1 s ]
 [i _TMDELAY
@@ -3062,87 +3062,87 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _BON
 -> -> 255 `i `uc
 ]
-"152 ./vconfig.h
+"153 ./vconfig.h
 [v _TDELAY `Cus ~T0 @X0 1 s ]
 [i _TDELAY
 -> -> 3000 `i `us
 ]
-"153
+"154
 [v _SEQDELAY `Cus ~T0 @X0 1 s ]
 [i _SEQDELAY
 -> -> 10000 `i `us
 ]
-"154
+"155
 [v _LDELAY `Cus ~T0 @X0 1 s ]
 [i _LDELAY
 -> -> 2400 `i `us
 ]
-"155
+"156
 [v _WLDELAY `Cus ~T0 @X0 1 s ]
 [i _WLDELAY
 -> -> 1600 `i `us
 ]
-"156
+"157
 [v _SDELAY `Cus ~T0 @X0 1 s ]
 [i _SDELAY
 -> -> 100 `i `us
 ]
-"157
+"158
 [v _DDELAY `Cus ~T0 @X0 1 s ]
 [i _DDELAY
 -> -> 500 `i `us
 ]
-"158
+"159
 [v _DFLIP `Cus ~T0 @X0 1 s ]
 [i _DFLIP
 -> -> 1500 `i `us
 ]
-"159
+"160
 [v _ADCDELAY `Cuc ~T0 @X0 1 s ]
 [i _ADCDELAY
 -> -> 1 `i `uc
 ]
-"160
+"161
 [v _SWITCH_VTERM `Cuc ~T0 @X0 1 s ]
 [i _SWITCH_VTERM
 -> -> 70 `i `uc
 ]
-"161
+"162
 [v _SWITCH_DURATION `Cuc ~T0 @X0 1 s ]
 [i _SWITCH_DURATION
 -> -> 32 `i `uc
 ]
-"162
+"163
 [v _HOST_UART `Cuc ~T0 @X0 1 s ]
 [i _HOST_UART
 -> -> 1 `i `uc
 ]
-"163
+"164
 [v _CHK_DAY_TIME `Cus ~T0 @X0 1 s ]
 [i _CHK_DAY_TIME
 -> -> 1200 `i `us
 ]
-"164
+"165
 [v _BAT_DAY_COUNT `Cuc ~T0 @X0 1 s ]
 [i _BAT_DAY_COUNT
 -> -> 45 `i `uc
 ]
-"165
+"166
 [v _BAT_NIGHT_COUNT `Cuc ~T0 @X0 1 s ]
 [i _BAT_NIGHT_COUNT
 -> -> 90 `i `uc
 ]
-"166
+"167
 [v _PV_VOLTS_HIGH `Cuc ~T0 @X0 1 s ]
 [i _PV_VOLTS_HIGH
 -> -> 70 `i `uc
 ]
-"167
+"168
 [v _SPI_RESET_COUNTS `Cuc ~T0 @X0 1 s ]
 [i _SPI_RESET_COUNTS
 -> -> 6 `i `uc
 ]
-"176
+"177
 [v _log_format1 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format1
 :U ..
@@ -3331,7 +3331,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"182
+"183
 [v _log_format2 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format2
 :U ..
@@ -3520,7 +3520,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"188
+"189
 [v _log_format3 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format3
 :U ..
@@ -3709,7 +3709,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"194
+"195
 [v _log_format4 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format4
 :U ..
@@ -3898,9 +3898,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-[v F25539 `Cuc ~T0 @X0 -> 20 `i t ]
-"351
-[v _spin `F25539 ~T0 @X0 -> 6 `i e ]
+[v F25545 `Cuc ~T0 @X0 -> 20 `i t ]
+"352
+[v _spin `F25545 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..
 :U ..
@@ -4146,7 +4146,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ]
 "70
-[v _set_calibration `(E25591 ~T0 @X0 1 ef1`uo ]
+[v _set_calibration `(E25597 ~T0 @X0 1 ef1`uo ]
 "71
 {
 [e :U _set_calibration ]
@@ -4155,8 +4155,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "71
 [f ]
 "72
-[v _em_model `E25591 ~T0 @X0 1 a ]
-[e = _em_model . `E25591 0 ]
+[v _em_model `E25597 ~T0 @X0 1 a ]
+[e = _em_model . `E25597 0 ]
 "76
 [e $U 3416  ]
 {
@@ -4258,7 +4258,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! && == -> . . _PORTFbits 0 5 `i -> 0 `i == -> . . _PORTFbits 0 4 `i -> 1 `i 3427  ]
 {
 "127
-[e = _em_model . `E25591 1 ]
+[e = _em_model . `E25597 1 ]
 "128
 }
 [e :U 3427 ]
@@ -4266,267 +4266,275 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! && == -> . . _PORTFbits 0 5 `i -> 0 `i == -> . . _PORTFbits 0 4 `i -> 0 `i 3428  ]
 {
 "130
-[e = _em_model . `E25591 2 ]
+[e = _em_model . `E25597 2 ]
 "131
 }
 [e :U 3428 ]
 "133
+[e $ ! && == -> . . _PORTFbits 0 5 `i -> 1 `i == -> . . _PORTFbits 0 4 `i -> 0 `i 3429  ]
+{
+"134
+[e = _em_model . `E25597 3 ]
+"135
+}
+[e :U 3429 ]
+"137
 [e ) _em_model ]
 [e $UE 3414  ]
-"134
+"138
 [e :UE 3414 ]
 }
-"139
+"143
 [v _phy_chan4 `(f ~T0 @X0 1 ef1`us ]
-"140
+"144
 {
 [e :U _phy_chan4 ]
-"139
-[v _value `us ~T0 @X0 1 r1 ]
-"140
-[f ]
-"141
-[e $ ! != -> _value `ui -> -> 0 `i `ui 3430  ]
-{
-"142
-[e ) -> * -> / -> _value `f _ADC_SCALE `d . _ha_daq_calib 2 `f ]
-[e $UE 3429  ]
 "143
-}
-[e $U 3431  ]
-[e :U 3430 ]
-{
+[v _value `us ~T0 @X0 1 r1 ]
 "144
-[e ) -> .0.00001 `f ]
-[e $UE 3429  ]
+[f ]
 "145
-}
-[e :U 3431 ]
+[e $ ! != -> _value `ui -> -> 0 `i `ui 3431  ]
+{
 "146
-[e :UE 3429 ]
+[e ) -> * -> / -> _value `f _ADC_SCALE `d . _ha_daq_calib 2 `f ]
+[e $UE 3430  ]
+"147
 }
+[e $U 3432  ]
+[e :U 3431 ]
+{
 "148
-[v _phy_chan5 `(f ~T0 @X0 1 ef1`us ]
+[e ) -> .0.00001 `f ]
+[e $UE 3430  ]
 "149
+}
+[e :U 3432 ]
+"150
+[e :UE 3430 ]
+}
+"152
+[v _phy_chan5 `(f ~T0 @X0 1 ef1`us ]
+"153
 {
 [e :U _phy_chan5 ]
-"148
-[v _value `us ~T0 @X0 1 r1 ]
-"149
-[f ]
-"150
-[e $ ! != -> _value `ui -> -> 0 `i `ui 3433  ]
-{
-"151
-[e ) -> * -> / -> _value `f _ADC_SCALE `d . _ha_daq_calib 4 `f ]
-[e $UE 3432  ]
 "152
-}
-[e $U 3434  ]
-[e :U 3433 ]
-{
+[v _value `us ~T0 @X0 1 r1 ]
 "153
-[e ) -> .0.00001 `f ]
-[e $UE 3432  ]
+[f ]
 "154
-}
-[e :U 3434 ]
+[e $ ! != -> _value `ui -> -> 0 `i `ui 3434  ]
+{
 "155
-[e :UE 3432 ]
+[e ) -> * -> / -> _value `f _ADC_SCALE `d . _ha_daq_calib 4 `f ]
+[e $UE 3433  ]
+"156
 }
-"160
+[e $U 3435  ]
+[e :U 3434 ]
+{
+"157
+[e ) -> .0.00001 `f ]
+[e $UE 3433  ]
+"158
+}
+[e :U 3435 ]
+"159
+[e :UE 3433 ]
+}
+"164
 [v _read_cal_data `(a ~T0 @X0 1 ef ]
-"161
+"165
 {
 [e :U _read_cal_data ]
 [f ]
-"162
+"166
 [v _x `us ~T0 @X0 1 a ]
 [e = _x -> -> 0 `i `us ]
 [v _y `us ~T0 @X0 1 a ]
-"163
+"167
 [v _r_cal_ptr `*uc ~T0 @X0 1 a ]
 [v _crcVal_save `uc ~T0 @X0 1 a ]
-"165
+"169
 [e = _y -> -> # _r_cal `ui `us ]
-"166
+"170
 [e = _r_cal_ptr -> &U _r_cal `*uc ]
-"168
+"172
 [e ( _CRC_Initialize ..  ]
-"171
-[e ( _CRC_StartCrc ..  ]
-"173
-[e :U 3438 ]
-{
-"174
-[e = *U + _r_cal_ptr * -> _x `ux -> -> # *U _r_cal_ptr `ui `ux ( _DATAEE_ReadByte (1 _x ]
 "175
-}
-[e $ < -> =+ _x -> -> 1 `i `us `ui -> _y `ui 3438  ]
-[e :U 3437 ]
-"176
-[e = _crcVal_save . _r_cal 13 ]
-"178
-[e $ ! == -> . _r_cal 12 `ui -> -> 6487 `i `ui 3439  ]
-{
-"179
-[e = . _r_cal 13 -> -> 66 `i `uc ]
-"180
-[e = _x -> -> 0 `i `us ]
-"182
-[e :U 3442 ]
-{
-"183
-[e ( _CRC_WriteData (1 -> *U + _r_cal_ptr * -> _x `ux -> -> # *U _r_cal_ptr `ui `ux `ul ]
-"184
-[e $U 3443  ]
-[e :U 3444 ]
-[e :U 3443 ]
-[e $ != -> ( _CRC_IsCrcBusy ..  `i -> 0 `i 3444  ]
-[e :U 3445 ]
-"185
-}
-[e $ < -> =+ _x -> -> 1 `i `us `ui -> _y `ui 3442  ]
-[e :U 3441 ]
-"186
-[e $ ! != ( _CRC_GetCalculatedResult (2 , -> -> 0 `i `a -> -> -> 0 `i `l `ul -> _crcVal_save `ul 3446  ]
-"187
-[e ) -> -> 0 `i `a ]
-[e $UE 3435  ]
-[e :U 3446 ]
-"188
-}
-[e $U 3447  ]
+[e ( _CRC_StartCrc ..  ]
+"177
 [e :U 3439 ]
 {
+"178
+[e = *U + _r_cal_ptr * -> _x `ux -> -> # *U _r_cal_ptr `ui `ux ( _DATAEE_ReadByte (1 _x ]
+"179
+}
+[e $ < -> =+ _x -> -> 1 `i `us `ui -> _y `ui 3439  ]
+[e :U 3438 ]
+"180
+[e = _crcVal_save . _r_cal 13 ]
+"182
+[e $ ! == -> . _r_cal 12 `ui -> -> 6487 `i `ui 3440  ]
+{
+"183
+[e = . _r_cal 13 -> -> 66 `i `uc ]
+"184
+[e = _x -> -> 0 `i `us ]
+"186
+[e :U 3443 ]
+{
+"187
+[e ( _CRC_WriteData (1 -> *U + _r_cal_ptr * -> _x `ux -> -> # *U _r_cal_ptr `ui `ux `ul ]
+"188
+[e $U 3444  ]
+[e :U 3445 ]
+[e :U 3444 ]
+[e $ != -> ( _CRC_IsCrcBusy ..  `i -> 0 `i 3445  ]
+[e :U 3446 ]
 "189
-[e ) -> -> 0 `i `a ]
-[e $UE 3435  ]
+}
+[e $ < -> =+ _x -> -> 1 `i `us `ui -> _y `ui 3443  ]
+[e :U 3442 ]
 "190
-}
-[e :U 3447 ]
+[e $ ! != ( _CRC_GetCalculatedResult (2 , -> -> 0 `i `a -> -> -> 0 `i `l `ul -> _crcVal_save `ul 3447  ]
 "191
-[e = . _r_cal 13 _crcVal_save ]
+[e ) -> -> 0 `i `a ]
+[e $UE 3436  ]
+[e :U 3447 ]
 "192
-[e ) -> -> 1 `i `a ]
-[e $UE 3435  ]
-"193
-[e :UE 3435 ]
 }
-"198
+[e $U 3448  ]
+[e :U 3440 ]
+{
+"193
+[e ) -> -> 0 `i `a ]
+[e $UE 3436  ]
+"194
+}
+[e :U 3448 ]
+"195
+[e = . _r_cal 13 _crcVal_save ]
+"196
+[e ) -> -> 1 `i `a ]
+[e $UE 3436  ]
+"197
+[e :UE 3436 ]
+}
+"202
 [v _write_cal_data `(v ~T0 @X0 1 ef ]
-"199
+"203
 {
 [e :U _write_cal_data ]
 [f ]
-"200
+"204
 [v _x `us ~T0 @X0 1 a ]
 [e = _x -> -> 0 `i `us ]
 [v _y `us ~T0 @X0 1 a ]
-"201
+"205
 [v _r_cal_ptr `*uc ~T0 @X0 1 a ]
 [v _crcVal `uc ~T0 @X0 1 a ]
-"203
+"207
 [e = _y -> -> # `S3411 `ui `us ]
-"204
-[e = . _ha_daq_calib 13 -> -> 66 `i `uc ]
-"205
-[e = _r_cal_ptr -> &U _ha_daq_calib `*uc ]
-"206
-[e = . _ha_daq_calib 12 -> -> 6487 `i `us ]
 "208
+[e = . _ha_daq_calib 13 -> -> 66 `i `uc ]
+"209
+[e = _r_cal_ptr -> &U _ha_daq_calib `*uc ]
+"210
+[e = . _ha_daq_calib 12 -> -> 6487 `i `us ]
+"212
 [e ( _CRC_Initialize ..  ]
-"211
-[e ( _CRC_StartCrc ..  ]
-"213
-[e :U 3451 ]
-{
-"214
-[e ( _DATAEE_WriteByte (2 , _x *U + _r_cal_ptr * -> _x `ux -> -> # *U _r_cal_ptr `ui `ux ]
 "215
-[e ( _CRC_WriteData (1 -> *U + _r_cal_ptr * -> _x `ux -> -> # *U _r_cal_ptr `ui `ux `ul ]
-"216
-[e $U 3452  ]
-[e :U 3453 ]
-[e :U 3452 ]
-[e $ != -> ( _CRC_IsCrcBusy ..  `i -> 0 `i 3453  ]
-[e :U 3454 ]
+[e ( _CRC_StartCrc ..  ]
 "217
-}
-[e $ < -> =+ _x -> -> 1 `i `us `ui -> _y `ui 3451  ]
-[e :U 3450 ]
+[e :U 3452 ]
+{
+"218
+[e ( _DATAEE_WriteByte (2 , _x *U + _r_cal_ptr * -> _x `ux -> -> # *U _r_cal_ptr `ui `ux ]
 "219
-[e = _crcVal -> ( _CRC_GetCalculatedResult (2 , -> -> 0 `i `a -> -> -> 0 `i `l `ul `uc ]
+[e ( _CRC_WriteData (1 -> *U + _r_cal_ptr * -> _x `ux -> -> # *U _r_cal_ptr `ui `ux `ul ]
+"220
+[e $U 3453  ]
+[e :U 3454 ]
+[e :U 3453 ]
+[e $ != -> ( _CRC_IsCrcBusy ..  `i -> 0 `i 3454  ]
+[e :U 3455 ]
 "221
-[e ( _DATAEE_WriteByte (2 , -> - -> # `S3411 `ui -> -> 1 `i `ui `us _crcVal ]
-"222
-[e :UE 3448 ]
 }
-"227
+[e $ < -> =+ _x -> -> 1 `i `us `ui -> _y `ui 3452  ]
+[e :U 3451 ]
+"223
+[e = _crcVal -> ( _CRC_GetCalculatedResult (2 , -> -> 0 `i `a -> -> -> 0 `i `l `ul `uc ]
+"225
+[e ( _DATAEE_WriteByte (2 , -> - -> # `S3411 `ui -> -> 1 `i `ui `us _crcVal ]
+"226
+[e :UE 3449 ]
+}
+"231
 [v _update_cal_data `(v ~T0 @X0 1 ef ]
-"228
+"232
 {
 [e :U _update_cal_data ]
 [f ]
-"229
+"233
 [e = _ha_daq_calib _r_cal ]
-"230
-[e $ ! ! != -> . _ha_daq_calib 8 `i -> 0 `i 3456  ]
-{
-"231
-[e = . _ha_daq_calib 8 -> -> 1 `i `uc ]
-"232
-}
-[e :U 3456 ]
 "234
-[e $ ! ! != -> . _ha_daq_calib 9 `i -> 0 `i 3457  ]
+[e $ ! ! != -> . _ha_daq_calib 8 `i -> 0 `i 3457  ]
 {
 "235
-[e = . _ha_daq_calib 9 -> -> 1 `i `uc ]
+[e = . _ha_daq_calib 8 -> -> 1 `i `uc ]
 "236
 }
 [e :U 3457 ]
-"237
-[e :UE 3455 ]
+"238
+[e $ ! ! != -> . _ha_daq_calib 9 `i -> 0 `i 3458  ]
+{
+"239
+[e = . _ha_daq_calib 9 -> -> 1 `i `uc ]
+"240
 }
-"242
+[e :U 3458 ]
+"241
+[e :UE 3456 ]
+}
+"246
 [v _Volts_to_SOC `(d ~T0 @X0 1 ef1`Cd ]
-"243
+"247
 {
 [e :U _Volts_to_SOC ]
-"242
+"246
 [v _bvoltage `Cd ~T0 @X0 1 r1 ]
-"243
+"247
 [f ]
-"244
+"248
 [v _slot `ul ~T0 @X0 1 a ]
-"245
+"249
 [v _soc `d ~T0 @X0 1 a ]
 [e = _soc -> -> .0.80 `f `d ]
-"250
+"254
 {
 [e = _slot -> -> -> 0 `i `l `ul ]
-[e $ < _slot -> -> -> 12 `i `l `ul 3459  ]
-[e $U 3460  ]
-[e :U 3459 ]
+[e $ < _slot -> -> -> 12 `i `l `ul 3460  ]
+[e $U 3461  ]
+[e :U 3460 ]
 {
-"251
-[e $ ! > _bvoltage -> *U + &U _bsoc_voltage * -> _slot `ux -> -> # *U &U _bsoc_voltage `ui `ux `d 3462  ]
+"255
+[e $ ! > _bvoltage -> *U + &U _bsoc_voltage * -> _slot `ux -> -> # *U &U _bsoc_voltage `ui `ux `d 3463  ]
 {
-"252
+"256
 [e = _soc -> *U + &U _bsoc_soc * -> _slot `ux -> -> # *U &U _bsoc_soc `ui `ux `d ]
-"253
+"257
 }
-[e :U 3462 ]
-"254
+[e :U 3463 ]
+"258
 }
 [e ++ _slot -> -> -> 1 `i `l `ul ]
-[e $ < _slot -> -> -> 12 `i `l `ul 3459  ]
-[e :U 3460 ]
+[e $ < _slot -> -> -> 12 `i `l `ul 3460  ]
+[e :U 3461 ]
 }
-"255
+"259
 [e ) _soc ]
-[e $UE 3458  ]
-"256
-[e :UE 3458 ]
+[e $UE 3459  ]
+"260
+[e :UE 3459 ]
 }
