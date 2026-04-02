@@ -19,7 +19,6 @@ mcc_generated_files/tmr1.h  \
 mcc_generated_files/tmr2.h  \
 mcc_generated_files/tmr0.h  \
 mcc_generated_files/memory.h  \
-mcc_generated_files/clc1.h  \
 mcc_generated_files/uart3.h  \
 mcc_generated_files/uart2.h  \
 mcc_generated_files/uart1.h  \
