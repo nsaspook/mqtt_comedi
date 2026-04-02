@@ -45,6 +45,8 @@ modbus_pz_hz60[] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00, PZEM_FREQUENCY_SYSTEM_RE
 modbus_pz_hz50[] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00, PZEM_FREQUENCY_SYSTEM_REG, 0x00, 0x01, 0x02, PZEM_FREQUENCY_50HZ, 0x00},
 modbus_pz_3wirehz60[] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00, PZEM_BAUDRATE_TYPE_REG, 0x00, 0x02, 0x04, PZEM_BAUDRATE_9600, PZEM_CONNECTION_3PHASE_3WIRE, PZEM_FREQUENCY_60HZ, 0x00},
 modbus_pz_3wirehz50[] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00, PZEM_BAUDRATE_TYPE_REG, 0x00, 0x02, 0x04, PZEM_BAUDRATE_9600, PZEM_CONNECTION_3PHASE_3WIRE, PZEM_FREQUENCY_50HZ, 0x00},
+modbus_pz_4wirehz60[] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00, PZEM_BAUDRATE_TYPE_REG, 0x00, 0x02, 0x04, PZEM_BAUDRATE_9600, PZEM_CONNECTION_3PHASE_4WIRE, PZEM_FREQUENCY_60HZ, 0x00},
+modbus_pz_4wirehz50[] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00, PZEM_BAUDRATE_TYPE_REG, 0x00, 0x02, 0x04, PZEM_BAUDRATE_9600, PZEM_CONNECTION_3PHASE_4WIRE, PZEM_FREQUENCY_50HZ, 0x00},
 // receive frames prototypes for received data checking
 pz_data1[(PZ_DATA_LEN1 * 2) + 5] = {PZMADDR, READ_INPUT_REGISTERS, 0x00},
 pz_hz1[(PZ_DATA_HZ1 * 2) + 6] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00};
@@ -108,10 +110,18 @@ int8_t pzem_controller_work(C_data * client)
 			break;
 		case P_HZ1: // set line frequency request
 			client->trace = T_config;
+#ifdef USE4WIRE
+#ifdef USE50HZ
+			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_pz_4wirehz50, sizeof(modbus_pz_4wirehz50));
+#else
+			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_pz_4wirehz60, sizeof(modbus_pz_4wirehz60));
+#endif
+#else
 #ifdef USE50HZ
 			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_pz_3wirehz50, sizeof(modbus_pz_3wirehz50));
 #else
 			client->req_length = modbus_rtu_send_msg((void*) cc_buffer_tx, (const void *) modbus_pz_3wirehz60, sizeof(modbus_pz_3wirehz60));
+#endif
 #endif
 			break;
 		case P_LAST: // end of command sequences
