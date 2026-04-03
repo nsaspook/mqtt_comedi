@@ -962,16 +962,16 @@ void main(void)
 #endif
 				} else {
 					snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%4.1f %4.1f %4.1f %4.1fW            ", imd_tmp.ap1s, imd_tmp.ap2s, imd_tmp.ap3s, imd_tmp.tps);
-					snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%4.1f %4.1f %4.1frW                ", imd_tmp.rpp1s, imd_tmp.rpp2s, imd_tmp.rpp3s);
+					snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%4.1f %4.1f %4.1fP                ", imd_tmp.rpp1s, imd_tmp.rpp2s, imd_tmp.rpp3s);
 				}
 				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "%2.1fKWh float %3.1fh                       ", (float) BM.log.kilowatt_hours / 10.0f, (float) BM.log.float_time / 60.0f);
 				snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "Bmax %uV Bmin %uV                      ", BM.log.bat_max / 10, BM.log.bat_min / 10);
-				snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.2fA %3.0fW                       ", (float) emt.hz / 1000.0f, ((float) em.al2) / 1000.0f, (em_tmp.wl2 / 100.0f));
+				snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.2fVA %3.0fVR                       ", (float) emt.hz / 1000.0f, ((float) em.varsys) / 1000.0f, ((float) em.vasys) / 100.0f);
 				if (spi_stat_ss.mui != 0x61DB5) {
 					if (ha_daq_calib.em_model == PZEM_M) {
-						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVA %3.2fPF             ", (float) em.wl1, (float) em.val1, (float) em.pfl1);
+						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1f %4.1f %4.1fW                ", (float) em.wl1, (float) em.wl2, (float) em.wl3);
 					} else {
-						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVA %3.2fPF             ", (float) em.wl1 / 10.0f, (float) em.val1 / 10.f, (float) em.pfl1 / 1000.0f);
+						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVR %3.2fPF             ", (float) em.wl1 / 10.0f, (float) em.varl1 / 10.f, (float) em.pfl1 / 1000.0f);
 					}
 				} else {
 					snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVA %3.2fPF             ", imd_tmp.ap1s / 10.0f, imd_tmp.rpp1s / 10.f, (float) em.pfl1 / 1000.0f);

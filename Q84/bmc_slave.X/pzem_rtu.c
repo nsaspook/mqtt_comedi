@@ -38,6 +38,8 @@ static void pzem_dir_handler(void);
 static void half_dup_tx(const bool);
 static void half_dup_rx(const bool);
 
+#define USE4WIRE
+
 static const uint8_t
 // transmit frames for commands
 modbus_pz_data1[] = {PZMADDR, READ_INPUT_REGISTERS, 0x00, 0x00, 0x00, PZ_DATA_LEN1},
@@ -234,13 +236,13 @@ static void pzem_data_handler(void)
 	em.varl1 = pz_ptr->prp1s;
 	em.varl2 = pz_ptr->prp2s;
 	em.varl3 = pz_ptr->prp3s;
-	em.wsys = (int32_t) pz_ptr->caes;
-	em.vasys = (int32_t) pz_ptr->cappes;
-	em.varsys = (int32_t) pz_ptr->cres;
-	em.pfl1 = (int16_t) pz_ptr->p1p2pf;
-	em.pfl2 = (int16_t) pz_ptr->p1p2pf;
-	em.pfl3 = (int16_t) pz_ptr->p1p2pf;
-	em.pfsys = (int16_t) pz_ptr->p3cpf;
+	em.wsys = (int32_t) pz_ptr->caps;
+	em.varsys = (int32_t) pz_ptr->c1ps;
+	em.vasys = (int32_t) pz_ptr->capps;
+	em.pfl1 = (int16_t) (pz_ptr->p1p2pf >> 8);
+	em.pfl2 = (int16_t) (pz_ptr->p1p2pf & 0x00ff);
+	em.pfl3 = (int16_t) (pz_ptr->p3cpf >> 8);
+	em.pfsys = (int16_t) (pz_ptr->p3cpf & 0x00ff);
 	em.hz = (int16_t) pz_ptr->hz1;
 	emt.hz = (int32_t) (((float) em.hz) * 10.0f);
 	em_tmp.hz = (float) emt.hz;
@@ -251,9 +253,9 @@ static void pzem_data_handler(void)
 	imd_tmp.ap1s = (float) em.wl1; // phase A:1 GTI power
 	imd_tmp.ap2s = (float) em.wl2; // Phase B:2 Utility power flow
 	imd_tmp.ap3s = (float) em.wl3; // Phase C:3 Load power
-	imd_tmp.rpp1s = (float) em.val1; // Reactive power for each Phase input
-	imd_tmp.rpp2s = (float) em.val2;
-	imd_tmp.rpp3s = (float) em.val3;
+	imd_tmp.rpp1s = (float) pz_ptr->pcp1 / 100.0f; // Current phase for each Phase input
+	imd_tmp.rpp2s = (float) pz_ptr->pcp2 / 100.0f;
+	imd_tmp.rpp3s = (float) pz_ptr->pcp3 / 100.0f;
 	imd_tmp.tps = (float) em.wsys; // Total power
 }
 

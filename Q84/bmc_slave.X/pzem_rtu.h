@@ -24,7 +24,7 @@ extern "C" {
 #define MB_PZEM_ID_L	0x06	// slave baudrate
 
 #define WRITE_PZEM_REGISTER		0x10
-
+	
 	// Input register addresses
 #define PZEM_VOLTAGE_REG                  0x0000 // A=0x0000, B=0x0001, C=0x0002
 #define PZEM_CURRENT_REG                  0x0003 // A=0x0003, B=0x0004, C=0x0005
@@ -140,10 +140,10 @@ extern "C" {
 		papp1s, papp2s, papp3s,
 		caps, c1ps, capps;
 
-		volatile uint16_t
+		volatile uint16_t // power factor
 		p1p2pf, p3cpf;
 
-		volatile uint32_t
+		volatile uint32_t // energy in kWh, kVarh, KVah
 		pae1s, pae2s, pae3s,
 		pre1s, pre2s, pre3s,
 		pappe1s, pappe2s, pappe3s,
