@@ -17,14 +17,14 @@ extern "C" {
 
 #define PZ_DATA_LEN1	0X40	// 16-bit words returned
 #define PZ_DATA_DIR1	0X40	// 16-bit words returned
-#define PZ_DATA_HZ1	0x01	
+#define PZ_DATA_HZ1	0x01
 
 #define PZMADDR		0x02 // modbus client address
 #define MB_PZEM_ID_H	PZMADDR	// slave ID
 #define MB_PZEM_ID_L	0x06	// slave baudrate
 
 #define WRITE_PZEM_REGISTER		0x10
-	
+
 	// Input register addresses
 #define PZEM_VOLTAGE_REG                  0x0000 // A=0x0000, B=0x0001, C=0x0002
 #define PZEM_CURRENT_REG                  0x0003 // A=0x0003, B=0x0004, C=0x0005
@@ -127,12 +127,6 @@ extern "C" {
 		hz1, hz2, hz3,
 		pvp2, pvp3,
 		pcp1, pcp2, pcp3;
-
-		volatile uint32_t
-		aep1f, aep1r,
-		aep2f, aep2r,
-		aep3f, aep3r,
-		taefd, taerd;
 
 		volatile int32_t
 		pap1s, pap2s, pap3s,

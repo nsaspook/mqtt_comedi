@@ -227,9 +227,9 @@ static void pzem_data_handler(void)
 	em.al1 = (uint16_t) pz_ptr->al1 * 10;
 	em.al2 = (uint16_t) pz_ptr->al2 * 10;
 	em.al3 = (uint16_t) pz_ptr->al3 * 10;
-	em.wl1 = pz_ptr->pap1s / 10;
-	em.wl2 = pz_ptr->pap2s / 10;
-	em.wl3 = pz_ptr->pap3s / 10;
+	em.wl1 = pz_ptr->pap1s;
+	em.wl2 = pz_ptr->pap2s;
+	em.wl3 = pz_ptr->pap3s;
 	em.val1 = pz_ptr->papp1s;
 	em.val2 = pz_ptr->papp2s;
 	em.val3 = pz_ptr->papp3s;
@@ -239,24 +239,24 @@ static void pzem_data_handler(void)
 	em.wsys = (int32_t) pz_ptr->caps;
 	em.varsys = (int32_t) pz_ptr->c1ps;
 	em.vasys = (int32_t) pz_ptr->capps;
-	em.pfl1 = (int16_t) (pz_ptr->p1p2pf >> 8);
-	em.pfl2 = (int16_t) (pz_ptr->p1p2pf & 0x00ff);
-	em.pfl3 = (int16_t) (pz_ptr->p3cpf >> 8);
-	em.pfsys = (int16_t) (pz_ptr->p3cpf & 0x00ff);
+	em.pfl2 = (int16_t) (pz_ptr->p1p2pf >> 8) / 10;
+	em.pfl1 = (int16_t) (pz_ptr->p1p2pf & 0x00ff) / 10;
+	em.pfsys = (int16_t) (pz_ptr->p3cpf >> 8) / 10;
+	em.pfl3 = (int16_t) (pz_ptr->p3cpf & 0x00ff) / 10;
 	em.hz = (int16_t) pz_ptr->hz1;
 	emt.hz = (int32_t) (((float) em.hz) * 10.0f);
 	em_tmp.hz = (float) emt.hz;
 	em_tmp.al1 = ((float) em.al1);
-	em_tmp.wl1 = (float) em.wl1 * 100.0f;
-	em_tmp.wl2 = (float) em.wl2 * 100.0f;
-	em_tmp.wl3 = (float) em.wl3 * 100.0f;
-	imd_tmp.ap1s = (float) em.wl1; // phase A:1 GTI power
-	imd_tmp.ap2s = (float) em.wl2; // Phase B:2 Utility power flow
-	imd_tmp.ap3s = (float) em.wl3; // Phase C:3 Load power
+	em_tmp.wl1 = (float) em.wl1 * 10.0f;
+	em_tmp.wl2 = (float) em.wl2 * 10.0f;
+	em_tmp.wl3 = (float) em.wl3 * 10.0f;
+	imd_tmp.ap1s = (float) em.wl1 / 10.0f; // phase A:1 GTI power
+	imd_tmp.ap2s = (float) em.wl2 / 10.0f; // Phase B:2 Utility power flow
+	imd_tmp.ap3s = (float) em.wl3 / 10.0f; // Phase C:3 Load power
 	imd_tmp.rpp1s = (float) pz_ptr->pcp1 / 100.0f; // Current phase for each Phase input
 	imd_tmp.rpp2s = (float) pz_ptr->pcp2 / 100.0f;
 	imd_tmp.rpp3s = (float) pz_ptr->pcp3 / 100.0f;
-	imd_tmp.tps = (float) em.wsys; // Total power
+	imd_tmp.tps = (float) em.wsys / 10.0f; // Total power
 }
 
 static bool pzem_modbus_write_check(C_data * client, bool* cstate, const uint16_t rec_length)
