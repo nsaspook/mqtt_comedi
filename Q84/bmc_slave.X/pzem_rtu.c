@@ -239,10 +239,6 @@ static void pzem_data_handler(void)
 	em.wsys = (int32_t) pz_ptr->caps;
 	em.varsys = (int32_t) pz_ptr->c1ps;
 	em.vasys = (int32_t) pz_ptr->capps;
-	em.pfl2 = (int16_t) (pz_ptr->p1p2pf >> 8) / 10;
-	em.pfl1 = (int16_t) (pz_ptr->p1p2pf & 0x00ff) / 10;
-	em.pfsys = (int16_t) (pz_ptr->p3cpf >> 8) / 10;
-	em.pfl3 = (int16_t) (pz_ptr->p3cpf & 0x00ff) / 10;
 	em.hz = (int16_t) pz_ptr->hz1;
 	emt.hz = (int32_t) (((float) em.hz) * 10.0f);
 	em_tmp.hz = (float) emt.hz;
@@ -257,6 +253,14 @@ static void pzem_data_handler(void)
 	imd_tmp.rpp2s = (float) pz_ptr->pcp2 / 100.0f;
 	imd_tmp.rpp3s = (float) pz_ptr->pcp3 / 100.0f;
 	imd_tmp.tps = (float) em.wsys / 10.0f; // Total power
+	imd_tmp.pfl1 = (int16_t) (pz_ptr->p1p2pf >> 8);
+	imd_tmp.pfl2 = (int16_t) (pz_ptr->p1p2pf & 0x00ff);
+	imd_tmp.pfl3 = (int16_t) (pz_ptr->p3cpf >> 8);
+	imd_tmp.pfsys = (int16_t) (pz_ptr->p3cpf & 0x00ff);
+	em.pfl1 = (int16_t) (imd_tmp.pfl1 / 10.0f);
+	em.pfl2 = (int16_t) (imd_tmp.pfl2 / 10.0f);
+	em.pfl3 = (int16_t) (imd_tmp.pfl3 / 10.0f);
+	em.pfsys = (int16_t) (imd_tmp.pfsys / 10.0f);
 }
 
 static bool pzem_modbus_write_check(C_data * client, bool* cstate, const uint16_t rec_length)

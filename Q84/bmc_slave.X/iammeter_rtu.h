@@ -20,7 +20,7 @@ extern "C" {
 
 #define MB_IAMMETER_ID_H	0x01	// slave ID
 #define MB_IAMMETER_ID_L	0x06	// slave baudrate
-	
+
 	typedef enum cmd_im_type {
 		I_DATA1 = 0,
 		I_DIR1,
@@ -69,22 +69,10 @@ extern "C" {
 		frei3, rrec3;
 	} IM_data1;
 
-	typedef struct IM_tmp {
-		volatile float
-		vl1n, vl2n, vl3n,
-		vl1l2, vl2l3, vl3l1,
-		al1, al2, al3,
-		wl1, wl2, wl3,
-		val1, val2, val3,
-		varl1, varl2, varl3,
-		vlnsys, vllsys, wsys, vasys, varsys,
-		pfl1, pfl2, pfl3, pfsys,
-		phaseseq, hz;
-	} IM_tmp;
-
 	typedef struct IMD_tmp {
 		volatile float
 		tps, ap1s, ap2s, ap3s,
+		pfl1, pfl2, pfl3, pfsys,
 		rpp1s, rpp2s, rpp3s;
 	} IMD_tmp;
 
@@ -109,8 +97,7 @@ extern "C" {
 		//		volatile uint8_t
 		//		firmware_version[0x20], model_name[0x20], serial_number[0x20];
 	} IM_dir1;
-	
-	extern IM_tmp im_tmp;
+
 	extern IMD_tmp imd_tmp;
 
 	void im_my_modbus_rx_32(void);

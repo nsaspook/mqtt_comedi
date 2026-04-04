@@ -59,7 +59,7 @@ im_dir1[(IM_DATA_DIR1 * 2) + 5] = {MADDR, READ_HOLDING_REGISTERS, 0x00};
  */
 IM_data1 im, *im_ptr;
 IM_dir1 imd, *imd_ptr;
-IM_tmp im_tmp;
+//IM_tmp im_tmp;
 IMD_tmp imd_tmp;
 IM_data2 imt;
 
