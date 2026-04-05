@@ -73,7 +73,15 @@ extern "C" {
 		volatile float
 		tps, ap1s, ap2s, ap3s,
 		pfl1, pfl2, pfl3, pfsys,
-		rpp1s, rpp2s, rpp3s;
+		rpp1s, rpp2s, rpp3s,
+		vl1n, vl2n, vl3n,
+		vl1l2, vl2l3, vl3l1,
+		al1, al2, al3,
+		wl1, wl2, wl3,
+		val1, val2, val3,
+		varl1, varl2, varl3,
+		vlnsys, vllsys, wsys, vasys, varsys,
+		phaseseq, hz;
 	} IMD_tmp;
 
 	typedef __pack struct IM_data2 {
@@ -94,8 +102,6 @@ extern "C" {
 		volatile int32_t
 		tps, ap1s, ap2s, ap3s,
 		rpp1s, rpp2s, rpp3s;
-		//		volatile uint8_t
-		//		firmware_version[0x20], model_name[0x20], serial_number[0x20];
 	} IM_dir1;
 
 	extern IMD_tmp imd_tmp;

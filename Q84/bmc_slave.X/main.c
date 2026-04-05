@@ -950,7 +950,7 @@ void main(void)
 				snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%s                         ", &BMC4.log_buffer[2]);
 				if (spi_stat_ss.mui != 0x61DB5) {
 					if (ha_daq_calib.em_model == PZEM_M) {
-						snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %ldVAC %4.2fA           ", modbus_name[C.id_ok], em.vl3l1 / 10, (em_tmp.al1 / 1000.0f));
+						snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %4.1fVAC %4.2fA           ", modbus_name[C.id_ok], imd_tmp.vl3l1 / 10, (imd_tmp.al1));
 					} else {
 						snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %ldVAC %3.0fW           ", modbus_name[C.id_ok], em.vl3l1 / 10, (em_tmp.wl1 / 100.0f));
 					}
@@ -971,13 +971,13 @@ void main(void)
 				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "%2.1fKWh float %3.1fh                       ", (float) BM.log.kilowatt_hours / 10.0f, (float) BM.log.float_time / 60.0f);
 				snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "Bmax %uV Bmin %uV                      ", BM.log.bat_max / 10, BM.log.bat_min / 10);
 				if (ha_daq_calib.em_model == PZEM_M) {
-					snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%3.1fHz %3.1fR %3.2fPf                       ", (float) emt.hz / 1000.0f, ((float) em.varsys) / 100.0f, ((float) imd_tmp.pfsys) / 100.0f);
+					snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%3.1fHz %3.1fR %3.2fPf                       ", (float) imd_tmp.hz, ((float) imd_tmp.varsys), (float) imd_tmp.pfsys);
 				} else {
 					snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%3.2fHz %3.2fR %3.2fPf                       ", (float) emt.hz / 1000.0f, ((float) em.varsys), ((float) em.pfsys));
 				}
 				if (spi_stat_ss.mui != 0x61DB5) {
 					if (ha_daq_calib.em_model == PZEM_M) {
-						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%3.2f %3.2f %3.2fPf                ", (float) imd_tmp.pfl1 / 100.0f, (float) imd_tmp.pfl2 / 100.0f, (float) imd_tmp.pfl3 / 100.0f);
+						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%3.2f %3.2f %3.2fPf                ", (float) imd_tmp.pfl1, (float) imd_tmp.pfl2, (float) imd_tmp.pfl3);
 					} else {
 						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVR %3.2fPf             ", (float) em.wl1 / 10.0f, (float) em.varl1 / 10.f, (float) em.pfl1 / 1000.0f);
 					}

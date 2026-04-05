@@ -144,21 +144,6 @@ extern "C" {
 		caes, cres, cappes;
 	} PZ_data1;
 
-	typedef struct PZ_tmp {
-		volatile float
-		vl1n, vl2n, vl3n,
-		vl1l2, vl2l3, vl3l1,
-		al1, al2, al3,
-		wl1, wl2, wl3,
-		val1, val2, val3,
-		varl1, varl2, varl3,
-		vlnsys, vllsys, wsys, vasys, varsys,
-		pfl1, pfl2, pfl3, pfsys,
-		phaseseq, hz;
-	} PZ_tmp;
-
-	extern PZ_tmp pz_tmp;
-
 	void pz_my_modbus_rx_32(void);
 	void init_pz_mb_master_timers(void);
 	int8_t pzem_controller_work(C_data *);

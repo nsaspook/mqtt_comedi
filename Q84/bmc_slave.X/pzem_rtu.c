@@ -57,7 +57,6 @@ pz_hz1[(PZ_DATA_HZ1 * 2) + 6] = {PZMADDR, WRITE_PZEM_REGISTER, 0x00};
  * register data frames
  */
 PZ_data1 pz, *pz_ptr;
-PZ_tmp pz_tmp;
 
 /*
  * state machine hardware timers interrupt ISR functions setup
@@ -242,25 +241,36 @@ static void pzem_data_handler(void)
 	em.hz = (int16_t) pz_ptr->hz1;
 	emt.hz = (int32_t) (((float) em.hz) * 10.0f);
 	em_tmp.hz = (float) emt.hz;
-	em_tmp.al1 = ((float) em.al1);
-	em_tmp.wl1 = (float) em.wl1 * 10.0f;
-	em_tmp.wl2 = (float) em.wl2 * 10.0f;
-	em_tmp.wl3 = (float) em.wl3 * 10.0f;
-	imd_tmp.ap1s = (float) em.wl1 / 10.0f; // phase A:1 GTI power
-	imd_tmp.ap2s = (float) em.wl2 / 10.0f; // Phase B:2 Utility power flow
-	imd_tmp.ap3s = (float) em.wl3 / 10.0f; // Phase C:3 Load power
-	imd_tmp.rpp1s = (float) pz_ptr->pcp1 / 100.0f; // Current phase for each Phase input
-	imd_tmp.rpp2s = (float) pz_ptr->pcp2 / 100.0f;
-	imd_tmp.rpp3s = (float) pz_ptr->pcp3 / 100.0f;
-	imd_tmp.tps = (float) em.wsys / 10.0f; // Total power
-	imd_tmp.pfl1 = (int16_t) (pz_ptr->p1p2pf >> 8);
-	imd_tmp.pfl2 = (int16_t) (pz_ptr->p1p2pf & 0x00ff);
-	imd_tmp.pfl3 = (int16_t) (pz_ptr->p3cpf >> 8);
-	imd_tmp.pfsys = (int16_t) (pz_ptr->p3cpf & 0x00ff);
-	em.pfl1 = (int16_t) (imd_tmp.pfl1 / 10.0f);
-	em.pfl2 = (int16_t) (imd_tmp.pfl2 / 10.0f);
-	em.pfl3 = (int16_t) (imd_tmp.pfl3 / 10.0f);
+	em_tmp.al1 = (float) em.al1;
+	em_tmp.wl1 = (float) ((float) pz_ptr->pap1s * 10.0f);
+	em_tmp.wl2 = (float) ((float) pz_ptr->pap2s * 10.0f);
+	em_tmp.wl3 = (float) ((float) pz_ptr->pap3s * 10.0f);
+	imd_tmp.ap1s = (float) ((float) em.wl1 / 10.0f); // phase A:1 GTI power
+	imd_tmp.ap2s = (float) ((float) em.wl2 / 10.0f); // Phase B:2 Utility power flow
+	imd_tmp.ap3s = (float) ((float) em.wl3 / 10.0f); // Phase C:3 Load power
+	imd_tmp.rpp1s = (float) (pz_ptr->pcp1 / 100.0f); // Current phase for each Phase input
+	imd_tmp.rpp2s = (float) (pz_ptr->pcp2 / 100.0f);
+	imd_tmp.rpp3s = (float) (pz_ptr->pcp3 / 100.0f);
+	imd_tmp.tps = (float) ((float) pz_ptr->caps / 10.0f); // Total power
+	imd_tmp.pfl1 = (int16_t) ((float) (pz_ptr->p1p2pf >> 8)) / 100.0f;
+	imd_tmp.pfl2 = (int16_t) ((float) (pz_ptr->p1p2pf & 0x00ff)) / 100.0f;
+	imd_tmp.pfl3 = (int16_t) ((float) (pz_ptr->p3cpf >> 8)) / 100.0f;
+	imd_tmp.pfsys = (int16_t) ((float) (pz_ptr->p3cpf & 0x00ff)) / 100.0f;
+	em.pfl1 = (int16_t) (imd_tmp.pfl1);
+	em.pfl2 = (int16_t) (imd_tmp.pfl2);
+	em.pfl3 = (int16_t) (imd_tmp.pfl3);
 	em.pfsys = (int16_t) (imd_tmp.pfsys / 10.0f);
+	imd_tmp.al1 = (float) (pz_ptr->al1 / 100.0f);
+	imd_tmp.al2 = (float) (pz_ptr->al2 / 100.0f);
+	imd_tmp.al2 = (float) (pz_ptr->al3 / 100.0f);
+	imd_tmp.wl1 = (float) (pz_ptr->pap1s);
+	imd_tmp.wl2 = (float) (pz_ptr->pap2s);
+	imd_tmp.wl3 = (float) (pz_ptr->pap3s);
+	imd_tmp.hz = (float) (pz_ptr->hz1 / 100.0f);
+	imd_tmp.varsys = (float) ((float) pz_ptr->c1ps / 100.0f);
+	imd_tmp.vl1l2 = (float) pz_ptr->vl1n;
+	imd_tmp.vl2l3 = (float) pz_ptr->vl2n;
+	imd_tmp.vl3l1 = (float) pz_ptr->vl3n;
 }
 
 static bool pzem_modbus_write_check(C_data * client, bool* cstate, const uint16_t rec_length)
