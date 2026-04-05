@@ -213,9 +213,12 @@ int8_t pzem_controller_work(C_data * client)
 static void pzem_data_handler(void)
 {
 	/*
-	 * load PZEM data pointer with receive buffer to data structure
+	 * load PZEM data pointer wEMETER_TRACEith receive buffer to data structure
 	 * and munge the data into the correct local formats for client
 	 */
+#ifdef EMETER_TRACE
+	TP1_SetHigh();
+#endif
 	em_ptr = (EM_data1*) & cc_buffer[3];
 	em.vl1n = (uint16_t) pz_ptr->vl1n;
 	em.vl2n = (uint16_t) pz_ptr->vl2n;
@@ -271,6 +274,9 @@ static void pzem_data_handler(void)
 	imd_tmp.vl1l2 = (float) pz_ptr->vl1n;
 	imd_tmp.vl2l3 = (float) pz_ptr->vl2n;
 	imd_tmp.vl3l1 = (float) pz_ptr->vl3n;
+#ifdef EMETER_TRACE
+	TP1_SetLow();
+#endif
 }
 
 static bool pzem_modbus_write_check(C_data * client, bool* cstate, const uint16_t rec_length)

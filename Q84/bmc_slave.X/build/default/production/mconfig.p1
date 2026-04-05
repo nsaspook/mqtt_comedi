@@ -35,14 +35,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n E25087 comm_type CLEAR INIT SEND RECV  ]
 [c E25093 0 1 2 3 4 5 6 7 8 .. ]
 [n E25093 cmd_type G_ID G_DATA1 G_DATA2 G_CONFIG G_PASSWD G_LIGHT G_VERSION G_SERIAL G_LAST  ]
-"139 ./modbus_master.h
+"141 ./modbus_master.h
 [s S3394 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 `uc 1 `us 1 `us 1 `us 1 `ul 1 `ul 1 `ul 1 `ul 1 `ul 1 `Va 1 ]
 [n S3394 M_data blink_lock config stable boot_code power_on pwm_volts error crc_data crc_calc send_count recv_count crc_error to_error sends rx ]
-"153
+"155
 [s S3395 `uc 1 `E25087 1 `E25093 1 `us 1 `us 1 `c 1 `c 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `ul 1 `ul 1 `ul 1 `VS3394 1 `us 1 `us 1 ]
 [n S3395 C_data mcmd cstate modbus_command req_length iam_count trace resets id_ok passwd_ok config_ok data_ok light_ok serial_ok link_ok version_ok tm_ok data_count data_prev c_crc_length M c_crc c_crc_rec ]
 [v F25172 `(c ~T0 @X0 0 tf1`*S3395 ]
-"169
+"171
 [s S3396 `*F25168 1 `*F25170 1 `*F25172 1 ]
 [n S3396 _op_t init_mb_master_timers info_ptr master_controller_work ]
 "321 ./vconfig.h
@@ -2578,47 +2578,47 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _MAX_12V_SYSTEMV
 -> .17.0 `f
 ]
-"72 ./modbus_master.h
+"74 ./modbus_master.h
 [v _TMDELAY `Cuc ~T0 @X0 1 s ]
 [i _TMDELAY
 -> -> 2 `i `uc
 ]
-"73
+"75
 [v _TEDELAY `Cuc ~T0 @X0 1 s ]
 [i _TEDELAY
 -> -> 1 `i `uc
 ]
-"74
+"76
 [v _RDELAY `Cuc ~T0 @X0 1 s ]
 [i _RDELAY
 -> -> 200 `i `uc
 ]
-"75
+"77
 [v _CDELAY `Cuc ~T0 @X0 1 s ]
 [i _CDELAY
 -> -> 40 `i `uc
 ]
-"76
+"78
 [v _QDELAY `Cuc ~T0 @X0 1 s ]
 [i _QDELAY
 -> -> 2 `i `uc
 ]
-"77
+"79
 [v _TODELAY `Cuc ~T0 @X0 1 s ]
 [i _TODELAY
 -> -> 4 `i `uc
 ]
-"78
+"80
 [v _SPACING `Cuc ~T0 @X0 1 s ]
 [i _SPACING
 -> -> 40 `i `uc
 ]
-"79
+"81
 [v _DUPL_DELAY `Cuc ~T0 @X0 1 s ]
 [i _DUPL_DELAY
 -> -> 2 `i `uc
 ]
-"267
+"269
 [v _table_crc_hi `Cuc ~T0 @X0 -> 256 `i s ]
 [i _table_crc_hi
 :U ..
@@ -2880,7 +2880,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 64 `i `uc
 ..
 ]
-"297
+"299
 [v _table_crc_lo `Cuc ~T0 @X0 -> 256 `i s ]
 [i _table_crc_lo
 :U ..
@@ -3142,12 +3142,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 64 `i `uc
 ..
 ]
-"337
+"339
 [v _BOFF `Cuc ~T0 @X0 1 s ]
 [i _BOFF
 -> -> 0 `i `uc
 ]
-"338
+"340
 [v _BON `Cuc ~T0 @X0 1 s ]
 [i _BON
 -> -> 255 `i `uc

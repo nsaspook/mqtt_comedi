@@ -5,7 +5,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v F24761 `(v ~T0 @X0 0 tf ]
 [v F24836 `(v ~T0 @X0 0 tf ]
 [v F24842 `(v ~T0 @X0 0 tf ]
-"139 ./modbus_master.h
+"141 ./modbus_master.h
 [s S3386 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 `uc 1 `us 1 `us 1 `us 1 `ul 1 `ul 1 `ul 1 `ul 1 `ul 1 `Va 1 ]
 [n S3386 M_data blink_lock config stable boot_code power_on pwm_volts error crc_data crc_calc send_count recv_count crc_error to_error sends rx ]
 "7 modbus_master.c
@@ -16,28 +16,28 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n E24860 comm_type CLEAR INIT SEND RECV  ]
 [c E24866 0 1 2 3 4 5 6 7 8 .. ]
 [n E24866 cmd_type G_ID G_DATA1 G_DATA2 G_CONFIG G_PASSWD G_LIGHT G_VERSION G_SERIAL G_LAST  ]
-"153 ./modbus_master.h
+"155 ./modbus_master.h
 [s S3387 `uc 1 `E24860 1 `E24866 1 `us 1 `us 1 `c 1 `c 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `ul 1 `ul 1 `ul 1 `VS3386 1 `us 1 `us 1 ]
 [n S3387 C_data mcmd cstate modbus_command req_length iam_count trace resets id_ok passwd_ok config_ok data_ok light_ok serial_ok link_ok version_ok tm_ok data_count data_prev c_crc_length M c_crc c_crc_rec ]
-"175
+"177
 [s S3389 `ul 1 `ul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `l 1 `Va 1 `Va 1 ]
 [n S3389 VM_type StartTime TimeUsed pacing pwm_update pwm_stop fault_count fault_ticks fault_source modbus_rx modbus_tx motor_speed fault_active dmt_sosc_flag ]
-"205
+"207
 [s S3394 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vs 1 `Vs 1 `Vs 1 `Vs 1 `Vs 1 `Vs 1 ]
 [n S3394 EM_data1 vl1n vl2n vl3n vl1l2 vl2l3 vl3l1 al1 al2 al3 wl1 wl2 wl3 val1 val2 val3 varl1 varl2 varl3 vlnsys vllsys wsys vasys varsys pfl1 pfl2 pfl3 pfsys phaseseq hz ]
-"219
+"221
 [s S3395 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 ]
 [n S3395 EM_tmp vl1n vl2n vl3n vl1l2 vl2l3 vl3l1 al1 al2 al3 wl1 wl2 wl3 val1 val2 val3 varl1 varl2 varl3 vlnsys vllsys wsys vasys varsys pfl1 pfl2 pfl3 pfsys phaseseq hz ]
-"232
+"234
 [s S3396 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 ]
 [n S3396 EM_data2 kwhpt kvarhpt kwhpp kvarhpp kwhpl1 kwhpl2 kwhpl3 kwhnt kvarhnt kwhnp kvarhnp kvaht kvahp rhm rhmk rhmp rhmkp hz rhlc ]
-"243
+"245
 [s S3397 `Vuc -> 14 `i `Vs 1 ]
 [n S3397 EM_serial serial year ]
-"248
+"250
 [s S3398 `Vs 1 ]
 [n S3398 EM_version firmware ]
-"343
+"345
 [v _crc16 `(us ~T0 @X0 0 ef2`*Vuc`us ]
 "27 /ldrv/microchip/xc8/v3.10/pic/include/c99/string.h
 [v _memcpy `(*v ~T0 @X0 0 ef3`*v`*Cv`ui ]
@@ -57,28 +57,28 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _timer_2ms_tick `(v ~T0 @X0 0 ef ]
 "129 ./mcc_generated_files/tmr3.h
 [v _TMR3_StartTimer `(v ~T0 @X0 0 ef ]
-"192 ./modbus_master.h
+"194 ./modbus_master.h
 [u S3392 `l 1 `uc -> 4 `i ]
 [n S3392 MREG32 value bytes ]
-"187
+"189
 [u S3391 `s 1 `uc -> 2 `i ]
 [n S3391 MREG value bytes ]
 "272 modbus_master.c
 [c E24877 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 .. ]
 [n E24877 trace_type T_begin T_clear T_passwd T_config T_data T_id T_serial T_version T_init T_init_d T_send T_send_d T_recv T_recv_r T_misc1 T_misc2 T_misc3 T_spacing T_light  ]
-"351 ./modbus_master.h
+"353 ./modbus_master.h
 [v _clear_2hz `(v ~T0 @X0 0 ef ]
-"352
+"354
 [v _clear_500ahz `(v ~T0 @X0 0 ef ]
-"355
+"357
 [v _get_500ahz `(ul ~T0 @X0 0 ef1`Cuc ]
-"353
+"355
 [v _clear_500hz `(v ~T0 @X0 0 ef ]
-"356
+"358
 [v _get_500hz `(ul ~T0 @X0 0 ef1`Cuc ]
 "380 ./mcc_generated_files/uart3.h
 [v _UART3_Write `(v ~T0 @X0 0 ef1`uc ]
-"359 ./modbus_master.h
+"361 ./modbus_master.h
 [v _serial_trmt `(a ~T0 @X0 0 ef ]
 "106 modbus_master.c
 [v _modbus_write_check `(a ~T0 @X0 0 sf3`*S3387`*a`us ]
@@ -128,6 +128,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _UART3_SetErrorHandler `(v ~T0 @X0 0 ef1`*F24678 ]
 [v F25279 `(v ~T0 @X0 0 tf ]
 [v F25284 `(v ~T0 @X0 0 tf ]
+"69747 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.30.487/xc8/pic/include/proc/pic18f57q84.h
+[s S3182 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S3182 . LATC0 LATC1 LATC2 LATC3 LATC4 LATC5 LATC6 LATC7 ]
+"69746
+[u S3181 `S3182 1 ]
+[n S3181 . . ]
+"69758
+[v _LATCbits `VS3181 ~T0 @X0 0 e@1216 ]
 "34 /ldrv/microchip/xc8/v3.10/pic/include/c99/string.h
 [v _strncpy `(*uc ~T0 @X0 0 ef3`*uc`*Cuc`ui ]
 "290 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.30.487/xc8/pic/include/proc/pic18f57q84.h
@@ -2576,47 +2584,47 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _SPI2_InterruptHandler `*F24836 ~T0 @X0 1 e ]
 "77
 [v _SPI2_RxInterruptHandler `*F24842 ~T0 @X0 1 e ]
-"72 ./modbus_master.h
+"74 ./modbus_master.h
 [v _TMDELAY `Cuc ~T0 @X0 1 s ]
 [i _TMDELAY
 -> -> 2 `i `uc
 ]
-"73
+"75
 [v _TEDELAY `Cuc ~T0 @X0 1 s ]
 [i _TEDELAY
 -> -> 1 `i `uc
 ]
-"74
+"76
 [v _RDELAY `Cuc ~T0 @X0 1 s ]
 [i _RDELAY
 -> -> 200 `i `uc
 ]
-"75
+"77
 [v _CDELAY `Cuc ~T0 @X0 1 s ]
 [i _CDELAY
 -> -> 40 `i `uc
 ]
-"76
+"78
 [v _QDELAY `Cuc ~T0 @X0 1 s ]
 [i _QDELAY
 -> -> 2 `i `uc
 ]
-"77
+"79
 [v _TODELAY `Cuc ~T0 @X0 1 s ]
 [i _TODELAY
 -> -> 4 `i `uc
 ]
-"78
+"80
 [v _SPACING `Cuc ~T0 @X0 1 s ]
 [i _SPACING
 -> -> 40 `i `uc
 ]
-"79
+"81
 [v _DUPL_DELAY `Cuc ~T0 @X0 1 s ]
 [i _DUPL_DELAY
 -> -> 2 `i `uc
 ]
-"267
+"269
 [v _table_crc_hi `Cuc ~T0 @X0 -> 256 `i s ]
 [i _table_crc_hi
 :U ..
@@ -2878,7 +2886,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 64 `i `uc
 ..
 ]
-"297
+"299
 [v _table_crc_lo `Cuc ~T0 @X0 -> 256 `i s ]
 [i _table_crc_lo
 :U ..
@@ -3140,12 +3148,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 64 `i `uc
 ..
 ]
-"337
+"339
 [v _BOFF `Cuc ~T0 @X0 1 s ]
 [i _BOFF
 -> -> 0 `i `uc
 ]
-"338
+"340
 [v _BON `Cuc ~T0 @X0 1 s ]
 [i _BON
 -> -> 255 `i `uc
@@ -4674,116 +4682,164 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 [e :U _em_data_handler ]
 [f ]
-"726
-[e = _em_ptr -> &U *U + _cc_buffer * -> -> 3 `i `x -> -> # *U _cc_buffer `i `x `*QS3394 ]
 "727
-[e = . _em 0 ( _mb32_swap (1 . *U _em_ptr 0 ]
-"728
-[e = . _em 1 ( _mb32_swap (1 . *U _em_ptr 1 ]
+[e :U 3537 ]
+{
+[e = . . _LATCbits 0 2 -> -> 1 `i `uc ]
+}
+[e :U 3536 ]
 "729
-[e = . _em 2 ( _mb32_swap (1 . *U _em_ptr 2 ]
+[e = _em_ptr -> &U *U + _cc_buffer * -> -> 3 `i `x -> -> # *U _cc_buffer `i `x `*QS3394 ]
 "730
-[e = . _em 3 ( _mb32_swap (1 . *U _em_ptr 3 ]
+[e = . _em 0 ( _mb32_swap (1 . *U _em_ptr 0 ]
 "731
-[e = . _em 4 ( _mb32_swap (1 . *U _em_ptr 4 ]
+[e = . _em 1 ( _mb32_swap (1 . *U _em_ptr 1 ]
 "732
-[e = . _em 5 ( _mb32_swap (1 . *U _em_ptr 5 ]
+[e = . _em 2 ( _mb32_swap (1 . *U _em_ptr 2 ]
 "733
-[e = . _em 6 ( _mb32_swap (1 . *U _em_ptr 6 ]
+[e = . _em 3 ( _mb32_swap (1 . *U _em_ptr 3 ]
 "734
-[e = . _em 7 ( _mb32_swap (1 . *U _em_ptr 7 ]
+[e = . _em 4 ( _mb32_swap (1 . *U _em_ptr 4 ]
 "735
-[e = . _em 8 ( _mb32_swap (1 . *U _em_ptr 8 ]
+[e = . _em 5 ( _mb32_swap (1 . *U _em_ptr 5 ]
 "736
-[e = . _em 9 ( _mb32_swap (1 . *U _em_ptr 9 ]
+[e = . _em 6 ( _mb32_swap (1 . *U _em_ptr 6 ]
 "737
-[e = . _em 10 ( _mb32_swap (1 . *U _em_ptr 10 ]
+[e = . _em 7 ( _mb32_swap (1 . *U _em_ptr 7 ]
 "738
-[e = . _em 11 ( _mb32_swap (1 . *U _em_ptr 11 ]
+[e = . _em 8 ( _mb32_swap (1 . *U _em_ptr 8 ]
 "739
-[e = . _em 12 ( _mb32_swap (1 . *U _em_ptr 12 ]
+[e = . _em 9 ( _mb32_swap (1 . *U _em_ptr 9 ]
 "740
-[e = . _em 13 ( _mb32_swap (1 . *U _em_ptr 13 ]
+[e = . _em 10 ( _mb32_swap (1 . *U _em_ptr 10 ]
 "741
-[e = . _em 14 ( _mb32_swap (1 . *U _em_ptr 14 ]
+[e = . _em 11 ( _mb32_swap (1 . *U _em_ptr 11 ]
 "742
-[e = . _em 15 ( _mb32_swap (1 . *U _em_ptr 15 ]
+[e = . _em 12 ( _mb32_swap (1 . *U _em_ptr 12 ]
 "743
-[e = . _em 16 ( _mb32_swap (1 . *U _em_ptr 16 ]
+[e = . _em 13 ( _mb32_swap (1 . *U _em_ptr 13 ]
 "744
-[e = . _em 17 ( _mb32_swap (1 . *U _em_ptr 17 ]
+[e = . _em 14 ( _mb32_swap (1 . *U _em_ptr 14 ]
 "745
-[e = . _em 20 ( _mb32_swap (1 . *U _em_ptr 20 ]
+[e = . _em 15 ( _mb32_swap (1 . *U _em_ptr 15 ]
 "746
-[e = . _em 21 ( _mb32_swap (1 . *U _em_ptr 21 ]
+[e = . _em 16 ( _mb32_swap (1 . *U _em_ptr 16 ]
 "747
-[e = . _em 22 ( _mb32_swap (1 . *U _em_ptr 22 ]
+[e = . _em 17 ( _mb32_swap (1 . *U _em_ptr 17 ]
 "748
-[e = . _em 23 ( _mb16_swap (1 . *U _em_ptr 23 ]
+[e = . _em 20 ( _mb32_swap (1 . *U _em_ptr 20 ]
 "749
-[e = . _em 24 ( _mb16_swap (1 . *U _em_ptr 24 ]
+[e = . _em 21 ( _mb32_swap (1 . *U _em_ptr 21 ]
 "750
-[e = . _em 26 ( _mb16_swap (1 . *U _em_ptr 26 ]
+[e = . _em 22 ( _mb32_swap (1 . *U _em_ptr 22 ]
 "751
-[e = . _em 28 ( _mb16_swap (1 . *U _em_ptr 28 ]
+[e = . _em 23 ( _mb16_swap (1 . *U _em_ptr 23 ]
+"752
+[e = . _em 24 ( _mb16_swap (1 . *U _em_ptr 24 ]
 "753
+[e = . _em 26 ( _mb16_swap (1 . *U _em_ptr 26 ]
+"754
+[e = . _em 28 ( _mb16_swap (1 . *U _em_ptr 28 ]
+"755
 [e = . _em_tmp 6 / -> . _em 6 `f -> .1000.0 `f ]
-"756
+"759
+[e :U 3540 ]
+{
+[e = . . _LATCbits 0 2 -> -> 0 `i `uc ]
+}
+[e :U 3539 ]
+"761
 [e :UE 3534 ]
 }
-"758
+"763
 [v _emt_data_handler `(v ~T0 @X0 1 sf ]
-"759
+"764
 {
 [e :U _emt_data_handler ]
 [f ]
-"764
-[e ( _memcpy (3 , , -> &U _emt `*v -> -> &U *U + _cc_buffer * -> -> 3 `i `x -> -> # *U _cc_buffer `i `x `*v `*Cv -> # _emt `ui ]
-"765
-[e = . _emt 17 ( _mb32_swap (1 . _emt 17 ]
-"767
-[e = . _em_tmp 28 / -> . _emt 17 `f -> .1000.0 `f ]
 "769
-[e :UE 3535 ]
+[e :U 3544 ]
+{
+[e = . . _LATCbits 0 2 -> -> 1 `i `uc ]
 }
-"771
-[v _ems_data_handler `(v ~T0 @X0 1 sf ]
+[e :U 3543 ]
 "772
+[e ( _memcpy (3 , , -> &U _emt `*v -> -> &U *U + _cc_buffer * -> -> 3 `i `x -> -> # *U _cc_buffer `i `x `*v `*Cv -> # _emt `ui ]
+"773
+[e = . _emt 17 ( _mb32_swap (1 . _emt 17 ]
+"774
+[e = . _em_tmp 28 / -> . _emt 17 `f -> .1000.0 `f ]
+"776
+[e :U 3547 ]
+{
+[e = . . _LATCbits 0 2 -> -> 0 `i `uc ]
+}
+[e :U 3546 ]
+"779
+[e :UE 3541 ]
+}
+"781
+[v _ems_data_handler `(v ~T0 @X0 1 sf ]
+"782
 {
 [e :U _ems_data_handler ]
 [f ]
-"776
-[e ( _memcpy (3 , , -> &U _ems `*v -> -> &U *U + _cc_buffer * -> -> 3 `i `x -> -> # *U _cc_buffer `i `x `*v `*Cv -> # _ems `ui ]
-"777
-[e = *U + &U . _ems 0 * -> -> -> 13 `i `ui `ux -> -> # *U &U . _ems 0 `ui `ux -> -> 0 `i `uc ]
-"778
-[e = . _ems 1 ( _mb16_swap (1 . _ems 1 ]
-"779
-[e :UE 3536 ]
+"787
+[e :U 3551 ]
+{
+[e = . . _LATCbits 0 2 -> -> 1 `i `uc ]
 }
-"781
+[e :U 3550 ]
+"789
+[e ( _memcpy (3 , , -> &U _ems `*v -> -> &U *U + _cc_buffer * -> -> 3 `i `x -> -> # *U _cc_buffer `i `x `*v `*Cv -> # _ems `ui ]
+"790
+[e = *U + &U . _ems 0 * -> -> -> 13 `i `ui `ux -> -> # *U &U . _ems 0 `ui `ux -> -> 0 `i `uc ]
+"791
+[e = . _ems 1 ( _mb16_swap (1 . _ems 1 ]
+"793
+[e :U 3554 ]
+{
+[e = . . _LATCbits 0 2 -> -> 0 `i `uc ]
+}
+[e :U 3553 ]
+"795
+[e :UE 3548 ]
+}
+"797
 [v _emv_data_handler `(v ~T0 @X0 1 sf ]
-"782
+"798
 {
 [e :U _emv_data_handler ]
 [f ]
-"786
-[e ( _memcpy (3 , , -> &U _emv `*v -> -> &U *U + _cc_buffer * -> -> 3 `i `x -> -> # *U _cc_buffer `i `x `*v `*Cv -> # _emv `ui ]
-"787
-[e = . _emv 0 ( _mb16_swap (1 . _emv 0 ]
-"788
-[e :UE 3537 ]
+"803
+[e :U 3558 ]
+{
+[e = . . _LATCbits 0 2 -> -> 1 `i `uc ]
 }
-"790
+[e :U 3557 ]
+"805
+[e ( _memcpy (3 , , -> &U _emv `*v -> -> &U *U + _cc_buffer * -> -> 3 `i `x -> -> # *U _cc_buffer `i `x `*v `*Cv -> # _emv `ui ]
+"806
+[e = . _emv 0 ( _mb16_swap (1 . _emv 0 ]
+"808
+[e :U 3561 ]
+{
+[e = . . _LATCbits 0 2 -> -> 0 `i `uc ]
+}
+[e :U 3560 ]
+"810
+[e :UE 3555 ]
+}
+"812
 [v _em540_version `(v ~T0 @X0 1 ef ]
-"791
+"813
 {
 [e :U _em540_version ]
 [f ]
-"792
+"814
 [e ( _strncpy (3 , , &U _em_info :s 5C -> -> 32 `i `ui ]
-"793
-[e :UE 3538 ]
+"815
+[e :UE 3562 ]
 }
 [a 5C 69 77 53 52 48 32 68 114 105 118 101 114 32 32 32 32 32 32 32 0 ]
 [a 1C 0 ]

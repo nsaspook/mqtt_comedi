@@ -291,6 +291,9 @@ static void iammeter_data_handler(void)
 	 * load IAMMETER data pointer with receive buffer to data structure
 	 * and munge the data into the correct local formats for client
 	 */
+#ifdef EMETER_TRACE
+	TP1_SetHigh();
+#endif
 	em_ptr = (EM_data1*) & cc_buffer[3];
 	em.vl1n = mb16_swap((const int16_t) im_ptr->vl1n) / 10;
 	em.vl2n = mb16_swap((const int16_t) im_ptr->vl2n) / 10;
@@ -324,10 +327,16 @@ static void iammeter_data_handler(void)
 	em_tmp.wl1 = (float) mb32_swap(im_ptr->wl1)*100;
 	em_tmp.wl2 = (float) mb32_swap(im_ptr->wl2)*100;
 	em_tmp.wl3 = (float) mb32_swap(im_ptr->wl3)*100;
+#ifdef EMETER_TRACE
+	TP1_SetLow();
+#endif
 }
 
 static void iammeter_dir_handler(void)
 {
+#ifdef EMETER_TRACE
+	TP1_SetHigh();
+#endif
 	imd_ptr = (IM_dir1*) & cc_buffer[3];
 	imd_tmp.ap1s = (float) mb32_swap(imd_ptr->ap1s) / 100000; // phase A:1 GTI power
 	imd_tmp.ap2s = (float) mb32_swap(imd_ptr->ap2s) / 100000; // Phase B:2 Utility power flow
@@ -336,6 +345,9 @@ static void iammeter_dir_handler(void)
 	imd_tmp.rpp2s = (float) mb32_swap(imd_ptr->rpp2s) / 100000;
 	imd_tmp.rpp3s = (float) mb32_swap(imd_ptr->rpp3s) / 100000;
 	imd_tmp.tps = (float) mb32_swap(imd_ptr->tps) / 100000; // Total power
+#ifdef EMETER_TRACE
+	TP1_SetLow();
+#endif
 }
 
 static bool iammeter_modbus_write_check(C_data * client, bool* cstate, const uint16_t rec_length)

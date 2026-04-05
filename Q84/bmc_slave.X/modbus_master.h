@@ -20,6 +20,8 @@
 extern "C" {
 #endif
 
+#define EMETER_TRACE
+
 #define MB_MASTER
 #define MB_EM540
 #define MB_EM540_ID_H	0x06

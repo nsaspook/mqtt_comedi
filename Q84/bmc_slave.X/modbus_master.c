@@ -723,6 +723,9 @@ static void em_data_handler(void)
 	 * load EM540 data pointer with receive buffer to data structure
 	 * and munge the data into the correct local formats for client
 	 */
+#ifdef EMETER_TRACE
+	TP1_SetHigh();
+#endif
 	em_ptr = (EM_data1*) & cc_buffer[3];
 	em.vl1n = mb32_swap(em_ptr->vl1n);
 	em.vl2n = mb32_swap(em_ptr->vl2n);
@@ -749,9 +752,11 @@ static void em_data_handler(void)
 	em.pfl2 = mb16_swap(em_ptr->pfl2);
 	em.pfsys = mb16_swap(em_ptr->pfsys);
 	em.hz = mb16_swap(em_ptr->hz);
-
 	em_tmp.al1 = ((float) em.al1) / 1000.0f;
 #ifndef MB_EM540_ONE
+#endif
+#ifdef EMETER_TRACE
+	TP1_SetLow();
 #endif
 }
 
@@ -760,11 +765,16 @@ static void emt_data_handler(void)
 	/*
 	 * move from receive buffer to data structure and munge the data into the correct local formats from MODBUS client
 	 */
+#ifdef EMETER_TRACE
+	TP1_SetHigh();
+#endif
 #ifdef	 MB_EM540_EMT
 	memcpy((void*) &emt, (void*) &cc_buffer[3], sizeof(emt));
 	emt.hz = mb32_swap(emt.hz);
-
 	em_tmp.hz = ((float) emt.hz) / 1000.0f;
+#ifdef EMETER_TRACE
+	TP1_SetLow();
+#endif
 #endif
 }
 
@@ -773,9 +783,15 @@ static void ems_data_handler(void)
 	/*
 	 * move from receive buffer to data structure and munge the data into the correct local formats from MODBUS client
 	 */
+#ifdef EMETER_TRACE
+	TP1_SetHigh();
+#endif
 	memcpy((void*) &ems, (void*) &cc_buffer[3], sizeof(ems));
 	ems.serial[13] = 0; // terminate serial string data
 	ems.year = mb16_swap(ems.year);
+#ifdef EMETER_TRACE
+	TP1_SetLow();
+#endif
 }
 
 static void emv_data_handler(void)
@@ -783,8 +799,14 @@ static void emv_data_handler(void)
 	/*
 	 * move from receive buffer to data structure and munge the data into the correct local formats from MODBUS client
 	 */
+#ifdef EMETER_TRACE
+	TP1_SetHigh();
+#endif
 	memcpy((void*) &emv, (void*) &cc_buffer[3], sizeof(emv));
 	emv.firmware = mb16_swap(emv.firmware);
+#ifdef EMETER_TRACE
+	TP1_SetLow();
+#endif
 }
 
 void em540_version(void)
