@@ -949,13 +949,9 @@ void main(void)
 				bmc_logger();
 				snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%s                         ", &BMC4.log_buffer[2]);
 				if (spi_stat_ss.mui != 0x61DB5) {
-					if (ha_daq_calib.em_model == PZEM_M) {
-						snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %4.1fVAC %4.2fA           ", modbus_name[C.id_ok], imd_tmp.vl3l1 / 10, (imd_tmp.al1));
-					} else {
-						snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %ldVAC %3.0fW           ", modbus_name[C.id_ok], em.vl3l1 / 10, (em_tmp.wl1 / 100.0f));
-					}
+					snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %4.1fV %4.2fA           ", modbus_name[C.id_ok], imd_tmp.vl1l2 / 10, (imd_tmp.al1));
 				} else {
-					snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %ldVAC %3.0fW           ", modbus_name[C.id_ok], em.vl3l1 / 10, (em_tmp.wl3 / 100.0f));
+					snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %ldV %3.0fW           ", modbus_name[C.id_ok], em.vl3l1 / 10, (em_tmp.wl3 / 100.0f));
 				}
 				if (BM.FM80_online) {
 					snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%s %s %d.%01dA %dA              ", FM80_name[BM.FM80_online], state_name[cc_mode], bat_amp_whole - 128, bat_amp_frac - 128, bat_amp_panel - 128);
@@ -966,17 +962,21 @@ void main(void)
 #endif
 				} else {
 					snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%4.1f %4.1f %4.1f %4.1fW            ", imd_tmp.ap1s, imd_tmp.ap2s, imd_tmp.ap3s, imd_tmp.tps);
-					snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%4.1f %4.1f %4.1fPh                ", imd_tmp.rpp1s, imd_tmp.rpp2s, imd_tmp.rpp3s);
+					if (ha_daq_calib.em_model == PZEM_M) {
+						snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%4.1f %4.1f %4.1fPh                ", imd_tmp.rpp1s, imd_tmp.rpp2s, imd_tmp.rpp3s);
+					} else {
+						snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%4.1f %4.1f %4.1fVR                ", imd_tmp.rpp1s, imd_tmp.rpp2s, imd_tmp.rpp3s);
+					}
 				}
 				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "%2.1fKWh float %3.1fh                       ", (float) BM.log.kilowatt_hours / 10.0f, (float) BM.log.float_time / 60.0f);
 				snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "Bmax %uV Bmin %uV                      ", BM.log.bat_max / 10, BM.log.bat_min / 10);
-				if (ha_daq_calib.em_model == PZEM_M) {
-					snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%3.1fHz %3.1fR %3.2fPf                       ", (float) imd_tmp.hz, ((float) imd_tmp.varsys), (float) imd_tmp.pfsys);
+				if ((ha_daq_calib.em_model == PZEM_M) || (ha_daq_calib.em_model == WEM30_M)) {
+					snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.1fR %3.2fPf                       ", (float) imd_tmp.hz, ((float) imd_tmp.varsys), (float) imd_tmp.pfsys);
 				} else {
-					snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%3.2fHz %3.2fR %3.2fPf                       ", (float) emt.hz / 1000.0f, ((float) em.varsys), ((float) em.pfsys));
+					snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.2fR %3.2fPf                       ", (float) emt.hz / 1000.0f, ((float) em.varsys), ((float) em.pfsys));
 				}
 				if (spi_stat_ss.mui != 0x61DB5) {
-					if (ha_daq_calib.em_model == PZEM_M) {
+					if ((ha_daq_calib.em_model == PZEM_M) || (ha_daq_calib.em_model == WEM30_M)) {
 						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%3.2f %3.2f %3.2fPf                ", (float) imd_tmp.pfl1, (float) imd_tmp.pfl2, (float) imd_tmp.pfl3);
 					} else {
 						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVR %3.2fPf             ", (float) em.wl1 / 10.0f, (float) em.varl1 / 10.f, (float) em.pfl1 / 1000.0f);

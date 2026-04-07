@@ -327,6 +327,19 @@ static void iammeter_data_handler(void)
 	em_tmp.wl1 = (float) mb32_swap(im_ptr->wl1)*100;
 	em_tmp.wl2 = (float) mb32_swap(im_ptr->wl2)*100;
 	em_tmp.wl3 = (float) mb32_swap(im_ptr->wl3)*100;
+	imd_tmp.tps = (float) ((float) mb32_swap(im_ptr->tps)); // Total power
+	imd_tmp.varsys = (float) ((float) mb32_swap(im_ptr->rpp1s) / 100000.0f);
+	imd_tmp.vl1l2 = (float) ((float) mb16_swap((const int16_t) im_ptr->vl1n) / 10.0f);
+	imd_tmp.vl2l3 = (float) ((float) mb16_swap((const int16_t) im_ptr->vl2n) / 10.0f);
+	imd_tmp.vl3l1 = (float) ((float) mb16_swap((const int16_t) im_ptr->vl3n) / 10.0f);
+	imd_tmp.al1 = (float) ((float) mb16_swap((const int16_t) im_ptr->al1)) / 100.0f;
+	imd_tmp.al2 = (float) ((float) mb16_swap((const int16_t) im_ptr->al2)) / 100.0f;
+	imd_tmp.al3 = (float) ((float) mb16_swap((const int16_t) im_ptr->al3)) / 100.0f;
+	imd_tmp.hz = (float) (((float) mb16_swap((const int16_t) im_ptr->hz)) / 100.0f);
+	imd_tmp.pfl1 = (float) ((float) mb16_swap((const int16_t) im_ptr->pfl1) / 10.0f);
+	imd_tmp.pfl2 = (float) ((float) mb16_swap((const int16_t) im_ptr->pfl2) / 10.0f);
+	imd_tmp.pfl3 = (float) ((float) mb16_swap((const int16_t) im_ptr->pfl3) / 10.0f);
+	imd_tmp.pfsys = (float) ((float) mb16_swap((const int16_t) im_ptr->pfl1) / 10.0f);
 #ifdef EMETER_TRACE
 	TP1_SetLow();
 #endif
@@ -338,13 +351,12 @@ static void iammeter_dir_handler(void)
 	TP1_SetHigh();
 #endif
 	imd_ptr = (IM_dir1*) & cc_buffer[3];
-	imd_tmp.ap1s = (float) mb32_swap(imd_ptr->ap1s) / 100000; // phase A:1 GTI power
-	imd_tmp.ap2s = (float) mb32_swap(imd_ptr->ap2s) / 100000; // Phase B:2 Utility power flow
-	imd_tmp.ap3s = (float) mb32_swap(imd_ptr->ap3s) / 100000; // Phase C:3 Load power
+	imd_tmp.ap1s = (float) mb32_swap(imd_ptr->ap1s) / 100000; // L1 or phase A:1 GTI power
+	imd_tmp.ap2s = (float) mb32_swap(imd_ptr->ap2s) / 100000; // L2 or Phase B:2 Utility power flow
+	imd_tmp.ap3s = (float) mb32_swap(imd_ptr->ap3s) / 100000; // GTI power or Phase C:3 Load power
 	imd_tmp.rpp1s = (float) mb32_swap(imd_ptr->rpp1s) / 100000; // Reactive power for each Phase input
 	imd_tmp.rpp2s = (float) mb32_swap(imd_ptr->rpp2s) / 100000;
 	imd_tmp.rpp3s = (float) mb32_swap(imd_ptr->rpp3s) / 100000;
-	imd_tmp.tps = (float) mb32_swap(imd_ptr->tps) / 100000; // Total power
 #ifdef EMETER_TRACE
 	TP1_SetLow();
 #endif
