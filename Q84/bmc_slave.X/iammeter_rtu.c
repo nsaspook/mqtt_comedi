@@ -327,7 +327,7 @@ static void iammeter_data_handler(void)
 	em_tmp.wl1 = (float) mb32_swap(im_ptr->wl1)*100;
 	em_tmp.wl2 = (float) mb32_swap(im_ptr->wl2)*100;
 	em_tmp.wl3 = (float) mb32_swap(im_ptr->wl3)*100;
-	imd_tmp.tps = (float) ((float) mb32_swap(im_ptr->tps)); // Total power
+	imd_tmp.tps = (float) ((float) mb32_swap(im_ptr->tps) / 100000.0f); // Total power
 	imd_tmp.varsys = (float) ((float) mb32_swap(im_ptr->rpp1s) / 100000.0f);
 	imd_tmp.vl1l2 = (float) ((float) mb16_swap((const int16_t) im_ptr->vl1n) / 10.0f);
 	imd_tmp.vl2l3 = (float) ((float) mb16_swap((const int16_t) im_ptr->vl2n) / 10.0f);
@@ -340,6 +340,22 @@ static void iammeter_data_handler(void)
 	imd_tmp.pfl2 = (float) ((float) mb16_swap((const int16_t) im_ptr->pfl2) / 10.0f);
 	imd_tmp.pfl3 = (float) ((float) mb16_swap((const int16_t) im_ptr->pfl3) / 10.0f);
 	imd_tmp.pfsys = (float) ((float) mb16_swap((const int16_t) im_ptr->pfl1) / 10.0f);
+	if (im_ptr->pdi1 > 0) {
+		imd_tmp.wl1 = (float) ((float) mb32_swap(im_ptr->wl1)* -1.0f);
+	} else {
+		imd_tmp.wl1 = (float) ((float) mb32_swap(im_ptr->wl1));
+	}
+	if (im_ptr->pdi2 > 0) {
+		imd_tmp.wl2 = (float) ((float) mb32_swap(im_ptr->wl2)* -1.0f);
+	} else {
+		imd_tmp.wl2 = (float) ((float) mb32_swap(im_ptr->wl2));
+	}
+	if (im_ptr->pdi3 > 0) {
+		imd_tmp.wl3 = (float) ((float) mb32_swap(im_ptr->wl3)* -1.0f);
+	} else {
+		imd_tmp.wl3 = (float) ((float) mb32_swap(im_ptr->wl3));
+	}
+
 #ifdef EMETER_TRACE
 	TP1_SetLow();
 #endif

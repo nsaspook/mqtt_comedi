@@ -961,11 +961,11 @@ void main(void)
 					snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "BAT %d.%01dV PV %d.%01dV                 ", vw, vf, pvw, pvf);
 #endif
 				} else {
-					snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%4.1f %4.1f %4.1f %4.1fW            ", imd_tmp.ap1s, imd_tmp.ap2s, imd_tmp.ap3s, imd_tmp.tps);
+					snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%4.0f %4.0f %4.0fVa %2.0fHz            ", imd_tmp.wl1, imd_tmp.wl2, imd_tmp.wl3, (float) imd_tmp.hz);
 					if (ha_daq_calib.em_model == PZEM_M) {
-						snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%4.1f %4.1f %4.1fPh                ", imd_tmp.rpp1s, imd_tmp.rpp2s, imd_tmp.rpp3s);
+						snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%4.0f %4.0f %4.0fPh %4.0fW               ", imd_tmp.rpp1s, imd_tmp.rpp2s, imd_tmp.rpp3s, imd_tmp.tps);
 					} else {
-						snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%4.1f %4.1f %4.1fVR                ", imd_tmp.rpp1s, imd_tmp.rpp2s, imd_tmp.rpp3s);
+						snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%4.0f %4.0f %4.0f %4.0fW               ", imd_tmp.ap1s, imd_tmp.ap2s, imd_tmp.ap3s, imd_tmp.tps);
 					}
 				}
 				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "%2.1fKWh float %3.1fh                       ", (float) BM.log.kilowatt_hours / 10.0f, (float) BM.log.float_time / 60.0f);
@@ -979,7 +979,7 @@ void main(void)
 					if ((ha_daq_calib.em_model == PZEM_M) || (ha_daq_calib.em_model == WEM30_M)) {
 						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%3.2f %3.2f %3.2fPf                ", (float) imd_tmp.pfl1, (float) imd_tmp.pfl2, (float) imd_tmp.pfl3);
 					} else {
-						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVR %3.2fPf             ", (float) em.wl1 / 10.0f, (float) em.varl1 / 10.f, (float) em.pfl1 / 1000.0f);
+						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.0fW %4.0fVR %3.2fPf             ", (float) em.wl1 / 10.0f, (float) em.varl1 / 10.f, (float) em.pfl1 / 1000.0f);
 					}
 				} else {
 					snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVA %3.2fPF             ", imd_tmp.ap1s / 10.0f, imd_tmp.rpp1s / 10.f, (float) em.pfl1 / 1000.0f);
