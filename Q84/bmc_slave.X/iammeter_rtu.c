@@ -324,9 +324,9 @@ static void iammeter_data_handler(void)
 	emt.hz = (int32_t) (((float) em.hz) * 10.0f);
 	em_tmp.hz = (float) emt.hz;
 	em_tmp.al1 = ((float) im.al1) / 100.0f;
-	em_tmp.wl1 = (float) mb32_swap(im_ptr->wl1)*100;
-	em_tmp.wl2 = (float) mb32_swap(im_ptr->wl2)*100;
-	em_tmp.wl3 = (float) mb32_swap(im_ptr->wl3)*100;
+	em_tmp.wl1 = (float) ((float) mb32_swap(im_ptr->wl1)) * 100.0f;
+	em_tmp.wl2 = (float) ((float) mb32_swap(im_ptr->wl2)) * 100.0f;
+	em_tmp.wl3 = (float) ((float) mb32_swap(im_ptr->wl3)) * 100.0f;
 	imd_tmp.tps = (float) ((float) mb32_swap(im_ptr->tps) / 100000.0f); // Total power
 	imd_tmp.varsys = (float) ((float) mb32_swap(im_ptr->rpp1s) / 100000.0f);
 	imd_tmp.vl1l2 = (float) ((float) mb16_swap((const int16_t) im_ptr->vl1n) / 10.0f);

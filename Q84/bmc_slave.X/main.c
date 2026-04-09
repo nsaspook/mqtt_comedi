@@ -949,9 +949,9 @@ void main(void)
 				bmc_logger();
 				snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%s                         ", &BMC4.log_buffer[2]);
 				if (spi_stat_ss.mui != 0x61DB5) {
-					snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %4.1fV %4.2fA           ", modbus_name[C.id_ok], imd_tmp.vl1l2 / 10, (imd_tmp.al1));
+					snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %4.1fV %4.2fA           ", modbus_name[C.id_ok], imd_tmp.vl1l2 / 10.0f, (imd_tmp.al1));
 				} else {
-					snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %ldV %3.0fW           ", modbus_name[C.id_ok], em.vl3l1 / 10, (em_tmp.wl3 / 100.0f));
+					snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %4.1fV %4.1fW           ", modbus_name[C.id_ok], imd_tmp.vl3l1 / 10.0f, (em_tmp.wl3 / 100.0f));
 				}
 				if (BM.FM80_online) {
 					snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%s %s %d.%01dA %dA              ", FM80_name[BM.FM80_online], state_name[cc_mode], bat_amp_whole - 128, bat_amp_frac - 128, bat_amp_panel - 128);

@@ -21,7 +21,7 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.63"
+#define VER	"V0.64"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -75,6 +75,7 @@ extern "C" {
 	 * V0.61 add support for PZEM-6L25 Energy meter and disable storage area flash
 	 * V0.62 set stack to reentrant for better program stability
 	 * V0.63 cleaning up LCD and MQTT data to match on all energy meters
+	 * V0.64 more clean-up
 	 */
 
 	/*
