@@ -112,6 +112,23 @@ static void emt_data_handler(void);
 static void ems_data_handler(void);
 static void emv_data_handler(void);
 
+typedef struct IMD_tmp {
+	volatile float
+	tps, ap1s, ap2s, ap3s,
+	pfl1, pfl2, pfl3, pfsys,
+	rpp1s, rpp2s, rpp3s,
+	vl1n, vl2n, vl3n,
+	vl1l2, vl2l3, vl3l1,
+	al1, al2, al3,
+	wl1, wl2, wl3,
+	val1, val2, val3,
+	varl1, varl2, varl3,
+	vlnsys, vllsys, wsys, vasys, varsys,
+	phaseseq, hz;
+} IMD_tmp;
+
+extern IMD_tmp imd_tmp;
+
 /*
  * add the required CRC bytes to a MODBUS message
  */
@@ -750,9 +767,20 @@ static void em_data_handler(void)
 	em.varsys = mb32_swap(em_ptr->varsys);
 	em.pfl1 = mb16_swap(em_ptr->pfl1);
 	em.pfl2 = mb16_swap(em_ptr->pfl2);
+	em.pfl3 = mb16_swap(em_ptr->pfl3);
 	em.pfsys = mb16_swap(em_ptr->pfsys);
 	em.hz = mb16_swap(em_ptr->hz);
 	em_tmp.al1 = ((float) em.al1) / 1000.0f;
+	em_tmp.wl1 = (float) ((float) mb32_swap(em_ptr->wl1)) * 100.0f;
+	em_tmp.wl2 = (float) ((float) mb32_swap(em_ptr->wl2)) * 100.0f;
+	em_tmp.wl3 = (float) ((float) mb32_swap(em_ptr->wl3)) * 100.0f;
+	imd_tmp.vl1l2 = (float) mb32_swap(em_ptr->vl1n);
+	imd_tmp.vl2l3 = (float) mb32_swap(em_ptr->vl2n);
+	imd_tmp.vl3l1 = (float) mb32_swap(em_ptr->vl3n);
+	imd_tmp.ap1s = (float) ((float) em.val1 / 10.0f); // phase A:1
+	imd_tmp.ap2s = (float) ((float) em.val2 / 10.0f); // Phase B:2
+	imd_tmp.ap3s = (float) ((float) em.val3 / 10.0f); // Phase C:3
+
 #ifndef MB_EM540_ONE
 #endif
 #ifdef EMETER_TRACE

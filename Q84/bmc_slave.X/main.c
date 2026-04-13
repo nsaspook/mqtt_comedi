@@ -979,10 +979,10 @@ void main(void)
 					if ((ha_daq_calib.em_model == PZEM_M) || (ha_daq_calib.em_model == WEM30_M)) {
 						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%3.2f %3.2f %3.2fPf                ", (float) imd_tmp.pfl1, (float) imd_tmp.pfl2, (float) imd_tmp.pfl3);
 					} else {
-						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.0fW %4.0fVR %3.2fPf             ", (float) em.wl1 / 10.0f, (float) em.varl1 / 10.f, (float) em.pfl1 / 1000.0f);
+						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.0fW %4.0fVa %3.2fPf             ", (float) em.wl1 / 10.0f, (float) em.val1 / 10.f, (float) em.pfl1 / 1000.0f);
 					}
 				} else {
-					snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVA %3.2fPF             ", imd_tmp.ap1s / 10.0f, imd_tmp.rpp1s / 10.f, (float) em.pfl1 / 1000.0f);
+					snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVA %3.2fPF             ", imd_tmp.ap1s / 1.0f, imd_tmp.rpp1s / 1.0f, (float) em.pfl1 / 1000.0f);
 				}
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
 				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3fV,5 %6.3fV                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));
