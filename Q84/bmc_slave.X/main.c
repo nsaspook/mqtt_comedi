@@ -963,7 +963,7 @@ void main(void)
 				} else {
 					snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%4.0f %4.0f %4.0fVa %2.0fHz            ", imd_tmp.wl1, imd_tmp.wl2, imd_tmp.wl3, (float) imd_tmp.hz);
 					if (ha_daq_calib.em_model == PZEM_M) {
-						snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%4.0f %4.0f %4.0fPh %4.0fW               ", imd_tmp.rpp1s, imd_tmp.rpp2s, imd_tmp.rpp3s, imd_tmp.tps);
+						snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%4.0f %4.0f %4.0fPh %2.0fW               ", imd_tmp.rpp1s, imd_tmp.rpp2s, imd_tmp.rpp3s, imd_tmp.tps);
 					} else {
 						snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%4.0f %4.0f %4.0f %4.0fW               ", imd_tmp.ap1s, imd_tmp.ap2s, imd_tmp.ap3s, imd_tmp.tps);
 					}
@@ -982,7 +982,7 @@ void main(void)
 						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.0fW %4.0fVa %3.2fPf             ", (float) em.wl1 / 10.0f, (float) em.val1 / 10.f, (float) em.pfl1 / 1000.0f);
 					}
 				} else {
-					snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.1fW %4.1fVA %3.2fPF             ", imd_tmp.ap1s / 1.0f, imd_tmp.rpp1s / 1.0f, (float) em.pfl1 / 1000.0f);
+					snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%3.2fW %3.2fVa %3.2fPf             ", imd_tmp.ap1s * 1.0f, imd_tmp.rpp1s * 1.0f, (float) em.pfl3 / 10.0f);
 				}
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
 				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3fV,5 %6.3fV                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));

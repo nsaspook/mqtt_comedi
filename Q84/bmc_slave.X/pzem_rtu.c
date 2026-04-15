@@ -266,9 +266,9 @@ static void pzem_data_handler(void)
 	imd_tmp.al1 = (float) (pz_ptr->al1 / 100.0f);
 	imd_tmp.al2 = (float) (pz_ptr->al2 / 100.0f);
 	imd_tmp.al2 = (float) (pz_ptr->al3 / 100.0f);
-	imd_tmp.wl1 = (float) (pz_ptr->pap1s);
-	imd_tmp.wl2 = (float) (pz_ptr->pap2s);
-	imd_tmp.wl3 = (float) (pz_ptr->pap3s);
+	imd_tmp.wl1 = (float) ((float) pz_ptr->pap1s / 10.0f);
+	imd_tmp.wl2 = (float) ((float) pz_ptr->pap2s / 10.0f);
+	imd_tmp.wl3 = (float) ((float) pz_ptr->pap3s / 10.0f);
 	imd_tmp.hz = (float) (pz_ptr->hz1 / 100.0f);
 	imd_tmp.varsys = (float) ((float) pz_ptr->c1ps / 100.0f);
 	imd_tmp.vl1l2 = (float) pz_ptr->vl1n;
