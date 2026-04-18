@@ -251,9 +251,18 @@ static void pzem_data_handler(void)
 	imd_tmp.ap1s = (float) ((float) em.wl1 / 10.0f); // phase A:1 GTI power
 	imd_tmp.ap2s = (float) ((float) em.wl2 / 10.0f); // Phase B:2 Utility power flow
 	imd_tmp.ap3s = (float) ((float) em.wl3 / 10.0f); // Phase C:3 Load power
-	imd_tmp.rpp1s = (float) (pz_ptr->pcp1 / 100.0f); // Current phase for each Phase input
+	imd_tmp.rpp1s = (float) (pz_ptr->pcp1 / 100.0f); // Current phase for each line input
 	imd_tmp.rpp2s = (float) (pz_ptr->pcp2 / 100.0f);
 	imd_tmp.rpp3s = (float) (pz_ptr->pcp3 / 100.0f);
+	if (imd_tmp.rpp1s > 180.0f) {
+		imd_tmp.rpp1s = imd_tmp.rpp1s + -360.0f;
+	}
+	if (imd_tmp.rpp2s > 180.0f) {
+		imd_tmp.rpp2s = imd_tmp.rpp2s + -360.0f;
+	}
+	if (imd_tmp.rpp3s > 180.0f) {
+		imd_tmp.rpp3s = imd_tmp.rpp3s + -360.0f;
+	}
 	imd_tmp.tps = (float) ((float) pz_ptr->caps / 10.0f); // Total power
 	imd_tmp.pfl1 = (int16_t) ((float) (pz_ptr->p1p2pf >> 8)) / 100.0f;
 	imd_tmp.pfl2 = (int16_t) ((float) (pz_ptr->p1p2pf & 0x00ff)) / 100.0f;

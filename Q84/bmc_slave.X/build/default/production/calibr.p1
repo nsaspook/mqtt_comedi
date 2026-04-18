@@ -7,7 +7,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v F24993 `(v ~T0 @X0 0 tf ]
 "3 calibr.c
 [c E25597 0 1 2 3 .. ]
-[n E25597 EMETER_MODEL EM540_M WEM30_M PZEM_M NEXT_M  ]
+[n E25597 EMETER_MODEL EM540_M WEM30_M PZEM_M POWER_M  ]
 "46 ./calibr.h
 [s S3411 `uo 1 `d 1 `d 1 `d 1 `d 1 `d 1 `d 1 `a 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 `VE25597 1 `us 1 `uc 1 ]
 [n S3411 ha_daq_calib_type bmc_id offset4 scaler4 offset5 scaler5 A200_Z A200_S done c_zero_cal c_scale_cal c_do_cal em_model checkmark crc ]
@@ -3062,87 +3062,87 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _BON
 -> -> 255 `i `uc
 ]
-"155 ./vconfig.h
+"156 ./vconfig.h
 [v _TDELAY `Cus ~T0 @X0 1 s ]
 [i _TDELAY
 -> -> 3000 `i `us
 ]
-"156
+"157
 [v _SEQDELAY `Cus ~T0 @X0 1 s ]
 [i _SEQDELAY
 -> -> 10000 `i `us
 ]
-"157
+"158
 [v _LDELAY `Cus ~T0 @X0 1 s ]
 [i _LDELAY
 -> -> 2400 `i `us
 ]
-"158
+"159
 [v _WLDELAY `Cus ~T0 @X0 1 s ]
 [i _WLDELAY
 -> -> 1600 `i `us
 ]
-"159
+"160
 [v _SDELAY `Cus ~T0 @X0 1 s ]
 [i _SDELAY
 -> -> 100 `i `us
 ]
-"160
+"161
 [v _DDELAY `Cus ~T0 @X0 1 s ]
 [i _DDELAY
 -> -> 500 `i `us
 ]
-"161
+"162
 [v _DFLIP `Cus ~T0 @X0 1 s ]
 [i _DFLIP
 -> -> 1500 `i `us
 ]
-"162
+"163
 [v _ADCDELAY `Cuc ~T0 @X0 1 s ]
 [i _ADCDELAY
 -> -> 1 `i `uc
 ]
-"163
+"164
 [v _SWITCH_VTERM `Cuc ~T0 @X0 1 s ]
 [i _SWITCH_VTERM
 -> -> 70 `i `uc
 ]
-"164
+"165
 [v _SWITCH_DURATION `Cuc ~T0 @X0 1 s ]
 [i _SWITCH_DURATION
 -> -> 32 `i `uc
 ]
-"165
+"166
 [v _HOST_UART `Cuc ~T0 @X0 1 s ]
 [i _HOST_UART
 -> -> 1 `i `uc
 ]
-"166
+"167
 [v _CHK_DAY_TIME `Cus ~T0 @X0 1 s ]
 [i _CHK_DAY_TIME
 -> -> 1200 `i `us
 ]
-"167
+"168
 [v _BAT_DAY_COUNT `Cuc ~T0 @X0 1 s ]
 [i _BAT_DAY_COUNT
 -> -> 45 `i `uc
 ]
-"168
+"169
 [v _BAT_NIGHT_COUNT `Cuc ~T0 @X0 1 s ]
 [i _BAT_NIGHT_COUNT
 -> -> 90 `i `uc
 ]
-"169
+"170
 [v _PV_VOLTS_HIGH `Cuc ~T0 @X0 1 s ]
 [i _PV_VOLTS_HIGH
 -> -> 70 `i `uc
 ]
-"170
+"171
 [v _SPI_RESET_COUNTS `Cuc ~T0 @X0 1 s ]
 [i _SPI_RESET_COUNTS
 -> -> 6 `i `uc
 ]
-"179
+"180
 [v _log_format1 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format1
 :U ..
@@ -3331,7 +3331,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"185
+"186
 [v _log_format2 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format2
 :U ..
@@ -3520,7 +3520,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"191
+"192
 [v _log_format3 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format3
 :U ..
@@ -3709,7 +3709,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"197
+"198
 [v _log_format4 `Cuc ~T0 @X0 -> 183 `i e ]
 [i _log_format4
 :U ..
@@ -3899,7 +3899,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ]
 [v F25545 `Cuc ~T0 @X0 -> 20 `i t ]
-"354
+"355
 [v _spin `F25545 ~T0 @X0 -> 6 `i e ]
 [i _spin
 :U ..

@@ -131,7 +131,7 @@ enum EMETER_MODEL set_calibration(unsigned long long mui)
 	}
 
 	if ((EMETER_CONF_PORT == 0x01) && (EMETER_CONF_TYPE_PORT == 0x00)) {
-		em_model = NEXT_M;
+		em_model = POWER_M;
 	}
 
 	return em_model;

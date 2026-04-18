@@ -40,7 +40,7 @@ extern "C" {
 		EM540_M = 0,	// E Meter jumpers high/high
 		WEM30_M,	// low/high
 		PZEM_M,		// low/low
-		NEXT_M,		// high/low
+		POWER_M,		// high/low
 	};
 
 	struct ha_daq_calib_type {

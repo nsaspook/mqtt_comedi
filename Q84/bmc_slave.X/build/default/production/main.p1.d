@@ -37,4 +37,5 @@ mydisplay.h  \
 rs232.h  \
 mxcmd.h  \
 iammeter_rtu.h  \
-pzem_rtu.h 
+pzem_rtu.h  \
+powerm.h 

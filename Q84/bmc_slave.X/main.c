@@ -52,7 +52,7 @@
  * Power
  * 2  5V power		4 - SV1 5VDD    grey
  * 9  GND		9   ANA VSS	purple
- * 14 GND		9   DIGA VSS	black
+ * 3,14 GND		9   DIGA VSS	black
  *
  * 13 pin connector	headers		cable colors
  * 1  5V power		2 - GLORY 5VDD  white
@@ -246,6 +246,7 @@ typedef signed long long int24_t;
 #include "modbus_master.h"
 #include "iammeter_rtu.h"
 #include "pzem_rtu.h"
+#include "powerm.h"
 #include "calibr.h"
 
 #ifdef TRACE
@@ -506,7 +507,9 @@ void main(void)
 		V.op.master_controller_work = &pzem_controller_work;
 		V.op.info_ptr = &pzem_version;
 		break;
-	case NEXT_M:
+	case POWER_M:
+		V.op.info_ptr = &powerm_version;
+		break;
 	case WEM30_M: // use IAMMETER MODBUS connection to WEM3080T instead of default EM540
 		V.op.init_mb_master_timers = &init_im_mb_master_timers;
 		V.op.master_controller_work = &iammeter_controller_work;
