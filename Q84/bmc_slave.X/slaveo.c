@@ -125,10 +125,8 @@ void slaveo_rx_isr(void)
 			serial_buffer_ss.cmake_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
-			data_in2 = 0;
-		} else {
-			data_in2 = 0;
 		}
+		data_in2 = 0;
 	}
 
 	// PORT_GO_BYTES
@@ -140,10 +138,8 @@ void slaveo_rx_isr(void)
 			serial_buffer_ss.make_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
-			data_in2 = 0;
-		} else {
-			data_in2 = 0;
 		}
+		data_in2 = 0;
 	}
 
 	// DAC_GO_BYTES
@@ -153,10 +149,8 @@ void slaveo_rx_isr(void)
 			serial_buffer_ss.dac_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
-			data_in2 = 0;
-		} else {
-			data_in2 = 0;
 		}
+		data_in2 = 0;
 	}
 
 	// CHAR_GET_BYTES
@@ -184,8 +178,6 @@ void slaveo_rx_isr(void)
 			serial_buffer_ss.cget_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
-
-			data_in2 = 0;
 		} else {
 			if ((serial_buffer_ss.data[BMC_D1] & 0x07) < BMC_EM540_DATA) { // [0..3]
 				if (serial_buffer_ss.raw_index == BMC_D0) {
@@ -197,8 +189,8 @@ void slaveo_rx_isr(void)
 				tmp_buf = log_buffer[BMC4.pos];
 			}
 			SPI2TXB = tmp_buf;
-			data_in2 = 0;
 		}
+		data_in2 = 0;
 	}
 
 	// PORT_GET_BYTES
@@ -209,7 +201,6 @@ void slaveo_rx_isr(void)
 			serial_buffer_ss.get_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
-			data_in2 = 0;
 		} else {
 			if (serial_buffer_ss.raw_index == BMC_D0) {
 				tmp_buf = (uint8_t) in_buf1 | 0b00000001;
@@ -217,8 +208,8 @@ void slaveo_rx_isr(void)
 				tmp_buf = (uint8_t) in_buf2;
 			}
 			SPI2TXB = tmp_buf;
-			data_in2 = 0;
 		}
+		data_in2 = 0;
 	}
 
 	// ADC_GET_BYTES
@@ -228,15 +219,14 @@ void slaveo_rx_isr(void)
 			serial_buffer_ss.adc_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
-			data_in2 = 0;
 		} else {
 			if (serial_buffer_ss.raw_index == BMC_D0) {
 				SPI2TXB = (adc_buffer[channel] &0x00ff);
 			} else {
 				SPI2TXB = ((adc_buffer[channel] >> 8)&0x00ff);
 			}
-			data_in2 = 0;
 		}
+		data_in2 = 0;
 	}
 
 	// GET_CFG_BYTES
@@ -246,7 +236,6 @@ void slaveo_rx_isr(void)
 			serial_buffer_ss.cfg_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
-			data_in2 = 0;
 		} else {
 			switch (channel) {
 			case ADC_HV0:
@@ -332,8 +321,8 @@ void slaveo_rx_isr(void)
 				}
 				break;
 			}
-			data_in2 = 0;
 		}
+		data_in2 = 0;
 	}
 
 	if (++serial_buffer_ss.raw_index > SPI_BUFFER_LEN - 1) {
@@ -354,7 +343,7 @@ void slaveo_rx_isr(void)
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.dac_value = true;
 		spi_comm_ss.REMOTE_LINK = true;
-		TMR0_Reload();
+		TMR0_Reload(); // restart master activity timer counter to prevent system restart
 	}
 
 	if (command == CMD_ADC_GO) { // Found a GO for a conversion command
