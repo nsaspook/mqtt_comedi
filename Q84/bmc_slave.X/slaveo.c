@@ -77,8 +77,8 @@ void slaveo_rx_isr(void)
 		spi_stat_ss.rxof_bit++;
 	}
 #endif
-	data_in2 = SPI2RXB;
-	serial_buffer_ss.data[serial_buffer_ss.raw_index] = data_in2;
+	data_in2 = SPI2RXB; // store SPI data received for later processing
+	serial_buffer_ss.data[serial_buffer_ss.raw_index] = data_in2; // buffer SPI into protocol data-frame
 
 	// CHAR_GO_BYTES
 	// use r_string array to buffer ascii data
