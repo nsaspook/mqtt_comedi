@@ -56,7 +56,6 @@ void SYSTEM_Initialize(void)
     OSCILLATOR_Initialize();
     DMA2_Initialize();
     DMA1_Initialize();
-    TMR4_Initialize();
     TMR2_Initialize();
     TMR0_Initialize();
     TMR6_Initialize();

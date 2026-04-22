@@ -79,6 +79,7 @@ extern "C" {
 	static const uint8_t TODELAY = 4; // misc delay
 	static const uint8_t SPACING = 40; // control loop cpu usage factor
 	static const uint8_t DUPL_DELAY = 2; // extra duplex delay mode
+	static const uint8_t HZ_DELAY = 200;
 
 	/*
 	 * RS485 port defines
@@ -89,6 +90,7 @@ extern "C" {
 #define Strdy		UART3_is_tx_ready
 #define Serror		UART3_get_last_status
 #define Sread		UART3_Read
+#define Srrdy		UART3_is_rx_ready
 #define Srbuffer	U3RXB
 
 	/*
@@ -356,7 +358,6 @@ extern "C" {
 	uint32_t get_2hz(const uint8_t);
 	uint32_t get_500ahz(const uint8_t);
 	uint32_t get_500hz(const uint8_t);
-	void timer_500ms_tick(void);
 	void timer_2ms_tick(void);
 	bool serial_trmt(void);
 	void mb_tx_test(C_data *);

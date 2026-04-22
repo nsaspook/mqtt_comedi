@@ -14,11 +14,15 @@ extern "C" {
 
 #include "modbus_master.h"
 #include "iammeter_rtu.h"
-	
+
+	typedef __pack struct POWERM_data1 {
+		volatile uint16_t
+		register1;
+	} POWERM_data1;
+
 	/*
 	 * GTI Inverter power control routines via RS485
 	 */
-	void powerm_my_modbus_rx_32(void);
 	void init_powerm_mb_master_timers(void);
 	int8_t powerm_controller_work(C_data *);
 	void powerm_version(void);

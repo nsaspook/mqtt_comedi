@@ -508,6 +508,8 @@ void main(void)
 		V.op.info_ptr = &pzem_version;
 		break;
 	case POWER_M:
+		V.op.init_mb_master_timers = &init_powerm_mb_master_timers;
+		V.op.master_controller_work = &powerm_controller_work;
 		V.op.info_ptr = &powerm_version;
 		break;
 	case WEM30_M: // use IAMMETER MODBUS connection to WEM3080T instead of default EM540

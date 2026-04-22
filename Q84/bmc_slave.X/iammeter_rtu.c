@@ -1,22 +1,10 @@
 #include "iammeter_rtu.h"
 
-typedef struct M_time_data { // ISR used, mainly for non-atomic mod problims
-	uint32_t clock_500hz;
-	uint32_t clock_500ahz;
-	uint32_t clock_2hz;
-} M_time_data;
-
 static volatile uint8_t cc_stream_file, *cc_buffer, cc_buffer_0[MAX_DATA], cc_buffer_tx[MAX_DATA]; // RX and TX command buffers
 
 static volatile M_data M = {
 	.blink_lock = false,
 	.power_on = true,
-};
-
-static volatile M_time_data MT = {
-	.clock_500ahz = 0,
-	.clock_2hz = 0,
-	.clock_500hz = 0,
 };
 
 static const uint16_t ITDELAY = 3; // KWH half-duplex delay
@@ -70,8 +58,6 @@ void init_im_mb_master_timers(void)
 	cc_buffer = cc_buffer_0;
 	im_ptr = (IM_data1*) & cc_buffer[3];
 	imd_ptr = (IM_dir1*) & cc_buffer[3];
-	TMR4_SetInterruptHandler(timer_500ms_tick);
-	TMR4_StartTimer();
 	TMR3_SetInterruptHandler(timer_2ms_tick);
 	TMR3_StartTimer();
 }

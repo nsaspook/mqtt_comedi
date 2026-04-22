@@ -1,22 +1,10 @@
 #include "pzem_rtu.h"
 
-typedef struct M_time_data { // ISR used, mainly for non-atomic mod problims
-	uint32_t clock_500hz;
-	uint32_t clock_500ahz;
-	uint32_t clock_2hz;
-} M_time_data;
-
 static volatile uint8_t cc_stream_file, *cc_buffer, cc_buffer_0[MAX_DATA], cc_buffer_tx[MAX_DATA]; // RX and TX command buffers
 
 static volatile M_data M = {
 	.blink_lock = false,
 	.power_on = true,
-};
-
-static volatile M_time_data MT = {
-	.clock_500ahz = 0,
-	.clock_2hz = 0,
-	.clock_500hz = 0,
 };
 
 static const uint16_t PTDELAY = 3; // KWH half-duplex delay
@@ -65,8 +53,6 @@ void init_pz_mb_master_timers(void)
 {
 	cc_buffer = cc_buffer_0;
 	pz_ptr = (PZ_data1*) & cc_buffer[3];
-	TMR4_SetInterruptHandler(timer_500ms_tick);
-	TMR4_StartTimer();
 	TMR3_SetInterruptHandler(timer_2ms_tick);
 	TMR3_StartTimer();
 }
@@ -95,7 +81,7 @@ int8_t pzem_controller_work(C_data * client)
 		clear_500ahz();
 		client->cstate = INIT;
 		client->modbus_command = client->mcmd++; // sequence MODBUS commands to client
-		if ((client->modbus_command == (cmd_type) P_HZ1) && (client->config_ok)) { // skip if we have valid 60Hz set
+		if ((client->modbus_command == (cmd_type) P_HZ1) && (client->config_ok)) { // skip if we have valid 50/60Hz WIRE set
 			client->modbus_command = client->mcmd++;
 		}
 		if (client->mcmd > P_LAST) {
@@ -134,7 +120,7 @@ int8_t pzem_controller_work(C_data * client)
 			break;
 		}
 		break;
-	case INIT:
+	case INIT: // start send data frame
 		client->trace = T_init;
 		/*
 		 * MODBUS master query speed
@@ -153,11 +139,11 @@ int8_t pzem_controller_work(C_data * client)
 			client->trace = T_init_d;
 		}
 		break;
-	case SEND:
+	case SEND: // send the serial data
 		client->trace = T_send;
 		if (get_500hz(false) >= PTEDELAY) {
 			for (uint8_t i = 0; i < client->req_length; i++) {
-				Swrite(cc_buffer_tx[i]);
+				Swrite(cc_buffer_tx[i]); // use TX ring buffer
 			}
 			client->cstate = RECV;
 			clear_500hz(); // state machine execute background timer clear
@@ -171,7 +157,7 @@ int8_t pzem_controller_work(C_data * client)
 #endif
 		}
 		break;
-	case RECV:
+	case RECV: // receive data from slave
 		client->trace = T_recv;
 		if (get_500hz(false) >= PTEDELAY) { // state machine execute timer test
 			client->trace = T_recv_r;
@@ -181,8 +167,8 @@ int8_t pzem_controller_work(C_data * client)
 			/*
 			 * process received controller data stream
 			 */
-			if (UART3_is_rx_ready()) {
-				m_data = UART3_Read(); // receiver data to buffer
+			if (Srrdy()) { // receive data ready?
+				m_data = Sread(); // receiver data to debug buffer
 				cc_buffer[M.recv_count] = m_data;
 				if (++M.recv_count >= MAX_DATA) {
 					M.recv_count = 0; // reset buffer position

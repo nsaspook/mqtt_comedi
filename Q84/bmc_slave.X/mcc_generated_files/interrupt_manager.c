@@ -88,7 +88,6 @@ void  INTERRUPT_Initialize (void)
     IPR3bits.TMR0IP = 1;
     IPR15bits.TMR6IP = 1;
     IPR8bits.TMR5IP = 1;
-    IPR11bits.TMR4IP = 0;
     IPR5bits.TMR3IP = 0;
     IPR3bits.TMR1IP = 1;
 }

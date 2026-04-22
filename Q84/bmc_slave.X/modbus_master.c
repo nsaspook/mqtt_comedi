@@ -91,7 +91,6 @@ char modbus_name [][12] = {
 	"EM540",
 };
 
-void timer_500ms_tick(void);
 void timer_2ms_tick(void);
 
 static void half_dup_tx(const bool);
@@ -210,8 +209,6 @@ void init_mb_master_timers(void)
 {
 	cc_buffer = cc_buffer_0;
 	em_ptr = (EM_data1*) & cc_buffer[3];
-	TMR4_SetInterruptHandler(timer_500ms_tick);
-	TMR4_StartTimer();
 	TMR3_SetInterruptHandler(timer_2ms_tick);
 	TMR3_StartTimer();
 }
@@ -534,19 +531,18 @@ static void half_dup_rx(const bool delay)
 #endif
 }
 
-// ISR function for TMR4
-
-void timer_500ms_tick(void)
-{
-	MT.clock_2hz++;
-}
-
 // ISR function for TMR3
 
 void timer_2ms_tick(void)
 {
+	static uint8_t tick_delay = 0;
+
 	MT.clock_500hz++;
 	MT.clock_500ahz++;
+	if (++tick_delay >= HZ_DELAY) {
+		MT.clock_2hz++;
+		tick_delay = 0;
+	}
 }
 
 /*
