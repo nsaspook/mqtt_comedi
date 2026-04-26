@@ -86,7 +86,7 @@ for the FMx0 charge controller and for MODBUS power meters
 #include <linux/list.h>
 #include <linux/completion.h>
 
-#define bmc_version "version 1.26 "
+#define bmc_version "version 1.27 "
 #define spibmc_version "version 1.8 "
 
 /*
@@ -233,8 +233,11 @@ static const uint32_t SUBDEV_DO = 4;
 static const uint32_t SMP_CORES = 4;
 static const uint32_t CONF_Q84 = 3;
 static const uint32_t MEM_BLOCKS = 8; // 0..3 CLCD display lines, 4..7 serial comms for FMx0, MODBUS, etc ...
-static const uint32_t SPI_GAP = 7000; // time for the Q84 to process each received SPI byte
-static const uint32_t SPI_GAP_LONG = 15000; // time for the Q84 to process each received SPI byte
+#ifdef RPIDAQ
+static const uint32_t SPI_GAP_LONG = 22000; // time for the Q84 to process each received SPI byte
+#else
+static const uint32_t SPI_GAP_LONG = 12000; // time for the Q84 to process each received SPI byte
+#endif
 
 static const uint32_t PIC18_CONVD_57Q84 = 24;
 static const uint32_t PIC18_CMDD_57Q84 = 4;
@@ -272,6 +275,9 @@ static const uint8_t CMD_CHAR_GET = 0x10; /* Get RX buffer */
 static const uint8_t CMD_DUMMY_CFG = 0x40; /* stuff config data in SPI buffer */
 static const uint8_t CMD_DEAD = 0xff; /* This is usually a bad response */
 static const uint8_t GET_MUI = 0x0D; // read the 57Q84 chip id
+
+static const int32_t MUI_RANGE_H = 0x250000;
+static const int32_t MUI_RANGE_L = 0x050000;
 
 /*
  * SPI packet link BYTE id's
@@ -634,7 +640,7 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	struct spi_param_type *spi_data = s->private;
 	struct spi_device *spi = spi_data->spi;
 	int32_t ret = 0;
-	ktime_t slower = SPI_GAP_LONG;
+	ktime_t slower = ns_to_ktime(SPI_GAP_LONG);
 
 	if (spi == NULL) {
 		ret = -ESHUTDOWN;
@@ -1957,7 +1963,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	}
 
 	retconf = daqbmc_bmc_get_mui(dev);
-	if ((retconf > 0x050000) && (retconf < 0x250000)) {
+	if ((retconf > MUI_RANGE_L) && (retconf < MUI_RANGE_H)) {
 		dev_info(dev->class_dev, "BMCBoard : MUI 0X%X \n", retconf);
 	} else {
 		dev_info(dev->class_dev, "BMCBoard : INVALID : MUI 0X%X \n", retconf);
@@ -2069,7 +2075,7 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 	struct comedi_spibmc *pdata;
 	int32_t ret;
 	struct bmc_packet_type packet_data, *packet = &packet_data;
-	ktime_t slower = SPI_GAP_LONG;
+	ktime_t slower = ns_to_ktime(SPI_GAP_LONG);
 
 	pdata = kzalloc(sizeof(struct comedi_spibmc), GFP_KERNEL | GFP_DMA);
 
