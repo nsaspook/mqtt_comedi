@@ -82,7 +82,7 @@ enum EMETER_MODEL set_calibration(unsigned long long mui)
 		ha_daq_calib.scaler4 = HV_SCALE4_1;
 		ha_daq_calib.scaler5 = HV_SCALE5_1;
 		break;
-	case 0x598F3: //
+	case 0x598F3: // old processor 47Q84 ?
 		ha_daq_calib.scaler4 = HV_SCALE4_2;
 		ha_daq_calib.scaler5 = HV_SCALE5_2;
 		break;
@@ -103,8 +103,8 @@ enum EMETER_MODEL set_calibration(unsigned long long mui)
 		ha_daq_calib.scaler5 = HV_SCALE5_6;
 		break;
 	case 0x5AE2B:
-		ha_daq_calib.scaler4 = HV_SCALE4_7;
-		ha_daq_calib.scaler5 = HV_SCALE5_7;
+		ha_daq_calib.scaler4 = HV_SCALE4_2;
+		ha_daq_calib.scaler5 = HV_SCALE5_2;
 		break;
 	default:
 		ha_daq_calib.scaler4 = HV_SCALAR4;

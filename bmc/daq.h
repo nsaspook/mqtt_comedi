@@ -36,7 +36,7 @@ extern "C" {
 	// USB Boards
 #define HV_SCALE0               83.6f
 #define HV_SCALE1               74.4f
-#define HV_SCALE2               74.4f
+#define HV_SCALE2               83.6f
 #define HV_SCALE3               83.6f
 #define HV_SCALE4               83.6f
 #define HV_SCALE5               83.6f
