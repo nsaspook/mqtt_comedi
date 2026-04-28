@@ -64,7 +64,7 @@ char *daq_text[] = {
 	"daq_bmc text 1           ",
 	"daq_bmc text 2           ",
 	"daq_bmc text 3           ",
-}, *daq_text_ptr, daq_bmc_data_text[SBUF_SIZ], daq_bmc_data_buf[SBUF_SIZ];
+}, *daq_text_ptr, daq_bmc_data_text[SYSLOG_SIZ], daq_bmc_data_buf[SYSLOG_SIZ];
 
 uint32_t daq_data_index = 0;
 static uint32_t slow_data = 0;
@@ -458,7 +458,7 @@ int get_data_sample(void)
 					comedi_data_write(it, subdev_serial0, BMC_CHAN, range_ao, AREF_GROUND, STX); // update daq_bmc data buffer
 					comedi_data_write(it, subdev_serial0, BMC_CHAN, range_ao, AREF_GROUND, STX);
 					daq_data_index = 0;
-					strncpy(daq_bmc_data_buf, daq_bmc_data_text, SBUF_SIZ);
+					strncpy(daq_bmc_data_buf, daq_bmc_data_text, SYSLOG_SIZ);
 					BMC4.pos = 0;
 					BMC4.bmc_flag = false;
 				} else {

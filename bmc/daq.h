@@ -62,8 +62,9 @@ extern "C" {
 	/*
 	 * make sure battery sensor power is connected to 12/24VDC supply
 	 * the sensor board has a onboard precision 5VDC reference/supply
+	 * A200_0_ZERO needs to set for each board
 	 */
-#define A200_0_ZERO    2.4600f	// should be near 2.5VDC for zero Hall sensor current
+#define A200_0_ZERO    2.4600f // should be near 2.5VDC for zero Hall sensor current
 #define A200_0_SCALAR  133.05f // BATTERY Amp scalar
 #define BSENSOR0       0
 
@@ -140,9 +141,9 @@ extern "C" {
 	extern volatile struct bmcdata bmc;
 	extern uint32_t datain, serial_buf, overrun;
 	extern union dio_buf_type obits;
-	extern uint32_t daq_bmc_data[];
-	extern char daq_bmc_data_text[];
-	extern char daq_bmc_data_buf[];
+	extern uint32_t daq_bmc_data[SYSLOG_SIZ];
+	extern char daq_bmc_data_text[SYSLOG_SIZ];
+	extern char daq_bmc_data_buf[SYSLOG_SIZ];
 	extern struct bmc_buffer_type BMC4;
 
 	extern int maxdata_ai, ranges_ai, channels_ai;

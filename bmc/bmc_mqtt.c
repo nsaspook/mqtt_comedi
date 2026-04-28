@@ -36,15 +36,14 @@ struct bmc_settings S = {
 };
 
 struct ha_csv_type {
-	double acvolts, acamps, acwatts, acwatts_gti, acwatts_gti_abs, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, panel_watts, fm_online, fm_mode, em540_online, dcwin, dcwout, bmc_id;
+	double acvolts, acamps, acwatts, acwatts_gti, acwatts_gti_abs, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, panel_watts, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
 	uint32_t d_id, boot_updates;
 	double benergy, runtime;
 	uint32_t boot_wait;
 	bool boot_volts, boot_once;
-	double  bsensor0;
 };
 
-char tmp_test_ptr[SBUF_SIZ];
+char tmp_test_ptr[SYSLOG_SIZ];
 
 struct ha_flag_type ha_flag_vars_ss = {
 	.runner = false,
@@ -222,6 +221,7 @@ static struct ha_csv_type R = {
 	.boot_wait = 0,
 	.boot_volts = false,
 	.boot_once = true,
+	.boot_updates = 0,
 }; // results from Q84 board
 static uint32_t goods = 0, bads = 0;
 static bool ok_data = false, got_cal_data = false;
@@ -517,7 +517,6 @@ void bmc_mqtt_init(void)
 	if ((E.rc = MQTTClient_connect(E.client_p, &conn_opts_p)) != MQTTCLIENT_SUCCESS) {
 		fprintf(fout, "%s Failed to connect MQTT server, return code %d %s, %s\n", log_time(false), E.rc, hname_ptr, (const char *) &ha_daq_host.clients[ha_daq_host.hindex]);
 		fflush(fout);
-		//		pthread_mutex_destroy(&E.ha_lock);
 		exit(EXIT_FAILURE);
 	}
 
@@ -669,7 +668,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	}
 
 	if (bmc.BOARD == bmcboard) {
-		E.adc[channel_ANA0] = get_adc_volts(channel_ANA0); // need to change to ANA0, ADC issues have been fixed
+		E.adc[channel_ANA0] = get_adc_volts(channel_ANA0);
 		/*
 		 * Battery 200A current sensor
 		 */
@@ -790,7 +789,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		}
 
 		/*
-		 * Battery runtime calculations at current battery load
+		 * Battery run-time calculations at current battery load
 		 */
 		if ((bsensor0_filter(R.bsensor0) + 0.001f) * (R.bvolts + 0.001f) > 0.00001f) {
 			R.runtime = (R.benergy / DRAIN_HOUR) / IDLE_DRAIN;
@@ -921,6 +920,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.bamps);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_pamps", BMC_MAXHOST);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.pamps);
+
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_fm_online", BMC_MAXHOST);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.fm_online);
 			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_fm_mode", BMC_MAXHOST);
@@ -1011,13 +1011,13 @@ static double bsensor0_filter(const double raw)
  */
 char * validate_bmc_text(const char * text, bool * valid)
 {
-	char tmp_test_ptr[SBUF_SIZ], *tmp_p = (char *) text;
+	char tmp_test_ptr[SYSLOG_SIZ], *tmp_p = (char *) text;
 	uint32_t len = 0, starts = 0, checkmark = 0;
 	bool end_data = false;
 	char *jtoken;
 
 	validate_failure = 0;
-	strncpy(tmp_test_ptr, text, SBUF_SIZ - 1);
+	strncpy(tmp_test_ptr, text, SYSLOG_SIZ - 1);
 	valid[0] = true;
 	if (tmp_test_ptr[0] == '^') {
 		starts++;
@@ -1039,7 +1039,7 @@ char * validate_bmc_text(const char * text, bool * valid)
 				valid[0] = false;
 				validate_failure = 3;
 			}
-			strncpy(tmp_test_ptr, tmp_p, SBUF_SIZ - 1);
+			strncpy(tmp_test_ptr, tmp_p, SYSLOG_SIZ - 1);
 			jtoken = strtok(tmp_test_ptr, ",");
 			if (jtoken != NULL) {
 				for (int i = 0; i < CSV_COUNT; i++) {
@@ -1110,9 +1110,9 @@ bool get_bmc_serial(void)
 
 		pacer = 0;
 		ret = true;
-		strncpy(tmp_test_ptr, daq_bmc_data_buf, SBUF_SIZ - 1);
+		strncpy(tmp_test_ptr, daq_bmc_data_buf, SYSLOG_SIZ);
 		tmp_ptr = validate_bmc_text(daq_bmc_data_buf, &ok_data);
-		strncpy(daq_bmc_data_buf, tmp_ptr, SBUF_SIZ - 1);
+		strncpy(daq_bmc_data_buf, tmp_ptr, SYSLOG_SIZ - 1);
 		if (ok_data) {
 			goods++;
 			jtoken = strtok(daq_bmc_data_buf, ",");

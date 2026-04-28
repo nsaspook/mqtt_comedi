@@ -45,6 +45,14 @@
  * 2  GND		1 - GLORY VSS   blue
  */
 
+/*
+ * for systemd systems, dup ipv6 addresses fix
+ * # rm /var/lib/NetworkManager/dhclient6-* or *.lease
+ * # rm /etc/machine-id
+ * # systemd-machine-id-setup
+ * # reboot
+ */
+
 #include <stdlib.h>
 #include <stdio.h> /* for printf() */
 #include <unistd.h>
@@ -194,19 +202,15 @@ bool get_set_config(void)
 	 * read configuration file settings
 	 */
 	config_init(&cfg);
-#ifdef RPIDAQ
 	config_set_options(&cfg,
+#ifdef RPIDAQ
 		(CONFIG_OPTION_FSYNC
 		| CONFIG_OPTION_SEMICOLON_SEPARATORS
-		| CONFIG_OPTION_COLON_ASSIGNMENT_FOR_GROUPS
-		| CONFIG_OPTION_OPEN_BRACE_ON_SEPARATE_LINE));
 #else
-	config_set_options(&cfg,
 		(CONFIG_OPTION_SEMICOLON_SEPARATORS
+#endif
 		| CONFIG_OPTION_COLON_ASSIGNMENT_FOR_GROUPS
 		| CONFIG_OPTION_OPEN_BRACE_ON_SEPARATE_LINE));
-#endif
-
 	/* Read the file. If there is an error, create a new file */
 	if (!config_read_file(&cfg, output_file)) {
 #ifdef CFG_DEBUG
@@ -243,7 +247,7 @@ bool get_set_config(void)
 				return(EXIT_FAILURE);
 #endif
 			} else {
-				fprintf(stderr, "Default configuration successfully written to: %s,\n",
+				fprintf(stderr, "Default configuration successfully written to: %s\n",
 					output_file_tmp);
 				fprintf(stderr, "review for correctness of all parameters and check the MQTT host %s\n",
 					(char*) MQTT_HOST_STR);
@@ -267,7 +271,6 @@ bool get_set_config(void)
 			strncpy(S.MQTT_HOSTIP, tmp_mqtt, BMC_MAXHOST - 1);
 			config_status = true;
 		} else {
-
 			fprintf(stderr, "No/Incorrect settings in configuration file, please review file contents.\n");
 		}
 		config_destroy(&cfg);

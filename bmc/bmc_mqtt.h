@@ -17,7 +17,7 @@ extern "C" {
 	/*
 	 * configuration data for Home Assistant
 	 */
-#define BMC_MAXHOST      1024 // hosts buffer size	
+#define BMC_MAXHOST      1024 // hosts buffer size
 
 #define DBENERGY	3100.0f
 #define DBVOLTAGE	12.6f
@@ -143,7 +143,7 @@ extern "C" {
 		char listen[HOST_SLOTS][BMC_MAXHOST];
 		char hname[HOST_SLOTS][BMC_MAXHOST];
 		double scalar[HOST_SLOTS], scalar4[HOST_SLOTS], scalar5[HOST_SLOTS];
-		uint8_t hindex, bindex;  // host array, calibration array
+		uint8_t hindex, bindex; // host array, calibration array
 		uint32_t pacer[HOST_SLOTS];
 		struct ha_daq_calib_type calib;
 	};

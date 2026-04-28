@@ -36,7 +36,7 @@ extern "C" {
 #include "MQTTClient.h"
 #include "bmc_mqtt.h"
 
-#define LOG_VERSION     "V0.31"
+#define LOG_VERSION     "V0.32"
 #define MQTT_VERSION    "V3.11"
 #define TNAME  "maint9"
 #define LADDRESS        "tcp://127.0.0.1:1883"
@@ -61,8 +61,7 @@ extern "C" {
 #define TIME_SYNC_SEC   30
 
 #define RBUF_SIZ        82
-#define SYSLOG_SIZ      4096
-#define SBUF_SIZ	512
+#define SYSLOG_SIZ      1024
 
 #define LOG_TO_FILE         "/var/log/bmc/bmc_comedi.log"
 #define LOG_TO_FILE_ALT     "/tmp/bmc_comedi.log"
@@ -96,7 +95,6 @@ extern "C" {
 		volatile uint32_t speed_go, im_delay, im_display, gti_delay, sequence, mqtt_count;
 		volatile int32_t rc, sane;
 		volatile uint32_t thirty_sec_clock, log_spam, log_time_reset;
-//		pthread_mutex_t ha_lock;
 		volatile int16_t di_16b, do_16b;
 		double adc[ANA_BUFFERS], dac[ANA_BUFFERS];
 		MQTTClient client_p, client_sd, client_ha;

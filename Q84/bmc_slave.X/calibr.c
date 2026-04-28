@@ -19,7 +19,7 @@ static const float HV_SCALE4_5 = 64.3520f;
 static const float HV_SCALE5_5 = 64.3480f;
 static const float HV_SCALE4_6 = 64.2500f;
 static const float HV_SCALE5_6 = 64.2500f;
-static const float HV_SCALE4_7 = 53.0000f;
+static const float HV_SCALE4_7 = 53.0000f; // used a 3.3 vref instead of the normal 4.095 vref
 static const float HV_SCALE5_7 = 53.0000f;
 
 
