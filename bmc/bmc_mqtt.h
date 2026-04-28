@@ -49,7 +49,7 @@ extern "C" {
 #define SLEEP_CODE      0
 #define FLOAT_CODE      1
 
-#define MBMQTT  4096
+#define MBMQTT  4096 // mqtt received message buffer
 #define CHECKMARK 1957
 #define CHECKBYTE 0x57
 	/*
@@ -62,7 +62,7 @@ extern "C" {
 #define MAINS_HZ_HIGH 65.0f
 
 #define CALIB_HV_LOW 50.0f
-#define CALIB_HV_HIGH 75.0f
+#define CALIB_HV_HIGH 85.0f
 
 #define BSENSOR_MAX_NEG  -125.0f
 #define BSENSOR_MAX_POS  125.0f
@@ -118,7 +118,7 @@ extern "C" {
 	struct ha_flag_type {
 		volatile MQTTClient_deliveryToken deliveredtoken, receivedtoken;
 		volatile bool runner, rec_ok;
-		int32_t ha_id;
+		volatile int32_t ha_id;
 		volatile int32_t var_update, energy_mode;
 	};
 

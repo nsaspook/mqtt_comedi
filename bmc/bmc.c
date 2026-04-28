@@ -219,7 +219,6 @@ bool get_set_config(void)
 #else
 		fprintf(stderr, "%s%s\n", (char*) "Unable to open BMC configuration file ", (char*) output_file);
 #endif
-
 		config_destroy(&cfg);
 
 		config_init(&cfg);
@@ -248,7 +247,7 @@ bool get_set_config(void)
 				return(EXIT_FAILURE);
 #endif
 			} else {
-				fprintf(stderr, "Testing configuration successfully written to: %s\n",
+				fprintf(stderr, "Default configuration successfully written to: %s\n",
 					output_file_tmp);
 				fprintf(stderr, "review for correctness of all parameters and check the MQTT host %s\n",
 					(char*) MQTT_HOST_STR);
@@ -272,7 +271,7 @@ bool get_set_config(void)
 			strncpy(S.MQTT_HOSTIP, tmp_mqtt, BMC_MAXHOST - 1);
 			config_status = true;
 		} else {
-			fprintf(stderr, "No/Incorrect settings in configuration file.\n");
+			fprintf(stderr, "No/Incorrect settings in configuration file, please review file contents.\n");
 		}
 		config_destroy(&cfg);
 	}
