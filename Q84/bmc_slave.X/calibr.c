@@ -21,6 +21,8 @@ static const float HV_SCALE4_6 = 64.2500f;
 static const float HV_SCALE5_6 = 64.2500f;
 static const float HV_SCALE4_7 = 53.0000f; // used a 3.3 vref instead of the normal 4.095 vref
 static const float HV_SCALE5_7 = 53.0000f;
+static const float HV_SCALE4_8 = 64.3850f;
+static const float HV_SCALE5_8 = 64.3850f;
 
 
 #define BVSOC_SLOTS     12      // 24V LiFePO4 Battery to SOC data table slots
@@ -81,6 +83,10 @@ enum EMETER_MODEL set_calibration(unsigned long long mui)
 	case 0: // USBBoard
 		ha_daq_calib.scaler4 = HV_SCALE4_1;
 		ha_daq_calib.scaler5 = HV_SCALE5_1;
+		break;
+	case 0x5A6B6: // replacement for USBBoard
+		ha_daq_calib.scaler4 = HV_SCALE4_8;
+		ha_daq_calib.scaler5 = HV_SCALE5_8;
 		break;
 	case 0x598F3: // old processor 47Q84 ?
 		ha_daq_calib.scaler4 = HV_SCALE4_2;

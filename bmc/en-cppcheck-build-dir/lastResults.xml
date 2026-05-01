@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<results version="2">
+    <cppcheck version="2.20.0"/>
+    <errors>
+        <error id="knownConditionTrueFalse" severity="style" msg="Condition &amp;#039;do_ao_only&amp;#039; is always false" verbose="Condition &amp;#039;do_ao_only&amp;#039; is always false" cwe="570" file0="bmc.c" sinceDate="4/28/26">
+            <location file="bmc.c" line="297" column="6" info="Condition &amp;#039;do_ao_only&amp;#039; is always false"/>
+            <location file="bmc.c" line="283" column="19" info="Assignment &amp;#039;do_ao_only=false&amp;#039;, assigned value is 0"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;LED_UP&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;LED_UP&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="bmc.c" sinceDate="4/28/26">
+            <location file="bmc.c" line="152" column="14"/>
+        </error>
+        <error id="invalidPrintfArgType_sint" severity="warning" msg="%d in format string (no. 2) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." verbose="%d in format string (no. 2) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." cwe="686" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="414" column="4"/>
+        </error>
+        <error id="invalidPrintfArgType_sint" severity="warning" msg="%d in format string (no. 6) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." verbose="%d in format string (no. 6) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." cwe="686" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="751" column="4"/>
+        </error>
+        <error id="invalidPrintfArgType_sint" severity="warning" msg="%d in format string (no. 7) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." verbose="%d in format string (no. 7) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." cwe="686" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="751" column="4"/>
+        </error>
+        <error id="invalidPrintfArgType_sint" severity="warning" msg="%d in format string (no. 8) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." verbose="%d in format string (no. 8) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." cwe="686" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="751" column="4"/>
+        </error>
+        <error id="invalidPrintfArgType_sint" severity="warning" msg="%d in format string (no. 8) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." verbose="%d in format string (no. 8) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." cwe="686" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="755" column="5"/>
+        </error>
+        <error id="invalidPrintfArgType_sint" severity="warning" msg="%d in format string (no. 9) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." verbose="%d in format string (no. 9) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." cwe="686" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="755" column="5"/>
+        </error>
+        <error id="incompatibleFileOpen" severity="warning" msg="The file &amp;#039;&amp;quot;/tmp/bmc_comedi.log&amp;quot;&amp;#039; is opened for read and write access at the same time on different streams" verbose="The file &amp;#039;&amp;quot;/tmp/bmc_comedi.log&amp;quot;&amp;#039; is opened for read and write access at the same time on different streams" cwe="664" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="468" column="11"/>
+        </error>
+        <error id="nullPointerRedundantCheck" severity="warning" msg="Either the condition &amp;#039;context==NULL&amp;#039; is redundant or there is possible null pointer dereference: ha_flag." verbose="Either the condition &amp;#039;context==NULL&amp;#039; is redundant or there is possible null pointer dereference: ha_flag." cwe="476" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="399" column="19" info="Null pointer dereference"/>
+            <location file="bmc_mqtt.c" line="398" column="31" info="ha_flag is assigned &amp;#039;context&amp;#039; here."/>
+            <location file="bmc_mqtt.c" line="405" column="14" info="Assuming that condition &amp;#039;context==NULL&amp;#039; is not redundant"/>
+        </error>
+        <error id="redundantInitialization" severity="style" msg="Redundant initialization for &amp;#039;data_result&amp;#039;. The initialized value is overwritten before it is read." verbose="Redundant initialization for &amp;#039;data_result&amp;#039;. The initialized value is overwritten before it is read." cwe="563" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="596" column="14" info="data_result is overwritten"/>
+            <location file="bmc_mqtt.c" line="594" column="21" info="data_result is initialized"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;tmp_str&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;tmp_str&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="719" column="9"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;len&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;len&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="1015" column="11"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;starts&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;starts&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="1015" column="20"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;checkmark&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;checkmark&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="1015" column="32"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;end_data&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;end_data&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="1016" column="7"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;jtoken&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;jtoken&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="1017" column="8"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;jtoken&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;jtoken&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="1109" column="19"/>
+        </error>
+        <error id="shadowVariable" severity="style" msg="Local variable &amp;#039;rawtime&amp;#039; shadows outer variable" verbose="Local variable &amp;#039;rawtime&amp;#039; shadows outer variable" cwe="398" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="629" column="9" info="Shadow variable"/>
+            <location file="bmc_mqtt.c" line="16" column="8" info="Shadowed declaration"/>
+        </error>
+        <error id="shadowVariable" severity="style" msg="Local variable &amp;#039;pubmsg&amp;#039; shadows outer variable" verbose="Local variable &amp;#039;pubmsg&amp;#039; shadows outer variable" cwe="398" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="633" column="21" info="Shadow variable"/>
+            <location file="bmc_mqtt.c" line="20" column="20" info="Shadowed declaration"/>
+        </error>
+        <error id="shadowVariable" severity="style" msg="Local variable &amp;#039;token&amp;#039; shadows outer variable" verbose="Local variable &amp;#039;token&amp;#039; shadows outer variable" cwe="398" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="634" column="27" info="Shadow variable"/>
+            <location file="bmc_mqtt.c" line="21" column="26" info="Shadowed declaration"/>
+        </error>
+        <error id="shadowVariable" severity="style" msg="Local variable &amp;#039;tmp_test_ptr&amp;#039; shadows outer variable" verbose="Local variable &amp;#039;tmp_test_ptr&amp;#039; shadows outer variable" cwe="398" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="1014" column="7" info="Shadow variable"/>
+            <location file="bmc_mqtt.c" line="46" column="6" info="Shadowed declaration"/>
+        </error>
+        <error id="constParameterCallback" severity="style" msg="Parameter &amp;#039;cause&amp;#039; can be declared as pointer to const. However it seems that &amp;#039;connlost&amp;#039; is a callback function, if &amp;#039;cause&amp;#039; is declared with const you might also need to cast function pointer(s)." verbose="Parameter &amp;#039;cause&amp;#039; can be declared as pointer to const. However it seems that &amp;#039;connlost&amp;#039; is a callback function, if &amp;#039;cause&amp;#039; is declared with const you might also need to cast function pointer(s)." cwe="398" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="396" column="36" info="Parameter &amp;#039;cause&amp;#039; can be declared as pointer to const"/>
+            <location file="bmc_mqtt.c" line="516" column="56" info="You might need to cast the function pointer here"/>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &amp;#039;ha_flag&amp;#039; can be declared as pointer to const" verbose="Variable &amp;#039;ha_flag&amp;#039; can be declared as pointer to const" cwe="398" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="398" column="23"/>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &amp;#039;where&amp;#039; can be declared as pointer to const" verbose="Variable &amp;#039;where&amp;#039; can be declared as pointer to const" cwe="398" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="401" column="9"/>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &amp;#039;what&amp;#039; can be declared as pointer to const" verbose="Variable &amp;#039;what&amp;#039; can be declared as pointer to const" cwe="398" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="402" column="9"/>
+        </error>
+        <error id="constParameterPointer" severity="style" msg="Parameter &amp;#039;file&amp;#039; can be declared as pointer to const" verbose="Parameter &amp;#039;file&amp;#039; can be declared as pointer to const" cwe="398" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="445" column="26"/>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &amp;#039;jtoken&amp;#039; can be declared as pointer to const" verbose="Variable &amp;#039;jtoken&amp;#039; can be declared as pointer to const" cwe="398" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="1017" column="8"/>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &amp;#039;tmp_ptr&amp;#039; can be declared as pointer to const" verbose="Variable &amp;#039;tmp_ptr&amp;#039; can be declared as pointer to const" cwe="398" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="1109" column="9"/>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &amp;#039;jtoken&amp;#039; can be declared as pointer to const" verbose="Variable &amp;#039;jtoken&amp;#039; can be declared as pointer to const" cwe="398" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="1109" column="19"/>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &amp;#039;len&amp;#039; is assigned a value that is never used." verbose="Variable &amp;#039;len&amp;#039; is assigned a value that is never used." cwe="563" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="1015" column="15"/>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &amp;#039;checkmark&amp;#039; is assigned a value that is never used." verbose="Variable &amp;#039;checkmark&amp;#039; is assigned a value that is never used." cwe="563" file0="bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="bmc_mqtt.c" line="1015" column="42"/>
+        </error>
+        <error id="invalidPrintfArgType_sint" severity="warning" msg="%d in format string (no. 1) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;wchar_t&amp;#039;." verbose="%d in format string (no. 1) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;wchar_t&amp;#039;." cwe="686" file0="bmcdio.c" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="185" column="2"/>
+        </error>
+        <error id="constParameterPointer" severity="style" msg="Parameter &amp;#039;pTransmitData&amp;#039; can be declared as pointer to const" verbose="Parameter &amp;#039;pTransmitData&amp;#039; can be declared as pointer to const" cwe="398" file0="bmcdio.c" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="113" column="37"/>
+        </error>
+        <error id="constParameterPointer" severity="style" msg="Parameter &amp;#039;set_data&amp;#039; can be declared as pointer to const" verbose="Parameter &amp;#039;set_data&amp;#039; can be declared as pointer to const" cwe="398" file0="bmcdio.c" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="268" column="30"/>
+        </error>
+        <error id="invalidPrintfArgType_sint" severity="warning" msg="%i in format string (no. 2) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." verbose="%i in format string (no. 2) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." cwe="686" file0="bmcdio.c" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="128" column="2"/>
+        </error>
+        <error id="invalidPrintfArgType_sint" severity="warning" msg="%i in format string (no. 1) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." verbose="%i in format string (no. 1) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." cwe="686" file0="bmcdio.c" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="136" column="3"/>
+        </error>
+        <error id="invalidPrintfArgType_sint" severity="warning" msg="%i in format string (no. 3) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." verbose="%i in format string (no. 3) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." cwe="686" file0="bmcdio.c" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="89" column="3"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;SPI_WriteRead&amp;#039; is never used." verbose="The function &amp;#039;SPI_WriteRead&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="104" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;bmx160_get&amp;#039; is never used." verbose="The function &amp;#039;bmx160_get&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="233" column="9"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;bmx160_set&amp;#039; is never used." verbose="The function &amp;#039;bmx160_set&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="250" column="9"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;bmx160_set3&amp;#039; is never used." verbose="The function &amp;#039;bmx160_set3&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="268" column="9"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;bmx160_update&amp;#039; is never used." verbose="The function &amp;#039;bmx160_update&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="374" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;get_MCP2210_ext_interrupt&amp;#039; is never used." verbose="The function &amp;#039;get_MCP2210_ext_interrupt&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="77" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;get_bmx160_transfer&amp;#039; is never used." verbose="The function &amp;#039;get_bmx160_transfer&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="322" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;get_mc33996_transfer&amp;#039; is never used." verbose="The function &amp;#039;get_mc33996_transfer&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="462" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;get_tic12400_transfer&amp;#039; is never used." verbose="The function &amp;#039;get_tic12400_transfer&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="378" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;get_usb_res&amp;#039; is never used." verbose="The function &amp;#039;get_usb_res&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="56" column="9"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;hidrawapi_mcp2210_init&amp;#039; is never used." verbose="The function &amp;#039;hidrawapi_mcp2210_init&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="150" column="19"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;mc33996_check&amp;#039; is never used." verbose="The function &amp;#039;mc33996_check&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="430" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;mc33996_init&amp;#039; is never used." verbose="The function &amp;#039;mc33996_init&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="394" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;mc33996_set&amp;#039; is never used." verbose="The function &amp;#039;mc33996_set&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="412" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;mc33996_update&amp;#039; is never used." verbose="The function &amp;#039;mc33996_update&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="477" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;move_bmx160_transfer_data&amp;#039; is never used." verbose="The function &amp;#039;move_bmx160_transfer_data&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="350" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;move_bmx160_transfer_status&amp;#039; is never used." verbose="The function &amp;#039;move_bmx160_transfer_status&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="362" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;setup_bmx160_transfer&amp;#039; is never used." verbose="The function &amp;#039;setup_bmx160_transfer&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="288" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;setup_mc33996_transfer&amp;#039; is never used." verbose="The function &amp;#039;setup_mc33996_transfer&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="442" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;setup_tic12400_transfer&amp;#039; is never used." verbose="The function &amp;#039;setup_tic12400_transfer&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="305" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;show_bmx160_transfer&amp;#039; is never used." verbose="The function &amp;#039;show_bmx160_transfer&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="bmcdio.c" line="338" column="6"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;i&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;i&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="daq.c" sinceDate="4/28/26">
+            <location file="daq.c" line="165" column="6"/>
+        </error>
+        <error id="knownConditionTrueFalse" severity="style" msg="Condition &amp;#039;do_ao_only&amp;#039; is always false" verbose="Condition &amp;#039;do_ao_only&amp;#039; is always false" cwe="570" file0="/public/bmc/bmc/oldbmc/bmc.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc.c" line="220" column="6" info="Condition &amp;#039;do_ao_only&amp;#039; is always false"/>
+            <location file="/public/bmc/bmc/oldbmc/bmc.c" line="207" column="19" info="Assignment &amp;#039;do_ao_only=false&amp;#039;, assigned value is 0"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;LED_UP&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;LED_UP&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="/public/bmc/bmc/oldbmc/bmc.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc.c" line="104" column="14"/>
+        </error>
+        <error id="invalidPrintfArgType_sint" severity="warning" msg="%d in format string (no. 2) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." verbose="%d in format string (no. 2) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." cwe="686" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="330" column="4"/>
+        </error>
+        <error id="invalidPrintfArgType_sint" severity="warning" msg="%d in format string (no. 5) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." verbose="%d in format string (no. 5) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." cwe="686" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="721" column="4"/>
+        </error>
+        <error id="invalidPrintfArgType_sint" severity="warning" msg="%d in format string (no. 6) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." verbose="%d in format string (no. 6) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." cwe="686" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="721" column="4"/>
+        </error>
+        <error id="invalidPrintfArgType_sint" severity="warning" msg="%d in format string (no. 7) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." verbose="%d in format string (no. 7) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." cwe="686" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="721" column="4"/>
+        </error>
+        <error id="invalidPrintfArgType_sint" severity="warning" msg="%d in format string (no. 7) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." verbose="%d in format string (no. 7) requires &amp;#039;int&amp;#039; but the argument type is &amp;#039;unsigned int&amp;#039;." cwe="686" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="725" column="5"/>
+        </error>
+        <error id="incompatibleFileOpen" severity="warning" msg="The file &amp;#039;&amp;quot;/tmp/bmc_comedi.log&amp;quot;&amp;#039; is opened for read and write access at the same time on different streams" verbose="The file &amp;#039;&amp;quot;/tmp/bmc_comedi.log&amp;quot;&amp;#039; is opened for read and write access at the same time on different streams" cwe="664" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="384" column="11"/>
+        </error>
+        <error id="nullPointerRedundantCheck" severity="warning" msg="Either the condition &amp;#039;context==NULL&amp;#039; is redundant or there is possible null pointer dereference: ha_flag." verbose="Either the condition &amp;#039;context==NULL&amp;#039; is redundant or there is possible null pointer dereference: ha_flag." cwe="476" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="315" column="19" info="Null pointer dereference"/>
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="314" column="31" info="ha_flag is assigned &amp;#039;context&amp;#039; here."/>
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="321" column="14" info="Assuming that condition &amp;#039;context==NULL&amp;#039; is not redundant"/>
+        </error>
+        <error id="redundantInitialization" severity="style" msg="Redundant initialization for &amp;#039;data_result&amp;#039;. The initialized value is overwritten before it is read." verbose="Redundant initialization for &amp;#039;data_result&amp;#039;. The initialized value is overwritten before it is read." cwe="563" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="497" column="14" info="data_result is overwritten"/>
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="495" column="21" info="data_result is initialized"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;jtoken&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;jtoken&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="598" column="19"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;len&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;len&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="979" column="11"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;starts&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;starts&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="979" column="20"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;checkmark&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;checkmark&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="979" column="32"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;end_data&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;end_data&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="980" column="7"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;jtoken&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;jtoken&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="981" column="8"/>
+        </error>
+        <error id="shadowVariable" severity="style" msg="Local variable &amp;#039;rawtime&amp;#039; shadows outer variable" verbose="Local variable &amp;#039;rawtime&amp;#039; shadows outer variable" cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="530" column="9" info="Shadow variable"/>
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="16" column="8" info="Shadowed declaration"/>
+        </error>
+        <error id="shadowVariable" severity="style" msg="Local variable &amp;#039;pubmsg&amp;#039; shadows outer variable" verbose="Local variable &amp;#039;pubmsg&amp;#039; shadows outer variable" cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="535" column="21" info="Shadow variable"/>
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="20" column="20" info="Shadowed declaration"/>
+        </error>
+        <error id="shadowVariable" severity="style" msg="Local variable &amp;#039;token&amp;#039; shadows outer variable" verbose="Local variable &amp;#039;token&amp;#039; shadows outer variable" cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="536" column="27" info="Shadow variable"/>
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="21" column="26" info="Shadowed declaration"/>
+        </error>
+        <error id="shadowVariable" severity="style" msg="Local variable &amp;#039;tmp_test_ptr&amp;#039; shadows outer variable" verbose="Local variable &amp;#039;tmp_test_ptr&amp;#039; shadows outer variable" cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="978" column="7" info="Shadow variable"/>
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="45" column="6" info="Shadowed declaration"/>
+        </error>
+        <error id="constParameterCallback" severity="style" msg="Parameter &amp;#039;cause&amp;#039; can be declared as pointer to const. However it seems that &amp;#039;connlost&amp;#039; is a callback function, if &amp;#039;cause&amp;#039; is declared with const you might also need to cast function pointer(s)." verbose="Parameter &amp;#039;cause&amp;#039; can be declared as pointer to const. However it seems that &amp;#039;connlost&amp;#039; is a callback function, if &amp;#039;cause&amp;#039; is declared with const you might also need to cast function pointer(s)." cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="312" column="36" info="Parameter &amp;#039;cause&amp;#039; can be declared as pointer to const"/>
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="433" column="56" info="You might need to cast the function pointer here"/>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &amp;#039;ha_flag&amp;#039; can be declared as pointer to const" verbose="Variable &amp;#039;ha_flag&amp;#039; can be declared as pointer to const" cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="314" column="23"/>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &amp;#039;where&amp;#039; can be declared as pointer to const" verbose="Variable &amp;#039;where&amp;#039; can be declared as pointer to const" cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="317" column="9"/>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &amp;#039;what&amp;#039; can be declared as pointer to const" verbose="Variable &amp;#039;what&amp;#039; can be declared as pointer to const" cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="318" column="9"/>
+        </error>
+        <error id="constParameterPointer" severity="style" msg="Parameter &amp;#039;file&amp;#039; can be declared as pointer to const" verbose="Parameter &amp;#039;file&amp;#039; can be declared as pointer to const" cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="361" column="26"/>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &amp;#039;tmp_ptr&amp;#039; can be declared as pointer to const" verbose="Variable &amp;#039;tmp_ptr&amp;#039; can be declared as pointer to const" cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="598" column="9"/>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &amp;#039;jtoken&amp;#039; can be declared as pointer to const" verbose="Variable &amp;#039;jtoken&amp;#039; can be declared as pointer to const" cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="598" column="19"/>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &amp;#039;jtoken&amp;#039; can be declared as pointer to const" verbose="Variable &amp;#039;jtoken&amp;#039; can be declared as pointer to const" cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="981" column="8"/>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &amp;#039;len&amp;#039; is assigned a value that is never used." verbose="Variable &amp;#039;len&amp;#039; is assigned a value that is never used." cwe="563" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="979" column="15"/>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &amp;#039;checkmark&amp;#039; is assigned a value that is never used." verbose="Variable &amp;#039;checkmark&amp;#039; is assigned a value that is never used." cwe="563" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="979" column="42"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;use_cal_file&amp;#039; is never used." verbose="The function &amp;#039;use_cal_file&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="361" column="6"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;i&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;i&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="/public/bmc/bmc/oldbmc/daq.c" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/daq.c" line="150" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;adc_range&amp;#039; is never used." verbose="The function &amp;#039;adc_range&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/daq.c" line="187" column="5"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;dac_range&amp;#039; is never used." verbose="The function &amp;#039;dac_range&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/daq.c" line="198" column="5"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;get_dio_bit&amp;#039; is never used." verbose="The function &amp;#039;get_dio_bit&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/daq.c" line="285" column="5"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;put_dio_bit&amp;#039; is never used." verbose="The function &amp;#039;put_dio_bit&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/daq.c" line="299" column="5"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;set_dac_volts&amp;#039; is never used." verbose="The function &amp;#039;set_dac_volts&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/daq.c" line="209" column="5"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;set_dio_input&amp;#039; is never used." verbose="The function &amp;#039;set_dio_input&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/daq.c" line="277" column="5"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;set_dio_output&amp;#039; is never used." verbose="The function &amp;#039;set_dio_output&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="/public/bmc/bmc/oldbmc/daq.c" line="269" column="5"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;mc33996_version&amp;#039; is never used." verbose="The function &amp;#039;mc33996_version&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="mc33996.c" line="5" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;tic12400_get_sw&amp;#039; is never used." verbose="The function &amp;#039;tic12400_get_sw&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="tic12400.c" line="198" column="10"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;tic12400_init&amp;#039; is never used." verbose="The function &amp;#039;tic12400_init&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="tic12400.c" line="140" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;tic12400_read_sw&amp;#039; is never used." verbose="The function &amp;#039;tic12400_read_sw&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="tic12400.c" line="237" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;tic12400_reset&amp;#039; is never used." verbose="The function &amp;#039;tic12400_reset&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="tic12400.c" line="124" column="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;tic12400_version&amp;#039; is never used." verbose="The function &amp;#039;tic12400_version&amp;#039; is never used." cwe="561" sinceDate="4/28/26">
+            <location file="tic12400.c" line="113" column="6"/>
+        </error>
+    </errors>
+</results>

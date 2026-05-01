@@ -1,0 +1,7 @@
+tic12400_version global:[build_date,build_time] call:[printf] noreturn:[printf]
+tic12400_reset global:[tic12400_fail_value,ticreset1a] call:[tic12400_wr]
+tic12400_init global:[setup1a,setup1a_trigger,setup1b,setup1c,setup1d,setup21,setup22,setup23,setup24,setup32,tic12400_fail_value,tic12400_init_fail,tic12400_status,ticdevid01,ticstat02,ticstatus] call:[tic12400_wr]
+tic12400_wr global:[tic12400_parity_status,ticvalue] call:[SPI_MCP2210_WriteRead,sleep_us] noreturn:[sleep_us]
+tic12400_get_sw global:[tic12400_event,tic12400_init_fail,tic12400_value]
+tic12400_parity call:[return]
+tic12400_read_sw global:[tic12400_counts,tic12400_event,tic12400_status,tic12400_value,tic12400_value_counts,ticread05,ticstat02,ticvalue] call:[tic12400_parity,tic12400_wr]

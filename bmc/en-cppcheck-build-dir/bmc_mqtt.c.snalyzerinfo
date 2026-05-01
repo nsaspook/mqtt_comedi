@@ -1,0 +1,16 @@
+showIP global:[ha_daq_host] call:[exit,freeifaddrs,getifaddrs,getnameinfo,perror,printf,sizeof,strcmp] noreturn:[exit,freeifaddrs]
+skeleton_daemon call:[chdir,close,exit,fork,log_time,printf,setsid,sysconf,umask] noreturn:[close,exit]
+log_time global:[fout] call:[ctime,fflush,fprintf,sprintf,strlen,time,tzset] noreturn:[fflush]
+timer_callback global:[E,ha_flag_vars_ss] call:[signal]
+connlost global:[fout] call:[exit,fflush,fprintf,log_time] noreturn:[exit,fprintf]
+delivered
+use_cal_file
+bmc_mqtt_init global:[E,calfile,conn_opts_p,fout,ha_daq_host,ha_flag_vars_ss,hname,hname_len,hname_ptr,new_timer,old_timer,pubmsg] call:[MQTTClient_connect,MQTTClient_create,MQTTClient_setCallbacks,MQTTClient_subscribe,exit,fflush,fopen,fprintf,gethostname,log_time,printf,pthread_mutex_destroy,setitimer,showIP,signal,skeleton_daemon,strlen,strncmp] noreturn:[exit,fopen]
+msgarrvd global:[E,fout,ha_flag_vars_ss] call:[MQTTClient_free,MQTTClient_freeMessage,cJSON_Delete,cJSON_GetErrorPtr,cJSON_GetObjectItemCaseSensitive,cJSON_IsString,cJSON_ParseWithLength,fflush,fprintf,log_time] noreturn:[fprintf]
+mqtt_bmc_data global:[BMC4,E,FW_Date,FW_Time,S,SERIAL_OPEN,bmc,daq_bmc_data,daq_bmc_data_buf,daq_bmc_data_text,datain,fout,ha_daq_host,ha_flag_vars_ss,tmp_test_ptr,validate_failure] call:[MQTTClient_publishMessage,Volts_to_SOC,ac0_filter,ac1_filter,atof,atoi,atoll,bsensor0_filter,cJSON_AddNumberToObject,cJSON_AddStringToObject,cJSON_CreateObject,cJSON_Delete,cJSON_Print,cJSON_free,calc_fixups,fabs,fflush,fprintf,get_adc_volts,log_time,lp_filter,memset,strlen,strncpy,strtok,time,usleep,validate_bmc_text] noreturn:[ac0_filter,ac1_filter,atof,atoi,atoll,cJSON_AddNumberToObject,fprintf,get_adc_volts]
+comedi_push_mqtt global:[E,ha_daq_host] call:[mqtt_bmc_data] noreturn:[mqtt_bmc_data]
+ac0_filter
+ac1_filter
+bsensor0_filter
+validate_bmc_text global:[validate_failure] call:[atoi,strlen,strncpy,strtok]
+Volts_to_SOC global:[bsoc_soc,bsoc_voltage]
