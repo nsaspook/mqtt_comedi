@@ -580,6 +580,7 @@ void main(void)
 				sprintf(get_vterm_ptr(1, MAIN_VTERM), "Update EEPROM DATA  ");
 				write_cal_data(); // update the EEPROM
 				sprintf(get_vterm_ptr(1, MAIN_VTERM), "Write EEPROM DATA   ");
+				read_cal_data();
 			} else {
 				sprintf(get_vterm_ptr(0, MAIN_VTERM), "Invalid EEPROM DATA ");
 			}

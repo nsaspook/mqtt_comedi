@@ -21,8 +21,8 @@ static const float HV_SCALE4_6 = 64.2500f;
 static const float HV_SCALE5_6 = 64.2500f;
 static const float HV_SCALE4_7 = 53.0000f; // used a 3.3 vref instead of the normal 4.095 vref
 static const float HV_SCALE5_7 = 53.0000f;
-static const float HV_SCALE4_8 = 64.3850f;
-static const float HV_SCALE5_8 = 64.3850f;
+static const float HV_SCALE4_8 = 64.3050f;
+static const float HV_SCALE5_8 = 64.3050f;
 
 
 #define BVSOC_SLOTS     12      // 24V LiFePO4 Battery to SOC data table slots

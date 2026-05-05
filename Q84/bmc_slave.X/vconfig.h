@@ -21,7 +21,7 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.65"
+#define VER	"V0.66"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -77,6 +77,7 @@ extern "C" {
 	 * V0.63 cleaning up LCD and MQTT data to match on all energy meters
 	 * V0.64 more clean-up
 	 * V0.65 RS485 GTI Inverter power control routines
+	 * V0.66 add new device MUI
 	 */
 
 	/*
