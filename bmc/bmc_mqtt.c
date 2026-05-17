@@ -561,7 +561,7 @@ int32_t msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_messag
 	 */
 	payloadptr = message->payload;
 	if (message->payloadlen > MBMQTT - 1) {
-		fprintf(fout, "%s Error: The received MQTT message is long than the local message buffer %d\n", log_time(false), MBMQTT);
+		fprintf(fout, "%s Error: The received MQTT message is longer than the local message buffer %d\n", log_time(false), MBMQTT);
 		ret = -1;
 		ha_flag->rec_ok = false;
 		E.comedi = false;
@@ -629,6 +629,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	time_t rawtime;
 	static uint32_t spam = 0;
 	double Soc = 1.0f;
+	int32_t client_status = MQTTCLIENT_SUCCESS;
 
 	MQTTClient_message pubmsg = MQTTClient_message_initializer;
 	MQTTClient_deliveryToken token;
@@ -949,7 +950,10 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		pubmsg.qos = QOS;
 		pubmsg.retained = 0;
 
-		MQTTClient_publishMessage(client_p, topic_p, &pubmsg, &token);
+		if ((client_status = MQTTClient_publishMessage(client_p, topic_p, &pubmsg, &token)) != MQTTCLIENT_SUCCESS) {
+			fprintf(fout, "%s MQTTClient_publishMessage error: %d\r\n", log_time(false), client_status);
+			fflush(fout);
+		};
 		// a busy, wait loop for the async delivery thread to complete
 		{
 			uint32_t waiting = 0;
