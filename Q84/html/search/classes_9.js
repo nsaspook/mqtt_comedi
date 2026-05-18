@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['terminal_5ftype_0',['terminal_type',['../structterminal__type.html',1,'']]]
+  ['ringbufs_5ft_0',['ringBufS_t',['../structringBufS__t.html',1,'']]]
 ];

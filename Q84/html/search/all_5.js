@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['ha_5fdaq_5fcalib_5ftype_0',['ha_daq_calib_type',['../structha__daq__calib__type.html',1,'']]]
+  ['d_5fdata_0',['D_data',['../structD__data.html',1,'']]],
+  ['digital_20converter_20with_20context_1',['ADC3: Analog-to-Digital Converter with Context',['../group__adc__context__scan.html',1,'']]]
 ];

@@ -1,0 +1,127 @@
+\doxysection{iammeter\+\_\+rtu.\+h}
+\hypertarget{iammeter__rtu_8h_source}{}\label{iammeter__rtu_8h_source}\index{bmc\_slave.X/iammeter\_rtu.h@{bmc\_slave.X/iammeter\_rtu.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00001}00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00002}00002\ \textcolor{comment}{\ *\ File:\ \ \ iammeter\_rtu.h}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00003}00003\ \textcolor{comment}{\ *\ Author:\ root}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00004}00004\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00005}00005\ \textcolor{comment}{\ *\ Created\ on\ March\ 4,\ 2026,\ 8:59\ PM}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00006}00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00008}00008\ \textcolor{preprocessor}{\#ifndef\ IAMMETER\_RTU\_H}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00009}00009\ \textcolor{preprocessor}{\#define\ IAMMETER\_RTU\_H}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00011}00011\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00012}00012\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00013}00013\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00014}00014\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00015}00015\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{modbus__master_8h}{modbus\_master.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00017}00017\ \textcolor{preprocessor}{\#define\ IM\_DATA\_LEN1\ \ \ \ 74\ \ }\textcolor{comment}{//\ 16-\/bit\ words\ returned\ 74}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00018}00018\ \textcolor{preprocessor}{\#define\ IM\_DATA\_DIR1\ \ \ \ 14\ \ }\textcolor{comment}{//\ 16-\/bit\ words\ returned}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00019}00019\ \textcolor{preprocessor}{\#define\ IM\_DATA\_DIR2\ \ \ \ 8}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00021}00021\ \textcolor{preprocessor}{\#define\ MB\_IAMMETER\_ID\_H\ \ \ \ 0x01\ \ \ \ }\textcolor{comment}{//\ slave\ ID}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00022}00022\ \textcolor{preprocessor}{\#define\ MB\_IAMMETER\_ID\_L\ \ \ \ 0x06\ \ \ \ }\textcolor{comment}{//\ slave\ baudrate}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00024}00024\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ cmd\_im\_type\ \{}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00025}00025\ \ \ \ \ \ \ \ \ I\_DATA1\ =\ 0,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00026}00026\ \ \ \ \ \ \ \ \ I\_DIR1,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00027}00027\ \ \ \ \ \ \ \ \ I\_LAST,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00028}00028\ \ \ \ \ \}\ cmd\_im\_type;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00030}00030\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00031}00031\ \textcolor{comment}{\ \ \ \ \ *\ maps\ the\ IAMMETER\ MODBUS\ registers\ to\ int32\_t,\ uint32\_t\ and\ uint16\_t\ values}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00032}00032\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00033}\mbox{\hyperlink{structIM__data1}{00033}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \_\_pack\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structIM__data1}{IM\_data1}}\ \{}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00034}00034\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint16\_t\ vl1n,\ al1,\ wl1;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00035}00035\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ aef1;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00036}00036\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint16\_t\ pfl1;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00037}00037\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ aer1;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00038}00038\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint16\_t\ pdi1;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00039}00039\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00040}00040\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint16\_t\ vl2n,\ al2,\ wl2;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00041}00041\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ aef2;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00042}00042\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint16\_t\ pfl2;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00043}00043\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ aer2;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00044}00044\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint16\_t\ pdi2;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00046}00046\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint16\_t\ vl3n,\ al3,\ wl3;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00047}00047\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ aef3;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00048}00048\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint16\_t\ pfl3;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00049}00049\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ aer3;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00050}00050\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint16\_t\ pdi3;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00052}00052\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ taef;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00053}00053\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint16\_t\ hz;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00054}00054\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ taer;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00055}00055\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00056}00056\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00057}00057\ \ \ \ \ \ \ \ \ aep1f,\ aep1r,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00058}00058\ \ \ \ \ \ \ \ \ aep2f,\ aep2r,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00059}00059\ \ \ \ \ \ \ \ \ aep3f,\ aep3r,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00060}00060\ \ \ \ \ \ \ \ \ taefd,\ taerd;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00062}00062\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int32\_t}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00063}00063\ \ \ \ \ \ \ \ \ tps,\ ap1s,\ ap2s,\ ap3s,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00064}00064\ \ \ \ \ \ \ \ \ rpp1s,\ rpp2s,\ rpp3s;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00066}00066\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00067}00067\ \ \ \ \ \ \ \ \ frei1,\ rrec1,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00068}00068\ \ \ \ \ \ \ \ \ frei2,\ rrec2,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00069}00069\ \ \ \ \ \ \ \ \ frei3,\ rrec3;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00070}00070\ \ \ \ \ \}\ \mbox{\hyperlink{structIM__data1}{IM\_data1}};}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00072}\mbox{\hyperlink{structIMD__tmp}{00072}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structIMD__tmp}{IMD\_tmp}}\ \{}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00073}00073\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{float}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00074}00074\ \ \ \ \ \ \ \ \ tps,\ ap1s,\ ap2s,\ ap3s,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00075}00075\ \ \ \ \ \ \ \ \ pfl1,\ pfl2,\ pfl3,\ pfsys,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00076}00076\ \ \ \ \ \ \ \ \ rpp1s,\ rpp2s,\ rpp3s,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00077}00077\ \ \ \ \ \ \ \ \ vl1n,\ vl2n,\ vl3n,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00078}00078\ \ \ \ \ \ \ \ \ vl1l2,\ vl2l3,\ vl3l1,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00079}00079\ \ \ \ \ \ \ \ \ al1,\ al2,\ al3,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00080}00080\ \ \ \ \ \ \ \ \ wl1,\ wl2,\ wl3,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00081}00081\ \ \ \ \ \ \ \ \ val1,\ val2,\ val3,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00082}00082\ \ \ \ \ \ \ \ \ varl1,\ varl2,\ varl3,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00083}00083\ \ \ \ \ \ \ \ \ vlnsys,\ vllsys,\ wsys,\ vasys,\ varsys,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00084}00084\ \ \ \ \ \ \ \ \ phaseseq,\ hz;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00085}00085\ \ \ \ \ \}\ \mbox{\hyperlink{structIMD__tmp}{IMD\_tmp}};}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00086}00086\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00087}\mbox{\hyperlink{structIM__data2}{00087}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \_\_pack\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structIM__data2}{IM\_data2}}\ \{}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00088}00088\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int64\_t}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00089}00089\ \ \ \ \ \ \ \ \ kwhpt,\ kvarhpt,\ kwhpp,\ kvarhpp,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00090}00090\ \ \ \ \ \ \ \ \ kwhpl1,\ kwhpl2,\ kwhpl3,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00091}00091\ \ \ \ \ \ \ \ \ kwhnt,\ kvarhnt,\ kwhnp,\ kvarhnp,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00092}00092\ \ \ \ \ \ \ \ \ kvaht,\ kvahp;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00093}00093\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int32\_t}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00094}00094\ \ \ \ \ \ \ \ \ rhm,\ rhmk,\ rhmp,\ rhmkp,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00095}00095\ \ \ \ \ \ \ \ \ hz,\ rhlc;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00096}00096\ \ \ \ \ \}\ \mbox{\hyperlink{structIM__data2}{IM\_data2}};}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00097}00097\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00098}00098\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00099}00099\ \textcolor{comment}{\ \ \ \ \ *\ map\ 16-\/bit\ registers\ to\ bytes\ to\ extract\ information}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00100}00100\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00101}\mbox{\hyperlink{structIM__dir1}{00101}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \_\_pack\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structIM__dir1}{IM\_dir1}}\ \{}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00102}00102\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int32\_t}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00103}00103\ \ \ \ \ \ \ \ \ tps,\ ap1s,\ ap2s,\ ap3s,}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00104}00104\ \ \ \ \ \ \ \ \ rpp1s,\ rpp2s,\ rpp3s;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00105}00105\ \ \ \ \ \}\ \mbox{\hyperlink{structIM__dir1}{IM\_dir1}};}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00106}00106\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00107}00107\ \ \ \ \ \textcolor{keyword}{extern}\ \mbox{\hyperlink{structIMD__tmp}{IMD\_tmp}}\ imd\_tmp;}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00108}00108\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00109}00109\ \ \ \ \ \textcolor{keywordtype}{void}\ im\_my\_modbus\_rx\_32(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00110}00110\ \ \ \ \ \textcolor{keywordtype}{void}\ init\_im\_mb\_master\_timers(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00111}00111\ \ \ \ \ int8\_t\ iammeter\_controller\_work(\mbox{\hyperlink{structC__data}{C\_data}}\ *);}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00112}00112\ \ \ \ \ int8\_t\ reset\_iammeter\_kwh(\mbox{\hyperlink{structC__data}{C\_data}}\ *);}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00113}00113\ \ \ \ \ uint16\_t\ modbus\_dcu\_send\_msg\_im(\textcolor{keywordtype}{void}\ *,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *,\ \textcolor{keyword}{const}\ uint16\_t);}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00114}00114\ \ \ \ \ \textcolor{keywordtype}{void}\ iammeter\_version(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00116}00116\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00117}00117\ \}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00118}00118\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00119}00119\ }
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00120}00120\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{/*\ IAMMETER\_RTU\_H\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{\Hypertarget{iammeter__rtu_8h_source_l00121}00121\ }
+
+\end{DoxyCode}

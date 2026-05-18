@@ -1,11 +1,22 @@
 var searchData=
 [
-  ['terminal_5ftype_0',['terminal_type',['../structterminal__type.html',1,'']]],
-  ['tic12400_2ec_1',['tic12400.c',['../tic12400_8c.html',1,'']]],
-  ['tic12400_2eh_2',['tic12400.h',['../tic12400_8h.html',1,'']]],
-  ['tickcount_3',['tickCount',['../main_8c.html#ada284e1e4e960e3a4fd5c0b0a93314e1',1,'tickCount:&#160;main.c'],['../timers_8c.html#ada284e1e4e960e3a4fd5c0b0a93314e1',1,'tickCount:&#160;main.c']]],
-  ['time_4',['time',['../mconfig_8c.html#ae7841e681c8c9d59818568d39553642c',1,'time(time_t *t):&#160;mconfig.c'],['../mconfig_8h.html#aae026724f73c36340024c657f4f44dab',1,'time(time_t *):&#160;mconfig.c']]],
-  ['timers_2ec_5',['timers.c',['../timers_8c.html',1,'']]],
-  ['timers_2eh_6',['timers.h',['../timers_8h.html',1,'']]],
-  ['to_20digital_20converter_20with_20context_7',['ADC3: Analog-to-Digital Converter with Context',['../group__adc__context__scan.html',1,'']]]
+  ['m_5fdata_0',['M_data',['../structM__data.html',1,'']]],
+  ['m_5ftime_5fdata_1',['M_time_data',['../structM__time__data.html',1,'']]],
+  ['main_2ec_2',['main.c',['../main_8c.html',1,'']]],
+  ['mc33996_2ec_3',['mc33996.c',['../mc33996_8c.html',1,'']]],
+  ['mc33996_2eh_4',['mc33996.h',['../mc33996_8h.html',1,'']]],
+  ['mconfig_2ec_5',['mconfig.c',['../mconfig_8c.html',1,'']]],
+  ['mconfig_2eh_6',['mconfig.h',['../mconfig_8h.html',1,'']]],
+  ['modbus_5fmaster_2ec_7',['modbus_master.c',['../modbus__master_8c.html',1,'']]],
+  ['modbus_5fmaster_2eh_8',['modbus_master.h',['../modbus__master_8h.html',1,'']]],
+  ['mreg_9',['MREG',['../unionMREG.html',1,'']]],
+  ['mreg32_10',['MREG32',['../unionMREG32.html',1,'']]],
+  ['mreg64_11',['MREG64',['../unionMREG64.html',1,'']]],
+  ['msg_5ftext_2eh_12',['msg_text.h',['../msg__text_8h.html',1,'']]],
+  ['mx_5flog_5fpacked_5ft_13',['mx_log_packed_t',['../structmx__log__packed__t.html',1,'']]],
+  ['mx_5flogpage_5ft_14',['mx_logpage_t',['../structmx__logpage__t.html',1,'']]],
+  ['mx_5fstatus_5fpacked_5ft_15',['mx_status_packed_t',['../structmx__status__packed__t.html',1,'']]],
+  ['mxcmd_2ec_16',['mxcmd.c',['../mxcmd_8c.html',1,'']]],
+  ['mxcmd_2eh_17',['mxcmd.h',['../mxcmd_8h.html',1,'']]],
+  ['mydisplay_2eh_18',['mydisplay.h',['../mydisplay_8h.html',1,'']]]
 ];

@@ -130,7 +130,7 @@ $(function(){initNavTree('uart3_8c_source.html','',''); initResizable(true); });
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#include &quot;interrupt_manager.h&quot;</span></div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span></div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">#define UART3_TX_BUFFER_SIZE 64</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#define UART3_RX_BUFFER_SIZE 64</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#define UART3_RX_BUFFER_SIZE 255</span></div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span></div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keyword">static</span> <span class="keyword">volatile</span> uint8_t uart3TxHead = 0;</div>
@@ -181,11 +181,11 @@ $(function(){initNavTree('uart3_8c_source.html','',''); initResizable(true); });
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="comment">// TXPOL not inverted; FLO off; RXPOL not inverted; RUNOVF RX input shifter stops all activity; STP Transmit 1Stop bit, receiver verifies first Stop bit; </span></div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    U3CON2 = 0x02;</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="comment">// BRGL 138; </span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    U3BRGL = 0x8A;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="comment">// BRGL 130; </span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    U3BRGL = 0x82;</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="comment">// BRGH 0; </span></div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    U3BRGH = 0x00;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="comment">// BRGH 6; </span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    U3BRGH = 0x06;</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="comment">// STPMD in middle of first Stop bit; TXWRE No error; </span></div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    U3FIFO = 0x00;</div>
@@ -384,7 +384,71 @@ $(function(){initNavTree('uart3_8c_source.html','',''); initResizable(true); });
 <div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>    UART3_TxInterruptHandler = InterruptHandler;</div>
 <div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>}</div>
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span></div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span><span class="keywordtype">void</span> UART3_Initialize115200(<span class="keywordtype">void</span>)</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>{</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>    <span class="comment">// Disable interrupts before changing states</span></div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>    PIE9bits.U3RXIE = 0;</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>    UART3_SetRxInterruptHandler(UART3_Receive_ISR);</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>    PIE9bits.U3TXIE = 0;</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>    UART3_SetTxInterruptHandler(UART3_Transmit_ISR);</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span> </div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>    <span class="comment">// Set the UART3 module to the options selected in the user interface.</span></div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span> </div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    <span class="comment">// P1L 0; </span></div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>    U3P1L = 0x00;</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span> </div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    <span class="comment">// P2L 0; </span></div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>    U3P2L = 0x00;</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span> </div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>    <span class="comment">// P3L 0; </span></div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>    U3P3L = 0x00;</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span> </div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>    <span class="comment">// BRGS high speed; MODE Asynchronous 8-bit mode; RXEN enabled; TXEN enabled; ABDEN disabled; </span></div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>    U3CON0 = 0xB0;</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span> </div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>    <span class="comment">// RXBIMD Set RXBKIF on rising RX input; BRKOVR disabled; WUE disabled; SENDB disabled; ON enabled; </span></div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>    U3CON1 = 0x80;</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span> </div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>    <span class="comment">// TXPOL not inverted; FLO off; RXPOL not inverted; RUNOVF RX input shifter stops all activity; STP Transmit 1Stop bit, receiver verifies first Stop bit; </span></div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>    U3CON2 = 0x02;</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span> </div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    <span class="comment">// BRGL 138; </span></div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    U3BRGL = 0x8A;</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span> </div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    <span class="comment">// BRGH 0; </span></div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>    U3BRGH = 0x00;</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>    <span class="comment">// STPMD in middle of first Stop bit; TXWRE No error; </span></div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>    U3FIFO = 0x00;</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span> </div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>    <span class="comment">// ABDIF Auto-baud not enabled or not complete; WUIF WUE not enabled by software; ABDIE disabled; </span></div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>    U3UIR = 0x00;</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span> </div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    <span class="comment">// ABDOVF Not overflowed; TXCIF 0; RXBKIF No Break detected; RXFOIF not overflowed; CERIF No Checksum error; </span></div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>    U3ERRIR = 0x00;</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span> </div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>    <span class="comment">// TXCIE disabled; FERIE disabled; TXMTIE disabled; ABDOVE disabled; CERIE disabled; RXFOIE disabled; PERIE disabled; RXBKIE disabled; </span></div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>    U3ERRIE = 0x00;</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span> </div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span> </div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>    UART3_SetFramingErrorHandler(UART3_DefaultFramingErrorHandler);</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>    UART3_SetOverrunErrorHandler(UART3_DefaultOverrunErrorHandler);</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>    UART3_SetErrorHandler(UART3_DefaultErrorHandler);</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span> </div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>    uart3RxLastError.status = 0;</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span> </div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>    <span class="comment">// initializing the driver state</span></div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    uart3TxHead = 0;</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    uart3TxTail = 0;</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    uart3TxBufferRemaining = <span class="keyword">sizeof</span>(uart3TxBuffer);</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    uart3RxHead = 0;</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    uart3RxTail = 0;</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>    uart3RxCount = 0;</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span> </div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>    <span class="comment">// enable receive interrupt</span></div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>    PIE9bits.U3RXIE = 1;</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>}</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span></div>
 <div class="ttc" id="aunionuart3__status__t_html"><div class="ttname"><a href="unionuart3__status__t.html">uart3_status_t</a></div><div class="ttdef"><b>Definition</b> <a href="uart3_8h_source.html#l00074">uart3.h:74</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

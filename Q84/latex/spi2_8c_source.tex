@@ -43,7 +43,7 @@
 \DoxyCodeLine{\Hypertarget{spi2_8c_source_l00060}00060\ }
 \DoxyCodeLine{\Hypertarget{spi2_8c_source_l00061}00061\ \textcolor{comment}{//con0\ ==\ SPIxCON0,\ con1\ ==\ SPIxCON1,\ con2\ ==\ SPIxCON2,\ baud\ ==\ SPIxBAUD,\ operation\ ==\ Master/Slave}}
 \DoxyCodeLine{\Hypertarget{spi2_8c_source_l00062}00062\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structspi2__configuration__t}{spi2\_configuration\_t}}\ spi2\_configuration[]\ =\ \{\ \ \ }
-\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00063}00063\ \ \ \ \ \{\ 0x0,\ 0x24,\ 0x1,\ 0x0,\ 1\ \}}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00063}00063\ \ \ \ \ \{\ 0x0,\ 0x24,\ 0x5,\ 0x0,\ 1\ \}}
 \DoxyCodeLine{\Hypertarget{spi2_8c_source_l00064}00064\ \};}
 \DoxyCodeLine{\Hypertarget{spi2_8c_source_l00065}00065\ }
 \DoxyCodeLine{\Hypertarget{spi2_8c_source_l00066}00066\ \textcolor{keywordtype}{void}\ SPI2\_Initialize(\textcolor{keywordtype}{void})}
@@ -52,8 +52,8 @@
 \DoxyCodeLine{\Hypertarget{spi2_8c_source_l00069}00069\ \ \ \ \ SPI2CON0\ =\ 0x00;}
 \DoxyCodeLine{\Hypertarget{spi2_8c_source_l00070}00070\ \ \ \ \ \textcolor{comment}{//SMP\ Middle;\ CKE\ Idle\ to\ active;\ CKP\ Idle:High,\ Active:Low;\ FST\ disabled;\ SSP\ active\ low;\ SDIP\ active\ high;\ SDOP\ active\ high;\ }}
 \DoxyCodeLine{\Hypertarget{spi2_8c_source_l00071}00071\ \ \ \ \ SPI2CON1\ =\ 0x24;}
-\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00072}00072\ \ \ \ \ \textcolor{comment}{//SSET\ disabled;\ TXR\ not\ required\ for\ a\ transfer;\ RXR\ suspended\ if\ the\ RxFIFO\ is\ full;\ }}
-\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00073}00073\ \ \ \ \ SPI2CON2\ =\ 0x01;}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00072}00072\ \ \ \ \ \textcolor{comment}{//SSET\ enabled;\ TXR\ not\ required\ for\ a\ transfer;\ RXR\ suspended\ if\ the\ RxFIFO\ is\ full;\ }}
+\DoxyCodeLine{\Hypertarget{spi2_8c_source_l00073}00073\ \ \ \ \ SPI2CON2\ =\ 0x05;}
 \DoxyCodeLine{\Hypertarget{spi2_8c_source_l00074}00074\ \ \ \ \ \textcolor{comment}{//CLKSEL\ FOSC;\ }}
 \DoxyCodeLine{\Hypertarget{spi2_8c_source_l00075}00075\ \ \ \ \ SPI2CLK\ =\ 0x00;}
 \DoxyCodeLine{\Hypertarget{spi2_8c_source_l00076}00076\ \ \ \ \ \textcolor{comment}{//BAUD\ 0;\ }}

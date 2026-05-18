@@ -1,7 +1,8 @@
 \doxysection{bmc\+\_\+slave.\+X/modbus\+\_\+master.c File Reference}
 \hypertarget{modbus__master_8c}{}\label{modbus__master_8c}\index{bmc\_slave.X/modbus\_master.c@{bmc\_slave.X/modbus\_master.c}}
 {\ttfamily \#include "{}modbus\+\_\+master.\+h"{}}\newline
-Include dependency graph for modbus\+\_\+master.\+c\+:\nopagebreak
+Include dependency graph for modbus\+\_\+master.\+c\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -12,15 +13,24 @@ Include dependency graph for modbus\+\_\+master.\+c\+:\nopagebreak
 \begin{DoxyCompactItemize}
 \item 
 struct \mbox{\hyperlink{structM__time__data}{M\+\_\+time\+\_\+data}}
+\item 
+struct \mbox{\hyperlink{structIMD__tmp}{IMD\+\_\+tmp}}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
 \Hypertarget{modbus__master_8c_aa7c8a7b379d2b6f098718b720c44ced2}\label{modbus__master_8c_aa7c8a7b379d2b6f098718b720c44ced2} 
 typedef struct M\+\_\+time\+\_\+data {\bfseries M\+\_\+time\+\_\+data}
+\item 
+\Hypertarget{modbus__master_8c_a54a6f16207c09bbcb9fe2764dc770c1b}\label{modbus__master_8c_a54a6f16207c09bbcb9fe2764dc770c1b} 
+typedef struct IMD\+\_\+tmp {\bfseries IMD\+\_\+tmp}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{modbus__master_8c_a573e15ec8f774a9a092fe68ed2852e69}{timer\+\_\+2ms\+\_\+tick}} (void)
+\item 
+uint16\+\_\+t \mbox{\hyperlink{modbus__master_8c_a8c6635caf3a5af03fa9ad8ecabc43603}{modbus\+\_\+rtu\+\_\+send\+\_\+msg}} (void \texorpdfstring{$\ast$}{*}cc\+\_\+buffer, const void \texorpdfstring{$\ast$}{*}modbus\+\_\+cc\+\_\+mode, uint16\+\_\+t req\+\_\+length)
 \item 
 uint16\+\_\+t \mbox{\hyperlink{modbus__master_8c_aec5790a2df1271942c73bae665c4ead3}{crc16}} (volatile uint8\+\_\+t \texorpdfstring{$\ast$}{*}buffer, uint16\+\_\+t buffer\+\_\+length)
 \item 
@@ -30,15 +40,35 @@ uint8\+\_\+t \mbox{\hyperlink{modbus__master_8c_a60e55e056abfe325744e919dc21096b
 \item 
 void \mbox{\hyperlink{modbus__master_8c_af0a79cc5a035f6c7545db9bcd27cb05b}{init\+\_\+mb\+\_\+master\+\_\+timers}} (void)
 \item 
+uint16\+\_\+t \mbox{\hyperlink{modbus__master_8c_af6d83ef9cbc3e2d8bbd7e89f867b058c}{crc16\+\_\+receive}} (const \mbox{\hyperlink{structC__data}{C\+\_\+data}} \texorpdfstring{$\ast$}{*}client, volatile uint8\+\_\+t \texorpdfstring{$\ast$}{*}cc\+\_\+buffer)
+\item 
+void \mbox{\hyperlink{modbus__master_8c_a93914a15c94b8a87827ef9c54d436e1e}{log\+\_\+crc\+\_\+error}} (const uint16\+\_\+t c\+\_\+crc, const uint16\+\_\+t c\+\_\+crc\+\_\+rec)
+\item 
 int32\+\_\+t \mbox{\hyperlink{modbus__master_8c_ab9997d0532cfcee473282a5732dbfab3}{mb32\+\_\+swap}} (const int32\+\_\+t value)
 \item 
 int16\+\_\+t \mbox{\hyperlink{modbus__master_8c_af506d4625fae8ae1a0fa2802f6fd6fde}{mb16\+\_\+swap}} (const int16\+\_\+t value)
 \item 
 int8\+\_\+t \mbox{\hyperlink{modbus__master_8c_af5f47e04feb695a8acd7dce709e879e5}{master\+\_\+controller\+\_\+work}} (\mbox{\hyperlink{structC__data}{C\+\_\+data}} \texorpdfstring{$\ast$}{*}client)
 \item 
+void \mbox{\hyperlink{modbus__master_8c_a1beecc83dea42956462e66ef987e88b1}{clear\+\_\+2hz}} (void)
+\item 
+void \mbox{\hyperlink{modbus__master_8c_a059b37f6d98c378242ebc40cbaf56e1c}{clear\+\_\+500ahz}} (void)
+\item 
+void \mbox{\hyperlink{modbus__master_8c_ac941be1be1f2239ffd59d96aaaa2a489}{clear\+\_\+500hz}} (void)
+\item 
+uint32\+\_\+t \mbox{\hyperlink{modbus__master_8c_a956c0bdafbaae37900664a1aaff97103}{get\+\_\+2hz}} (const uint8\+\_\+t mode)
+\item 
+uint32\+\_\+t \mbox{\hyperlink{modbus__master_8c_adbdce2998d1942dce9af01d3430c9465}{get\+\_\+500ahz}} (const uint8\+\_\+t mode)
+\item 
+uint32\+\_\+t \mbox{\hyperlink{modbus__master_8c_a84de20d2fd1009a7214c839f6e45c6ce}{get\+\_\+500hz}} (const uint8\+\_\+t mode)
+\item 
+bool \mbox{\hyperlink{modbus__master_8c_a5aead333706382af8db1f62d075e8cbe}{serial\+\_\+trmt}} (void)
+\item 
 void \mbox{\hyperlink{modbus__master_8c_af45e35cc73a4cc8e44d55288b35f3ac6}{mb\+\_\+tx\+\_\+test}} (\mbox{\hyperlink{structC__data}{C\+\_\+data}} \texorpdfstring{$\ast$}{*}client)
 \item 
 void \mbox{\hyperlink{modbus__master_8c_a90eb393250f99616118f14648db15c48}{mb\+\_\+setup}} (void)
+\item 
+void \mbox{\hyperlink{modbus__master_8c_aa2c1f6054d37cf9698055dafbe072581}{em540\+\_\+version}} (void)
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Variables}
 \begin{DoxyCompactItemize}
@@ -47,37 +77,7 @@ void \mbox{\hyperlink{modbus__master_8c_a90eb393250f99616118f14648db15c48}{mb\+\
 \item 
 volatile struct \mbox{\hyperlink{structVM__type}{VM\+\_\+type}} \mbox{\hyperlink{modbus__master_8c_aa878c5ca046b7cdf57b050a631a23c21}{VM}}
 \item 
-const uint8\+\_\+t \mbox{\hyperlink{modbus__master_8c_a9de3b5e2bf120b2cb9ef6a7a19b80b32}{modbus\+\_\+em\+\_\+id}} \mbox{[}$\,$\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x00, 0x0b, 0x00, 0x01\}
-\item 
-const uint8\+\_\+t \mbox{\hyperlink{modbus__master_8c_a828ca7706f2b6875390a9ab55fa28d89}{modbus\+\_\+em\+\_\+version}} \mbox{[}$\,$\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x03, 0x02, 0x00, 0x01\}
-\item 
-const uint8\+\_\+t \mbox{\hyperlink{modbus__master_8c_aebd21d687f7193712837dcc66402e4ca}{modbus\+\_\+em\+\_\+data1}} \mbox{[}$\,$\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x00, 0x00, 0x00, EM\+\_\+\+DATA\+\_\+\+LEN1\}
-\item 
-const uint8\+\_\+t \mbox{\hyperlink{modbus__master_8c_a887629594d0e3fc6c1fd3b90e43d4e38}{modbus\+\_\+em\+\_\+data2}} \mbox{[}$\,$\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x05, 0x00, 0x00, EM\+\_\+\+DATA\+\_\+\+LEN2\}
-\item 
-const uint8\+\_\+t \mbox{\hyperlink{modbus__master_8c_a82cc77f94aef68cfd03427c8a897791c}{modbus\+\_\+em\+\_\+serial}} \mbox{[}$\,$\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x50, 0x00, 0x00, SERIAL\+\_\+\+DATA\+\_\+\+LEN\}
-\item 
-const uint8\+\_\+t \mbox{\hyperlink{modbus__master_8c_a56a13e7dd2e55d75714e05387f90f0be}{modbus\+\_\+em\+\_\+config}} \mbox{[}$\,$\mbox{]} = \{MADDR, WRITE\+\_\+\+SINGLE\+\_\+\+REGISTER, 0x10, 0x02, 0x00, 0x00\}
-\item 
-const uint8\+\_\+t \mbox{\hyperlink{modbus__master_8c_a2d37e251e5dca8e9fc848315571f7377}{modbus\+\_\+em\+\_\+passwd}} \mbox{[}$\,$\mbox{]} = \{MADDR, WRITE\+\_\+\+SINGLE\+\_\+\+REGISTER, 0x10, 0x00, 0x00, 0x00\}
-\item 
-const uint8\+\_\+t \mbox{\hyperlink{modbus__master_8c_a59095c02180a13e06a70606163296a7c}{modbus\+\_\+em\+\_\+light}} \mbox{[}$\,$\mbox{]} = \{MADDR, WRITE\+\_\+\+SINGLE\+\_\+\+REGISTER, 0x16, 0x04, 0x00, 0x05\}
-\item 
-const uint8\+\_\+t \mbox{\hyperlink{modbus__master_8c_afb3fa4dbdc35b5ff1d0b7b08184b724a}{em\+\_\+id}} \mbox{[}$\,$\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x00, 0x00, 0x00, 0x00, 0x00\}
-\item 
-const uint8\+\_\+t \mbox{\hyperlink{modbus__master_8c_a1f6128f701b1766f61eded27f65c9c69}{em\+\_\+version}} \mbox{[}$\,$\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x00, 0x00, 0x00, 0x00, 0x00\}
-\item 
-const uint8\+\_\+t \mbox{\hyperlink{modbus__master_8c_a5f950edde634daa95270b8666be6e8e7}{em\+\_\+data1}} \mbox{[}(EM\+\_\+\+DATA\+\_\+\+LEN1 \texorpdfstring{$\ast$}{*}2)+5\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x00\}
-\item 
-const uint8\+\_\+t \mbox{\hyperlink{modbus__master_8c_a59846f8ac7cd0a612ab55602f9b5afd0}{em\+\_\+data2}} \mbox{[}(EM\+\_\+\+DATA\+\_\+\+LEN2 \texorpdfstring{$\ast$}{*}2)+5\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x00\}
-\item 
-const uint8\+\_\+t \mbox{\hyperlink{modbus__master_8c_a039bac82925153baac20a6358cb39651}{em\+\_\+serial}} \mbox{[}(SERIAL\+\_\+\+DATA\+\_\+\+LEN \texorpdfstring{$\ast$}{*}2)+5\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x00\}
-\item 
-const uint8\+\_\+t \mbox{\hyperlink{modbus__master_8c_a4598d27951568cdabccbc637d05cc7e7}{em\+\_\+config}} \mbox{[}$\,$\mbox{]} = \{MADDR, WRITE\+\_\+\+SINGLE\+\_\+\+REGISTER, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00\}
-\item 
-const uint8\+\_\+t \mbox{\hyperlink{modbus__master_8c_a53d70948c53f54187da313e1325c88f1}{em\+\_\+passwd}} \mbox{[}$\,$\mbox{]} = \{MADDR, WRITE\+\_\+\+SINGLE\+\_\+\+REGISTER, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00\}
-\item 
-const uint8\+\_\+t \mbox{\hyperlink{modbus__master_8c_afde4387f2861d0278e453efa18061df2}{em\+\_\+light}} \mbox{[}$\,$\mbox{]} = \{MADDR, WRITE\+\_\+\+SINGLE\+\_\+\+REGISTER, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00\}
+char \mbox{\hyperlink{modbus__master_8c_ad9fb37c2df3e8fc699ddc99714356959}{em\+\_\+info}} \mbox{[}32\mbox{]}
 \item 
 \mbox{\hyperlink{structEM__data1}{EM\+\_\+data1}} \mbox{\hyperlink{modbus__master_8c_a6b4eae00bfaa75a10707f816dcddf8a2}{em}}
 \item 
@@ -90,12 +90,46 @@ const uint8\+\_\+t \mbox{\hyperlink{modbus__master_8c_afde4387f2861d0278e453efa1
 \mbox{\hyperlink{structEM__serial}{EM\+\_\+serial}} \mbox{\hyperlink{modbus__master_8c_a432631245393587c2229a92d6017b089}{ems}}
 \item 
 \mbox{\hyperlink{structEM__version}{EM\+\_\+version}} \mbox{\hyperlink{modbus__master_8c_a2a4878e45b9cc74051c899b7f6a98a09}{emv}}
+\item 
+char \mbox{\hyperlink{modbus__master_8c_a27ea873d1753c1389584d2615412c683}{modbus\+\_\+name}} \mbox{[}$\,$\mbox{]}\mbox{[}12\mbox{]}
+\item 
+\mbox{\hyperlink{structIMD__tmp}{IMD\+\_\+tmp}} \mbox{\hyperlink{modbus__master_8c_a9441dc765d27c52876dd9c32b889a533}{imd\+\_\+tmp}}
 \end{DoxyCompactItemize}
 
 
 \label{doc-func-members}
 \Hypertarget{modbus__master_8c_doc-func-members}
 \doxysubsection{Function Documentation}
+\Hypertarget{modbus__master_8c_a1beecc83dea42956462e66ef987e88b1}\index{modbus\_master.c@{modbus\_master.c}!clear\_2hz@{clear\_2hz}}
+\index{clear\_2hz@{clear\_2hz}!modbus\_master.c@{modbus\_master.c}}
+\doxysubsubsection{\texorpdfstring{clear\_2hz()}{clear\_2hz()}}
+{\footnotesize\ttfamily \label{modbus__master_8c_a1beecc83dea42956462e66ef987e88b1} 
+void clear\+\_\+2hz (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00448}{448}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+
+\Hypertarget{modbus__master_8c_a059b37f6d98c378242ebc40cbaf56e1c}\index{modbus\_master.c@{modbus\_master.c}!clear\_500ahz@{clear\_500ahz}}
+\index{clear\_500ahz@{clear\_500ahz}!modbus\_master.c@{modbus\_master.c}}
+\doxysubsubsection{\texorpdfstring{clear\_500ahz()}{clear\_500ahz()}}
+{\footnotesize\ttfamily \label{modbus__master_8c_a059b37f6d98c378242ebc40cbaf56e1c} 
+void clear\+\_\+500ahz (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00453}{453}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+
+\Hypertarget{modbus__master_8c_ac941be1be1f2239ffd59d96aaaa2a489}\index{modbus\_master.c@{modbus\_master.c}!clear\_500hz@{clear\_500hz}}
+\index{clear\_500hz@{clear\_500hz}!modbus\_master.c@{modbus\_master.c}}
+\doxysubsubsection{\texorpdfstring{clear\_500hz()}{clear\_500hz()}}
+{\footnotesize\ttfamily \label{modbus__master_8c_ac941be1be1f2239ffd59d96aaaa2a489} 
+void clear\+\_\+500hz (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00458}{458}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+
 \Hypertarget{modbus__master_8c_aec5790a2df1271942c73bae665c4ead3}\index{modbus\_master.c@{modbus\_master.c}!crc16@{crc16}}
 \index{crc16@{crc16}!modbus\_master.c@{modbus\_master.c}}
 \doxysubsubsection{\texorpdfstring{crc16()}{crc16()}}
@@ -104,7 +138,57 @@ uint16\+\_\+t crc16 (\begin{DoxyParamCaption}\item[{volatile uint8\+\_\+t \texor
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00144}{144}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00160}{160}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+
+\Hypertarget{modbus__master_8c_af6d83ef9cbc3e2d8bbd7e89f867b058c}\index{modbus\_master.c@{modbus\_master.c}!crc16\_receive@{crc16\_receive}}
+\index{crc16\_receive@{crc16\_receive}!modbus\_master.c@{modbus\_master.c}}
+\doxysubsubsection{\texorpdfstring{crc16\_receive()}{crc16\_receive()}}
+{\footnotesize\ttfamily \label{modbus__master_8c_af6d83ef9cbc3e2d8bbd7e89f867b058c} 
+uint16\+\_\+t crc16\+\_\+receive (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structC__data}{C\+\_\+data}} \texorpdfstring{$\ast$}{*}}]{client}{, }\item[{volatile uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{cc\+\_\+buffer}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00220}{220}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+
+\Hypertarget{modbus__master_8c_aa2c1f6054d37cf9698055dafbe072581}\index{modbus\_master.c@{modbus\_master.c}!em540\_version@{em540\_version}}
+\index{em540\_version@{em540\_version}!modbus\_master.c@{modbus\_master.c}}
+\doxysubsubsection{\texorpdfstring{em540\_version()}{em540\_version()}}
+{\footnotesize\ttfamily \label{modbus__master_8c_aa2c1f6054d37cf9698055dafbe072581} 
+void em540\+\_\+version (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00836}{836}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+
+\Hypertarget{modbus__master_8c_a956c0bdafbaae37900664a1aaff97103}\index{modbus\_master.c@{modbus\_master.c}!get\_2hz@{get\_2hz}}
+\index{get\_2hz@{get\_2hz}!modbus\_master.c@{modbus\_master.c}}
+\doxysubsubsection{\texorpdfstring{get\_2hz()}{get\_2hz()}}
+{\footnotesize\ttfamily \label{modbus__master_8c_a956c0bdafbaae37900664a1aaff97103} 
+uint32\+\_\+t get\+\_\+2hz (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t}]{mode}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00463}{463}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+
+\Hypertarget{modbus__master_8c_adbdce2998d1942dce9af01d3430c9465}\index{modbus\_master.c@{modbus\_master.c}!get\_500ahz@{get\_500ahz}}
+\index{get\_500ahz@{get\_500ahz}!modbus\_master.c@{modbus\_master.c}}
+\doxysubsubsection{\texorpdfstring{get\_500ahz()}{get\_500ahz()}}
+{\footnotesize\ttfamily \label{modbus__master_8c_adbdce2998d1942dce9af01d3430c9465} 
+uint32\+\_\+t get\+\_\+500ahz (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t}]{mode}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00479}{479}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+
+\Hypertarget{modbus__master_8c_a84de20d2fd1009a7214c839f6e45c6ce}\index{modbus\_master.c@{modbus\_master.c}!get\_500hz@{get\_500hz}}
+\index{get\_500hz@{get\_500hz}!modbus\_master.c@{modbus\_master.c}}
+\doxysubsubsection{\texorpdfstring{get\_500hz()}{get\_500hz()}}
+{\footnotesize\ttfamily \label{modbus__master_8c_a84de20d2fd1009a7214c839f6e45c6ce} 
+uint32\+\_\+t get\+\_\+500hz (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t}]{mode}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00491}{491}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
 \Hypertarget{modbus__master_8c_af0a79cc5a035f6c7545db9bcd27cb05b}\index{modbus\_master.c@{modbus\_master.c}!init\_mb\_master\_timers@{init\_mb\_master\_timers}}
 \index{init\_mb\_master\_timers@{init\_mb\_master\_timers}!modbus\_master.c@{modbus\_master.c}}
@@ -114,7 +198,7 @@ void init\+\_\+mb\+\_\+master\+\_\+timers (\begin{DoxyParamCaption}\item[{void}]
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00191}{191}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00208}{208}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
 \Hypertarget{modbus__master_8c_a60e55e056abfe325744e919dc21096bb}\index{modbus\_master.c@{modbus\_master.c}!init\_stream\_params@{init\_stream\_params}}
 \index{init\_stream\_params@{init\_stream\_params}!modbus\_master.c@{modbus\_master.c}}
@@ -124,7 +208,17 @@ uint8\+\_\+t init\+\_\+stream\+\_\+params (\begin{DoxyParamCaption}\item[{void}]
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00182}{182}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00199}{199}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+
+\Hypertarget{modbus__master_8c_a93914a15c94b8a87827ef9c54d436e1e}\index{modbus\_master.c@{modbus\_master.c}!log\_crc\_error@{log\_crc\_error}}
+\index{log\_crc\_error@{log\_crc\_error}!modbus\_master.c@{modbus\_master.c}}
+\doxysubsubsection{\texorpdfstring{log\_crc\_error()}{log\_crc\_error()}}
+{\footnotesize\ttfamily \label{modbus__master_8c_a93914a15c94b8a87827ef9c54d436e1e} 
+void log\+\_\+crc\+\_\+error (\begin{DoxyParamCaption}\item[{const uint16\+\_\+t}]{c\+\_\+crc}{, }\item[{const uint16\+\_\+t}]{c\+\_\+crc\+\_\+rec}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00228}{228}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
 \Hypertarget{modbus__master_8c_af5f47e04feb695a8acd7dce709e879e5}\index{modbus\_master.c@{modbus\_master.c}!master\_controller\_work@{master\_controller\_work}}
 \index{master\_controller\_work@{master\_controller\_work}!modbus\_master.c@{modbus\_master.c}}
@@ -134,7 +228,7 @@ int8\+\_\+t master\+\_\+controller\+\_\+work (\begin{DoxyParamCaption}\item[{\mb
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00265}{265}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00281}{281}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
 \Hypertarget{modbus__master_8c_af506d4625fae8ae1a0fa2802f6fd6fde}\index{modbus\_master.c@{modbus\_master.c}!mb16\_swap@{mb16\_swap}}
 \index{mb16\_swap@{mb16\_swap}!modbus\_master.c@{modbus\_master.c}}
@@ -144,7 +238,7 @@ int16\+\_\+t mb16\+\_\+swap (\begin{DoxyParamCaption}\item[{const int16\+\_\+t}]
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00247}{247}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00262}{262}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
 \Hypertarget{modbus__master_8c_ab9997d0532cfcee473282a5732dbfab3}\index{modbus\_master.c@{modbus\_master.c}!mb32\_swap@{mb32\_swap}}
 \index{mb32\_swap@{mb32\_swap}!modbus\_master.c@{modbus\_master.c}}
@@ -154,7 +248,7 @@ int32\+\_\+t mb32\+\_\+swap (\begin{DoxyParamCaption}\item[{const int32\+\_\+t}]
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00231}{231}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00246}{246}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
 \Hypertarget{modbus__master_8c_a90eb393250f99616118f14648db15c48}\index{modbus\_master.c@{modbus\_master.c}!mb\_setup@{mb\_setup}}
 \index{mb\_setup@{mb\_setup}!modbus\_master.c@{modbus\_master.c}}
@@ -164,7 +258,7 @@ void mb\+\_\+setup (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCapti
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00585}{585}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00603}{603}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
 \Hypertarget{modbus__master_8c_af45e35cc73a4cc8e44d55288b35f3ac6}\index{modbus\_master.c@{modbus\_master.c}!mb\_tx\_test@{mb\_tx\_test}}
 \index{mb\_tx\_test@{mb\_tx\_test}!modbus\_master.c@{modbus\_master.c}}
@@ -174,7 +268,17 @@ void mb\+\_\+tx\+\_\+test (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struc
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00554}{554}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00569}{569}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+
+\Hypertarget{modbus__master_8c_a8c6635caf3a5af03fa9ad8ecabc43603}\index{modbus\_master.c@{modbus\_master.c}!modbus\_rtu\_send\_msg@{modbus\_rtu\_send\_msg}}
+\index{modbus\_rtu\_send\_msg@{modbus\_rtu\_send\_msg}!modbus\_master.c@{modbus\_master.c}}
+\doxysubsubsection{\texorpdfstring{modbus\_rtu\_send\_msg()}{modbus\_rtu\_send\_msg()}}
+{\footnotesize\ttfamily \label{modbus__master_8c_a8c6635caf3a5af03fa9ad8ecabc43603} 
+uint16\+\_\+t modbus\+\_\+rtu\+\_\+send\+\_\+msg (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{cc\+\_\+buffer}{, }\item[{const void \texorpdfstring{$\ast$}{*}}]{modbus\+\_\+cc\+\_\+mode}{, }\item[{uint16\+\_\+t}]{req\+\_\+length}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00148}{148}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
 \Hypertarget{modbus__master_8c_a9f3266015b32b55423f7ff3d32079455}\index{modbus\_master.c@{modbus\_master.c}!my\_modbus\_rx\_32@{my\_modbus\_rx\_32}}
 \index{my\_modbus\_rx\_32@{my\_modbus\_rx\_32}!modbus\_master.c@{modbus\_master.c}}
@@ -184,7 +288,27 @@ void my\+\_\+modbus\+\_\+rx\+\_\+32 (\begin{DoxyParamCaption}\item[{void}]{}{}\e
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00166}{166}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00183}{183}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+
+\Hypertarget{modbus__master_8c_a5aead333706382af8db1f62d075e8cbe}\index{modbus\_master.c@{modbus\_master.c}!serial\_trmt@{serial\_trmt}}
+\index{serial\_trmt@{serial\_trmt}!modbus\_master.c@{modbus\_master.c}}
+\doxysubsubsection{\texorpdfstring{serial\_trmt()}{serial\_trmt()}}
+{\footnotesize\ttfamily \label{modbus__master_8c_a5aead333706382af8db1f62d075e8cbe} 
+bool serial\+\_\+trmt (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00561}{561}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+
+\Hypertarget{modbus__master_8c_a573e15ec8f774a9a092fe68ed2852e69}\index{modbus\_master.c@{modbus\_master.c}!timer\_2ms\_tick@{timer\_2ms\_tick}}
+\index{timer\_2ms\_tick@{timer\_2ms\_tick}!modbus\_master.c@{modbus\_master.c}}
+\doxysubsubsection{\texorpdfstring{timer\_2ms\_tick()}{timer\_2ms\_tick()}}
+{\footnotesize\ttfamily \label{modbus__master_8c_a573e15ec8f774a9a092fe68ed2852e69} 
+void timer\+\_\+2ms\+\_\+tick (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00536}{536}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
 
 
@@ -212,6 +336,7 @@ Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00166}{166}} of fi
 \DoxyCodeLine{\ \ \ \ .M.blink\_lock\ =\ \textcolor{keyword}{false},}
 \DoxyCodeLine{\ \ \ \ .M.power\_on\ =\ \textcolor{keyword}{true},}
 \DoxyCodeLine{\ \ \ \ .tm\_ok\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\ \ \ \ .link\_ok\ =\ \textcolor{keyword}{false},}
 \DoxyCodeLine{\}}
 
 \end{DoxyCode}
@@ -227,67 +352,17 @@ Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00026}{26}} of fil
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00080}{80}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00083}{83}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
-\Hypertarget{modbus__master_8c_a4598d27951568cdabccbc637d05cc7e7}\index{modbus\_master.c@{modbus\_master.c}!em\_config@{em\_config}}
-\index{em\_config@{em\_config}!modbus\_master.c@{modbus\_master.c}}
-\doxysubsubsection{\texorpdfstring{em\_config}{em\_config}}
-{\footnotesize\ttfamily \label{modbus__master_8c_a4598d27951568cdabccbc637d05cc7e7} 
-const uint8\+\_\+t em\+\_\+config\mbox{[}$\,$\mbox{]} = \{MADDR, WRITE\+\_\+\+SINGLE\+\_\+\+REGISTER, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00\}}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00073}{73}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
-
-\Hypertarget{modbus__master_8c_a5f950edde634daa95270b8666be6e8e7}\index{modbus\_master.c@{modbus\_master.c}!em\_data1@{em\_data1}}
-\index{em\_data1@{em\_data1}!modbus\_master.c@{modbus\_master.c}}
-\doxysubsubsection{\texorpdfstring{em\_data1}{em\_data1}}
-{\footnotesize\ttfamily \label{modbus__master_8c_a5f950edde634daa95270b8666be6e8e7} 
-const uint8\+\_\+t em\+\_\+data1\mbox{[}(EM\+\_\+\+DATA\+\_\+\+LEN1 \texorpdfstring{$\ast$}{*}2)+5\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x00\}}
+\Hypertarget{modbus__master_8c_ad9fb37c2df3e8fc699ddc99714356959}\index{modbus\_master.c@{modbus\_master.c}!em\_info@{em\_info}}
+\index{em\_info@{em\_info}!modbus\_master.c@{modbus\_master.c}}
+\doxysubsubsection{\texorpdfstring{em\_info}{em\_info}}
+{\footnotesize\ttfamily \label{modbus__master_8c_ad9fb37c2df3e8fc699ddc99714356959} 
+char em\+\_\+info\mbox{[}32\mbox{]}}
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00070}{70}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
-
-\Hypertarget{modbus__master_8c_a59846f8ac7cd0a612ab55602f9b5afd0}\index{modbus\_master.c@{modbus\_master.c}!em\_data2@{em\_data2}}
-\index{em\_data2@{em\_data2}!modbus\_master.c@{modbus\_master.c}}
-\doxysubsubsection{\texorpdfstring{em\_data2}{em\_data2}}
-{\footnotesize\ttfamily \label{modbus__master_8c_a59846f8ac7cd0a612ab55602f9b5afd0} 
-const uint8\+\_\+t em\+\_\+data2\mbox{[}(EM\+\_\+\+DATA\+\_\+\+LEN2 \texorpdfstring{$\ast$}{*}2)+5\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x00\}}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00071}{71}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
-
-\Hypertarget{modbus__master_8c_afb3fa4dbdc35b5ff1d0b7b08184b724a}\index{modbus\_master.c@{modbus\_master.c}!em\_id@{em\_id}}
-\index{em\_id@{em\_id}!modbus\_master.c@{modbus\_master.c}}
-\doxysubsubsection{\texorpdfstring{em\_id}{em\_id}}
-{\footnotesize\ttfamily \label{modbus__master_8c_afb3fa4dbdc35b5ff1d0b7b08184b724a} 
-const uint8\+\_\+t em\+\_\+id\mbox{[}$\,$\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x00, 0x00, 0x00, 0x00, 0x00\}}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00068}{68}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
-
-\Hypertarget{modbus__master_8c_afde4387f2861d0278e453efa18061df2}\index{modbus\_master.c@{modbus\_master.c}!em\_light@{em\_light}}
-\index{em\_light@{em\_light}!modbus\_master.c@{modbus\_master.c}}
-\doxysubsubsection{\texorpdfstring{em\_light}{em\_light}}
-{\footnotesize\ttfamily \label{modbus__master_8c_afde4387f2861d0278e453efa18061df2} 
-const uint8\+\_\+t em\+\_\+light\mbox{[}$\,$\mbox{]} = \{MADDR, WRITE\+\_\+\+SINGLE\+\_\+\+REGISTER, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00\}}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00075}{75}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
-
-\Hypertarget{modbus__master_8c_a53d70948c53f54187da313e1325c88f1}\index{modbus\_master.c@{modbus\_master.c}!em\_passwd@{em\_passwd}}
-\index{em\_passwd@{em\_passwd}!modbus\_master.c@{modbus\_master.c}}
-\doxysubsubsection{\texorpdfstring{em\_passwd}{em\_passwd}}
-{\footnotesize\ttfamily \label{modbus__master_8c_a53d70948c53f54187da313e1325c88f1} 
-const uint8\+\_\+t em\+\_\+passwd\mbox{[}$\,$\mbox{]} = \{MADDR, WRITE\+\_\+\+SINGLE\+\_\+\+REGISTER, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00\}}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00074}{74}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00053}{53}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
 \Hypertarget{modbus__master_8c_a5807c23d9fb79511e76cf4377431dd63}\index{modbus\_master.c@{modbus\_master.c}!em\_ptr@{em\_ptr}}
 \index{em\_ptr@{em\_ptr}!modbus\_master.c@{modbus\_master.c}}
@@ -297,17 +372,7 @@ Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00074}{74}} of fil
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00080}{80}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
-
-\Hypertarget{modbus__master_8c_a039bac82925153baac20a6358cb39651}\index{modbus\_master.c@{modbus\_master.c}!em\_serial@{em\_serial}}
-\index{em\_serial@{em\_serial}!modbus\_master.c@{modbus\_master.c}}
-\doxysubsubsection{\texorpdfstring{em\_serial}{em\_serial}}
-{\footnotesize\ttfamily \label{modbus__master_8c_a039bac82925153baac20a6358cb39651} 
-const uint8\+\_\+t em\+\_\+serial\mbox{[}(SERIAL\+\_\+\+DATA\+\_\+\+LEN \texorpdfstring{$\ast$}{*}2)+5\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x00\}}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00072}{72}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00083}{83}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
 \Hypertarget{modbus__master_8c_a7436972fbe7474220728f2ea610efe83}\index{modbus\_master.c@{modbus\_master.c}!em\_tmp@{em\_tmp}}
 \index{em\_tmp@{em\_tmp}!modbus\_master.c@{modbus\_master.c}}
@@ -317,17 +382,7 @@ Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00072}{72}} of fil
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00081}{81}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
-
-\Hypertarget{modbus__master_8c_a1f6128f701b1766f61eded27f65c9c69}\index{modbus\_master.c@{modbus\_master.c}!em\_version@{em\_version}}
-\index{em\_version@{em\_version}!modbus\_master.c@{modbus\_master.c}}
-\doxysubsubsection{\texorpdfstring{em\_version}{em\_version}}
-{\footnotesize\ttfamily \label{modbus__master_8c_a1f6128f701b1766f61eded27f65c9c69} 
-const uint8\+\_\+t em\+\_\+version\mbox{[}$\,$\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x00, 0x00, 0x00, 0x00, 0x00\}}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00069}{69}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00084}{84}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
 \Hypertarget{modbus__master_8c_a432631245393587c2229a92d6017b089}\index{modbus\_master.c@{modbus\_master.c}!ems@{ems}}
 \index{ems@{ems}!modbus\_master.c@{modbus\_master.c}}
@@ -337,7 +392,7 @@ Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00069}{69}} of fil
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00083}{83}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00086}{86}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
 \Hypertarget{modbus__master_8c_ad191a89afedc59648e8f67556d13375c}\index{modbus\_master.c@{modbus\_master.c}!emt@{emt}}
 \index{emt@{emt}!modbus\_master.c@{modbus\_master.c}}
@@ -347,7 +402,7 @@ Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00083}{83}} of fil
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00082}{82}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00085}{85}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
 \Hypertarget{modbus__master_8c_a2a4878e45b9cc74051c899b7f6a98a09}\index{modbus\_master.c@{modbus\_master.c}!emv@{emv}}
 \index{emv@{emv}!modbus\_master.c@{modbus\_master.c}}
@@ -357,87 +412,35 @@ Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00082}{82}} of fil
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00084}{84}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00087}{87}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
-\Hypertarget{modbus__master_8c_a56a13e7dd2e55d75714e05387f90f0be}\index{modbus\_master.c@{modbus\_master.c}!modbus\_em\_config@{modbus\_em\_config}}
-\index{modbus\_em\_config@{modbus\_em\_config}!modbus\_master.c@{modbus\_master.c}}
-\doxysubsubsection{\texorpdfstring{modbus\_em\_config}{modbus\_em\_config}}
-{\footnotesize\ttfamily \label{modbus__master_8c_a56a13e7dd2e55d75714e05387f90f0be} 
-const uint8\+\_\+t modbus\+\_\+em\+\_\+config\mbox{[}$\,$\mbox{]} = \{MADDR, WRITE\+\_\+\+SINGLE\+\_\+\+REGISTER, 0x10, 0x02, 0x00, 0x00\}}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00064}{64}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
-
-\Hypertarget{modbus__master_8c_aebd21d687f7193712837dcc66402e4ca}\index{modbus\_master.c@{modbus\_master.c}!modbus\_em\_data1@{modbus\_em\_data1}}
-\index{modbus\_em\_data1@{modbus\_em\_data1}!modbus\_master.c@{modbus\_master.c}}
-\doxysubsubsection{\texorpdfstring{modbus\_em\_data1}{modbus\_em\_data1}}
-{\footnotesize\ttfamily \label{modbus__master_8c_aebd21d687f7193712837dcc66402e4ca} 
-const uint8\+\_\+t modbus\+\_\+em\+\_\+data1\mbox{[}$\,$\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x00, 0x00, 0x00, EM\+\_\+\+DATA\+\_\+\+LEN1\}}
+\Hypertarget{modbus__master_8c_a9441dc765d27c52876dd9c32b889a533}\index{modbus\_master.c@{modbus\_master.c}!imd\_tmp@{imd\_tmp}}
+\index{imd\_tmp@{imd\_tmp}!modbus\_master.c@{modbus\_master.c}}
+\doxysubsubsection{\texorpdfstring{imd\_tmp}{imd\_tmp}}
+{\footnotesize\ttfamily \label{modbus__master_8c_a9441dc765d27c52876dd9c32b889a533} 
+\mbox{\hyperlink{structIMD__tmp}{IMD\+\_\+tmp}} imd\+\_\+tmp\hspace{0.3cm}{\ttfamily [extern]}}
 
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00061}{61}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{iammeter__rtu_8c_source_l00050}{50}} of file \mbox{\hyperlink{iammeter__rtu_8c_source}{iammeter\+\_\+rtu.\+c}}.
 
-\Hypertarget{modbus__master_8c_a887629594d0e3fc6c1fd3b90e43d4e38}\index{modbus\_master.c@{modbus\_master.c}!modbus\_em\_data2@{modbus\_em\_data2}}
-\index{modbus\_em\_data2@{modbus\_em\_data2}!modbus\_master.c@{modbus\_master.c}}
-\doxysubsubsection{\texorpdfstring{modbus\_em\_data2}{modbus\_em\_data2}}
-{\footnotesize\ttfamily \label{modbus__master_8c_a887629594d0e3fc6c1fd3b90e43d4e38} 
-const uint8\+\_\+t modbus\+\_\+em\+\_\+data2\mbox{[}$\,$\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x05, 0x00, 0x00, EM\+\_\+\+DATA\+\_\+\+LEN2\}}
+\Hypertarget{modbus__master_8c_a27ea873d1753c1389584d2615412c683}\index{modbus\_master.c@{modbus\_master.c}!modbus\_name@{modbus\_name}}
+\index{modbus\_name@{modbus\_name}!modbus\_master.c@{modbus\_master.c}}
+\doxysubsubsection{\texorpdfstring{modbus\_name}{modbus\_name}}
+{\footnotesize\ttfamily \label{modbus__master_8c_a27ea873d1753c1389584d2615412c683} 
+char modbus\+\_\+name\mbox{[}$\,$\mbox{]}\mbox{[}12\mbox{]}}
 
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ \textcolor{stringliteral}{"{}Offline"{}},}
+\DoxyCodeLine{\ \ \ \ \textcolor{stringliteral}{"{}EM540"{}},}
+\DoxyCodeLine{\}}
 
-
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00062}{62}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
-
-\Hypertarget{modbus__master_8c_a9de3b5e2bf120b2cb9ef6a7a19b80b32}\index{modbus\_master.c@{modbus\_master.c}!modbus\_em\_id@{modbus\_em\_id}}
-\index{modbus\_em\_id@{modbus\_em\_id}!modbus\_master.c@{modbus\_master.c}}
-\doxysubsubsection{\texorpdfstring{modbus\_em\_id}{modbus\_em\_id}}
-{\footnotesize\ttfamily \label{modbus__master_8c_a9de3b5e2bf120b2cb9ef6a7a19b80b32} 
-const uint8\+\_\+t modbus\+\_\+em\+\_\+id\mbox{[}$\,$\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x00, 0x0b, 0x00, 0x01\}}
-
+\end{DoxyCode}
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00059}{59}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
-
-\Hypertarget{modbus__master_8c_a59095c02180a13e06a70606163296a7c}\index{modbus\_master.c@{modbus\_master.c}!modbus\_em\_light@{modbus\_em\_light}}
-\index{modbus\_em\_light@{modbus\_em\_light}!modbus\_master.c@{modbus\_master.c}}
-\doxysubsubsection{\texorpdfstring{modbus\_em\_light}{modbus\_em\_light}}
-{\footnotesize\ttfamily \label{modbus__master_8c_a59095c02180a13e06a70606163296a7c} 
-const uint8\+\_\+t modbus\+\_\+em\+\_\+light\mbox{[}$\,$\mbox{]} = \{MADDR, WRITE\+\_\+\+SINGLE\+\_\+\+REGISTER, 0x16, 0x04, 0x00, 0x05\}}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00066}{66}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
-
-\Hypertarget{modbus__master_8c_a2d37e251e5dca8e9fc848315571f7377}\index{modbus\_master.c@{modbus\_master.c}!modbus\_em\_passwd@{modbus\_em\_passwd}}
-\index{modbus\_em\_passwd@{modbus\_em\_passwd}!modbus\_master.c@{modbus\_master.c}}
-\doxysubsubsection{\texorpdfstring{modbus\_em\_passwd}{modbus\_em\_passwd}}
-{\footnotesize\ttfamily \label{modbus__master_8c_a2d37e251e5dca8e9fc848315571f7377} 
-const uint8\+\_\+t modbus\+\_\+em\+\_\+passwd\mbox{[}$\,$\mbox{]} = \{MADDR, WRITE\+\_\+\+SINGLE\+\_\+\+REGISTER, 0x10, 0x00, 0x00, 0x00\}}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00065}{65}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
-
-\Hypertarget{modbus__master_8c_a82cc77f94aef68cfd03427c8a897791c}\index{modbus\_master.c@{modbus\_master.c}!modbus\_em\_serial@{modbus\_em\_serial}}
-\index{modbus\_em\_serial@{modbus\_em\_serial}!modbus\_master.c@{modbus\_master.c}}
-\doxysubsubsection{\texorpdfstring{modbus\_em\_serial}{modbus\_em\_serial}}
-{\footnotesize\ttfamily \label{modbus__master_8c_a82cc77f94aef68cfd03427c8a897791c} 
-const uint8\+\_\+t modbus\+\_\+em\+\_\+serial\mbox{[}$\,$\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x50, 0x00, 0x00, SERIAL\+\_\+\+DATA\+\_\+\+LEN\}}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00063}{63}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
-
-\Hypertarget{modbus__master_8c_a828ca7706f2b6875390a9ab55fa28d89}\index{modbus\_master.c@{modbus\_master.c}!modbus\_em\_version@{modbus\_em\_version}}
-\index{modbus\_em\_version@{modbus\_em\_version}!modbus\_master.c@{modbus\_master.c}}
-\doxysubsubsection{\texorpdfstring{modbus\_em\_version}{modbus\_em\_version}}
-{\footnotesize\ttfamily \label{modbus__master_8c_a828ca7706f2b6875390a9ab55fa28d89} 
-const uint8\+\_\+t modbus\+\_\+em\+\_\+version\mbox{[}$\,$\mbox{]} = \{MADDR, READ\+\_\+\+HOLDING\+\_\+\+REGISTERS, 0x03, 0x02, 0x00, 0x01\}}
-
-
-
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00060}{60}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00089}{89}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 
 \Hypertarget{modbus__master_8c_aa878c5ca046b7cdf57b050a631a23c21}\index{modbus\_master.c@{modbus\_master.c}!VM@{VM}}
 \index{VM@{VM}!modbus\_master.c@{modbus\_master.c}}
@@ -461,5 +464,5 @@ volatile struct \mbox{\hyperlink{structVM__type}{VM\+\_\+type}} VM}
 \end{DoxyCode}
 
 
-Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00041}{41}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
+Definition at line \mbox{\hyperlink{modbus__master_8c_source_l00042}{42}} of file \mbox{\hyperlink{modbus__master_8c_source}{modbus\+\_\+master.\+c}}.
 

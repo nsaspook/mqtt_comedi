@@ -1,12 +1,13 @@
 var modbus__master_8h =
 [
+    [ "M_data", "structM__data.html", null ],
+    [ "C_data", "structC__data.html", null ],
+    [ "_op_t", "struct__op__t.html", null ],
     [ "VM_type", "structVM__type.html", null ],
     [ "PWMDC", "unionPWMDC.html", null ],
     [ "MREG", "unionMREG.html", null ],
     [ "MREG32", "unionMREG32.html", null ],
     [ "MREG64", "unionMREG64.html", null ],
-    [ "M_data", "structM__data.html", null ],
-    [ "C_data", "structC__data.html", null ],
     [ "EM_data1", "structEM__data1.html", null ],
     [ "EM_tmp", "structEM__tmp.html", null ],
     [ "EM_data2", "structEM__data2.html", null ],

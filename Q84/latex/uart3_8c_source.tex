@@ -32,7 +32,7 @@
 \DoxyCodeLine{\Hypertarget{uart3_8c_source_l00052}00052\ \textcolor{preprocessor}{\#include\ "{}interrupt\_manager.h"{}}}
 \DoxyCodeLine{\Hypertarget{uart3_8c_source_l00053}00053\ }
 \DoxyCodeLine{\Hypertarget{uart3_8c_source_l00057}00057\ \textcolor{preprocessor}{\#define\ UART3\_TX\_BUFFER\_SIZE\ 64}}
-\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00058}00058\ \textcolor{preprocessor}{\#define\ UART3\_RX\_BUFFER\_SIZE\ 64}}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00058}00058\ \textcolor{preprocessor}{\#define\ UART3\_RX\_BUFFER\_SIZE\ 255}}
 \DoxyCodeLine{\Hypertarget{uart3_8c_source_l00059}00059\ }
 \DoxyCodeLine{\Hypertarget{uart3_8c_source_l00063}00063\ }
 \DoxyCodeLine{\Hypertarget{uart3_8c_source_l00064}00064\ \textcolor{keyword}{static}\ \textcolor{keyword}{volatile}\ uint8\_t\ uart3TxHead\ =\ 0;}
@@ -83,11 +83,11 @@
 \DoxyCodeLine{\Hypertarget{uart3_8c_source_l00112}00112\ \ \ \ \ \textcolor{comment}{//\ TXPOL\ not\ inverted;\ FLO\ off;\ RXPOL\ not\ inverted;\ RUNOVF\ RX\ input\ shifter\ stops\ all\ activity;\ STP\ Transmit\ 1Stop\ bit,\ receiver\ verifies\ first\ Stop\ bit;\ }}
 \DoxyCodeLine{\Hypertarget{uart3_8c_source_l00113}00113\ \ \ \ \ U3CON2\ =\ 0x02;}
 \DoxyCodeLine{\Hypertarget{uart3_8c_source_l00114}00114\ }
-\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00115}00115\ \ \ \ \ \textcolor{comment}{//\ BRGL\ 138;\ }}
-\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00116}00116\ \ \ \ \ U3BRGL\ =\ 0x8A;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00115}00115\ \ \ \ \ \textcolor{comment}{//\ BRGL\ 130;\ }}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00116}00116\ \ \ \ \ U3BRGL\ =\ 0x82;}
 \DoxyCodeLine{\Hypertarget{uart3_8c_source_l00117}00117\ }
-\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00118}00118\ \ \ \ \ \textcolor{comment}{//\ BRGH\ 0;\ }}
-\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00119}00119\ \ \ \ \ U3BRGH\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00118}00118\ \ \ \ \ \textcolor{comment}{//\ BRGH\ 6;\ }}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00119}00119\ \ \ \ \ U3BRGH\ =\ 0x06;}
 \DoxyCodeLine{\Hypertarget{uart3_8c_source_l00120}00120\ }
 \DoxyCodeLine{\Hypertarget{uart3_8c_source_l00121}00121\ \ \ \ \ \textcolor{comment}{//\ STPMD\ in\ middle\ of\ first\ Stop\ bit;\ TXWRE\ No\ error;\ }}
 \DoxyCodeLine{\Hypertarget{uart3_8c_source_l00122}00122\ \ \ \ \ U3FIFO\ =\ 0x00;}
@@ -286,6 +286,70 @@
 \DoxyCodeLine{\Hypertarget{uart3_8c_source_l00315}00315\ \ \ \ \ UART3\_TxInterruptHandler\ =\ InterruptHandler;}
 \DoxyCodeLine{\Hypertarget{uart3_8c_source_l00316}00316\ \}}
 \DoxyCodeLine{\Hypertarget{uart3_8c_source_l00317}00317\ }
-\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00318}00318\ }
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00318}00318\ \textcolor{keywordtype}{void}\ UART3\_Initialize115200(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00319}00319\ \{}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00320}00320\ \ \ \ \ \textcolor{comment}{//\ Disable\ interrupts\ before\ changing\ states}}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00321}00321\ \ \ \ \ PIE9bits.U3RXIE\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00322}00322\ \ \ \ \ UART3\_SetRxInterruptHandler(UART3\_Receive\_ISR);}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00323}00323\ \ \ \ \ PIE9bits.U3TXIE\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00324}00324\ \ \ \ \ UART3\_SetTxInterruptHandler(UART3\_Transmit\_ISR);}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00325}00325\ }
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00326}00326\ \ \ \ \ \textcolor{comment}{//\ Set\ the\ UART3\ module\ to\ the\ options\ selected\ in\ the\ user\ interface.}}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00327}00327\ }
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00328}00328\ \ \ \ \ \textcolor{comment}{//\ P1L\ 0;\ }}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00329}00329\ \ \ \ \ U3P1L\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00330}00330\ }
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00331}00331\ \ \ \ \ \textcolor{comment}{//\ P2L\ 0;\ }}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00332}00332\ \ \ \ \ U3P2L\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00333}00333\ }
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00334}00334\ \ \ \ \ \textcolor{comment}{//\ P3L\ 0;\ }}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00335}00335\ \ \ \ \ U3P3L\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00336}00336\ }
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00337}00337\ \ \ \ \ \textcolor{comment}{//\ BRGS\ high\ speed;\ MODE\ Asynchronous\ 8-\/bit\ mode;\ RXEN\ enabled;\ TXEN\ enabled;\ ABDEN\ disabled;\ }}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00338}00338\ \ \ \ \ U3CON0\ =\ 0xB0;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00339}00339\ }
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00340}00340\ \ \ \ \ \textcolor{comment}{//\ RXBIMD\ Set\ RXBKIF\ on\ rising\ RX\ input;\ BRKOVR\ disabled;\ WUE\ disabled;\ SENDB\ disabled;\ ON\ enabled;\ }}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00341}00341\ \ \ \ \ U3CON1\ =\ 0x80;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00342}00342\ }
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00343}00343\ \ \ \ \ \textcolor{comment}{//\ TXPOL\ not\ inverted;\ FLO\ off;\ RXPOL\ not\ inverted;\ RUNOVF\ RX\ input\ shifter\ stops\ all\ activity;\ STP\ Transmit\ 1Stop\ bit,\ receiver\ verifies\ first\ Stop\ bit;\ }}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00344}00344\ \ \ \ \ U3CON2\ =\ 0x02;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00345}00345\ }
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00346}00346\ \ \ \ \ \textcolor{comment}{//\ BRGL\ 138;\ }}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00347}00347\ \ \ \ \ U3BRGL\ =\ 0x8A;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00348}00348\ }
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00349}00349\ \ \ \ \ \textcolor{comment}{//\ BRGH\ 0;\ }}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00350}00350\ \ \ \ \ U3BRGH\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00351}00351\ }
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00352}00352\ \ \ \ \ \textcolor{comment}{//\ STPMD\ in\ middle\ of\ first\ Stop\ bit;\ TXWRE\ No\ error;\ }}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00353}00353\ \ \ \ \ U3FIFO\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00354}00354\ }
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00355}00355\ \ \ \ \ \textcolor{comment}{//\ ABDIF\ Auto-\/baud\ not\ enabled\ or\ not\ complete;\ WUIF\ WUE\ not\ enabled\ by\ software;\ ABDIE\ disabled;\ }}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00356}00356\ \ \ \ \ U3UIR\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00357}00357\ }
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00358}00358\ \ \ \ \ \textcolor{comment}{//\ ABDOVF\ Not\ overflowed;\ TXCIF\ 0;\ RXBKIF\ No\ Break\ detected;\ RXFOIF\ not\ overflowed;\ CERIF\ No\ Checksum\ error;\ }}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00359}00359\ \ \ \ \ U3ERRIR\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00360}00360\ }
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00361}00361\ \ \ \ \ \textcolor{comment}{//\ TXCIE\ disabled;\ FERIE\ disabled;\ TXMTIE\ disabled;\ ABDOVE\ disabled;\ CERIE\ disabled;\ RXFOIE\ disabled;\ PERIE\ disabled;\ RXBKIE\ disabled;\ }}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00362}00362\ \ \ \ \ U3ERRIE\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00363}00363\ }
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00364}00364\ }
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00365}00365\ \ \ \ \ UART3\_SetFramingErrorHandler(UART3\_DefaultFramingErrorHandler);}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00366}00366\ \ \ \ \ UART3\_SetOverrunErrorHandler(UART3\_DefaultOverrunErrorHandler);}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00367}00367\ \ \ \ \ UART3\_SetErrorHandler(UART3\_DefaultErrorHandler);}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00368}00368\ }
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00369}00369\ \ \ \ \ uart3RxLastError.status\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00370}00370\ }
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00371}00371\ \ \ \ \ \textcolor{comment}{//\ initializing\ the\ driver\ state}}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00372}00372\ \ \ \ \ uart3TxHead\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00373}00373\ \ \ \ \ uart3TxTail\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00374}00374\ \ \ \ \ uart3TxBufferRemaining\ =\ \textcolor{keyword}{sizeof}(uart3TxBuffer);}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00375}00375\ \ \ \ \ uart3RxHead\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00376}00376\ \ \ \ \ uart3RxTail\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00377}00377\ \ \ \ \ uart3RxCount\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00378}00378\ }
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00379}00379\ \ \ \ \ \textcolor{comment}{//\ enable\ receive\ interrupt}}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00380}00380\ \ \ \ \ PIE9bits.U3RXIE\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00381}00381\ \}}
+\DoxyCodeLine{\Hypertarget{uart3_8c_source_l00382}00382\ }
 
 \end{DoxyCode}

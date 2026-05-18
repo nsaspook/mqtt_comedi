@@ -2,6 +2,7 @@
 \hypertarget{calibr_8h}{}\label{calibr_8h}\index{bmc\_slave.X/calibr.h@{bmc\_slave.X/calibr.h}}
 {\ttfamily \#include $<$xc.\+h$>$}\newline
 {\ttfamily \#include "{}vconfig.\+h"{}}\newline
+{\ttfamily \#include "{}mcc\+\_\+generated\+\_\+files/crc.\+h"{}}\newline
 Include dependency graph for calibr.\+h\+:
 \nopagebreak
 \begin{figure}[H]
@@ -10,8 +11,7 @@ Include dependency graph for calibr.\+h\+:
 \includegraphics[width=350pt]{calibr_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:
-\nopagebreak
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -22,15 +22,45 @@ This graph shows which files directly or indirectly include this file\+:
 \begin{DoxyCompactItemize}
 \item 
 struct \mbox{\hyperlink{structha__daq__calib__type}{ha\+\_\+daq\+\_\+calib\+\_\+type}}
+\item 
+struct \mbox{\hyperlink{structbmc__settings}{bmc\+\_\+settings}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{calibr_8h_a21dd3d7229ea82ee36d5f7f54b42842a}{TATE}}~0x42
+\item 
+\#define \mbox{\hyperlink{calibr_8h_af5e6d2f597a723472479ba1c997238b2}{EE\+\_\+\+CHECKMARK}}~0x1957
+\item 
+\#define \mbox{\hyperlink{calibr_8h_a1291f416b069313021b519eea62d5bf1}{NORMAL}}~0
+\item 
+\#define \mbox{\hyperlink{calibr_8h_a00548cec6d104932bf79a65bac1c47e8}{REVERSE}}~1
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries EMETER\+\_\+\+MODEL} \{ {\bfseries EM540\+\_\+M} = 0
+, {\bfseries WEM30\+\_\+M}
+, {\bfseries PZEM\+\_\+M}
+, {\bfseries POWER\+\_\+M}
+ \}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{calibr_8h_a79f37a1a9e6812b8f917ae05702d8049}{set\+\_\+calibration}} (unsigned long long)
+enum EMETER\+\_\+\+MODEL \mbox{\hyperlink{calibr_8h_a0b47bd207eb714ab30eec7ef16dcf0b4}{set\+\_\+calibration}} (unsigned long long)
 \item 
 float \mbox{\hyperlink{calibr_8h_a80ebdcd8e0efd6f160faafd7e0a0bd5b}{phy\+\_\+chan4}} (uint16\+\_\+t)
 \item 
 float \mbox{\hyperlink{calibr_8h_a539f16cb8c4fce876b95d5c97411fc4a}{phy\+\_\+chan5}} (uint16\+\_\+t)
+\item 
+bool \mbox{\hyperlink{calibr_8h_a5d74cfa8a8f9daa1a5c132b07477ce22}{read\+\_\+cal\+\_\+data}} (void)
+\item 
+void \mbox{\hyperlink{calibr_8h_a90939549868a1d6140642836447e4618}{write\+\_\+cal\+\_\+data}} (void)
+\item 
+void \mbox{\hyperlink{calibr_8h_aee0656bcb26933b57d1866087081f181}{update\+\_\+cal\+\_\+data}} (void)
+\item 
+double \mbox{\hyperlink{calibr_8h_a39ca5dbb36a16d316a402cdec3ae62b1}{Volts\+\_\+to\+\_\+\+SOC}} (const double)
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Variables}
 \begin{DoxyCompactItemize}
@@ -38,6 +68,8 @@ float \mbox{\hyperlink{calibr_8h_a539f16cb8c4fce876b95d5c97411fc4a}{phy\+\_\+cha
 volatile struct \mbox{\hyperlink{structspi__stat__type__ss}{spi\+\_\+stat\+\_\+type\+\_\+ss}} \mbox{\hyperlink{calibr_8h_a027874cb31b7257cd1bae1de3d7a087e}{spi\+\_\+stat\+\_\+ss}}
 \item 
 struct \mbox{\hyperlink{structha__daq__calib__type}{ha\+\_\+daq\+\_\+calib\+\_\+type}} \mbox{\hyperlink{calibr_8h_a5b53aad72b2f4887a37100b31dfb9962}{ha\+\_\+daq\+\_\+calib}}
+\item 
+struct \mbox{\hyperlink{structbmc__settings}{bmc\+\_\+settings}} \mbox{\hyperlink{calibr_8h_aca00e54e0ffcf526dfa2cccfbd891c0e}{S}}
 \end{DoxyCompactItemize}
 
 
@@ -47,6 +79,66 @@ Calibration values for host for HV inputs and 200A current sensor
 return physical voltage units for channels 4 \& 5 
 
 Definition in file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
+
+
+
+\label{doc-define-members}
+\Hypertarget{calibr_8h_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{calibr_8h_af5e6d2f597a723472479ba1c997238b2}\index{calibr.h@{calibr.h}!EE\_CHECKMARK@{EE\_CHECKMARK}}
+\index{EE\_CHECKMARK@{EE\_CHECKMARK}!calibr.h@{calibr.h}}
+\doxysubsubsection{\texorpdfstring{EE\_CHECKMARK}{EE\_CHECKMARK}}
+{\footnotesize\ttfamily \label{calibr_8h_af5e6d2f597a723472479ba1c997238b2} 
+\#define EE\+\_\+\+CHECKMARK~0x1957}
+
+
+
+Definition at line \mbox{\hyperlink{calibr_8h_source_l00020}{20}} of file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
+
+\Hypertarget{calibr_8h_a1291f416b069313021b519eea62d5bf1}\index{calibr.h@{calibr.h}!NORMAL@{NORMAL}}
+\index{NORMAL@{NORMAL}!calibr.h@{calibr.h}}
+\doxysubsubsection{\texorpdfstring{NORMAL}{NORMAL}}
+{\footnotesize\ttfamily \label{calibr_8h_a1291f416b069313021b519eea62d5bf1} 
+\#define NORMAL~0}
+
+
+
+Definition at line \mbox{\hyperlink{calibr_8h_source_l00021}{21}} of file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
+
+\Hypertarget{calibr_8h_a00548cec6d104932bf79a65bac1c47e8}\index{calibr.h@{calibr.h}!REVERSE@{REVERSE}}
+\index{REVERSE@{REVERSE}!calibr.h@{calibr.h}}
+\doxysubsubsection{\texorpdfstring{REVERSE}{REVERSE}}
+{\footnotesize\ttfamily \label{calibr_8h_a00548cec6d104932bf79a65bac1c47e8} 
+\#define REVERSE~1}
+
+
+
+Definition at line \mbox{\hyperlink{calibr_8h_source_l00022}{22}} of file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
+
+\Hypertarget{calibr_8h_a21dd3d7229ea82ee36d5f7f54b42842a}\index{calibr.h@{calibr.h}!TATE@{TATE}}
+\index{TATE@{TATE}!calibr.h@{calibr.h}}
+\doxysubsubsection{\texorpdfstring{TATE}{TATE}}
+{\footnotesize\ttfamily \label{calibr_8h_a21dd3d7229ea82ee36d5f7f54b42842a} 
+\#define TATE~0x42}
+
+
+
+Definition at line \mbox{\hyperlink{calibr_8h_source_l00019}{19}} of file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
+
+
+
+\label{doc-enum-members}
+\Hypertarget{calibr_8h_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{calibr_8h_aad1f6d8fc7e9a8c417a83028f46a539e}\index{calibr.h@{calibr.h}!EMETER\_MODEL@{EMETER\_MODEL}}
+\index{EMETER\_MODEL@{EMETER\_MODEL}!calibr.h@{calibr.h}}
+\doxysubsubsection{\texorpdfstring{EMETER\_MODEL}{EMETER\_MODEL}}
+{\footnotesize\ttfamily \label{calibr_8h_aad1f6d8fc7e9a8c417a83028f46a539e} 
+enum EMETER\+\_\+\+MODEL}
+
+
+
+Definition at line \mbox{\hyperlink{calibr_8h_source_l00039}{39}} of file \mbox{\hyperlink{calibr_8h_source}{calibr.\+h}}.
 
 
 
@@ -61,7 +153,7 @@ float phy\+\_\+chan4 (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{value}{}\en
 
 
 
-Definition at line \mbox{\hyperlink{calibr_8c_source_l00046}{46}} of file \mbox{\hyperlink{calibr_8c_source}{calibr.\+c}}.
+Definition at line \mbox{\hyperlink{calibr_8c_source_l00149}{149}} of file \mbox{\hyperlink{calibr_8c_source}{calibr.\+c}}.
 
 \Hypertarget{calibr_8h_a539f16cb8c4fce876b95d5c97411fc4a}\index{calibr.h@{calibr.h}!phy\_chan5@{phy\_chan5}}
 \index{phy\_chan5@{phy\_chan5}!calibr.h@{calibr.h}}
@@ -71,17 +163,57 @@ float phy\+\_\+chan5 (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{value}{}\en
 
 
 
-Definition at line \mbox{\hyperlink{calibr_8c_source_l00055}{55}} of file \mbox{\hyperlink{calibr_8c_source}{calibr.\+c}}.
+Definition at line \mbox{\hyperlink{calibr_8c_source_l00158}{158}} of file \mbox{\hyperlink{calibr_8c_source}{calibr.\+c}}.
 
-\Hypertarget{calibr_8h_a79f37a1a9e6812b8f917ae05702d8049}\index{calibr.h@{calibr.h}!set\_calibration@{set\_calibration}}
+\Hypertarget{calibr_8h_a5d74cfa8a8f9daa1a5c132b07477ce22}\index{calibr.h@{calibr.h}!read\_cal\_data@{read\_cal\_data}}
+\index{read\_cal\_data@{read\_cal\_data}!calibr.h@{calibr.h}}
+\doxysubsubsection{\texorpdfstring{read\_cal\_data()}{read\_cal\_data()}}
+{\footnotesize\ttfamily \label{calibr_8h_a5d74cfa8a8f9daa1a5c132b07477ce22} 
+bool read\+\_\+cal\+\_\+data (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{calibr_8c_source_l00170}{170}} of file \mbox{\hyperlink{calibr_8c_source}{calibr.\+c}}.
+
+\Hypertarget{calibr_8h_a0b47bd207eb714ab30eec7ef16dcf0b4}\index{calibr.h@{calibr.h}!set\_calibration@{set\_calibration}}
 \index{set\_calibration@{set\_calibration}!calibr.h@{calibr.h}}
 \doxysubsubsection{\texorpdfstring{set\_calibration()}{set\_calibration()}}
-{\footnotesize\ttfamily \label{calibr_8h_a79f37a1a9e6812b8f917ae05702d8049} 
-void set\+\_\+calibration (\begin{DoxyParamCaption}\item[{unsigned long long}]{mui}{}\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \label{calibr_8h_a0b47bd207eb714ab30eec7ef16dcf0b4} 
+enum EMETER\+\_\+\+MODEL set\+\_\+calibration (\begin{DoxyParamCaption}\item[{unsigned long long}]{mui}{}\end{DoxyParamCaption})}
 
 
 
-Definition at line \mbox{\hyperlink{calibr_8c_source_l00006}{6}} of file \mbox{\hyperlink{calibr_8c_source}{calibr.\+c}}.
+Definition at line \mbox{\hyperlink{calibr_8c_source_l00072}{72}} of file \mbox{\hyperlink{calibr_8c_source}{calibr.\+c}}.
+
+\Hypertarget{calibr_8h_aee0656bcb26933b57d1866087081f181}\index{calibr.h@{calibr.h}!update\_cal\_data@{update\_cal\_data}}
+\index{update\_cal\_data@{update\_cal\_data}!calibr.h@{calibr.h}}
+\doxysubsubsection{\texorpdfstring{update\_cal\_data()}{update\_cal\_data()}}
+{\footnotesize\ttfamily \label{calibr_8h_aee0656bcb26933b57d1866087081f181} 
+void update\+\_\+cal\+\_\+data (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{calibr_8c_source_l00237}{237}} of file \mbox{\hyperlink{calibr_8c_source}{calibr.\+c}}.
+
+\Hypertarget{calibr_8h_a39ca5dbb36a16d316a402cdec3ae62b1}\index{calibr.h@{calibr.h}!Volts\_to\_SOC@{Volts\_to\_SOC}}
+\index{Volts\_to\_SOC@{Volts\_to\_SOC}!calibr.h@{calibr.h}}
+\doxysubsubsection{\texorpdfstring{Volts\_to\_SOC()}{Volts\_to\_SOC()}}
+{\footnotesize\ttfamily \label{calibr_8h_a39ca5dbb36a16d316a402cdec3ae62b1} 
+double Volts\+\_\+to\+\_\+\+SOC (\begin{DoxyParamCaption}\item[{const double}]{bvoltage}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{calibr_8c_source_l00252}{252}} of file \mbox{\hyperlink{calibr_8c_source}{calibr.\+c}}.
+
+\Hypertarget{calibr_8h_a90939549868a1d6140642836447e4618}\index{calibr.h@{calibr.h}!write\_cal\_data@{write\_cal\_data}}
+\index{write\_cal\_data@{write\_cal\_data}!calibr.h@{calibr.h}}
+\doxysubsubsection{\texorpdfstring{write\_cal\_data()}{write\_cal\_data()}}
+{\footnotesize\ttfamily \label{calibr_8h_a90939549868a1d6140642836447e4618} 
+void write\+\_\+cal\+\_\+data (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{calibr_8c_source_l00208}{208}} of file \mbox{\hyperlink{calibr_8c_source}{calibr.\+c}}.
 
 
 
@@ -96,7 +228,17 @@ struct \mbox{\hyperlink{structha__daq__calib__type}{ha\+\_\+daq\+\_\+calib\+\_\+
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00278}{278}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l00352}{352}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\Hypertarget{calibr_8h_aca00e54e0ffcf526dfa2cccfbd891c0e}\index{calibr.h@{calibr.h}!S@{S}}
+\index{S@{S}!calibr.h@{calibr.h}}
+\doxysubsubsection{\texorpdfstring{S}{S}}
+{\footnotesize\ttfamily \label{calibr_8h_aca00e54e0ffcf526dfa2cccfbd891c0e} 
+struct \mbox{\hyperlink{structbmc__settings}{bmc\+\_\+settings}} S\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{calibr_8c_source_l00061}{61}} of file \mbox{\hyperlink{calibr_8c_source}{calibr.\+c}}.
 
 \Hypertarget{calibr_8h_a027874cb31b7257cd1bae1de3d7a087e}\index{calibr.h@{calibr.h}!spi\_stat\_ss@{spi\_stat\_ss}}
 \index{spi\_stat\_ss@{spi\_stat\_ss}!calibr.h@{calibr.h}}
@@ -106,5 +248,5 @@ volatile struct \mbox{\hyperlink{structspi__stat__type__ss}{spi\+\_\+stat\+\_\+t
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00264}{264}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l00338}{338}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 

@@ -1,0 +1,132 @@
+\doxysection{pzem\+\_\+rtu.\+h}
+\hypertarget{pzem__rtu_8h_source}{}\label{pzem__rtu_8h_source}\index{bmc\_slave.X/pzem\_rtu.h@{bmc\_slave.X/pzem\_rtu.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00001}00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00002}00002\ \textcolor{comment}{\ *\ File:\ \ \ pzem\_rtu.h}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00003}00003\ \textcolor{comment}{\ *\ Author:\ root}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00004}00004\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00005}00005\ \textcolor{comment}{\ *\ Created\ on\ March\ 23,\ 2026,\ 8:59\ PM}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00006}00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00008}00008\ \textcolor{preprocessor}{\#ifndef\ PZEM\_RTU\_H}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00009}00009\ \textcolor{preprocessor}{\#define\ PZEM\_RTU\_H}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00011}00011\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00012}00012\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00013}00013\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00014}00014\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00015}00015\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{modbus__master_8h}{modbus\_master.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00016}00016\ \textcolor{preprocessor}{\#include\ "{}iammeter\_rtu.h"{}}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00017}00017\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00018}00018\ \textcolor{preprocessor}{\#define\ PZ\_DATA\_LEN1\ \ \ \ 0X40\ \ \ \ }\textcolor{comment}{//\ 16-\/bit\ words\ returned}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00019}00019\ \textcolor{preprocessor}{\#define\ PZ\_DATA\_DIR1\ \ \ \ 0X40\ \ \ \ }\textcolor{comment}{//\ 16-\/bit\ words\ returned}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00020}00020\ \textcolor{preprocessor}{\#define\ PZ\_DATA\_HZ1\ 0x01}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00022}00022\ \textcolor{preprocessor}{\#define\ PZMADDR\ \ \ \ \ 0x02\ }\textcolor{comment}{//\ modbus\ client\ address}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00023}00023\ \textcolor{preprocessor}{\#define\ MB\_PZEM\_ID\_H\ \ \ \ PZMADDR\ }\textcolor{comment}{//\ slave\ ID}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00024}00024\ \textcolor{preprocessor}{\#define\ MB\_PZEM\_ID\_L\ \ \ \ 0x06\ \ \ \ }\textcolor{comment}{//\ slave\ baudrate}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00026}00026\ \textcolor{preprocessor}{\#define\ WRITE\_PZEM\_REGISTER\ \ \ \ \ 0x10}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00028}00028\ \ \ \ \ \textcolor{comment}{//\ Input\ register\ addresses}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00029}00029\ \textcolor{preprocessor}{\#define\ PZEM\_VOLTAGE\_REG\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x0000\ }\textcolor{comment}{//\ A=0x0000,\ B=0x0001,\ C=0x0002}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00030}00030\ \textcolor{preprocessor}{\#define\ PZEM\_CURRENT\_REG\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x0003\ }\textcolor{comment}{//\ A=0x0003,\ B=0x0004,\ C=0x0005}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00031}00031\ \textcolor{preprocessor}{\#define\ PZEM\_FREQUENCY\_REG\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x0006\ }\textcolor{comment}{//\ A=0x0006,\ B=0x0007,\ C=0x0008}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00032}00032\ \textcolor{preprocessor}{\#define\ PZEM\_VOLTAGE\_PHASE\_REG\ \ \ \ \ \ \ \ \ \ \ \ 0x0009\ }\textcolor{comment}{//\ B=0x0009,\ C=0x000A\ (A\ is\ reference)}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00033}00033\ \textcolor{preprocessor}{\#define\ PZEM\_CURRENT\_PHASE\_REG\ \ \ \ \ \ \ \ \ \ \ \ 0x000B\ }\textcolor{comment}{//\ A=0x000B,\ B=0x000C,\ C=0x000D}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00034}00034\ \textcolor{preprocessor}{\#define\ PZEM\_ACTIVE\_POWER\_REG\ \ \ \ \ \ \ \ \ \ \ \ \ 0x000E\ }\textcolor{comment}{//\ A=0x000E/0x000F,\ B=0x0010/0x0011,\ C=0x0012/0x0013}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00035}00035\ \textcolor{preprocessor}{\#define\ PZEM\_REACTIVE\_POWER\_REG\ \ \ \ \ \ \ \ \ \ \ 0x0014\ }\textcolor{comment}{//\ A=0x0014/0x0015,\ B=0x0016/0x0017,\ C=0x0018/0x0019}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00036}00036\ \textcolor{preprocessor}{\#define\ PZEM\_APPARENT\_POWER\_REG\ \ \ \ \ \ \ \ \ \ \ 0x001A\ }\textcolor{comment}{//\ A=0x001A/0x001B,\ B=0x001C/0x001D,\ C=0x001E/0x001F}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00037}00037\ \textcolor{preprocessor}{\#define\ PZEM\_ACTIVE\_POWER\_COMBINED\_REG\ \ \ \ 0x0020\ }\textcolor{comment}{//\ combined=0x0020/0x0021}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00038}00038\ \textcolor{preprocessor}{\#define\ PZEM\_REACTIVE\_POWER\_COMBINED\_REG\ \ 0x0022\ }\textcolor{comment}{//\ combined=0x0022/0x0023}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00039}00039\ \textcolor{preprocessor}{\#define\ PZEM\_APPARENT\_POWER\_COMBINED\_REG\ \ 0x0024\ }\textcolor{comment}{//\ combined=0x0024/0x0025}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00040}00040\ \textcolor{preprocessor}{\#define\ PZEM\_POWER\_FACTOR\_A\_B\_REG\ \ \ \ \ \ \ \ \ 0x0026\ }\textcolor{comment}{//\ A=hi,\ B=lo}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00041}00041\ \textcolor{preprocessor}{\#define\ PZEM\_POWER\_FACTOR\_C\_COMBINED\_REG\ \ 0x0027\ }\textcolor{comment}{//\ C=hi,\ combined=lo}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00042}00042\ \textcolor{preprocessor}{\#define\ PZEM\_ACTIVE\_ENERGY\_REG\ \ \ \ \ \ \ \ \ \ \ \ 0x0028\ }\textcolor{comment}{//\ A=0x0028/0x0029,\ B=0x002A/0x002B,\ C=0x002C/0x002D}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00043}00043\ \textcolor{preprocessor}{\#define\ PZEM\_REACTIVE\_ENERGY\_REG\ \ \ \ \ \ \ \ \ \ 0x002E\ }\textcolor{comment}{//\ A=0x002E/0x002F,\ B=0x0030/0x0031,\ C=0x0032/0x0033}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00044}00044\ \textcolor{preprocessor}{\#define\ PZEM\_APPARENT\_ENERGY\_REG\ \ \ \ \ \ \ \ \ \ 0x0034\ }\textcolor{comment}{//\ A=0x0034/0x0035,\ B=0x0036/0x0037,\ C=0x0038/0x0039}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00045}00045\ \textcolor{preprocessor}{\#define\ PZEM\_ACTIVE\_ENERGY\_COMBINED\_REG\ \ \ 0x003A\ }\textcolor{comment}{//\ combined=0x003A/0x003B}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00046}00046\ \textcolor{preprocessor}{\#define\ PZEM\_REACTIVE\_ENERGY\_COMBINED\_REG\ 0x003C\ }\textcolor{comment}{//\ combined=0x003C/0x003D}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00047}00047\ \textcolor{preprocessor}{\#define\ PZEM\_APPARENT\_ENERGY\_COMBINED\_REG\ 0x003E\ }}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00048}00048\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00049}00049\ \ \ \ \ \textcolor{comment}{//\ Parameter\ registers}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00050}00050\ \textcolor{preprocessor}{\#define\ PZEM\_ADDRESS\_REG\ \ \ \ \ \ \ \ \ \ \ \ 0x0000\ \ }}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00051}00051\ \textcolor{preprocessor}{\#define\ PZEM\_BAUDRATE\_TYPE\_REG\ \ \ \ \ \ 0x0001\ \ }}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00052}00052\ \textcolor{preprocessor}{\#define\ PZEM\_FREQUENCY\_SYSTEM\_REG\ \ \ 0x0002\ \ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00060}00060\ \textcolor{preprocessor}{\#define\ PZEM\_VOLTAGE\_RESOLUTION\ \ \ \ \ \ 0.1f}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00061}00061\ \textcolor{preprocessor}{\#define\ PZEM\_CURRENT\_RESOLUTION\ \ \ \ \ \ 0.01f}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00062}00062\ \textcolor{preprocessor}{\#define\ PZEM\_FREQUENCY\_RESOLUTION\ \ \ \ 0.01f}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00063}00063\ \textcolor{preprocessor}{\#define\ PZEM\_POWER\_RESOLUTION\ \ \ \ \ \ \ \ 0.1f}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00064}00064\ \textcolor{preprocessor}{\#define\ PZEM\_POWER\_FACTOR\_RESOLUTION\ 0.01f}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00065}00065\ \textcolor{preprocessor}{\#define\ PZEM\_ENERGY\_RESOLUTION\ \ \ \ \ \ \ 0.1f}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00066}\mbox{\hyperlink{group__PZEM6L24Resolutions_ga3e02cfc40c7470cb86b4c1aaa43e3bed}{00066}}\ \textcolor{preprocessor}{\#define\ PZEM\_PHASE\_RESOLUTION\ \ \ \ \ \ \ \ 0.01f\ \ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00068}00068\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00074}\mbox{\hyperlink{group__PZEM6L24ResetOptions_ga96a39f510b203c974aa82d300857818e}{00074}}\ \textcolor{preprocessor}{\#define\ PZEM\_RESET\_ENERGY\_A\ \ \ \ \ \ \ \ 0x00\ \ }}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00075}\mbox{\hyperlink{group__PZEM6L24ResetOptions_ga7bc61b089100b019aadd8b559700628e}{00075}}\ \textcolor{preprocessor}{\#define\ PZEM\_RESET\_ENERGY\_B\ \ \ \ \ \ \ \ 0x01\ \ }}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00076}\mbox{\hyperlink{group__PZEM6L24ResetOptions_ga42d4625977610c7bf47738a0f1008db0}{00076}}\ \textcolor{preprocessor}{\#define\ PZEM\_RESET\_ENERGY\_C\ \ \ \ \ \ \ \ 0x02\ \ }}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00077}\mbox{\hyperlink{group__PZEM6L24ResetOptions_ga86d59d8bb55848fd9fe2a7b21dc27cce}{00077}}\ \textcolor{preprocessor}{\#define\ PZEM\_RESET\_ENERGY\_COMBINED\ 0x03\ \ }}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00078}\mbox{\hyperlink{group__PZEM6L24ResetOptions_gae0a3189f1018ebafda58275ae006f4be}{00078}}\ \textcolor{preprocessor}{\#define\ PZEM\_RESET\_ENERGY\_ALL\ \ \ \ \ \ 0x0F\ \ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00086}00086\ \textcolor{preprocessor}{\#define\ PZEM\_BAUDRATE\_2400\ \ \ 0x00}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00087}00087\ \textcolor{preprocessor}{\#define\ PZEM\_BAUDRATE\_4800\ \ \ 0x01}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00088}00088\ \textcolor{preprocessor}{\#define\ PZEM\_BAUDRATE\_9600\ \ \ 0x02}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00089}00089\ \textcolor{preprocessor}{\#define\ PZEM\_BAUDRATE\_19200\ \ 0x03}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00090}00090\ \textcolor{preprocessor}{\#define\ PZEM\_BAUDRATE\_38400\ \ 0x04}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00091}00091\ \textcolor{preprocessor}{\#define\ PZEM\_BAUDRATE\_57600\ \ 0x05}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00092}\mbox{\hyperlink{group__PZEM6L24Baudrates_gaab7df293fd49b403f20dfdfdbc2effae}{00092}}\ \textcolor{preprocessor}{\#define\ PZEM\_BAUDRATE\_115200\ 0x06\ \ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00100}\mbox{\hyperlink{group__PZEM6L24ConnectionTypes_ga6685953d8cb99f2d8df19a9e41be372b}{00100}}\ \textcolor{preprocessor}{\#define\ PZEM\_CONNECTION\_3PHASE\_4WIRE\ 0x00\ \ }}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00101}\mbox{\hyperlink{group__PZEM6L24ConnectionTypes_ga6d6bc992145348855708f0befc496861}{00101}}\ \textcolor{preprocessor}{\#define\ PZEM\_CONNECTION\_3PHASE\_3WIRE\ 0x01\ \ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00103}00103\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00109}\mbox{\hyperlink{group__PZEM6L24Frequencies_ga31768bbb573d266f30d503d1a79c0a58}{00109}}\ \textcolor{preprocessor}{\#define\ PZEM\_FREQUENCY\_50HZ\ 0x00\ \ }}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00110}\mbox{\hyperlink{group__PZEM6L24Frequencies_ga7b3c8e1dec022df673f5447534db96fa}{00110}}\ \textcolor{preprocessor}{\#define\ PZEM\_FREQUENCY\_60HZ\ 0x01\ \ }}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00111}00111\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00113}00113\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00114}00114\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ cmd\_pz\_type\ \{}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00115}00115\ \ \ \ \ \ \ \ \ P\_DATA1\ =\ 0,}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00116}00116\ \ \ \ \ \ \ \ \ P\_HZ1,}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00117}00117\ \ \ \ \ \ \ \ \ P\_LAST,}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00118}00118\ \ \ \ \ \}\ cmd\_pz\_type;}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00119}00119\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00120}00120\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00121}00121\ \textcolor{comment}{\ \ \ \ \ *\ maps\ the\ PZEM\ MODBUS\ registers\ to\ int32\_t,\ uint32\_t\ and\ uint16\_t\ values}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00122}00122\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00123}\mbox{\hyperlink{structPZ__data1}{00123}}\ \ \ \ \ \textcolor{keyword}{typedef}\ \_\_pack\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structPZ__data1}{PZ\_data1}}\ \{}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00124}00124\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint16\_t}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00125}00125\ \ \ \ \ \ \ \ \ vl1n,\ vl2n,\ vl3n,}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00126}00126\ \ \ \ \ \ \ \ \ al1,\ al2,\ al3,}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00127}00127\ \ \ \ \ \ \ \ \ hz1,\ hz2,\ hz3,}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00128}00128\ \ \ \ \ \ \ \ \ pvp2,\ pvp3,}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00129}00129\ \ \ \ \ \ \ \ \ pcp1,\ pcp2,\ pcp3;}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00130}00130\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00131}00131\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ int32\_t}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00132}00132\ \ \ \ \ \ \ \ \ pap1s,\ pap2s,\ pap3s,}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00133}00133\ \ \ \ \ \ \ \ \ prp1s,\ prp2s,\ prp3s,}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00134}00134\ \ \ \ \ \ \ \ \ papp1s,\ papp2s,\ papp3s,}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00135}00135\ \ \ \ \ \ \ \ \ caps,\ c1ps,\ capps;}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00136}00136\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00137}00137\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint16\_t\ \textcolor{comment}{//\ power\ factor}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00138}00138\ \ \ \ \ \ \ \ \ p1p2pf,\ p3cpf;}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00139}00139\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00140}00140\ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ \textcolor{comment}{//\ energy\ in\ kWh,\ kVarh,\ KVah}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00141}00141\ \ \ \ \ \ \ \ \ pae1s,\ pae2s,\ pae3s,}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00142}00142\ \ \ \ \ \ \ \ \ pre1s,\ pre2s,\ pre3s,}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00143}00143\ \ \ \ \ \ \ \ \ pappe1s,\ pappe2s,\ pappe3s,}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00144}00144\ \ \ \ \ \ \ \ \ caes,\ cres,\ cappes;}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00145}00145\ \ \ \ \ \}\ \mbox{\hyperlink{structPZ__data1}{PZ\_data1}};}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00146}00146\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00147}00147\ \ \ \ \ \textcolor{keywordtype}{void}\ pz\_my\_modbus\_rx\_32(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00148}00148\ \ \ \ \ \textcolor{keywordtype}{void}\ init\_pz\_mb\_master\_timers(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00149}00149\ \ \ \ \ int8\_t\ pzem\_controller\_work(\mbox{\hyperlink{structC__data}{C\_data}}\ *);}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00150}00150\ \ \ \ \ \textcolor{keywordtype}{void}\ pzem\_version(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00151}00151\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00152}00152\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00153}00153\ \}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00154}00154\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00155}00155\ }
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00156}00156\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{/*\ PZEM\_RTU\_H\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{\Hypertarget{pzem__rtu_8h_source_l00157}00157\ }
+
+\end{DoxyCode}
