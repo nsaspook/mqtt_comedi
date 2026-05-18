@@ -1,3 +1,7 @@
+/** \file pzem_rtu.c
+ *
+ */
+
 #include "pzem_rtu.h"
 
 static volatile uint8_t cc_stream_file, *cc_buffer, cc_buffer_0[MAX_DATA], cc_buffer_tx[MAX_DATA]; // RX and TX command buffers

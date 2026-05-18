@@ -1,5 +1,14 @@
 var NAVTREEINDEX1 =
 {
+"structspi__stat__type__ss.html":[1,0,35],
+"structterminal__type.html":[1,0,36],
+"tic12400_8c.html":[2,0,0,36],
+"tic12400_8c_source.html":[2,0,0,36],
+"tic12400_8h.html":[2,0,0,37],
+"tic12400_8h_source.html":[2,0,0,37],
+"tic12400_8p1_8d_source.html":[2,0,0,1,0,0,14],
+"timers_8c.html":[2,0,0,38],
+"timers_8c.html#ada284e1e4e960e3a4fd5c0b0a93314e1":[2,0,0,38,0],
 "timers_8c_source.html":[2,0,0,38],
 "timers_8h.html":[2,0,0,39],
 "timers_8h_source.html":[2,0,0,39],

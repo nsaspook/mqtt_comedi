@@ -1,0 +1,540 @@
+\doxysection{bmc\+\_\+slave.\+X/pzem\+\_\+rtu.h File Reference}
+\hypertarget{pzem__rtu_8h}{}\label{pzem__rtu_8h}\index{bmc\_slave.X/pzem\_rtu.h@{bmc\_slave.X/pzem\_rtu.h}}
+{\ttfamily \#include "{}modbus\+\_\+master.\+h"{}}\newline
+{\ttfamily \#include "{}iammeter\+\_\+rtu.\+h"{}}\newline
+Include dependency graph for pzem\+\_\+rtu.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{pzem__rtu_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=348pt]{pzem__rtu_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structPZ__data1}{PZ\+\_\+data1}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_a89bc252eeecd19abb3a82481d789966e}{PZ\+\_\+\+DATA\+\_\+\+LEN1}}~0\+X40
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_ab6bc727eed2adac3d95eb5f5409d91a1}{PZ\+\_\+\+DATA\+\_\+\+DIR1}}~0\+X40
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_a328dab483c6d35ed635b3439f7418d0a}{PZ\+\_\+\+DATA\+\_\+\+HZ1}}~0x01
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_ad8025b333b8ff0a2c04c292d1eae0b76}{PZMADDR}}~0x02
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_abf33c1cd1bca165fb228ae6c31464df2}{MB\+\_\+\+PZEM\+\_\+\+ID\+\_\+H}}~PZMADDR
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_a7fba735fdcbd1c2192c6fd70157bde40}{MB\+\_\+\+PZEM\+\_\+\+ID\+\_\+L}}~0x06
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_af352c01bbe5eff57f77ff9b4a9bb82c5}{WRITE\+\_\+\+PZEM\+\_\+\+REGISTER}}~0x10
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_a232ab478edc2fd0c4ee6a4589db3e9e1}{PZEM\+\_\+\+VOLTAGE\+\_\+\+REG}}~0x0000
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_abfe9b9fe26c04998020cd9e832e961bf}{PZEM\+\_\+\+CURRENT\+\_\+\+REG}}~0x0003
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_a1e698f39a01b7ec10375dee8697c49b1}{PZEM\+\_\+\+FREQUENCY\+\_\+\+REG}}~0x0006
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_abdfdf109f0ec0422cd52e1e195b7f540}{PZEM\+\_\+\+VOLTAGE\+\_\+\+PHASE\+\_\+\+REG}}~0x0009
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_ad18e73f64622c7c3e346daf34b3ef082}{PZEM\+\_\+\+CURRENT\+\_\+\+PHASE\+\_\+\+REG}}~0x000B
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_aeb3cdb3a5324549babf46d5a149cd026}{PZEM\+\_\+\+ACTIVE\+\_\+\+POWER\+\_\+\+REG}}~0x000E
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_af69707870b550fa05378bb9f4697ab8b}{PZEM\+\_\+\+REACTIVE\+\_\+\+POWER\+\_\+\+REG}}~0x0014
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_a3a4cc289220b71820aa6c03e72e9ef30}{PZEM\+\_\+\+APPARENT\+\_\+\+POWER\+\_\+\+REG}}~0x001A
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_ae0a6e61eddd6e4f291a047ae5531c823}{PZEM\+\_\+\+ACTIVE\+\_\+\+POWER\+\_\+\+COMBINED\+\_\+\+REG}}~0x0020
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_a32483e827a5b0fe28dfbab5b262c29f2}{PZEM\+\_\+\+REACTIVE\+\_\+\+POWER\+\_\+\+COMBINED\+\_\+\+REG}}~0x0022
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_a146cb34fc5d547cae64a8b3bcdc1fd5b}{PZEM\+\_\+\+APPARENT\+\_\+\+POWER\+\_\+\+COMBINED\+\_\+\+REG}}~0x0024
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_a37c85ceea265d16b6918b8f9bae99874}{PZEM\+\_\+\+POWER\+\_\+\+FACTOR\+\_\+\+A\+\_\+\+B\+\_\+\+REG}}~0x0026
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_a6531f3dea9f2f17b97fde26a0e0728dc}{PZEM\+\_\+\+POWER\+\_\+\+FACTOR\+\_\+\+C\+\_\+\+COMBINED\+\_\+\+REG}}~0x0027
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_a0121258fe13d77b42895a3836bcea282}{PZEM\+\_\+\+ACTIVE\+\_\+\+ENERGY\+\_\+\+REG}}~0x0028
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_a7fad3aa101097d939b2be65be2a48d45}{PZEM\+\_\+\+REACTIVE\+\_\+\+ENERGY\+\_\+\+REG}}~0x002E
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_a6bf95463343dedfc53db6e9d05155d2f}{PZEM\+\_\+\+APPARENT\+\_\+\+ENERGY\+\_\+\+REG}}~0x0034
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_ac3b456fb750ed83b5bdfa130ce6690d3}{PZEM\+\_\+\+ACTIVE\+\_\+\+ENERGY\+\_\+\+COMBINED\+\_\+\+REG}}~0x003A
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_aaa8497bdd8d5c6d065c17e8356d3691c}{PZEM\+\_\+\+REACTIVE\+\_\+\+ENERGY\+\_\+\+COMBINED\+\_\+\+REG}}~0x003C
+\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_a9ff37aa0411884ebf339c9f51c7ee8e1}{PZEM\+\_\+\+APPARENT\+\_\+\+ENERGY\+\_\+\+COMBINED\+\_\+\+REG}}~0x003E
+\begin{DoxyCompactList}\small\item\em Apparent energy combined register address. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_ae8b906acdabce722bf943d4c889a6ed4}{PZEM\+\_\+\+ADDRESS\+\_\+\+REG}}~0x0000
+\begin{DoxyCompactList}\small\item\em Address register (addr=hi, addr type=lo) \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_a2d52d26158f0b00f1f789702fb28d289}{PZEM\+\_\+\+BAUDRATE\+\_\+\+TYPE\+\_\+\+REG}}~0x0001
+\begin{DoxyCompactList}\small\item\em Baudrate/connection type register (connection type=hi, baudrate=lo) \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{pzem__rtu_8h_a9469eaf671baf1bb68168fac7a1b42cc}{PZEM\+\_\+\+FREQUENCY\+\_\+\+SYSTEM\+\_\+\+REG}}~0x0002
+\begin{DoxyCompactList}\small\item\em Frequency system register (reserved=hi, frequency=lo) \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__PZEM6L24Resolutions_ga5a854aff7a37e223c46c7251a92c1b3f}{PZEM\+\_\+\+VOLTAGE\+\_\+\+RESOLUTION}}~0.\+1f
+\item 
+\#define \mbox{\hyperlink{group__PZEM6L24Resolutions_gaca8f299e96691d28a154189d9a6f13ac}{PZEM\+\_\+\+CURRENT\+\_\+\+RESOLUTION}}~0.\+01f
+\item 
+\#define \mbox{\hyperlink{group__PZEM6L24Resolutions_ga73beadbd4f72477570879fea8653e608}{PZEM\+\_\+\+FREQUENCY\+\_\+\+RESOLUTION}}~0.\+01f
+\item 
+\#define \mbox{\hyperlink{group__PZEM6L24Resolutions_ga5538b4b2b6f90886f80cd9e7656ae7a4}{PZEM\+\_\+\+POWER\+\_\+\+RESOLUTION}}~0.\+1f
+\item 
+\#define \mbox{\hyperlink{group__PZEM6L24Resolutions_ga7d01b39f5955bd84d424514cd5a50c21}{PZEM\+\_\+\+POWER\+\_\+\+FACTOR\+\_\+\+RESOLUTION}}~0.\+01f
+\item 
+\#define \mbox{\hyperlink{group__PZEM6L24Resolutions_gad42c84af6678dbf708905c70a399904f}{PZEM\+\_\+\+ENERGY\+\_\+\+RESOLUTION}}~0.\+1f
+\item 
+\#define \mbox{\hyperlink{group__PZEM6L24Resolutions_ga3e02cfc40c7470cb86b4c1aaa43e3bed}{PZEM\+\_\+\+PHASE\+\_\+\+RESOLUTION}}~0.\+01f
+\begin{DoxyCompactList}\small\item\em Phase angle resolution (degrees per LSB) \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__PZEM6L24ResetOptions_ga96a39f510b203c974aa82d300857818e}{PZEM\+\_\+\+RESET\+\_\+\+ENERGY\+\_\+A}}~0x00
+\begin{DoxyCompactList}\small\item\em Reset phase A energy. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__PZEM6L24ResetOptions_ga7bc61b089100b019aadd8b559700628e}{PZEM\+\_\+\+RESET\+\_\+\+ENERGY\+\_\+B}}~0x01
+\begin{DoxyCompactList}\small\item\em Reset phase B energy. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__PZEM6L24ResetOptions_ga42d4625977610c7bf47738a0f1008db0}{PZEM\+\_\+\+RESET\+\_\+\+ENERGY\+\_\+C}}~0x02
+\begin{DoxyCompactList}\small\item\em Reset phase C energy. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__PZEM6L24ResetOptions_ga86d59d8bb55848fd9fe2a7b21dc27cce}{PZEM\+\_\+\+RESET\+\_\+\+ENERGY\+\_\+\+COMBINED}}~0x03
+\begin{DoxyCompactList}\small\item\em Reset combined energy. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__PZEM6L24ResetOptions_gae0a3189f1018ebafda58275ae006f4be}{PZEM\+\_\+\+RESET\+\_\+\+ENERGY\+\_\+\+ALL}}~0x0F
+\begin{DoxyCompactList}\small\item\em Reset all energy counters. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__PZEM6L24Baudrates_gaa273c33fa0068be6a855550e22a252fe}{PZEM\+\_\+\+BAUDRATE\+\_\+2400}}~0x00
+\item 
+\#define \mbox{\hyperlink{group__PZEM6L24Baudrates_ga8b9fb9a9203f9b951283ce76c8a337d4}{PZEM\+\_\+\+BAUDRATE\+\_\+4800}}~0x01
+\item 
+\#define \mbox{\hyperlink{group__PZEM6L24Baudrates_ga01ae88335532d62a82c59e3be068eaeb}{PZEM\+\_\+\+BAUDRATE\+\_\+9600}}~0x02
+\item 
+\#define \mbox{\hyperlink{group__PZEM6L24Baudrates_ga31acfe01fe7089420e5a5a484f606dd4}{PZEM\+\_\+\+BAUDRATE\+\_\+19200}}~0x03
+\item 
+\#define \mbox{\hyperlink{group__PZEM6L24Baudrates_gaa14b94ca3c20899f76711beac95d277b}{PZEM\+\_\+\+BAUDRATE\+\_\+38400}}~0x04
+\item 
+\#define \mbox{\hyperlink{group__PZEM6L24Baudrates_ga80d2611b752e6eadde0cc5a9d0b1af07}{PZEM\+\_\+\+BAUDRATE\+\_\+57600}}~0x05
+\item 
+\#define \mbox{\hyperlink{group__PZEM6L24Baudrates_gaab7df293fd49b403f20dfdfdbc2effae}{PZEM\+\_\+\+BAUDRATE\+\_\+115200}}~0x06
+\begin{DoxyCompactList}\small\item\em 115200 baud \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__PZEM6L24ConnectionTypes_ga6685953d8cb99f2d8df19a9e41be372b}{PZEM\+\_\+\+CONNECTION\+\_\+3\+PHASE\+\_\+4\+WIRE}}~0x00
+\begin{DoxyCompactList}\small\item\em 3-\/phase 4-\/wire connection \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__PZEM6L24ConnectionTypes_ga6d6bc992145348855708f0befc496861}{PZEM\+\_\+\+CONNECTION\+\_\+3\+PHASE\+\_\+3\+WIRE}}~0x01
+\begin{DoxyCompactList}\small\item\em 3-\/phase 3-\/wire connection \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__PZEM6L24Frequencies_ga31768bbb573d266f30d503d1a79c0a58}{PZEM\+\_\+\+FREQUENCY\+\_\+50\+HZ}}~0x00
+\begin{DoxyCompactList}\small\item\em 50 Hz AC system \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__PZEM6L24Frequencies_ga7b3c8e1dec022df673f5447534db96fa}{PZEM\+\_\+\+FREQUENCY\+\_\+60\+HZ}}~0x01
+\begin{DoxyCompactList}\small\item\em 60 Hz AC system \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{pzem__rtu_8h_a751f50890e5bb382e31ae4f091bd14fa}\label{pzem__rtu_8h_a751f50890e5bb382e31ae4f091bd14fa} 
+typedef enum cmd\+\_\+pz\+\_\+type {\bfseries cmd\+\_\+pz\+\_\+type}
+\item 
+\Hypertarget{pzem__rtu_8h_a20419171a3cbcb2877c29b610bc8b01e}\label{pzem__rtu_8h_a20419171a3cbcb2877c29b610bc8b01e} 
+typedef \+\_\+\+\_\+pack struct PZ\+\_\+data1 {\bfseries PZ\+\_\+data1}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries cmd\+\_\+pz\+\_\+type} \{ {\bfseries P\+\_\+\+DATA1} = 0
+, {\bfseries P\+\_\+\+HZ1}
+, {\bfseries P\+\_\+\+LAST}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{pzem__rtu_8h_a09b338cc710342f0a002473966fadc35}{pz\+\_\+my\+\_\+modbus\+\_\+rx\+\_\+32}} (void)
+\item 
+void \mbox{\hyperlink{pzem__rtu_8h_ac7ba1779ac9e3e41b12df6bc6b6cfdb7}{init\+\_\+pz\+\_\+mb\+\_\+master\+\_\+timers}} (void)
+\item 
+int8\+\_\+t \mbox{\hyperlink{pzem__rtu_8h_a233e6239e73803c2061f30902662a724}{pzem\+\_\+controller\+\_\+work}} (\mbox{\hyperlink{structC__data}{C\+\_\+data}} \texorpdfstring{$\ast$}{*})
+\item 
+void \mbox{\hyperlink{pzem__rtu_8h_a70680d845d94c0979ba0cb3268f4e183}{pzem\+\_\+version}} (void)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+File\+: \doxylink{pzem__rtu_8h}{pzem\+\_\+rtu.\+h} Author\+: root
+
+Created on March 23, 2026, 8\+:59 PM 
+
+Definition in file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+
+
+\label{doc-define-members}
+\Hypertarget{pzem__rtu_8h_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{pzem__rtu_8h_abf33c1cd1bca165fb228ae6c31464df2}\index{pzem\_rtu.h@{pzem\_rtu.h}!MB\_PZEM\_ID\_H@{MB\_PZEM\_ID\_H}}
+\index{MB\_PZEM\_ID\_H@{MB\_PZEM\_ID\_H}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{MB\_PZEM\_ID\_H}{MB\_PZEM\_ID\_H}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_abf33c1cd1bca165fb228ae6c31464df2} 
+\#define MB\+\_\+\+PZEM\+\_\+\+ID\+\_\+H~PZMADDR}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00023}{23}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_a7fba735fdcbd1c2192c6fd70157bde40}\index{pzem\_rtu.h@{pzem\_rtu.h}!MB\_PZEM\_ID\_L@{MB\_PZEM\_ID\_L}}
+\index{MB\_PZEM\_ID\_L@{MB\_PZEM\_ID\_L}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{MB\_PZEM\_ID\_L}{MB\_PZEM\_ID\_L}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_a7fba735fdcbd1c2192c6fd70157bde40} 
+\#define MB\+\_\+\+PZEM\+\_\+\+ID\+\_\+L~0x06}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00024}{24}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_ab6bc727eed2adac3d95eb5f5409d91a1}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZ\_DATA\_DIR1@{PZ\_DATA\_DIR1}}
+\index{PZ\_DATA\_DIR1@{PZ\_DATA\_DIR1}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZ\_DATA\_DIR1}{PZ\_DATA\_DIR1}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_ab6bc727eed2adac3d95eb5f5409d91a1} 
+\#define PZ\+\_\+\+DATA\+\_\+\+DIR1~0\+X40}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00019}{19}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_a328dab483c6d35ed635b3439f7418d0a}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZ\_DATA\_HZ1@{PZ\_DATA\_HZ1}}
+\index{PZ\_DATA\_HZ1@{PZ\_DATA\_HZ1}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZ\_DATA\_HZ1}{PZ\_DATA\_HZ1}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_a328dab483c6d35ed635b3439f7418d0a} 
+\#define PZ\+\_\+\+DATA\+\_\+\+HZ1~0x01}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00020}{20}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_a89bc252eeecd19abb3a82481d789966e}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZ\_DATA\_LEN1@{PZ\_DATA\_LEN1}}
+\index{PZ\_DATA\_LEN1@{PZ\_DATA\_LEN1}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZ\_DATA\_LEN1}{PZ\_DATA\_LEN1}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_a89bc252eeecd19abb3a82481d789966e} 
+\#define PZ\+\_\+\+DATA\+\_\+\+LEN1~0\+X40}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00018}{18}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_ac3b456fb750ed83b5bdfa130ce6690d3}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_ACTIVE\_ENERGY\_COMBINED\_REG@{PZEM\_ACTIVE\_ENERGY\_COMBINED\_REG}}
+\index{PZEM\_ACTIVE\_ENERGY\_COMBINED\_REG@{PZEM\_ACTIVE\_ENERGY\_COMBINED\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_ACTIVE\_ENERGY\_COMBINED\_REG}{PZEM\_ACTIVE\_ENERGY\_COMBINED\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_ac3b456fb750ed83b5bdfa130ce6690d3} 
+\#define PZEM\+\_\+\+ACTIVE\+\_\+\+ENERGY\+\_\+\+COMBINED\+\_\+\+REG~0x003A}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00045}{45}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_a0121258fe13d77b42895a3836bcea282}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_ACTIVE\_ENERGY\_REG@{PZEM\_ACTIVE\_ENERGY\_REG}}
+\index{PZEM\_ACTIVE\_ENERGY\_REG@{PZEM\_ACTIVE\_ENERGY\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_ACTIVE\_ENERGY\_REG}{PZEM\_ACTIVE\_ENERGY\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_a0121258fe13d77b42895a3836bcea282} 
+\#define PZEM\+\_\+\+ACTIVE\+\_\+\+ENERGY\+\_\+\+REG~0x0028}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00042}{42}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_ae0a6e61eddd6e4f291a047ae5531c823}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_ACTIVE\_POWER\_COMBINED\_REG@{PZEM\_ACTIVE\_POWER\_COMBINED\_REG}}
+\index{PZEM\_ACTIVE\_POWER\_COMBINED\_REG@{PZEM\_ACTIVE\_POWER\_COMBINED\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_ACTIVE\_POWER\_COMBINED\_REG}{PZEM\_ACTIVE\_POWER\_COMBINED\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_ae0a6e61eddd6e4f291a047ae5531c823} 
+\#define PZEM\+\_\+\+ACTIVE\+\_\+\+POWER\+\_\+\+COMBINED\+\_\+\+REG~0x0020}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00037}{37}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_aeb3cdb3a5324549babf46d5a149cd026}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_ACTIVE\_POWER\_REG@{PZEM\_ACTIVE\_POWER\_REG}}
+\index{PZEM\_ACTIVE\_POWER\_REG@{PZEM\_ACTIVE\_POWER\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_ACTIVE\_POWER\_REG}{PZEM\_ACTIVE\_POWER\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_aeb3cdb3a5324549babf46d5a149cd026} 
+\#define PZEM\+\_\+\+ACTIVE\+\_\+\+POWER\+\_\+\+REG~0x000E}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00034}{34}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_ae8b906acdabce722bf943d4c889a6ed4}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_ADDRESS\_REG@{PZEM\_ADDRESS\_REG}}
+\index{PZEM\_ADDRESS\_REG@{PZEM\_ADDRESS\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_ADDRESS\_REG}{PZEM\_ADDRESS\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_ae8b906acdabce722bf943d4c889a6ed4} 
+\#define PZEM\+\_\+\+ADDRESS\+\_\+\+REG~0x0000}
+
+
+
+Address register (addr=hi, addr type=lo) 
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00050}{50}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_a9ff37aa0411884ebf339c9f51c7ee8e1}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_APPARENT\_ENERGY\_COMBINED\_REG@{PZEM\_APPARENT\_ENERGY\_COMBINED\_REG}}
+\index{PZEM\_APPARENT\_ENERGY\_COMBINED\_REG@{PZEM\_APPARENT\_ENERGY\_COMBINED\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_APPARENT\_ENERGY\_COMBINED\_REG}{PZEM\_APPARENT\_ENERGY\_COMBINED\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_a9ff37aa0411884ebf339c9f51c7ee8e1} 
+\#define PZEM\+\_\+\+APPARENT\+\_\+\+ENERGY\+\_\+\+COMBINED\+\_\+\+REG~0x003E}
+
+
+
+Apparent energy combined register address. 
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00047}{47}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_a6bf95463343dedfc53db6e9d05155d2f}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_APPARENT\_ENERGY\_REG@{PZEM\_APPARENT\_ENERGY\_REG}}
+\index{PZEM\_APPARENT\_ENERGY\_REG@{PZEM\_APPARENT\_ENERGY\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_APPARENT\_ENERGY\_REG}{PZEM\_APPARENT\_ENERGY\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_a6bf95463343dedfc53db6e9d05155d2f} 
+\#define PZEM\+\_\+\+APPARENT\+\_\+\+ENERGY\+\_\+\+REG~0x0034}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00044}{44}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_a146cb34fc5d547cae64a8b3bcdc1fd5b}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_APPARENT\_POWER\_COMBINED\_REG@{PZEM\_APPARENT\_POWER\_COMBINED\_REG}}
+\index{PZEM\_APPARENT\_POWER\_COMBINED\_REG@{PZEM\_APPARENT\_POWER\_COMBINED\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_APPARENT\_POWER\_COMBINED\_REG}{PZEM\_APPARENT\_POWER\_COMBINED\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_a146cb34fc5d547cae64a8b3bcdc1fd5b} 
+\#define PZEM\+\_\+\+APPARENT\+\_\+\+POWER\+\_\+\+COMBINED\+\_\+\+REG~0x0024}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00039}{39}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_a3a4cc289220b71820aa6c03e72e9ef30}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_APPARENT\_POWER\_REG@{PZEM\_APPARENT\_POWER\_REG}}
+\index{PZEM\_APPARENT\_POWER\_REG@{PZEM\_APPARENT\_POWER\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_APPARENT\_POWER\_REG}{PZEM\_APPARENT\_POWER\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_a3a4cc289220b71820aa6c03e72e9ef30} 
+\#define PZEM\+\_\+\+APPARENT\+\_\+\+POWER\+\_\+\+REG~0x001A}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00036}{36}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_a2d52d26158f0b00f1f789702fb28d289}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_BAUDRATE\_TYPE\_REG@{PZEM\_BAUDRATE\_TYPE\_REG}}
+\index{PZEM\_BAUDRATE\_TYPE\_REG@{PZEM\_BAUDRATE\_TYPE\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_BAUDRATE\_TYPE\_REG}{PZEM\_BAUDRATE\_TYPE\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_a2d52d26158f0b00f1f789702fb28d289} 
+\#define PZEM\+\_\+\+BAUDRATE\+\_\+\+TYPE\+\_\+\+REG~0x0001}
+
+
+
+Baudrate/connection type register (connection type=hi, baudrate=lo) 
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00051}{51}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_ad18e73f64622c7c3e346daf34b3ef082}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_CURRENT\_PHASE\_REG@{PZEM\_CURRENT\_PHASE\_REG}}
+\index{PZEM\_CURRENT\_PHASE\_REG@{PZEM\_CURRENT\_PHASE\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_CURRENT\_PHASE\_REG}{PZEM\_CURRENT\_PHASE\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_ad18e73f64622c7c3e346daf34b3ef082} 
+\#define PZEM\+\_\+\+CURRENT\+\_\+\+PHASE\+\_\+\+REG~0x000B}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00033}{33}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_abfe9b9fe26c04998020cd9e832e961bf}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_CURRENT\_REG@{PZEM\_CURRENT\_REG}}
+\index{PZEM\_CURRENT\_REG@{PZEM\_CURRENT\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_CURRENT\_REG}{PZEM\_CURRENT\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_abfe9b9fe26c04998020cd9e832e961bf} 
+\#define PZEM\+\_\+\+CURRENT\+\_\+\+REG~0x0003}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00030}{30}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_a1e698f39a01b7ec10375dee8697c49b1}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_FREQUENCY\_REG@{PZEM\_FREQUENCY\_REG}}
+\index{PZEM\_FREQUENCY\_REG@{PZEM\_FREQUENCY\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_FREQUENCY\_REG}{PZEM\_FREQUENCY\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_a1e698f39a01b7ec10375dee8697c49b1} 
+\#define PZEM\+\_\+\+FREQUENCY\+\_\+\+REG~0x0006}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00031}{31}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_a9469eaf671baf1bb68168fac7a1b42cc}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_FREQUENCY\_SYSTEM\_REG@{PZEM\_FREQUENCY\_SYSTEM\_REG}}
+\index{PZEM\_FREQUENCY\_SYSTEM\_REG@{PZEM\_FREQUENCY\_SYSTEM\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_FREQUENCY\_SYSTEM\_REG}{PZEM\_FREQUENCY\_SYSTEM\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_a9469eaf671baf1bb68168fac7a1b42cc} 
+\#define PZEM\+\_\+\+FREQUENCY\+\_\+\+SYSTEM\+\_\+\+REG~0x0002}
+
+
+
+Frequency system register (reserved=hi, frequency=lo) 
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00052}{52}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_a37c85ceea265d16b6918b8f9bae99874}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_POWER\_FACTOR\_A\_B\_REG@{PZEM\_POWER\_FACTOR\_A\_B\_REG}}
+\index{PZEM\_POWER\_FACTOR\_A\_B\_REG@{PZEM\_POWER\_FACTOR\_A\_B\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_POWER\_FACTOR\_A\_B\_REG}{PZEM\_POWER\_FACTOR\_A\_B\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_a37c85ceea265d16b6918b8f9bae99874} 
+\#define PZEM\+\_\+\+POWER\+\_\+\+FACTOR\+\_\+\+A\+\_\+\+B\+\_\+\+REG~0x0026}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00040}{40}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_a6531f3dea9f2f17b97fde26a0e0728dc}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_POWER\_FACTOR\_C\_COMBINED\_REG@{PZEM\_POWER\_FACTOR\_C\_COMBINED\_REG}}
+\index{PZEM\_POWER\_FACTOR\_C\_COMBINED\_REG@{PZEM\_POWER\_FACTOR\_C\_COMBINED\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_POWER\_FACTOR\_C\_COMBINED\_REG}{PZEM\_POWER\_FACTOR\_C\_COMBINED\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_a6531f3dea9f2f17b97fde26a0e0728dc} 
+\#define PZEM\+\_\+\+POWER\+\_\+\+FACTOR\+\_\+\+C\+\_\+\+COMBINED\+\_\+\+REG~0x0027}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00041}{41}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_aaa8497bdd8d5c6d065c17e8356d3691c}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_REACTIVE\_ENERGY\_COMBINED\_REG@{PZEM\_REACTIVE\_ENERGY\_COMBINED\_REG}}
+\index{PZEM\_REACTIVE\_ENERGY\_COMBINED\_REG@{PZEM\_REACTIVE\_ENERGY\_COMBINED\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_REACTIVE\_ENERGY\_COMBINED\_REG}{PZEM\_REACTIVE\_ENERGY\_COMBINED\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_aaa8497bdd8d5c6d065c17e8356d3691c} 
+\#define PZEM\+\_\+\+REACTIVE\+\_\+\+ENERGY\+\_\+\+COMBINED\+\_\+\+REG~0x003C}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00046}{46}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_a7fad3aa101097d939b2be65be2a48d45}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_REACTIVE\_ENERGY\_REG@{PZEM\_REACTIVE\_ENERGY\_REG}}
+\index{PZEM\_REACTIVE\_ENERGY\_REG@{PZEM\_REACTIVE\_ENERGY\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_REACTIVE\_ENERGY\_REG}{PZEM\_REACTIVE\_ENERGY\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_a7fad3aa101097d939b2be65be2a48d45} 
+\#define PZEM\+\_\+\+REACTIVE\+\_\+\+ENERGY\+\_\+\+REG~0x002E}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00043}{43}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_a32483e827a5b0fe28dfbab5b262c29f2}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_REACTIVE\_POWER\_COMBINED\_REG@{PZEM\_REACTIVE\_POWER\_COMBINED\_REG}}
+\index{PZEM\_REACTIVE\_POWER\_COMBINED\_REG@{PZEM\_REACTIVE\_POWER\_COMBINED\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_REACTIVE\_POWER\_COMBINED\_REG}{PZEM\_REACTIVE\_POWER\_COMBINED\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_a32483e827a5b0fe28dfbab5b262c29f2} 
+\#define PZEM\+\_\+\+REACTIVE\+\_\+\+POWER\+\_\+\+COMBINED\+\_\+\+REG~0x0022}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00038}{38}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_af69707870b550fa05378bb9f4697ab8b}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_REACTIVE\_POWER\_REG@{PZEM\_REACTIVE\_POWER\_REG}}
+\index{PZEM\_REACTIVE\_POWER\_REG@{PZEM\_REACTIVE\_POWER\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_REACTIVE\_POWER\_REG}{PZEM\_REACTIVE\_POWER\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_af69707870b550fa05378bb9f4697ab8b} 
+\#define PZEM\+\_\+\+REACTIVE\+\_\+\+POWER\+\_\+\+REG~0x0014}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00035}{35}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_abdfdf109f0ec0422cd52e1e195b7f540}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_VOLTAGE\_PHASE\_REG@{PZEM\_VOLTAGE\_PHASE\_REG}}
+\index{PZEM\_VOLTAGE\_PHASE\_REG@{PZEM\_VOLTAGE\_PHASE\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_VOLTAGE\_PHASE\_REG}{PZEM\_VOLTAGE\_PHASE\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_abdfdf109f0ec0422cd52e1e195b7f540} 
+\#define PZEM\+\_\+\+VOLTAGE\+\_\+\+PHASE\+\_\+\+REG~0x0009}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00032}{32}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_a232ab478edc2fd0c4ee6a4589db3e9e1}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZEM\_VOLTAGE\_REG@{PZEM\_VOLTAGE\_REG}}
+\index{PZEM\_VOLTAGE\_REG@{PZEM\_VOLTAGE\_REG}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZEM\_VOLTAGE\_REG}{PZEM\_VOLTAGE\_REG}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_a232ab478edc2fd0c4ee6a4589db3e9e1} 
+\#define PZEM\+\_\+\+VOLTAGE\+\_\+\+REG~0x0000}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00029}{29}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_ad8025b333b8ff0a2c04c292d1eae0b76}\index{pzem\_rtu.h@{pzem\_rtu.h}!PZMADDR@{PZMADDR}}
+\index{PZMADDR@{PZMADDR}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{PZMADDR}{PZMADDR}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_ad8025b333b8ff0a2c04c292d1eae0b76} 
+\#define PZMADDR~0x02}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00022}{22}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+\Hypertarget{pzem__rtu_8h_af352c01bbe5eff57f77ff9b4a9bb82c5}\index{pzem\_rtu.h@{pzem\_rtu.h}!WRITE\_PZEM\_REGISTER@{WRITE\_PZEM\_REGISTER}}
+\index{WRITE\_PZEM\_REGISTER@{WRITE\_PZEM\_REGISTER}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{WRITE\_PZEM\_REGISTER}{WRITE\_PZEM\_REGISTER}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_af352c01bbe5eff57f77ff9b4a9bb82c5} 
+\#define WRITE\+\_\+\+PZEM\+\_\+\+REGISTER~0x10}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00026}{26}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+
+
+\label{doc-enum-members}
+\Hypertarget{pzem__rtu_8h_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{pzem__rtu_8h_adbdd571e90b15660eb533a4ce5d37ad7}\index{pzem\_rtu.h@{pzem\_rtu.h}!cmd\_pz\_type@{cmd\_pz\_type}}
+\index{cmd\_pz\_type@{cmd\_pz\_type}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{cmd\_pz\_type}{cmd\_pz\_type}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_adbdd571e90b15660eb533a4ce5d37ad7} 
+enum cmd\+\_\+pz\+\_\+type}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8h_source_l00114}{114}} of file \mbox{\hyperlink{pzem__rtu_8h_source}{pzem\+\_\+rtu.\+h}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{pzem__rtu_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{pzem__rtu_8h_ac7ba1779ac9e3e41b12df6bc6b6cfdb7}\index{pzem\_rtu.h@{pzem\_rtu.h}!init\_pz\_mb\_master\_timers@{init\_pz\_mb\_master\_timers}}
+\index{init\_pz\_mb\_master\_timers@{init\_pz\_mb\_master\_timers}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{init\_pz\_mb\_master\_timers()}{init\_pz\_mb\_master\_timers()}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_ac7ba1779ac9e3e41b12df6bc6b6cfdb7} 
+void init\+\_\+pz\+\_\+mb\+\_\+master\+\_\+timers (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8c_source_l00056}{56}} of file \mbox{\hyperlink{pzem__rtu_8c_source}{pzem\+\_\+rtu.\+c}}.
+
+\Hypertarget{pzem__rtu_8h_a09b338cc710342f0a002473966fadc35}\index{pzem\_rtu.h@{pzem\_rtu.h}!pz\_my\_modbus\_rx\_32@{pz\_my\_modbus\_rx\_32}}
+\index{pz\_my\_modbus\_rx\_32@{pz\_my\_modbus\_rx\_32}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{pz\_my\_modbus\_rx\_32()}{pz\_my\_modbus\_rx\_32()}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_a09b338cc710342f0a002473966fadc35} 
+void pz\+\_\+my\+\_\+modbus\+\_\+rx\+\_\+32 (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8c_source_l00438}{438}} of file \mbox{\hyperlink{pzem__rtu_8c_source}{pzem\+\_\+rtu.\+c}}.
+
+\Hypertarget{pzem__rtu_8h_a233e6239e73803c2061f30902662a724}\index{pzem\_rtu.h@{pzem\_rtu.h}!pzem\_controller\_work@{pzem\_controller\_work}}
+\index{pzem\_controller\_work@{pzem\_controller\_work}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{pzem\_controller\_work()}{pzem\_controller\_work()}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_a233e6239e73803c2061f30902662a724} 
+int8\+\_\+t pzem\+\_\+controller\+\_\+work (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structC__data}{C\+\_\+data}} \texorpdfstring{$\ast$}{*}}]{client}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8c_source_l00069}{69}} of file \mbox{\hyperlink{pzem__rtu_8c_source}{pzem\+\_\+rtu.\+c}}.
+
+\Hypertarget{pzem__rtu_8h_a70680d845d94c0979ba0cb3268f4e183}\index{pzem\_rtu.h@{pzem\_rtu.h}!pzem\_version@{pzem\_version}}
+\index{pzem\_version@{pzem\_version}!pzem\_rtu.h@{pzem\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{pzem\_version()}{pzem\_version()}}
+{\footnotesize\ttfamily \label{pzem__rtu_8h_a70680d845d94c0979ba0cb3268f4e183} 
+void pzem\+\_\+version (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{pzem__rtu_8c_source_l00454}{454}} of file \mbox{\hyperlink{pzem__rtu_8c_source}{pzem\+\_\+rtu.\+c}}.
+

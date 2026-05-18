@@ -1,4 +1,4 @@
-/*
+/** \file pzem_rtu.h
  * File:   pzem_rtu.h
  * Author: root
  *

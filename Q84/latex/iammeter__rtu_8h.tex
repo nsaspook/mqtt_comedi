@@ -1,0 +1,248 @@
+\doxysection{bmc\+\_\+slave.\+X/iammeter\+\_\+rtu.h File Reference}
+\hypertarget{iammeter__rtu_8h}{}\label{iammeter__rtu_8h}\index{bmc\_slave.X/iammeter\_rtu.h@{bmc\_slave.X/iammeter\_rtu.h}}
+{\ttfamily \#include "{}modbus\+\_\+master.\+h"{}}\newline
+Include dependency graph for iammeter\+\_\+rtu.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{iammeter__rtu_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{iammeter__rtu_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structIM__data1}{IM\+\_\+data1}}
+\item 
+struct \mbox{\hyperlink{structIMD__tmp}{IMD\+\_\+tmp}}
+\item 
+struct \mbox{\hyperlink{structIM__data2}{IM\+\_\+data2}}
+\item 
+struct \mbox{\hyperlink{structIM__dir1}{IM\+\_\+dir1}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{iammeter__rtu_8h_a885f5946bc259cfc9ac2063a5e7494ba}{IM\+\_\+\+DATA\+\_\+\+LEN1}}~74
+\item 
+\#define \mbox{\hyperlink{iammeter__rtu_8h_ac5861b5dd923db7a7205a1dca3fb8f12}{IM\+\_\+\+DATA\+\_\+\+DIR1}}~14
+\item 
+\#define \mbox{\hyperlink{iammeter__rtu_8h_afa77bb7516e5942bc9a4a7791900e8b9}{IM\+\_\+\+DATA\+\_\+\+DIR2}}~8
+\item 
+\#define \mbox{\hyperlink{iammeter__rtu_8h_a5dd432720ead65d3b0b8a060be1dd606}{MB\+\_\+\+IAMMETER\+\_\+\+ID\+\_\+H}}~0x01
+\item 
+\#define \mbox{\hyperlink{iammeter__rtu_8h_a52d4de08b2ea79a01056b64cd93df6cf}{MB\+\_\+\+IAMMETER\+\_\+\+ID\+\_\+L}}~0x06
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{iammeter__rtu_8h_ada13ecc68e1e937c135d4059d4cec677}\label{iammeter__rtu_8h_ada13ecc68e1e937c135d4059d4cec677} 
+typedef enum cmd\+\_\+im\+\_\+type {\bfseries cmd\+\_\+im\+\_\+type}
+\item 
+\Hypertarget{iammeter__rtu_8h_a570df6abf5b7a6c4e3500742e750e1e0}\label{iammeter__rtu_8h_a570df6abf5b7a6c4e3500742e750e1e0} 
+typedef \+\_\+\+\_\+pack struct IM\+\_\+data1 {\bfseries IM\+\_\+data1}
+\item 
+\Hypertarget{iammeter__rtu_8h_a54a6f16207c09bbcb9fe2764dc770c1b}\label{iammeter__rtu_8h_a54a6f16207c09bbcb9fe2764dc770c1b} 
+typedef struct IMD\+\_\+tmp {\bfseries IMD\+\_\+tmp}
+\item 
+\Hypertarget{iammeter__rtu_8h_a0d1dd18792b2aa433a84e281fae1c61c}\label{iammeter__rtu_8h_a0d1dd18792b2aa433a84e281fae1c61c} 
+typedef \+\_\+\+\_\+pack struct IM\+\_\+data2 {\bfseries IM\+\_\+data2}
+\item 
+\Hypertarget{iammeter__rtu_8h_ad79f343bd6765bcbd94d3137c89672e9}\label{iammeter__rtu_8h_ad79f343bd6765bcbd94d3137c89672e9} 
+typedef \+\_\+\+\_\+pack struct IM\+\_\+dir1 {\bfseries IM\+\_\+dir1}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries cmd\+\_\+im\+\_\+type} \{ {\bfseries I\+\_\+\+DATA1} = 0
+, {\bfseries I\+\_\+\+DIR1}
+, {\bfseries I\+\_\+\+LAST}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{iammeter__rtu_8h_ad3379107fc9db1ca069121557586f89c}{im\+\_\+my\+\_\+modbus\+\_\+rx\+\_\+32}} (void)
+\item 
+void \mbox{\hyperlink{iammeter__rtu_8h_a5068fdf09cec6f743a039d9e5c96cb2d}{init\+\_\+im\+\_\+mb\+\_\+master\+\_\+timers}} (void)
+\item 
+int8\+\_\+t \mbox{\hyperlink{iammeter__rtu_8h_a4afa0196278fb69d6685ce0698e07b82}{iammeter\+\_\+controller\+\_\+work}} (\mbox{\hyperlink{structC__data}{C\+\_\+data}} \texorpdfstring{$\ast$}{*})
+\item 
+int8\+\_\+t \mbox{\hyperlink{iammeter__rtu_8h_ad22847d8416656ff268dbae2c4d3bf75}{reset\+\_\+iammeter\+\_\+kwh}} (\mbox{\hyperlink{structC__data}{C\+\_\+data}} \texorpdfstring{$\ast$}{*})
+\item 
+uint16\+\_\+t \mbox{\hyperlink{iammeter__rtu_8h_a30ff81940e5a831376a762ebc6a227ae}{modbus\+\_\+dcu\+\_\+send\+\_\+msg\+\_\+im}} (void \texorpdfstring{$\ast$}{*}, const void \texorpdfstring{$\ast$}{*}, const uint16\+\_\+t)
+\item 
+void \mbox{\hyperlink{iammeter__rtu_8h_ad1b5612799dee83d511857ecd4aaa9aa}{iammeter\+\_\+version}} (void)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structIMD__tmp}{IMD\+\_\+tmp}} \mbox{\hyperlink{iammeter__rtu_8h_a9441dc765d27c52876dd9c32b889a533}{imd\+\_\+tmp}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+File\+: \doxylink{iammeter__rtu_8h}{iammeter\+\_\+rtu.\+h} Author\+: root
+
+Created on March 4, 2026, 8\+:59 PM 
+
+Definition in file \mbox{\hyperlink{iammeter__rtu_8h_source}{iammeter\+\_\+rtu.\+h}}.
+
+
+
+\label{doc-define-members}
+\Hypertarget{iammeter__rtu_8h_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{iammeter__rtu_8h_ac5861b5dd923db7a7205a1dca3fb8f12}\index{iammeter\_rtu.h@{iammeter\_rtu.h}!IM\_DATA\_DIR1@{IM\_DATA\_DIR1}}
+\index{IM\_DATA\_DIR1@{IM\_DATA\_DIR1}!iammeter\_rtu.h@{iammeter\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{IM\_DATA\_DIR1}{IM\_DATA\_DIR1}}
+{\footnotesize\ttfamily \label{iammeter__rtu_8h_ac5861b5dd923db7a7205a1dca3fb8f12} 
+\#define IM\+\_\+\+DATA\+\_\+\+DIR1~14}
+
+
+
+Definition at line \mbox{\hyperlink{iammeter__rtu_8h_source_l00018}{18}} of file \mbox{\hyperlink{iammeter__rtu_8h_source}{iammeter\+\_\+rtu.\+h}}.
+
+\Hypertarget{iammeter__rtu_8h_afa77bb7516e5942bc9a4a7791900e8b9}\index{iammeter\_rtu.h@{iammeter\_rtu.h}!IM\_DATA\_DIR2@{IM\_DATA\_DIR2}}
+\index{IM\_DATA\_DIR2@{IM\_DATA\_DIR2}!iammeter\_rtu.h@{iammeter\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{IM\_DATA\_DIR2}{IM\_DATA\_DIR2}}
+{\footnotesize\ttfamily \label{iammeter__rtu_8h_afa77bb7516e5942bc9a4a7791900e8b9} 
+\#define IM\+\_\+\+DATA\+\_\+\+DIR2~8}
+
+
+
+Definition at line \mbox{\hyperlink{iammeter__rtu_8h_source_l00019}{19}} of file \mbox{\hyperlink{iammeter__rtu_8h_source}{iammeter\+\_\+rtu.\+h}}.
+
+\Hypertarget{iammeter__rtu_8h_a885f5946bc259cfc9ac2063a5e7494ba}\index{iammeter\_rtu.h@{iammeter\_rtu.h}!IM\_DATA\_LEN1@{IM\_DATA\_LEN1}}
+\index{IM\_DATA\_LEN1@{IM\_DATA\_LEN1}!iammeter\_rtu.h@{iammeter\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{IM\_DATA\_LEN1}{IM\_DATA\_LEN1}}
+{\footnotesize\ttfamily \label{iammeter__rtu_8h_a885f5946bc259cfc9ac2063a5e7494ba} 
+\#define IM\+\_\+\+DATA\+\_\+\+LEN1~74}
+
+
+
+Definition at line \mbox{\hyperlink{iammeter__rtu_8h_source_l00017}{17}} of file \mbox{\hyperlink{iammeter__rtu_8h_source}{iammeter\+\_\+rtu.\+h}}.
+
+\Hypertarget{iammeter__rtu_8h_a5dd432720ead65d3b0b8a060be1dd606}\index{iammeter\_rtu.h@{iammeter\_rtu.h}!MB\_IAMMETER\_ID\_H@{MB\_IAMMETER\_ID\_H}}
+\index{MB\_IAMMETER\_ID\_H@{MB\_IAMMETER\_ID\_H}!iammeter\_rtu.h@{iammeter\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{MB\_IAMMETER\_ID\_H}{MB\_IAMMETER\_ID\_H}}
+{\footnotesize\ttfamily \label{iammeter__rtu_8h_a5dd432720ead65d3b0b8a060be1dd606} 
+\#define MB\+\_\+\+IAMMETER\+\_\+\+ID\+\_\+H~0x01}
+
+
+
+Definition at line \mbox{\hyperlink{iammeter__rtu_8h_source_l00021}{21}} of file \mbox{\hyperlink{iammeter__rtu_8h_source}{iammeter\+\_\+rtu.\+h}}.
+
+\Hypertarget{iammeter__rtu_8h_a52d4de08b2ea79a01056b64cd93df6cf}\index{iammeter\_rtu.h@{iammeter\_rtu.h}!MB\_IAMMETER\_ID\_L@{MB\_IAMMETER\_ID\_L}}
+\index{MB\_IAMMETER\_ID\_L@{MB\_IAMMETER\_ID\_L}!iammeter\_rtu.h@{iammeter\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{MB\_IAMMETER\_ID\_L}{MB\_IAMMETER\_ID\_L}}
+{\footnotesize\ttfamily \label{iammeter__rtu_8h_a52d4de08b2ea79a01056b64cd93df6cf} 
+\#define MB\+\_\+\+IAMMETER\+\_\+\+ID\+\_\+L~0x06}
+
+
+
+Definition at line \mbox{\hyperlink{iammeter__rtu_8h_source_l00022}{22}} of file \mbox{\hyperlink{iammeter__rtu_8h_source}{iammeter\+\_\+rtu.\+h}}.
+
+
+
+\label{doc-enum-members}
+\Hypertarget{iammeter__rtu_8h_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{iammeter__rtu_8h_a223131410889cc50374d29669cb99176}\index{iammeter\_rtu.h@{iammeter\_rtu.h}!cmd\_im\_type@{cmd\_im\_type}}
+\index{cmd\_im\_type@{cmd\_im\_type}!iammeter\_rtu.h@{iammeter\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{cmd\_im\_type}{cmd\_im\_type}}
+{\footnotesize\ttfamily \label{iammeter__rtu_8h_a223131410889cc50374d29669cb99176} 
+enum cmd\+\_\+im\+\_\+type}
+
+
+
+Definition at line \mbox{\hyperlink{iammeter__rtu_8h_source_l00024}{24}} of file \mbox{\hyperlink{iammeter__rtu_8h_source}{iammeter\+\_\+rtu.\+h}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{iammeter__rtu_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{iammeter__rtu_8h_a4afa0196278fb69d6685ce0698e07b82}\index{iammeter\_rtu.h@{iammeter\_rtu.h}!iammeter\_controller\_work@{iammeter\_controller\_work}}
+\index{iammeter\_controller\_work@{iammeter\_controller\_work}!iammeter\_rtu.h@{iammeter\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{iammeter\_controller\_work()}{iammeter\_controller\_work()}}
+{\footnotesize\ttfamily \label{iammeter__rtu_8h_a4afa0196278fb69d6685ce0698e07b82} 
+int8\+\_\+t iammeter\+\_\+controller\+\_\+work (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structC__data}{C\+\_\+data}} \texorpdfstring{$\ast$}{*}}]{client}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{iammeter__rtu_8c_source_l00074}{74}} of file \mbox{\hyperlink{iammeter__rtu_8c_source}{iammeter\+\_\+rtu.\+c}}.
+
+\Hypertarget{iammeter__rtu_8h_ad1b5612799dee83d511857ecd4aaa9aa}\index{iammeter\_rtu.h@{iammeter\_rtu.h}!iammeter\_version@{iammeter\_version}}
+\index{iammeter\_version@{iammeter\_version}!iammeter\_rtu.h@{iammeter\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{iammeter\_version()}{iammeter\_version()}}
+{\footnotesize\ttfamily \label{iammeter__rtu_8h_ad1b5612799dee83d511857ecd4aaa9aa} 
+void iammeter\+\_\+version (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{iammeter__rtu_8c_source_l00564}{564}} of file \mbox{\hyperlink{iammeter__rtu_8c_source}{iammeter\+\_\+rtu.\+c}}.
+
+\Hypertarget{iammeter__rtu_8h_ad3379107fc9db1ca069121557586f89c}\index{iammeter\_rtu.h@{iammeter\_rtu.h}!im\_my\_modbus\_rx\_32@{im\_my\_modbus\_rx\_32}}
+\index{im\_my\_modbus\_rx\_32@{im\_my\_modbus\_rx\_32}!iammeter\_rtu.h@{iammeter\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{im\_my\_modbus\_rx\_32()}{im\_my\_modbus\_rx\_32()}}
+{\footnotesize\ttfamily \label{iammeter__rtu_8h_ad3379107fc9db1ca069121557586f89c} 
+void im\+\_\+my\+\_\+modbus\+\_\+rx\+\_\+32 (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{iammeter__rtu_8c_source_l00548}{548}} of file \mbox{\hyperlink{iammeter__rtu_8c_source}{iammeter\+\_\+rtu.\+c}}.
+
+\Hypertarget{iammeter__rtu_8h_a5068fdf09cec6f743a039d9e5c96cb2d}\index{iammeter\_rtu.h@{iammeter\_rtu.h}!init\_im\_mb\_master\_timers@{init\_im\_mb\_master\_timers}}
+\index{init\_im\_mb\_master\_timers@{init\_im\_mb\_master\_timers}!iammeter\_rtu.h@{iammeter\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{init\_im\_mb\_master\_timers()}{init\_im\_mb\_master\_timers()}}
+{\footnotesize\ttfamily \label{iammeter__rtu_8h_a5068fdf09cec6f743a039d9e5c96cb2d} 
+void init\+\_\+im\+\_\+mb\+\_\+master\+\_\+timers (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{iammeter__rtu_8c_source_l00060}{60}} of file \mbox{\hyperlink{iammeter__rtu_8c_source}{iammeter\+\_\+rtu.\+c}}.
+
+\Hypertarget{iammeter__rtu_8h_a30ff81940e5a831376a762ebc6a227ae}\index{iammeter\_rtu.h@{iammeter\_rtu.h}!modbus\_dcu\_send\_msg\_im@{modbus\_dcu\_send\_msg\_im}}
+\index{modbus\_dcu\_send\_msg\_im@{modbus\_dcu\_send\_msg\_im}!iammeter\_rtu.h@{iammeter\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{modbus\_dcu\_send\_msg\_im()}{modbus\_dcu\_send\_msg\_im()}}
+{\footnotesize\ttfamily \label{iammeter__rtu_8h_a30ff81940e5a831376a762ebc6a227ae} 
+uint16\+\_\+t modbus\+\_\+dcu\+\_\+send\+\_\+msg\+\_\+im (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{cc\+\_\+buffer}{, }\item[{const void \texorpdfstring{$\ast$}{*}}]{modbus\+\_\+cc\+\_\+mode}{, }\item[{const uint16\+\_\+t}]{req\+\_\+length}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{iammeter__rtu_8c_source_l00514}{514}} of file \mbox{\hyperlink{iammeter__rtu_8c_source}{iammeter\+\_\+rtu.\+c}}.
+
+\Hypertarget{iammeter__rtu_8h_ad22847d8416656ff268dbae2c4d3bf75}\index{iammeter\_rtu.h@{iammeter\_rtu.h}!reset\_iammeter\_kwh@{reset\_iammeter\_kwh}}
+\index{reset\_iammeter\_kwh@{reset\_iammeter\_kwh}!iammeter\_rtu.h@{iammeter\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{reset\_iammeter\_kwh()}{reset\_iammeter\_kwh()}}
+{\footnotesize\ttfamily \label{iammeter__rtu_8h_ad22847d8416656ff268dbae2c4d3bf75} 
+int8\+\_\+t reset\+\_\+iammeter\+\_\+kwh (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structC__data}{C\+\_\+data}} \texorpdfstring{$\ast$}{*}}]{client}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{iammeter__rtu_8c_source_l00193}{193}} of file \mbox{\hyperlink{iammeter__rtu_8c_source}{iammeter\+\_\+rtu.\+c}}.
+
+
+
+\label{doc-var-members}
+\Hypertarget{iammeter__rtu_8h_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{iammeter__rtu_8h_a9441dc765d27c52876dd9c32b889a533}\index{iammeter\_rtu.h@{iammeter\_rtu.h}!imd\_tmp@{imd\_tmp}}
+\index{imd\_tmp@{imd\_tmp}!iammeter\_rtu.h@{iammeter\_rtu.h}}
+\doxysubsubsection{\texorpdfstring{imd\_tmp}{imd\_tmp}}
+{\footnotesize\ttfamily \label{iammeter__rtu_8h_a9441dc765d27c52876dd9c32b889a533} 
+\mbox{\hyperlink{structIMD__tmp}{IMD\+\_\+tmp}} imd\+\_\+tmp\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{iammeter__rtu_8c_source_l00054}{54}} of file \mbox{\hyperlink{iammeter__rtu_8c_source}{iammeter\+\_\+rtu.\+c}}.
+

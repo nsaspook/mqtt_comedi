@@ -1,4 +1,4 @@
-/*
+/** \file iammeter_rtu.h
  * File:   iammeter_rtu.h
  * Author: root
  *
