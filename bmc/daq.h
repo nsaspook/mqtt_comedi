@@ -73,10 +73,12 @@ extern "C" {
 #define BMCBoard       "BMCboard (Q84)"
 #define BMC_CHAN       4
 #define USBBoard       "K8055 (VM110)"
+#define PCMBoard       "ni_daq_700"
 
 	typedef enum {
 		bmcboard = 0,
 		usbboard = 1,
+		pcmboard = 2,
 	} board_t;
 
 	typedef enum {

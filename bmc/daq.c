@@ -115,6 +115,11 @@ int init_daq(double min_range, double max_range, int range_update)
 		bmc.BNAME = USBBoard;
 	}
 
+	if (strcmp(comedi_get_board_name(it), PCMBoard) == 0) {
+		bmc.BOARD = pcmboard;
+		bmc.BNAME = PCMBoard;
+	}
+
 	fprintf(fout, "Subdev AI  %i ", subdev_ai);
 	channels_ai = comedi_get_n_channels(it, subdev_ai);
 	fprintf(fout, "Analog  Channels %i ", channels_ai);
