@@ -21,7 +21,7 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.66"
+#define VER	"V0.67"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -78,6 +78,7 @@ extern "C" {
 	 * V0.64 more clean-up
 	 * V0.65 RS485 GTI Inverter power control routines
 	 * V0.66 add new device MUI
+	 * V0.67 use PZEM values for scalars in data string 18
 	 */
 
 	/*
@@ -181,14 +182,14 @@ extern "C" {
 	const char log_format1[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%6.3f,%6.3f,%6.3f,%6.3f,1957,~EOT                                                  \r\n";
 #define LOG_VARS1	BMC4.d_id,((float) em.vl3l1) / 10.0f,em_tmp.al1, ((float) em.wl1) / 10.0f, ((float) em.wl2) / 10.0f, \
 	((float) em.val1) / 10.0f, ((float) em.varl1) / 10.0f,  ((float) em.pfsys) / 10.0f, em_tmp.hz,vw, vf, pvw, pvf, bat_amp_whole - 128, \
-	bat_amp_frac - 128, bat_amp_panel - 128, panel_watts, BM.FM80_online, cc_mode, C.data_ok,BM.node_id, ha_daq_calib.scaler4, \
-	ha_daq_calib.scaler5, ha_daq_calib.A200_Z, ha_daq_calib.A200_S
+	bat_amp_frac - 128, bat_amp_panel - 128, panel_watts, BM.FM80_online, cc_mode, C.data_ok,BM.node_id, \
+	ha_daq_calib.scaler4, ha_daq_calib.scaler5, ha_daq_calib.A200_Z, ha_daq_calib.A200_S
 
 	const char log_format2[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%6.4f,%6.4f,%6.4f,%6.4f,1957,~EOT                                                  \r\n";
 #define LOG_VARS2	BMC4.d_id,((float) em.vl1n) / 10.0f,((float) em.vl2n) / 10.0f, ((float) em.vl3n) / 10.0f, ((float) em.al2) / 1000.0f, \
 	((float) em.wl3) / 10.0f, ((float) em.wsys) / 10.0f,  ((float) em.pfl1) / 10.0f, ((float) em.pfl2) / 10.0f,vw, vf, pvw, pvf, bat_amp_whole - 128, \
-	bat_amp_frac - 128, bat_amp_panel - 128, BM.benergy, BM.FM80_online, cc_mode, C.data_ok,BM.node_id, ha_daq_calib.scaler4, \
-	ha_daq_calib.scaler5, ha_daq_calib.A200_Z, ha_daq_calib.A200_S
+	bat_amp_frac - 128, bat_amp_panel - 128, BM.benergy, BM.FM80_online, cc_mode, C.data_ok,BM.node_id, \
+	imd_tmp.wl1, imd_tmp.wl2, imd_tmp.wl3, imd_tmp.varsys
 
 	const char log_format3[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%7.4f,%7.4f,%6.4f,%7.4f,1957,~EOT                                                  \r\n";
 #define LOG_VARS3	BMC4.d_id,((float) em.vl3l1) / 10.0f,((float) em.al1) / 1000.0f, ((float) em.wl1) / 10.0f, ((float) em.wl2) / 10.0f, \
