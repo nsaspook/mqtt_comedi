@@ -86,7 +86,7 @@ extern "C" {
 	};
 
 	struct spi_stat_type_ss {
-		volatile uint32_t adc_count, dac_count, bmc_counts, spi_resets,
+		volatile uint32_t adc_count, dac_count, bmc_counts, last_bmc_counts, spi_resets,
 		port_count, port_error_count, port_data_count, zombie_count,
 		char_count, char_error_count, rxof_bit, txdone_bit, txuf_bit,
 		slave_int_count, last_slave_int_count, slave_tx_count,
@@ -139,7 +139,7 @@ extern "C" {
 	extern volatile struct bmc_buffer_type BMC4;
 	extern volatile char buffer[MAX_BMC_BUF], log_buffer[MAX_BMC_BUF];
 	extern struct ha_daq_calib_type ha_daq_calib;
-	extern volatile struct bmc_buffer_type BMC4;
+//	extern volatile struct bmc_buffer_type BMC4;
 
 	void check_slaveo(void);
 	void init_slaveo(void);

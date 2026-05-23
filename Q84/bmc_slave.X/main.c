@@ -341,6 +341,12 @@ volatile struct spi_stat_type_ss spi_stat_ss = {
 	.deviceid = 0,
 	.devicerev = 0,
 };
+volatile struct spi_stat_type_ss report_stat_ss = {
+	.bmc_counts = 0,
+	.slave_int_count = 0,
+	.last_bmc_counts = 0,
+	.last_slave_int_count = 0,
+};
 volatile struct serial_buffer_type_ss serial_buffer_ss = {
 	.data[BMC_CMD] = CHECKBYTE,
 	.data[BMC_CKSUM] = CHECKBYTE,
@@ -993,7 +999,7 @@ void main(void)
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
 				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3fV,5 %6.3fV                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));
 				snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu  0X%.2X                             ", spi_stat_ss.bmc_counts, spi_stat_ss.daq_conf);
-				snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "OF %lu ERR %lu                        ", spi_stat_ss.rxof_bit, spi_stat_ss.spi_resets);
+				snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "Calls: M%lu S%lu                        ", report_stat_ss.last_bmc_counts, report_stat_ss.last_slave_int_count);
 
 				refresh_lcd();
 				serial_buffer_ss.r_string_index = 0;
@@ -1123,6 +1129,7 @@ void main(void)
 			V.set_sequ = true;
 			check_help(false);
 		}
+		report_stat_ss.bmc_counts++;
 #ifdef MAIN_TRACE
 		TP1_SetLow();
 #endif
@@ -1143,6 +1150,10 @@ void onesec_io(void)
 		slaveo_time_isr();
 		BM.spi_reset = 0;
 	}
+	report_stat_ss.last_bmc_counts = report_stat_ss.bmc_counts;
+	report_stat_ss.last_slave_int_count = report_stat_ss.slave_int_count;
+	report_stat_ss.bmc_counts = 0;
+	report_stat_ss.slave_int_count = 0;
 }
 
 /* Misc ACSII spinner character generator, stores position for each shape */

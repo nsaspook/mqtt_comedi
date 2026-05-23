@@ -5,6 +5,8 @@
 
 static const char *const FW_Date = __DATE__;
 static const char *const FW_Time = __TIME__;
+static const int32_t MUI_RANGE_H = 0x250000;
+static const int32_t MUI_RANGE_L = 0x050000;
 
 struct itimerval new_timer = {
 	.it_value.tv_sec = CMD_SEC,
@@ -885,7 +887,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.l1watts);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_wl2n", BMC_MAXHOST);
 				if (ha_daq_host.hindex == 1) {  // PZEM L2 connected to 240VAC
-					cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.l2watts * 2.0f); // double power
+					cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.l2watts * 1.0f); // power
 				} else {
 					cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.l2watts);
 				}
@@ -1214,7 +1216,7 @@ bool get_bmc_serial(void)
 					}
 				} else {
 					if (R.d_id == DC2_CMD) {
-						jtoken = strtok(NULL, ","); // set the calibration data from the Q84
+						jtoken = strtok(NULL, ","); // get PZEM power data
 						if (jtoken != NULL)
 							R.l1watts = atof(jtoken);
 						jtoken = strtok(NULL, ",");
