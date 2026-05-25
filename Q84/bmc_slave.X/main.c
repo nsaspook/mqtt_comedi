@@ -546,6 +546,7 @@ void main(void)
 
 #endif
 	TMR2_StartTimer();
+	TMR4_StartTimer();
 	TMR5_SetInterruptHandler(onesec_io);
 	TMR5_StartTimer();
 	TMR6_StartTimer(); // software timer and FM80 I/O
@@ -958,6 +959,7 @@ void main(void)
 			 * send text updates to CLCD
 			 */
 			if (r_string_ready) {
+				static float slave_usage = 0.0f;
 				bmc_logger();
 				snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%s                         ", &BMC4.log_buffer[2]);
 				if (spi_stat_ss.mui != 0x61DB5) {
@@ -999,7 +1001,8 @@ void main(void)
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
 				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3fV,5 %6.3fV                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));
 				snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu  0X%.2X                             ", spi_stat_ss.bmc_counts, spi_stat_ss.daq_conf);
-				snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "Calls: M%lu S%lu                        ", report_stat_ss.last_bmc_counts, report_stat_ss.last_slave_int_count);
+				slave_usage = ((float) (report_stat_ss.comm_ok * report_stat_ss.last_slave_int_count)) / 200000.0f;
+				snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "C%u S%lu U%.2f%%                        ", report_stat_ss.comm_ok, report_stat_ss.last_slave_int_count, slave_usage);
 
 				refresh_lcd();
 				serial_buffer_ss.r_string_index = 0;
@@ -1154,6 +1157,8 @@ void onesec_io(void)
 	report_stat_ss.last_slave_int_count = report_stat_ss.slave_int_count;
 	report_stat_ss.bmc_counts = 0;
 	report_stat_ss.slave_int_count = 0;
+	report_stat_ss.comm_ok = TMR4; // 500ns per count
+	TMR4 = 250;
 }
 
 /* Misc ACSII spinner character generator, stores position for each shape */

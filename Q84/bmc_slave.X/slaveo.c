@@ -70,7 +70,12 @@ void slaveo_rx_isr(void)
 	/* we only get this when the master wants data, the slave never generates one */
 	// SPI port #2 SLAVE receiver
 
+	if (TMR4 == 250) {
+		TMR4 = 0;
+		T4CONbits.TMR4ON = 1;
+	}
 	DLED_SetHigh();
+
 	report_stat_ss.slave_int_count++;
 	Nop();
 #ifdef SLAVE_DEBUG
@@ -474,6 +479,7 @@ void slaveo_rx_isr(void)
 
 isr_end:
 	DLED_SetLow();
+	T4CONbits.TMR4ON = 0;
 }
 
 void slaveo_spi_isr(void)
