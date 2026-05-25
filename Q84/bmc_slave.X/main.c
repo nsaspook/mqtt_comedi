@@ -1001,7 +1001,10 @@ void main(void)
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
 				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3fV,5 %6.3fV                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));
 				snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu  0X%.2X                             ", spi_stat_ss.bmc_counts, spi_stat_ss.daq_conf);
-				slave_usage = ((float) (report_stat_ss.comm_ok * report_stat_ss.last_slave_int_count)) / 200000.0f;
+				slave_usage = ((float) (report_stat_ss.comm_ok * report_stat_ss.last_slave_int_count)) / ISR_TIME_SCALE;
+				if (slave_usage > 99.0f) {
+					slave_usage = 99.0f;
+				}
 				snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "C%u S%lu U%.2f%%                        ", report_stat_ss.comm_ok, report_stat_ss.last_slave_int_count, slave_usage);
 
 				refresh_lcd();
@@ -1140,7 +1143,7 @@ void main(void)
 }
 
 /*
- * run LED and status indicators
+ * run LED and status indicators, 1 second timer ISR
  */
 void onesec_io(void)
 {
@@ -1157,8 +1160,8 @@ void onesec_io(void)
 	report_stat_ss.last_slave_int_count = report_stat_ss.slave_int_count;
 	report_stat_ss.bmc_counts = 0;
 	report_stat_ss.slave_int_count = 0;
-	report_stat_ss.comm_ok = TMR4; // 500ns per count
-	TMR4 = 250;
+	report_stat_ss.comm_ok = TMR4; // 250ns per count
+	TMR4 = ISR_TIMEMARK;
 }
 
 /* Misc ACSII spinner character generator, stores position for each shape */

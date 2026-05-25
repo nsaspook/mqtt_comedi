@@ -70,8 +70,8 @@ void slaveo_rx_isr(void)
 	/* we only get this when the master wants data, the slave never generates one */
 	// SPI port #2 SLAVE receiver
 
-	if (TMR4 == 250) {
-		TMR4 = 0;
+	if (TMR4 == ISR_TIMEMARK) {
+		TMR4 = 0;  // reset ISR task time counter, 250ns per count
 		T4CONbits.TMR4ON = 1;
 	}
 	DLED_SetHigh();

@@ -22,7 +22,7 @@ extern "C" {
 #include "vconfig.h"
 #include "calibr.h"
 
-#define SLAVEO_DRIVER   "V0.91"
+#define SLAVEO_DRIVER   "V0.92"
 #define SLAVE_DEBUG
 #define CHECKBYTE       0x57
 #define CHECKMARK	0x1957
@@ -32,6 +32,8 @@ extern "C" {
 #define PACKET_BUF_SIZ	16
 #define RSTRING_BUF_SIZ	81
 #define MAX_BMC_BUF	512
+	
+#define ISR_TIMEMARK	250
 
 	/*
 	 * controller codes
@@ -73,7 +75,7 @@ extern "C" {
 	static const uint8_t PORT_GO_BYTES = 7;
 	static const uint8_t CHAR_GO_BYTES = 7;
 	static const uint8_t DAC_GO_BYTES = 7;
-
+	
 	struct spi_link_type_ss { // internal state table
 		uint8_t SPI_DATA : 1;
 		uint8_t ADC_DATA : 1;

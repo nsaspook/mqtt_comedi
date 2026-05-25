@@ -173,6 +173,8 @@ extern "C" {
 	static const uint8_t PV_VOLTS_HIGH = 70;
 	static const uint8_t SPI_RESET_COUNTS = 6;
 
+	static const float ISR_TIME_SCALE = 40000.0f;
+
 #define DBENERGY	3100.0f
 #define DBVOLTAGE	12.6f
 #define DBFLOAT		14.3f
