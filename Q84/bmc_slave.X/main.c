@@ -334,7 +334,6 @@ BM_type BM = {
 	.spi_reset = 0,
 };
 
-volatile struct spi_link_type_ss spi_comm_ss = {false, false, false, false, false, false, false, false};
 volatile struct spi_stat_type_ss spi_stat_ss = {
 	.raw_index = 0,
 	.daq_conf = 0,
@@ -961,7 +960,11 @@ void main(void)
 			if (r_string_ready) {
 				static float slave_usage = 0.0f;
 				bmc_logger();
+				/*
+				 * MAIN text screen
+				 */
 				snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%s                         ", &BMC4.log_buffer[2]);
+				// check for special DAQ configuration
 				if (spi_stat_ss.mui != 0x61DB5) {
 					snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %4.1fV %4.2fA           ", modbus_name[C.id_ok], imd_tmp.vl1l2 / 10.0f, (imd_tmp.al1));
 				} else {
@@ -982,6 +985,9 @@ void main(void)
 						snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%4.0f %4.0f %4.0f %4.0fW               ", imd_tmp.ap1s, imd_tmp.ap2s, imd_tmp.ap3s, imd_tmp.tps);
 					}
 				}
+				/*
+				 * INFO test screen
+				 */
 				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "%2.1fKWh float %3.1fh                       ", (float) BM.log.kilowatt_hours / 10.0f, (float) BM.log.float_time / 60.0f);
 				snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "Bmax %uV Bmin %uV                      ", BM.log.bat_max / 10, BM.log.bat_min / 10);
 				if ((ha_daq_calib.em_model == PZEM_M) || (ha_daq_calib.em_model == WEM30_M)) {
@@ -989,6 +995,7 @@ void main(void)
 				} else {
 					snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.2fR %3.2fPf                       ", (float) emt.hz / 1000.0f, ((float) em.varsys), ((float) em.pfsys));
 				}
+				// check for special DAQ configuration
 				if (spi_stat_ss.mui != 0x61DB5) {
 					if ((ha_daq_calib.em_model == PZEM_M) || (ha_daq_calib.em_model == WEM30_M)) {
 						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%3.2f %3.2f %3.2fPf                ", (float) imd_tmp.pfl1, (float) imd_tmp.pfl2, (float) imd_tmp.pfl3);
@@ -998,6 +1005,9 @@ void main(void)
 				} else {
 					snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%3.2fW %3.2fVa %3.2fPf             ", imd_tmp.ap1s * 1.0f, imd_tmp.rpp1s * 1.0f, (float) em.pfl3 / 10.0f);
 				}
+				/*
+				 * DBUG text screen
+				 */
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
 				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3fV,5 %6.3fV                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));
 				snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu  0X%.2X                             ", spi_stat_ss.bmc_counts, spi_stat_ss.daq_conf);

@@ -7,7 +7,7 @@
  *
  */
 /** \file slaveo.c
- * BMCboard SPI DAQ slave for the Orange PI
+ * BMCboard SPI DAQ slave for the Orange PI and RPi
  */
 
 #include <xc.h>
@@ -71,13 +71,13 @@ void slaveo_rx_isr(void)
 	// SPI port #2 SLAVE receiver
 
 	if (TMR4 == ISR_TIMEMARK) {
-		TMR4 = 0;  // reset ISR task time counter, 250ns per count
+		TMR4 = 0; // reset ISR task time counter, 250ns per count
 		T4CONbits.TMR4ON = 1;
 	}
 	DLED_SetHigh();
 
 	report_stat_ss.slave_int_count++;
-	Nop();
+
 #ifdef SLAVE_DEBUG
 	if (SPI2INTFbits.RXOIF) {
 		spi_stat_ss.rxof_bit++;
@@ -343,19 +343,12 @@ void slaveo_rx_isr(void)
 	}
 
 	if (command == CMD_DAC_GO) { // Found a GO for a DAC conversion command
-		spi_comm_ss.ADC_RUN = false;
-		spi_comm_ss.PORT_DATA = false;
-		spi_comm_ss.CHAR_DATA = false;
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.dac_value = true;
-		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload(); // restart master activity timer counter to prevent system restart
 	}
 
 	if (command == CMD_ADC_GO) { // Found a GO for a conversion command
-		spi_comm_ss.ADC_RUN = false;
-		spi_comm_ss.PORT_DATA = false;
-		spi_comm_ss.CHAR_DATA = false;
 		channel = data_in2 & LO_NIBBLE; // only 16 possible channels so higher numbers needs to be munged
 		if (channel > AI_CHAN_FIX) {
 			switch (channel) {
@@ -399,49 +392,32 @@ void slaveo_rx_isr(void)
 		}
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.adc_value = true;
-		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
 	}
 
 	if (command == CMD_PORT_GET) { // send the V.bmc_di buffer
-		spi_comm_ss.ADC_RUN = false;
-		spi_comm_ss.PORT_DATA = true;
-		spi_comm_ss.CHAR_DATA = false;
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.get_value = true;
-		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
 	}
 
 	if (command == CMD_PORT_GO) { // Found a GO for a DO command
-		spi_comm_ss.ADC_RUN = false;
-		spi_comm_ss.PORT_DATA = true;
-		spi_comm_ss.CHAR_DATA = false;
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.make_value = true;
-		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
 	}
 
 	if (command == CMD_CHAR_GET) { // send the serial buffer
-		spi_comm_ss.ADC_RUN = false;
-		spi_comm_ss.PORT_DATA = false;
-		spi_comm_ss.CHAR_DATA = true;
 		channel = data_in2 & LO_NIBBLE; // only 16 possible channels
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.cget_value = true;
-		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
 	}
 
 	if (command == CMD_CHAR_GO) { // get data for the serial buffer
-		spi_comm_ss.ADC_RUN = false;
-		spi_comm_ss.PORT_DATA = false;
-		spi_comm_ss.CHAR_DATA = true;
 		channel = data_in2 & LO_NIBBLE; // only 16 possible channels
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.cmake_value = true;
-		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
 	}
 
@@ -459,7 +435,6 @@ void slaveo_rx_isr(void)
 				MLED_SetLow();
 			}
 		}
-		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
 		StartTimer(TMR_ADC, ADCDELAY);
 	}
@@ -472,7 +447,6 @@ void slaveo_rx_isr(void)
 			val_zero = SPI2RXB;
 		}
 		SPI2STATUSbits.RXRE = 0;
-		spi_comm_ss.REMOTE_LINK = true;
 		TMR0_Reload();
 		StartTimer(TMR_ADC, ADCDELAY);
 	}
