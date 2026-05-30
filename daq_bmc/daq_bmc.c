@@ -389,7 +389,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 #ifdef OPIZ3
 		.max_speed_hz = 4000000,
 #else
-		.max_speed_hz = 6000000,
+		.max_speed_hz = 4000000,
 #endif
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
@@ -407,7 +407,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 #ifdef OPIZ3
 		.max_speed_hz = 4000000,
 #else
-		.max_speed_hz = 6000000,
+		.max_speed_hz = 4000000,
 #endif
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
@@ -600,7 +600,7 @@ static uint32_t daqbmc_bmc_get_mui(struct comedi_device *);
  *	Return a number representing the hardware revision of the PI board.
  *********************************************************************
  */
-static int32_t piBoardRev(struct comedi_device *dev)
+static inline int32_t piBoardRev(struct comedi_device *dev)
 {
 #ifdef OPIZ3
 	int32_t boardRev = BMC_OPIZ3; // hardwired for now
