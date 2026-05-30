@@ -21,7 +21,7 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.69"
+#define VER	"V0.70"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -81,6 +81,7 @@ extern "C" {
 	 * V0.67 use PZEM values for scalars in data string 18
 	 * V0.68 Task calls tracking for Main process and Slave I/O interrupts
 	 * V0.69 cleanup unused debug variables
+	 * V0.70 cleanup slaveo.c
 	 */
 
 	/*

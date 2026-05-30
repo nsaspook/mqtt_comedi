@@ -334,6 +334,7 @@ BM_type BM = {
 	.spi_reset = 0,
 };
 
+volatile struct spi_link_type_ss spi_comm_ss = {false, false, false, false, false, false, false, false};
 volatile struct spi_stat_type_ss spi_stat_ss = {
 	.raw_index = 0,
 	.daq_conf = 0,

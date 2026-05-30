@@ -64,9 +64,9 @@ void DMA3_Initialize(void)
     //DMA Instance Selection : 0x02
     DMASELECT = 0x02;
     //Source Address : &SPI1RXB
-    DMAnSSA = (volatile unsigned short)&SPI1RXB;
+    DMAnSSA = (volatile unsigned short) &SPI1RXB;
     //Destination Address : &spi1_rec_buf1
-    DMAnDSA= (volatile unsigned short)&spi1_rec_buf1;
+    DMAnDSA= (volatile unsigned short) &spi1_rec_buf1;
     //DMODE unchanged; DSTP not cleared; SMR SFR; SMODE unchanged; SSTP not cleared; 
     DMAnCON1 = 0x00;
     //Source Message Size : 1

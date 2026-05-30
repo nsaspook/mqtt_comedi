@@ -92,11 +92,6 @@ void slaveo_rx_isr(void)
 		if (serial_buffer_ss.raw_index == CHAR_GO_BYTES) {
 			BM.spi_reset = 0;
 			if ((serial_buffer_ss.data[BMC_D1] & 0x07) < BMC_EM540_DATA) { // [0..3] UART1
-				/*
-				 * uart1 only
-				 */
-				UART1_Write(serial_buffer_ss.data[BMC_D0]);
-
 				if (!r_string_ready) {
 					if (serial_buffer_ss.data[BMC_D0] == STX) { // character sync
 						serial_buffer_ss.r_string_index = 0;
@@ -164,14 +159,7 @@ void slaveo_rx_isr(void)
 	if (serial_buffer_ss.cget_value) {
 		if (serial_buffer_ss.raw_index == CHAR_GET_BYTES) {
 			if ((serial_buffer_ss.data[BMC_D1] & 0x07) < BMC_EM540_DATA) { // [0..3]
-				/*
-				 * uart1 only
-				 */
-				if (UART1_is_rx_ready()) {
-					tmp_buf = UART1_Read();
-				} else {
-					tmp_buf = 0;
-				}
+				tmp_buf = 0;
 				SPI2TXB = tmp_buf;
 			} else { // [4..7]
 				tmp_buf = 0x57;
@@ -187,9 +175,7 @@ void slaveo_rx_isr(void)
 		} else {
 			if ((serial_buffer_ss.data[BMC_D1] & 0x07) < BMC_EM540_DATA) { // [0..3]
 				if (serial_buffer_ss.raw_index == BMC_D0) {
-					tmp_buf = 0x00; //
-				} else {
-					tmp_buf = UART1_is_rx_ready(); // new data is ready
+					tmp_buf = 0x00;
 				}
 			} else { // MEMORY device
 				tmp_buf = log_buffer[BMC4.pos];
@@ -436,7 +422,6 @@ void slaveo_rx_isr(void)
 			}
 		}
 		TMR0_Reload();
-		StartTimer(TMR_ADC, ADCDELAY);
 	}
 
 
@@ -448,7 +433,6 @@ void slaveo_rx_isr(void)
 		}
 		SPI2STATUSbits.RXRE = 0;
 		TMR0_Reload();
-		StartTimer(TMR_ADC, ADCDELAY);
 	}
 
 isr_end:

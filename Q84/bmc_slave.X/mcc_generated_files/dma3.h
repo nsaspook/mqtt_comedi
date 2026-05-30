@@ -52,7 +52,7 @@
 */
 #include <stdint.h>
 
-volatile uint8_t spi1_rec_buf1[32];
+uint8_t spi1_rec_buf1[3];
 
 /**
  * @brief Initializes the DMA3 module

@@ -128,6 +128,7 @@ extern "C" {
 		BMC_DATA_DUMMY,
 	};
 
+	extern volatile struct spi_link_type_ss spi_comm_ss;
 	extern volatile struct serial_buffer_type_ss serial_buffer_ss;
 	extern volatile struct spi_stat_type_ss spi_stat_ss, report_stat_ss;
 	extern volatile uint8_t data_in2, adc_buffer_ptr, adc_channel, channel, upper;

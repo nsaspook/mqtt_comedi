@@ -58,15 +58,6 @@ bool init_display(void)
 	DMA1_SetORIInterruptHandler(spi_lcd_byte);
 	DMA1_SetDMAPriority(2);
 
-	DMA2_SetSCNTIInterruptHandler(spi_src_byte);
-	DMA2_SetORIInterruptHandler(spi_or_byte);
-	DMA2_SetDCNTIInterruptHandler(spi_des_byte);
-	DMA2_SetDMAPriority(3);
-
-	DMA3_SetSCNTIInterruptHandler(spi_src_byte);
-	DMA3_SetORIInterruptHandler(spi_or_byte);
-	DMA3_SetDCNTIInterruptHandler(spi_des_byte);
-	DMA3_SetDMAPriority(3);
 #endif
 #ifdef NHD  // uses MODE 3 on the Q84, https://newhavendisplay.com/content/specs/NHD-0420D3Z-NSW-BBW-V3.pdf
 #ifdef USEMCC_SPI
@@ -112,7 +103,6 @@ bool init_display(void)
 	send_lcd_cmd_dma(LCD_CMD_CLR); // clear screen
 	wdtdelay(NHD_L_DELAY);
 	DMA1_StopTransfer();
-	DMA2_StopTransfer();
 #else
 	send_lcd_cmd(LCD_CMD_BRI); // set back-light level
 	send_lcd_data(NHD_BL_LOW);
@@ -122,7 +112,6 @@ bool init_display(void)
 	send_lcd_cmd(LCD_CMD_CLR); // clear screen
 	wdtdelay(NHD_L_DELAY);
 	DMA1_StopTransfer();
-	DMA2_StopTransfer();
 #endif
 #endif
 	powerup = false; // only of the first display init call

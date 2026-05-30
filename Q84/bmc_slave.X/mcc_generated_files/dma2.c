@@ -64,15 +64,15 @@ void DMA2_Initialize(void)
     //DMA Instance Selection : 0x01
     DMASELECT = 0x01;
     //Source Address : &SPI1RXB
-    DMAnSSA = (volatile unsigned short)&SPI1RXB;
+    DMAnSSA = (volatile unsigned short) &SPI1RXB;
     //Destination Address : &spi1_rec_buf
-    DMAnDSA= (volatile unsigned short)&spi1_rec_buf;
+    DMAnDSA= (volatile unsigned short) &spi1_rec_buf;
     //DMODE incremented; DSTP not cleared; SMR SFR; SMODE unchanged; SSTP not cleared; 
     DMAnCON1 = 0x40;
     //Source Message Size : 1
     DMAnSSZ = 1;
     //Destination Message Size : 4
-    DMAnDSZ = 8;
+    DMAnDSZ = 4;
     //Start Trigger : SIRQ None; 
     DMAnSIRQ = 0x00;
     //Abort Trigger : AIRQ None; 

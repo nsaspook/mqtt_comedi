@@ -52,7 +52,7 @@
 */
 #include <stdint.h>
 
-volatile uint8_t spi1_rec_buf[32];
+uint8_t spi1_rec_buf[4];
 
 /**
  * @brief Initializes the DMA2 module
