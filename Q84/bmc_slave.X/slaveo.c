@@ -322,19 +322,19 @@ void slaveo_rx_isr(void)
 		spi_stat_ss.txuf_bit++; // buffer high watermark cleared
 	}
 
-	command = data_in2 & HI_NIBBLE;
-
 	if (serial_buffer_ss.dac_value || serial_buffer_ss.get_value || serial_buffer_ss.make_value || serial_buffer_ss.dac_value || serial_buffer_ss.cfg_value || serial_buffer_ss.cget_value || serial_buffer_ss.cmake_value) {
 		goto isr_end;
 	}
 
-	if (command == CMD_DAC_GO) { // Found a GO for a DAC conversion command
+	command = data_in2 & HI_NIBBLE; // Linux bmc_daq driver commands
+
+	switch (command) {
+	case CMD_DAC_GO:
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.dac_value = true;
 		TMR0_Reload(); // restart master activity timer counter to prevent system restart
-	}
-
-	if (command == CMD_ADC_GO) { // Found a GO for a conversion command
+		break;
+	case CMD_ADC_GO:
 		channel = data_in2 & LO_NIBBLE; // only 16 possible channels so higher numbers needs to be munged
 		if (channel > AI_CHAN_FIX) {
 			switch (channel) {
@@ -379,35 +379,25 @@ void slaveo_rx_isr(void)
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.adc_value = true;
 		TMR0_Reload();
-	}
-
-	if (command == CMD_PORT_GET) { // send the V.bmc_di buffer
-		serial_buffer_ss.raw_index = BMC_D0;
-		serial_buffer_ss.get_value = true;
-		TMR0_Reload();
-	}
-
-	if (command == CMD_PORT_GO) { // Found a GO for a DO command
+		break;
+	case CMD_PORT_GET:
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.make_value = true;
 		TMR0_Reload();
-	}
-
-	if (command == CMD_CHAR_GET) { // send the serial buffer
+		break;
+	case CMD_CHAR_GET:
 		channel = data_in2 & LO_NIBBLE; // only 16 possible channels
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.cget_value = true;
 		TMR0_Reload();
-	}
-
-	if (command == CMD_CHAR_GO) { // get data for the serial buffer
+		break;
+	case CMD_CHAR_GO:
 		channel = data_in2 & LO_NIBBLE; // only 16 possible channels
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.cmake_value = true;
 		TMR0_Reload();
-	}
-
-	if (command == CMD_DUMMY_CFG) {
+		break;
+	case CMD_DUMMY_CFG:
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.cfg_value = true;
 		channel = data_in2 & LO_NIBBLE; // only 16 possible channels so higher numbers needs to be munged
@@ -422,10 +412,10 @@ void slaveo_rx_isr(void)
 			}
 		}
 		TMR0_Reload();
-	}
-
-
-	if (command == CMD_ZERO) {
+		break;
+	case CMD_ZERO:
+	default:
+	{
 		static uint8_t val_zero = CHECKBYTE;
 
 		while (!SPI2STATUSbits.RXRE) { // clear the FIFO of data
@@ -433,6 +423,8 @@ void slaveo_rx_isr(void)
 		}
 		SPI2STATUSbits.RXRE = 0;
 		TMR0_Reload();
+	}
+		break;
 	}
 
 isr_end:
