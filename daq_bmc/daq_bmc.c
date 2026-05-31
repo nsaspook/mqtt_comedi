@@ -389,7 +389,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 #ifdef OPIZ3
 		.max_speed_hz = 4000000,
 #else
-		.max_speed_hz = 4000000,
+		.max_speed_hz = 6000000,
 #endif
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
@@ -407,7 +407,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 #ifdef OPIZ3
 		.max_speed_hz = 4000000,
 #else
-		.max_speed_hz = 4000000,
+		.max_speed_hz = 6000000,
 #endif
 		.min_acq_ns = 180000,
 		.rate_min = 1000,

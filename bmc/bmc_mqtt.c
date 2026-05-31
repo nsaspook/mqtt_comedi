@@ -5,6 +5,8 @@
 
 static const char *const FW_Date = __DATE__;
 static const char *const FW_Time = __TIME__;
+const int32_t MUI_RANGE_H = 0x250000;
+const int32_t MUI_RANGE_L = 0x050000;
 
 struct itimerval new_timer = {
 	.it_value.tv_sec = CMD_SEC,
