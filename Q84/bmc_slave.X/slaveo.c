@@ -382,6 +382,11 @@ void slaveo_rx_isr(void)
 		break;
 	case CMD_PORT_GET:
 		serial_buffer_ss.raw_index = BMC_D0;
+		serial_buffer_ss.get_value = true;
+		TMR0_Reload();
+		break;
+	case CMD_PORT_GO:
+		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.make_value = true;
 		TMR0_Reload();
 		break;
