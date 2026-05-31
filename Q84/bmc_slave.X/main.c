@@ -815,7 +815,7 @@ void main(void)
 				 * interrupt lock for 16-bit atomic updates of out_buf
 				 */
 				INTERRUPT_GlobalInterruptHighDisable();
-				if (serial_buffer_ss.make_value == false) {
+				if (serial_buffer_ss.dmake_value == false) {
 					out_buf = (uint16_t) 0xffff & V.bmc_do;
 				}
 				INTERRUPT_GlobalInterruptHighEnable();

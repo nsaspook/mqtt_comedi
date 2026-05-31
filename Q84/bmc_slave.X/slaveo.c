@@ -30,9 +30,9 @@ void check_slaveo(void) /* SPI Slave error check */
 static void clear_slaveo_flags(void)
 {
 	serial_buffer_ss.adc_value = false;
-	serial_buffer_ss.make_value = false;
+	serial_buffer_ss.dmake_value = false;
 	serial_buffer_ss.dac_value = false;
-	serial_buffer_ss.get_value = false;
+	serial_buffer_ss.dget_value = false;
 	serial_buffer_ss.cfg_value = false;
 	serial_buffer_ss.cmake_value = false;
 	serial_buffer_ss.cget_value = false;
@@ -131,12 +131,12 @@ void slaveo_rx_isr(void)
 	}
 
 	// PORT_GO_BYTES
-	if (serial_buffer_ss.make_value) {
+	if (serial_buffer_ss.dmake_value) {
 		if (serial_buffer_ss.raw_index == PORT_GO_BYTES) {
 			V.bmc_do = serial_buffer_ss.data[BMC_D0];
 			V.bmc_do += (uint32_t) (serial_buffer_ss.data[BMC_D1] << 8u)&0x0000ff00;
 			data_in2 = 0;
-			serial_buffer_ss.make_value = false;
+			serial_buffer_ss.dmake_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
 		}
@@ -186,11 +186,11 @@ void slaveo_rx_isr(void)
 	}
 
 	// PORT_GET_BYTES
-	if (serial_buffer_ss.get_value) {
+	if (serial_buffer_ss.dget_value) {
 		if (serial_buffer_ss.raw_index == PORT_GET_BYTES) {
 			tmp_buf = (uint8_t) in_buf3;
 			SPI2TXB = tmp_buf;
-			serial_buffer_ss.get_value = false;
+			serial_buffer_ss.dget_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
 		} else {
@@ -322,7 +322,7 @@ void slaveo_rx_isr(void)
 		spi_stat_ss.txuf_bit++; // buffer high watermark cleared
 	}
 
-	if (serial_buffer_ss.dac_value || serial_buffer_ss.get_value || serial_buffer_ss.make_value || serial_buffer_ss.dac_value || serial_buffer_ss.cfg_value || serial_buffer_ss.cget_value || serial_buffer_ss.cmake_value) {
+	if (serial_buffer_ss.dac_value || serial_buffer_ss.dget_value || serial_buffer_ss.dmake_value || serial_buffer_ss.dac_value || serial_buffer_ss.cfg_value || serial_buffer_ss.cget_value || serial_buffer_ss.cmake_value) {
 		goto isr_end;
 	}
 
@@ -382,12 +382,12 @@ void slaveo_rx_isr(void)
 		break;
 	case CMD_PORT_GET:
 		serial_buffer_ss.raw_index = BMC_D0;
-		serial_buffer_ss.get_value = true;
+		serial_buffer_ss.dget_value = true;
 		TMR0_Reload();
 		break;
 	case CMD_PORT_GO:
 		serial_buffer_ss.raw_index = BMC_D0;
-		serial_buffer_ss.make_value = true;
+		serial_buffer_ss.dmake_value = true;
 		TMR0_Reload();
 		break;
 	case CMD_CHAR_GET:
@@ -409,7 +409,7 @@ void slaveo_rx_isr(void)
 		tmp_buf4 = (void *) &ha_daq_calib.scaler4;
 		tmp_buf5 = (void *) &ha_daq_calib.scaler5;
 		if (channel == 0x7) {
-			if (!serial_buffer_ss.adc_value && !serial_buffer_ss.dac_value && !serial_buffer_ss.make_value && !serial_buffer_ss.get_value&& !serial_buffer_ss.cmake_value && !serial_buffer_ss.cget_value) {
+			if (!serial_buffer_ss.adc_value && !serial_buffer_ss.dac_value && !serial_buffer_ss.dmake_value && !serial_buffer_ss.dget_value&& !serial_buffer_ss.cmake_value && !serial_buffer_ss.cget_value) {
 				MLED_SetHigh();
 				clear_slaveo_flags();
 				MCZ_PWM_SetLow();

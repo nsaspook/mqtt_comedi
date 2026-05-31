@@ -101,7 +101,7 @@ extern "C" {
 	struct serial_buffer_type_ss {
 		volatile uint8_t data[PACKET_BUF_SIZ], r_string[RSTRING_BUF_SIZ], adcl, adc2, adch, command, raw_index, r_string_index, r_string_chan;
 		volatile uint32_t place;
-		volatile bool make_value, get_value, dac_value, adc_value, cfg_value, cmake_value, cget_value;
+		volatile bool dmake_value, dget_value, dac_value, adc_value, cfg_value, cmake_value, cget_value;
 	};
 
 	struct bmc_buffer_type {
@@ -141,7 +141,6 @@ extern "C" {
 	extern volatile struct bmc_buffer_type BMC4;
 	extern volatile char buffer[MAX_BMC_BUF], log_buffer[MAX_BMC_BUF];
 	extern struct ha_daq_calib_type ha_daq_calib;
-//	extern volatile struct bmc_buffer_type BMC4;
 
 	void check_slaveo(void);
 	void init_slaveo(void);
