@@ -72,6 +72,12 @@ extern "C" {
 		STATUS_LAST,
 	};
 
+	enum fwrev_type {
+		FW_P0 = 0,
+		FW_P1 = 1,
+		FW_P2 = 2,
+	};
+
 	const char state_name [][12] = {
 		"Sleep",
 		"Float",
@@ -100,7 +106,7 @@ extern "C" {
 	} mx_log_packed_t;
 
 	extern void FM_onesec_io(void);
-	extern void FM_tensec_io(void);
+	extern void FM_twosec_io(void);
 	extern void FM_io(void);
 	extern uint8_t FM_tx(const uint16_t *, const uint8_t);
 	extern bool FM_tx_empty(void);

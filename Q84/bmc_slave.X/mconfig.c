@@ -134,56 +134,6 @@ void vterm_dump(void)
 	WaitMs(TDELAY);
 }
 
-void vterm_sequence(void)
-{
-	snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, " Mesg %d Stack %d              ", V.msg_error, V.stack);
-	switch (V.response.info) {
-	case DIS_LOG:
-		snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, " S%dF%d log    %d      ", V.stream, V.function, V.response.log_seq & 0x03);
-		snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, " Stored #%d            ", V.response.log_num);
-		break;
-	case DIS_FREE:
-		snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, " S%dF%d log    %d      ", V.stream, V.function, V.response.log_seq & 0x03);
-		snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, " Port Lock #%d            ", V.speed_spin);
-		break;
-	case DIS_LOAD:
-		snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, " Ready LL              ");
-		snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, " S2F41 #%c             ", V.response.mcode);
-		break;
-	case DIS_PUMP:
-		snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, " Pump LL               ");
-		snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, " S2F41 #%c             ", V.response.mcode);
-		break;
-	case DIS_UNLOAD:
-		snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, " Open LL               ");
-		snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, " S2F41 #%c             ", V.response.mcode);
-		break;
-	case DIS_HELP:
-		snprintf(get_vterm_ptr(0, HELP_VTERM), MAX_TEXT, "HELP %s                ", build_date);
-		snprintf(get_vterm_ptr(1, HELP_VTERM), MAX_TEXT, "DISPLAY %s             ", build_time);
-		break;
-	case DIS_SEQUENCE:
-		snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, " Load-lock num %d      ", V.llid);
-		snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, " SEQUENCE %d           ", V.sequences);
-		break;
-	case DIS_SEQUENCE_M:
-		snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, " Display num %d        ", V.response.mesgid);
-		snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, " SEQUENCE %d           ", V.sequences);
-		break;
-	case DIS_TERM:
-		snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, " Terminal %d             ", V.response.TID);
-		snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, " CMD %c %c Len %d        ", V.response.mcode, V.response.mparm, V.response.cmdlen);
-		break;
-	case DIS_CLEAR:
-	default:
-		snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "                      ");
-		snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "                      ");
-		snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "                      ");
-		snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "                      ");
-		break;
-	}
-}
-
 /*
  * update possible command messages from equipment
  * not being used now

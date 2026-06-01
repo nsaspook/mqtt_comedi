@@ -14,7 +14,7 @@ void FM_restart(void)
 	dcount = 0;
 	dstart = 0;
 	rdstart = 0;
-	BM.ten_sec_flag = false;
+	BM.two_sec_flag = false;
 }
 
 /*
@@ -136,9 +136,9 @@ void FM_onesec_io(void)
 	BM.one_sec_flag = true;
 }
 
-void FM_tensec_io(void)
+void FM_twosec_io(void)
 {
-	BM.ten_sec_flag = true;
+	BM.two_sec_flag = true;
 }
 
 /*

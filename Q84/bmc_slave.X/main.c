@@ -312,7 +312,7 @@ V_data V = {
 
 BM_type BM = {
 	.one_sec_flag = false,
-	.ten_sec_flag = false,
+	.two_sec_flag = false,
 	.pacing = 0,
 	.rx_count = 0,
 	.flush = 0,
@@ -553,7 +553,7 @@ void main(void)
 	TMR6_SetInterruptHandler(FM_io);
 	TMR0_SetInterruptHandler(test_slave);
 	TMR0_StartTimer();
-	TMR1_SetInterruptHandler(FM_tensec_io); // really TWO seconds
+	TMR1_SetInterruptHandler(FM_twosec_io);
 	TMR1_StartTimer();
 
 	speed_text = em_info;
@@ -650,19 +650,19 @@ void main(void)
 				break;
 			case state_fwrev:
 				switch (fw_state) {
-				case 0:
+				case FW_P0:
 					send_mx_cmd(cmd_fwreva);
 					rec_mx_cmd(state_fwrev_cb, REC_LEN);
 					break;
-				case 1:
+				case FW_P1:
 					send_mx_cmd(cmd_fwrevb);
 					rec_mx_cmd(state_fwrev_cb, REC_LEN);
 					break;
-				case 2:
+				case FW_P2:
 					send_mx_cmd(cmd_fwrevc);
 					rec_mx_cmd(state_fwrev_cb, REC_LEN);
 				default:
-					fw_state = 0;
+					fw_state = FW_P0;
 					break;
 				}
 				break;
@@ -1188,7 +1188,6 @@ char spinners(uint8_t shape, const uint8_t reset)
 	c = spin[shape][s[shape]];
 	if (++s[shape] >= strlen(spin[shape]))
 		s[shape] = 0;
-
 	return c;
 }
 
@@ -1389,7 +1388,6 @@ int16_t num_whole(const int16_t num_10x)
 
 void state_init_cb(void)
 {
-	//	float Soc;
 	static uint8_t off_delay = 0;
 
 	mx_code = abuf[2]&0xf;
@@ -1398,7 +1396,6 @@ void state_init_cb(void)
 		off_delay = 0;
 	} else {
 		if (off_delay++ > 3) {
-
 			BM.FM80_online = false;
 			cc_mode = STATUS_LAST;
 		}
@@ -1430,7 +1427,6 @@ static void state_fwrev_cb(void)
 	if (!C.tm_ok) {
 		state = state_misc;
 	} else {
-
 		C.tm_ok = false;
 		state = state_time;
 	}
@@ -1478,10 +1474,9 @@ void state_misc_cb(void)
 		state = state_init;
 		return;
 	}
-	if (!BM.ten_sec_flag) {
+	if (!BM.two_sec_flag) {
 		state = state_misc;
 	} else {
-
 		state = state_status;
 	}
 }
@@ -1514,7 +1509,6 @@ void state_watts_cb(void)
 	if (BM.FM80_online) {
 		state = state_mx_log; // only get log data once state_init_cb has run
 	} else {
-
 		state = state_mx_status;
 	}
 }
@@ -1551,10 +1545,9 @@ void state_mx_status_cb(void)
 		rx_count++, abuf[0], abuf[1], abuf[2], abuf[3], abuf[4], abuf[5], abuf[6], abuf[7], abuf[8], abuf[9], abuf[10], abuf[11], abuf[12], abuf[13]);
 #endif
 
-	if (BM.ten_sec_flag) {
-		BM.ten_sec_flag = false;
+	if (BM.two_sec_flag) {
+		BM.two_sec_flag = false;
 		if (BM.FM80_online || BM.modbus_online) { // log for MX80 and EM540
-
 			MM_ERROR_C;
 			/*
 			 * not used
@@ -1611,12 +1604,10 @@ void state_status_cb(void)
 			}
 			BM.pv_high = false;
 		}
-
 	}
 	if (BM.FM80_online) { // don't update when offline
 		cc_mode = FMxx_STATE;
 	} else {
-
 		cc_mode = STATUS_LAST;
 	}
 	state = state_watts;

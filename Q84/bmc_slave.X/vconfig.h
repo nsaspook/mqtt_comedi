@@ -21,7 +21,7 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.70"
+#define VER	"V0.71"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -82,6 +82,7 @@ extern "C" {
 	 * V0.68 Task calls tracking for Main process and Slave I/O interrupts
 	 * V0.69 cleanup unused debug variables
 	 * V0.70 cleanup slaveo.c
+	 * V0.71 calibration value error on cold/power up boot. Reset sends correct value for scalar5
 	 */
 
 	/*
@@ -252,7 +253,7 @@ extern "C" {
 	} mx_logpage_t;
 
 	typedef struct BM_type {
-		volatile bool ten_sec_flag, one_sec_flag, FM80_charged, pv_high, pv_update, once, a_switch[D_SW_COUNT], a_trigger[D_SW_COUNT], a_type[D_SW_COUNT];
+		volatile bool two_sec_flag, one_sec_flag, FM80_charged, pv_high, pv_update, once, a_switch[D_SW_COUNT], a_trigger[D_SW_COUNT], a_type[D_SW_COUNT];
 		volatile uint16_t pacing, rx_count, flush, pv_prev, day_check, dim_delay, benergy;
 		volatile bool FM80_online, FM80_io, LOG, display_dim, display_update, display_on, fm80_restart, fm80_soc_once;
 		volatile uint8_t canbus_online, modbus_online, alt_display, a_pin[D_SW_COUNT], spi_reset;

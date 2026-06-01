@@ -30,7 +30,7 @@ extern "C" {
 	 * OPEN HOST
 	 */
 	static const float HV_SCALAR4 = 64.2500f; // defaults
-	static const float HV_SCALAR5 = 64.2500f;
+	static const float HV_SCALAR5 = 64.2501f;
 	static const float A200_0_ZERO = 2.5216f; // Battery sensor zero ADC value
 	static const float A200_0_SCALAR = 133.05f; // Battery Amp scalar to +- 200A
 
