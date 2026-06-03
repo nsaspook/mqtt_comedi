@@ -211,6 +211,7 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.scalar5[OPEN_HOST] = HV_SCALE5_0,
 	.calib.A200_Z[OPEN_HOST] = A200_0_ZERO,
 	.calib.A200_S[OPEN_HOST] = A200_0_SCALAR,
+	.calib.sane = true,
 };
 
 static double ac0_filter(const double);
@@ -748,9 +749,11 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		// sanity checks for scalars
 		if (ha_daq_host.calib.scalar4[ha_daq_host.bindex] > CALIB_HV_HIGH || ha_daq_host.calib.scalar4[ha_daq_host.bindex] < CALIB_HV_LOW) {
 			ha_daq_host.calib.scalar4[ha_daq_host.bindex] = HV_SCALE4_0;
+			ha_daq_host.calib.sane = false;
 		}
 		if (ha_daq_host.calib.scalar5[ha_daq_host.bindex] > CALIB_HV_HIGH || ha_daq_host.calib.scalar5[ha_daq_host.bindex] < CALIB_HV_LOW) {
 			ha_daq_host.calib.scalar5[ha_daq_host.bindex] = ha_daq_host.calib.scalar4[ha_daq_host.bindex];
+			ha_daq_host.calib.sane = false;
 		}
 
 		if (ok_data) {
@@ -765,10 +768,17 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		}
 		memset(daq_bmc_data_text, 0, MAX_STRLEN);
 		if (bmc.BOARD == bmcboard) {
-			fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV, ANA2 %6.3fV, ANA4 %6.3fV, ANA5 %6.3fV, AND5 %6.3fV, Battery Sensor %6.3fA, : Host Index %d, Scalar Index %d, Scalar ANA4 %7.4f, Scalar ANA5 %7.4f Serial 0X%X\n",
-				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2),
-				E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], R.bsensor0, ha_daq_host.hindex, ha_daq_host.bindex, ha_daq_host.calib.scalar4[ha_daq_host.bindex], ha_daq_host.calib.scalar5[ha_daq_host.bindex],
-				(uint8_t) daq_bmc_data[0]);
+			if (ha_daq_host.calib.sane) {
+				fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV, ANA2 %6.3fV, ANA4 %6.3fV, ANA5 %6.3fV, AND5 %6.3fV, Battery Sensor %6.3fA, : Host Index %d, Scalar Index %d, Scalar ANA4 %7.4f, Scalar ANA5 %7.4f Serial 0X%X\n",
+					get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2),
+					E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], R.bsensor0, ha_daq_host.hindex, ha_daq_host.bindex, ha_daq_host.calib.scalar4[ha_daq_host.bindex], ha_daq_host.calib.scalar5[ha_daq_host.bindex],
+					(uint8_t) daq_bmc_data[0]);
+			} else {
+				fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV, ANA2 %6.3fV, ANA4 %6.3fV, ANA5 %6.3fV, AND5 %6.3fV, Battery Sensor %6.3fA, : Host Index %d, Scalar Index %d, \033[1mScalar ANA4 %7.4f\033[0m, \033[1mScalar ANA5 %7.4f\033[0m Serial 0X%X\n",
+					get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2),
+					E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], R.bsensor0, ha_daq_host.hindex, ha_daq_host.bindex, ha_daq_host.calib.scalar4[ha_daq_host.bindex], ha_daq_host.calib.scalar5[ha_daq_host.bindex],
+					(uint8_t) daq_bmc_data[0]);
+			}
 		} else {
 			fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV : Scalar Index %d, Scalar ANA4 %6.4f, Scalar ANA5 %6.4f\n",
 				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1),
