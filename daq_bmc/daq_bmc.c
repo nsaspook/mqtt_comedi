@@ -1666,7 +1666,7 @@ static uint32_t daqbmc_bmc_get_mui(struct comedi_device *dev)
 
 	devpriv->ai_count++;
 #ifdef SPI_DEBUG
-	dev_info(dev->class_dev, "Calibration data downloaded from board\n");
+	dev_info(dev->class_dev, "MUI data downloaded from board\n");
 #endif
 	mutex_unlock(&devpriv->drvdata_lock);
 	clear_bit(SPI_AI_RUN, &devpriv->state_bits);
@@ -2003,9 +2003,9 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		s->insn_bits = daqbmc_di_insn_bits;
 	}
 
-	if ((retconf & 0x4) == 0x04 || FORCE_47Q84) { // 47Q84 processor
-		daqbmc_cpu = PICSL12_47;
-	}
+//	if ((retconf & 0x4) == 0x04 || FORCE_47Q84) { // 47Q84 processor
+//		daqbmc_cpu = PICSL12_47;
+//	}
 
 	/*
 	 * setup the timer to call my_timer_ai_callback

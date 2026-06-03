@@ -62,7 +62,7 @@ extern "C" {
 #define MAINS_HZ_HIGH 65.0f
 
 #define CALIB_HV_LOW 50.0f
-#define CALIB_HV_HIGH 85.0f
+#define CALIB_HV_HIGH 83.0f
 
 #define BSENSOR_MAX_NEG  -125.0f
 #define BSENSOR_MAX_POS  125.0f

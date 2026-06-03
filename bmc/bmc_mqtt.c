@@ -39,6 +39,7 @@ struct bmc_settings S = {
 
 struct ha_csv_type {
 	double acvolts, acamps, acwatts, acwatts_gti, acwatts_gti_abs, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, panel_watts, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
+	double l1watts, l2watts, l3watts, varsys;
 	uint32_t d_id, boot_updates;
 	double benergy, runtime;
 	uint32_t boot_wait;
@@ -93,7 +94,7 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.hosts[2] = "10.1.1.46", // no HA server
 	.hosts[3] = "10.1.1.45", // HA server and full devices
 	.hosts[4] = "10.1.1.40", // no HA server, rpi2B testing system
-	.hosts[5] = "10.1.1.255",
+	.hosts[5] = "10.1.1.166",
 	.hosts[OPEN_HOST] = "10.1.1.255",
 	.mqtt[0] = "10.1.1.30",
 	.mqtt[1] = MQTT_HOST, // no HA server
@@ -191,12 +192,12 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.A200_S[3] = A200_0_SCALAR,
 	.calib.bmc_id[4] = 0x061DB5, // 57Q84 BMC testing board
 	.calib.offset4[4] = HV_SCALE_OFFSET,
-	.calib.scalar4[4] = HV_SCALE4_0,
+	.calib.scalar4[4] = HV_SCALE4_4,
 	.calib.offset5[4] = HV_SCALE_OFFSET,
-	.calib.scalar5[4] = HV_SCALE5_0,
+	.calib.scalar5[4] = HV_SCALE5_4,
 	.calib.A200_Z[4] = A200_0_ZERO,
 	.calib.A200_S[4] = A200_0_SCALAR,
-	.calib.bmc_id[5] = 0x000000, // 57Q84 BMC testing board
+	.calib.bmc_id[5] = 0x000700, // ni_daq_700 PCMCIA board
 	.calib.offset4[5] = HV_SCALE_OFFSET,
 	.calib.scalar4[5] = HV_SCALE4_0,
 	.calib.offset5[5] = HV_SCALE_OFFSET,
@@ -261,6 +262,7 @@ void showIP(void)
 			 * match IP address to clients and topics
 			 */
 			ha_daq_host.hindex = OPEN_HOST; // default to open daq host
+			ha_daq_host.bindex = ha_daq_host.hindex;
 			strncpy((char *) &ha_daq_host.hosts[OPEN_HOST][0], host, BMC_MAXHOST);
 			strncpy((char *) &ha_daq_host.mqtt[OPEN_HOST][0], S.MQTT_HOSTIP, BMC_MAXHOST);
 
@@ -288,8 +290,9 @@ void showIP(void)
 				ha_daq_host.hindex = 5;
 				got_ipaddr = true;
 			}
-			ha_daq_host.bindex = ha_daq_host.hindex;
+
 			if (got_ipaddr) {
+				ha_daq_host.bindex = ha_daq_host.hindex;
 				goto showip_exit;
 			}
 		}
@@ -747,7 +750,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			ha_daq_host.calib.scalar4[ha_daq_host.bindex] = HV_SCALE4_0;
 		}
 		if (ha_daq_host.calib.scalar5[ha_daq_host.bindex] > CALIB_HV_HIGH || ha_daq_host.calib.scalar5[ha_daq_host.bindex] < CALIB_HV_LOW) {
-			ha_daq_host.calib.scalar5[ha_daq_host.bindex] = HV_SCALE5_0;
+			ha_daq_host.calib.scalar5[ha_daq_host.bindex] = ha_daq_host.calib.scalar4[ha_daq_host.bindex];
 		}
 
 		if (ok_data) {
@@ -762,7 +765,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		}
 		memset(daq_bmc_data_text, 0, MAX_STRLEN);
 		if (bmc.BOARD == bmcboard) {
-			fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV, ANA2 %6.3fV, ANA4 %6.3fV, ANA5 %6.3fV, AND5 %6.3fV, Battery Sensor %6.3fA, : Host Index %d, Scalar Index %d, Scalar ANA4 %6.4f, Scalar ANA5 %6.4f Serial 0X%X\n",
+			fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV, ANA2 %6.3fV, ANA4 %6.3fV, ANA5 %6.3fV, AND5 %6.3fV, Battery Sensor %6.3fA, : Host Index %d, Scalar Index %d, Scalar ANA4 %7.4f, Scalar ANA5 %7.4f Serial 0X%X\n",
 				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2),
 				E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], R.bsensor0, ha_daq_host.hindex, ha_daq_host.bindex, ha_daq_host.calib.scalar4[ha_daq_host.bindex], ha_daq_host.calib.scalar5[ha_daq_host.bindex],
 				(uint8_t) daq_bmc_data[0]);
@@ -881,6 +884,19 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], S.PVVOLTAGEV);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_bank_daq_energy", BMC_MAXHOST);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.panel_watts);
+
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_wl1n", BMC_MAXHOST);
+				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.l1watts);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_wl2n", BMC_MAXHOST);
+				if (ha_daq_host.hindex == 1) { // PZEM L2 connected to 240VAC
+					cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.l2watts * 1.0f); // power
+				} else {
+					cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.l2watts);
+				}
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_wl3n", BMC_MAXHOST);
+				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.l3watts);
+				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_varsys", BMC_MAXHOST);
+				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.varsys);
 				break;
 			case DC1_CMD:
 			default:
@@ -1186,19 +1202,38 @@ bool get_bmc_serial(void)
 				if (jtoken != NULL) { // get the Q84 MUI
 					R.bmc_id = atoll(jtoken);
 				}
-				jtoken = strtok(NULL, ","); // set the calibration data from the Q84
-				if (jtoken != NULL)
-					ha_daq_host.calib.scalar4[ha_daq_host.bindex] = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					ha_daq_host.calib.scalar5[ha_daq_host.bindex] = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL)
-					ha_daq_host.calib.A200_Z[ha_daq_host.bindex] = atof(jtoken);
-				jtoken = strtok(NULL, ",");
-				if (jtoken != NULL) {
-					ha_daq_host.calib.A200_S[ha_daq_host.bindex] = atof(jtoken);
+				if (R.d_id == DC1_CMD) {
+					jtoken = strtok(NULL, ","); // set the calibration data from the Q84
+					if (jtoken != NULL)
+						ha_daq_host.calib.scalar4[ha_daq_host.bindex] = atof(jtoken);
+					jtoken = strtok(NULL, ",");
+					if (jtoken != NULL)
+						ha_daq_host.calib.scalar5[ha_daq_host.bindex] = atof(jtoken);
+					jtoken = strtok(NULL, ",");
+					if (jtoken != NULL)
+						ha_daq_host.calib.A200_Z[ha_daq_host.bindex] = atof(jtoken);
+					jtoken = strtok(NULL, ",");
+					if (jtoken != NULL) {
+						ha_daq_host.calib.A200_S[ha_daq_host.bindex] = atof(jtoken);
+					}
+				} else {
+					if (R.d_id == DC2_CMD) {
+						jtoken = strtok(NULL, ","); // set the calibration data from the Q84
+						if (jtoken != NULL)
+							R.l1watts = atof(jtoken);
+						jtoken = strtok(NULL, ",");
+						if (jtoken != NULL)
+							R.l2watts = atof(jtoken);
+						jtoken = strtok(NULL, ",");
+						if (jtoken != NULL)
+							R.l3watts = atof(jtoken);
+						jtoken = strtok(NULL, ",");
+						if (jtoken != NULL) {
+							R.varsys = atof(jtoken);
+						}
+					}
 				}
+
 				/*
 				 * check for several possible CSV data updates to variables
 				 */
