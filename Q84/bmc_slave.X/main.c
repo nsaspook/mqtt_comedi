@@ -947,6 +947,7 @@ void main(void)
 
 		if (TimerDone(TMR_DISPLAY)) { // limit update rate
 			static uint8_t switcher = INFO_VTERM;
+			char * ptr_log;
 
 			SPI_EADOG();
 			StartTimer(TMR_DISPLAY, DDELAY);
@@ -964,7 +965,9 @@ void main(void)
 				/*
 				 * MAIN text screen
 				 */
-				snprintf(get_vterm_ptr(0, MAIN_VTERM), MAX_TEXT, "%s                         ", &BMC4.log_buffer[2]);
+				ptr_log = get_vterm_ptr(0, MAIN_VTERM);
+				snprintf(ptr_log, MAX_TEXT, "%s ", &BMC4.log_buffer[2]);
+				snprintf(&ptr_log[3], MAX_TEXT, " %7.4f, %7.4f                   ", ha_daq_calib.scaler4, ha_daq_calib.scaler5);
 				// check for special DAQ configuration
 				if (spi_stat_ss.mui != 0x61DB5) {
 					snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %4.1fV %4.2fA           ", modbus_name[C.id_ok], imd_tmp.vl1l2 / 10.0f, (imd_tmp.al1));

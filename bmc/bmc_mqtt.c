@@ -262,6 +262,7 @@ void showIP(void)
 			 * match IP address to clients and topics
 			 */
 			ha_daq_host.hindex = OPEN_HOST; // default to open daq host
+			ha_daq_host.bindex = ha_daq_host.hindex;
 			strncpy((char *) &ha_daq_host.hosts[OPEN_HOST][0], host, BMC_MAXHOST);
 			strncpy((char *) &ha_daq_host.mqtt[OPEN_HOST][0], S.MQTT_HOSTIP, BMC_MAXHOST);
 
@@ -289,8 +290,9 @@ void showIP(void)
 				ha_daq_host.hindex = 5;
 				got_ipaddr = true;
 			}
-			ha_daq_host.bindex = ha_daq_host.hindex;
+
 			if (got_ipaddr) {
+				ha_daq_host.bindex = ha_daq_host.hindex;
 				goto showip_exit;
 			}
 		}
@@ -748,7 +750,10 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			ha_daq_host.calib.scalar4[ha_daq_host.bindex] = HV_SCALE4_0;
 		}
 		if (ha_daq_host.calib.scalar5[ha_daq_host.bindex] > CALIB_HV_HIGH || ha_daq_host.calib.scalar5[ha_daq_host.bindex] < CALIB_HV_LOW) {
-			ha_daq_host.calib.scalar5[ha_daq_host.bindex] = HV_SCALE5_0;
+			/*
+			 * if out of scale mirror scalar4
+			 */
+			ha_daq_host.calib.scalar5[ha_daq_host.bindex] = ha_daq_host.calib.scalar4[ha_daq_host.bindex];
 		}
 
 		if (ok_data) {
@@ -886,7 +891,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_wl1n", BMC_MAXHOST);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.l1watts);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_wl2n", BMC_MAXHOST);
-				if (ha_daq_host.hindex == 1) {  // PZEM L2 connected to 240VAC
+				if (ha_daq_host.hindex == 1) { // PZEM L2 connected to 240VAC
 					cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.l2watts * 1.0f); // power
 				} else {
 					cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.l2watts);
@@ -1202,14 +1207,17 @@ bool get_bmc_serial(void)
 				}
 				if (R.d_id == DC1_CMD) {
 					jtoken = strtok(NULL, ","); // set the calibration data from the Q84
-					if (jtoken != NULL)
+					if (jtoken != NULL) {
 						ha_daq_host.calib.scalar4[ha_daq_host.bindex] = atof(jtoken);
+					}
 					jtoken = strtok(NULL, ",");
-					if (jtoken != NULL)
+					if (jtoken != NULL) {
 						ha_daq_host.calib.scalar5[ha_daq_host.bindex] = atof(jtoken);
+					}
 					jtoken = strtok(NULL, ",");
-					if (jtoken != NULL)
+					if (jtoken != NULL) {
 						ha_daq_host.calib.A200_Z[ha_daq_host.bindex] = atof(jtoken);
+					}
 					jtoken = strtok(NULL, ",");
 					if (jtoken != NULL) {
 						ha_daq_host.calib.A200_S[ha_daq_host.bindex] = atof(jtoken);
@@ -1217,14 +1225,17 @@ bool get_bmc_serial(void)
 				} else {
 					if (R.d_id == DC2_CMD) {
 						jtoken = strtok(NULL, ","); // get PZEM power data
-						if (jtoken != NULL)
+						if (jtoken != NULL) {
 							R.l1watts = atof(jtoken);
+						}
 						jtoken = strtok(NULL, ",");
-						if (jtoken != NULL)
+						if (jtoken != NULL) {
 							R.l2watts = atof(jtoken);
+						}
 						jtoken = strtok(NULL, ",");
-						if (jtoken != NULL)
+						if (jtoken != NULL) {
 							R.l3watts = atof(jtoken);
+						}
 						jtoken = strtok(NULL, ",");
 						if (jtoken != NULL) {
 							R.varsys = atof(jtoken);

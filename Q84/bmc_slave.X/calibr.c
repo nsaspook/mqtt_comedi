@@ -6,23 +6,23 @@ static struct ha_daq_calib_type r_cal;
  * BMC dev boards calibration settings
  */
 static const float HV_SCALE4_0 = 64.2695f;
-static const float HV_SCALE5_0 = 64.2695f;
+static const float HV_SCALE5_0 = 64.2696f;
 static const float HV_SCALE4_1 = 64.1890f;
 static const float HV_SCALE5_1 = 64.1415f;
 static const float HV_SCALE4_2 = 54.1890f; // used a 3.3 vref instead of the normal 4.095 vref
 static const float HV_SCALE5_2 = 54.1415f;
 static const float HV_SCALE4_3 = 55.6000f;
-static const float HV_SCALE5_3 = 55.6500f;
+static const float HV_SCALE5_3 = 55.6501f;
 static const float HV_SCALE4_4 = 64.3590f;
-static const float HV_SCALE5_4 = 64.3850f;
+static const float HV_SCALE5_4 = 64.3851f;
 static const float HV_SCALE4_5 = 64.3520f;
-static const float HV_SCALE5_5 = 64.3480f;
+static const float HV_SCALE5_5 = 64.3481f;
 static const float HV_SCALE4_6 = 64.2500f;
-static const float HV_SCALE5_6 = 64.2500f;
+static const float HV_SCALE5_6 = 64.2501f;
 static const float HV_SCALE4_7 = 53.0000f; // used a 3.3 vref instead of the normal 4.095 vref
-static const float HV_SCALE5_7 = 53.0000f;
+static const float HV_SCALE5_7 = 53.0001f;
 static const float HV_SCALE4_8 = 64.3050f;
-static const float HV_SCALE5_8 = 64.3050f;
+static const float HV_SCALE5_8 = 64.3051f;
 
 
 #define BVSOC_SLOTS     12      // 24V LiFePO4 Battery to SOC data table slots

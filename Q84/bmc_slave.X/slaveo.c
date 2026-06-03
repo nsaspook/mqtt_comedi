@@ -230,19 +230,19 @@ void slaveo_rx_isr(void)
 			spi_stat_ss.txdone_bit++; // number of completed packets
 		} else {
 			switch (channel) {
-			case ADC_HV0:
+			case ADC_HV0: // 32-bit float
 				switch (serial_buffer_ss.raw_index) {
 				case BMC_D0:
-					SPI2TXB = (char) tmp_buf4[0];
+					SPI2TXB = (uint8_t) tmp_buf4[0];
 					break;
 				case BMC_D1:
-					SPI2TXB = (char) tmp_buf4[1];
+					SPI2TXB = (uint8_t) tmp_buf4[1];
 					break;
 				case BMC_D2:
-					SPI2TXB = (char) tmp_buf4[2];
+					SPI2TXB = (uint8_t) tmp_buf4[2];
 					break;
 				case BMC_D3:
-					SPI2TXB = (char) tmp_buf4[3];
+					SPI2TXB = (uint8_t) tmp_buf4[3];
 					break;
 				default:
 					SPI2TXB = CHECKBYTE;
@@ -252,39 +252,35 @@ void slaveo_rx_isr(void)
 			case ADC_HV1:
 				switch (serial_buffer_ss.raw_index) {
 				case BMC_D0:
-					SPI2TXB = (char) tmp_buf5[0];
+					SPI2TXB = (uint8_t) tmp_buf5[0];
 					break;
 				case BMC_D1:
-					SPI2TXB = (char) tmp_buf5[1];
+					SPI2TXB = (uint8_t) tmp_buf5[1];
 					break;
 				case BMC_D2:
-					SPI2TXB = (char) tmp_buf5[2];
+					SPI2TXB = (uint8_t) tmp_buf5[2];
 					break;
 				case BMC_D3:
-					SPI2TXB = (char) tmp_buf5[3];
+					SPI2TXB = (uint8_t) tmp_buf5[3];
 					break;
 				default:
 					SPI2TXB = CHECKBYTE;
 					break;
 				}
 				break;
-			case GET_MUI:
+			case GET_MUI: // 32-bit integer
 				switch (serial_buffer_ss.raw_index) {
 				case BMC_D0:
-					tmp_buf5[0] = (uint8_t) spi_stat_ss.mui;
-					SPI2TXB = (uint8_t) tmp_buf5[0];
+					SPI2TXB = (uint8_t) spi_stat_ss.mui;
 					break;
 				case BMC_D1:
-					tmp_buf5[1] = (uint8_t) (spi_stat_ss.mui >> 8);
-					SPI2TXB = (uint8_t) tmp_buf5[1];
+					SPI2TXB = (uint8_t) (spi_stat_ss.mui >> 8);
 					break;
 				case BMC_D2:
-					tmp_buf5[2] = (uint8_t) (spi_stat_ss.mui >> 16);
-					SPI2TXB = (uint8_t) tmp_buf5[2];
+					SPI2TXB = (uint8_t) (spi_stat_ss.mui >> 16);
 					break;
 				case BMC_D3:
-					tmp_buf5[3] = (uint8_t) (spi_stat_ss.mui >> 24);
-					SPI2TXB = (uint8_t) tmp_buf5[3];
+					SPI2TXB = (uint8_t) (spi_stat_ss.mui >> 24);
 					break;
 				default:
 					SPI2TXB = CHECKBYTE;
