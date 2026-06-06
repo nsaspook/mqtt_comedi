@@ -86,7 +86,7 @@ for the FMx0 charge controller and for MODBUS power meters
 #include <linux/list.h>
 #include <linux/completion.h>
 
-#define bmc_version "version 1.27 "
+#define bmc_version "version 1.28 "
 #define spibmc_version "version 1.8 "
 
 /*
@@ -1194,7 +1194,11 @@ static int32_t daqbmc_ao_cmdtest(struct comedi_device *dev,
  */
 static void my_timer_ai_callback(struct timer_list *t)
 {
+#ifdef OPIZ3
 	struct daqbmc_private *devpriv = from_timer(devpriv, t, ai_timer);
+#else
+	struct daqbmc_private *devpriv = timer_container_of(devpriv, t, ai_timer);
+#endif
 	struct comedi_device *dev = devpriv->dev;
 
 	if (!dev) {
@@ -2003,9 +2007,9 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		s->insn_bits = daqbmc_di_insn_bits;
 	}
 
-//	if ((retconf & 0x4) == 0x04 || FORCE_47Q84) { // 47Q84 processor
-//		daqbmc_cpu = PICSL12_47;
-//	}
+	//	if ((retconf & 0x4) == 0x04 || FORCE_47Q84) { // 47Q84 processor
+	//		daqbmc_cpu = PICSL12_47;
+	//	}
 
 	/*
 	 * setup the timer to call my_timer_ai_callback
@@ -2052,7 +2056,11 @@ static void daqbmc_detach(struct comedi_device * dev)
 		devpriv->ao_spi->daqbmc_task = NULL;
 	}
 
+#ifdef OPIZ3
 	del_timer_sync(&devpriv->ai_spi->my_timer);
+#else
+	timer_delete_sync(&devpriv->ai_spi->my_timer);
+#endif
 	dev_info(dev->class_dev, "daq_bmc detached\n");
 }
 
