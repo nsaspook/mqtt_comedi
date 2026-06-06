@@ -56,10 +56,10 @@
 void CRC_Initialize(void)
 {
     //CRC Configurations
-    //CRCPLEN 7; 
-    CRCCON1 = 0x07;
-    //CRCDLEN 7; 
-    CRCCON2 = 0x07;
+    //CRCPLEN 15; 
+    CRCCON1 = 0x0F;
+    //CRCDLEN 15; 
+    CRCCON2 = 0x0F;
 
     // Read/Write access to CRCXOR
     CRCCON0bits.SETUP = 0b10;
@@ -68,9 +68,9 @@ void CRC_Initialize(void)
     //CRCXORU 0; 
     CRCXORU = 0x00;
     //CRCXORH 0; 
-    CRCXORH = 0x00;
+    CRCXORH = 0x10;
     //CRCXORL 0; 
-    CRCXORL = 0xD5;
+    CRCXORL = 0x21;
 
     // Read/Write access to CRCOUT
     CRCCON0bits.SETUP = 0b00;
@@ -78,10 +78,10 @@ void CRC_Initialize(void)
     CRCOUTT = 0x00;
     //CRCOUTU 0; 
     CRCOUTU = 0x00;
-    //CRCOUTH 0; 
-    CRCOUTH = 0x00;
-    //CRCOUTL 0; 
-    CRCOUTL = 0x00;
+    //CRCOUTH 255; 
+    CRCOUTH = 0xFF;
+    //CRCOUTL 255; 
+    CRCOUTL = 0xFF;
 
     //CRCDATAT 0; 
     CRCDATAT = 0x00;
@@ -118,10 +118,10 @@ void CRC_Initialize(void)
     // Disabled SCANI CRC interrupt
     PIE8bits.SCANIE = 0;
 
-    //CRCEN enabled; CRCGO disabled; CRCACCM data augmented with 0s; CRCSETUP 0; CRCLENDIAN shift left; 
-    CRCCON0 = 0x90;
-    //SCANEN disabled; TRIGEN disabled; SCANGO disabled; MREG Program Flash Memory; BURSTMD CRC request and Trigger; 
-    SCANCON0 = 0x00;
+    //CRCEN enabled; CRCGO disabled; CRCACCM data not augmented with 0s; CRCSETUP 0; CRCLENDIAN shift left; 
+    CRCCON0 = 0x80;
+    //SCANEN enabled; TRIGEN disabled; SCANGO disabled; MREG Program Flash Memory; BURSTMD CRC request and Trigger; 
+    SCANCON0 = 0x80;
 }
 
 inline void CRC_StartCrc(void)
@@ -181,7 +181,7 @@ uint32_t CRC_GetCalculatedResult(bool reverse, uint32_t xorValue)
         result = CRC_ReverseValue(result);
     }
     result ^= xorValue;
-    return (result & 0xFF);
+    return (result & 0xFFFF);
 }
 
 inline bool CRC_IsCrcBusy(void)

@@ -20,6 +20,7 @@
 extern "C" {
 #endif
 
+//#define HWCRC
 #define EMETER_TRACE
 
 #define MB_MASTER

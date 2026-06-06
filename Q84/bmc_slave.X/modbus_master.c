@@ -159,6 +159,12 @@ uint16_t modbus_rtu_send_msg(void *cc_buffer, const void *modbus_cc_mode, uint16
  */
 uint16_t crc16(volatile uint8_t *buffer, uint16_t buffer_length)
 {
+#ifdef HWCRC // for flash or EEPROM only
+	CRC_SetScannerAddressLimit((uint24_t) & buffer[0], (uint24_t) & buffer[buffer_length-1]);
+	CRC_StartScanner();
+	while (CRC_IsCrcBusy() || CRC_IsScannerBusy());
+	return(uint16_t) CRC_GetCalculatedResult(false, 0x00);
+#else
 	uint8_t crc_hi = 0xFF; /* high CRC byte initialized */
 	uint8_t crc_lo = 0xFF; /* low CRC byte initialized */
 	uint8_t i; /* will index into CRC lookup */
@@ -173,6 +179,7 @@ uint16_t crc16(volatile uint8_t *buffer, uint16_t buffer_length)
 
 	crc16t = (uint16_t) crc_hi << (uint16_t) 8 | (uint16_t) crc_lo;
 	return crc16t;
+#endif
 }
 
 /*

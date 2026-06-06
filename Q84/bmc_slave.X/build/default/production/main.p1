@@ -22,24 +22,24 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n E25077 comm_type CLEAR INIT SEND RECV  ]
 [c E25083 0 1 2 3 4 5 6 7 8 .. ]
 [n E25083 cmd_type G_ID G_DATA1 G_DATA2 G_CONFIG G_PASSWD G_LIGHT G_VERSION G_SERIAL G_LAST  ]
-"143 ./modbus_master.h
+"144 ./modbus_master.h
 [s S3394 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 `uc 1 `us 1 `us 1 `us 1 `ul 1 `ul 1 `ul 1 `ul 1 `ul 1 `Va 1 ]
 [n S3394 M_data blink_lock config stable boot_code power_on pwm_volts error crc_data crc_calc send_count recv_count crc_error to_error sends rx ]
-"157
+"158
 [s S3395 `uc 1 `E25077 1 `E25083 1 `us 1 `us 1 `c 1 `c 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `ul 1 `ul 1 `ul 1 `VS3394 1 `us 1 `us 1 ]
 [n S3395 C_data mcmd cstate modbus_command req_length iam_count trace resets id_ok passwd_ok config_ok data_ok light_ok serial_ok link_ok version_ok tm_ok data_count data_prev c_crc_length M c_crc c_crc_rec ]
 [v F25162 `(c ~T0 @X0 0 tf1`*S3395 ]
-"173
+"174
 [s S3396 `*F25158 1 `*F25160 1 `*F25162 1 ]
 [n S3396 _op_t init_mb_master_timers info_ptr master_controller_work ]
 "331 ./vconfig.h
 [s S3412 `E25499 1 `E25508 1 `uc -> 128 `i `uc -> 160 `i `uc -> 64 `i `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `Vul 1 `l 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `E25508 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `us 1 `Vus 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :4 `uc 1 :4 `uc 1 `S3411 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `Vuc 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `us 1 `us 1 `s 1 `s 1 `uc 1 `uc 1 `s 1 `s 1 `ul 1 `ul 1 `ul 1 `S3396 1 ]
 [n S3412 V_data s_state ui_state buf terminal info ticks systemb tx_total rx_total bt_total br_total brn_total btn_total bmc_do bmc_di utc_ticks testing stream function error abort msg_error msg_ret alarm event ui_sw r_checksum t_checksum checksum_error timer_error ping mode_pwm equip_timeout sequences all_errors ceid bmc_ao rbit wbit ebit failed_send failed_receive response uart llid sid ping_count euart vterm vterm_switch uart_speed_fast ticker flipper queue debug help stack help_id rerror speed_spin set_sequ log_s6f11 log_abort log_char v_tx_line v_rx_line tx_volts rx_volts tx_rs232 rx_rs232 secs_value cmd_value utc_cmd_value di_fail do_fail op ]
-"351 ./modbus_master.h
+"352 ./modbus_master.h
 [v _init_mb_master_timers `(v ~T0 @X0 0 ef ]
-"366
+"367
 [v _em540_version `(v ~T0 @X0 0 ef ]
-"352
+"353
 [v _master_controller_work `(c ~T0 @X0 0 ef1`*S3395 ]
 "240 ./vconfig.h
 [s S3408 `uc 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `s 1 `uc 1 ]
@@ -168,7 +168,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v F24796 `(v ~T0 @X0 0 tf ]
 "555 ./mcc_generated_files/uart3.h
 [v _UART3_SetRxInterruptHandler `(v ~T0 @X0 0 ef1`*F24796 ]
-"349 ./modbus_master.h
+"350 ./modbus_master.h
 [v _my_modbus_rx_32 `(v ~T0 @X0 0 ef ]
 [v F25054 `(v ~T0 @X0 1 tf2`uc`us ]
 "33 ./timers.h
@@ -208,7 +208,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _FM_twosec_io `(v ~T0 @X0 0 ef ]
 "130 ./mcc_generated_files/tmr1.h
 [v _TMR1_StartTimer `(v ~T0 @X0 0 ef ]
-"61 ./modbus_master.h
+"62 ./modbus_master.h
 [v _em_info `uc ~T0 @X0 -> 0 `x e ]
 "35 ./timers.h
 [v _WaitMs `(v ~T0 @X0 0 ef1`us ]
@@ -228,7 +228,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _set_vterm `(uc ~T0 @X0 0 ef1`Cuc ]
 "44
 [v _refresh_lcd `(uc ~T0 @X0 0 ef ]
-"370 ./modbus_master.h
+"371 ./modbus_master.h
 [v _C `S3395 ~T0 @X0 0 e ]
 "424 main.c
 [v _send_mx_cmd `(v ~T0 @X0 0 sf1`*Cus ]
@@ -323,27 +323,27 @@ Version 4.0 HI-TECH Software Intermediate Code
 "443 main.c
 [v _bmc_logger `(v ~T0 @X0 0 ef ]
 [v F25342 `uc ~T0 @X0 -> 12 `i t ]
-"376 ./modbus_master.h
+"377 ./modbus_master.h
 [v _modbus_name `F25342 ~T0 @X0 -> 0 `x e ]
 "72 ./iammeter_rtu.h
 [s S3429 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 ]
 [n S3429 IMD_tmp tps ap1s ap2s ap3s pfl1 pfl2 pfl3 pfsys rpp1s rpp2s rpp3s vl1n vl2n vl3n vl1l2 vl2l3 vl3l1 al1 al2 al3 wl1 wl2 wl3 val1 val2 val3 varl1 varl2 varl3 vlnsys vllsys wsys vasys varsys phaseseq hz ]
 "107
 [v _imd_tmp `S3429 ~T0 @X0 0 e ]
-"223 ./modbus_master.h
+"224 ./modbus_master.h
 [s S3403 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 ]
 [n S3403 EM_tmp vl1n vl2n vl3n vl1l2 vl2l3 vl3l1 al1 al2 al3 wl1 wl2 wl3 val1 val2 val3 varl1 varl2 varl3 vlnsys vllsys wsys vasys varsys pfl1 pfl2 pfl3 pfsys phaseseq hz ]
-"372
+"373
 [v _em_tmp `S3403 ~T0 @X0 0 e ]
-"236
+"237
 [s S3404 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 ]
 [n S3404 EM_data2 kwhpt kvarhpt kwhpp kvarhpp kwhpl1 kwhpl2 kwhpl3 kwhnt kvarhnt kwhnp kvarhnp kvaht kvahp rhm rhmk rhmp rhmkp hz rhlc ]
-"373
+"374
 [v _emt `QS3404 ~T0 @X0 0 e ]
-"209
+"210
 [s S3402 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vs 1 `Vs 1 `Vs 1 `Vs 1 `Vs 1 `Vs 1 ]
 [n S3402 EM_data1 vl1n vl2n vl3n vl1l2 vl2l3 vl3l1 al1 al2 al3 wl1 wl2 wl3 val1 val2 val3 varl1 varl2 varl3 vlnsys vllsys wsys vasys varsys pfl1 pfl2 pfl3 pfsys phaseseq hz ]
-"371
+"372
 [v _em `QS3402 ~T0 @X0 0 e ]
 "72 ./calibr.h
 [v _phy_chan4 `(f ~T0 @X0 0 ef1`us ]
@@ -3049,52 +3049,52 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i _MAX_12V_SYSTEMV
 -> .17.0 `f
 ]
-"74 ./modbus_master.h
+"75 ./modbus_master.h
 [v _TMDELAY `Cuc ~T0 @X0 1 s ]
 [i _TMDELAY
 -> -> 2 `i `uc
 ]
-"75
+"76
 [v _TEDELAY `Cuc ~T0 @X0 1 s ]
 [i _TEDELAY
 -> -> 1 `i `uc
 ]
-"76
+"77
 [v _RDELAY `Cuc ~T0 @X0 1 s ]
 [i _RDELAY
 -> -> 200 `i `uc
 ]
-"77
+"78
 [v _CDELAY `Cuc ~T0 @X0 1 s ]
 [i _CDELAY
 -> -> 40 `i `uc
 ]
-"78
+"79
 [v _QDELAY `Cuc ~T0 @X0 1 s ]
 [i _QDELAY
 -> -> 2 `i `uc
 ]
-"79
+"80
 [v _TODELAY `Cuc ~T0 @X0 1 s ]
 [i _TODELAY
 -> -> 4 `i `uc
 ]
-"80
+"81
 [v _SPACING `Cuc ~T0 @X0 1 s ]
 [i _SPACING
 -> -> 40 `i `uc
 ]
-"81
+"82
 [v _DUPL_DELAY `Cuc ~T0 @X0 1 s ]
 [i _DUPL_DELAY
 -> -> 2 `i `uc
 ]
-"82
+"83
 [v _HZ_DELAY `Cuc ~T0 @X0 1 s ]
 [i _HZ_DELAY
 -> -> 200 `i `uc
 ]
-"271
+"272
 [v _table_crc_hi `Cuc ~T0 @X0 -> 256 `i s ]
 [i _table_crc_hi
 :U ..
@@ -3356,7 +3356,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 64 `i `uc
 ..
 ]
-"301
+"302
 [v _table_crc_lo `Cuc ~T0 @X0 -> 256 `i s ]
 [i _table_crc_lo
 :U ..
@@ -3618,12 +3618,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 64 `i `uc
 ..
 ]
-"341
+"342
 [v _BOFF `Cuc ~T0 @X0 1 s ]
 [i _BOFF
 -> -> 0 `i `uc
 ]
-"342
+"343
 [v _BON `Cuc ~T0 @X0 1 s ]
 [i _BON
 -> -> 255 `i `uc
@@ -8220,12 +8220,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 [a 68C 37 115 0 ]
 [a 5C 79 70 70 76 73 78 69 0 ]
 [a 3C 68 73 83 65 66 76 69 0 ]
-[a 1C 74 117 110 32 32 50 32 50 48 50 54 0 ]
+[a 1C 74 117 110 32 32 53 32 50 48 50 54 0 ]
 [a 26C 53 55 81 56 52 0 ]
 [a 29C 53 55 81 56 52 0 ]
 [a 27C 52 55 81 56 52 0 ]
 [a 30C 52 55 81 56 52 0 ]
-[a 2C 49 56 58 52 57 58 53 51 0 ]
+[a 2C 48 57 58 53 53 58 52 51 0 ]
 [a 20C 86 48 46 55 49 0 ]
 [a 23C 86 48 46 55 49 0 ]
 [a 34C 86 48 46 55 49 0 ]

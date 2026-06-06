@@ -132,7 +132,7 @@ void TMR0_Reload(void)
     TMR0L = (uint8_t) timer0ReloadVal16bit;
 }
 
-void __interrupt(irq(TMR0),base(8)) TMR0_ISR()
+void __interrupt(irq(TMR0),base(8),low_priority) TMR0_ISR()
 {
     static volatile uint16_t CountCallBack = 0;
 

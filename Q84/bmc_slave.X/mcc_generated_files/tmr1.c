@@ -162,7 +162,7 @@ uint8_t TMR1_CheckGateValueStatus(void)
     return (T1GCONbits.T1GVAL);
 }
 
-void __interrupt(irq(TMR1),base(8)) TMR1_ISR()
+void __interrupt(irq(TMR1),base(8),low_priority) TMR1_ISR()
 {
     static volatile unsigned int CountCallBack = 0;
 
