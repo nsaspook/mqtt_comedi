@@ -86,8 +86,11 @@ for the FMx0 charge controller and for MODBUS power meters
 #include <linux/list.h>
 #include <linux/completion.h>
 
-#define bmc_version "version 1.28 "
-#define spibmc_version "version 1.8 "
+#define bmc_version "version 1.29 "
+#define spibmc_version "version 1.9 "
+
+#define KERNEL7
+//#define SPI_DEBUG
 
 /*
  * Look for Soc board types using C preprocessor defines
@@ -387,7 +390,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
 #ifdef OPIZ3
-		.max_speed_hz = 4000000,
+		.max_speed_hz = 12000000,
 #else
 		.max_speed_hz = 6000000,
 #endif
@@ -405,7 +408,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
 #ifdef OPIZ3
-		.max_speed_hz = 4000000,
+		.max_speed_hz = 12000000,
 #else
 		.max_speed_hz = 6000000,
 #endif
@@ -1195,7 +1198,11 @@ static int32_t daqbmc_ao_cmdtest(struct comedi_device *dev,
 static void my_timer_ai_callback(struct timer_list *t)
 {
 #ifdef OPIZ3
+#ifdef KERNEL7
+	struct daqbmc_private *devpriv = timer_container_of(devpriv, t, ai_timer);
+#else
 	struct daqbmc_private *devpriv = from_timer(devpriv, t, ai_timer);
+#endif
 #else
 	struct daqbmc_private *devpriv = timer_container_of(devpriv, t, ai_timer);
 #endif
@@ -1771,8 +1778,16 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		 * probe/init hardware for special cases that may need
 		 * many SPI transfers
 		 */
+#ifdef SPI_DEBUG
+		dev_info(dev->class_dev, "Probing for SPI using chip select : 0x%1x\n",
+			thisboard->bmc_cs);
+#endif
 #ifdef OPIZ3
+#ifdef KERNEL7
+		if (*pdata->slave.spi->chip_select == thisboard->bmc_cs) {
+#else
 		if (pdata->slave.spi->chip_select == thisboard->bmc_cs) {
+#endif
 #else
 		if (*pdata->slave.spi->chip_select == thisboard->bmc_cs) {
 #endif
@@ -1920,7 +1935,8 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	 * Probe the BMCboard existence and for configuration data
 	 * set BMC board configuration in retconf
 	 */
-	retconf = daq_code;
+	//	retconf = daq_code;
+	retconf = daqbmc_bmc_get_config(dev);
 
 	if (FORCE_57Q84_ALL) {
 		retconf = 0x00;
@@ -2007,10 +2023,6 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		s->insn_bits = daqbmc_di_insn_bits;
 	}
 
-	//	if ((retconf & 0x4) == 0x04 || FORCE_47Q84) { // 47Q84 processor
-	//		daqbmc_cpu = PICSL12_47;
-	//	}
-
 	/*
 	 * setup the timer to call my_timer_ai_callback
 	 */
@@ -2057,7 +2069,11 @@ static void daqbmc_detach(struct comedi_device * dev)
 	}
 
 #ifdef OPIZ3
+#ifdef KERNEL7
+	timer_delete_sync(&devpriv->ai_spi->my_timer);
+#else
 	del_timer_sync(&devpriv->ai_spi->my_timer);
+#endif
 #else
 	timer_delete_sync(&devpriv->ai_spi->my_timer);
 #endif
@@ -2118,7 +2134,11 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 	 */
 
 #ifdef OPIZ3
+#ifdef KERNEL7
+	if ((uint32_t) * spi->chip_select == CS_BMC) {
+#else
 	if ((uint32_t) spi->chip_select == CS_BMC) {
+#endif
 #else
 	if ((uint32_t) * spi->chip_select == CS_BMC) {
 #endif
@@ -2163,7 +2183,11 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 
 	/* setup Comedi part of driver */
 #ifdef OPIZ3
+#ifdef KERNEL7
+	if ((uint32_t) * spi->chip_select == CS_BMC) {
+#else
 	if ((uint32_t) spi->chip_select == CS_BMC) {
+#endif
 #else
 	if ((uint32_t) * spi->chip_select == CS_BMC) {
 #endif
@@ -2258,6 +2282,7 @@ static int spibmc_of_check(struct device * dev)
 
 static const struct of_device_id spibmc_dt_ids[] = {
 	{ .compatible = "orangepi,spi-bmc", .data = &spibmc_of_check},
+	{ .compatible = "orangepi-zero3,spi-bmc", .data = &spibmc_of_check},
 	{ .compatible = "cisco,spi-petra", .data = &spibmc_of_check},
 	{ .compatible = "dh,dhcom-board", .data = &spibmc_of_check},
 	{ .compatible = "elgin,jg10309-01", .data = &spibmc_of_check},
@@ -2359,7 +2384,11 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 		"BMCboard SPI setup: spi cs %d: %d Hz: spi mode 0x%x: "
 		"probing for controller device %s\n",
 #ifdef OPIZ3
+#ifdef KERNEL7
+		(int) *spi_bmc->spi->chip_select,
+#else
 		(int) spi_bmc->spi->chip_select,
+#endif
 #else
 		(int) *spi_bmc->spi->chip_select,
 #endif
