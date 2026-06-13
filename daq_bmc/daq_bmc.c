@@ -89,7 +89,7 @@ for the FMx0 charge controller and for MODBUS power meters
 #define bmc_version "version 1.29 "
 #define spibmc_version "version 1.9 "
 
-#define KERNEL7
+//#define KERNEL7
 //#define SPI_DEBUG
 
 /*
@@ -237,9 +237,17 @@ static const uint32_t SMP_CORES = 4;
 static const uint32_t CONF_Q84 = 3;
 static const uint32_t MEM_BLOCKS = 8; // 0..3 CLCD display lines, 4..7 serial comms for FMx0, MODBUS, etc ...
 #ifdef RPIDAQ
+#ifdef KERNEL7
+static const uint32_t SPI_GAP_LONG = 12000; // time for the Q84 to process each received SPI byte
+#else
 static const uint32_t SPI_GAP_LONG = 22000; // time for the Q84 to process each received SPI byte
+#endif
+#else
+#ifdef KERNEL7
+static const uint32_t SPI_GAP_LONG = 8000; // time for the Q84 to process each received SPI byte
 #else
 static const uint32_t SPI_GAP_LONG = 12000; // time for the Q84 to process each received SPI byte
+#endif
 #endif
 
 static const uint32_t PIC18_CONVD_57Q84 = 24;
