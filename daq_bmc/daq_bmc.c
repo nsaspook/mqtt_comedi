@@ -89,7 +89,7 @@ for the FMx0 charge controller and for MODBUS power meters
 #define bmc_version "version 1.29 "
 #define spibmc_version "version 1.9 "
 
-//#define KERNEL7
+#define KERNEL7
 //#define SPI_DEBUG
 
 /*
@@ -398,7 +398,11 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
 #ifdef OPIZ3
+#ifdef KERNEL7
 		.max_speed_hz = 12000000,
+#else
+		.max_speed_hz = 4000000,
+#endif
 #else
 		.max_speed_hz = 6000000,
 #endif
@@ -416,7 +420,11 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
 #ifdef OPIZ3
+#ifdef KERNEL7
 		.max_speed_hz = 12000000,
+#else
+		.max_speed_hz = 4000000,
+#endif
 #else
 		.max_speed_hz = 6000000,
 #endif
