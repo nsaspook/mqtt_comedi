@@ -90,7 +90,7 @@ for the FMx0 charge controller and for MODBUS power meters
 #define spibmc_version "version 1.9 "
 
 #define KERNEL7
-//#define SPI_DEBUG
+#define SPI_DEBUG
 
 /*
  * Look for Soc board types using C preprocessor defines
@@ -421,7 +421,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
 #ifdef OPIZ3
 #ifdef KERNEL7
-		.max_speed_hz = 12000000,
+		.max_speed_hz = 6000000,
 #else
 		.max_speed_hz = 4000000,
 #endif
@@ -610,6 +610,7 @@ static void daqbmc_ao_put_samples(struct comedi_device *,
 	struct comedi_subdevice *,
 	uint16_t *);
 static int32_t bmc_spi_exchange(struct comedi_device *, struct bmc_packet_type *);
+static int32_t bmc_spi_setspeed(struct comedi_device *, uint32_t);
 static int32_t bmc_spi_packet(struct spi_device *, struct bmc_packet_type *, ktime_t);
 static int32_t daqbmc_bmc_get_config(struct comedi_device *);
 static uint32_t daqbmc_bmc_get_mui(struct comedi_device *);
@@ -646,6 +647,26 @@ static int32_t bmc_spi_packet(struct spi_device *spi, struct bmc_packet_type * p
 	spi_bus_unlock(spi->controller);
 	__set_current_state(TASK_UNINTERRUPTIBLE);
 	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
+
+	return ret;
+}
+
+/*
+ * set spi clock speed
+ */
+static int32_t bmc_spi_setspeed(struct comedi_device *dev, uint32_t spi_speed)
+{
+	struct comedi_subdevice *s = dev->read_subdev;
+	struct spi_param_type *spi_data = s->private;
+	struct spi_device *spi = spi_data->spi;
+	int32_t ret = 0;
+
+	if (spi == NULL) {
+		ret = -ESHUTDOWN;
+		return ret;
+	}
+
+	spi->max_speed_hz = spi_speed;
 
 	return ret;
 }
@@ -1994,11 +2015,12 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		do_conf = false;
 		daqbmc_conf = PICSL12_AO;
 		dev->n_subdevices = daqbmc_devices[daqbmc_conf].n_subdev; // only show the analog devices
+		bmc_spi_setspeed(dev, daqbmc_devices[daqbmc_conf].max_speed_hz);
 		dev_info(dev->class_dev,
-			"BMCBoard Digital DI DO Disabled, controller device %s, retconf:0X%X \n", daqbmc_devices[daqbmc_conf].name, retconf);
+			"BMCBoard Digital DI DO Disabled, controller device %s, retconf:0X%X, SPI speed %u \n", daqbmc_devices[daqbmc_conf].name, retconf, daqbmc_devices[daqbmc_conf].max_speed_hz);
 	}
 
-	retconf = daqbmc_bmc_get_mui(dev);
+	retconf = (daqbmc_bmc_get_mui(dev) & 0xffffff);
 	if ((retconf > MUI_RANGE_L) && (retconf < MUI_RANGE_H)) {
 		dev_info(dev->class_dev, "BMCBoard : MUI 0X%X \n", retconf);
 	} else {
