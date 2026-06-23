@@ -86,7 +86,7 @@ for the FMx0 charge controller and for MODBUS power meters
 #include <linux/list.h>
 #include <linux/completion.h>
 
-#define bmc_version "version 1.29 "
+#define bmc_version "version 1.30 "
 #define spibmc_version "version 1.9 "
 
 #define KERNEL7
@@ -379,6 +379,7 @@ struct daqbmc_device {
 	int32_t ao_subdev_flags;
 	uint32_t min_acq_ns;
 	uint32_t rate_min;
+	uint32_t init_speed_hz;
 	uint32_t max_speed_hz;
 	uint32_t spi_mode;
 	uint32_t spi_bpw;
@@ -406,6 +407,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 #else
 		.max_speed_hz = 6000000,
 #endif
+		.init_speed_hz = 4000000,
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
 		.spi_mode = 3,
@@ -428,6 +430,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 #else
 		.max_speed_hz = 6000000,
 #endif
+		.init_speed_hz = 4000000,
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
 		.spi_mode = 3,
@@ -441,6 +444,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.name = "special",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_CMD_READ | SDF_COMMON,
 		.max_speed_hz = 64000000,
+		.init_speed_hz = 4000000,
 		.min_acq_ns = 30000,
 		.rate_min = 30000,
 		.spi_mode = 3,
@@ -1971,8 +1975,10 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	/*
 	 * Probe the BMCboard existence and for configuration data
 	 * set BMC board configuration in retconf
+	 * use init SPI speed during this step
 	 */
-	//	retconf = daq_code;
+
+	bmc_spi_setspeed(dev, daqbmc_devices[daqbmc_conf].init_speed_hz);
 	retconf = daqbmc_bmc_get_config(dev);
 
 	if (FORCE_57Q84_ALL) {
@@ -2010,6 +2016,8 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	 * using retconf value from the BMC board
 	 */
 	retconf = daqbmc_bmc_get_config(dev);
+	// use operational SPI speed
+	bmc_spi_setspeed(dev, daqbmc_devices[daqbmc_conf].max_speed_hz);
 	if ((retconf & 0x3) != 0x00) { // sub-device codes from the Q84
 		di_conf = false;
 		do_conf = false;
