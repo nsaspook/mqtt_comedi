@@ -1881,7 +1881,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		dev_err(dev->class_dev, "invalid Pi board revision! %u\n",
 			devpriv->board_rev);
 		ret = -EINVAL;
-		goto daqbmc_kfree_rx_exit;
+		goto daqbmc_kfree_exit;
 	}
 
 #ifdef SPI_DEBUG
@@ -1895,7 +1895,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	} else {
 		dev_err(dev->class_dev, "board revision detection failed!\n");
 		ret = -EINVAL;
-		goto daqbmc_kfree_rx_exit;
+		goto daqbmc_kfree_exit;
 	}
 
 	/*
@@ -1905,7 +1905,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	ret = comedi_alloc_subdevices(dev, devpriv->num_subdev);
 	if (ret) {
 		dev_err(dev->class_dev, "alloc subdevice(s) failed!\n");
-		goto daqbmc_kfree_rx_exit;
+		goto daqbmc_kfree_exit;
 	}
 
 	/* daq_bmc ai */
@@ -1969,7 +1969,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	if (ret) {
 		dev_err(dev->class_dev,
 			"alloc AO subdevice readback failed!\n");
-		goto daqbmc_kfree_rx_exit;
+		goto daqbmc_kfree_exit;
 	}
 
 	/*
@@ -1996,14 +1996,14 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		dev_err(dev->class_dev,
 			"BMCBoard not detected 0X%X, unloading driver \n", retconf);
 		ret = -EINVAL;
-		goto daqbmc_kfree_rx_exit;
+		goto daqbmc_kfree_exit;
 	}
 
 	if (retconf == CHECKBYTE) { // bad ID from daq_bmc board
 		dev_err(dev->class_dev,
-			"BMCBoard config not detected 0X%X, unloading driver \n", retconf);
-		ret = -EINVAL;
-		goto daqbmc_kfree_rx_exit;
+			"BMCBoard expected config byte not detected 0X%X\n", retconf);
+		//		ret = -EINVAL;
+		//		goto daqbmc_kfree_rx_exit;
 	}
 #ifdef SPI_DEBUG
 	dev_info(dev->class_dev,
@@ -2082,7 +2082,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		if (ret) {
 			dev_err(dev->class_dev, "cpu thread creation failed, unloading driver \n");
 			ret = -EINVAL;
-			goto daqbmc_kfree_rx_exit;
+			goto daqbmc_kfree_exit;
 		}
 	}
 	ret = 0; // complete without errors
