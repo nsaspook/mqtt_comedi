@@ -90,6 +90,13 @@ for the FMx0 charge controller and for MODBUS power meters
 #define spibmc_version "version 1.9 "
 
 #define KERNEL7
+/*
+ * random freezing issues, try this
+ * Edit /etc/sysctl.conf and add this at the bottom
+   vm.zone_reclaim_mode=2
+   vm.min_free_kbytes=45056
+   Reboot
+ */
 #define SPI_DEBUG
 
 /*
@@ -649,8 +656,9 @@ static int32_t bmc_spi_packet(struct spi_device *spi, struct bmc_packet_type * p
 	spi_bus_lock(spi->controller);
 	ret = spi_sync_locked(spi, packet->m);
 	spi_bus_unlock(spi->controller);
-	__set_current_state(TASK_UNINTERRUPTIBLE);
+	__set_current_state(TASK_INTERRUPTIBLE);
 	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
+	schedule();
 
 	return ret;
 }
@@ -799,9 +807,10 @@ static int32_t daqbmc_ao_thread_function(void *data)
 		if (likely(test_bit(AO_CMD_RUNNING, &devpriv->state_bits))) {
 			daqbmc_handle_ao_eoc(dev, s);
 			pdata->kmin = ktime_set(0, pdata->delay_nsecs);
-			__set_current_state(TASK_UNINTERRUPTIBLE);
+			__set_current_state(TASK_INTERRUPTIBLE);
 			schedule_hrtimeout_range(&pdata->kmin, 0,
 				HRTIMER_MODE_REL_PINNED);
+			schedule();
 		} else {
 			clear_bit(SPI_AO_RUN, &devpriv->state_bits);
 			smp_mb__after_atomic();
