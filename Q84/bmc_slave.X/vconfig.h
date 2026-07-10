@@ -21,7 +21,7 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.71"
+#define VER	"V0.72"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -83,6 +83,7 @@ extern "C" {
 	 * V0.69 cleanup unused debug variables
 	 * V0.70 cleanup slaveo.c
 	 * V0.71 calibration value error on cold/power up boot. Reset sends correct value for scalar5
+	 * V0.72 XC8-4.0 -O3 optimizations
 	 */
 
 	/*
