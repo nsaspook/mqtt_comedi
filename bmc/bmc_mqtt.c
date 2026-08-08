@@ -2,6 +2,7 @@
 #include <math.h>
 
 #define COEF            12.0f
+#define channel_BADS	0xe
 
 static const char *const FW_Date = __DATE__;
 static const char *const FW_Time = __TIME__;
@@ -762,6 +763,10 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			if ((bmc.BOARD == bmcboard) && SERIAL_OPEN) {
 				bads++;
 				fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, bads %d, Overruns %d validate failure code %d\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, tmp_test_ptr, ok_data, bads, overrun, validate_failure);
+				if (bads > 100) {
+					bads=0;
+					get_adc_volts(channel_BADS);
+				}
 			} else {
 				fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.4x DI 0x%.6x\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, datain);
 			}

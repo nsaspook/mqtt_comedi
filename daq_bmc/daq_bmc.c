@@ -85,11 +85,13 @@ for the FMx0 charge controller and for MODBUS power meters
 #include <linux/timer.h>
 #include <linux/list.h>
 #include <linux/completion.h>
+#include <linux/gpio/consumer.h>
 
 #define bmc_version "version 1.30 "
 #define spibmc_version "version 1.9 "
 
 #define KERNEL7
+//#define LED_LINK
 /*
  * random freezing issues, try this
  * Edit /etc/sysctl.conf and add this at the bottom
@@ -98,6 +100,12 @@ for the FMx0 charge controller and for MODBUS power meters
    Reboot
  */
 #define SPI_DEBUG
+#ifdef LED_LINK
+#define RED_LED 0
+#define GREEN_LED 1
+
+static struct gpio_desc *red_led;
+#endif
 
 /*
  * Look for Soc board types using C preprocessor defines
@@ -407,7 +415,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
 #ifdef OPIZ3
 #ifdef KERNEL7
-		.max_speed_hz = 12000000,
+		.max_speed_hz = 6000000,
 #else
 		.max_speed_hz = 4000000,
 #endif
@@ -698,6 +706,10 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 		ret = -ESHUTDOWN;
 		return ret;
 	}
+#ifdef LED_LINK
+	gpiod_set_value(red_led, 1);
+	gpiod_put(red_led);
+#endif
 	/*
 	 * use nine spi transfers for the complete SPI transaction
 	 * we need the inter-byte processing time on the slave side
@@ -772,7 +784,10 @@ static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_typ
 	packet->one_t.cs_change = false;
 	packet->one_t.len = 1;
 	ret += bmc_spi_packet(spi, packet, slower);
-
+#ifdef LED_LINK
+	gpiod_set_value(red_led, 0);
+	gpiod_put(red_led);
+#endif
 	return ret;
 }
 
@@ -1923,6 +1938,17 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 			"hunk ai transfers enabled, length: %i\n",
 			hunk_len);
 	}
+
+#ifdef LED_LINK
+	red_led = gpiod_get(NULL, "gpio12", GPIOD_OUT_HIGH);
+	if (IS_ERR(red_led)) {
+		printk(KERN_ERR "RED LED GPIO request failed\n");
+	} else {
+		printk(KERN_ERR "RED LED GPIO request okay\n");
+	}
+	gpiod_direction_output(red_led, 0);
+#endif
+
 	s = &dev->subdevices[SUBDEV_AI]; // AI setup
 	s->private = devpriv->ai_spi;
 	s->type = COMEDI_SUBD_AI;
