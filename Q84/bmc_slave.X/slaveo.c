@@ -358,6 +358,10 @@ void slaveo_rx_isr(void)
 			case 0xd:
 				channel = channel_FVR_Buffer2;
 				break;
+			case 0xe: // SPI bads count reset command
+				channel = channel_BADS;
+				RESET();
+				break;
 			case 0xf:
 				SPI1CON0bits.EN = 0;
 				MLED_SetHigh();

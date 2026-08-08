@@ -22,7 +22,7 @@ extern "C" {
 #include "vconfig.h"
 #include "calibr.h"
 
-#define SLAVEO_DRIVER   "V0.92"
+#define SLAVEO_DRIVER   "V0.93"
 #define SLAVE_DEBUG
 #define CHECKBYTE       0x57
 #define CHECKMARK	0x1957
@@ -32,6 +32,7 @@ extern "C" {
 #define PACKET_BUF_SIZ	16
 #define RSTRING_BUF_SIZ	81
 #define MAX_BMC_BUF	512
+#define channel_BADS	0xe
 	
 #define ISR_TIMEMARK	250
 
