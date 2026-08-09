@@ -2,7 +2,7 @@
 #include <math.h>
 
 #define COEF            12.0f
-#define channel_BADS	0xe
+#define channel_BADS 0xe
 
 static const char *const FW_Date = __DATE__;
 static const char *const FW_Time = __TIME__;
@@ -228,7 +228,7 @@ static struct ha_csv_type R = {
 	.boot_once = true,
 	.boot_updates = 0,
 }; // results from Q84 board
-static uint32_t goods = 0, bads = 0;
+static uint32_t goods = 0, bads = 0, bads_resets = 0;
 static bool ok_data = false, got_cal_data = false;
 
 /** \file bmc_mqtt.c
@@ -765,9 +765,10 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		} else {
 			if ((bmc.BOARD == bmcboard) && SERIAL_OPEN) {
 				bads++;
-				fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, bads %d, Overruns %d validate failure code %d\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, tmp_test_ptr, ok_data, bads, overrun, validate_failure);
-				if (bads > 100) {
+				fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, bads %d, %d, Overruns %d validate failure code %d\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, tmp_test_ptr, ok_data, bads, bads_resets, overrun, validate_failure);
+				if (bads > KAI) {
 					bads = 0;
+					bads_resets++;
 					get_adc_volts(channel_BADS);
 				}
 			} else {
