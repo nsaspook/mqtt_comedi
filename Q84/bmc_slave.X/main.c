@@ -6,7 +6,7 @@
  * LED4 GREEN	5VDC Power
  *
  * SPI1 MODE 3 MASTER to DISPLAY and MODE 1 to DIO SLAVE devices
- * SPI2 MODE 3 SLAVE to OPi controller MASTER SPI port
+ * SPI2 MODE 3 SLAVE to OPi/RPi controller MASTER SPI port
  */
 
 /*
@@ -108,7 +108,7 @@
 #pragma config ZCD = OFF        // ZCD Disable bit (ZCD module is disabled. ZCD can be enabled by setting the ZCDSEN bit of ZCDCON)
 #pragma config PPS1WAY = OFF    // PPSLOCK bit One-Way Set Enable bit (PPSLOCKED bit can be set and cleared repeatedly (subject to the unlock sequence))
 #pragma config STVREN = ON      // Stack Full/Underflow Reset Enable bit (Stack full/underflow will cause Reset)
-#pragma config LVP = OFF        // Low Voltage Programming Enable bit (HV on MCLR/VPP must be used for programming)
+#pragma config LVP = ON        // Low Voltage Programming Enable bit (HV on MCLR/VPP must be used for programming)
 #pragma config XINST = OFF      // Extended Instruction Set Enable bit (Extended Instruction Set and Indexed Addressing Mode disabled)
 
 // CONFIG6
