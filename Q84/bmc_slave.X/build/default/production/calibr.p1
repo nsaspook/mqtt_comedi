@@ -4088,12 +4088,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 "20
 [v _HV_SCALE4_6 `Cf ~T0 @X0 1 s ]
 [i _HV_SCALE4_6
--> .64.2500 `f
+-> .64.2920 `f
 ]
 "21
 [v _HV_SCALE5_6 `Cf ~T0 @X0 1 s ]
 [i _HV_SCALE5_6
--> .64.2501 `f
+-> .64.3890 `f
 ]
 "22
 [v _HV_SCALE4_7 `Cf ~T0 @X0 1 s ]
@@ -4247,20 +4247,28 @@ Version 4.0 HI-TECH Software Intermediate Code
 "111
 [e :U 3425 ]
 "112
-[e = . _ha_daq_calib 2 -> _HV_SCALE4_2 `d ]
+[e = . _ha_daq_calib 2 -> _HV_SCALE4_6 `d ]
 "113
-[e = . _ha_daq_calib 4 -> _HV_SCALE5_2 `d ]
+[e = . _ha_daq_calib 4 -> _HV_SCALE5_6 `d ]
 "114
 [e $U 3415  ]
 "115
 [e :U 3426 ]
 "116
-[e = . _ha_daq_calib 2 -> _HV_SCALAR4 `d ]
+[e = . _ha_daq_calib 2 -> _HV_SCALE4_2 `d ]
 "117
-[e = . _ha_daq_calib 4 -> _HV_SCALAR5 `d ]
+[e = . _ha_daq_calib 4 -> _HV_SCALE5_2 `d ]
 "118
 [e $U 3415  ]
 "119
+[e :U 3427 ]
+"120
+[e = . _ha_daq_calib 2 -> _HV_SCALAR4 `d ]
+"121
+[e = . _ha_daq_calib 4 -> _HV_SCALAR5 `d ]
+"122
+[e $U 3415  ]
+"123
 }
 [e $U 3415  ]
 [e :U 3416 ]
@@ -4273,300 +4281,301 @@ Version 4.0 HI-TECH Software Intermediate Code
  , $ -> -> -> 366379 `l `o `uo 3422
  , $ -> -> -> 400821 `l `o `uo 3423
  , $ -> -> -> 374568 `l `o `uo 3424
- , $ -> -> -> 372267 `l `o `uo 3425
- 3426 ]
+ , $ -> -> -> 371240 `l `o `uo 3425
+ , $ -> -> -> 372267 `l `o `uo 3426
+ 3427 ]
 [e :U 3415 ]
-"125
-[e $ ! != -> ( _read_cal_data ..  `i -> 0 `i 3427  ]
+"129
+[e $ ! != -> ( _read_cal_data ..  `i -> 0 `i 3428  ]
 {
-"126
+"130
 [e = _em_model . _r_cal 11 ]
-"127
-}
-[e :U 3427 ]
-"132
-[e $ ! && == -> . . _PORTFbits 0 5 `i -> 0 `i == -> . . _PORTFbits 0 4 `i -> 1 `i 3428  ]
-{
-"133
-[e = _em_model . `E25586 1 ]
-"134
+"131
 }
 [e :U 3428 ]
-"135
-[e $ ! && == -> . . _PORTFbits 0 5 `i -> 0 `i == -> . . _PORTFbits 0 4 `i -> 0 `i 3429  ]
-{
 "136
-[e = _em_model . `E25586 2 ]
+[e $ ! && == -> . . _PORTFbits 0 5 `i -> 0 `i == -> . . _PORTFbits 0 4 `i -> 1 `i 3429  ]
+{
 "137
+[e = _em_model . `E25586 1 ]
+"138
 }
 [e :U 3429 ]
 "139
-[e $ ! && == -> . . _PORTFbits 0 5 `i -> 1 `i == -> . . _PORTFbits 0 4 `i -> 0 `i 3430  ]
+[e $ ! && == -> . . _PORTFbits 0 5 `i -> 0 `i == -> . . _PORTFbits 0 4 `i -> 0 `i 3430  ]
 {
 "140
-[e = _em_model . `E25586 3 ]
+[e = _em_model . `E25586 2 ]
 "141
 }
 [e :U 3430 ]
 "143
+[e $ ! && == -> . . _PORTFbits 0 5 `i -> 1 `i == -> . . _PORTFbits 0 4 `i -> 0 `i 3431  ]
+{
+"144
+[e = _em_model . `E25586 3 ]
+"145
+}
+[e :U 3431 ]
+"147
 [e ) _em_model ]
 [e $UE 3414  ]
-"144
+"148
 [e :UE 3414 ]
 }
-"149
+"153
 [v _phy_chan4 `(f ~T0 @X0 1 ef1`us ]
-"150
+"154
 {
 [e :U _phy_chan4 ]
-"149
-[v _value `us ~T0 @X0 1 r1 ]
-"150
-[f ]
-"151
-[e $ ! != -> _value `ui -> -> 0 `i `ui 3432  ]
-{
-"152
-[e ) -> * -> / -> _value `f _ADC_SCALE `d . _ha_daq_calib 2 `f ]
-[e $UE 3431  ]
 "153
-}
-[e $U 3433  ]
-[e :U 3432 ]
-{
+[v _value `us ~T0 @X0 1 r1 ]
 "154
-[e ) -> .0.00001 `f ]
-[e $UE 3431  ]
+[f ]
 "155
-}
-[e :U 3433 ]
+[e $ ! != -> _value `ui -> -> 0 `i `ui 3433  ]
+{
 "156
-[e :UE 3431 ]
+[e ) -> * -> / -> _value `f _ADC_SCALE `d . _ha_daq_calib 2 `f ]
+[e $UE 3432  ]
+"157
 }
+[e $U 3434  ]
+[e :U 3433 ]
+{
 "158
-[v _phy_chan5 `(f ~T0 @X0 1 ef1`us ]
+[e ) -> .0.00001 `f ]
+[e $UE 3432  ]
 "159
+}
+[e :U 3434 ]
+"160
+[e :UE 3432 ]
+}
+"162
+[v _phy_chan5 `(f ~T0 @X0 1 ef1`us ]
+"163
 {
 [e :U _phy_chan5 ]
-"158
-[v _value `us ~T0 @X0 1 r1 ]
-"159
-[f ]
-"160
-[e $ ! != -> _value `ui -> -> 0 `i `ui 3435  ]
-{
-"161
-[e ) -> * -> / -> _value `f _ADC_SCALE `d . _ha_daq_calib 4 `f ]
-[e $UE 3434  ]
 "162
-}
-[e $U 3436  ]
-[e :U 3435 ]
-{
+[v _value `us ~T0 @X0 1 r1 ]
 "163
-[e ) -> .0.00001 `f ]
-[e $UE 3434  ]
+[f ]
 "164
-}
-[e :U 3436 ]
+[e $ ! != -> _value `ui -> -> 0 `i `ui 3436  ]
+{
 "165
-[e :UE 3434 ]
+[e ) -> * -> / -> _value `f _ADC_SCALE `d . _ha_daq_calib 4 `f ]
+[e $UE 3435  ]
+"166
 }
-"170
+[e $U 3437  ]
+[e :U 3436 ]
+{
+"167
+[e ) -> .0.00001 `f ]
+[e $UE 3435  ]
+"168
+}
+[e :U 3437 ]
+"169
+[e :UE 3435 ]
+}
+"174
 [v _read_cal_data `(a ~T0 @X0 1 ef ]
-"171
+"175
 {
 [e :U _read_cal_data ]
 [f ]
-"172
+"176
 [v _x `us ~T0 @X0 1 a ]
 [e = _x -> -> 0 `i `us ]
 [v _y `us ~T0 @X0 1 a ]
-"173
+"177
 [v _r_cal_ptr `*uc ~T0 @X0 1 a ]
 [v _crcVal_save `uc ~T0 @X0 1 a ]
-"175
+"179
 [e = _y -> -> # _r_cal `ui `us ]
-"176
+"180
 [e = _r_cal_ptr -> &U _r_cal `*uc ]
-"178
+"182
 [e ( _CRC_Initialize ..  ]
-"181
-[e ( _CRC_StartCrc ..  ]
-"183
-[e :U 3440 ]
-{
-"184
-[e = *U + _r_cal_ptr * -> _x `ux -> -> # *U _r_cal_ptr `ui `ux ( _DATAEE_ReadByte (1 _x ]
 "185
-}
-[e $ < -> =+ _x -> -> 1 `i `us `ui -> _y `ui 3440  ]
-[e :U 3439 ]
-"186
-[e = _crcVal_save . _r_cal 13 ]
-"188
-[e $ ! == -> . _r_cal 12 `ui -> -> 6487 `i `ui 3441  ]
-{
-"189
-[e = . _r_cal 13 -> -> 66 `i `uc ]
-"190
-[e = _x -> -> 0 `i `us ]
-"192
-[e :U 3444 ]
-{
-"193
-[e ( _CRC_WriteData (1 -> *U + _r_cal_ptr * -> _x `ux -> -> # *U _r_cal_ptr `ui `ux `ul ]
-"194
-[e $U 3445  ]
-[e :U 3446 ]
-[e :U 3445 ]
-[e $ != -> ( _CRC_IsCrcBusy ..  `i -> 0 `i 3446  ]
-[e :U 3447 ]
-"195
-}
-[e $ < -> =+ _x -> -> 1 `i `us `ui -> _y `ui 3444  ]
-[e :U 3443 ]
-"196
-[e $ ! != ( _CRC_GetCalculatedResult (2 , -> -> 0 `i `a -> -> -> 0 `i `l `ul -> _crcVal_save `ul 3448  ]
-"197
-[e ) -> -> 0 `i `a ]
-[e $UE 3437  ]
-[e :U 3448 ]
-"198
-}
-[e $U 3449  ]
+[e ( _CRC_StartCrc ..  ]
+"187
 [e :U 3441 ]
 {
+"188
+[e = *U + _r_cal_ptr * -> _x `ux -> -> # *U _r_cal_ptr `ui `ux ( _DATAEE_ReadByte (1 _x ]
+"189
+}
+[e $ < -> =+ _x -> -> 1 `i `us `ui -> _y `ui 3441  ]
+[e :U 3440 ]
+"190
+[e = _crcVal_save . _r_cal 13 ]
+"192
+[e $ ! == -> . _r_cal 12 `ui -> -> 6487 `i `ui 3442  ]
+{
+"193
+[e = . _r_cal 13 -> -> 66 `i `uc ]
+"194
+[e = _x -> -> 0 `i `us ]
+"196
+[e :U 3445 ]
+{
+"197
+[e ( _CRC_WriteData (1 -> *U + _r_cal_ptr * -> _x `ux -> -> # *U _r_cal_ptr `ui `ux `ul ]
+"198
+[e $U 3446  ]
+[e :U 3447 ]
+[e :U 3446 ]
+[e $ != -> ( _CRC_IsCrcBusy ..  `i -> 0 `i 3447  ]
+[e :U 3448 ]
 "199
-[e ) -> -> 0 `i `a ]
-[e $UE 3437  ]
+}
+[e $ < -> =+ _x -> -> 1 `i `us `ui -> _y `ui 3445  ]
+[e :U 3444 ]
 "200
-}
-[e :U 3449 ]
+[e $ ! != ( _CRC_GetCalculatedResult (2 , -> -> 0 `i `a -> -> -> 0 `i `l `ul -> _crcVal_save `ul 3449  ]
 "201
-[e = . _r_cal 13 _crcVal_save ]
+[e ) -> -> 0 `i `a ]
+[e $UE 3438  ]
+[e :U 3449 ]
 "202
-[e ) -> -> 1 `i `a ]
-[e $UE 3437  ]
-"203
-[e :UE 3437 ]
 }
-"208
+[e $U 3450  ]
+[e :U 3442 ]
+{
+"203
+[e ) -> -> 0 `i `a ]
+[e $UE 3438  ]
+"204
+}
+[e :U 3450 ]
+"205
+[e = . _r_cal 13 _crcVal_save ]
+"206
+[e ) -> -> 1 `i `a ]
+[e $UE 3438  ]
+"207
+[e :UE 3438 ]
+}
+"212
 [v _write_cal_data `(v ~T0 @X0 1 ef ]
-"209
+"213
 {
 [e :U _write_cal_data ]
 [f ]
-"210
+"214
 [v _x `us ~T0 @X0 1 a ]
 [e = _x -> -> 0 `i `us ]
 [v _y `us ~T0 @X0 1 a ]
-"211
+"215
 [v _r_cal_ptr `*uc ~T0 @X0 1 a ]
 [v _crcVal `uc ~T0 @X0 1 a ]
-"213
+"217
 [e = _y -> -> # `S3411 `ui `us ]
-"214
-[e = . _ha_daq_calib 13 -> -> 66 `i `uc ]
-"215
-[e = _r_cal_ptr -> &U _ha_daq_calib `*uc ]
-"216
-[e = . _ha_daq_calib 12 -> -> 6487 `i `us ]
 "218
+[e = . _ha_daq_calib 13 -> -> 66 `i `uc ]
+"219
+[e = _r_cal_ptr -> &U _ha_daq_calib `*uc ]
+"220
+[e = . _ha_daq_calib 12 -> -> 6487 `i `us ]
+"222
 [e ( _CRC_Initialize ..  ]
-"221
-[e ( _CRC_StartCrc ..  ]
-"223
-[e :U 3453 ]
-{
-"224
-[e ( _DATAEE_WriteByte (2 , _x *U + _r_cal_ptr * -> _x `ux -> -> # *U _r_cal_ptr `ui `ux ]
 "225
-[e ( _CRC_WriteData (1 -> *U + _r_cal_ptr * -> _x `ux -> -> # *U _r_cal_ptr `ui `ux `ul ]
-"226
-[e $U 3454  ]
-[e :U 3455 ]
-[e :U 3454 ]
-[e $ != -> ( _CRC_IsCrcBusy ..  `i -> 0 `i 3455  ]
-[e :U 3456 ]
+[e ( _CRC_StartCrc ..  ]
 "227
-}
-[e $ < -> =+ _x -> -> 1 `i `us `ui -> _y `ui 3453  ]
-[e :U 3452 ]
+[e :U 3454 ]
+{
+"228
+[e ( _DATAEE_WriteByte (2 , _x *U + _r_cal_ptr * -> _x `ux -> -> # *U _r_cal_ptr `ui `ux ]
 "229
-[e = _crcVal -> ( _CRC_GetCalculatedResult (2 , -> -> 0 `i `a -> -> -> 0 `i `l `ul `uc ]
+[e ( _CRC_WriteData (1 -> *U + _r_cal_ptr * -> _x `ux -> -> # *U _r_cal_ptr `ui `ux `ul ]
+"230
+[e $U 3455  ]
+[e :U 3456 ]
+[e :U 3455 ]
+[e $ != -> ( _CRC_IsCrcBusy ..  `i -> 0 `i 3456  ]
+[e :U 3457 ]
 "231
-[e ( _DATAEE_WriteByte (2 , -> - -> # `S3411 `ui -> -> 1 `i `ui `us _crcVal ]
-"232
-[e :UE 3450 ]
 }
-"237
+[e $ < -> =+ _x -> -> 1 `i `us `ui -> _y `ui 3454  ]
+[e :U 3453 ]
+"233
+[e = _crcVal -> ( _CRC_GetCalculatedResult (2 , -> -> 0 `i `a -> -> -> 0 `i `l `ul `uc ]
+"235
+[e ( _DATAEE_WriteByte (2 , -> - -> # `S3411 `ui -> -> 1 `i `ui `us _crcVal ]
+"236
+[e :UE 3451 ]
+}
+"241
 [v _update_cal_data `(v ~T0 @X0 1 ef ]
-"238
+"242
 {
 [e :U _update_cal_data ]
 [f ]
-"239
+"243
 [e = _ha_daq_calib _r_cal ]
-"240
-[e $ ! ! != -> . _ha_daq_calib 8 `i -> 0 `i 3458  ]
-{
-"241
-[e = . _ha_daq_calib 8 -> -> 1 `i `uc ]
-"242
-}
-[e :U 3458 ]
 "244
-[e $ ! ! != -> . _ha_daq_calib 9 `i -> 0 `i 3459  ]
+[e $ ! ! != -> . _ha_daq_calib 8 `i -> 0 `i 3459  ]
 {
 "245
-[e = . _ha_daq_calib 9 -> -> 1 `i `uc ]
+[e = . _ha_daq_calib 8 -> -> 1 `i `uc ]
 "246
 }
 [e :U 3459 ]
-"247
-[e :UE 3457 ]
+"248
+[e $ ! ! != -> . _ha_daq_calib 9 `i -> 0 `i 3460  ]
+{
+"249
+[e = . _ha_daq_calib 9 -> -> 1 `i `uc ]
+"250
 }
-"252
+[e :U 3460 ]
+"251
+[e :UE 3458 ]
+}
+"256
 [v _Volts_to_SOC `(d ~T0 @X0 1 ef1`Cd ]
-"253
+"257
 {
 [e :U _Volts_to_SOC ]
-"252
+"256
 [v _bvoltage `Cd ~T0 @X0 1 r1 ]
-"253
+"257
 [f ]
-"254
+"258
 [v _slot `ul ~T0 @X0 1 a ]
-"255
+"259
 [v _soc `d ~T0 @X0 1 a ]
 [e = _soc -> -> .0.80 `f `d ]
-"260
+"264
 {
 [e = _slot -> -> -> 0 `i `l `ul ]
-[e $ < _slot -> -> -> 12 `i `l `ul 3461  ]
-[e $U 3462  ]
-[e :U 3461 ]
-{
-"261
-[e $ ! > _bvoltage -> *U + &U _bsoc_voltage * -> _slot `ux -> -> # *U &U _bsoc_voltage `ui `ux `d 3464  ]
-{
-"262
-[e = _soc -> *U + &U _bsoc_soc * -> _slot `ux -> -> # *U &U _bsoc_soc `ui `ux `d ]
-"263
-}
-[e :U 3464 ]
-"264
-}
-"260
-[e ++ _slot -> -> -> 1 `i `l `ul ]
-[e $ < _slot -> -> -> 12 `i `l `ul 3461  ]
+[e $ < _slot -> -> -> 12 `i `l `ul 3462  ]
+[e $U 3463  ]
 [e :U 3462 ]
-"264
-}
+{
 "265
-[e ) _soc ]
-[e $UE 3460  ]
+[e $ ! > _bvoltage -> *U + &U _bsoc_voltage * -> _slot `ux -> -> # *U &U _bsoc_voltage `ui `ux `d 3465  ]
+{
 "266
-[e :UE 3460 ]
+[e = _soc -> *U + &U _bsoc_soc * -> _slot `ux -> -> # *U &U _bsoc_soc `ui `ux `d ]
+"267
+}
+[e :U 3465 ]
+"268
+}
+"264
+[e ++ _slot -> -> -> 1 `i `l `ul ]
+[e $ < _slot -> -> -> 12 `i `l `ul 3462  ]
+[e :U 3463 ]
+"268
+}
+"269
+[e ) _soc ]
+[e $UE 3461  ]
+"270
+[e :UE 3461 ]
 }

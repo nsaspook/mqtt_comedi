@@ -17,8 +17,8 @@ static const float HV_SCALE4_4 = 64.3590f;
 static const float HV_SCALE5_4 = 64.3851f;
 static const float HV_SCALE4_5 = 64.3520f;
 static const float HV_SCALE5_5 = 64.3481f;
-static const float HV_SCALE4_6 = 64.2500f;
-static const float HV_SCALE5_6 = 64.2501f;
+static const float HV_SCALE4_6 = 64.2920f;
+static const float HV_SCALE5_6 = 64.3890f;
 static const float HV_SCALE4_7 = 53.0000f; // used a 3.3 vref instead of the normal 4.095 vref
 static const float HV_SCALE5_7 = 53.0001f;
 static const float HV_SCALE4_8 = 64.3050f;
@@ -105,6 +105,10 @@ enum EMETER_MODEL set_calibration(unsigned long long mui)
 		ha_daq_calib.scaler5 = HV_SCALE5_5;
 		break;
 	case 0x5B728:
+		ha_daq_calib.scaler4 = HV_SCALE4_6;
+		ha_daq_calib.scaler5 = HV_SCALE5_6;
+		break;
+	case 0x5AA28:
 		ha_daq_calib.scaler4 = HV_SCALE4_6;
 		ha_daq_calib.scaler5 = HV_SCALE5_6;
 		break;

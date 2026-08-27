@@ -761,11 +761,11 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		}
 
 		if (ok_data) {
-			fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.4x DI 0x%.6x, goods %d, bads %d, d_id %d\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, goods, bads, R.d_id);
+			fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.4x DI 0x%.6x, goods %d, bads %d:%d, d_id %d\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, goods, bads, bads_resets, R.d_id);
 		} else {
 			if ((bmc.BOARD == bmcboard) && SERIAL_OPEN) {
 				bads++;
-				fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, bads %d, %d, Overruns %d validate failure code %d\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, tmp_test_ptr, ok_data, bads, bads_resets, overrun, validate_failure);
+				fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, bads %d:%d, d_id %d, Overruns %d validate failure code %d\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, tmp_test_ptr, ok_data, bads, bads_resets, R.d_id, overrun, validate_failure);
 				if (bads > KAI) {
 					bads = 0;
 					bads_resets++;

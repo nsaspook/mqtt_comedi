@@ -992,8 +992,13 @@ void main(void)
 				/*
 				 * INFO test screen
 				 */
-				snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "%2.1fKWh float %3.1fh                       ", (float) BM.log.kilowatt_hours / 10.0f, (float) BM.log.float_time / 60.0f);
-				snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "Bmax %uV Bmin %uV                      ", BM.log.bat_max / 10, BM.log.bat_min / 10);
+				if (BM.FM80_online) {
+					snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "%2.1fKWh float %3.1fh                       ", (float) BM.log.kilowatt_hours / 10.0f, (float) BM.log.float_time / 60.0f);
+					snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "Bmax %uV Bmin %uV                      ", BM.log.bat_max / 10, BM.log.bat_min / 10);
+				} else {
+					snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "R %u, T4 %u T0 %u                      ", ISR_TIMEMARK, TMR4, TMR0_ReadTimer() - 0x1B1E);
+					snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "%x data, %x raw, %x str                      ", data_in2, serial_buffer_ss.raw_index, serial_buffer_ss.r_string_index);
+				}
 				if ((ha_daq_calib.em_model == PZEM_M) || (ha_daq_calib.em_model == WEM30_M)) {
 					snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.1fR %3.2fPf                       ", (float) imd_tmp.hz, ((float) imd_tmp.varsys), (float) imd_tmp.pfsys);
 				} else {
@@ -1015,7 +1020,7 @@ void main(void)
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
 				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3fV,5 %6.3fV                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));
 				snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu  0X%.2X                             ", spi_stat_ss.bmc_counts, spi_stat_ss.daq_conf);
-				slave_usage = ((float) (report_stat_ss.comm_ok * report_stat_ss.last_slave_int_count)) / ISR_TIME_SCALE;
+				slave_usage = ((float) (report_stat_ss.comm_ok * report_stat_ss.last_slave_int_count)) / ISR_TIME_SCALE; // get a percentage to total cpu usage
 				if (slave_usage > 99.0f) {
 					slave_usage = 99.0f;
 				}
@@ -1175,7 +1180,7 @@ void onesec_io(void)
 	report_stat_ss.bmc_counts = 0;
 	report_stat_ss.slave_int_count = 0;
 	report_stat_ss.comm_ok = TMR4; // 250ns per count
-	TMR4 = ISR_TIMEMARK;
+	TMR4 = ISR_TIMEMARK; // set flag to start slave ISR cpu counter at next SPI 2 interrupt
 }
 
 /* Misc ACSII spinner character generator, stores position for each shape */
@@ -1200,6 +1205,7 @@ char spinners(uint8_t shape, const uint8_t reset)
 void test_slave(void)
 {
 	MCZ_PWM_SetLow();
+	RESET();
 }
 
 /*

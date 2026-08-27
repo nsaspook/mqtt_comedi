@@ -177,7 +177,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _channel `Vuc ~T0 @X0 0 e ]
 "278 ./mcc_generated_files/tmr0.h
 [v _TMR0_Reload `(v ~T0 @X0 0 ef ]
-"338 slaveo.c
+"339 slaveo.c
 [c E23890 0 1 2 4 5 22 23 29 59 60 61 62 63 .. ]
 [n E23890 . channel_ANA0 channel_ANA1 channel_ANA2 channel_ANA4 channel_ANA5 channel_ANC6 channel_ANC7 channel_AND5 channel_VSS channel_Temp channel_DAC1 channel_FVR_Buffer1 channel_FVR_Buffer2  ]
 "3613 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.30.487/xc8/pic/include/proc/pic18f57q84.h
@@ -5092,128 +5092,130 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! || || || || || || != -> . _serial_buffer_ss 12 `i -> 0 `i != -> . _serial_buffer_ss 11 `i -> 0 `i != -> . _serial_buffer_ss 10 `i -> 0 `i != -> . _serial_buffer_ss 12 `i -> 0 `i != -> . _serial_buffer_ss 14 `i -> 0 `i != -> . _serial_buffer_ss 16 `i -> 0 `i != -> . _serial_buffer_ss 15 `i -> 0 `i 3518  ]
 {
 "322
-[e $U 3519  ]
+[e ( _TMR0_Reload ..  ]
 "323
+[e $U 3519  ]
+"324
 }
 [e :U 3518 ]
-"325
+"326
 [e = _command -> & -> _data_in2 `i -> _HI_NIBBLE `i `uc ]
-"327
+"328
 [e $U 3521  ]
 {
-"328
-[e :U 3522 ]
 "329
-[e = . _serial_buffer_ss 6 -> . `E25895 1 `uc ]
+[e :U 3522 ]
 "330
-[e = . _serial_buffer_ss 12 -> -> 1 `i `a ]
+[e = . _serial_buffer_ss 6 -> . `E25895 1 `uc ]
 "331
-[e ( _TMR0_Reload ..  ]
+[e = . _serial_buffer_ss 12 -> -> 1 `i `a ]
 "332
-[e $U 3520  ]
+[e ( _TMR0_Reload ..  ]
 "333
-[e :U 3523 ]
+[e $U 3520  ]
 "334
-[e = _channel -> & -> _data_in2 `i -> _LO_NIBBLE `i `uc ]
+[e :U 3523 ]
 "335
+[e = _channel -> & -> _data_in2 `i -> _LO_NIBBLE `i `uc ]
+"336
 [e $ ! > -> _channel `i -> _AI_CHAN_FIX `i 3524  ]
 {
-"336
+"337
 [e $U 3526  ]
 {
-"337
-[e :U 3527 ]
 "338
-[e = _channel -> . `E23890 5 `uc ]
+[e :U 3527 ]
 "339
-[e $U 3525  ]
+[e = _channel -> . `E23890 5 `uc ]
 "340
-[e :U 3528 ]
+[e $U 3525  ]
 "341
-[e = _channel -> . `E23890 6 `uc ]
+[e :U 3528 ]
 "342
-[e $U 3525  ]
+[e = _channel -> . `E23890 6 `uc ]
 "343
-[e :U 3529 ]
+[e $U 3525  ]
 "344
-[e = _channel -> . `E23890 7 `uc ]
+[e :U 3529 ]
 "345
-[e $U 3525  ]
+[e = _channel -> . `E23890 7 `uc ]
 "346
-[e :U 3530 ]
+[e $U 3525  ]
 "347
-[e = _channel -> . `E23890 8 `uc ]
+[e :U 3530 ]
 "348
-[e $U 3525  ]
+[e = _channel -> . `E23890 8 `uc ]
 "349
-[e :U 3531 ]
+[e $U 3525  ]
 "350
-[e = _channel -> . `E23890 9 `uc ]
+[e :U 3531 ]
 "351
-[e $U 3525  ]
+[e = _channel -> . `E23890 9 `uc ]
 "352
-[e :U 3532 ]
+[e $U 3525  ]
 "353
-[e = _channel -> . `E23890 10 `uc ]
+[e :U 3532 ]
 "354
-[e $U 3525  ]
+[e = _channel -> . `E23890 10 `uc ]
 "355
-[e :U 3533 ]
+[e $U 3525  ]
 "356
-[e = _channel -> . `E23890 11 `uc ]
+[e :U 3533 ]
 "357
-[e $U 3525  ]
+[e = _channel -> . `E23890 11 `uc ]
 "358
-[e :U 3534 ]
+[e $U 3525  ]
 "359
-[e = _channel -> . `E23890 12 `uc ]
+[e :U 3534 ]
 "360
-[e $U 3525  ]
+[e = _channel -> . `E23890 12 `uc ]
 "361
-[e :U 3535 ]
-"362
-[e = _channel -> -> 14 `i `uc ]
-"363
-[; <" reset ;# ">
-"364
 [e $U 3525  ]
+"362
+[e :U 3535 ]
+"363
+[e = _channel -> -> 14 `i `uc ]
+"364
+[; <" reset ;# ">
 "365
-[e :U 3536 ]
+[e $U 3525  ]
 "366
-[e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
+[e :U 3536 ]
 "367
+[e = . . _SPI1CON0bits 0 4 -> -> 0 `i `uc ]
+"368
 [e :U 3539 ]
 {
 [e = . . _LATBbits 0 1 -> -> 1 `i `uc ]
 }
 [e :U 3538 ]
-"368
-[e = . _serial_buffer_ss 6 -> . `E25895 0 `uc ]
 "369
-[e ( _clear_slaveo_flags ..  ]
+[e = . _serial_buffer_ss 6 -> . `E25895 0 `uc ]
 "370
+[e ( _clear_slaveo_flags ..  ]
+"371
 [e :U 3542 ]
 {
 [e = . . _LATBbits 0 1 -> -> 0 `i `uc ]
 }
 [e :U 3541 ]
-"371
-[e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
 "372
-[e = _channel -> . `E23890 0 `uc ]
+[e = . . _SPI1CON0bits 0 4 -> -> 1 `i `uc ]
 "373
-[e $U 3525  ]
-"374
-[e :U 3543 ]
-"375
 [e = _channel -> . `E23890 0 `uc ]
-"376
+"374
 [e $U 3525  ]
+"375
+[e :U 3543 ]
+"376
+[e = _channel -> . `E23890 0 `uc ]
 "377
+[e $U 3525  ]
+"378
 }
 [e $U 3525  ]
 [e :U 3526 ]
-"336
+"337
 [e [\ _channel , $ -> 6 `i 3527
  , $ -> 7 `i 3528
  , $ -> 8 `i 3529
@@ -5226,145 +5228,145 @@ Version 4.0 HI-TECH Software Intermediate Code
  , $ -> 15 `i 3536
  3543 ]
 [e :U 3525 ]
-"378
+"379
 }
 [e :U 3524 ]
-"379
-[e = . _serial_buffer_ss 6 -> . `E25895 1 `uc ]
 "380
-[e = . _serial_buffer_ss 13 -> -> 1 `i `a ]
+[e = . _serial_buffer_ss 6 -> . `E25895 1 `uc ]
 "381
-[e ( _TMR0_Reload ..  ]
+[e = . _serial_buffer_ss 13 -> -> 1 `i `a ]
 "382
-[e $U 3520  ]
+[e ( _TMR0_Reload ..  ]
 "383
-[e :U 3544 ]
+[e $U 3520  ]
 "384
-[e = . _serial_buffer_ss 6 -> . `E25895 1 `uc ]
+[e :U 3544 ]
 "385
-[e = . _serial_buffer_ss 11 -> -> 1 `i `a ]
+[e = . _serial_buffer_ss 6 -> . `E25895 1 `uc ]
 "386
-[e ( _TMR0_Reload ..  ]
+[e = . _serial_buffer_ss 11 -> -> 1 `i `a ]
 "387
-[e $U 3520  ]
+[e ( _TMR0_Reload ..  ]
 "388
-[e :U 3545 ]
+[e $U 3520  ]
 "389
-[e = . _serial_buffer_ss 6 -> . `E25895 1 `uc ]
+[e :U 3545 ]
 "390
-[e = . _serial_buffer_ss 10 -> -> 1 `i `a ]
+[e = . _serial_buffer_ss 6 -> . `E25895 1 `uc ]
 "391
-[e ( _TMR0_Reload ..  ]
+[e = . _serial_buffer_ss 10 -> -> 1 `i `a ]
 "392
-[e $U 3520  ]
+[e ( _TMR0_Reload ..  ]
 "393
-[e :U 3546 ]
+[e $U 3520  ]
 "394
-[e = _channel -> & -> _data_in2 `i -> _LO_NIBBLE `i `uc ]
+[e :U 3546 ]
 "395
-[e = . _serial_buffer_ss 6 -> . `E25895 1 `uc ]
+[e = _channel -> & -> _data_in2 `i -> _LO_NIBBLE `i `uc ]
 "396
-[e = . _serial_buffer_ss 16 -> -> 1 `i `a ]
+[e = . _serial_buffer_ss 6 -> . `E25895 1 `uc ]
 "397
-[e ( _TMR0_Reload ..  ]
+[e = . _serial_buffer_ss 16 -> -> 1 `i `a ]
 "398
-[e $U 3520  ]
-"399
-[e :U 3547 ]
-"400
-[e = _channel -> & -> _data_in2 `i -> _LO_NIBBLE `i `uc ]
-"401
-[e = . _serial_buffer_ss 6 -> . `E25895 1 `uc ]
-"402
-[e = . _serial_buffer_ss 15 -> -> 1 `i `a ]
-"403
 [e ( _TMR0_Reload ..  ]
-"404
+"399
 [e $U 3520  ]
-"405
-[e :U 3548 ]
-"406
-[e = . _serial_buffer_ss 6 -> . `E25895 1 `uc ]
-"407
-[e = . _serial_buffer_ss 14 -> -> 1 `i `a ]
-"408
+"400
+[e :U 3547 ]
+"401
 [e = _channel -> & -> _data_in2 `i -> _LO_NIBBLE `i `uc ]
+"402
+[e = . _serial_buffer_ss 6 -> . `E25895 1 `uc ]
+"403
+[e = . _serial_buffer_ss 15 -> -> 1 `i `a ]
+"404
+[e ( _TMR0_Reload ..  ]
+"405
+[e $U 3520  ]
+"406
+[e :U 3548 ]
+"407
+[e = . _serial_buffer_ss 6 -> . `E25895 1 `uc ]
+"408
+[e = . _serial_buffer_ss 14 -> -> 1 `i `a ]
 "409
-[e = _tmp_buf4 -> -> &U . _ha_daq_calib 2 `*v `*uc ]
+[e = _channel -> & -> _data_in2 `i -> _LO_NIBBLE `i `uc ]
 "410
-[e = _tmp_buf5 -> -> &U . _ha_daq_calib 4 `*v `*uc ]
+[e = _tmp_buf4 -> -> &U . _ha_daq_calib 2 `*v `*uc ]
 "411
+[e = _tmp_buf5 -> -> &U . _ha_daq_calib 4 `*v `*uc ]
+"412
 [e $ ! == -> _channel `i -> 7 `i 3549  ]
 {
-"412
+"413
 [e $ ! && && && && && ! != -> . _serial_buffer_ss 13 `i -> 0 `i ! != -> . _serial_buffer_ss 12 `i -> 0 `i ! != -> . _serial_buffer_ss 10 `i -> 0 `i ! != -> . _serial_buffer_ss 11 `i -> 0 `i ! != -> . _serial_buffer_ss 15 `i -> 0 `i ! != -> . _serial_buffer_ss 16 `i -> 0 `i 3550  ]
 {
-"413
+"414
 [e :U 3553 ]
 {
 [e = . . _LATBbits 0 1 -> -> 1 `i `uc ]
 }
 [e :U 3552 ]
-"414
-[e ( _clear_slaveo_flags ..  ]
 "415
+[e ( _clear_slaveo_flags ..  ]
+"416
 [e :U 3556 ]
 {
 [e = . . _LATDbits 0 7 -> -> 0 `i `uc ]
 }
 [e :U 3555 ]
-"416
+"417
 [e :U 3559 ]
 {
 [e = . . _LATBbits 0 1 -> -> 0 `i `uc ]
 }
 [e :U 3558 ]
-"417
-}
-[e :U 3550 ]
 "418
 }
-[e :U 3549 ]
+[e :U 3550 ]
 "419
-[e ( _TMR0_Reload ..  ]
+}
+[e :U 3549 ]
 "420
-[e $U 3520  ]
+[e ( _TMR0_Reload ..  ]
 "421
-[e :U 3560 ]
+[e $U 3520  ]
 "422
-[e :U 3561 ]
+[e :U 3560 ]
 "423
-{
+[e :U 3561 ]
 "424
+{
+"425
 [v F25958 `uc ~T0 @X0 1 s val_zero ]
 [i F25958
 -> -> 87 `i `uc
 ]
-"426
+"427
 [e $U 3562  ]
 [e :U 3563 ]
 {
-"427
-[e = F25958 _SPI2RXB ]
 "428
+[e = F25958 _SPI2RXB ]
+"429
 }
 [e :U 3562 ]
-"426
+"427
 [e $ ! != -> . . _SPI2STATUSbits 0 3 `i -> 0 `i 3563  ]
 [e :U 3564 ]
-"429
-[e = . . _SPI2STATUSbits 0 3 -> -> 0 `i `uc ]
 "430
-[e ( _TMR0_Reload ..  ]
+[e = . . _SPI2STATUSbits 0 3 -> -> 0 `i `uc ]
 "431
-}
+[e ( _TMR0_Reload ..  ]
 "432
-[e $U 3520  ]
+}
 "433
+[e $U 3520  ]
+"434
 }
 [e $U 3520  ]
 [e :U 3521 ]
-"327
+"328
 [e [\ _command , $ -> _CMD_DAC_GO `i 3522
  , $ -> _CMD_ADC_GO `i 3523
  , $ -> _CMD_PORT_GET `i 3544
@@ -5375,56 +5377,56 @@ Version 4.0 HI-TECH Software Intermediate Code
  , $ -> _CMD_ZERO `i 3560
  3561 ]
 [e :U 3520 ]
-"435
-[e :U 3519 ]
 "436
+[e :U 3519 ]
+"437
 [e :U 3567 ]
 {
 [e = . . _LATBbits 0 3 -> -> 0 `i `uc ]
 }
 [e :U 3566 ]
-"437
-[e = . . _T4CONbits 3 7 -> -> 0 `i `uc ]
 "438
+[e = . . _T4CONbits 3 7 -> -> 0 `i `uc ]
+"439
 [e :UE 3433 ]
 }
-"440
-[v _slaveo_spi_isr `(v ~T0 @X0 1 ef ]
 "441
+[v _slaveo_spi_isr `(v ~T0 @X0 1 ef ]
+"442
 {
 [e :U _slaveo_spi_isr ]
 [f ]
-"442
-[e ++ . _spi_stat_ss 19 -> -> 1 `i `Vul ]
 "443
-[e = _SPI2INTF -> -> 0 `i `uc ]
+[e ++ . _spi_stat_ss 19 -> -> 1 `i `Vul ]
 "444
+[e = _SPI2INTF -> -> 0 `i `uc ]
+"445
 [e :UE 3568 ]
 }
-"446
-[v _slaveo_time_isr `(v ~T0 @X0 1 ef ]
 "447
+[v _slaveo_time_isr `(v ~T0 @X0 1 ef ]
+"448
 {
 [e :U _slaveo_time_isr ]
 [f ]
-"448
-[e = . . _SPI2CON0bits 0 4 -> -> 0 `i `uc ]
 "449
-[e = . . _SPI2CON0bits 0 4 -> -> 1 `i `uc ]
+[e = . . _SPI2CON0bits 0 4 -> -> 0 `i `uc ]
 "450
+[e = . . _SPI2CON0bits 0 4 -> -> 1 `i `uc ]
+"451
 [e $ ! || != -> . . _SPI2STATUSbits 0 7 `i -> 0 `i != -> . . _SPI2STATUSbits 0 3 `i -> 0 `i 3570  ]
 {
-"451
-[e ++ . _spi_stat_ss 4 -> -> 1 `i `Vul ]
 "452
+[e ++ . _spi_stat_ss 4 -> -> 1 `i `Vul ]
+"453
 [e :U 3573 ]
 {
 [e = . . _LATBbits 0 1 -> -> 1 `i `uc ]
 }
 [e :U 3572 ]
-"453
+"454
 }
 [e :U 3570 ]
-"454
+"455
 [e :UE 3569 ]
 }

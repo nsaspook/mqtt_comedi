@@ -70,7 +70,7 @@ void slaveo_rx_isr(void)
 	/* we only get this when the master wants data, the slave never generates one */
 	// SPI port #2 SLAVE receiver
 
-	if (TMR4 == ISR_TIMEMARK) {
+	if (TMR4 == ISR_TIMEMARK) { // ISR cpu usage counter start flag
 		TMR4 = 0; // reset ISR task time counter, 250ns per count
 		T4CONbits.TMR4ON = 1;
 	}
@@ -319,6 +319,7 @@ void slaveo_rx_isr(void)
 	}
 
 	if (serial_buffer_ss.dac_value || serial_buffer_ss.dget_value || serial_buffer_ss.dmake_value || serial_buffer_ss.dac_value || serial_buffer_ss.cfg_value || serial_buffer_ss.cget_value || serial_buffer_ss.cmake_value) {
+		TMR0_Reload(); // restart master activity timer counter to prevent system restart
 		goto isr_end;
 	}
 
@@ -434,7 +435,7 @@ void slaveo_rx_isr(void)
 
 isr_end:
 	DLED_SetLow();
-	T4CONbits.TMR4ON = 0;
+	T4CONbits.TMR4ON = 0; // ISR cpu usage counter stop flag
 }
 
 void slaveo_spi_isr(void)
