@@ -344,6 +344,7 @@ static void iammeter_data_handler(void)
 	} else {
 		imd_tmp.wl3 = (float) ((float) mb32_swap(im_ptr->wl3));
 	}
+	em_tmp.hz = imd_tmp.hz;
 
 #ifdef EMETER_TRACE
 	TP1_SetLow();

@@ -273,6 +273,7 @@ static void pzem_data_handler(void)
 	imd_tmp.vl1l2 = (float) pz_ptr->vl1n;
 	imd_tmp.vl2l3 = (float) pz_ptr->vl2n;
 	imd_tmp.vl3l1 = (float) pz_ptr->vl3n;
+	em_tmp.hz = imd_tmp.hz;
 #ifdef EMETER_TRACE
 	TP1_SetLow();
 #endif
