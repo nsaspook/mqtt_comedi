@@ -474,6 +474,14 @@ int get_data_sample(void)
 	return 0;
 }
 
+/*
+ * Testing methods to restart SPI data flow when hung by unknown reason so far
+ */
+void bump_serial(void)
+{
+	comedi_data_write(it, subdev_serial0, BMC_CHAN, range_ao, AREF_GROUND, STX);
+}
+
 double lp_filter(double new, int bn, int slow) // low pass filter, slow rate of change for new, LPCHANC channels, slow/fast select (-1) to zero channel
 {
 	static double smooth[LPCHANC] = {0};
