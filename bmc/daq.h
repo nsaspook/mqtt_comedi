@@ -40,6 +40,7 @@ extern "C" {
 #define HV_SCALE3               83.6f
 #define HV_SCALE4               83.6f
 #define HV_SCALE5               83.6f
+#define HV_SCALE6               83.6f
 #define HV_SCALE_OPEN_HOST      83.6f
 	// BMC Boards
 #define HV_SCALE4_0             64.2600f
@@ -54,6 +55,8 @@ extern "C" {
 #define HV_SCALE5_4             64.2600f
 #define HV_SCALE4_5             64.2600f
 #define HV_SCALE5_5             64.2600f
+#define HV_SCALE4_6             64.2600f
+#define HV_SCALE5_6             64.2600f
 #define HV_SCALE4_OPEN_HOST     64.2600f
 #define HV_SCALE5_OPEN_HOST     64.2600f
 #define HV_SCALE_RAW            4.096f
@@ -168,6 +171,8 @@ extern "C" {
 	int get_data_sample(void);
 	double lp_filter(double, int, int);
 	double calc_fixups(double data, FIX_CODES fixup);
+	
+	void bump_serial(void);
 #ifdef __cplusplus
 }
 #endif

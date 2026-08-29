@@ -87,10 +87,9 @@ for the FMx0 charge controller and for MODBUS power meters
 #include <linux/completion.h>
 #include <linux/gpio/consumer.h>
 
-#define bmc_version "version 1.30 "
+#define bmc_version "version 1.31 "
 #define spibmc_version "version 1.9 "
 
-#define KERNEL7
 //#define LED_LINK
 /*
  * random freezing issues, try this
@@ -99,7 +98,7 @@ for the FMx0 charge controller and for MODBUS power meters
    vm.min_free_kbytes=45056
    Reboot
  */
-#define SPI_DEBUG
+//#define SPI_DEBUG
 #ifdef LED_LINK
 #define RED_LED 0
 #define GREEN_LED 1
@@ -251,19 +250,7 @@ static const uint32_t SUBDEV_DO = 4;
 static const uint32_t SMP_CORES = 4;
 static const uint32_t CONF_Q84 = 3;
 static const uint32_t MEM_BLOCKS = 8; // 0..3 CLCD display lines, 4..7 serial comms for FMx0, MODBUS, etc ...
-#ifdef RPIDAQ
-#ifdef KERNEL7
 static const uint32_t SPI_GAP_LONG = 12000; // time for the Q84 to process each received SPI byte
-#else
-static const uint32_t SPI_GAP_LONG = 22000; // time for the Q84 to process each received SPI byte
-#endif
-#else
-#ifdef KERNEL7
-static const uint32_t SPI_GAP_LONG = 8000; // time for the Q84 to process each received SPI byte
-#else
-static const uint32_t SPI_GAP_LONG = 12000; // time for the Q84 to process each received SPI byte
-#endif
-#endif
 
 static const uint32_t PIC18_CONVD_57Q84 = 24;
 static const uint32_t PIC18_CMDD_57Q84 = 4;
@@ -413,15 +400,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.name = "PICSL12",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
-#ifdef OPIZ3
-#ifdef KERNEL7
 		.max_speed_hz = 6000000,
-#else
-		.max_speed_hz = 4000000,
-#endif
-#else
-		.max_speed_hz = 6000000,
-#endif
 		.init_speed_hz = 4000000,
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
@@ -436,15 +415,7 @@ static const struct daqbmc_device daqbmc_devices[] = {
 		.name = "PICSL12_AO",
 		.ai_subdev_flags = SDF_READABLE | SDF_GROUND | SDF_COMMON,
 		.ao_subdev_flags = SDF_GROUND | SDF_CMD_WRITE | SDF_WRITABLE,
-#ifdef OPIZ3
-#ifdef KERNEL7
 		.max_speed_hz = 6000000,
-#else
-		.max_speed_hz = 4000000,
-#endif
-#else
-		.max_speed_hz = 6000000,
-#endif
 		.init_speed_hz = 4000000,
 		.min_acq_ns = 180000,
 		.rate_min = 1000,
@@ -636,15 +607,16 @@ static uint32_t daqbmc_bmc_get_mui(struct comedi_device *);
 
 /*
  * piBoardRev:
- *	Return a number representing the hardware revision of the PI board.
+ *	Return a number representing the type of SoC board
+ *	uses the GNUC release level for now
  *********************************************************************
  */
 static inline int32_t piBoardRev(struct comedi_device *dev)
 {
 #ifdef OPIZ3
-	int32_t boardRev = BMC_OPIZ3; // hardwired for now
+	int32_t boardRev = BMC_OPIZ3;
 #else
-	int32_t boardRev = BMC_RPIDAQ; // hardwired for now
+	int32_t boardRev = BMC_RPIDAQ;
 #endif
 
 	bmc_rev = boardRev;
@@ -1262,15 +1234,7 @@ static int32_t daqbmc_ao_cmdtest(struct comedi_device *dev,
  */
 static void my_timer_ai_callback(struct timer_list *t)
 {
-#ifdef OPIZ3
-#ifdef KERNEL7
 	struct daqbmc_private *devpriv = timer_container_of(devpriv, t, ai_timer);
-#else
-	struct daqbmc_private *devpriv = from_timer(devpriv, t, ai_timer);
-#endif
-#else
-	struct daqbmc_private *devpriv = timer_container_of(devpriv, t, ai_timer);
-#endif
 	struct comedi_device *dev = devpriv->dev;
 
 	if (!dev) {
@@ -1847,15 +1811,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		dev_info(dev->class_dev, "Probing for SPI using chip select : 0x%1x\n",
 			thisboard->bmc_cs);
 #endif
-#ifdef OPIZ3
-#ifdef KERNEL7
 		if (*pdata->slave.spi->chip_select == thisboard->bmc_cs) {
-#else
-		if (pdata->slave.spi->chip_select == thisboard->bmc_cs) {
-#endif
-#else
-		if (*pdata->slave.spi->chip_select == thisboard->bmc_cs) {
-#endif
 			devpriv->ai_spi = &pdata->slave;
 			devpriv->ao_spi = &pdata->slave;
 			pdata->one_t.tx_buf = pdata->tx_buff;
@@ -2149,15 +2105,7 @@ static void daqbmc_detach(struct comedi_device * dev)
 		devpriv->ao_spi->daqbmc_task = NULL;
 	}
 
-#ifdef OPIZ3
-#ifdef KERNEL7
 	timer_delete_sync(&devpriv->ai_spi->my_timer);
-#else
-	del_timer_sync(&devpriv->ai_spi->my_timer);
-#endif
-#else
-	timer_delete_sync(&devpriv->ai_spi->my_timer);
-#endif
 	dev_info(dev->class_dev, "daq_bmc detached\n");
 }
 
@@ -2214,15 +2162,7 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 	 * Do only one chip select for the BMCboard
 	 */
 
-#ifdef OPIZ3
-#ifdef KERNEL7
 	if ((uint32_t) * spi->chip_select == CS_BMC) {
-#else
-	if ((uint32_t) spi->chip_select == CS_BMC) {
-#endif
-#else
-	if ((uint32_t) * spi->chip_select == CS_BMC) {
-#endif
 		/*
 		 * get a copy of the slave device 0 to share with Comedi
 		 * we need a device to talk to the Q84
@@ -2263,15 +2203,7 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 	}
 
 	/* setup Comedi part of driver */
-#ifdef OPIZ3
-#ifdef KERNEL7
 	if ((uint32_t) * spi->chip_select == CS_BMC) {
-#else
-	if ((uint32_t) spi->chip_select == CS_BMC) {
-#endif
-#else
-	if ((uint32_t) * spi->chip_select == CS_BMC) {
-#endif
 		ret = comedi_driver_register(&daqbmc_driver);
 		if (ret < 0) {
 			goto kfree_rx_exit;
@@ -2464,15 +2396,7 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	dev_info(dev->class_dev,
 		"BMCboard SPI setup: spi cs %d: %d Hz: spi mode 0x%x: "
 		"probing for controller device %s\n",
-#ifdef OPIZ3
-#ifdef KERNEL7
 		(int) *spi_bmc->spi->chip_select,
-#else
-		(int) spi_bmc->spi->chip_select,
-#endif
-#else
-		(int) *spi_bmc->spi->chip_select,
-#endif
 		spi_bmc->spi->max_speed_hz,
 		spi_bmc->spi->mode,
 		spi_bmc->device_spi->name);

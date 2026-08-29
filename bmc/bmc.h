@@ -36,7 +36,7 @@ extern "C" {
 #include "MQTTClient.h"
 #include "bmc_mqtt.h"
 
-#define LOG_VERSION     "V0.33"
+#define LOG_VERSION     "V0.34"
 #define MQTT_VERSION    "V3.11"
 #define TNAME  "maint9"
 #define LADDRESS        "tcp://127.0.0.1:1883"
@@ -65,7 +65,7 @@ extern "C" {
 
 #define LOG_TO_FILE         "/var/log/bmc/bmc_comedi.log"
 #define LOG_TO_FILE_ALT     "/tmp/bmc_comedi.log"
-#define CAL_FILE            "/etc/bmc_calfile.bin"
+#define CAL_FILE            "/etc/daq_bmc/bmc_calfile.bin"
 #define CAL_FILE_ALT        "/tmp/bmc_calfile.bin"
 
 #define MQTT_RECONN     3

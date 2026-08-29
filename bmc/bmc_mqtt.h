@@ -142,6 +142,7 @@ extern "C" {
 		char topics[HOST_SLOTS][BMC_MAXHOST];
 		char listen[HOST_SLOTS][BMC_MAXHOST];
 		char hname[HOST_SLOTS][BMC_MAXHOST];
+		char bname[HOST_SLOTS][BMC_MAXHOST];
 		double scalar[HOST_SLOTS], scalar4[HOST_SLOTS], scalar5[HOST_SLOTS];
 		uint8_t hindex, bindex; // host array, calibration array
 		uint32_t pacer[HOST_SLOTS];
