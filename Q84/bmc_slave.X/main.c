@@ -234,12 +234,10 @@ typedef signed long long int24_t;
 #include <string.h>
 #include <time.h>
 #include "mcc_generated_files/mcc.h"
-#include "mcc_generated_files/uart1.h"
 #include "eadog.h"
 #include "timers.h"
 #include "mconfig.h"
 #include "mydisplay.h"
-#include "rs232.h"
 #include "slaveo.h"
 #include "bmcdio.h"
 #include "mxcmd.h"
@@ -446,7 +444,7 @@ void bmc_logger(void);
  * Lets get going with the code.
  * Main application
  */
-void main(void)
+int main(void)
 {
 	SPI2STATUSbits.SPI2CLRBF;
 
