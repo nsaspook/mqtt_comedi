@@ -21,7 +21,7 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.72"
+#define VER	"V0.73"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -84,6 +84,7 @@ extern "C" {
 	 * V0.70 cleanup slaveo.c
 	 * V0.71 calibration value error on cold/power up boot. Reset sends correct value for scalar5
 	 * V0.72 XC8-4.0 -O3 optimizations
+	 * V0.73 allow for a few CRC errors when running
 	 */
 
 	/*
@@ -99,13 +100,6 @@ extern "C" {
 	 */
 	//#define TRACE
 	//#define MAIN_TRACE
-
-
-	/*
-	 * over-ride DIO testing failures
-	 * set to true for normal operation
-	 */
-#define IO_FAIL	true
 
 	/*
 	 * DIO and SERIAL testing modes

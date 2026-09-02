@@ -710,6 +710,7 @@ int main(void)
 				sprintf(get_vterm_ptr(0, MAIN_VTERM), "Read EEPROM DATA    ");
 			} else {
 				sprintf(get_vterm_ptr(0, MAIN_VTERM), "Invalid EEPROM DATA ");
+//				update_cal_data();
 				write_cal_data();
 				timeout = true;
 			}
@@ -726,13 +727,13 @@ int main(void)
 
 			SPI_TIC12400();
 			tic12400_reset();
-			if (!tic12400_init() && IO_FAIL) {
+			if (!tic12400_init()) {
 				V.di_fail = true;
 				failure = true;
 				spi_stat_ss.daq_conf |= 0x01; // fail DI
 			};
 			SPI_MC33996();
-			if (!mc33996_init() && IO_FAIL) {
+			if (!mc33996_init()) {
 				V.do_fail = true;
 				failure = true;
 				spi_stat_ss.daq_conf |= 0x02; // fail DO
@@ -1017,7 +1018,7 @@ int main(void)
 				 */
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
 				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3fV,5 %6.3fV                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));
-				snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu  0X%.2X                             ", spi_stat_ss.bmc_counts, spi_stat_ss.daq_conf);
+				snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu 0X%.2X %u                            ", spi_stat_ss.bmc_counts, spi_stat_ss.daq_conf, mxcmd_serial_errors);
 				slave_usage = ((float) (report_stat_ss.comm_ok * report_stat_ss.last_slave_int_count)) / ISR_TIME_SCALE; // get a percentage to total cpu usage
 				if (slave_usage > 99.0f) {
 					slave_usage = 99.0f;

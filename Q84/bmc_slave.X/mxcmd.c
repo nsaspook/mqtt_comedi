@@ -7,6 +7,12 @@ static volatile uint8_t data = 0x00, dcount = 0, dstart = 0, rdstart = 0;
 static volatile uint16_t tbuf[FM_BUFFER + 1], rbuf[FM_BUFFER + 1];
 static uint16_t *p_tbuf = (uint16_t*) tbuf, *p_rbuf = (uint16_t*) rbuf;
 static volatile uint8_t pace = 0; // the charge controller doesn't like back to back bytes
+volatile uint8_t mxcmd_serial_errors = 0;
+
+void mxcmd_log(void)
+{
+	mxcmd_serial_errors++;
+}
 
 void FM_restart(void)
 {
@@ -71,6 +77,7 @@ void FM_io(void)
 		rbuf[0] = U2RXB; // read bad data to clear error
 		U2ERRIRbits.RXFOIF = 0;
 		rdstart = 0; // reset buffer to start
+		mxcmd_log();
 	}
 
 	/*

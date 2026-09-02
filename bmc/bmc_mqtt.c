@@ -104,7 +104,7 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.mqtt[3] = "10.1.1.45",
 	.mqtt[4] = "10.1.1.40", // no HA server, has internal mqtt server
 	.mqtt[5] = MQTT_HOST,
-	.mqtt[6] = "10.1.1.30", // send data to here
+	.mqtt[6] = "10.1.1.35", // send data to here
 	.mqtt[OPEN_HOST] = MQTT_HOST,
 	.topics[0] = "comedi/bmc/data/bmc/1",
 	.topics[1] = "comedi/bmc/data/bmc/2",
@@ -539,13 +539,15 @@ void bmc_mqtt_init(void)
 		MQTTClient_create(&E.client_p, LADDRESS, (const char *) &ha_daq_host.topics[ha_daq_host.hindex],
 			MQTTCLIENT_PERSISTENCE_NONE, NULL);
 		conn_opts_p.keepAliveInterval = KAI;
-		conn_opts_p.cleansession = 1;
+		conn_opts_p.retryInterval = MQTT_RECONN;
+		conn_opts_p.cleansession = 0;
 		hname_ptr = LADDRESS;
 	} else {
 		MQTTClient_create(&E.client_p, ha_daq_host.mqtt[ha_daq_host.hindex], (const char *) &ha_daq_host.clients[ha_daq_host.hindex],
 			MQTTCLIENT_PERSISTENCE_NONE, NULL);
 		conn_opts_p.keepAliveInterval = KAI;
-		conn_opts_p.cleansession = 1;
+		conn_opts_p.retryInterval = MQTT_RECONN;
+		conn_opts_p.cleansession = 0;
 		hname_ptr = (char *) ha_daq_host.mqtt[ha_daq_host.hindex];
 	}
 

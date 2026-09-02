@@ -37,6 +37,7 @@ C_data C = {
 	.M.power_on = true,
 	.tm_ok = false,
 	.link_ok = false,
+	.c_crc_errors = 0,
 };
 
 volatile struct VM_type VM = {
@@ -160,7 +161,7 @@ uint16_t modbus_rtu_send_msg(void *cc_buffer, const void *modbus_cc_mode, uint16
 uint16_t crc16(volatile uint8_t *buffer, uint16_t buffer_length)
 {
 #ifdef HWCRC // for flash or EEPROM only
-	CRC_SetScannerAddressLimit((uint24_t) & buffer[0], (uint24_t) & buffer[buffer_length-1]);
+	CRC_SetScannerAddressLimit((uint24_t) & buffer[0], (uint24_t) & buffer[buffer_length - 1]);
 	CRC_StartScanner();
 	while (CRC_IsCrcBusy() || CRC_IsScannerBusy());
 	return(uint16_t) CRC_GetCalculatedResult(false, 0x00);
@@ -703,17 +704,20 @@ static bool modbus_read_id_check(C_data * client, bool* cstate, const uint16_t r
 		if ((DBUG_R c_crc == c_crc_rec) && (cc_buffer[3] == MB_EM540_ID_H) && (cc_buffer[4] == MB_EM540_ID_L)) {
 			MM_ERROR_C;
 			client->id_ok = true;
+			client->c_crc_errors = 0;
 			*cstate = true;
 		} else {
 			MM_ERROR_S;
 			*cstate = false;
-			client->id_ok = false;
-			client->config_ok = false;
-			client->passwd_ok = false;
-			client->data_ok = false;
-			client->light_ok = false;
-			client->version_ok = false;
-			client->serial_ok = false;
+			if (client->c_crc_errors++ > MAX_CRC_ERROR) {
+				client->id_ok = false;
+				client->config_ok = false;
+				client->passwd_ok = false;
+				client->data_ok = false;
+				client->light_ok = false;
+				client->version_ok = false;
+				client->serial_ok = false;
+			}
 			log_crc_error(c_crc, c_crc_rec);
 		}
 		client->cstate = CLEAR;

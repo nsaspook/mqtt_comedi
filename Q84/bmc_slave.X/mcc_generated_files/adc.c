@@ -67,11 +67,11 @@ void ADC_Initialize(void)
     //ADACT disabled; 
     ADACT = 0x00;
 
-    //ADCCS FOSC/48; 
-    ADCLK = 0x17;
+    //ADCCS FOSC/16; 
+    ADCLK = 0x07;
     
     //ADC charge pump control
-    ADCP = 0x00;
+    ADCP = 0x80;
     
 
     /****************************************
@@ -127,8 +127,8 @@ void ADC_Initialize(void)
     //ADACQH 0; 
     ADACQH = 0x00;
 
-    //ADCAP Additional uC of 31pF; 
-    ADCAP = 0x1F;
+    //ADCAP Additional uC disabled; 
+    ADCAP = 0x00;
 
     //ADPREL 0; 
     ADPREL = 0x00;

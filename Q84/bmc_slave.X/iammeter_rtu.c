@@ -454,6 +454,7 @@ static bool iammeter_modbus_read_dir_check(C_data * client, bool* cstate, const 
 		if (DBUG_R c_crc == c_crc_rec) {
 			MM_ERROR_C;
 			client->id_ok = true;
+			client->c_crc_errors = 0;
 			*cstate = true;
 			/*
 			 * move from receive buffer to data structure and munge the data into the correct local 32-bit format from MODBUS client
@@ -464,7 +465,9 @@ static bool iammeter_modbus_read_dir_check(C_data * client, bool* cstate, const 
 		} else {
 			MM_ERROR_S;
 			*cstate = false;
-			client->id_ok = false;
+			if (client->c_crc_errors++ > MAX_CRC_ERROR) {
+				client->id_ok = false;
+			}
 			log_crc_error(c_crc, c_crc_rec);
 		}
 		client->cstate = CLEAR;

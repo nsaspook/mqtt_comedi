@@ -153,7 +153,7 @@ enum EMETER_MODEL set_calibration(unsigned long long mui)
 float phy_chan4(uint16_t value)
 {
 	if (value) {
-		return((((float) value)) / ADC_SCALE) * ha_daq_calib.scaler4;
+		return(((((float) value)) / ADC_SCALE) + HV_SCALE_OFFSET) * ha_daq_calib.scaler4;
 	} else {
 		return 0.00001f;
 	}
@@ -162,7 +162,7 @@ float phy_chan4(uint16_t value)
 float phy_chan5(uint16_t value)
 {
 	if (value) {
-		return((((float) value)) / ADC_SCALE) * ha_daq_calib.scaler5;
+		return(((((float) value)) / ADC_SCALE) + HV_SCALE_OFFSET) * ha_daq_calib.scaler5;
 	} else {
 		return 0.00001f;
 	}

@@ -327,6 +327,7 @@ static bool pzem_modbus_read_check(C_data * client, bool* cstate, const uint16_t
 		if (DBUG_R c_crc == c_crc_rec) {
 			client->data_ok = true;
 			client->id_ok = true;
+			client->c_crc_errors = 0;
 			*cstate = true;
 			/*
 			 * move from receive buffer to data structure and munge the data into the correct local 32-bit format from MODBUS client
@@ -339,7 +340,9 @@ static bool pzem_modbus_read_check(C_data * client, bool* cstate, const uint16_t
 			MM_ERROR_S;
 			*cstate = false;
 			client->data_ok = false;
-			client->id_ok = false;
+			if (client->c_crc_errors++ > MAX_CRC_ERROR) {
+				client->id_ok = false;
+			}
 			client->config_ok = false;
 			log_crc_error(c_crc, c_crc_rec);
 		}

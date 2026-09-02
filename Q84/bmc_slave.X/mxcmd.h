@@ -104,6 +104,8 @@ extern "C" {
 	typedef struct {
 		uint8_t a[16];
 	} mx_log_packed_t;
+	
+	extern volatile uint8_t	mxcmd_serial_errors;
 
 	extern void FM_onesec_io(void);
 	extern void FM_twosec_io(void);
@@ -117,6 +119,7 @@ extern "C" {
 	extern void wdtdelay(const uint32_t);
 	extern float lp_filter(const float, const uint8_t, const int8_t);
 	extern uint16_t calc_checksum(const uint8_t*, const uint8_t);
+	extern void mxcmd_log(void);
 
 	extern BM_type BM;
 

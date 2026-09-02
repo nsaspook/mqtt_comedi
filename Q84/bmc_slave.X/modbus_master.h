@@ -34,6 +34,7 @@ extern "C" {
 #define EM_DATA_LEN1	52	// 16-bit words returned
 #define EM_DATA_LEN2	64	// 16-bit words returned
 #define SERIAL_DATA_LEN	8
+#define MAX_CRC_ERROR	2	// fail message OK flags if greater than this
 #define AUTO_DERE
 	/*
 	 * setup options on the EM540 from the factor defaults
@@ -164,7 +165,7 @@ extern "C" {
 		bool id_ok, passwd_ok, config_ok, data_ok, light_ok, serial_ok, link_ok, version_ok, tm_ok;
 		uint32_t data_count, data_prev, c_crc_length;
 		volatile M_data M;
-		uint16_t c_crc, c_crc_rec;
+		uint16_t c_crc, c_crc_rec, c_crc_errors;
 	} C_data;
 
 	/*

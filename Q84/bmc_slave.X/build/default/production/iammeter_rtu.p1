@@ -5,7 +5,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v F24749 `(v ~T0 @X0 0 tf ]
 [v F24824 `(v ~T0 @X0 0 tf ]
 [v F24830 `(v ~T0 @X0 0 tf ]
-"144 ./modbus_master.h
+"145 ./modbus_master.h
 [s S3386 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 `uc 1 `us 1 `us 1 `us 1 `ul 1 `ul 1 `ul 1 `ul 1 `ul 1 `Va 1 ]
 [n S3386 M_data blink_lock config stable boot_code power_on pwm_volts error crc_data crc_calc send_count recv_count crc_error to_error sends rx ]
 "33 ./iammeter_rtu.h
@@ -23,7 +23,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v F24412 `(v ~T0 @X0 0 tf ]
 "368 ./mcc_generated_files/tmr3.h
 [v _TMR3_SetInterruptHandler `(v ~T0 @X0 0 ef1`*F24412 ]
-"362 ./modbus_master.h
+"363 ./modbus_master.h
 [v _timer_2ms_tick `(v ~T0 @X0 0 ef ]
 "129 ./mcc_generated_files/tmr3.h
 [v _TMR3_StartTimer `(v ~T0 @X0 0 ef ]
@@ -32,43 +32,43 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n E24849 comm_type CLEAR INIT SEND RECV  ]
 [c E24855 0 1 2 3 4 5 6 7 8 .. ]
 [n E24855 cmd_type G_ID G_DATA1 G_DATA2 G_CONFIG G_PASSWD G_LIGHT G_VERSION G_SERIAL G_LAST  ]
-"158 ./modbus_master.h
-[s S3387 `uc 1 `E24849 1 `E24855 1 `us 1 `us 1 `c 1 `c 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `ul 1 `ul 1 `ul 1 `VS3386 1 `us 1 `us 1 ]
-[n S3387 C_data mcmd cstate modbus_command req_length iam_count trace resets id_ok passwd_ok config_ok data_ok light_ok serial_ok link_ok version_ok tm_ok data_count data_prev c_crc_length M c_crc c_crc_rec ]
+"159 ./modbus_master.h
+[s S3387 `uc 1 `E24849 1 `E24855 1 `us 1 `us 1 `c 1 `c 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `a 1 `ul 1 `ul 1 `ul 1 `VS3386 1 `us 1 `us 1 `us 1 ]
+[n S3387 C_data mcmd cstate modbus_command req_length iam_count trace resets id_ok passwd_ok config_ok data_ok light_ok serial_ok link_ok version_ok tm_ok data_count data_prev c_crc_length M c_crc c_crc_rec c_crc_errors ]
 "80 iammeter_rtu.c
 [c E24866 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 .. ]
 [n E24866 trace_type T_begin T_clear T_passwd T_config T_data T_id T_serial T_version T_init T_init_d T_send T_send_d T_recv T_recv_r T_misc1 T_misc2 T_misc3 T_spacing T_light  ]
-"356 ./modbus_master.h
+"357 ./modbus_master.h
 [v _clear_2hz `(v ~T0 @X0 0 ef ]
-"357
+"358
 [v _clear_500ahz `(v ~T0 @X0 0 ef ]
 "93 iammeter_rtu.c
-[c E25115 0 1 2 .. ]
-[n E25115 cmd_im_type I_DATA1 I_DIR1 I_LAST  ]
-"368 ./modbus_master.h
+[c E25116 0 1 2 .. ]
+[n E25116 cmd_im_type I_DATA1 I_DIR1 I_LAST  ]
+"369 ./modbus_master.h
 [v _modbus_rtu_send_msg `(us ~T0 @X0 0 ef3`*v`*Cv`us ]
-"360
-[v _get_500ahz `(ul ~T0 @X0 0 ef1`Cuc ]
-"358
-[v _clear_500hz `(v ~T0 @X0 0 ef ]
 "361
+[v _get_500ahz `(ul ~T0 @X0 0 ef1`Cuc ]
+"359
+[v _clear_500hz `(v ~T0 @X0 0 ef ]
+"362
 [v _get_500hz `(ul ~T0 @X0 0 ef1`Cuc ]
 "380 ./mcc_generated_files/uart3.h
 [v _UART3_Write `(v ~T0 @X0 0 ef1`uc ]
-"363 ./modbus_master.h
+"364 ./modbus_master.h
 [v _serial_trmt `(a ~T0 @X0 0 ef ]
 "163 ./mcc_generated_files/uart3.h
 [v _UART3_is_rx_ready `(a ~T0 @X0 0 ef ]
 "355
 [v _UART3_Read `(uc ~T0 @X0 0 ef ]
-[v F25266 `(v ~T0 @X0 0 tf ]
+[v F25267 `(v ~T0 @X0 0 tf ]
 "25 iammeter_rtu.c
-[v _iammeter_modbus_read_check `(a ~T0 @X0 0 sf4`*S3387`*a`us`*F25266 ]
+[v _iammeter_modbus_read_check `(a ~T0 @X0 0 sf4`*S3387`*a`us`*F25267 ]
 "29
 [v _iammeter_data_handler `(v ~T0 @X0 0 sf ]
-[v F25273 `(v ~T0 @X0 0 tf ]
+[v F25274 `(v ~T0 @X0 0 tf ]
 "26
-[v _iammeter_modbus_read_dir_check `(a ~T0 @X0 0 sf5`*S3387`*a`us`*F25273`Cuc ]
+[v _iammeter_modbus_read_dir_check `(a ~T0 @X0 0 sf5`*S3387`*a`us`*F25274`Cuc ]
 "30
 [v _iammeter_dir_handler `(v ~T0 @X0 0 sf ]
 "113 ./iammeter_rtu.h
@@ -97,29 +97,29 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S3181 . . ]
 "69758
 [v _LATCbits `VS3181 ~T0 @X0 0 e@1216 ]
-"210 ./modbus_master.h
+"211 ./modbus_master.h
 [s S3394 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vs 1 `Vs 1 `Vs 1 `Vs 1 `Vs 1 `Vs 1 ]
 [n S3394 EM_data1 vl1n vl2n vl3n vl1l2 vl2l3 vl3l1 al1 al2 al3 wl1 wl2 wl3 val1 val2 val3 varl1 varl2 varl3 vlnsys vllsys wsys vasys varsys pfl1 pfl2 pfl3 pfsys phaseseq hz ]
-"372
+"373
 [v _em_ptr `*QS3394 ~T0 @X0 0 e ]
 [v _em `QS3394 ~T0 @X0 0 e ]
-"355
+"356
 [v _mb16_swap `(s ~T0 @X0 0 ef1`Cs ]
-"354
+"355
 [v _mb32_swap `(l ~T0 @X0 0 ef1`Cl ]
-"237
+"238
 [s S3396 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vo 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 `Vl 1 ]
 [n S3396 EM_data2 kwhpt kvarhpt kwhpp kvarhpp kwhpl1 kwhpl2 kwhpl3 kwhnt kvarhnt kwhnp kvarhnp kvaht kvahp rhm rhmk rhmp rhmkp hz rhlc ]
-"374
+"375
 [v _emt `QS3396 ~T0 @X0 0 e ]
-"224
+"225
 [s S3395 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 `Vf 1 ]
 [n S3395 EM_tmp vl1n vl2n vl3n vl1l2 vl2l3 vl3l1 al1 al2 al3 wl1 wl2 wl3 val1 val2 val3 varl1 varl2 varl3 vlnsys vllsys wsys vasys varsys pfl1 pfl2 pfl3 pfsys phaseseq hz ]
-"373
+"374
 [v _em_tmp `S3395 ~T0 @X0 0 e ]
-"348
-[v _crc16 `(us ~T0 @X0 0 ef2`*Vuc`us ]
 "349
+[v _crc16 `(us ~T0 @X0 0 ef2`*Vuc`us ]
+"350
 [v _crc16_receive `(us ~T0 @X0 0 ef2`*CS3387`*Vuc ]
 "69685 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.30.487/xc8/pic/include/proc/pic18f57q84.h
 [s S3180 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
@@ -129,23 +129,23 @@ Version 4.0 HI-TECH Software Intermediate Code
 [n S3179 . . ]
 "69696
 [v _LATBbits `VS3179 ~T0 @X0 0 e@1215 ]
-"366 ./modbus_master.h
+"367 ./modbus_master.h
 [v _log_crc_error `(v ~T0 @X0 0 ef2`Cus`Cus ]
-[v F25330 `(v ~T0 @X0 0 tf ]
-[v F25335 `(v ~T0 @X0 0 tf ]
-[v F25339 `(v ~T0 @X0 0 tf ]
-[v F25344 `(v ~T0 @X0 0 tf ]
+[v F25331 `(v ~T0 @X0 0 tf ]
+[v F25336 `(v ~T0 @X0 0 tf ]
+[v F25340 `(v ~T0 @X0 0 tf ]
+[v F25345 `(v ~T0 @X0 0 tf ]
 "27 /ldrv/microchip/xc8/v4.00/pic/include/c99/string.h
 [v _memcpy `(*v ~T0 @X0 0 ef3`*v`*Cv`ui ]
 "34348 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.30.487/xc8/pic/include/proc/pic18f57q84.h
 [v _U3RXB `Vuc ~T0 @X0 0 e@711 ]
 "34 /ldrv/microchip/xc8/v4.00/pic/include/c99/string.h
 [v _strncpy `(*uc ~T0 @X0 0 ef3`*uc`*Cuc`ui ]
-"62 ./modbus_master.h
+"63 ./modbus_master.h
 [v _em_info `uc ~T0 @X0 -> 0 `x e ]
-[v F25114 `uc ~T0 @X0 -> 12 `i t ]
-"377
-[v _modbus_name `F25114 ~T0 @X0 -> 0 `x e ]
+[v F25115 `uc ~T0 @X0 -> 12 `i t ]
+"378
+[v _modbus_name `F25115 ~T0 @X0 -> 0 `x e ]
 "290 /root/.mchp_packs/Microchip/PIC18F-Q_DFP/1.30.487/xc8/pic/include/proc/pic18f57q84.h
 [; <" BOOTREG equ 038h ;# ">
 "322
@@ -2592,52 +2592,52 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _SPI2_InterruptHandler `*F24824 ~T0 @X0 1 e ]
 "77
 [v _SPI2_RxInterruptHandler `*F24830 ~T0 @X0 1 e ]
-"75 ./modbus_master.h
+"76 ./modbus_master.h
 [v _TMDELAY `Cuc ~T0 @X0 1 s ]
 [i _TMDELAY
 -> -> 2 `i `uc
 ]
-"76
+"77
 [v _TEDELAY `Cuc ~T0 @X0 1 s ]
 [i _TEDELAY
 -> -> 1 `i `uc
 ]
-"77
+"78
 [v _RDELAY `Cuc ~T0 @X0 1 s ]
 [i _RDELAY
 -> -> 200 `i `uc
 ]
-"78
+"79
 [v _CDELAY `Cuc ~T0 @X0 1 s ]
 [i _CDELAY
 -> -> 40 `i `uc
 ]
-"79
+"80
 [v _QDELAY `Cuc ~T0 @X0 1 s ]
 [i _QDELAY
 -> -> 2 `i `uc
 ]
-"80
+"81
 [v _TODELAY `Cuc ~T0 @X0 1 s ]
 [i _TODELAY
 -> -> 4 `i `uc
 ]
-"81
+"82
 [v _SPACING `Cuc ~T0 @X0 1 s ]
 [i _SPACING
 -> -> 40 `i `uc
 ]
-"82
+"83
 [v _DUPL_DELAY `Cuc ~T0 @X0 1 s ]
 [i _DUPL_DELAY
 -> -> 2 `i `uc
 ]
-"83
+"84
 [v _HZ_DELAY `Cuc ~T0 @X0 1 s ]
 [i _HZ_DELAY
 -> -> 200 `i `uc
 ]
-"272
+"273
 [v _table_crc_hi `Cuc ~T0 @X0 -> 256 `i s ]
 [i _table_crc_hi
 :U ..
@@ -2899,7 +2899,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 64 `i `uc
 ..
 ]
-"302
+"303
 [v _table_crc_lo `Cuc ~T0 @X0 -> 256 `i s ]
 [i _table_crc_lo
 :U ..
@@ -3161,12 +3161,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 64 `i `uc
 ..
 ]
-"342
+"343
 [v _BOFF `Cuc ~T0 @X0 1 s ]
 [i _BOFF
 -> -> 0 `i `uc
 ]
-"343
+"344
 [v _BON `Cuc ~T0 @X0 1 s ]
 [i _BON
 -> -> 255 `i `uc
@@ -3386,17 +3386,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 "75
 [f ]
 "76
-[v F25308 `ul ~T0 @X0 1 s spacing ]
-[i F25308
+[v F25309 `ul ~T0 @X0 1 s spacing ]
+[i F25309
 -> -> -> 0 `i `l `ul
 ]
 "77
-[v F25309 `uc ~T0 @X0 1 s m_data ]
-[i F25309
+[v F25310 `uc ~T0 @X0 1 s m_data ]
+[i F25310
 -> -> 0 `i `uc
 ]
 "79
-[e $ ! && < ++ F25308 -> -> -> 1 `i `l `ul -> _ISPACING `ul != -> . *U _client 1 `ui -> . `E24849 3 `ui 3405  ]
+[e $ ! && < ++ F25309 -> -> -> 1 `i `l `ul -> _ISPACING `ul != -> . *U _client 1 `ui -> . `E24849 3 `ui 3405  ]
 {
 "80
 [e ) -> . `E24866 17 `c ]
@@ -3405,7 +3405,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 3405 ]
 "83
-[e = F25308 -> -> -> 0 `i `l `ul ]
+[e = F25309 -> -> -> 0 `i `l `ul ]
 "85
 [e = . *U _client 5 -> . `E24866 0 `c ]
 "86
@@ -3424,10 +3424,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 "92
 [e = . *U _client 2 -> ++ . *U _client 0 -> -> 1 `i `uc `E24855 ]
 "93
-[e $ ! > -> . *U _client 0 `i -> . `E25115 2 `i 3409  ]
+[e $ ! > -> . *U _client 0 `i -> . `E25116 2 `i 3409  ]
 {
 "94
-[e = . *U _client 0 -> . `E25115 0 `uc ]
+[e = . *U _client 0 -> . `E25116 0 `uc ]
 "95
 }
 [e :U 3409 ]
@@ -3455,7 +3455,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "109
 [e = . *U _client 1 . `E24849 0 ]
 "110
-[e = . *U _client 0 -> . `E25115 0 `uc ]
+[e = . *U _client 0 -> . `E25116 0 `uc ]
 "111
 [e $U 3410  ]
 "112
@@ -3469,9 +3469,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $U 3410  ]
 [e :U 3411 ]
 "99
-[e [\ -> . *U _client 2 `ui , $ -> . `E25115 0 `ui 3412
- , $ -> . `E25115 1 `ui 3413
- , $ -> . `E25115 2 `ui 3414
+[e [\ -> . *U _client 2 `ui , $ -> . `E25116 0 `ui 3412
+ , $ -> . `E25116 1 `ui 3413
+ , $ -> . `E25116 2 `ui 3414
  3415 ]
 [e :U 3410 ]
 "116
@@ -3555,9 +3555,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! != -> ( _UART3_is_rx_ready ..  `i -> 0 `i 3427  ]
 {
 "165
-[e = F25309 ( _UART3_Read ..  ]
+[e = F25310 ( _UART3_Read ..  ]
 "166
-[e = *U + _cc_buffer * -> . _M 10 `ux -> -> # *U _cc_buffer `ui `ux F25309 ]
+[e = *U + _cc_buffer * -> . _M 10 `ux -> -> # *U _cc_buffer `ui `ux F25310 ]
 "167
 [e $ ! >= =+ . _M 10 -> -> 1 `i `Vul -> -> -> 250 `i `l `ul 3428  ]
 {
@@ -3593,8 +3593,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $U 3429  ]
 [e :U 3430 ]
 "174
-[e [\ -> . *U _client 2 `ui , $ -> . `E25115 0 `ui 3431
- , $ -> . `E25115 1 `ui 3432
+[e [\ -> . *U _client 2 `ui , $ -> . `E25116 0 `ui 3431
+ , $ -> . `E25116 1 `ui 3432
  3433 ]
 [e :U 3429 ]
 "184
@@ -3633,8 +3633,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "194
 [f ]
 "195
-[v F25315 `uc ~T0 @X0 1 s m_data ]
-[i F25315
+[v F25316 `uc ~T0 @X0 1 s m_data ]
+[i F25316
 -> -> 0 `i `uc
 ]
 "197
@@ -3773,9 +3773,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! != -> ( _UART3_is_rx_ready ..  `i -> 0 `i 3457  ]
 {
 "258
-[e = F25315 ( _UART3_Read ..  ]
+[e = F25316 ( _UART3_Read ..  ]
 "259
-[e = *U + _cc_buffer * -> . _M 10 `ux -> -> # *U _cc_buffer `ui `ux F25315 ]
+[e = *U + _cc_buffer * -> . _M 10 `ux -> -> # *U _cc_buffer `ui `ux F25316 ]
 "260
 [e $ ! >= =+ . _M 10 -> -> 1 `i `Vul -> -> -> 250 `i `l `ul 3458  ]
 {
@@ -4068,7 +4068,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "386
 [e = . *U _client 1 . `E24849 0 ]
 "387
-[e = . *U _client 0 -> . `E25115 2 `uc ]
+[e = . *U _client 0 -> . `E25116 2 `uc ]
 "388
 }
 [e $U 3488  ]
@@ -4080,7 +4080,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "390
 [e = . *U _client 1 . `E24849 0 ]
 "391
-[e = . *U _client 0 -> . `E25115 0 `uc ]
+[e = . *U _client 0 -> . `E25116 0 `uc ]
 "392
 [e ++ . _M 12 -> -> 1 `i `Vul ]
 "393
@@ -4110,7 +4110,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :UE 3481 ]
 }
 "402
-[v _iammeter_modbus_read_check `(a ~T0 @X0 1 sf4`*S3387`*a`us`*F25330 ]
+[v _iammeter_modbus_read_check `(a ~T0 @X0 1 sf4`*S3387`*a`us`*F25331 ]
 "403
 {
 [e :U _iammeter_modbus_read_check ]
@@ -4118,7 +4118,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _client `*S3387 ~T0 @X0 1 r1 ]
 [v _cstate `*a ~T0 @X0 1 r2 ]
 [v _rec_length `Cus ~T0 @X0 1 r3 ]
-[v _DataHandler `*F25335 ~T0 @X0 1 r4 ]
+[v _DataHandler `*F25336 ~T0 @X0 1 r4 ]
 "403
 [f ]
 "404
@@ -4191,7 +4191,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 3507 ]
 "436
-[e = . *U _client 0 -> . `E25115 0 `uc ]
+[e = . *U _client 0 -> . `E25116 0 `uc ]
 "437
 [e ++ . _M 12 -> -> 1 `i `Vul ]
 "438
@@ -4213,7 +4213,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :UE 3494 ]
 }
 "446
-[v _iammeter_modbus_read_dir_check `(a ~T0 @X0 1 sf5`*S3387`*a`us`*F25339`Cuc ]
+[v _iammeter_modbus_read_dir_check `(a ~T0 @X0 1 sf5`*S3387`*a`us`*F25340`Cuc ]
 "447
 {
 [e :U _iammeter_modbus_read_dir_check ]
@@ -4221,7 +4221,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _client `*S3387 ~T0 @X0 1 r1 ]
 [v _cstate `*a ~T0 @X0 1 r2 ]
 [v _rec_length `Cus ~T0 @X0 1 r3 ]
-[v _DataHandler `*F25344 ~T0 @X0 1 r4 ]
+[v _DataHandler `*F25345 ~T0 @X0 1 r4 ]
 [v _command `Cuc ~T0 @X0 1 r5 ]
 "447
 [f ]
@@ -4249,216 +4249,224 @@ Version 4.0 HI-TECH Software Intermediate Code
 "456
 [e = . *U _client 7 -> -> 1 `i `a ]
 "457
+[e = . *U _client 22 -> -> 0 `i `us ]
+"458
 [e = *U _cstate -> -> 1 `i `a ]
-"461
-[e ( *U _DataHandler ..  ]
 "462
-[e = . *U _client 17 . *U _client 16 ]
+[e ( *U _DataHandler ..  ]
 "463
-[e ++ . *U _client 16 -> -> -> 1 `i `l `ul ]
+[e = . *U _client 17 . *U _client 16 ]
 "464
+[e ++ . *U _client 16 -> -> -> 1 `i `l `ul ]
+"465
 }
 [e $U 3515  ]
 [e :U 3511 ]
 {
-"465
+"466
 [e :U 3518 ]
 {
 [e = . . _LATBbits 0 1 -> -> 1 `i `uc ]
 }
 [e :U 3517 ]
-"466
-[e = *U _cstate -> -> 0 `i `a ]
 "467
-[e = . *U _client 7 -> -> 0 `i `a ]
+[e = *U _cstate -> -> 0 `i `a ]
 "468
-[e ( _log_crc_error (2 , _c_crc _c_crc_rec ]
+[e $ ! > -> ++ . *U _client 22 -> -> 1 `i `us `ui -> -> 2 `i `ui 3519  ]
+{
 "469
+[e = . *U _client 7 -> -> 0 `i `a ]
+"470
+}
+[e :U 3519 ]
+"471
+[e ( _log_crc_error (2 , _c_crc _c_crc_rec ]
+"472
 }
 [e :U 3515 ]
-"470
-[e = . *U _client 1 . `E24849 0 ]
-"471
-}
-[e $U 3519  ]
-[e :U 3510 ]
-{
-"472
-[e $ ! >= ( _get_500hz (1 -> -> 0 `i `uc -> _IRDELAY `ul 3520  ]
-{
 "473
 [e = . *U _client 1 . `E24849 0 ]
 "474
-[e = . *U _client 0 -> . `E25115 1 `uc ]
+}
+[e $U 3520  ]
+[e :U 3510 ]
+{
 "475
-[e ++ . _M 12 -> -> 1 `i `Vul ]
+[e $ ! >= ( _get_500hz (1 -> -> 0 `i `uc -> _IRDELAY `ul 3521  ]
+{
 "476
-[e ++ . _M 6 -> -> 1 `i `Vus ]
+[e = . *U _client 1 . `E24849 0 ]
 "477
-[e = *U _cstate -> -> 0 `i `a ]
+[e = . *U _client 0 -> . `E25116 1 `uc ]
 "478
-[e = . *U _client 7 -> -> 0 `i `a ]
+[e ++ . _M 12 -> -> 1 `i `Vul ]
 "479
+[e ++ . _M 6 -> -> 1 `i `Vus ]
+"480
+[e = *U _cstate -> -> 0 `i `a ]
+"481
+[e = . *U _client 7 -> -> 0 `i `a ]
+"482
+}
+[e :U 3521 ]
+"483
 }
 [e :U 3520 ]
-"480
-}
-[e :U 3519 ]
-"481
+"484
 [e ) *U _cstate ]
 [e $UE 3509  ]
-"482
+"485
 [e :UE 3509 ]
 }
-"486
+"489
 [v _half_dup_tx `(v ~T0 @X0 1 sf1`Ca ]
-"487
+"490
 {
 [e :U _half_dup_tx ]
-"486
+"489
 [v _delay `Ca ~T0 @X0 1 r1 ]
-"487
+"490
 [f ]
-"498
-[e :UE 3521 ]
-}
-"502
-[v _half_dup_rx `(v ~T0 @X0 1 sf1`Ca ]
-"503
-{
-[e :U _half_dup_rx ]
-"502
-[v _delay `Ca ~T0 @X0 1 r1 ]
-"503
-[f ]
-"513
+"501
 [e :UE 3522 ]
 }
-"515
-[v _modbus_dcu_send_msg_im `(us ~T0 @X0 1 ef3`*v`*Cv`Cus ]
+"505
+[v _half_dup_rx `(v ~T0 @X0 1 sf1`Ca ]
+"506
+{
+[e :U _half_dup_rx ]
+"505
+[v _delay `Ca ~T0 @X0 1 r1 ]
+"506
+[f ]
 "516
+[e :UE 3523 ]
+}
+"518
+[v _modbus_dcu_send_msg_im `(us ~T0 @X0 1 ef3`*v`*Cv`Cus ]
+"519
 {
 [e :U _modbus_dcu_send_msg_im ]
-"515
+"518
 [v _cc_buffer `*v ~T0 @X0 1 r1 ]
 [v _modbus_cc_mode `*Cv ~T0 @X0 1 r2 ]
 [v _req_length `Cus ~T0 @X0 1 r3 ]
-"516
-[f ]
-"517
-[e ( _memcpy (3 , , _cc_buffer _modbus_cc_mode -> _req_length `ui ]
-"518
-[e ) _req_length ]
-[e $UE 3523  ]
 "519
-[e :UE 3523 ]
-}
+[f ]
+"520
+[e ( _memcpy (3 , , _cc_buffer _modbus_cc_mode -> _req_length `ui ]
 "521
-[v _modbus_read_dcu_check_im `(a ~T0 @X0 1 sf3`*S3387`*a`us ]
+[e ) _req_length ]
+[e $UE 3524  ]
 "522
+[e :UE 3524 ]
+}
+"524
+[v _modbus_read_dcu_check_im `(a ~T0 @X0 1 sf3`*S3387`*a`us ]
+"525
 {
 [e :U _modbus_read_dcu_check_im ]
-"521
+"524
 [v _client `*S3387 ~T0 @X0 1 r1 ]
 [v _cstate `*a ~T0 @X0 1 r2 ]
 [v _rec_length `Cus ~T0 @X0 1 r3 ]
-"522
-[f ]
-"523
-[e = . *U _client 3 _rec_length ]
-"524
-[e $ ! >= . _M 10 -> . *U _client 3 `ul 3525  ]
-{
 "525
-[e = . *U _client 14 -> -> 1 `i `a ]
+[f ]
 "526
-}
-[e $U 3526  ]
-[e :U 3525 ]
-{
+[e = . *U _client 3 _rec_length ]
 "527
-[e $ ! >= ( _get_500hz (1 -> -> 0 `i `uc -> _IRDELAY `ul 3527  ]
+[e $ ! >= . _M 10 -> . *U _client 3 `ul 3526  ]
 {
 "528
-[e ++ . _M 12 -> -> 1 `i `Vul ]
+[e = . *U _client 14 -> -> 1 `i `a ]
 "529
-[e ++ . _M 6 -> -> 1 `i `Vus ]
+}
+[e $U 3527  ]
+[e :U 3526 ]
+{
 "530
-[e = . *U _client 7 -> -> 0 `i `a ]
+[e $ ! >= ( _get_500hz (1 -> -> 0 `i `uc -> _IRDELAY `ul 3528  ]
+{
 "531
-[e = *U _cstate -> -> 0 `i `a ]
+[e ++ . _M 12 -> -> 1 `i `Vul ]
 "532
-[e = . *U _client 9 -> -> 0 `i `a ]
+[e ++ . _M 6 -> -> 1 `i `Vus ]
 "533
-[e = . *U _client 8 -> -> 0 `i `a ]
+[e = . *U _client 7 -> -> 0 `i `a ]
 "534
-[e = . *U _client 10 -> -> 0 `i `a ]
+[e = *U _cstate -> -> 0 `i `a ]
 "535
-[e = . *U _client 13 -> -> 0 `i `a ]
+[e = . *U _client 9 -> -> 0 `i `a ]
 "536
-[e = . *U _client 14 -> -> 0 `i `a ]
+[e = . *U _client 8 -> -> 0 `i `a ]
 "537
-[e = . *U _client 12 -> -> 0 `i `a ]
+[e = . *U _client 10 -> -> 0 `i `a ]
 "538
-[e :U 3530 ]
+[e = . *U _client 13 -> -> 0 `i `a ]
+"539
+[e = . *U _client 14 -> -> 0 `i `a ]
+"540
+[e = . *U _client 12 -> -> 0 `i `a ]
+"541
+[e :U 3531 ]
 {
 [e = . . _LATBbits 0 1 -> -> 1 `i `uc ]
 }
-[e :U 3529 ]
-"539
+[e :U 3530 ]
+"542
+}
+[e :U 3528 ]
+"543
 }
 [e :U 3527 ]
-"540
-}
-[e :U 3526 ]
-"541
+"544
 [e ) *U _cstate ]
-[e $UE 3524  ]
-"542
-[e :UE 3524 ]
+[e $UE 3525  ]
+"545
+[e :UE 3525 ]
 }
-"549
+"552
 [v _im_my_modbus_rx_32 `(v ~T0 @X0 1 ef ]
-"550
+"553
 {
 [e :U _im_my_modbus_rx_32 ]
 [f ]
-"551
-[v F25361 `uc ~T0 @X0 1 s m_data ]
-[i F25361
+"554
+[v F25362 `uc ~T0 @X0 1 s m_data ]
+[i F25362
 -> -> 0 `i `uc
 ]
-"553
+"556
 [e :s 1C ]
-"554
+"557
 [e = . _M 14 -> -> 1 `i `a ]
-"558
-[e = F25361 _U3RXB ]
-"559
-[e = *U + _cc_buffer * -> . _M 10 `ux -> -> # *U _cc_buffer `ui `ux F25361 ]
-"560
-[e $ ! >= =+ . _M 10 -> -> 1 `i `Vul -> -> -> 250 `i `l `ul 3532  ]
-{
 "561
-[e = . _M 10 -> -> -> 0 `i `l `ul ]
+[e = F25362 _U3RXB ]
 "562
-}
-[e :U 3532 ]
+[e = *U + _cc_buffer * -> . _M 10 `ux -> -> # *U _cc_buffer `ui `ux F25362 ]
 "563
-[e :UE 3531 ]
-}
+[e $ ! >= =+ . _M 10 -> -> 1 `i `Vul -> -> -> 250 `i `l `ul 3533  ]
+{
+"564
+[e = . _M 10 -> -> -> 0 `i `l `ul ]
 "565
-[v _iammeter_version `(v ~T0 @X0 1 ef ]
+}
+[e :U 3533 ]
 "566
+[e :UE 3532 ]
+}
+"568
+[v _iammeter_version `(v ~T0 @X0 1 ef ]
+"569
 {
 [e :U _iammeter_version ]
 [f ]
-"567
+"570
 [e ( _strncpy (3 , , &U _em_info :s 2C -> -> 32 `i `ui ]
-"568
+"571
 [e ( _strncpy (3 , , &U *U + &U _modbus_name * -> -> -> 1 `i `ui `ux -> * -> # *U &U *U &U _modbus_name `ui -> -> 12 `i `ui `ux :s 3C -> -> 12 `i `ui ]
-"569
-[e :UE 3533 ]
+"572
+[e :UE 3534 ]
 }
 [a 3C 87 69 77 51 48 0 ]
 [a 2C 87 69 77 51 48 56 48 32 68 114 105 118 101 114 32 32 32 32 32 32 0 ]
