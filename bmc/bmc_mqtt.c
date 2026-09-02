@@ -42,7 +42,7 @@ struct ha_csv_type {
 	double acvolts, acamps, acwatts, acwatts_gti, acwatts_gti_abs, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, panel_watts, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
 	double l1watts, l2watts, l3watts, varsys;
 	uint32_t d_id, boot_updates;
-	double benergy, runtime;
+	double benergy, runtime, bsensor1, bsensor_tmp;
 	uint32_t boot_wait;
 	bool boot_volts, boot_once;
 };
@@ -104,7 +104,7 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.mqtt[3] = "10.1.1.45",
 	.mqtt[4] = "10.1.1.40", // no HA server, has internal mqtt server
 	.mqtt[5] = MQTT_HOST,
-	.mqtt[6] = "10.1.1.30", // send data to here
+	.mqtt[6] = "10.1.1.35", // send data to here
 	.mqtt[OPEN_HOST] = MQTT_HOST,
 	.topics[0] = "comedi/bmc/data/bmc/1",
 	.topics[1] = "comedi/bmc/data/bmc/2",
@@ -188,6 +188,8 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.scalar5[0] = HV_SCALE5_0,
 	.calib.A200_Z[0] = A200_0_ZERO,
 	.calib.A200_S[0] = A200_0_SCALAR,
+	.calib.A100_Z[0] = A100_0_ZERO,
+	.calib.A100_S[0] = A100_0_SCALAR,
 	.calib.bmc_id[1] = 0, // K8055 (VM110) modified for two HV inputs
 	.calib.offset4[1] = HV_SCALE_OFFSET,
 	.calib.scalar4[1] = HV_SCALE4_1,
@@ -195,6 +197,8 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.scalar5[1] = HV_SCALE5_1,
 	.calib.A200_Z[1] = A200_0_ZERO,
 	.calib.A200_S[1] = A200_0_SCALAR,
+	.calib.A100_Z[1] = A100_0_ZERO,
+	.calib.A100_S[1] = A100_0_SCALAR,
 	.calib.bmc_id[2] = 0x05AE2B, // bmc Q84 MUI for shed monitor
 	.calib.offset4[2] = HV_SCALE_OFFSET,
 	.calib.scalar4[2] = HV_SCALE4_2,
@@ -202,6 +206,8 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.scalar5[2] = HV_SCALE5_2,
 	.calib.A200_Z[2] = A200_0_ZERO,
 	.calib.A200_S[2] = A200_0_SCALAR,
+	.calib.A100_Z[2] = A100_0_ZERO,
+	.calib.A100_S[2] = A100_0_SCALAR,
 	.calib.bmc_id[3] = 0x05ABB6, // bmc Q84 MUI enclosure board
 	.calib.offset4[3] = HV_SCALE_OFFSET,
 	.calib.scalar4[3] = HV_SCALE4_3,
@@ -209,6 +215,8 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.scalar5[3] = HV_SCALE5_3,
 	.calib.A200_Z[3] = A200_0_ZERO,
 	.calib.A200_S[3] = A200_0_SCALAR,
+	.calib.A100_Z[3] = A100_0_ZERO,
+	.calib.A100_S[3] = A100_0_SCALAR,
 	.calib.bmc_id[4] = 0x061DB5, // 57Q84 BMC testing board
 	.calib.offset4[4] = HV_SCALE_OFFSET,
 	.calib.scalar4[4] = HV_SCALE4_4,
@@ -216,6 +224,8 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.scalar5[4] = HV_SCALE5_4,
 	.calib.A200_Z[4] = A200_0_ZERO,
 	.calib.A200_S[4] = A200_0_SCALAR,
+	.calib.A100_Z[4] = A100_0_ZERO,
+	.calib.A100_S[4] = A100_0_SCALAR,
 	.calib.bmc_id[5] = 0x000700, // ni_daq_700 PCMCIA board
 	.calib.offset4[5] = HV_SCALE_OFFSET,
 	.calib.scalar4[5] = HV_SCALE4_0,
@@ -223,6 +233,8 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.scalar5[5] = HV_SCALE5_0,
 	.calib.A200_Z[5] = A200_0_ZERO,
 	.calib.A200_S[5] = A200_0_SCALAR,
+	.calib.A100_Z[5] = A100_0_ZERO,
+	.calib.A100_S[5] = A100_0_SCALAR,
 	.calib.bmc_id[6] = 0x05AA28, // auxbmc Q84 MUI enclosure board
 	.calib.offset4[6] = HV_SCALE_OFFSET,
 	.calib.scalar4[6] = HV_SCALE4_6,
@@ -230,6 +242,8 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.scalar5[6] = HV_SCALE5_6,
 	.calib.A200_Z[6] = A200_0_ZERO,
 	.calib.A200_S[6] = A200_0_SCALAR,
+	.calib.A100_Z[6] = A100_0_ZERO,
+	.calib.A100_S[6] = A100_0_SCALAR,
 	.calib.bmc_id[OPEN_HOST] = 0x000000, // BMC OPEN HOST
 	.calib.offset4[OPEN_HOST] = HV_SCALE_OFFSET,
 	.calib.scalar4[OPEN_HOST] = HV_SCALE4_0,
@@ -237,6 +251,8 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.scalar5[OPEN_HOST] = HV_SCALE5_0,
 	.calib.A200_Z[OPEN_HOST] = A200_0_ZERO,
 	.calib.A200_S[OPEN_HOST] = A200_0_SCALAR,
+	.calib.A100_Z[OPEN_HOST] = A100_0_ZERO,
+	.calib.A100_S[OPEN_HOST] = A100_0_SCALAR,
 	.calib.sane = true,
 };
 
@@ -539,13 +555,15 @@ void bmc_mqtt_init(void)
 		MQTTClient_create(&E.client_p, LADDRESS, (const char *) &ha_daq_host.topics[ha_daq_host.hindex],
 			MQTTCLIENT_PERSISTENCE_NONE, NULL);
 		conn_opts_p.keepAliveInterval = KAI;
-		conn_opts_p.cleansession = 1;
+		conn_opts_p.retryInterval = MQTT_RECONN;
+		conn_opts_p.cleansession = 0;
 		hname_ptr = LADDRESS;
 	} else {
 		MQTTClient_create(&E.client_p, ha_daq_host.mqtt[ha_daq_host.hindex], (const char *) &ha_daq_host.clients[ha_daq_host.hindex],
 			MQTTCLIENT_PERSISTENCE_NONE, NULL);
 		conn_opts_p.keepAliveInterval = KAI;
-		conn_opts_p.cleansession = 1;
+		conn_opts_p.retryInterval = MQTT_RECONN;
+		conn_opts_p.cleansession = 0;
 		hname_ptr = (char *) ha_daq_host.mqtt[ha_daq_host.hindex];
 	}
 
@@ -712,6 +730,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		 * Battery 200A current sensor
 		 */
 		R.bsensor0 = lp_filter((E.adc[channel_ANA0] - ha_daq_host.calib.A200_Z[ha_daq_host.bindex]) * ha_daq_host.calib.A200_S[ha_daq_host.bindex], BSENSOR0, true);
+		R.bsensor1 = lp_filter((E.adc[channel_ANA1] - ha_daq_host.calib.A100_Z[ha_daq_host.bindex]) * ha_daq_host.calib.A100_S[ha_daq_host.bindex], BSENSOR1, true);
 		E.adc[channel_ANA1] = get_adc_volts(channel_ANA1);
 		E.adc[channel_ANA2] = get_adc_volts(channel_ANA2);
 		E.adc[channel_ANC6] = get_adc_volts(channel_ANC6);
@@ -735,7 +754,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			R.acwout = 0.0f;
 		}
 
-		if (R.bsensor0 < BSENSOR_MAX_NEG || R.bsensor0 > BSENSOR_MAX_POS) {
+		if (R.bsensor0 < BSENSOR0_MAX_NEG || R.bsensor0 > BSENSOR0_MAX_POS) {
 			R.bsensor0 = 0.01234f;
 		}
 
@@ -746,6 +765,11 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			R.dcwout = fabs(R.bsensor0 * R.bvolts); // discharge
 			R.dcwin = 0.0f;
 		}
+
+		if (R.bsensor1 < BSENSOR1_MAX_NEG || R.bsensor0 > BSENSOR1_MAX_POS) {
+			R.bsensor1 = 0.01234f;
+		}
+
 
 		if (R.achz < MAINS_HZ_LOW || R.achz > MAINS_HZ_HIGH) {
 			R.achz = MAINS_HZ;
@@ -822,15 +846,23 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		}
 		memset(daq_bmc_data_text, 0, MAX_STRLEN);
 		if (bmc.BOARD == bmcboard) {
+			/*
+			 * alternate current sensor values depending on ID
+			 */
+			if (R.d_id == DC2_CMD) {
+				R.bsensor_tmp = R.bsensor1;
+			} else {
+				R.bsensor_tmp = R.bsensor0;
+			}
 			if (ha_daq_host.calib.sane) {
 				fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV, ANA2 %6.3fV, ANA4 %6.3fV, ANA5 %6.3fV, AND5 %6.3fV, Battery Sensor %6.3fA, : Host Index %d, Scalar Index %d, Scalar ANA4 %7.4f, Scalar ANA5 %7.4f Serial 0X%X\n",
 					get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2),
-					E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], R.bsensor0, ha_daq_host.hindex, ha_daq_host.bindex, ha_daq_host.calib.scalar4[ha_daq_host.bindex], ha_daq_host.calib.scalar5[ha_daq_host.bindex],
+					E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], R.bsensor_tmp, ha_daq_host.hindex, ha_daq_host.bindex, ha_daq_host.calib.scalar4[ha_daq_host.bindex], ha_daq_host.calib.scalar5[ha_daq_host.bindex],
 					(uint8_t) daq_bmc_data[0]);
 			} else {
 				fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV, ANA2 %6.3fV, ANA4 %6.3fV, ANA5 %6.3fV, AND5 %6.3fV, Battery Sensor %6.3fA, : Host Index %d, Scalar Index %d, \033[1mScalar ANA4 %7.4f\033[0m, \033[1mScalar ANA5 %7.4f\033[0m Serial 0X%X\n",
 					get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2),
-					E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], R.bsensor0, ha_daq_host.hindex, ha_daq_host.bindex, ha_daq_host.calib.scalar4[ha_daq_host.bindex], ha_daq_host.calib.scalar5[ha_daq_host.bindex],
+					E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], R.bsensor_tmp, ha_daq_host.hindex, ha_daq_host.bindex, ha_daq_host.calib.scalar4[ha_daq_host.bindex], ha_daq_host.calib.scalar5[ha_daq_host.bindex],
 					(uint8_t) daq_bmc_data[0]);
 			}
 		} else {
@@ -908,6 +940,8 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], E.adc[channel_ANA5]);
 			strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_bsamps0", BMC_MAXHOST);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.bsensor0);
+			strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_bsamps1", BMC_MAXHOST);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.bsensor1);
 			strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_bswatts0", BMC_MAXHOST);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.bsensor0 * R.bvolts);
 		} else {

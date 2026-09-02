@@ -490,7 +490,7 @@ double lp_filter(double new, int bn, int slow) // low pass filter, slow rate of 
 	if ((bn >= LPCHANC) || (bn < 0)) // check for proper array position
 		return new;
 	if (slow) {
-		lp_speed = 0.033;
+		lp_speed = 0.003;
 	} else {
 		lp_speed = 0.125;
 	}

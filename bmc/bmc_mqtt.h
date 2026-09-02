@@ -64,8 +64,11 @@ extern "C" {
 #define CALIB_HV_LOW 50.0f
 #define CALIB_HV_HIGH 83.0f
 
-#define BSENSOR_MAX_NEG  -125.0f
-#define BSENSOR_MAX_POS  125.0f
+#define BSENSOR0_MAX_NEG  -125.0f
+#define BSENSOR0_MAX_POS  125.0f
+#define BSENSOR1_MAX_NEG  -60.0f
+#define BSENSOR1_MAX_POS  60.0f
+
 
 #define UPDATE_PACER  500 // MQTT and logging frequency to 0.01 seconds.
 #define UPDATE_PACER_RPI2B 500
@@ -133,6 +136,8 @@ extern "C" {
 		double scalar5[HOST_SLOTS];
 		double A200_Z[HOST_SLOTS];
 		double A200_S[HOST_SLOTS];
+		double A100_Z[HOST_SLOTS];
+		double A100_S[HOST_SLOTS];
 	};
 
 	struct ha_daq_hosts_type {
