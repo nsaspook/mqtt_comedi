@@ -67,7 +67,7 @@ extern "C" {
 	 * the sensor board has a onboard precision 5VDC reference/supply
 	 * Ax00_0_ZERO needs to set for each board
 	 */
-#define A200_0_ZERO    2.5216f // should be near 2.5VDC for zero Hall sensor current
+#define A200_0_ZERO    2.5220f // should be near 2.5VDC for zero Hall sensor current
 #define A200_0_SCALAR  133.05f // BATTERY 200 Amp scalar
 #define A100_0_ZERO    2.4000f // should be near 2.5VDC for zero Hall sensor current
 #define A100_0_SCALAR  59.05f // PV 100 Amp scalar
