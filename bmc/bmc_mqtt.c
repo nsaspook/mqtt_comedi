@@ -242,8 +242,8 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.scalar5[6] = HV_SCALE5_6,
 	.calib.A200_Z[6] = A200_0_ZERO,
 	.calib.A200_S[6] = A200_0_SCALAR,
-	.calib.A100_Z[6] = A100_0_ZERO,
-	.calib.A100_S[6] = A100_0_SCALAR,
+	.calib.A100_Z[6] = A100_0_ZERO_6,
+	.calib.A100_S[6] = A100_0_SCALAR_6,
 	.calib.bmc_id[OPEN_HOST] = 0x000000, // BMC OPEN HOST
 	.calib.offset4[OPEN_HOST] = HV_SCALE_OFFSET,
 	.calib.scalar4[OPEN_HOST] = HV_SCALE4_0,
@@ -731,6 +731,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		 */
 		R.bsensor0 = lp_filter((E.adc[channel_ANA0] - ha_daq_host.calib.A200_Z[ha_daq_host.bindex]) * ha_daq_host.calib.A200_S[ha_daq_host.bindex], BSENSOR0, true);
 		R.bsensor1 = lp_filter((E.adc[channel_ANA1] - ha_daq_host.calib.A100_Z[ha_daq_host.bindex]) * ha_daq_host.calib.A100_S[ha_daq_host.bindex], BSENSOR1, true);
+
 		E.adc[channel_ANA1] = get_adc_volts(channel_ANA1);
 		E.adc[channel_ANA2] = get_adc_volts(channel_ANA2);
 		E.adc[channel_ANC6] = get_adc_volts(channel_ANC6);
@@ -755,8 +756,9 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		}
 
 		if (R.bsensor0 < BSENSOR0_MAX_NEG || R.bsensor0 > BSENSOR0_MAX_POS) {
-			R.bsensor0 = 0.01234f;
+			R.bsensor0 = 0.001234f;
 		}
+		R.bsensor0 = calc_fixups(R.bsensor0, WIDE_ZERO); // reduce zero current noise
 
 		if (R.bsensor0 * R.bvolts > 0.0f) {
 			R.dcwin = calc_fixups(R.bsensor0 * R.bvolts, NO_NEG); // charge
@@ -767,8 +769,9 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		}
 
 		if (R.bsensor1 < BSENSOR1_MAX_NEG || R.bsensor0 > BSENSOR1_MAX_POS) {
-			R.bsensor1 = 0.01234f;
+			R.bsensor1 = 0.001234f;
 		}
+		R.bsensor1 = calc_fixups(R.bsensor1, WIDE_ZERO); // reduce zero current noise
 
 
 		if (R.achz < MAINS_HZ_LOW || R.achz > MAINS_HZ_HIGH) {
