@@ -69,10 +69,12 @@ extern "C" {
 	 */
 #define A200_0_ZERO		2.5220f // should be near 2.5VDC for zero Hall sensor current
 #define A200_0_SCALAR		133.05f // BATTERY 200 Amp scalar
+#define A200_0_ZERO_6		2.5220f
+#define A200_0_SCALAR_6		133.05f
 #define A100_0_ZERO		2.4000f // should be near 2.5VDC for zero Hall sensor current
 #define A100_0_SCALAR		59.05f // PV 100 Amp scalar
-#define A100_0_ZERO_6		2.3990f // should be near 2.5VDC for zero Hall sensor current
-#define A100_0_SCALAR_6		59.05f // PV 100 Amp scalar
+#define A100_0_ZERO_6		2.3990f
+#define A100_0_SCALAR_6		59.05f 
 	
 #define BSENSOR0       0
 #define BSENSOR1       1
