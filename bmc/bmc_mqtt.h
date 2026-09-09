@@ -66,8 +66,8 @@ extern "C" {
 
 #define BSENSOR0_MAX_NEG  -125.0f
 #define BSENSOR0_MAX_POS  125.0f
-#define BSENSOR1_MAX_NEG  -60.0f
-#define BSENSOR1_MAX_POS  60.0f
+#define BSENSOR1_MAX_NEG  -40.0f
+#define BSENSOR1_MAX_POS  40.0f
 
 
 #define UPDATE_PACER  500 // MQTT and logging frequency to 0.01 seconds.

@@ -120,8 +120,8 @@ void CRC_Initialize(void)
 
     //CRCEN enabled; CRCGO disabled; CRCACCM data not augmented with 0s; CRCSETUP 0; CRCLENDIAN shift left; 
     CRCCON0 = 0x80;
-    //SCANEN enabled; TRIGEN disabled; SCANGO disabled; MREG Program Flash Memory; BURSTMD CRC request and Trigger; 
-    SCANCON0 = 0x80;
+    //SCANEN disabled; TRIGEN disabled; SCANGO disabled; MREG Program Flash Memory; BURSTMD CRC request and Trigger; 
+    SCANCON0 = 0x00;
 }
 
 inline void CRC_StartCrc(void)

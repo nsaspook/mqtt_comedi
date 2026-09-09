@@ -67,17 +67,20 @@
  */
 
 /*
- * UART3 MODBUS serial comms, MODBUS header:: A-PIN 3 , B-PIN 2 , DERE-PIN 6, VSS-PIN 1 and 4, VDD-PIN 5, interrupts, 9600 bps
+ * UART3 MODBUS serial comms, MODBUS header:: A-PIN 3 , B-PIN 2 , DERE-PIN 6, VSS-PIN 1 and 4, VDD-PIN 5, interrupts, 9600 bps MOD_RX/MOD_TX
  *
  * UART2 FMx0 serial comms 9-bits async OPTO isolated MATE header:: FM_RX-PIN 4, FM_TX-PIN 3, FM_0V-PIN 2, FM_24V-PIN 1,
- * UART2 TTL serial HEADER:: RX-PIN 3, TX-PIN 2, VSS-PIN 1, VDD-PIN 4, SV1 serial header:: TX-PIN 10, RX-PIN 9, VSS-PIN 6, interrupts, polled. 9600 bps
+ * UART2 TTL serial HEADER:: RX-PIN 3, TX-PIN 2, VSS-PIN 1, VDD-PIN 4, SV1 serial header:: TX-PIN 10, RX-PIN 9, VSS-PIN 6, interrupts, polled. 9600 bps PC_RX/PC_TX
  *
  * UART1 general serial comms, PVP JACK connector:: RS232 TX-PIN 5, RX-PIN 4 VSS-PIN 6,  SV1 serial header::, TX-PIN 8, RX-PIN 7, VSS-PIN 6,
- * UART1 PVP JACK connector:: TTL TX-PIN 5, RX-PIN 7 VSS-PIN 6, interrupts, 115200 bps
+ * UART1 PVP JACK connector:: TTL TX-PIN 5, RX-PIN 7 VSS-PIN 6, interrupts, 115200 bps MB_RX/MB_TX
  *
  * Energy Meter Model
- * AUX IO pin 4, RF5
- * jumper to low/common for WEM30 meters or open for EM540 meters
+ * AUX IO pin 4, RF4,RF5,RF7 EMETER_CONF_TYPE, EMETER_CONF, EMETER_CONF_TYPE1
+ * jumper RF5 to low/common for WEM30 meters
+ * jumper RF4 and RF5 to low/common for PZEM meters
+ * jumper RF7 to low/common for custom meters
+ * all jumpers OPEN for EM540 meters
  */
 
 // PIC18F57Q84 Configuration Bit Settings
