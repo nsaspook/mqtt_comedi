@@ -1007,8 +1007,8 @@ int main(void)
 					snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "R %u, T4 %u T0 %u                      ", ISR_TIMEMARK, TMR4, TMR0_ReadTimer() - 0x1B1E);
 					snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "%x data, %x raw, %x str                      ", data_in2, serial_buffer_ss.raw_index, serial_buffer_ss.r_string_index);
 #else
-					snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "ADC %3X %3X %3X %3X                     ", adc_buffer[channel_ANA0], adc_buffer[channel_ANA1], adc_buffer[channel_ANA2], adc_buffer[channel_ANA4]);
-					snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "ADC %3X %3X %3X %3X                     ", adc_buffer[channel_ANA5], adc_buffer[channel_ANC6], adc_buffer[channel_ANC7], adc_buffer[channel_AND5]);
+					snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "ADC %03X %03X %03X %03X                     ", adc_buffer[channel_ANA0], adc_buffer[channel_ANA1], adc_buffer[channel_ANA2], adc_buffer[channel_ANA4]);
+					snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "ADC %03X %03X %03X %03X                     ", adc_buffer[channel_ANA5], adc_buffer[channel_ANC6], adc_buffer[channel_ANC7], adc_buffer[channel_AND5]);
 #endif
 				}
 				if ((ha_daq_calib.em_model == PZEM_M) || (ha_daq_calib.em_model == WEM30_M)) {
