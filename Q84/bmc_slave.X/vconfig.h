@@ -21,7 +21,7 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.73"
+#define VER	"V0.74"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -85,6 +85,7 @@ extern "C" {
 	 * V0.71 calibration value error on cold/power up boot. Reset sends correct value for scalar5
 	 * V0.72 XC8-4.0 -O3 optimizations
 	 * V0.73 allow for a few CRC errors when running
+	 * V0.74 reformat INFO and MAIN VTERM display data
 	 */
 
 	/*
@@ -92,7 +93,8 @@ extern "C" {
 	 */
 	//#define DIS_DEBUG	// active debug status display, disable during normal operation
 
-
+	//#define SHOW_SPI2	// show SPI2 debug on INFO VTERM else show ADC raw results from conversions
+	//#define SHOW_SCALARS  // show ADC4 and ADC5 scalars to voltage
 	//#define IAMMETER_TEST
 
 	/*
@@ -327,13 +329,13 @@ extern "C" {
 		SEQ_STATES s_state;
 		UI_STATES ui_state;
 		char buf[MAX_BUF + 1], terminal[MAX_TERM + 1], info[MAX_INFO + 1];
-		volatile uint32_t ticks, systemb, tx_total, rx_total, bt_total, br_total, brn_total, btn_total, bmc_do, bmc_di;
+		volatile uint32_t uptime_ticks, systemb, tx_total, rx_total, bt_total, br_total, brn_total, btn_total, bmc_do, bmc_di;
 		volatile uint32_t utc_ticks;
 		int32_t testing;
 		uint8_t stream, function, error, abort, msg_error, msg_ret, alarm, event;
 		UI_STATES ui_sw;
 		uint16_t r_checksum, t_checksum, checksum_error, timer_error, ping, mode_pwm, equip_timeout, sequences, all_errors, ceid;
-		volatile uint16_t bmc_ao;
+		volatile uint16_t bmc_ao, log_len;
 		uint8_t rbit : 1, wbit : 1, ebit : 1, failed_send : 4, failed_receive : 4;
 		terminal_type response;
 		uint8_t uart, llid, sid, ping_count, euart, vterm, vterm_switch, uart_speed_fast;

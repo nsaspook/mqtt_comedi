@@ -309,6 +309,7 @@ V_data V = {
 	.op.init_mb_master_timers = &init_mb_master_timers,
 	.op.master_controller_work = &master_controller_work,
 	.op.info_ptr = &em540_version,
+	.log_len = 0,
 };
 
 BM_type BM = {
@@ -713,7 +714,7 @@ int main(void)
 				sprintf(get_vterm_ptr(0, MAIN_VTERM), "Read EEPROM DATA    ");
 			} else {
 				sprintf(get_vterm_ptr(0, MAIN_VTERM), "Invalid EEPROM DATA ");
-//				update_cal_data();
+				//				update_cal_data();
 				write_cal_data();
 				timeout = true;
 			}
@@ -969,7 +970,11 @@ int main(void)
 				 */
 				ptr_log = get_vterm_ptr(0, MAIN_VTERM);
 				snprintf(ptr_log, MAX_TEXT, "%s ", &BMC4.log_buffer[2]);
+#ifdef SHOW_SCALARS
 				snprintf(&ptr_log[3], MAX_TEXT, " %7.4f, %7.4f                   ", ha_daq_calib.scaler4, ha_daq_calib.scaler5);
+#else
+				snprintf(&ptr_log[3], MAX_TEXT, " %luSec, %u                   ", V.uptime_ticks, V.log_len);
+#endif
 				// check for special DAQ configuration
 				if (spi_stat_ss.mui != 0x61DB5) {
 					snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %4.1fV %4.2fA           ", modbus_name[C.id_ok], imd_tmp.vl1l2 / 10.0f, (imd_tmp.al1));
@@ -998,8 +1003,13 @@ int main(void)
 					snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "%2.1fKWh float %3.1fh                       ", (float) BM.log.kilowatt_hours / 10.0f, (float) BM.log.float_time / 60.0f);
 					snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "Bmax %uV Bmin %uV                      ", BM.log.bat_max / 10, BM.log.bat_min / 10);
 				} else {
+#ifdef SHOW_SPI2
 					snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "R %u, T4 %u T0 %u                      ", ISR_TIMEMARK, TMR4, TMR0_ReadTimer() - 0x1B1E);
 					snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "%x data, %x raw, %x str                      ", data_in2, serial_buffer_ss.raw_index, serial_buffer_ss.r_string_index);
+#else
+					snprintf(get_vterm_ptr(0, INFO_VTERM), MAX_TEXT, "ADC %3X %3X %3X %3X                     ", adc_buffer[channel_ANA0], adc_buffer[channel_ANA1], adc_buffer[channel_ANA2], adc_buffer[channel_ANA4]);
+					snprintf(get_vterm_ptr(1, INFO_VTERM), MAX_TEXT, "ADC %3X %3X %3X %3X                     ", adc_buffer[channel_ANA5], adc_buffer[channel_ANC6], adc_buffer[channel_ANC7], adc_buffer[channel_AND5]);
+#endif
 				}
 				if ((ha_daq_calib.em_model == PZEM_M) || (ha_daq_calib.em_model == WEM30_M)) {
 					snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.1fR %3.2fPf                       ", (float) imd_tmp.hz, ((float) imd_tmp.varsys), (float) imd_tmp.pfsys);
@@ -1172,6 +1182,7 @@ void onesec_io(void)
 	MLED_SetLow();
 	DLED_SetLow();
 	V.utc_ticks++;
+	V.uptime_ticks++;
 	BM.one_sec_flag = true;
 	if (BM.spi_reset++ >= SPI_RESET_COUNTS) {
 		slaveo_time_isr();
@@ -1366,9 +1377,9 @@ void bmc_logger(void)
 		d_id = DC1_CMD;
 		BMC4.d_id = d_id;
 		snprintf((char*) log_buffer, MAX_B_BUF, log_format1, LOG_VARS1);
-
 		break;
 	}
+	V.log_len = strlen((const char *) log_buffer);
 
 	BMC4.log_buffer = &log_buffer[0];
 	BMC4.len = 512;
