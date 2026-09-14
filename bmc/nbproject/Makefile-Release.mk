@@ -37,7 +37,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/bmc.o \
 	${OBJECTDIR}/bmc_mqtt.o \
-	${OBJECTDIR}/daq.o
+	${OBJECTDIR}/daq.o \
+	${OBJECTDIR}/specials.o
 
 
 # C Compiler Flags
@@ -78,6 +79,11 @@ ${OBJECTDIR}/daq.o: daq.c nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O3 -Wall `pkg-config --cflags comedilib` `pkg-config --cflags libcjson` `pkg-config --cflags libcurl` `pkg-config --cflags libgpiod` -std=c11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/daq.o daq.c
+
+${OBJECTDIR}/specials.o: specials.c nbproject/Makefile-${CND_CONF}.mk
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -O3 -Wall `pkg-config --cflags comedilib` `pkg-config --cflags libcjson` `pkg-config --cflags libcurl` `pkg-config --cflags libgpiod` -std=c11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/specials.o specials.c
 
 # Subprojects
 .build-subprojects:

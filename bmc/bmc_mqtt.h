@@ -13,6 +13,7 @@ extern "C" {
 #include <netdb.h>
 #include <libconfig.h>
 #include <inttypes.h>
+#include "specials.h"
 
 	/*
 	 * configuration data for Home Assistant
@@ -31,7 +32,7 @@ extern "C" {
 		char MQTT_HOSTIP[BMC_MAXHOST];
 	};
 
-#define HOST_SLOTS 10 //BMC host data slots
+#define HOST_SLOTS 17 //BMC host data slots
 #define OPEN_HOST 9 // BMC host array index for those without a known IP address or MUI
 #define BENERGY_INTEGRAL 720.0f // seconds per hour (3600) divided by BMC_DAQ CSV datastream update rate in seconds: currently 5 second update rate
 #define MQTT_RETRY 10
@@ -154,10 +155,20 @@ extern "C" {
 		struct ha_daq_calib_type calib;
 	};
 
+	struct ha_csv_type {
+		double acvolts, acamps, acwatts, acwatts_gti, acwatts_gti_abs, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, panel_watts, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
+		double l1watts, l2watts, l3watts, varsys;
+		uint32_t d_id, boot_updates;
+		double benergy, runtime, bsensor1, bsensor_tmp;
+		uint32_t boot_wait;
+		bool boot_volts, boot_once;
+	};
+
 	extern struct ha_flag_type ha_flag_vars_ss, ha_daq_hosts_type;
 	extern struct ha_daq_hosts_type ha_daq_host;
 	char * validate_bmc_text(const char *, bool *);
 	extern struct bmc_settings S;
+	extern struct ha_csv_type R;
 
 	void mqtt_bmc_data(MQTTClient, const char *);
 	void delivered(void *, MQTTClient_deliveryToken);
