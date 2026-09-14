@@ -38,15 +38,6 @@ struct bmc_settings S = {
 	.MQTT_HOSTIP = MQTT_HOST,
 };
 
-struct ha_csv_type {
-	double acvolts, acamps, acwatts, acwatts_gti, acwatts_gti_abs, acva, acvar, acpf, achz, acwin, acwout, bvolts, pvolts, bamps, pamps, panel_watts, fm_online, fm_mode, em540_online, bsensor0, dcwin, dcwout, bmc_id;
-	double l1watts, l2watts, l3watts, varsys;
-	uint32_t d_id, boot_updates;
-	double benergy, runtime, bsensor1, bsensor_tmp;
-	uint32_t boot_wait;
-	bool boot_volts, boot_once;
-};
-
 char tmp_test_ptr[SYSLOG_SIZ];
 
 struct ha_flag_type ha_flag_vars_ss = {
@@ -261,7 +252,7 @@ static double ac1_filter(const double);
 static double bsensor0_filter(const double);
 static double Volts_to_SOC(const double);
 
-static struct ha_csv_type R = {
+struct ha_csv_type R = {
 	.benergy = DBENERGY, // default running value, updates per run
 	.runtime = BAT_RUN_MAX,
 	.boot_wait = 0,
@@ -269,6 +260,7 @@ static struct ha_csv_type R = {
 	.boot_once = true,
 	.boot_updates = 0,
 }; // results from Q84 board
+
 static uint32_t goods = 0, bads = 0, bads_resets = 0;
 static bool ok_data = false, got_cal_data = false;
 
@@ -694,9 +686,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 	//#define DIGITAL_ONLY
 
 #ifndef DIGITAL_ONLY
-	double over_sample;
-
-	over_sample = 0.0f; // over-sample avg
+	double over_sample = 0.0f; // over-sample avg
 	for (int i = 0; i < OVER_SAMP; i++) {
 		if (bmc.BOARD == bmcboard) {
 			over_sample += ac0_filter(get_adc_volts(channel_ANA4));
@@ -726,22 +716,16 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 
 	if (bmc.BOARD == bmcboard) {
 		E.adc[channel_ANA0] = get_adc_volts(channel_ANA0);
-		/*
-		 * Battery 200A current sensor
-		 */
-		R.bsensor0 = lp_filter((E.adc[channel_ANA0] - ha_daq_host.calib.A200_Z[ha_daq_host.bindex]) * ha_daq_host.calib.A200_S[ha_daq_host.bindex], BSENSOR0, true);
-		
-#if USE_AND5
-		R.bsensor1 = lp_filter((E.adc[channel_AND5] - ha_daq_host.calib.A100_Z[ha_daq_host.bindex]) * ha_daq_host.calib.A100_S[ha_daq_host.bindex], BSENSOR1, true);
-#else 
-		R.bsensor1 = lp_filter((E.adc[channel_ANA1] - ha_daq_host.calib.A100_Z[ha_daq_host.bindex]) * ha_daq_host.calib.A100_S[ha_daq_host.bindex], BSENSOR1, true);
-#endif
-
 		E.adc[channel_ANA1] = get_adc_volts(channel_ANA1);
 		E.adc[channel_ANA2] = get_adc_volts(channel_ANA2);
 		E.adc[channel_ANC6] = get_adc_volts(channel_ANC6);
 		E.adc[channel_ANC7] = get_adc_volts(channel_ANC7);
 		E.adc[channel_AND5] = get_adc_volts(channel_AND5);
+		/*
+		 * Battery 200A and 100A current sensors
+		 */
+		R.bsensor0 = lp_filter((E.adc[channel_ANA0] - ha_daq_host.calib.A200_Z[ha_daq_host.bindex]) * ha_daq_host.calib.A200_S[ha_daq_host.bindex], BSENSOR0, true);
+		adc_specials(ADC_SPECIALS_bsensor1);
 	}
 #endif
 

@@ -37,7 +37,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/bmc.o \
 	${OBJECTDIR}/bmc_mqtt.o \
-	${OBJECTDIR}/daq.o
+	${OBJECTDIR}/daq.o \
+	${OBJECTDIR}/specials.o
 
 
 # C Compiler Flags
@@ -78,6 +79,11 @@ ${OBJECTDIR}/daq.o: daq.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/daq.o daq.c
+
+${OBJECTDIR}/specials.o: specials.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/specials.o specials.c
 
 # Subprojects
 .build-subprojects:
