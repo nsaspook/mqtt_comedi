@@ -124,7 +124,7 @@ extern "C" {
 
 	struct ha_daq_calib_type {
 		uint16_t checkmark;
-		bool newfile;
+		bool newfile, sane;
 		bool oldfile, fileok;
 		uint64_t bmc_id[HOST_SLOTS];
 		double offset4[HOST_SLOTS];

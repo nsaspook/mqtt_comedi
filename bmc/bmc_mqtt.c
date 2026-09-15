@@ -2,6 +2,7 @@
 #include <math.h>
 
 #define COEF            12.0f
+#define channel_BADS 0xe
 
 static const char *const FW_Date = __DATE__;
 static const char *const FW_Time = __TIME__;
@@ -209,6 +210,7 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.calib.scalar5[OPEN_HOST] = HV_SCALE5_0,
 	.calib.A200_Z[OPEN_HOST] = A200_0_ZERO,
 	.calib.A200_S[OPEN_HOST] = A200_0_SCALAR,
+	.calib.sane = true,
 };
 
 static double ac0_filter(const double);
@@ -224,7 +226,7 @@ static struct ha_csv_type R = {
 	.boot_once = true,
 	.boot_updates = 0,
 }; // results from Q84 board
-static uint32_t goods = 0, bads = 0;
+static uint32_t goods = 0, bads = 0, bads_resets = 0;
 static bool ok_data = false, got_cal_data = false;
 
 /** \file bmc_mqtt.c
@@ -677,14 +679,11 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		R.bsensor0 = lp_filter((E.adc[channel_ANA0] - ha_daq_host.calib.A200_Z[ha_daq_host.bindex]) * ha_daq_host.calib.A200_S[ha_daq_host.bindex], BSENSOR0, true);
 		E.adc[channel_ANA1] = get_adc_volts(channel_ANA1);
 		E.adc[channel_ANA2] = get_adc_volts(channel_ANA2);
-		E.adc[channel_ANC6] = get_adc_volts(channel_ANC6);
-		E.adc[channel_ANC7] = get_adc_volts(channel_ANC7);
-		E.adc[channel_AND5] = get_adc_volts(channel_AND5);
 	}
 #endif
 
 	E.do_16b = bmc.dataout.dio_buf;
-	E.di_16b = datain;
+	E.di_16b = (~datain & 0xff);
 
 	if (get_bmc_serial()) {
 		/*
@@ -744,30 +743,36 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		// sanity checks for scalars
 		if (ha_daq_host.calib.scalar4[ha_daq_host.bindex] > CALIB_HV_HIGH || ha_daq_host.calib.scalar4[ha_daq_host.bindex] < CALIB_HV_LOW) {
 			ha_daq_host.calib.scalar4[ha_daq_host.bindex] = HV_SCALE4_0;
+			ha_daq_host.calib.sane = false;
 		}
 		if (ha_daq_host.calib.scalar5[ha_daq_host.bindex] > CALIB_HV_HIGH || ha_daq_host.calib.scalar5[ha_daq_host.bindex] < CALIB_HV_LOW) {
-			ha_daq_host.calib.scalar5[ha_daq_host.bindex] = HV_SCALE5_0;
+			ha_daq_host.calib.scalar5[ha_daq_host.bindex] = ha_daq_host.calib.scalar4[ha_daq_host.bindex];
+			ha_daq_host.calib.sane = false;
 		}
 
 		if (ok_data) {
-			fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.4x DI 0x%.6x, goods %d, bads %d, d_id %d\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, goods, bads, R.d_id);
+			fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.4x DI 0x%.6x, goods %d, bads %d:%d, d_id %d\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, goods, bads, bads_resets, R.d_id);
 		} else {
 			if ((bmc.BOARD == bmcboard) && SERIAL_OPEN) {
 				bads++;
-				fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, bads %d, Overruns %d validate failure code %d\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, tmp_test_ptr, ok_data, bads, overrun, validate_failure);
+				fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.4x DI 0x%.6x, DAQ %s, OK Data %d, bads %d, %d, Overruns %d validate failure code %d\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, ~datain & 0x3fffff, tmp_test_ptr, ok_data, bads, bads_resets, overrun, validate_failure);
+				if (bads > KAI) {
+					bads = 0;
+					bads_resets++;
+					get_adc_volts(channel_BADS);
+				}
 			} else {
-				fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.4x DI 0x%.6x\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, datain);
+				fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.2x DI 0x%.2x\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, (~datain & 0xff));
 			}
 		}
 		memset(daq_bmc_data_text, 0, MAX_STRLEN);
 		if (bmc.BOARD == bmcboard) {
-			fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV, ANA2 %6.3fV, ANA4 %6.3fV, ANA5 %6.3fV, AND5 %6.3fV, Battery Sensor %6.3fA, : Host Index %d, Scalar Index %d, Scalar ANA4 %6.4f, Scalar ANA5 %6.4f Serial 0X%X\n",
-				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2),
-				E.adc[channel_ANA4], E.adc[channel_ANA5], E.adc[channel_AND5], R.bsensor0, ha_daq_host.hindex, ha_daq_host.bindex, ha_daq_host.calib.scalar4[ha_daq_host.bindex], ha_daq_host.calib.scalar5[ha_daq_host.bindex],
-				(uint8_t) daq_bmc_data[0]);
+			if (ha_daq_host.calib.sane) {
+			} else {
+			}
 		} else {
-			fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV : Scalar Index %d, Scalar ANA4 %6.4f, Scalar ANA5 %6.4f\n",
-				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1),
+			fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV, ANA2 %6.3fV, ANA3 %6.3fV, ANA4 %6.3fV, ANA5 %6.3fV, ANA6 %6.3fV, ANA7 %6.3fV : Scalar Index %d, Scalar ANA4 %6.4f, Scalar ANA5 %6.4f\n",
+				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2), get_adc_volts(channel_ANA3), get_adc_volts(channel_ANA4), get_adc_volts(channel_ANA5), get_adc_volts(channel_ANA6), get_adc_volts(channel_ANA7),
 				ha_daq_host.hindex, ha_daq_host.scalar4[ha_daq_host.hindex], ha_daq_host.scalar5[ha_daq_host.hindex]);
 		}
 		fflush(fout);
@@ -834,19 +839,22 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], (double) E.di_16b);
 		}
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc0", BMC_MAXHOST);
-		if (bmc.BOARD == bmcboard) {
-			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA4]);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc1", BMC_MAXHOST);
-			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA5]);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_bsamps0", BMC_MAXHOST);
-			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.bsensor0);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_bswatts0", BMC_MAXHOST);
-			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.bsensor0 * R.bvolts);
-		} else {
-			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA0]);
-			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc1", BMC_MAXHOST);
-			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA1]);
-		}
+		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA0]);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc1", BMC_MAXHOST);
+		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA1]);
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc2", BMC_MAXHOST);
+		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], get_adc_volts(channel_ANA2));
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc3", BMC_MAXHOST);
+		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], get_adc_volts(channel_ANA3));
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc4", BMC_MAXHOST);
+		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], get_adc_volts(channel_ANA4));
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc5", BMC_MAXHOST);
+		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], get_adc_volts(channel_ANA5));
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc6", BMC_MAXHOST);
+		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], get_adc_volts(channel_ANA6));
+		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc7", BMC_MAXHOST);
+		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], get_adc_volts(channel_ANA7));
+
 		/*
 		 * parse the string for variable values
 		 * set MQTT data per the data-stream ID
@@ -885,7 +893,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.l1watts);
 				strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_wl2n", BMC_MAXHOST);
 				if (ha_daq_host.hindex == 1) { // PZEM L2 connected to 240VAC
-					cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.l2watts * 2.0f); // double power
+					cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.l2watts * 1.0f); // power
 				} else {
 					cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], R.l2watts);
 				}

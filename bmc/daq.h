@@ -33,13 +33,13 @@ extern "C" {
 	 * scale adc result into calibrated units
 	 * for USB boards, BMC boards use MUI_ID downloaded scales and offsets
 	 */
-	// USB Boards
+	// USB/PCMCIA Boards
 #define HV_SCALE0               83.6f
 #define HV_SCALE1               74.4f
 #define HV_SCALE2               83.6f
 #define HV_SCALE3               83.6f
 #define HV_SCALE4               83.6f
-#define HV_SCALE5               83.6f
+#define HV_SCALE5               10.0f
 #define HV_SCALE_OPEN_HOST      83.6f
 	// BMC Boards
 #define HV_SCALE4_0             64.2600f
@@ -103,11 +103,12 @@ extern "C" {
 		channel_ANA0 = 0x0,
 		channel_ANA1 = 0x1,
 		channel_ANA2 = 0x2,
+		channel_ANA3 = 0x3,
 		channel_ANA4 = 0x4,
 		channel_ANA5 = 0x5,
-		channel_ANC6 = 0x6,
-		channel_ANC7 = 0x7,
-		channel_AND5 = 0x8,
+		channel_ANA6 = 0x6,
+		channel_ANA7 = 0x7,
+		channel_ANA8 = 0x8,
 		channel_VSS = 0x9,
 		channel_Temp = 0xA,
 		channel_DAC1 = 0xB,

@@ -281,6 +281,9 @@ double get_adc_volts(int chan)
 		}
 	} else {
 		ad_range->max = ha_daq_host.scalar[ha_daq_host.hindex];
+		if (bmc.BOARD == pcmboard) {
+			ad_range->min = -ha_daq_host.scalar[ha_daq_host.hindex];
+		}
 	}
 
 	return comedi_to_phys(data[0], ad_range, maxdata_ai);
