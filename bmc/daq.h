@@ -118,6 +118,17 @@ extern "C" {
 		channel_init = 0xF
 	} ADC_channel_t; // the BMCboard will translate to the correct hardware channel
 
+	struct dodata {
+		unsigned char D0 : 1; // 
+		unsigned char D1 : 1; // 
+		unsigned char D2 : 1; // 
+		unsigned char D3 : 1; // 
+		unsigned char D4 : 1; // 
+		unsigned char D5 : 1; // 
+		unsigned char D6 : 1; // 
+		unsigned char D7 : 1; // 
+	};
+
 	union dio_buf_type {
 		uint32_t dio_buf;
 		uint8_t bytes[4];
@@ -132,7 +143,7 @@ extern "C" {
 		int32_t utc;
 		board_t BOARD;
 		char * BNAME;
-	} __attribute__((packed)) bmctype;
+	} bmctype;
 
 	struct bmc_buffer_type {
 		volatile uint32_t *log_buffer;
@@ -141,7 +152,7 @@ extern "C" {
 		volatile bool bmc_flag;
 	};
 
-	extern volatile struct bmcdata bmc;
+	extern struct bmcdata bmc;
 	extern uint32_t datain, serial_buf, overrun;
 	extern union dio_buf_type obits;
 	extern uint32_t daq_bmc_data[SYSLOG_SIZ];

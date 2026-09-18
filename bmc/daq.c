@@ -57,6 +57,7 @@ bool DO_OPEN = true, DI_OPEN = true, DO_ERROR = false;
 union dio_buf_type obits, ibits;
 
 uint32_t datain = 0x3fffff, serial_buf, daq_bmc_data[SYSLOG_SIZ], overrun = 0;
+struct dodata dataout;
 const char text_test[] = {"the quick brown fox jumps over the lazy dogs back"};
 
 char *daq_text[] = {
@@ -119,6 +120,7 @@ int init_daq(double min_range, double max_range, int range_update)
 		bmc.BOARD = pcmboard;
 		bmc.BNAME = PCMBoard;
 	}
+	fprintf(fout, "Comedi DAQ BOARD Number: %s, Driver Index: %d\r\n", bmc.BNAME, bmc.BOARD);
 
 	fprintf(fout, "Subdev AI  %i ", subdev_ai);
 	channels_ai = comedi_get_n_channels(it, subdev_ai);
@@ -418,6 +420,16 @@ int init_dio(void)
 
 int get_data_sample(void)
 {
+	// DAQ700
+	if (DIO_OPEN) {
+		if (bmc.BOARD == pcmboard) {
+			datain = bmc.dataout.dio_buf; // buffer output
+			dataout.D0 = 0;
+			comedi_dio_bitfield2(it, subdev_dio, 0x00ff, &datain, 0);
+		}
+	}
+
+	// k8055
 	if (DI_OPEN) {
 		if (bmc.BOARD == bmcboard) {
 			comedi_dio_bitfield2(it, subdev_di, 0x00, &datain, 0x00);
@@ -426,7 +438,7 @@ int get_data_sample(void)
 		}
 	}
 
-	if (DO_OPEN) {
+	if (DO_OPEN) { // k8055
 		uint32_t tmp_data = (~datain & 0x3fffff);
 
 		// send I/O as a byte mask

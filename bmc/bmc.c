@@ -53,6 +53,10 @@
  * # reboot
  */
 
+/*
+ * the DAQCard 700 is a 16-bit DIO channel, 0..7 bit output, 8..15 bit input
+ */
+
 #include <stdlib.h>
 #include <stdio.h> /* for printf() */
 #include <unistd.h>
@@ -64,7 +68,7 @@
 #include "bmc.h"
 #include "bmc_mqtt.h"
 
-volatile struct bmcdata bmc = {
+struct bmcdata bmc = {
 	.BOARD = bmcboard,
 	.BNAME = "BMCBoard",
 }; /* DAQ buffer */
@@ -152,7 +156,7 @@ void led_lightshow(int speed)
 	static bool LED_UP = true;
 
 	if (j++ >= speed) { // delay a bit ok
-		if (0) { // screen status feedback
+		if (1) { // screen status feedback
 			bmc.dataout.dio_buf = ~cylon; // roll leds cylon style
 		} else {
 			bmc.dataout.dio_buf = cylon; // roll leds cylon style (inverted)
@@ -335,7 +339,10 @@ int main(int argc, char *argv[])
 #endif
 			} else {
 				if (ha_daq_host.hindex >= 4) {
-					led_lightshow(2);
+					if (bmc.BOARD == usbboard)
+						led_lightshow(2);
+					if (bmc.BOARD == pcmboard)
+						led_lightshow(4);
 				} else {
 					led_lightshow(10);
 				}

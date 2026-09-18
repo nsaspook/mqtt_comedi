@@ -683,7 +683,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 #endif
 
 	E.do_16b = bmc.dataout.dio_buf;
-	E.di_16b = (~datain & 0xff);
+	E.di_16b = (~datain & 0xff00);
 
 	if (get_bmc_serial()) {
 		/*
@@ -762,7 +762,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 					get_adc_volts(channel_BADS);
 				}
 			} else {
-				fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%.2x DI 0x%.2x\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf, (~datain & 0xff));
+				fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%04x DI 0x%04x\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf & 0x00ff, (~datain & 0xff00)&0xff00);
 			}
 		}
 		memset(daq_bmc_data_text, 0, MAX_STRLEN);
