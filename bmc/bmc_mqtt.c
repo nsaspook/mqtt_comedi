@@ -762,18 +762,21 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 					get_adc_volts(channel_BADS);
 				}
 			} else {
-				fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%04x DI 0x%04x\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf & 0x00ff, (~datain & 0xff00)&0xff00);
+				if (bmc.BOARD == pcmboard)
+					fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%04x DI 0x%04x\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf & 0x00ff, (~datain & 0xff00)&0xff00);
+				if (bmc.BOARD == usbboard)
+					fprintf(fout, "%s Sending Comedi data to MQTT server %s, Topic %s, DO 0x%02x DI 0x%02x\n", log_time(false), ha_daq_host.mqtt[ha_daq_host.hindex], topic_p, bmc.dataout.dio_buf & 0x00ff, (~datain & 0xff)&0xff);
 			}
 		}
 		memset(daq_bmc_data_text, 0, MAX_STRLEN);
-		if (bmc.BOARD == bmcboard) {
-			if (ha_daq_host.calib.sane) {
-			} else {
-			}
-		} else {
+		if (bmc.BOARD == pcmboard) {
 			fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV, ANA2 %6.3fV, ANA3 %6.3fV, ANA4 %6.3fV, ANA5 %6.3fV, ANA6 %6.3fV, ANA7 %6.3fV : Scalar Index %d, Scalar ANA4 %6.4f, Scalar ANA5 %6.4f\n",
 				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), get_adc_volts(channel_ANA2), get_adc_volts(channel_ANA3), get_adc_volts(channel_ANA4), get_adc_volts(channel_ANA5), get_adc_volts(channel_ANA6), get_adc_volts(channel_ANA7),
 				ha_daq_host.hindex, ha_daq_host.scalar4[ha_daq_host.hindex], ha_daq_host.scalar5[ha_daq_host.hindex]);
+		}
+		if (bmc.BOARD == usbboard) {
+			fprintf(fout, "ANA0 %6.3fV, ANA1 %6.3fV: Scalar Index %d, Scalar ANA4 %6.4f, Scalar ANA5 %6.4f\n",
+				get_adc_volts(channel_ANA0), get_adc_volts(channel_ANA1), ha_daq_host.hindex, ha_daq_host.scalar4[ha_daq_host.hindex], ha_daq_host.scalar5[ha_daq_host.hindex]);
 		}
 		fflush(fout);
 		E.mqtt_count++;
@@ -842,18 +845,20 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA0]);
 		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc1", BMC_MAXHOST);
 		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], E.adc[channel_ANA1]);
-		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc2", BMC_MAXHOST);
-		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], get_adc_volts(channel_ANA2));
-		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc3", BMC_MAXHOST);
-		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], get_adc_volts(channel_ANA3));
-		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc4", BMC_MAXHOST);
-		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], get_adc_volts(channel_ANA4));
-		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc5", BMC_MAXHOST);
-		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], get_adc_volts(channel_ANA5));
-		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc6", BMC_MAXHOST);
-		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], get_adc_volts(channel_ANA6));
-		strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc7", BMC_MAXHOST);
-		cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], get_adc_volts(channel_ANA7));
+		if (bmc.BOARD == pcmboard) {
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc2", BMC_MAXHOST);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], get_adc_volts(channel_ANA2));
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc3", BMC_MAXHOST);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], get_adc_volts(channel_ANA3));
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc4", BMC_MAXHOST);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], get_adc_volts(channel_ANA4));
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc5", BMC_MAXHOST);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], get_adc_volts(channel_ANA5));
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc6", BMC_MAXHOST);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], get_adc_volts(channel_ANA6));
+			strncpy(&ha_daq_host.hname[ha_daq_host.hindex][mqtt_id], "bmc_adc7", BMC_MAXHOST);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.hname[ha_daq_host.hindex], get_adc_volts(channel_ANA7));
+		}
 
 		/*
 		 * parse the string for variable values

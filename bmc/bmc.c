@@ -328,7 +328,10 @@ int main(int argc, char *argv[])
 		fflush(fout);
 		while (true) {
 			usleep(MAIN_DELAY); // sample rate ~1 msec
-			//			set_dac_raw(0, sine_wave[i++]);
+			if (bmc.BOARD == usbboard) {
+				set_dac_raw(0, sine_wave[i++]);
+				set_dac_raw(1, sine_wave[i + 128]);
+			}
 			get_data_sample();
 
 			if (bmc.BOARD == bmcboard) {
@@ -339,10 +342,12 @@ int main(int argc, char *argv[])
 #endif
 			} else {
 				if (ha_daq_host.hindex >= 4) {
-					if (bmc.BOARD == usbboard)
+					if (bmc.BOARD == usbboard) {
 						led_lightshow(2);
-					if (bmc.BOARD == pcmboard)
+					}
+					if (bmc.BOARD == pcmboard) {
 						led_lightshow(4);
+					}
 				} else {
 					led_lightshow(10);
 				}
