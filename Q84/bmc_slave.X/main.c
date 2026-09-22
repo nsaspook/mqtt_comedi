@@ -441,6 +441,7 @@ static void state_fwrev_cb(void);
 static void state_time_cb(void);
 static void state_date_cb(void);
 static void state_restart_cb(void);
+static adc_result_t analog_update(ADC_channel_t);
 
 void bmc_logger(void);
 
@@ -828,112 +829,22 @@ int main(void)
 			SPI_EADOG();
 			spi_stat_ss.adc_count++; // just keep count
 
-			ADC_DischargeSampleCapacitor();
-			ADC_StartConversion(channel_ANA0);
-			while (!ADC_IsConversionDone()) {
-			};
-			if (ADC_IsConversionDone()) {
-				adc_buffer[channel_ANA0] = ADC_GetConversionResult();
-			};
+			// update ADC input buffers
+			analog_update(channel_ANA0);
+			analog_update(channel_ANA1);
+			analog_update(channel_ANA2);
+			analog_update(channel_ANA4);
+			analog_update(channel_ANA5);
+			analog_update(channel_ANC6);
+			analog_update(channel_ANC7);
+			analog_update(channel_AND5);
+			analog_update(channel_VSS);
+			analog_update(channel_Temp);
+			analog_update(channel_DAC1);
+			analog_update(channel_FVR_Buffer1);
+			analog_update(channel_FVR_Buffer2);
 
-			ADC_DischargeSampleCapacitor();
-			ADC_StartConversion(channel_ANA1);
-			while (!ADC_IsConversionDone()) {
-			};
-			if (ADC_IsConversionDone()) {
-				V.v_tx_line = ADC_GetConversionResult();
-				adc_buffer[channel_ANA1] = V.v_tx_line;
-			};
-
-			ADC_DischargeSampleCapacitor();
-			ADC_StartConversion(channel_ANA2);
-			while (!ADC_IsConversionDone()) {
-			};
-			if (ADC_IsConversionDone()) {
-				V.v_rx_line = ADC_GetConversionResult();
-				adc_buffer[channel_ANA2] = V.v_rx_line;
-			};
-
-			ADC_DischargeSampleCapacitor();
-			ADC_StartConversion(channel_ANA4);
-			while (!ADC_IsConversionDone()) {
-			};
-			if (ADC_IsConversionDone()) {
-				adc_buffer[channel_ANA4] = ADC_GetConversionResult();
-			};
-
-			ADC_DischargeSampleCapacitor();
-			ADC_StartConversion(channel_ANA5);
-			while (!ADC_IsConversionDone()) {
-			};
-			if (ADC_IsConversionDone()) {
-				adc_buffer[channel_ANA5] = ADC_GetConversionResult();
-			};
-
-			ADC_DischargeSampleCapacitor();
-			ADC_StartConversion(channel_ANC6);
-			while (!ADC_IsConversionDone()) {
-			};
-			if (ADC_IsConversionDone()) {
-				adc_buffer[channel_ANC6] = ADC_GetConversionResult();
-			};
-
-			ADC_DischargeSampleCapacitor();
-			ADC_StartConversion(channel_ANC7);
-			while (!ADC_IsConversionDone()) {
-			};
-			if (ADC_IsConversionDone()) {
-				adc_buffer[channel_ANC7] = ADC_GetConversionResult();
-			};
-
-			ADC_DischargeSampleCapacitor();
-			ADC_StartConversion(channel_AND5);
-			while (!ADC_IsConversionDone()) {
-			};
-			if (ADC_IsConversionDone()) {
-				adc_buffer[channel_AND5] = ADC_GetConversionResult();
-			};
-
-			ADC_DischargeSampleCapacitor();
-			ADC_StartConversion(channel_VSS);
-			while (!ADC_IsConversionDone()) {
-			};
-			if (ADC_IsConversionDone()) {
-				adc_buffer[channel_VSS] = ADC_GetConversionResult();
-			};
-
-			ADC_DischargeSampleCapacitor();
-			ADC_StartConversion(channel_Temp);
-			while (!ADC_IsConversionDone()) {
-			};
-			if (ADC_IsConversionDone()) {
-				adc_buffer[channel_Temp] = ADC_GetConversionResult();
-			};
-
-			ADC_DischargeSampleCapacitor();
-			ADC_StartConversion(channel_DAC1);
-			while (!ADC_IsConversionDone()) {
-			};
-			if (ADC_IsConversionDone()) {
-				adc_buffer[channel_DAC1] = ADC_GetConversionResult();
-			};
-
-			ADC_DischargeSampleCapacitor();
-			ADC_StartConversion(channel_FVR_Buffer1);
-			while (!ADC_IsConversionDone()) {
-			};
-			if (ADC_IsConversionDone()) {
-				adc_buffer[channel_FVR_Buffer1] = ADC_GetConversionResult();
-			};
-
-			ADC_DischargeSampleCapacitor();
-			ADC_StartConversion(channel_FVR_Buffer2);
-			while (!ADC_IsConversionDone()) {
-			};
-			if (ADC_IsConversionDone()) {
-				adc_buffer[channel_FVR_Buffer2] = ADC_GetConversionResult();
-			};
-			DAC1DATL = (uint8_t) V.bmc_ao; // update DAC1 output
+			DAC1DATL = (uint8_t) V.bmc_ao; // update DAC1 output from buffer
 			ClrWdt(); // reset the WDT timer
 
 			if (!V.di_fail) {
@@ -1642,6 +1553,19 @@ void state_panelv_cb(void)
 #endif
 	state = state_batteryv;
 }
+
+adc_result_t analog_update(ADC_channel_t channel)
+{
+	ADC_DischargeSampleCapacitor();
+	ADC_StartConversion(channel);
+	while (!ADC_IsConversionDone()) {
+	};
+	if (ADC_IsConversionDone()) {
+		adc_buffer[channel] = ADC_GetConversionResult();
+	};
+	return adc_buffer[channel];
+}
+
 /**
  End of File
  */
