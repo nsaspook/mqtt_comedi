@@ -21,7 +21,7 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.74"
+#define VER	"V0.75"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -86,6 +86,7 @@ extern "C" {
 	 * V0.72 XC8-4.0 -O3 optimizations
 	 * V0.73 allow for a few CRC errors when running
 	 * V0.74 reformat INFO and MAIN VTERM display data
+	 * V0.75 cleanup adc code
 	 */
 
 	/*

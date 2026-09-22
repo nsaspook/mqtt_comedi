@@ -1559,10 +1559,8 @@ adc_result_t analog_update(ADC_channel_t channel)
 	ADC_DischargeSampleCapacitor();
 	ADC_StartConversion(channel);
 	while (!ADC_IsConversionDone()) {
-	};
-	if (ADC_IsConversionDone()) {
-		adc_buffer[channel] = ADC_GetConversionResult();
-	};
+	}
+	adc_buffer[channel] = ADC_GetConversionResult();
 	return adc_buffer[channel];
 }
 
