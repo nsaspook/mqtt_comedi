@@ -6,7 +6,7 @@
  * LED4 GREEN	5VDC Power
  *
  * SPI1 MODE 3 MASTER to DISPLAY and MODE 1 to DIO SLAVE devices
- * SPI2 MODE 3 SLAVE to OPi/RPi controller MASTER SPI port
+ * SPI2 MODE 3 SLAVE to OPi/RPi controller is MASTER SPI port,  // slave select must be disabled in MCC for Q84
  */
 
 /*
@@ -17,7 +17,7 @@
  * RPi pin		daq_bmc pin
  * Signal
  * 30 GND/VSS		1 - SPI2 VSS	brown
- * 26 SPI0 CE1		2 - SPI2 SS2	green
+ * 26 SPI0 CE1		2 - SPI2 SS2	green // slave select must be disabled in MCC
  * 23 SPI0 SCLK		3 - SPI2 SCK	yellow
  * 19 SPI0 MOSI		4 - SPI2 MOSI	orange
  * 21 SPI0 MISO		5 - SPI2 MISO	red
@@ -43,7 +43,7 @@
  * OPi pin		daq_bmc pin
  * Signal
  * 25 GND		1 - SPI2 VSS	brown
- * 24 SPI1 CE0		2 - SPI2 SS2	green
+ * 24 SPI1 CE0		2 - SPI2 SS2	green // slave select must be disabled in MCC
  * 23 SPI1 SCLK		3 - SPI2 SCK	yellow
  * 19 SPI1 MOSI		4 - SPI2 MOSI	orange
  * 21 SPI1 MISO		5 - SPI2 MISO	red

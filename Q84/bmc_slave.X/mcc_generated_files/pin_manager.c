@@ -159,7 +159,6 @@ void PIN_MANAGER_Initialize(void)
     RF2PPS = 0x27;   //RF2->UART3:TXDE3;    
     SPI2SCKPPS = 0x1A;   //RD2->SPI2:SCK2;    
     SPI1SCKPPS = 0x13;   //RC3->SPI1:SCK1;    
-    SPI2SSPPS = 0x19;   //RD1->SPI2:SS2;    
     RC5PPS = 0x32;   //RC5->SPI1:SDO1;    
     SPI1SDIPPS = 0x14;   //RC4->SPI1:SDI1;    
 }
