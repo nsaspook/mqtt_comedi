@@ -87,7 +87,7 @@ for the FMx0 charge controller and for MODBUS power meters
 #include <linux/completion.h>
 #include <linux/gpio/consumer.h>
 
-#define bmc_version "version 1.31 "
+#define bmc_version "version 1.32 "
 #define spibmc_version "version 1.9 "
 
 //#define LED_LINK
@@ -98,7 +98,7 @@ for the FMx0 charge controller and for MODBUS power meters
    vm.min_free_kbytes=45056
    Reboot
  */
-//#define SPI_DEBUG
+#define SPI_DEBUG
 #ifdef LED_LINK
 #define RED_LED 0
 #define GREEN_LED 1
@@ -318,16 +318,18 @@ static DECLARE_COMPLETION(done);
 /*
  * module configuration and data variables
  * found at /sys/modules/daq_bmc/parameters
+ * 
+ * DEFAULTS CAN BE MODIFIED in /etc/modprobe.d/daq_bmc.conf
  */
 static int32_t daqbmc_conf = PICSL12; // value 0
 module_param(daqbmc_conf, int, S_IRUGO);
 MODULE_PARM_DESC(daqbmc_conf, "hardware configuration: default 0=BMCboard standard, 1=BMCboard without DI or DO");
 static int32_t daqbmc_cpu = PICSL12; // value 0
 module_param(daqbmc_cpu, int, S_IRUGO);
-static int32_t di_conf = 1; // default true
+static int32_t di_conf = 1; // default true BUT be changed in  /etc/modprobe.d/daq_bmc.conf
 module_param(di_conf, int, S_IRUGO);
 MODULE_PARM_DESC(di_conf, "make digital input subdevice");
-static int32_t do_conf = 1; // default true
+static int32_t do_conf = 1; // default true BUT be changed in  /etc/modprobe.d/daq_bmc.conf
 module_param(do_conf, int, S_IRUGO);
 MODULE_PARM_DESC(do_conf, "make digital output subdevice");
 static uint32_t ai_count = 0;
@@ -2047,6 +2049,10 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		s->maxdata = 1;
 		s->insn_bits = daqbmc_do_insn_bits;
 		s->io_bits = 0x00ffffff;
+	} else {
+#ifdef SPI_DEBUG
+		dev_info(dev->class_dev, "BMCBoard : No DO %d, check modprobe conf file \n", do_conf);
+#endif
 	}
 
 	if (di_conf) {
@@ -2058,6 +2064,10 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		s->range_table = &range_digital;
 		s->maxdata = 1;
 		s->insn_bits = daqbmc_di_insn_bits;
+	} else {
+#ifdef SPI_DEBUG
+		dev_info(dev->class_dev, "BMCBoard : No DI %d, check modprobe conf file \n", di_conf);
+#endif
 	}
 
 	/*
@@ -2359,6 +2369,10 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 		spi_bmc->chan = 0;
 		return 0;
 	}
+	
+	if ((do_conf == 0() || (di_conf == 0)) {
+		dev_err(dev->class_dev, "PIC18Fx7Q84 DAQ device DI and/or DO subsystems modified to OFF in module configuration file\n");
+	}
 
 	switch (daqbmc_conf) {
 	case 0:
@@ -2368,7 +2382,7 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 		spi_bmc->device_type = PICSL12_AO;
 		break;
 	default:
-		spi_bmc->device_type = PICSL12_AO;
+		spi_bmc->device_type = PICSL12;
 	}
 	spi_bmc->device_spi = &daqbmc_devices[spi_bmc->device_type];
 
@@ -2387,7 +2401,7 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 	spi_bmc->range = 0; // 4.096 default
 	spi_bmc->bits = spi_bmc->device_spi->n_chan_bits;
 
-	if ((daqbmc_conf == PICSL12_AO) || (do_conf == 0) || (di_conf == 0)) { // no DI DO board version
+	if ((daqbmc_conf == PICSL12_AO)) { // no DI DO board version
 		do_conf = 0;
 		di_conf = 0;
 	}

@@ -25,7 +25,7 @@ extern "C" {
 		ADC_SPECIALS_bsensor1,
 	};
 
-	bool adc_specials(enum specials_type);
+	uint32_t adc_specials(enum specials_type);
 
 #ifdef __cplusplus
 }
