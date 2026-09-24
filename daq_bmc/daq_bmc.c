@@ -159,7 +159,7 @@ enum daqbmc_platform_index {
  * OPi pin		daq_bmc pin
  * Signal
  * 25 GND		1 - SPI2 VSS	brown
- * 24 SPI1 CE0		2 - SPI2 SS2	green
+ * 24 SPI1 CE0		2 - SPI2 SS2	green, can also be connected to OPi pin 20 GND for CS enable
  * 23 SPI1 SCLK		3 - SPI2 SCK	yellow
  * 19 SPI1 MOSI		4 - SPI2 MOSI	orange
  * 21 SPI1 MISO		5 - SPI2 MISO	red
@@ -640,7 +640,6 @@ static int32_t bmc_spi_packet(struct spi_device *spi, struct bmc_packet_type * p
 	spi_bus_unlock(spi->controller);
 	__set_current_state(TASK_INTERRUPTIBLE);
 	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
-	schedule();
 
 	return ret;
 }
@@ -2369,8 +2368,8 @@ static int32_t daqbmc_spi_probe(struct comedi_device * dev,
 		spi_bmc->chan = 0;
 		return 0;
 	}
-	
-	if ((do_conf == 0() || (di_conf == 0)) {
+
+	if ((do_conf == 0) || (di_conf == 0)) {
 		dev_err(dev->class_dev, "PIC18Fx7Q84 DAQ device DI and/or DO subsystems modified to OFF in module configuration file\n");
 	}
 
