@@ -1,7 +1,7 @@
 FM_restart global:[BM,data,dcount,dstart,rdstart]
 FM_tx_empty global:[dcount]
 FM_tx global:[BM,dcount,dstart,tbuf] call:[memcpy]
-FM_io global:[dcount,dstart,pace,rbuf,rdstart,tbuf] call:[UART2_Write,timer_ms_tick,while] noreturn:[UART2_Write,while]
+FM_io global:[BUFFER_SPACING,dcount,dstart,pace,rbuf,rdstart,tbuf] call:[UART2_Write,timer_ms_tick] noreturn:[UART2_Write,timer_ms_tick]
 FM_rx global:[rbuf,rdstart] call:[memcpy] noreturn:[memcpy]
 FM_rx_ready global:[rdstart]
 FM_rx_count global:[rdstart]

@@ -26,6 +26,8 @@ extern "C" {
 #define DPVENERGY 300.0f
 #define DPVVOLTAGE 12.6f
 #define DSOC_MODE 2.0f
+	
+#define DBVOLTAGE_TOO_LOW	9.0f
 
 	struct bmc_settings {
 		double BENERGYV, BVOLTAGEV, BVFLOATV, PVENERGYV, PVVOLTAGEV, SOC_MODEV;
