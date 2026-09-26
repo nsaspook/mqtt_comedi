@@ -870,10 +870,14 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		/*
 		 * Battery energy calculations and fixes
 		 */
-		if (R.boot_volts && (R.boot_wait++ > 2) && R.bvolts > DBVOLTAGE_TOO_LOW) { // find boot battery energy from voltage table
+		if (R.boot_volts && (R.boot_wait++ > 2)) { // find boot battery energy from voltage table
 			R.boot_volts = false;
 			Soc = Volts_to_SOC(R.bvolts * S.SOC_MODEV); // convert to 24vdc standard Soc table
-			R.benergy = S.BENERGYV*Soc;
+			if (R.bvolts > DBVOLTAGE_TOO_LOW) {
+				R.benergy = S.BENERGYV*Soc;
+			} else {
+				R.benergy = S.BENERGYV * 0.01f; // dead or disconnected battery
+			}
 		} else {
 			R.benergy = R.benergy + ((bsensor0_filter(R.bsensor0) * R.bvolts) / BENERGY_INTEGRAL); // 5 seconds per sample interval
 		}
