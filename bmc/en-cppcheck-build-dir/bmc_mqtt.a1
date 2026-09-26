@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<analyzerinfo hash="10202309275264511713">
+<analyzerinfo hash="6276851625050896502">
         <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdlib.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results." verbose="Include file: &lt;stdlib.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results.">
             <location file="/public/bmc/bmc/oldbmc/bmc.h" line="15" column="2"/>
         </error>
@@ -144,23 +144,23 @@
             <symbol>jtoken</symbol>
         </error>
         <error id="shadowVariable" severity="style" msg="Local variable &apos;rawtime&apos; shadows outer variable" verbose="Local variable &apos;rawtime&apos; shadows outer variable" cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c">
-            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="530" column="9" info="Shadow variable"/>
-            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="16" column="8" info="Shadowed declaration"/>
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="530" column="9" info="Shadow local variable"/>
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="16" column="8" info="Shadowed variable"/>
             <symbol>rawtime</symbol>
         </error>
         <error id="shadowVariable" severity="style" msg="Local variable &apos;pubmsg&apos; shadows outer variable" verbose="Local variable &apos;pubmsg&apos; shadows outer variable" cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c">
-            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="535" column="21" info="Shadow variable"/>
-            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="20" column="20" info="Shadowed declaration"/>
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="535" column="21" info="Shadow local variable"/>
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="20" column="20" info="Shadowed variable"/>
             <symbol>pubmsg</symbol>
         </error>
         <error id="shadowVariable" severity="style" msg="Local variable &apos;token&apos; shadows outer variable" verbose="Local variable &apos;token&apos; shadows outer variable" cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c">
-            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="536" column="27" info="Shadow variable"/>
-            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="21" column="26" info="Shadowed declaration"/>
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="536" column="27" info="Shadow local variable"/>
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="21" column="26" info="Shadowed variable"/>
             <symbol>token</symbol>
         </error>
         <error id="shadowVariable" severity="style" msg="Local variable &apos;tmp_test_ptr&apos; shadows outer variable" verbose="Local variable &apos;tmp_test_ptr&apos; shadows outer variable" cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c">
-            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="978" column="7" info="Shadow variable"/>
-            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="45" column="6" info="Shadowed declaration"/>
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="978" column="7" info="Shadow local variable"/>
+            <location file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" line="45" column="6" info="Shadowed variable"/>
             <symbol>tmp_test_ptr</symbol>
         </error>
         <error id="constParameterCallback" severity="style" msg="Parameter &apos;cause&apos; can be declared as pointer to const. However it seems that &apos;connlost&apos; is a callback function, if &apos;cause&apos; is declared with const you might also need to cast function pointer(s)." verbose="Parameter &apos;cause&apos; can be declared as pointer to const. However it seems that &apos;connlost&apos; is a callback function, if &apos;cause&apos; is declared with const you might also need to cast function pointer(s)." cwe="398" file0="/public/bmc/bmc/oldbmc/bmc_mqtt.c">
@@ -235,13 +235,10 @@
     <functiondecl file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" functionName="bsensor0_filter" lineNumber="965" column="15"/>
     <functiondecl file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" functionName="validate_bmc_text" lineNumber="976" column="8"/>
     <functiondecl file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" functionName="Volts_to_SOC" lineNumber="1043" column="8"/>
-    <functioncall functionName="ITIMER_REAL"/>
     <functioncall functionName="MQTTCLIENT_PERSISTENCE_NONE"/>
-    <functioncall functionName="MQTTClient"/>
     <functioncall functionName="MQTTClient_connect"/>
     <functioncall functionName="MQTTClient_connectOptions_initializer"/>
     <functioncall functionName="MQTTClient_create"/>
-    <functioncall functionName="MQTTClient_deliveryToken"/>
     <functioncall functionName="MQTTClient_free"/>
     <functioncall functionName="MQTTClient_freeMessage"/>
     <functioncall functionName="MQTTClient_message_initializer"/>
@@ -250,7 +247,6 @@
     <functioncall functionName="MQTTClient_subscribe"/>
     <functioncall functionName="NI_NUMERICHOST"/>
     <functioncall functionName="NULL"/>
-    <functioncall functionName="SIGALRM"/>
     <functioncall functionName="Volts_to_SOC"/>
     <functioncall functionName="_SC_OPEN_MAX"/>
     <functioncall functionName="ac0_filter"/>
@@ -279,7 +275,6 @@
     <functioncall functionName="error_exit"/>
     <functioncall functionName="exit"/>
     <functioncall functionName="fabs"/>
-    <functioncall functionName="false"/>
     <functioncall functionName="fflush"/>
     <functioncall functionName="fopen"/>
     <functioncall functionName="fork"/>
@@ -291,7 +286,6 @@
     <functioncall functionName="getnameinfo"/>
     <functioncall functionName="log_time"/>
     <functioncall functionName="lp_filter"/>
-    <functioncall functionName="lsampl_t"/>
     <functioncall functionName="memset"/>
     <functioncall functionName="mqtt_bmc_data"/>
     <functioncall functionName="msgarrvd"/>
@@ -313,7 +307,6 @@
     <functioncall functionName="sysconf"/>
     <functioncall functionName="time"/>
     <functioncall functionName="timer_callback"/>
-    <functioncall functionName="true"/>
     <functioncall functionName="tzset"/>
     <functioncall functionName="umask"/>
     <functioncall functionName="usleep"/>
@@ -350,13 +343,10 @@
     <functiondecl file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" functionName="bsensor0_filter" lineNumber="965" column="15"/>
     <functiondecl file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" functionName="validate_bmc_text" lineNumber="976" column="8"/>
     <functiondecl file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" functionName="Volts_to_SOC" lineNumber="1043" column="8"/>
-    <functioncall functionName="ITIMER_REAL"/>
     <functioncall functionName="MQTTCLIENT_PERSISTENCE_NONE"/>
-    <functioncall functionName="MQTTClient"/>
     <functioncall functionName="MQTTClient_connect"/>
     <functioncall functionName="MQTTClient_connectOptions_initializer"/>
     <functioncall functionName="MQTTClient_create"/>
-    <functioncall functionName="MQTTClient_deliveryToken"/>
     <functioncall functionName="MQTTClient_free"/>
     <functioncall functionName="MQTTClient_freeMessage"/>
     <functioncall functionName="MQTTClient_message_initializer"/>
@@ -365,7 +355,6 @@
     <functioncall functionName="MQTTClient_subscribe"/>
     <functioncall functionName="NI_NUMERICHOST"/>
     <functioncall functionName="NULL"/>
-    <functioncall functionName="SIGALRM"/>
     <functioncall functionName="Volts_to_SOC"/>
     <functioncall functionName="_SC_OPEN_MAX"/>
     <functioncall functionName="ac0_filter"/>
@@ -394,7 +383,6 @@
     <functioncall functionName="error_exit"/>
     <functioncall functionName="exit"/>
     <functioncall functionName="fabs"/>
-    <functioncall functionName="false"/>
     <functioncall functionName="fflush"/>
     <functioncall functionName="fopen"/>
     <functioncall functionName="fork"/>
@@ -406,7 +394,6 @@
     <functioncall functionName="getnameinfo"/>
     <functioncall functionName="log_time"/>
     <functioncall functionName="lp_filter"/>
-    <functioncall functionName="lsampl_t"/>
     <functioncall functionName="memset"/>
     <functioncall functionName="mqtt_bmc_data"/>
     <functioncall functionName="msgarrvd"/>
@@ -428,7 +415,6 @@
     <functioncall functionName="sysconf"/>
     <functioncall functionName="time"/>
     <functioncall functionName="timer_callback"/>
-    <functioncall functionName="true"/>
     <functioncall functionName="tzset"/>
     <functioncall functionName="umask"/>
     <functioncall functionName="usleep"/>
@@ -465,13 +451,10 @@
     <functiondecl file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" functionName="bsensor0_filter" lineNumber="965" column="15"/>
     <functiondecl file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" functionName="validate_bmc_text" lineNumber="976" column="8"/>
     <functiondecl file="/public/bmc/bmc/oldbmc/bmc_mqtt.c" functionName="Volts_to_SOC" lineNumber="1043" column="8"/>
-    <functioncall functionName="ITIMER_REAL"/>
     <functioncall functionName="MQTTCLIENT_PERSISTENCE_NONE"/>
-    <functioncall functionName="MQTTClient"/>
     <functioncall functionName="MQTTClient_connect"/>
     <functioncall functionName="MQTTClient_connectOptions_initializer"/>
     <functioncall functionName="MQTTClient_create"/>
-    <functioncall functionName="MQTTClient_deliveryToken"/>
     <functioncall functionName="MQTTClient_free"/>
     <functioncall functionName="MQTTClient_freeMessage"/>
     <functioncall functionName="MQTTClient_message_initializer"/>
@@ -480,7 +463,6 @@
     <functioncall functionName="MQTTClient_subscribe"/>
     <functioncall functionName="NI_NUMERICHOST"/>
     <functioncall functionName="NULL"/>
-    <functioncall functionName="SIGALRM"/>
     <functioncall functionName="Volts_to_SOC"/>
     <functioncall functionName="_SC_OPEN_MAX"/>
     <functioncall functionName="ac0_filter"/>
@@ -509,7 +491,6 @@
     <functioncall functionName="error_exit"/>
     <functioncall functionName="exit"/>
     <functioncall functionName="fabs"/>
-    <functioncall functionName="false"/>
     <functioncall functionName="fflush"/>
     <functioncall functionName="fopen"/>
     <functioncall functionName="fork"/>
@@ -521,7 +502,6 @@
     <functioncall functionName="getnameinfo"/>
     <functioncall functionName="log_time"/>
     <functioncall functionName="lp_filter"/>
-    <functioncall functionName="lsampl_t"/>
     <functioncall functionName="memset"/>
     <functioncall functionName="mqtt_bmc_data"/>
     <functioncall functionName="msgarrvd"/>
@@ -543,7 +523,6 @@
     <functioncall functionName="sysconf"/>
     <functioncall functionName="time"/>
     <functioncall functionName="timer_callback"/>
-    <functioncall functionName="true"/>
     <functioncall functionName="tzset"/>
     <functioncall functionName="umask"/>
     <functioncall functionName="usleep"/>

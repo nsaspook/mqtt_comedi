@@ -103,6 +103,7 @@ extern "C" {
 	 */
 	//#define TRACE
 	//#define MAIN_TRACE
+#define SLAVE_TRACE
 
 	/*
 	 * DIO and SERIAL testing modes

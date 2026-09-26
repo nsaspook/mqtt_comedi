@@ -70,11 +70,14 @@ void slaveo_rx_isr(void)
 	/* we only get this when the master wants data, the slave never generates one */
 	// SPI port #2 SLAVE receiver
 
+#ifdef SLAVE_TRACE
+	TP1_SetHigh();
+#endif
+	DLED_SetHigh();
 	if (TMR4 == ISR_TIMEMARK) { // ISR cpu usage counter start flag
 		TMR4 = 0; // reset ISR task time counter, 250ns per count
 		T4CONbits.TMR4ON = 1;
 	}
-	DLED_SetHigh();
 
 	report_stat_ss.slave_int_count++;
 
@@ -434,8 +437,11 @@ void slaveo_rx_isr(void)
 	}
 
 isr_end:
-	DLED_SetLow();
 	T4CONbits.TMR4ON = 0; // ISR cpu usage counter stop flag
+	DLED_SetLow();
+#ifdef SLAVE_TRACE
+	TP1_SetLow();
+#endif
 }
 
 void slaveo_spi_isr(void)

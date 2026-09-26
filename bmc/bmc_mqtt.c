@@ -52,13 +52,13 @@ struct ha_flag_type ha_flag_vars_ss = {
 // 24V LiFePO4 Battery to SOC data table slots, scale battery voltage to match
 static const float bsoc_voltage[BVSOC_SLOTS] = {
 	20.000f,
-	25.000f,
-	25.100f,
-	25.300f,
+	21.000f,
+	21.500f,
+	22.000f,
+	23.500f,
+	24.500f,
 	25.500f,
-	25.800f,
 	26.000f,
-	26.200f,
 	26.600f,
 	26.800f,
 	27.200f,
@@ -869,12 +869,14 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 		/*
 		 * Battery energy calculations and fixes
 		 */
-		if (R.boot_volts && (R.boot_wait++ > 2) && R.bvolts > 12.0f) { // find boot battery energy from voltage table
+		if (R.boot_volts && (R.boot_wait++ > 2) && R.bvolts > DBVOLTAGE_TOO_LOW) { // find boot battery energy from voltage table
 			R.boot_volts = false;
 			Soc = Volts_to_SOC(R.bvolts * S.SOC_MODEV); // convert to 24vdc standard Soc table
 			R.benergy = S.BENERGYV*Soc;
+		} else {
+			R.benergy = R.benergy + ((bsensor0_filter(R.bsensor0) * R.bvolts) / BENERGY_INTEGRAL); // 5 seconds per sample interval
 		}
-		R.benergy = R.benergy + ((bsensor0_filter(R.bsensor0) * R.bvolts) / BENERGY_INTEGRAL); // 5 seconds per sample interval
+
 		if (R.benergy > S.BENERGYV) {
 			R.benergy = S.BENERGYV;
 		}
