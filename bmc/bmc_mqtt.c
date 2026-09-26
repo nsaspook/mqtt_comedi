@@ -1208,7 +1208,7 @@ double Volts_to_SOC(const double bvoltage)
 	 * walk up the table
 	 */
 	for (slot = 0; slot < BVSOC_SLOTS; slot++) {
-		if (bvoltage > bsoc_voltage[slot]) {
+		if (bvoltage >= bsoc_voltage[slot]) {
 			soc = bsoc_soc[slot];
 		}
 	}
