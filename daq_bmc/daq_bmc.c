@@ -640,6 +640,7 @@ static int32_t bmc_spi_packet(struct spi_device *spi, struct bmc_packet_type * p
 	spi_bus_unlock(spi->controller);
 	__set_current_state(TASK_INTERRUPTIBLE);
 	schedule_hrtimeout_range(&slower, 0, HRTIMER_MODE_REL_PINNED);
+	schedule();
 
 	return ret;
 }
@@ -1994,8 +1995,6 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	if (retconf == CHECKBYTE) { // bad ID from daq_bmc board
 		dev_err(dev->class_dev,
 			"BMCBoard expected config byte not detected 0X%X\n", retconf);
-		//		ret = -EINVAL;
-		//		goto daqbmc_kfree_rx_exit;
 	}
 #ifdef SPI_DEBUG
 	dev_info(dev->class_dev,
