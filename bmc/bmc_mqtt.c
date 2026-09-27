@@ -51,17 +51,17 @@ struct ha_flag_type ha_flag_vars_ss = {
 
 // 24V LiFePO4 Battery to SOC data table slots, scale battery voltage to match
 static const float bsoc_voltage[BVSOC_SLOTS] = {
-	20.000f,
+	SOC_V_LOW,
 	21.000f,
 	21.500f,
 	22.000f,
 	23.500f,
 	24.500f,
 	25.500f,
-	26.000f,
-	26.600f,
-	26.800f,
-	27.200f,
+	26.500f,
+	27.700f,
+	28.100f,
+	28.300f,
 	35.000f,
 }; // SoC voltage guess
 
