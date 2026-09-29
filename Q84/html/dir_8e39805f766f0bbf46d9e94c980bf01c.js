@@ -44,6 +44,8 @@ var dir_8e39805f766f0bbf46d9e94c980bf01c =
     [ "tmr2.h", "tmr2_8h_source.html", null ],
     [ "tmr3.c", "tmr3_8c_source.html", null ],
     [ "tmr3.h", "tmr3_8h_source.html", null ],
+    [ "tmr4.c", "tmr4_8c_source.html", null ],
+    [ "tmr4.h", "tmr4_8h_source.html", null ],
     [ "tmr5.c", "tmr5_8c_source.html", null ],
     [ "tmr5.h", "tmr5_8h_source.html", null ],
     [ "tmr6.c", "tmr6_8c_source.html", null ],

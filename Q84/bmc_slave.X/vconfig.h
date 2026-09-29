@@ -21,7 +21,7 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.75"
+#define VER	"V0.76"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -87,6 +87,7 @@ extern "C" {
 	 * V0.73 allow for a few CRC errors when running
 	 * V0.74 reformat INFO and MAIN VTERM display data
 	 * V0.75 cleanup adc code
+	 * V0.76 cleanup code smells using cppcheck
 	 */
 
 	/*
@@ -176,7 +177,7 @@ extern "C" {
 	static const uint8_t PV_VOLTS_HIGH = 70;
 	static const uint8_t SPI_RESET_COUNTS = 6;
 
-	static const float ISR_TIME_SCALE = 40000.0f; // about 40us between SPI interrupts
+	static const float ISR_TIME_SCALE = 38000.0f; // about 38us between SPI interrupts
 
 #define DBENERGY	3100.0f
 #define DBVOLTAGE	12.6f

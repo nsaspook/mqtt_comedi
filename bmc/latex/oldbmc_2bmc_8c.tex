@@ -1,0 +1,220 @@
+\doxysection{oldbmc/bmc.c File Reference}
+\hypertarget{oldbmc_2bmc_8c}{}\label{oldbmc_2bmc_8c}\index{oldbmc/bmc.c@{oldbmc/bmc.c}}
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$comedilib.\+h$>$}\newline
+{\ttfamily \#include "{}daq.\+h"{}}\newline
+{\ttfamily \#include "{}bmc.\+h"{}}\newline
+{\ttfamily \#include "{}bmc\+\_\+mqtt.\+h"{}}\newline
+Include dependency graph for bmc.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{oldbmc_2bmc_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{oldbmc_2bmc_8c_a633bd8078fb9bffd4da9a4652d41c7b3}\label{oldbmc_2bmc_8c_a633bd8078fb9bffd4da9a4652d41c7b3} 
+int {\bfseries usleep} (uint32\+\_\+t)
+\item 
+void \mbox{\hyperlink{oldbmc_2bmc_8c_aa1ff853f69933127b742482f1ae5d3c0}{led\+\_\+lightshow}} (int speed)
+\item 
+void \mbox{\hyperlink{oldbmc_2bmc_8c_a68682220474014fd9e7b1f741f66bdc9}{relay\+\_\+set}} (uint16\+\_\+t relays)
+\item 
+bool \mbox{\hyperlink{oldbmc_2bmc_8c_af8a6ede6a08feec8a30d1beea2d11dcc}{get\+\_\+set\+\_\+config}} (void)
+\item 
+int \mbox{\hyperlink{oldbmc_2bmc_8c_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char \texorpdfstring{$\ast$}{*}argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+volatile struct \mbox{\hyperlink{structbmcdata}{bmcdata}} \mbox{\hyperlink{oldbmc_2bmc_8c_ac6de194018febf2edf0e9f9c161442d3}{bmc}}
+\item 
+struct \mbox{\hyperlink{structenergy__type}{energy\+\_\+type}} \mbox{\hyperlink{oldbmc_2bmc_8c_aae3805c63e28abac1e41ffd7b623596e}{E}}
+\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{oldbmc_2bmc_8c_ae54230f3933b19460113c7aeac29cec7}{board\+\_\+name}} = "{}NO\+\_\+\+BOARD"{}
+\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{oldbmc_2bmc_8c_aec275271b98c5dd5cbe9a33ea5081893}{driver\+\_\+name}} = "{}NO\+\_\+\+DRIVER"{}
+\item 
+FILE \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{oldbmc_2bmc_8c_acec19516a59050bb447192fe318e6a9c}{fout}}
+\item 
+FILE \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{oldbmc_2bmc_8c_a5c919529f4194032f9410cba6ccc7a7e}{calfile}}
+\item 
+const uint8\+\_\+t \mbox{\hyperlink{oldbmc_2bmc_8c_aa126acbf368104cb6989bab8f4644dbd}{sine\+\_\+wave}} \mbox{[}256\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Demo code for driver testing, a simple console display of data inputs and voltage
+
+This file may be freely modified, distributed, and combined with other software, as long as proper attribution is given in the source code. 
+
+Definition in file \mbox{\hyperlink{oldbmc_2bmc_8c_source}{bmc.\+c}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{oldbmc_2bmc_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{oldbmc_2bmc_8c_af8a6ede6a08feec8a30d1beea2d11dcc}\index{bmc.c@{bmc.c}!get\_set\_config@{get\_set\_config}}
+\index{get\_set\_config@{get\_set\_config}!bmc.c@{bmc.c}}
+\doxysubsubsection{\texorpdfstring{get\_set\_config()}{get\_set\_config()}}
+{\footnotesize\ttfamily \label{oldbmc_2bmc_8c_af8a6ede6a08feec8a30d1beea2d11dcc} 
+bool get\+\_\+set\+\_\+config (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{oldbmc_2bmc_8c_source_l00138}{138}} of file \mbox{\hyperlink{oldbmc_2bmc_8c_source}{bmc.\+c}}.
+
+\Hypertarget{oldbmc_2bmc_8c_aa1ff853f69933127b742482f1ae5d3c0}\index{bmc.c@{bmc.c}!led\_lightshow@{led\_lightshow}}
+\index{led\_lightshow@{led\_lightshow}!bmc.c@{bmc.c}}
+\doxysubsubsection{\texorpdfstring{led\_lightshow()}{led\_lightshow()}}
+{\footnotesize\ttfamily \label{oldbmc_2bmc_8c_aa1ff853f69933127b742482f1ae5d3c0} 
+void led\+\_\+lightshow (\begin{DoxyParamCaption}\item[{int}]{speed}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{oldbmc_2bmc_8c_source_l00099}{99}} of file \mbox{\hyperlink{oldbmc_2bmc_8c_source}{bmc.\+c}}.
+
+\Hypertarget{oldbmc_2bmc_8c_a0ddf1224851353fc92bfbff6f499fa97}\index{bmc.c@{bmc.c}!main@{main}}
+\index{main@{main}!bmc.c@{bmc.c}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily \label{oldbmc_2bmc_8c_a0ddf1224851353fc92bfbff6f499fa97} 
+int main (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{argv}{\mbox{[}$\,$\mbox{]}}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{oldbmc_2bmc_8c_source_l00205}{205}} of file \mbox{\hyperlink{oldbmc_2bmc_8c_source}{bmc.\+c}}.
+
+\Hypertarget{oldbmc_2bmc_8c_a68682220474014fd9e7b1f741f66bdc9}\index{bmc.c@{bmc.c}!relay\_set@{relay\_set}}
+\index{relay\_set@{relay\_set}!bmc.c@{bmc.c}}
+\doxysubsubsection{\texorpdfstring{relay\_set()}{relay\_set()}}
+{\footnotesize\ttfamily \label{oldbmc_2bmc_8c_a68682220474014fd9e7b1f741f66bdc9} 
+void relay\+\_\+set (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{relays}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{oldbmc_2bmc_8c_source_l00133}{133}} of file \mbox{\hyperlink{oldbmc_2bmc_8c_source}{bmc.\+c}}.
+
+
+
+\label{doc-var-members}
+\Hypertarget{oldbmc_2bmc_8c_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{oldbmc_2bmc_8c_ac6de194018febf2edf0e9f9c161442d3}\index{bmc.c@{bmc.c}!bmc@{bmc}}
+\index{bmc@{bmc}!bmc.c@{bmc.c}}
+\doxysubsubsection{\texorpdfstring{bmc}{bmc}}
+{\footnotesize\ttfamily \label{oldbmc_2bmc_8c_ac6de194018febf2edf0e9f9c161442d3} 
+volatile struct \mbox{\hyperlink{structbmcdata}{bmcdata}} bmc}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .BOARD\ =\ bmcboard,}
+\DoxyCodeLine{\ \ \ \ .BNAME\ =\ \textcolor{stringliteral}{"{}BMCBoard"{}},}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{oldbmc_2bmc_8c_source_l00020}{20}} of file \mbox{\hyperlink{oldbmc_2bmc_8c_source}{bmc.\+c}}.
+
+\Hypertarget{oldbmc_2bmc_8c_ae54230f3933b19460113c7aeac29cec7}\index{bmc.c@{bmc.c}!board\_name@{board\_name}}
+\index{board\_name@{board\_name}!bmc.c@{bmc.c}}
+\doxysubsubsection{\texorpdfstring{board\_name}{board\_name}}
+{\footnotesize\ttfamily \label{oldbmc_2bmc_8c_ae54230f3933b19460113c7aeac29cec7} 
+const char\texorpdfstring{$\ast$}{*} board\+\_\+name = "{}NO\+\_\+\+BOARD"{}}
+
+
+
+Definition at line \mbox{\hyperlink{oldbmc_2bmc_8c_source_l00056}{56}} of file \mbox{\hyperlink{oldbmc_2bmc_8c_source}{bmc.\+c}}.
+
+\Hypertarget{oldbmc_2bmc_8c_a5c919529f4194032f9410cba6ccc7a7e}\index{bmc.c@{bmc.c}!calfile@{calfile}}
+\index{calfile@{calfile}!bmc.c@{bmc.c}}
+\doxysubsubsection{\texorpdfstring{calfile}{calfile}}
+{\footnotesize\ttfamily \label{oldbmc_2bmc_8c_a5c919529f4194032f9410cba6ccc7a7e} 
+FILE \texorpdfstring{$\ast$}{*} calfile}
+
+
+
+Definition at line \mbox{\hyperlink{oldbmc_2bmc_8c_source_l00058}{58}} of file \mbox{\hyperlink{oldbmc_2bmc_8c_source}{bmc.\+c}}.
+
+\Hypertarget{oldbmc_2bmc_8c_aec275271b98c5dd5cbe9a33ea5081893}\index{bmc.c@{bmc.c}!driver\_name@{driver\_name}}
+\index{driver\_name@{driver\_name}!bmc.c@{bmc.c}}
+\doxysubsubsection{\texorpdfstring{driver\_name}{driver\_name}}
+{\footnotesize\ttfamily \label{oldbmc_2bmc_8c_aec275271b98c5dd5cbe9a33ea5081893} 
+const char \texorpdfstring{$\ast$}{*} driver\+\_\+name = "{}NO\+\_\+\+DRIVER"{}}
+
+
+
+Definition at line \mbox{\hyperlink{oldbmc_2bmc_8c_source_l00056}{56}} of file \mbox{\hyperlink{oldbmc_2bmc_8c_source}{bmc.\+c}}.
+
+\Hypertarget{oldbmc_2bmc_8c_aae3805c63e28abac1e41ffd7b623596e}\index{bmc.c@{bmc.c}!E@{E}}
+\index{E@{E}!bmc.c@{bmc.c}}
+\doxysubsubsection{\texorpdfstring{E}{E}}
+{\footnotesize\ttfamily \label{oldbmc_2bmc_8c_aae3805c63e28abac1e41ffd7b623596e} 
+struct \mbox{\hyperlink{structenergy__type}{energy\+\_\+type}} E}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .once\_gti\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{\ \ \ \ .once\_ac\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{\ \ \ \ .once\_gti\_zero\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{\ \ \ \ .iammeter\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\ \ \ \ .fm80\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\ \ \ \ .dumpload\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\ \ \ \ .homeassistant\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\ \ \ \ .ac\_low\_adj\ =\ 0.0f,}
+\DoxyCodeLine{\ \ \ \ .gti\_low\_adj\ =\ 0.0f,}
+\DoxyCodeLine{\ \ \ \ .ac\_sw\_on\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{\ \ \ \ .gti\_sw\_on\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{\ \ \ \ .im\_delay\ =\ 0,}
+\DoxyCodeLine{\ \ \ \ .gti\_delay\ =\ 0,}
+\DoxyCodeLine{\ \ \ \ .im\_display\ =\ 0,}
+\DoxyCodeLine{\ \ \ \ .rc\ =\ 0,}
+\DoxyCodeLine{\ \ \ \ .speed\_go\ =\ 0,}
+\DoxyCodeLine{\ \ \ \ .ac\_sw\_status\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\ \ \ \ .gti\_sw\_status\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\ \ \ \ .solar\_mode\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\ \ \ \ .solar\_shutdown\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\ \ \ \ .startup\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{\ \ \ \ .ac\_mismatch\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\ \ \ \ .dc\_mismatch\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\ \ \ \ .mode\_mismatch\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\ \ \ \ .dl\_excess\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\ \ \ \ .dl\_excess\_adj\ =\ 0.0f,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{oldbmc_2bmc_8c_source_l00025}{25}} of file \mbox{\hyperlink{oldbmc_2bmc_8c_source}{bmc.\+c}}.
+
+\Hypertarget{oldbmc_2bmc_8c_acec19516a59050bb447192fe318e6a9c}\index{bmc.c@{bmc.c}!fout@{fout}}
+\index{fout@{fout}!bmc.c@{bmc.c}}
+\doxysubsubsection{\texorpdfstring{fout}{fout}}
+{\footnotesize\ttfamily \label{oldbmc_2bmc_8c_acec19516a59050bb447192fe318e6a9c} 
+FILE\texorpdfstring{$\ast$}{*} fout}
+
+
+
+Definition at line \mbox{\hyperlink{oldbmc_2bmc_8c_source_l00058}{58}} of file \mbox{\hyperlink{oldbmc_2bmc_8c_source}{bmc.\+c}}.
+
+\Hypertarget{oldbmc_2bmc_8c_aa126acbf368104cb6989bab8f4644dbd}\index{bmc.c@{bmc.c}!sine\_wave@{sine\_wave}}
+\index{sine\_wave@{sine\_wave}!bmc.c@{bmc.c}}
+\doxysubsubsection{\texorpdfstring{sine\_wave}{sine\_wave}}
+{\footnotesize\ttfamily \label{oldbmc_2bmc_8c_aa126acbf368104cb6989bab8f4644dbd} 
+const uint8\+\_\+t sine\+\_\+wave\mbox{[}256\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{oldbmc_2bmc_8c_source_l00064}{64}} of file \mbox{\hyperlink{oldbmc_2bmc_8c_source}{bmc.\+c}}.
+

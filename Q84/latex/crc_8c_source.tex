@@ -36,10 +36,10 @@
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00056}00056\ \textcolor{keywordtype}{void}\ CRC\_Initialize(\textcolor{keywordtype}{void})}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00057}00057\ \{}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00058}00058\ \ \ \ \ \textcolor{comment}{//CRC\ Configurations}}
-\DoxyCodeLine{\Hypertarget{crc_8c_source_l00059}00059\ \ \ \ \ \textcolor{comment}{//CRCPLEN\ 7;\ }}
-\DoxyCodeLine{\Hypertarget{crc_8c_source_l00060}00060\ \ \ \ \ CRCCON1\ =\ 0x07;}
-\DoxyCodeLine{\Hypertarget{crc_8c_source_l00061}00061\ \ \ \ \ \textcolor{comment}{//CRCDLEN\ 7;\ }}
-\DoxyCodeLine{\Hypertarget{crc_8c_source_l00062}00062\ \ \ \ \ CRCCON2\ =\ 0x07;}
+\DoxyCodeLine{\Hypertarget{crc_8c_source_l00059}00059\ \ \ \ \ \textcolor{comment}{//CRCPLEN\ 15;\ }}
+\DoxyCodeLine{\Hypertarget{crc_8c_source_l00060}00060\ \ \ \ \ CRCCON1\ =\ 0x0F;}
+\DoxyCodeLine{\Hypertarget{crc_8c_source_l00061}00061\ \ \ \ \ \textcolor{comment}{//CRCDLEN\ 15;\ }}
+\DoxyCodeLine{\Hypertarget{crc_8c_source_l00062}00062\ \ \ \ \ CRCCON2\ =\ 0x0F;}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00063}00063\ }
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00064}00064\ \ \ \ \ \textcolor{comment}{//\ Read/Write\ access\ to\ CRCXOR}}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00065}00065\ \ \ \ \ CRCCON0bits.SETUP\ =\ 0b10;}
@@ -48,9 +48,9 @@
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00068}00068\ \ \ \ \ \textcolor{comment}{//CRCXORU\ 0;\ }}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00069}00069\ \ \ \ \ CRCXORU\ =\ 0x00;}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00070}00070\ \ \ \ \ \textcolor{comment}{//CRCXORH\ 0;\ }}
-\DoxyCodeLine{\Hypertarget{crc_8c_source_l00071}00071\ \ \ \ \ CRCXORH\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{crc_8c_source_l00071}00071\ \ \ \ \ CRCXORH\ =\ 0x10;}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00072}00072\ \ \ \ \ \textcolor{comment}{//CRCXORL\ 0;\ }}
-\DoxyCodeLine{\Hypertarget{crc_8c_source_l00073}00073\ \ \ \ \ CRCXORL\ =\ 0xD5;}
+\DoxyCodeLine{\Hypertarget{crc_8c_source_l00073}00073\ \ \ \ \ CRCXORL\ =\ 0x21;}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00074}00074\ }
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00075}00075\ \ \ \ \ \textcolor{comment}{//\ Read/Write\ access\ to\ CRCOUT}}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00076}00076\ \ \ \ \ CRCCON0bits.SETUP\ =\ 0b00;}
@@ -58,10 +58,10 @@
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00078}00078\ \ \ \ \ CRCOUTT\ =\ 0x00;}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00079}00079\ \ \ \ \ \textcolor{comment}{//CRCOUTU\ 0;\ }}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00080}00080\ \ \ \ \ CRCOUTU\ =\ 0x00;}
-\DoxyCodeLine{\Hypertarget{crc_8c_source_l00081}00081\ \ \ \ \ \textcolor{comment}{//CRCOUTH\ 0;\ }}
-\DoxyCodeLine{\Hypertarget{crc_8c_source_l00082}00082\ \ \ \ \ CRCOUTH\ =\ 0x00;}
-\DoxyCodeLine{\Hypertarget{crc_8c_source_l00083}00083\ \ \ \ \ \textcolor{comment}{//CRCOUTL\ 0;\ }}
-\DoxyCodeLine{\Hypertarget{crc_8c_source_l00084}00084\ \ \ \ \ CRCOUTL\ =\ 0x00;}
+\DoxyCodeLine{\Hypertarget{crc_8c_source_l00081}00081\ \ \ \ \ \textcolor{comment}{//CRCOUTH\ 255;\ }}
+\DoxyCodeLine{\Hypertarget{crc_8c_source_l00082}00082\ \ \ \ \ CRCOUTH\ =\ 0xFF;}
+\DoxyCodeLine{\Hypertarget{crc_8c_source_l00083}00083\ \ \ \ \ \textcolor{comment}{//CRCOUTL\ 255;\ }}
+\DoxyCodeLine{\Hypertarget{crc_8c_source_l00084}00084\ \ \ \ \ CRCOUTL\ =\ 0xFF;}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00085}00085\ }
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00086}00086\ \ \ \ \ \textcolor{comment}{//CRCDATAT\ 0;\ }}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00087}00087\ \ \ \ \ CRCDATAT\ =\ 0x00;}
@@ -98,8 +98,8 @@
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00118}00118\ \ \ \ \ \textcolor{comment}{//\ Disabled\ SCANI\ CRC\ interrupt}}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00119}00119\ \ \ \ \ PIE8bits.SCANIE\ =\ 0;}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00120}00120\ }
-\DoxyCodeLine{\Hypertarget{crc_8c_source_l00121}00121\ \ \ \ \ \textcolor{comment}{//CRCEN\ enabled;\ CRCGO\ disabled;\ CRCACCM\ data\ augmented\ with\ 0s;\ CRCSETUP\ 0;\ CRCLENDIAN\ shift\ left;\ }}
-\DoxyCodeLine{\Hypertarget{crc_8c_source_l00122}00122\ \ \ \ \ CRCCON0\ =\ 0x90;}
+\DoxyCodeLine{\Hypertarget{crc_8c_source_l00121}00121\ \ \ \ \ \textcolor{comment}{//CRCEN\ enabled;\ CRCGO\ disabled;\ CRCACCM\ data\ not\ augmented\ with\ 0s;\ CRCSETUP\ 0;\ CRCLENDIAN\ shift\ left;\ }}
+\DoxyCodeLine{\Hypertarget{crc_8c_source_l00122}00122\ \ \ \ \ CRCCON0\ =\ 0x80;}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00123}00123\ \ \ \ \ \textcolor{comment}{//SCANEN\ disabled;\ TRIGEN\ disabled;\ SCANGO\ disabled;\ MREG\ Program\ Flash\ Memory;\ BURSTMD\ CRC\ request\ and\ Trigger;\ }}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00124}00124\ \ \ \ \ SCANCON0\ =\ 0x00;}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00125}00125\ \}}
@@ -161,7 +161,7 @@
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00181}00181\ \ \ \ \ \ \ \ \ result\ =\ CRC\_ReverseValue(result);}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00182}00182\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00183}00183\ \ \ \ \ result\ \string^=\ xorValue;}
-\DoxyCodeLine{\Hypertarget{crc_8c_source_l00184}00184\ \ \ \ \ \textcolor{keywordflow}{return}\ (result\ \&\ 0xFF);}
+\DoxyCodeLine{\Hypertarget{crc_8c_source_l00184}00184\ \ \ \ \ \textcolor{keywordflow}{return}\ (result\ \&\ 0xFFFF);}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00185}00185\ \}}
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00186}00186\ }
 \DoxyCodeLine{\Hypertarget{crc_8c_source_l00187}00187\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ CRC\_IsCrcBusy(\textcolor{keywordtype}{void})}

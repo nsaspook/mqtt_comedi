@@ -8,7 +8,8 @@
 {\ttfamily \#include "{}mcc\+\_\+generated\+\_\+files/mcc.\+h"{}}\newline
 {\ttfamily \#include "{}eadog.\+h"{}}\newline
 {\ttfamily \#include "{}timers.\+h"{}}\newline
-Include dependency graph for mxcmd.\+h\+:\nopagebreak
+Include dependency graph for mxcmd.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -62,13 +63,18 @@ enum {\bfseries status\+\_\+type} \{ \newline
 {\bfseries STATUS\+\_\+\+EQUALIZE} = 4
 , {\bfseries STATUS\+\_\+\+LAST}
  \}
+\item 
+enum {\bfseries fwrev\+\_\+type} \{ {\bfseries FW\+\_\+\+P0} = 0
+, {\bfseries FW\+\_\+\+P1} = 1
+, {\bfseries FW\+\_\+\+P2} = 2
+ \}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
 void \mbox{\hyperlink{mxcmd_8h_a4ccd1856565dd7ab002df3626cf57f66}{FM\+\_\+onesec\+\_\+io}} (void)
 \item 
-void \mbox{\hyperlink{mxcmd_8h_ad539b986b26827d204438c05a91a0717}{FM\+\_\+tensec\+\_\+io}} (void)
+void \mbox{\hyperlink{mxcmd_8h_ad2150e49700e9da645d2aaf5b898921e}{FM\+\_\+twosec\+\_\+io}} (void)
 \item 
 void \mbox{\hyperlink{mxcmd_8h_abe0a94adeae8ff00f9ccd6e5c7d0b3aa}{FM\+\_\+io}} (void)
 \item 
@@ -89,6 +95,8 @@ void \mbox{\hyperlink{mxcmd_8h_a3ff828022c3c7d1ef14e5879c8404350}{wdtdelay}} (co
 float \mbox{\hyperlink{mxcmd_8h_a9bb18bfcdf15f760da510549a44b457d}{lp\+\_\+filter}} (const float, const uint8\+\_\+t, const int8\+\_\+t)
 \item 
 uint16\+\_\+t \mbox{\hyperlink{mxcmd_8h_ab0d350778d1786d7dcd0af50a64b6be9}{calc\+\_\+checksum}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}, const uint8\+\_\+t)
+\item 
+void \mbox{\hyperlink{mxcmd_8h_a7e2210ec0778ee5852bd42e7e2e91ee9}{mxcmd\+\_\+log}} (void)
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Variables}
 \begin{DoxyCompactItemize}
@@ -134,6 +142,8 @@ const char \mbox{\hyperlink{mxcmd_8h_ab33e1a306777b9a7e14c7c24319d15e8}{state\+\
 const char \mbox{\hyperlink{mxcmd_8h_ac5bf43eaf4012cb612db12df7d4cda2d}{FM80\+\_\+name}} \mbox{[}$\,$\mbox{]}\mbox{[}12\mbox{]}
 \item 
 const char \mbox{\hyperlink{mxcmd_8h_a74c3ef42093466c0285353477fa763fe}{canbus\+\_\+name}} \mbox{[}$\,$\mbox{]}\mbox{[}12\mbox{]}
+\item 
+volatile uint8\+\_\+t \mbox{\hyperlink{mxcmd_8h_afa3eed1695262224486f65b9da5cb6fb}{mxcmd\+\_\+serial\+\_\+errors}}
 \item 
 \mbox{\hyperlink{structBM__type}{BM\+\_\+type}} \mbox{\hyperlink{mxcmd_8h_a3a38aaf607185c11e1049670971260c1}{BM}}
 \end{DoxyCompactItemize}
@@ -246,6 +256,16 @@ Definition at line \mbox{\hyperlink{mxcmd_8h_source_l00031}{31}} of file \mbox{\
 \label{doc-enum-members}
 \Hypertarget{mxcmd_8h_doc-enum-members}
 \doxysubsection{Enumeration Type Documentation}
+\Hypertarget{mxcmd_8h_a074a734bba44eed75cf655e230147f44}\index{mxcmd.h@{mxcmd.h}!fwrev\_type@{fwrev\_type}}
+\index{fwrev\_type@{fwrev\_type}!mxcmd.h@{mxcmd.h}}
+\doxysubsubsection{\texorpdfstring{fwrev\_type}{fwrev\_type}}
+{\footnotesize\ttfamily \label{mxcmd_8h_a074a734bba44eed75cf655e230147f44} 
+enum fwrev\+\_\+type}
+
+
+
+Definition at line \mbox{\hyperlink{mxcmd_8h_source_l00075}{75}} of file \mbox{\hyperlink{mxcmd_8h_source}{mxcmd.\+h}}.
+
 \Hypertarget{mxcmd_8h_afeeec1ac8e29380d5d210b6b6279263c}\index{mxcmd.h@{mxcmd.h}!status\_type@{status\_type}}
 \index{status\_type@{status\_type}!mxcmd.h@{mxcmd.h}}
 \doxysubsubsection{\texorpdfstring{status\_type}{status\_type}}
@@ -269,7 +289,7 @@ uint16\+\_\+t calc\+\_\+checksum (\begin{DoxyParamCaption}\item[{const uint8\+\_
 
 
 
-Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00170}{170}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
+Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00177}{177}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
 
 \Hypertarget{mxcmd_8h_abe0a94adeae8ff00f9ccd6e5c7d0b3aa}\index{mxcmd.h@{mxcmd.h}!FM\_io@{FM\_io}}
 \index{FM\_io@{FM\_io}!mxcmd.h@{mxcmd.h}}
@@ -279,7 +299,7 @@ void FM\+\_\+io (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption}
 
 
 
-Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00050}{50}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
+Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00056}{56}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
 
 \Hypertarget{mxcmd_8h_a4ccd1856565dd7ab002df3626cf57f66}\index{mxcmd.h@{mxcmd.h}!FM\_onesec\_io@{FM\_onesec\_io}}
 \index{FM\_onesec\_io@{FM\_onesec\_io}!mxcmd.h@{mxcmd.h}}
@@ -289,7 +309,7 @@ void FM\+\_\+onesec\+\_\+io (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyP
 
 
 
-Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00134}{134}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
+Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00141}{141}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
 
 \Hypertarget{mxcmd_8h_a8cc637e3c1f47e8a9d70a0c936661577}\index{mxcmd.h@{mxcmd.h}!FM\_restart@{FM\_restart}}
 \index{FM\_restart@{FM\_restart}!mxcmd.h@{mxcmd.h}}
@@ -299,7 +319,7 @@ void FM\+\_\+restart (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCap
 
 
 
-Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00011}{11}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
+Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00017}{17}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
 
 \Hypertarget{mxcmd_8h_a2a79ed9db2ba353db0fd0dc4732b5065}\index{mxcmd.h@{mxcmd.h}!FM\_rx@{FM\_rx}}
 \index{FM\_rx@{FM\_rx}!mxcmd.h@{mxcmd.h}}
@@ -309,7 +329,7 @@ uint8\+\_\+t FM\+\_\+rx (\begin{DoxyParamCaption}\item[{uint16\+\_\+t \texorpdfs
 
 
 
-Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00105}{105}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
+Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00112}{112}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
 
 \Hypertarget{mxcmd_8h_ace552cc9ac75a38c6af6a8535d819220}\index{mxcmd.h@{mxcmd.h}!FM\_rx\_count@{FM\_rx\_count}}
 \index{FM\_rx\_count@{FM\_rx\_count}!mxcmd.h@{mxcmd.h}}
@@ -319,7 +339,7 @@ uint8\+\_\+t FM\+\_\+rx\+\_\+count (\begin{DoxyParamCaption}\item[{void}]{}{}\en
 
 
 
-Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00126}{126}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
+Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00133}{133}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
 
 \Hypertarget{mxcmd_8h_a6cce652e606a4da5f3b020b69a8f70c1}\index{mxcmd.h@{mxcmd.h}!FM\_rx\_ready@{FM\_rx\_ready}}
 \index{FM\_rx\_ready@{FM\_rx\_ready}!mxcmd.h@{mxcmd.h}}
@@ -329,17 +349,17 @@ bool FM\+\_\+rx\+\_\+ready (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyPa
 
 
 
-Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00117}{117}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
+Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00124}{124}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
 
-\Hypertarget{mxcmd_8h_ad539b986b26827d204438c05a91a0717}\index{mxcmd.h@{mxcmd.h}!FM\_tensec\_io@{FM\_tensec\_io}}
-\index{FM\_tensec\_io@{FM\_tensec\_io}!mxcmd.h@{mxcmd.h}}
-\doxysubsubsection{\texorpdfstring{FM\_tensec\_io()}{FM\_tensec\_io()}}
-{\footnotesize\ttfamily \label{mxcmd_8h_ad539b986b26827d204438c05a91a0717} 
-void FM\+\_\+tensec\+\_\+io (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+\Hypertarget{mxcmd_8h_ad2150e49700e9da645d2aaf5b898921e}\index{mxcmd.h@{mxcmd.h}!FM\_twosec\_io@{FM\_twosec\_io}}
+\index{FM\_twosec\_io@{FM\_twosec\_io}!mxcmd.h@{mxcmd.h}}
+\doxysubsubsection{\texorpdfstring{FM\_twosec\_io()}{FM\_twosec\_io()}}
+{\footnotesize\ttfamily \label{mxcmd_8h_ad2150e49700e9da645d2aaf5b898921e} 
+void FM\+\_\+twosec\+\_\+io (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
 
 
 
-Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00139}{139}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
+Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00146}{146}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
 
 \Hypertarget{mxcmd_8h_a0a8aae91856342d6202bb611a85e33af}\index{mxcmd.h@{mxcmd.h}!FM\_tx@{FM\_tx}}
 \index{FM\_tx@{FM\_tx}!mxcmd.h@{mxcmd.h}}
@@ -349,7 +369,7 @@ uint8\+\_\+t FM\+\_\+tx (\begin{DoxyParamCaption}\item[{const uint16\+\_\+t \tex
 
 
 
-Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00035}{35}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
+Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00041}{41}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
 
 \Hypertarget{mxcmd_8h_aa147a86347635feac74ca677afd24391}\index{mxcmd.h@{mxcmd.h}!FM\_tx\_empty@{FM\_tx\_empty}}
 \index{FM\_tx\_empty@{FM\_tx\_empty}!mxcmd.h@{mxcmd.h}}
@@ -359,7 +379,7 @@ bool FM\+\_\+tx\+\_\+empty (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyPa
 
 
 
-Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00023}{23}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
+Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00029}{29}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
 
 \Hypertarget{mxcmd_8h_a9bb18bfcdf15f760da510549a44b457d}\index{mxcmd.h@{mxcmd.h}!lp\_filter@{lp\_filter}}
 \index{lp\_filter@{lp\_filter}!mxcmd.h@{mxcmd.h}}
@@ -369,7 +389,17 @@ float lp\+\_\+filter (\begin{DoxyParamCaption}\item[{const float}]{new}{, }\item
 
 
 
-Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00148}{148}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
+Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00155}{155}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
+
+\Hypertarget{mxcmd_8h_a7e2210ec0778ee5852bd42e7e2e91ee9}\index{mxcmd.h@{mxcmd.h}!mxcmd\_log@{mxcmd\_log}}
+\index{mxcmd\_log@{mxcmd\_log}!mxcmd.h@{mxcmd.h}}
+\doxysubsubsection{\texorpdfstring{mxcmd\_log()}{mxcmd\_log()}}
+{\footnotesize\ttfamily \label{mxcmd_8h_a7e2210ec0778ee5852bd42e7e2e91ee9} 
+void mxcmd\+\_\+log (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00012}{12}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
 
 \Hypertarget{mxcmd_8h_a3ff828022c3c7d1ef14e5879c8404350}\index{mxcmd.h@{mxcmd.h}!wdtdelay@{wdtdelay}}
 \index{wdtdelay@{wdtdelay}!mxcmd.h@{mxcmd.h}}
@@ -379,7 +409,7 @@ void wdtdelay (\begin{DoxyParamCaption}\item[{const uint32\+\_\+t}]{delay}{}\end
 
 
 
-Definition at line \mbox{\hyperlink{eadog_8c_source_l00599}{599}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
+Definition at line \mbox{\hyperlink{eadog_8c_source_l00588}{588}} of file \mbox{\hyperlink{eadog_8c_source}{eadog.\+c}}.
 
 
 
@@ -394,7 +424,7 @@ Definition at line \mbox{\hyperlink{eadog_8c_source_l00599}{599}} of file \mbox{
 
 
 
-Definition at line \mbox{\hyperlink{main_8c_source_l00313}{313}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+Definition at line \mbox{\hyperlink{main_8c_source_l00315}{315}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
 
 \Hypertarget{mxcmd_8h_a8140eca72f5bd1556dda03a75798b440}\index{mxcmd.h@{mxcmd.h}!build\_version@{build\_version}}
 \index{build\_version@{build\_version}!mxcmd.h@{mxcmd.h}}
@@ -422,7 +452,7 @@ const char canbus\+\_\+name\mbox{[}$\,$\mbox{]}\mbox{[}12\mbox{]}}
 \end{DoxyCode}
 
 
-Definition at line \mbox{\hyperlink{mxcmd_8h_source_l00089}{89}} of file \mbox{\hyperlink{mxcmd_8h_source}{mxcmd.\+h}}.
+Definition at line \mbox{\hyperlink{mxcmd_8h_source_l00095}{95}} of file \mbox{\hyperlink{mxcmd_8h_source}{mxcmd.\+h}}.
 
 \Hypertarget{mxcmd_8h_ab71e824e2b598e97ff80389d170d51a2}\index{mxcmd.h@{mxcmd.h}!cmd\_batterya@{cmd\_batterya}}
 \index{cmd\_batterya@{cmd\_batterya}!mxcmd.h@{mxcmd.h}}
@@ -610,7 +640,17 @@ const char FM80\+\_\+name\mbox{[}$\,$\mbox{]}\mbox{[}12\mbox{]}}
 \end{DoxyCode}
 
 
-Definition at line \mbox{\hyperlink{mxcmd_8h_source_l00084}{84}} of file \mbox{\hyperlink{mxcmd_8h_source}{mxcmd.\+h}}.
+Definition at line \mbox{\hyperlink{mxcmd_8h_source_l00090}{90}} of file \mbox{\hyperlink{mxcmd_8h_source}{mxcmd.\+h}}.
+
+\Hypertarget{mxcmd_8h_afa3eed1695262224486f65b9da5cb6fb}\index{mxcmd.h@{mxcmd.h}!mxcmd\_serial\_errors@{mxcmd\_serial\_errors}}
+\index{mxcmd\_serial\_errors@{mxcmd\_serial\_errors}!mxcmd.h@{mxcmd.h}}
+\doxysubsubsection{\texorpdfstring{mxcmd\_serial\_errors}{mxcmd\_serial\_errors}}
+{\footnotesize\ttfamily \label{mxcmd_8h_afa3eed1695262224486f65b9da5cb6fb} 
+volatile uint8\+\_\+t mxcmd\+\_\+serial\+\_\+errors\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{mxcmd_8c_source_l00010}{10}} of file \mbox{\hyperlink{mxcmd_8c_source}{mxcmd.\+c}}.
 
 \Hypertarget{mxcmd_8h_ab33e1a306777b9a7e14c7c24319d15e8}\index{mxcmd.h@{mxcmd.h}!state\_name@{state\_name}}
 \index{state\_name@{state\_name}!mxcmd.h@{mxcmd.h}}
@@ -632,5 +672,5 @@ const char state\+\_\+name\mbox{[}$\,$\mbox{]}\mbox{[}12\mbox{]}}
 \end{DoxyCode}
 
 
-Definition at line \mbox{\hyperlink{mxcmd_8h_source_l00075}{75}} of file \mbox{\hyperlink{mxcmd_8h_source}{mxcmd.\+h}}.
+Definition at line \mbox{\hyperlink{mxcmd_8h_source_l00081}{81}} of file \mbox{\hyperlink{mxcmd_8h_source}{mxcmd.\+h}}.
 

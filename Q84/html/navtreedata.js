@@ -46,7 +46,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "0805L075WR_8c_source.html",
-"structspi__stat__type__ss.html"
+"pzem__rtu_8h.html#a9469eaf671baf1bb68168fac7a1b42cc"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

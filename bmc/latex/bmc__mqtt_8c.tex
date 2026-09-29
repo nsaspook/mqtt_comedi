@@ -10,15 +10,12 @@ Include dependency graph for bmc\+\_\+mqtt.\+c\+:
 \includegraphics[width=350pt]{bmc__mqtt_8c__incl}
 \end{center}
 \end{figure}
-\doxysubsubsection*{Data Structures}
-\begin{DoxyCompactItemize}
-\item 
-struct \mbox{\hyperlink{structha__csv__type}{ha\+\_\+csv\+\_\+type}}
-\end{DoxyCompactItemize}
 \doxysubsubsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
 \#define \mbox{\hyperlink{bmc__mqtt_8c_aadf817f59fb13a1a5c66ea9f7574b842}{COEF}}~12.\+0f
+\item 
+\#define \mbox{\hyperlink{bmc__mqtt_8c_a9d910ecc9aa400a0f9dbf4a85ccbd1d3}{channel\+\_\+\+BADS}}~0xe
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
@@ -39,6 +36,8 @@ bool \mbox{\hyperlink{bmc__mqtt_8c_a4e737d6f2b4a0c8f5cd5709ebf9e10e4}{use\+\_\+c
 \item 
 void \mbox{\hyperlink{bmc__mqtt_8c_a54f0ea5507a2068e1501043652357a4a}{bmc\+\_\+mqtt\+\_\+init}} (void)
 \item 
+void \mbox{\hyperlink{bmc__mqtt_8c_af42b78c0a5baddbe53a8be057ec75132}{set\+\_\+bmc\+\_\+timer}} (void)
+\item 
 int32\+\_\+t \mbox{\hyperlink{bmc__mqtt_8c_aeb7f1edb73f2b51c6df601678ca4df22}{msgarrvd}} (void \texorpdfstring{$\ast$}{*}context, char \texorpdfstring{$\ast$}{*}topic\+Name, int topic\+Len, MQTTClient\+\_\+message \texorpdfstring{$\ast$}{*}message)
 \item 
 void \mbox{\hyperlink{bmc__mqtt_8c_a8888b45133e89225b2be298298f3e0a7}{mqtt\+\_\+bmc\+\_\+data}} (MQTTClient client\+\_\+p, const char \texorpdfstring{$\ast$}{*}topic\+\_\+p)
@@ -46,9 +45,17 @@ void \mbox{\hyperlink{bmc__mqtt_8c_a8888b45133e89225b2be298298f3e0a7}{mqtt\+\_\+
 void \mbox{\hyperlink{bmc__mqtt_8c_ad028f76c3adbc84c58138d75381d444e}{comedi\+\_\+push\+\_\+mqtt}} (void)
 \item 
 char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{bmc__mqtt_8c_afc202782872def34090f247b1a882354}{validate\+\_\+bmc\+\_\+text}} (const char \texorpdfstring{$\ast$}{*}text, bool \texorpdfstring{$\ast$}{*}valid)
+\item 
+bool \mbox{\hyperlink{bmc__mqtt_8c_a0ef74547d5dc05b27fe192f87c4b5777}{validate\+\_\+ok}} (void)
+\item 
+bool \mbox{\hyperlink{bmc__mqtt_8c_a7b7bca9cd6eb5816ddcbe48b5a42b365}{get\+\_\+bmc\+\_\+serial}} (void)
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Variables}
 \begin{DoxyCompactItemize}
+\item 
+const int32\+\_\+t \mbox{\hyperlink{bmc__mqtt_8c_a17e3efb131404c09be69ea7b3e121a77}{MUI\+\_\+\+RANGE\+\_\+H}} = 0x250000
+\item 
+const int32\+\_\+t \mbox{\hyperlink{bmc__mqtt_8c_a89d90dc7bfa59aa96803a25b831d0b4c}{MUI\+\_\+\+RANGE\+\_\+L}} = 0x050000
 \item 
 struct itimerval \mbox{\hyperlink{bmc__mqtt_8c_a14ddb1f381c3b1a58448a5668f29bb5c}{new\+\_\+timer}}
 \item 
@@ -72,6 +79,10 @@ char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{bmc__mqtt_8c_a53e9185f4c46ea86c
 \item 
 size\+\_\+t \mbox{\hyperlink{bmc__mqtt_8c_a0302e6410ed78eb873656e89c5eb7398}{hname\+\_\+len}} = 12
 \item 
+size\+\_\+t \mbox{\hyperlink{bmc__mqtt_8c_a3fd27e9e74a64f5d13890158e7822211}{mqtt\+\_\+id}} = 5
+\item 
+size\+\_\+t \mbox{\hyperlink{bmc__mqtt_8c_ab0c3d9e15ba5207faff3ccfc5ea96a08}{mqtt\+\_\+id\+\_\+b}} = 6
+\item 
 int32\+\_\+t \mbox{\hyperlink{bmc__mqtt_8c_ac1b8876a970e65b3647a5ce270bd3a80}{validate\+\_\+failure}}
 \item 
 struct \mbox{\hyperlink{structbmc__settings}{bmc\+\_\+settings}} \mbox{\hyperlink{bmc__mqtt_8c_aca00e54e0ffcf526dfa2cccfbd891c0e}{S}}
@@ -81,11 +92,15 @@ char \mbox{\hyperlink{bmc__mqtt_8c_aab32c08b8e6208ad62ba74e92c8e83e5}{tmp\+\_\+t
 struct \mbox{\hyperlink{structha__flag__type}{ha\+\_\+flag\+\_\+type}} \mbox{\hyperlink{bmc__mqtt_8c_a300fe8f759de831a9cf50f5a86c85e23}{ha\+\_\+flag\+\_\+vars\+\_\+ss}}
 \item 
 struct \mbox{\hyperlink{structha__daq__hosts__type}{ha\+\_\+daq\+\_\+hosts\+\_\+type}} \mbox{\hyperlink{bmc__mqtt_8c_aa7f2dd4de271c4f5ee5cf3a3099c0b2b}{ha\+\_\+daq\+\_\+host}}
+\item 
+struct \mbox{\hyperlink{structha__csv__type}{ha\+\_\+csv\+\_\+type}} \mbox{\hyperlink{bmc__mqtt_8c_a23866ea47d9a1e4d638bac6ada9d65a4}{R}}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
 show all assigned networking addresses and types on the current machine
+
+Match IP address to known BMC boards for HA MQTT access
 
 Definition in file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
@@ -94,6 +109,16 @@ Definition in file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 \label{doc-define-members}
 \Hypertarget{bmc__mqtt_8c_doc-define-members}
 \doxysubsection{Macro Definition Documentation}
+\Hypertarget{bmc__mqtt_8c_a9d910ecc9aa400a0f9dbf4a85ccbd1d3}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!channel\_BADS@{channel\_BADS}}
+\index{channel\_BADS@{channel\_BADS}!bmc\_mqtt.c@{bmc\_mqtt.c}}
+\doxysubsubsection{\texorpdfstring{channel\_BADS}{channel\_BADS}}
+{\footnotesize\ttfamily \label{bmc__mqtt_8c_a9d910ecc9aa400a0f9dbf4a85ccbd1d3} 
+\#define channel\+\_\+\+BADS~0xe}
+
+
+
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00005}{5}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+
 \Hypertarget{bmc__mqtt_8c_aadf817f59fb13a1a5c66ea9f7574b842}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!COEF@{COEF}}
 \index{COEF@{COEF}!bmc\_mqtt.c@{bmc\_mqtt.c}}
 \doxysubsubsection{\texorpdfstring{COEF}{COEF}}
@@ -117,7 +142,7 @@ void bmc\+\_\+mqtt\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{Doxy
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00371}{371}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00501}{501}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_ad028f76c3adbc84c58138d75381d444e}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!comedi\_push\_mqtt@{comedi\_push\_mqtt}}
 \index{comedi\_push\_mqtt@{comedi\_push\_mqtt}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -127,7 +152,7 @@ void comedi\+\_\+push\+\_\+mqtt (\begin{DoxyParamCaption}\item[{void}]{}{}\end{D
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00944}{944}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l01098}{1098}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_a2a87ef47168dc639b307a285b8cb4462}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!connlost@{connlost}}
 \index{connlost@{connlost}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -137,7 +162,7 @@ void connlost (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{
 
 trouble in River-\/city
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00312}{312}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00442}{442}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_a4a79780b9057489f0740020d6bae250f}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!delivered@{delivered}}
 \index{delivered@{delivered}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -147,7 +172,17 @@ void delivered (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00350}{350}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00480}{480}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+
+\Hypertarget{bmc__mqtt_8c_a7b7bca9cd6eb5816ddcbe48b5a42b365}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!get\_bmc\_serial@{get\_bmc\_serial}}
+\index{get\_bmc\_serial@{get\_bmc\_serial}!bmc\_mqtt.c@{bmc\_mqtt.c}}
+\doxysubsubsection{\texorpdfstring{get\_bmc\_serial()}{get\_bmc\_serial()}}
+{\footnotesize\ttfamily \label{bmc__mqtt_8c_a7b7bca9cd6eb5816ddcbe48b5a42b365} 
+bool get\+\_\+bmc\+\_\+serial (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l01221}{1221}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_a18b19ee666a9edc39d904a474ddee1d9}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!log\_time@{log\_time}}
 \index{log\_time@{log\_time}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -157,7 +192,7 @@ char \texorpdfstring{$\ast$}{*} log\+\_\+time (\begin{DoxyParamCaption}\item[{bo
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00277}{277}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00407}{407}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_a8888b45133e89225b2be298298f3e0a7}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!mqtt\_bmc\_data@{mqtt\_bmc\_data}}
 \index{mqtt\_bmc\_data@{mqtt\_bmc\_data}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -167,7 +202,7 @@ void mqtt\+\_\+bmc\+\_\+data (\begin{DoxyParamCaption}\item[{MQTTClient}]{client
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00527}{527}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00674}{674}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_aeb7f1edb73f2b51c6df601678ca4df22}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!msgarrvd@{msgarrvd}}
 \index{msgarrvd@{msgarrvd}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -177,7 +212,17 @@ int32\+\_\+t msgarrvd (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00450}{450}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00590}{590}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+
+\Hypertarget{bmc__mqtt_8c_af42b78c0a5baddbe53a8be057ec75132}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!set\_bmc\_timer@{set\_bmc\_timer}}
+\index{set\_bmc\_timer@{set\_bmc\_timer}!bmc\_mqtt.c@{bmc\_mqtt.c}}
+\doxysubsubsection{\texorpdfstring{set\_bmc\_timer()}{set\_bmc\_timer()}}
+{\footnotesize\ttfamily \label{bmc__mqtt_8c_af42b78c0a5baddbe53a8be057ec75132} 
+void set\+\_\+bmc\+\_\+timer (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00584}{584}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_a0e3152830cd54954f6745ba7ae42ff42}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!showIP@{showIP}}
 \index{showIP@{showIP}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -187,7 +232,7 @@ void show\+IP (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00170}{170}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00273}{273}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_afb5539e439feb0f55b20b1812e23f34e}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!skeleton\_daemon@{skeleton\_daemon}}
 \index{skeleton\_daemon@{skeleton\_daemon}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -197,7 +242,7 @@ void skeleton\+\_\+daemon (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyPar
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00219}{219}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00349}{349}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_aa39b8400b702a022ed3aaa4940cf4e15}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!timer\_callback@{timer\_callback}}
 \index{timer\_callback@{timer\_callback}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -207,7 +252,7 @@ void timer\+\_\+callback (\begin{DoxyParamCaption}\item[{int32\+\_\+t}]{signum}{
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00301}{301}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00431}{431}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_a4e737d6f2b4a0c8f5cd5709ebf9e10e4}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!use\_cal\_file@{use\_cal\_file}}
 \index{use\_cal\_file@{use\_cal\_file}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -217,7 +262,7 @@ bool use\+\_\+cal\+\_\+file (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00361}{361}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00491}{491}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_afc202782872def34090f247b1a882354}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!validate\_bmc\_text@{validate\_bmc\_text}}
 \index{validate\_bmc\_text@{validate\_bmc\_text}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -227,7 +272,17 @@ char \texorpdfstring{$\ast$}{*} validate\+\_\+bmc\+\_\+text (\begin{DoxyParamCap
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00976}{976}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l01130}{1130}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+
+\Hypertarget{bmc__mqtt_8c_a0ef74547d5dc05b27fe192f87c4b5777}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!validate\_ok@{validate\_ok}}
+\index{validate\_ok@{validate\_ok}!bmc\_mqtt.c@{bmc\_mqtt.c}}
+\doxysubsubsection{\texorpdfstring{validate\_ok()}{validate\_ok()}}
+{\footnotesize\ttfamily \label{bmc__mqtt_8c_a0ef74547d5dc05b27fe192f87c4b5777} 
+bool validate\+\_\+ok (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l01194}{1194}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 
 
@@ -242,7 +297,7 @@ MQTTClient\+\_\+connect\+Options conn\+\_\+opts\+\_\+ha = MQTTClient\+\_\+connec
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00019}{19}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00022}{22}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_a2188c27eaf301ddaee5291573d372e69}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!conn\_opts\_p@{conn\_opts\_p}}
 \index{conn\_opts\_p@{conn\_opts\_p}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -252,7 +307,7 @@ MQTTClient\+\_\+connect\+Options conn\+\_\+opts\+\_\+p = MQTTClient\+\_\+connect
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00017}{17}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00020}{20}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_aaabdc1064c8e541e51137a5b9a56d6af}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!conn\_opts\_sd@{conn\_opts\_sd}}
 \index{conn\_opts\_sd@{conn\_opts\_sd}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -262,7 +317,7 @@ MQTTClient\+\_\+connect\+Options conn\+\_\+opts\+\_\+sd = MQTTClient\+\_\+connec
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00018}{18}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00021}{21}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_aa7f2dd4de271c4f5ee5cf3a3099c0b2b}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!ha\_daq\_host@{ha\_daq\_host}}
 \index{ha\_daq\_host@{ha\_daq\_host}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -272,7 +327,7 @@ struct \mbox{\hyperlink{structha__daq__hosts__type}{ha\+\_\+daq\+\_\+hosts\+\_\+
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00087}{87}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00083}{83}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_a300fe8f759de831a9cf50f5a86c85e23}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!ha\_flag\_vars\_ss@{ha\_flag\_vars\_ss}}
 \index{ha\_flag\_vars\_ss@{ha\_flag\_vars\_ss}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -294,7 +349,7 @@ struct \mbox{\hyperlink{structha__flag__type}{ha\+\_\+flag\+\_\+type}} ha\+\_\+f
 \end{DoxyCode}
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00047}{47}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00043}{43}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_a309dd9af8762ae249ec20b89790077e1}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!hname@{hname}}
 \index{hname@{hname}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -304,7 +359,7 @@ char hname\mbox{[}256\mbox{]}}
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00022}{22}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00025}{25}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_a0302e6410ed78eb873656e89c5eb7398}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!hname\_len@{hname\_len}}
 \index{hname\_len@{hname\_len}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -314,7 +369,7 @@ size\+\_\+t hname\+\_\+len = 12}
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00023}{23}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00026}{26}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_a53e9185f4c46ea86c015ce0a3082636a}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!hname\_ptr@{hname\_ptr}}
 \index{hname\_ptr@{hname\_ptr}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -324,7 +379,47 @@ char \texorpdfstring{$\ast$}{*} hname\+\_\+ptr = hname}
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00022}{22}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00025}{25}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+
+\Hypertarget{bmc__mqtt_8c_a3fd27e9e74a64f5d13890158e7822211}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!mqtt\_id@{mqtt\_id}}
+\index{mqtt\_id@{mqtt\_id}!bmc\_mqtt.c@{bmc\_mqtt.c}}
+\doxysubsubsection{\texorpdfstring{mqtt\_id}{mqtt\_id}}
+{\footnotesize\ttfamily \label{bmc__mqtt_8c_a3fd27e9e74a64f5d13890158e7822211} 
+size\+\_\+t mqtt\+\_\+id = 5}
+
+
+
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00026}{26}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+
+\Hypertarget{bmc__mqtt_8c_ab0c3d9e15ba5207faff3ccfc5ea96a08}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!mqtt\_id\_b@{mqtt\_id\_b}}
+\index{mqtt\_id\_b@{mqtt\_id\_b}!bmc\_mqtt.c@{bmc\_mqtt.c}}
+\doxysubsubsection{\texorpdfstring{mqtt\_id\_b}{mqtt\_id\_b}}
+{\footnotesize\ttfamily \label{bmc__mqtt_8c_ab0c3d9e15ba5207faff3ccfc5ea96a08} 
+size\+\_\+t mqtt\+\_\+id\+\_\+b = 6}
+
+
+
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00026}{26}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+
+\Hypertarget{bmc__mqtt_8c_a17e3efb131404c09be69ea7b3e121a77}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!MUI\_RANGE\_H@{MUI\_RANGE\_H}}
+\index{MUI\_RANGE\_H@{MUI\_RANGE\_H}!bmc\_mqtt.c@{bmc\_mqtt.c}}
+\doxysubsubsection{\texorpdfstring{MUI\_RANGE\_H}{MUI\_RANGE\_H}}
+{\footnotesize\ttfamily \label{bmc__mqtt_8c_a17e3efb131404c09be69ea7b3e121a77} 
+const int32\+\_\+t MUI\+\_\+\+RANGE\+\_\+H = 0x250000}
+
+
+
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00009}{9}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+
+\Hypertarget{bmc__mqtt_8c_a89d90dc7bfa59aa96803a25b831d0b4c}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!MUI\_RANGE\_L@{MUI\_RANGE\_L}}
+\index{MUI\_RANGE\_L@{MUI\_RANGE\_L}!bmc\_mqtt.c@{bmc\_mqtt.c}}
+\doxysubsubsection{\texorpdfstring{MUI\_RANGE\_L}{MUI\_RANGE\_L}}
+{\footnotesize\ttfamily \label{bmc__mqtt_8c_a89d90dc7bfa59aa96803a25b831d0b4c} 
+const int32\+\_\+t MUI\+\_\+\+RANGE\+\_\+L = 0x050000}
+
+
+
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00010}{10}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_a14ddb1f381c3b1a58448a5668f29bb5c}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!new\_timer@{new\_timer}}
 \index{new\_timer@{new\_timer}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -344,7 +439,7 @@ struct itimerval new\+\_\+timer}
 \end{DoxyCode}
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00009}{9}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00012}{12}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_abd3227d62200e602c74491707a402e23}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!old\_timer@{old\_timer}}
 \index{old\_timer@{old\_timer}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -354,7 +449,7 @@ struct itimerval old\+\_\+timer}
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00015}{15}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00018}{18}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_a54ec132fd248befe31c04f4eb787af1c}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!pubmsg@{pubmsg}}
 \index{pubmsg@{pubmsg}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -364,7 +459,29 @@ MQTTClient\+\_\+message pubmsg = MQTTClient\+\_\+message\+\_\+initializer}
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00020}{20}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00023}{23}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+
+\Hypertarget{bmc__mqtt_8c_a23866ea47d9a1e4d638bac6ada9d65a4}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!R@{R}}
+\index{R@{R}!bmc\_mqtt.c@{bmc\_mqtt.c}}
+\doxysubsubsection{\texorpdfstring{R}{R}}
+{\footnotesize\ttfamily \label{bmc__mqtt_8c_a23866ea47d9a1e4d638bac6ada9d65a4} 
+struct \mbox{\hyperlink{structha__csv__type}{ha\+\_\+csv\+\_\+type}} R}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ .benergy\ =\ DBENERGY,\ }
+\DoxyCodeLine{\ \ \ \ .runtime\ =\ BAT\_RUN\_MAX,}
+\DoxyCodeLine{\ \ \ \ .boot\_wait\ =\ 0,}
+\DoxyCodeLine{\ \ \ \ .boot\_volts\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\ \ \ \ .boot\_once\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{\ \ \ \ .boot\_updates\ =\ 0,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00255}{255}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_a57469fe2e06b847a09c408d6a8adb6fa}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!rawtime@{rawtime}}
 \index{rawtime@{rawtime}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -374,7 +491,7 @@ time\+\_\+t rawtime}
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00016}{16}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00019}{19}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_aca00e54e0ffcf526dfa2cccfbd891c0e}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!S@{S}}
 \index{S@{S}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -390,12 +507,13 @@ struct \mbox{\hyperlink{structbmc__settings}{bmc\+\_\+settings}} S}
 \DoxyCodeLine{\ \ \ \ .PVENERGYV\ =\ DPVENERGY,}
 \DoxyCodeLine{\ \ \ \ .PVVOLTAGEV\ =\ DPVVOLTAGE,}
 \DoxyCodeLine{\ \ \ \ .SOC\_MODEV\ =\ DSOC\_MODE,}
+\DoxyCodeLine{\ \ \ \ .MQTT\_HOSTIP\ =\ MQTT\_HOST,}
 \DoxyCodeLine{\}}
 
 \end{DoxyCode}
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00029}{29}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00032}{32}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_aab32c08b8e6208ad62ba74e92c8e83e5}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!tmp\_test\_ptr@{tmp\_test\_ptr}}
 \index{tmp\_test\_ptr@{tmp\_test\_ptr}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -405,7 +523,7 @@ char tmp\+\_\+test\+\_\+ptr\mbox{[}SYSLOG\+\_\+\+SIZ\mbox{]}}
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00045}{45}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00041}{41}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_a2ba92fd6abf4e3954194600bbbbe3d5e}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!token@{token}}
 \index{token@{token}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -415,7 +533,7 @@ MQTTClient\+\_\+delivery\+Token token}
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00021}{21}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00024}{24}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 
 \Hypertarget{bmc__mqtt_8c_ac1b8876a970e65b3647a5ce270bd3a80}\index{bmc\_mqtt.c@{bmc\_mqtt.c}!validate\_failure@{validate\_failure}}
 \index{validate\_failure@{validate\_failure}!bmc\_mqtt.c@{bmc\_mqtt.c}}
@@ -425,5 +543,5 @@ int32\+\_\+t validate\+\_\+failure}
 
 
 
-Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00024}{24}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
+Definition at line \mbox{\hyperlink{bmc__mqtt_8c_source_l00027}{27}} of file \mbox{\hyperlink{bmc__mqtt_8c_source}{bmc\+\_\+mqtt.\+c}}.
 

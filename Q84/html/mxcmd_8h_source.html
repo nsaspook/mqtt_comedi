@@ -169,61 +169,70 @@ $(function(){initNavTree('mxcmd_8h_source.html','',''); initResizable(true); });
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        STATUS_LAST,</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    };</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keyword">const</span> <span class="keywordtype">char</span> state_name [][12] = {</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="stringliteral">&quot;Sleep&quot;</span>,</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <span class="stringliteral">&quot;Float&quot;</span>,</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <span class="stringliteral">&quot;Bulk&quot;</span>,</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        <span class="stringliteral">&quot;Absorb&quot;</span>,</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="stringliteral">&quot;Equalize&quot;</span>,</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        <span class="stringliteral">&quot;N/A &quot;</span>,</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    };</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keyword">const</span> <span class="keywordtype">char</span> FM80_name [][12] = {</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        <span class="stringliteral">&quot;Offline&quot;</span>,</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        <span class="stringliteral">&quot;FMx0&quot;</span>,</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    };</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keyword">const</span> <span class="keywordtype">char</span> canbus_name [][12] = {</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        <span class="stringliteral">&quot;Offline&quot;</span>,</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="stringliteral">&quot;CANBUS&quot;</span>,</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    };</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="foldopen" id="foldopen00094" data-start="{" data-end="};">
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="structmx__status__packed__t.html">   94</a></span>    <span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        uint8_t a[16]; <span class="comment">// raw_ah(part2)</span></div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    } <a class="code hl_struct" href="structmx__status__packed__t.html">mx_status_packed_t</a>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keyword">enum</span> fwrev_type {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        FW_P0 = 0,</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        FW_P1 = 1,</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        FW_P2 = 2,</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    };</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keyword">const</span> <span class="keywordtype">char</span> state_name [][12] = {</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        <span class="stringliteral">&quot;Sleep&quot;</span>,</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        <span class="stringliteral">&quot;Float&quot;</span>,</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        <span class="stringliteral">&quot;Bulk&quot;</span>,</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        <span class="stringliteral">&quot;Absorb&quot;</span>,</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        <span class="stringliteral">&quot;Equalize&quot;</span>,</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <span class="stringliteral">&quot;N/A &quot;</span>,</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    };</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keyword">const</span> <span class="keywordtype">char</span> FM80_name [][12] = {</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="stringliteral">&quot;Offline&quot;</span>,</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        <span class="stringliteral">&quot;FMx0&quot;</span>,</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    };</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keyword">const</span> <span class="keywordtype">char</span> canbus_name [][12] = {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="stringliteral">&quot;Offline&quot;</span>,</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <span class="stringliteral">&quot;CANBUS&quot;</span>,</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    };</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="foldopen" id="foldopen00100" data-start="{" data-end="};">
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="structmx__status__packed__t.html">  100</a></span>    <span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        uint8_t a[16]; <span class="comment">// raw_ah(part2)</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    } <a class="code hl_struct" href="structmx__status__packed__t.html">mx_status_packed_t</a>;</div>
 </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="foldopen" id="foldopen00098" data-start="{" data-end="};">
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="structmx__log__packed__t.html">   98</a></span>    <span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        uint8_t a[16];</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    } <a class="code hl_struct" href="structmx__log__packed__t.html">mx_log_packed_t</a>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="foldopen" id="foldopen00104" data-start="{" data-end="};">
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="structmx__log__packed__t.html">  104</a></span>    <span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        uint8_t a[16];</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    } <a class="code hl_struct" href="structmx__log__packed__t.html">mx_log_packed_t</a>;</div>
 </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keyword">extern</span> <span class="keywordtype">void</span> FM_onesec_io(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="keyword">extern</span> <span class="keywordtype">void</span> FM_tensec_io(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keyword">extern</span> <span class="keywordtype">void</span> FM_io(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keyword">extern</span> uint8_t FM_tx(<span class="keyword">const</span> uint16_t *, <span class="keyword">const</span> uint8_t);</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keyword">extern</span> <span class="keywordtype">bool</span> FM_tx_empty(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keyword">extern</span> uint8_t FM_rx(uint16_t *);</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keyword">extern</span> <span class="keywordtype">bool</span> FM_rx_ready(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="keyword">extern</span> uint8_t FM_rx_count(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keyword">extern</span> <span class="keywordtype">void</span> FM_restart(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keyword">extern</span> <span class="keywordtype">void</span> wdtdelay(<span class="keyword">const</span> uint32_t);</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keyword">extern</span> <span class="keywordtype">float</span> lp_filter(<span class="keyword">const</span> <span class="keywordtype">float</span>, <span class="keyword">const</span> uint8_t, <span class="keyword">const</span> int8_t);</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keyword">extern</span> uint16_t calc_checksum(<span class="keyword">const</span> uint8_t*, <span class="keyword">const</span> uint8_t);</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keyword">extern</span> <a class="code hl_struct" href="structBM__type.html">BM_type</a> BM;</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor">#ifdef  __cplusplus</span></div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>}</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="preprocessor">#endif  </span><span class="comment">/* MXCMD_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keyword">extern</span> <span class="keyword">volatile</span> uint8_t mxcmd_serial_errors;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keyword">extern</span> <span class="keywordtype">void</span> FM_onesec_io(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keyword">extern</span> <span class="keywordtype">void</span> FM_twosec_io(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keyword">extern</span> <span class="keywordtype">void</span> FM_io(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keyword">extern</span> uint8_t FM_tx(<span class="keyword">const</span> uint16_t *, <span class="keyword">const</span> uint8_t);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keyword">extern</span> <span class="keywordtype">bool</span> FM_tx_empty(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keyword">extern</span> uint8_t FM_rx(uint16_t *);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keyword">extern</span> <span class="keywordtype">bool</span> FM_rx_ready(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keyword">extern</span> uint8_t FM_rx_count(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keyword">extern</span> <span class="keywordtype">void</span> FM_restart(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keyword">extern</span> <span class="keywordtype">void</span> wdtdelay(<span class="keyword">const</span> uint32_t);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keyword">extern</span> <span class="keywordtype">float</span> lp_filter(<span class="keyword">const</span> <span class="keywordtype">float</span>, <span class="keyword">const</span> uint8_t, <span class="keyword">const</span> int8_t);</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="keyword">extern</span> uint16_t calc_checksum(<span class="keyword">const</span> uint8_t*, <span class="keyword">const</span> uint8_t);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="keyword">extern</span> <span class="keywordtype">void</span> mxcmd_log(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="keyword">extern</span> <a class="code hl_struct" href="structBM__type.html">BM_type</a> BM;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor">#ifdef  __cplusplus</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>}</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="preprocessor">#endif  </span><span class="comment">/* MXCMD_H */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aeadog_8h_html"><div class="ttname"><a href="eadog_8h.html">eadog.h</a></div></div>
-<div class="ttc" id="astructBM__type_html"><div class="ttname"><a href="structBM__type.html">BM_type</a></div><div class="ttdef"><b>Definition</b> <a href="vconfig_8h_source.html#l00248">vconfig.h:248</a></div></div>
-<div class="ttc" id="astructmx__log__packed__t_html"><div class="ttname"><a href="structmx__log__packed__t.html">mx_log_packed_t</a></div><div class="ttdef"><b>Definition</b> <a href="#l00098">mxcmd.h:98</a></div></div>
-<div class="ttc" id="astructmx__status__packed__t_html"><div class="ttname"><a href="structmx__status__packed__t.html">mx_status_packed_t</a></div><div class="ttdef"><b>Definition</b> <a href="#l00094">mxcmd.h:94</a></div></div>
+<div class="ttc" id="astructBM__type_html"><div class="ttname"><a href="structBM__type.html">BM_type</a></div><div class="ttdef"><b>Definition</b> <a href="vconfig_8h_source.html#l00255">vconfig.h:255</a></div></div>
+<div class="ttc" id="astructmx__log__packed__t_html"><div class="ttname"><a href="structmx__log__packed__t.html">mx_log_packed_t</a></div><div class="ttdef"><b>Definition</b> <a href="#l00104">mxcmd.h:104</a></div></div>
+<div class="ttc" id="astructmx__status__packed__t_html"><div class="ttname"><a href="structmx__status__packed__t.html">mx_status_packed_t</a></div><div class="ttdef"><b>Definition</b> <a href="#l00100">mxcmd.h:100</a></div></div>
 <div class="ttc" id="atimers_8h_html"><div class="ttname"><a href="timers_8h.html">timers.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
