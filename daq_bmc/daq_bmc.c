@@ -97,6 +97,8 @@ for the FMx0 charge controller and for MODBUS power meters
    vm.zone_reclaim_mode=2
    vm.min_free_kbytes=45056
    Reboot
+ * 
+ * reducing the CPU speed also helps fir 7+ kernels
  */
 #define SPI_DEBUG
 #ifdef LED_LINK
@@ -258,6 +260,7 @@ static const uint32_t SPI_BUFF_SIZE_NOHUNK = 64; // normally 64
 static const uint32_t MAX_CHANLIST_LEN = 256;
 static const uint32_t CONV_SPEED = 50000; /* 10s of nsecs: the true rate is ~3000/5000 so we need a fixup,  two conversions per result */
 static const uint32_t MAX_BOARD_RATE = 1000000000;
+
 static const struct spi_delay CS_CHANGE_DELAY_USECS0 = {
 	.value = 0,
 	.unit = SPI_DELAY_UNIT_USECS,
@@ -625,6 +628,10 @@ static inline int32_t piBoardRev(struct comedi_device *dev)
 	return boardRev;
 }
 
+/*
+ * Only one byte is sent and received
+ * with spacing after the transaction set by 'slower'
+ */
 static int32_t bmc_spi_packet(struct spi_device *spi, struct bmc_packet_type * packet, ktime_t slower)
 {
 	int32_t ret = 0;
@@ -2202,7 +2209,7 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 
 		ret = 0;
 		for (int i = BMC_CMD; i < BMC_DUMMY; i++) {
-			ret = bmc_spi_packet(spi, packet, slower); // only one byte is transmitted
+			ret = bmc_spi_packet(spi, packet, slower); // only one byte is transmitted per packet
 		}
 		daq_code = packet->bmc_byte_r[BMC_CMD];
 #ifdef SPI_DEBUG
@@ -2447,7 +2454,7 @@ module_exit(daqbmc_exit);
 
 MODULE_AUTHOR("NSASPOOK <nsaspooksma2@gmail.com");
 MODULE_DESCRIPTION("RPI DI/DO/AI/AO SPI Driver for Comedi");
-MODULE_VERSION("6.12.62+");
+MODULE_VERSION("6.18.34+");
 MODULE_LICENSE("GPL");
 MODULE_ALIAS("spi:spibmc");
 

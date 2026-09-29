@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<analyzerinfo hash="1317861212978601681">
+<analyzerinfo>
         <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;xc.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results." verbose="Include file: &lt;xc.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results.">
             <location file="mcc_generated_files/mcc.h" line="49" column="2"/>
         </error>
@@ -246,25 +246,26 @@
         <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;string.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results." verbose="Include file: &lt;string.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results.">
             <location file="mconfig.c" line="4" column="2"/>
         </error>
-        <error id="uselessAssignmentPtrArg" severity="warning" msg="Assignment of function parameter has no effect outside the function. Did you forget dereferencing it?" verbose="Assignment of function parameter has no effect outside the function. Did you forget dereferencing it?" cwe="398" file0="mconfig.c">
+        <error id="uselessAssignmentPtrArg" severity="warning" msg="Assignment of function parameter has no effect outside the function. Did you forget dereferencing it?" verbose="Assignment of function parameter has no effect outside the function. Did you forget dereferencing it?" cwe="398" hash="5832187007736220664" file0="mconfig.c">
             <location file="mconfig.c" line="412" column="3"/>
         </error>
-        <error id="incrementboolean" severity="style" msg="Incrementing a variable of type &apos;bool&apos; with postfix operator++ is deprecated by the C++ Standard. You should assign it the value &apos;true&apos; instead." verbose="The operand of a postfix increment operator may be of type bool but it is deprecated by C++ Standard (Annex D-1) and the operand is always set to true. You should assign it the value &apos;true&apos; instead." cwe="398" file0="mconfig.c">
+        <error id="incrementboolean" severity="style" msg="Incrementing a variable of type &apos;bool&apos; with postfix operator++ is deprecated by the C++ Standard. You should assign it the value &apos;true&apos; instead." verbose="The operand of a postfix increment operator may be of type bool but it is deprecated by C++ Standard (Annex D-1) and the operand is always set to true. You should assign it the value &apos;true&apos; instead." cwe="398" hash="11907832825204186598" file0="mconfig.c">
             <location file="mconfig.c" line="63" column="4"/>
         </error>
-        <error id="knownConditionTrueFalse" severity="style" msg="Condition &apos;V.response.info!=DIS_STR&apos; is always true" verbose="Condition &apos;V.response.info!=DIS_STR&apos; is always true" cwe="571" file0="mconfig.c">
+        <error id="knownConditionTrueFalse" severity="style" msg="Condition &apos;V.response.info!=DIS_STR&apos; is always true" verbose="Condition &apos;V.response.info!=DIS_STR&apos; is always true" cwe="571" hash="16973149928610726805" file0="mconfig.c">
             <location file="mconfig.c" line="201" column="25" info="Condition &apos;V.response.info!=DIS_STR&apos; is always true"/>
+            <location file="mconfig.c" line="197" column="23" info="Assuming condition is false"/>
             <location file="mconfig.c" line="194" column="22" info="Assuming condition &apos;V.response.info==DIS_STR&apos; is false"/>
         </error>
-        <error id="constParameterPointer" severity="style" msg="Parameter &apos;data&apos; can be declared as pointer to const" verbose="Parameter &apos;data&apos; can be declared as pointer to const" cwe="398" file0="mconfig.c">
+        <error id="constParameterPointer" severity="style" msg="Parameter &apos;data&apos; can be declared as pointer to const" verbose="Parameter &apos;data&apos; can be declared as pointer to const" cwe="398" hash="2674519941858188001" file0="mconfig.c">
             <location file="mconfig.c" line="258" column="27" info="Parameter &apos;data&apos; can be declared as pointer to const"/>
             <symbol>data</symbol>
         </error>
-        <error id="constParameterPointer" severity="style" msg="Parameter &apos;t&apos; can be declared as pointer to const" verbose="Parameter &apos;t&apos; can be declared as pointer to const" cwe="398" file0="mconfig.c">
+        <error id="constParameterPointer" severity="style" msg="Parameter &apos;t&apos; can be declared as pointer to const" verbose="Parameter &apos;t&apos; can be declared as pointer to const" cwe="398" hash="6150394290598882017" file0="mconfig.c">
             <location file="mconfig.c" line="404" column="22" info="Parameter &apos;t&apos; can be declared as pointer to const"/>
             <symbol>t</symbol>
         </error>
-        <error id="unreadVariable" severity="style" msg="Variable &apos;t&apos; is assigned a value that is never used." verbose="Variable &apos;t&apos; is assigned a value that is never used." cwe="563" file0="mconfig.c">
+        <error id="unreadVariable" severity="style" msg="Variable &apos;t&apos; is assigned a value that is never used." verbose="Variable &apos;t&apos; is assigned a value that is never used." cwe="563" hash="16183318642990278351" file0="mconfig.c">
             <location file="mconfig.c" line="412" column="5"/>
             <symbol>t</symbol>
         </error>
@@ -304,27 +305,27 @@
     <functioncall functionName="update_lcd"/>
     <functioncall functionName="wait_lcd_done"/>
   </FileInfo>
-        <error id="variableScope" severity="style" msg="The scope of the variable &apos;vi&apos; can be reduced." verbose="The scope of the variable &apos;vi&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="mconfig.c">
+        <error id="variableScope" severity="style" msg="The scope of the variable &apos;vi&apos; can be reduced." verbose="The scope of the variable &apos;vi&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" hash="17008849542205009958" file0="mconfig.c">
             <location file="mconfig.c" line="287" column="41"/>
             <symbol>vi</symbol>
         </error>
-        <error id="variableScope" severity="style" msg="The scope of the variable &apos;utc_value&apos; can be reduced." verbose="The scope of the variable &apos;utc_value&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="mconfig.c">
+        <error id="variableScope" severity="style" msg="The scope of the variable &apos;utc_value&apos; can be reduced." verbose="The scope of the variable &apos;utc_value&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" hash="9675880232112006123" file0="mconfig.c">
             <location file="mconfig.c" line="288" column="17"/>
             <symbol>utc_value</symbol>
         </error>
-        <error id="variableScope" severity="style" msg="The scope of the variable &apos;utc&apos; can be reduced." verbose="The scope of the variable &apos;utc&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="mconfig.c">
+        <error id="variableScope" severity="style" msg="The scope of the variable &apos;utc&apos; can be reduced." verbose="The scope of the variable &apos;utc&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" hash="3916149925699508897" file0="mconfig.c">
             <location file="mconfig.c" line="289" column="14"/>
             <symbol>utc</symbol>
         </error>
-        <error id="variableScope" severity="style" msg="The scope of the variable &apos;rxData&apos; can be reduced." verbose="The scope of the variable &apos;rxData&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="mconfig.c">
+        <error id="variableScope" severity="style" msg="The scope of the variable &apos;rxData&apos; can be reduced." verbose="The scope of the variable &apos;rxData&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" hash="6818540704672416953" file0="mconfig.c">
             <location file="mconfig.c" line="290" column="37"/>
             <symbol>rxData</symbol>
         </error>
-        <error id="unreadVariable" severity="style" msg="Variable &apos;rxData&apos; is assigned a value that is never used." verbose="Variable &apos;rxData&apos; is assigned a value that is never used." cwe="563" file0="mconfig.c">
+        <error id="unreadVariable" severity="style" msg="Variable &apos;rxData&apos; is assigned a value that is never used." verbose="Variable &apos;rxData&apos; is assigned a value that is never used." cwe="563" hash="2793536976215468794" file0="mconfig.c">
             <location file="mconfig.c" line="290" column="44"/>
             <symbol>rxData</symbol>
         </error>
-        <error id="unreadVariable" severity="style" msg="Variable &apos;rxData&apos; is assigned a value that is never used." verbose="Variable &apos;rxData&apos; is assigned a value that is never used." cwe="563" file0="mconfig.c">
+        <error id="unreadVariable" severity="style" msg="Variable &apos;rxData&apos; is assigned a value that is never used." verbose="Variable &apos;rxData&apos; is assigned a value that is never used." cwe="563" hash="632437240520683830" file0="mconfig.c">
             <location file="mconfig.c" line="386" column="12"/>
             <symbol>rxData</symbol>
         </error>
@@ -406,4 +407,43 @@
     <functioncall functionName="update_lcd"/>
     <functioncall functionName="wait_lcd_done"/>
   </FileInfo>
+  <includes>
+    <filename>bmcdio.h</filename>
+    <filename>calibr.h</filename>
+    <filename>eadog.h</filename>
+    <filename>mc33996.h</filename>
+    <filename>mcc_generated_files/adc.h</filename>
+    <filename>mcc_generated_files/clc1.h</filename>
+    <filename>mcc_generated_files/crc.h</filename>
+    <filename>mcc_generated_files/dac1.h</filename>
+    <filename>mcc_generated_files/device_config.h</filename>
+    <filename>mcc_generated_files/dma1.h</filename>
+    <filename>mcc_generated_files/dma2.h</filename>
+    <filename>mcc_generated_files/dma3.h</filename>
+    <filename>mcc_generated_files/interrupt_manager.h</filename>
+    <filename>mcc_generated_files/mcc.h</filename>
+    <filename>mcc_generated_files/memory.h</filename>
+    <filename>mcc_generated_files/pin_manager.h</filename>
+    <filename>mcc_generated_files/spi1.h</filename>
+    <filename>mcc_generated_files/spi2.h</filename>
+    <filename>mcc_generated_files/tmr0.h</filename>
+    <filename>mcc_generated_files/tmr1.h</filename>
+    <filename>mcc_generated_files/tmr2.h</filename>
+    <filename>mcc_generated_files/tmr3.h</filename>
+    <filename>mcc_generated_files/tmr4.h</filename>
+    <filename>mcc_generated_files/tmr5.h</filename>
+    <filename>mcc_generated_files/tmr6.h</filename>
+    <filename>mcc_generated_files/uart1.h</filename>
+    <filename>mcc_generated_files/uart2.h</filename>
+    <filename>mcc_generated_files/uart3.h</filename>
+    <filename>mconfig.h</filename>
+    <filename>modbus_master.h</filename>
+    <filename>msg_text.h</filename>
+    <filename>mydisplay.h</filename>
+    <filename>slaveo.h</filename>
+    <filename>tic12400.h</filename>
+    <filename>timers.h</filename>
+    <filename>vconfig.h</filename>
+  </includes>
+  <hash>18107152009471168633</hash>
 </analyzerinfo>
