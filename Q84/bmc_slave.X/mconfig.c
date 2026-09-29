@@ -60,7 +60,7 @@ void check_help(const bool flipper)
 		}
 		snprintf(get_vterm_ptr(2, HELP_VTERM), MAX_TEXT, "%s                 ", T[V.help_id].display);
 		snprintf(get_vterm_ptr(1, HELP_VTERM), MAX_TEXT, "%s                 ", T[V.help_id].message);
-		V.help_id++; // cycle help text messages to LCD
+		V.help_id = true; // cycle help text messages to LCD
 	}
 }
 
@@ -148,12 +148,7 @@ void MyeaDogM_WriteStringAtPos(const uint8_t r, const uint8_t c, char *strPtr)
 			snprintf(get_vterm_ptr(2, HELP_VTERM), MAX_TEXT, "%s", V.info);
 			update_lcd(HELP_VTERM);
 		} else {
-			if ((V.response.info != DIS_STR)) {
-				update_lcd(INFO_VTERM);
-			} else {
-				snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%s", V.info);
-				update_lcd(MAIN_VTERM);
-			}
+			update_lcd(INFO_VTERM);
 		}
 
 		if ((V.response.info != DIS_STR) && TimerDone(TMR_INFO)) {
@@ -205,7 +200,7 @@ D_CODES set_temp_display_help(const D_CODES new_response_info)
  * send to logging TTL serial port, busy wait until port buffer has space
  * use UART1
  */
-void log_serial(uint8_t * data, uint16_t len)
+void log_serial(const uint8_t * data, uint16_t len)
 {
 	uint16_t idx = 0;
 
@@ -356,8 +351,8 @@ time_t time(time_t * t)
 	PIE8bits.TMR5IE = 0;
 	current_time = V.utc_ticks;
 	PIE8bits.TMR5IE = 1;
-	if (t) {
-		t = &current_time;
-	}
+	//	if (t) {
+	//		t = &current_time;
+	//	}
 	return current_time;
 }

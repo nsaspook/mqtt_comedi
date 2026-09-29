@@ -21,12 +21,6 @@ volatile bool r_string_ready = false, bmc_string_ready = false, update_bmc_strin
 
 static void clear_slaveo_flags(void);
 
-void check_slaveo(void) /* SPI Slave error check */
-{
-	if (SPI2STATUSbits.TXWE) { // check for overruns/collisions
-	}
-}
-
 static void clear_slaveo_flags(void)
 {
 	serial_buffer_ss.adc_value = false;
@@ -74,10 +68,12 @@ void slaveo_rx_isr(void)
 	TP1_SetHigh();
 #endif
 	DLED_SetHigh();
+#ifdef SLAVE_TIME
 	if (TMR4 == ISR_TIMEMARK) { // ISR cpu usage counter start flag
 		TMR4 = 0; // reset ISR task time counter, 250ns per count
 		T4CONbits.TMR4ON = 1;
 	}
+#endif
 
 	report_stat_ss.slave_int_count++;
 
@@ -332,7 +328,6 @@ void slaveo_rx_isr(void)
 	case CMD_DAC_GO:
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.dac_value = true;
-		TMR0_Reload(); // restart master activity timer counter to prevent system restart
 		break;
 	case CMD_ADC_GO:
 		channel = data_in2 & LO_NIBBLE; // only 16 possible channels so higher numbers needs to be munged
@@ -382,29 +377,24 @@ void slaveo_rx_isr(void)
 		}
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.adc_value = true;
-		TMR0_Reload();
 		break;
 	case CMD_PORT_GET:
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.dget_value = true;
-		TMR0_Reload();
 		break;
 	case CMD_PORT_GO:
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.dmake_value = true;
-		TMR0_Reload();
 		break;
 	case CMD_CHAR_GET:
 		channel = data_in2 & LO_NIBBLE; // only 16 possible channels
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.cget_value = true;
-		TMR0_Reload();
 		break;
 	case CMD_CHAR_GO:
 		channel = data_in2 & LO_NIBBLE; // only 16 possible channels
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.cmake_value = true;
-		TMR0_Reload();
 		break;
 	case CMD_DUMMY_CFG:
 		serial_buffer_ss.raw_index = BMC_D0;
@@ -420,7 +410,6 @@ void slaveo_rx_isr(void)
 				MLED_SetLow();
 			}
 		}
-		TMR0_Reload();
 		break;
 	case CMD_ZERO:
 	default:
@@ -431,13 +420,15 @@ void slaveo_rx_isr(void)
 			val_zero = SPI2RXB;
 		}
 		SPI2STATUSbits.RXRE = 0;
-		TMR0_Reload();
 	}
 		break;
 	}
+	TMR0_Reload(); // restart master activity timer counter to prevent system restart
 
 isr_end:
+#ifdef SLAVE_TIME
 	T4CONbits.TMR4ON = 0; // ISR cpu usage counter stop flag
+#endif
 	DLED_SetLow();
 #ifdef SLAVE_TRACE
 	TP1_SetLow();

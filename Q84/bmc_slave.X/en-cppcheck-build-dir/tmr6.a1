@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
-<analyzerinfo hash="16186393896178263381">
-        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;xc.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;xc.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
-            <location file="/public/bmc/Q84/bmc_slave.X/mcc_generated_files/tmr6.c" line="51" column="0"/>
+<analyzerinfo>
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;xc.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results." verbose="Include file: &lt;xc.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results.">
+            <location file="/public/bmc/Q84/bmc_slave.X/mcc_generated_files/tmr6.c" line="51" column="2"/>
         </error>
-        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdint.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;stdint.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
-            <location file="/public/bmc/Q84/bmc_slave.X/mcc_generated_files/tmr6.h" line="54" column="0"/>
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdint.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results." verbose="Include file: &lt;stdint.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results.">
+            <location file="/public/bmc/Q84/bmc_slave.X/mcc_generated_files/tmr6.h" line="54" column="2"/>
         </error>
-        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdbool.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;stdbool.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
-            <location file="/public/bmc/Q84/bmc_slave.X/mcc_generated_files/tmr6.h" line="55" column="0"/>
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdbool.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results." verbose="Include file: &lt;stdbool.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results.">
+            <location file="/public/bmc/Q84/bmc_slave.X/mcc_generated_files/tmr6.h" line="55" column="2"/>
         </error>
-        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdint.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;stdint.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
-            <location file="/public/bmc/Q84/bmc_slave.X/timers.h" line="6" column="0"/>
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdint.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results." verbose="Include file: &lt;stdint.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results.">
+            <location file="/public/bmc/Q84/bmc_slave.X/timers.h" line="6" column="2"/>
         </error>
-        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdbool.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;stdbool.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
-            <location file="/public/bmc/Q84/bmc_slave.X/timers.h" line="7" column="0"/>
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdbool.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results." verbose="Include file: &lt;stdbool.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results.">
+            <location file="/public/bmc/Q84/bmc_slave.X/timers.h" line="7" column="2"/>
         </error>
   <FileInfo check="CheckUnusedFunctions">
     <functiondecl file="/public/bmc/Q84/bmc_slave.X/mcc_generated_files/tmr6.c" functionName="TMR6_Initialize" lineNumber="67" column="6"/>
@@ -43,6 +43,12 @@
     <functioncall functionName="TMR6_Start"/>
     <functioncall functionName="TMR6_Stop"/>
     <functioncall functionName="base"/>
-    <functioncall functionName="irq"/>
+    <functioncall functionName="low_priority"/>
   </FileInfo>
+  <includes>
+    <filename>/public/bmc/Q84/bmc_slave.X/mcc_generated_files/interrupt_manager.h</filename>
+    <filename>/public/bmc/Q84/bmc_slave.X/mcc_generated_files/tmr6.h</filename>
+    <filename>/public/bmc/Q84/bmc_slave.X/timers.h</filename>
+  </includes>
+  <hash>3058168709835887747</hash>
 </analyzerinfo>

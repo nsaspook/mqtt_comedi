@@ -203,7 +203,7 @@ void send_lcd_data_dma(const uint8_t strPtr)
 
 void send_spi1_tic12400_dma(uint8_t *strPtr, const uint8_t len)
 {
-	uint8_t *mc_cmd = strPtr;
+	const uint8_t *mc_cmd = strPtr;
 
 	wait_lcd_done();
 	CS_SetHigh();
@@ -221,7 +221,7 @@ void send_spi1_tic12400_dma(uint8_t *strPtr, const uint8_t len)
 
 void send_spi1_mc33996_dma(uint8_t *strPtr, const uint8_t len)
 {
-	uint8_t *mc_cmd = strPtr;
+	const uint8_t *mc_cmd = strPtr;
 
 	wait_lcd_done();
 	CS_SetHigh();
@@ -256,7 +256,7 @@ void send_lcd_pos_dma(const uint8_t strPtr)
 	start_lcd(); // start DMA transfer
 }
 
-void eaDogM_WriteStringAtPos(const uint8_t r, const uint8_t c, char *strPtr)
+void eaDogM_WriteStringAtPos(const uint8_t r, const uint8_t c, const char *strPtr)
 {
 	uint8_t row;
 

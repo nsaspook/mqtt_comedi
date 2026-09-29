@@ -943,12 +943,15 @@ int main(void)
 				snprintf(get_vterm_ptr(0, DBUG_VTERM), MAX_TEXT, "MUI %llX PIC %X                ", spi_stat_ss.mui, spi_stat_ss.deviceid);
 				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3fV,5 %6.3fV                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));
 				snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu 0X%.2X %u                            ", spi_stat_ss.bmc_counts, spi_stat_ss.daq_conf, mxcmd_serial_errors);
-				slave_usage = ((float) (report_stat_ss.comm_ok * report_stat_ss.last_slave_int_count)) / ISR_TIME_SCALE; // get a percentage to total cpu usage
+#ifdef SLAVE_TIME
+				slave_usage = ((float) ((float) report_stat_ss.comm_ok * (float) report_stat_ss.last_slave_int_count)) / (float) ISR_TIME_SCALE; // get a percentage to total cpu usage
 				if (slave_usage > 99.0f) {
 					slave_usage = 99.0f;
 				}
-				snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "C%u S%lu U%.2f%%                        ", report_stat_ss.comm_ok, report_stat_ss.last_slave_int_count, slave_usage);
-
+				snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "S%lu C%u U%.2f%%                        ", report_stat_ss.last_slave_int_count, report_stat_ss.comm_ok, slave_usage);
+#else
+				snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "S%lu EMCC%lu                         ", report_stat_ss.last_slave_int_count, V.comm_count);
+#endif
 				refresh_lcd();
 				serial_buffer_ss.r_string_index = 0;
 				r_string_ready = false;
@@ -1463,7 +1466,7 @@ void state_mx_status_cb(void)
 		bat_amp_panel = abuf[2];
 		bat_amp_frac = abuf[1];
 
-		if (BM.fm80_soc_once) {
+		if (BM.fm80_soc_once) { // make some battery energy guesses when CC connects
 			BM.fm80_soc_once = false;
 			BM.bvolts = (float) vw + ((float) vf / 0.1f);
 			if (BM.bvolts > MAX_12V_SYSTEMV) {
@@ -1471,6 +1474,16 @@ void state_mx_status_cb(void)
 			}
 			BM.Soc = Volts_to_SOC(BM.bvolts * S.SOC_MODEV); // convert to 24vdc standard Soc table
 			BM.benergy = (uint16_t) (S.BENERGYV * BM.Soc);
+			if (BM.bvolts > DBVOLTAGE_TOO_LOW) {
+				BM.benergy = (uint16_t) ((double) S.BENERGYV * BM.Soc);
+			} else {
+				BM.benergy = 1; // dead or disconnected battery
+			}
+
+			if (BM.benergy > S.BENERGYV) {
+				BM.benergy = (uint16_t) S.BENERGYV;
+			}
+
 		}
 	}
 #ifdef debug_data

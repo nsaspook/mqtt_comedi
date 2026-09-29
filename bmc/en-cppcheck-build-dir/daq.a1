@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<analyzerinfo hash="3595104405336297816">
+<analyzerinfo>
         <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdio.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results." verbose="Include file: &lt;stdio.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results.">
             <location file="/public/bmc/bmc/oldbmc/daq.c" line="5" column="2"/>
         </error>
@@ -102,7 +102,7 @@
         <error id="normalCheckLevelMaxBranches" severity="information" msg="Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches." verbose="Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches." file0="/public/bmc/bmc/oldbmc/daq.c">
             <location file="/public/bmc/bmc/oldbmc/daq.c" line="0" column="0"/>
         </error>
-        <error id="variableScope" severity="style" msg="The scope of the variable &apos;i&apos; can be reduced." verbose="The scope of the variable &apos;i&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="/public/bmc/bmc/oldbmc/daq.c">
+        <error id="variableScope" severity="style" msg="The scope of the variable &apos;i&apos; can be reduced." verbose="The scope of the variable &apos;i&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" hash="7268545962482408442" file0="/public/bmc/bmc/oldbmc/daq.c">
             <location file="/public/bmc/bmc/oldbmc/daq.c" line="150" column="6"/>
             <symbol>i</symbol>
         </error>
@@ -154,4 +154,10 @@
     <functioncall functionName="strcmp"/>
     <functioncall functionName="strncpy"/>
   </FileInfo>
+  <includes>
+    <filename>/public/bmc/bmc/oldbmc/bmc.h</filename>
+    <filename>/public/bmc/bmc/oldbmc/bmc_mqtt.h</filename>
+    <filename>/public/bmc/bmc/oldbmc/daq.h</filename>
+  </includes>
+  <hash>18110627619843805105</hash>
 </analyzerinfo>

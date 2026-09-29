@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<analyzerinfo hash="13525735691074874510">
-        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;xc.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;xc.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
-            <location file="/public/bmc/Q84/bmc_slave.X/mcc_generated_files/dma1.c" line="51" column="0"/>
+<analyzerinfo>
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;xc.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results." verbose="Include file: &lt;xc.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results.">
+            <location file="/public/bmc/Q84/bmc_slave.X/mcc_generated_files/dma1.c" line="51" column="2"/>
         </error>
-        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdint.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;stdint.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
-            <location file="/public/bmc/Q84/bmc_slave.X/mcc_generated_files/dma1.h" line="53" column="0"/>
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdint.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results." verbose="Include file: &lt;stdint.h&gt; not found. Please note: Standard library headers do not need to be provided to get proper results.">
+            <location file="/public/bmc/Q84/bmc_slave.X/mcc_generated_files/dma1.h" line="53" column="2"/>
         </error>
   <FileInfo check="CheckUnusedFunctions">
     <functiondecl file="/public/bmc/Q84/bmc_slave.X/mcc_generated_files/dma1.c" functionName="DMA1_Initialize" lineNumber="61" column="6"/>
@@ -35,6 +35,9 @@
     <functioncall functionName="IRQ_DMA1SCNT"/>
     <functioncall functionName="SPI1TXB"/>
     <functioncall functionName="base"/>
-    <functioncall functionName="irq"/>
   </FileInfo>
+  <includes>
+    <filename>/public/bmc/Q84/bmc_slave.X/mcc_generated_files/dma1.h</filename>
+  </includes>
+  <hash>11746477989851569460</hash>
 </analyzerinfo>

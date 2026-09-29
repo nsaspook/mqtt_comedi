@@ -346,8 +346,8 @@ extern "C" {
 #define MM_ERROR_S	MLED_SetHigh() // RED LED
 #define MM_ERROR_C	MLED_SetLow()  // RED LED
 
-	uint16_t crc16(volatile uint8_t *, uint16_t);
-	uint16_t crc16_receive(const C_data *, volatile uint8_t *);
+	uint16_t crc16(const volatile uint8_t *, uint16_t);
+	uint16_t crc16_receive(const C_data *, const volatile uint8_t *);
 	void my_modbus_rx_32(void);
 	uint8_t init_stream_params(void);
 	void init_mb_master_timers(void);

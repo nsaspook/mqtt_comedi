@@ -3,6 +3,7 @@
  */
 
 #include "pzem_rtu.h"
+#include "slaveo.h"
 
 static volatile uint8_t cc_stream_file, *cc_buffer, cc_buffer_0[MAX_DATA], cc_buffer_tx[MAX_DATA]; // RX and TX command buffers
 
@@ -172,6 +173,7 @@ int8_t pzem_controller_work(C_data * client)
 			 * process received controller data stream
 			 */
 			if (Srrdy()) { // receive data ready?
+				V.comm_count++;
 				m_data = Sread(); // receiver data to debug buffer
 				cc_buffer[M.recv_count] = m_data;
 				if (++M.recv_count >= MAX_DATA) {

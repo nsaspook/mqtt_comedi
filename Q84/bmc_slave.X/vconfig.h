@@ -104,6 +104,7 @@ extern "C" {
 	//#define TRACE
 	//#define MAIN_TRACE
 #define SLAVE_TRACE
+#define SLAVE_TIME
 
 	/*
 	 * DIO and SERIAL testing modes
@@ -175,7 +176,7 @@ extern "C" {
 	static const uint8_t PV_VOLTS_HIGH = 70;
 	static const uint8_t SPI_RESET_COUNTS = 6;
 
-	static const float ISR_TIME_SCALE = 40000.0f;
+	static const float ISR_TIME_SCALE = 40000.0f; // about 40us between SPI interrupts
 
 #define DBENERGY	3100.0f
 #define DBVOLTAGE	12.6f
@@ -294,7 +295,6 @@ extern "C" {
 		uint8_t TID, mcode, mparm, cmdlen, log_seq;
 		uint8_t host_display_ack : 1;
 		D_CODES info, help_temp;
-		uint16_t ceid;
 		uint16_t log_num;
 	} terminal_type;
 
@@ -332,11 +332,11 @@ extern "C" {
 		UI_STATES ui_state;
 		char buf[MAX_BUF + 1], terminal[MAX_TERM + 1], info[MAX_INFO + 1];
 		volatile uint32_t uptime_ticks, systemb, tx_total, rx_total, bt_total, br_total, brn_total, btn_total, bmc_do, bmc_di;
-		volatile uint32_t utc_ticks;
+		volatile uint32_t utc_ticks, comm_count;
 		int32_t testing;
 		uint8_t stream, function, error, abort, msg_error, msg_ret, alarm, event;
 		UI_STATES ui_sw;
-		uint16_t r_checksum, t_checksum, checksum_error, timer_error, ping, mode_pwm, equip_timeout, sequences, all_errors, ceid;
+		uint16_t r_checksum, t_checksum, checksum_error, timer_error, ping, mode_pwm, equip_timeout, sequences, all_errors;
 		volatile uint16_t bmc_ao, log_len;
 		uint8_t rbit : 1, wbit : 1, ebit : 1, failed_send : 4, failed_receive : 4;
 		terminal_type response;

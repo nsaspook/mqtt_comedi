@@ -42,7 +42,7 @@ void mconfig_init(void);
 
 void mode_lamp_dim(void);
 void mode_lamp_bright(void);
-void log_serial(uint8_t *, uint16_t);
+void log_serial(const uint8_t *, uint16_t);
 void logging_cmds(void);
 void set_time(const time_t);
 time_t time(time_t *);

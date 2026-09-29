@@ -25,4 +25,12 @@ mcc_generated_files/uart2.h  \
 mcc_generated_files/uart1.h  \
 mcc_generated_files/crc.h  \
 mcc_generated_files/spi1.h  \
-mcc_generated_files/spi2.h 
+mcc_generated_files/spi2.h  \
+slaveo.h  \
+mconfig.h  \
+vconfig.h  \
+calibr.h  \
+bmcdio.h  \
+tic12400.h  \
+eadog.h  \
+mc33996.h 

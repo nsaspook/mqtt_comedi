@@ -34,7 +34,7 @@ extern "C" {
 #define MAX_BMC_BUF	512
 #define channel_BADS	0xe
 	
-#define ISR_TIMEMARK	250
+#define ISR_TIMEMARK	255
 
 	/*
 	 * controller codes
@@ -67,7 +67,7 @@ extern "C" {
 	static const uint8_t UART_DUMMY_MASK = 0b01000000;
 	static const uint8_t ADC_HV0 = 0x04; // 60+ volt ADC channel
 	static const uint8_t ADC_HV1 = 0x05; // 60+ volt ADC channel
-	static const uint8_t GET_MUI = 0x0D; // 60+ volt ADC channel
+	static const uint8_t GET_MUI = 0x0D; // controller ID number
 
 	static const uint8_t PORT_GET_BYTES = 7;
 	static const uint8_t CHAR_GET_BYTES = 7;
@@ -137,13 +137,11 @@ extern "C" {
 	extern V_data V;
 	volatile bool failure;
 	extern volatile uint8_t in_buf1, in_buf2, in_buf3;
-	extern volatile uint8_t tmp_buf;
 	extern volatile bool r_string_ready, bmc_string_ready, update_bmc_string;
 	extern volatile struct bmc_buffer_type BMC4;
 	extern volatile char buffer[MAX_BMC_BUF], log_buffer[MAX_BMC_BUF];
 	extern struct ha_daq_calib_type ha_daq_calib;
 
-	void check_slaveo(void);
 	void init_slaveo(void);
 
 	void slaveo_rx_isr(void);

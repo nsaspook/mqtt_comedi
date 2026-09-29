@@ -3,6 +3,7 @@
  *
  */
 #include "modbus_master.h"
+#include "slaveo.h"
 
 typedef struct M_time_data { // ISR used, mainly for non-atomic mod problems
 	uint32_t clock_500hz;
@@ -158,7 +159,7 @@ uint16_t modbus_rtu_send_msg(void *cc_buffer, const void *modbus_cc_mode, uint16
 /*
  * calculate a CRC16 from the data buffer
  */
-uint16_t crc16(volatile uint8_t *buffer, uint16_t buffer_length)
+uint16_t crc16(const volatile uint8_t *buffer, uint16_t buffer_length)
 {
 #ifdef HWCRC // for flash or EEPROM only
 	CRC_SetScannerAddressLimit((uint24_t) & buffer[0], (uint24_t) & buffer[buffer_length - 1]);
@@ -197,6 +198,7 @@ void my_modbus_rx_32(void)
 	/*
 	 * process received controller data stream
 	 */
+	V.comm_count++;
 	m_data = Srbuffer; // receiver data buffer
 	cc_buffer[M.recv_count] = m_data; // review the scope of global cc_buffer
 	if (++M.recv_count >= MAX_DATA) {
@@ -225,7 +227,7 @@ void init_mb_master_timers(void)
  * helper functions
  * received CRC16 bytes from client
  */
-uint16_t crc16_receive(const C_data * client, volatile uint8_t *cc_buffer)
+uint16_t crc16_receive(const C_data * client, const volatile uint8_t *cc_buffer)
 {
 	uint16_t crc16r;
 

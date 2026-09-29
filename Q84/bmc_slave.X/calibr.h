@@ -21,6 +21,8 @@ extern "C" {
 #define  NORMAL  0
 #define  REVERSE 1
 
+#define DBVOLTAGE_TOO_LOW	10.0f
+#define SOC_V_LOW		DBVOLTAGE_TOO_LOW+DBVOLTAGE_TOO_LOW
 
 	static const float ADC_SCALE = 4096.0f;
 	static const float HV_SCALE_OFFSET = 0.0f;
@@ -37,10 +39,10 @@ extern "C" {
 	static const float MAX_12V_SYSTEMV = 17.0f; // max system volts for 12VDC systems
 
 	enum EMETER_MODEL { // energy meter driver types
-		EM540_M = 0,	// E Meter jumpers high/high
-		WEM30_M,	// low/high
-		PZEM_M,		// low/low
-		POWER_M,		// high/low
+		EM540_M = 0, // E Meter jumpers high/high
+		WEM30_M, // low/high
+		PZEM_M, // low/low
+		POWER_M, // high/low
 	};
 
 	struct ha_daq_calib_type {

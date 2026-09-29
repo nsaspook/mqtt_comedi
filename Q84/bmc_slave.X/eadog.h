@@ -123,7 +123,7 @@ extern "C" {
 	void eaDogM_SetPos(const uint8_t, const uint8_t);
 	void eaDogM_ClearRow(const uint8_t);
 	void eaDogM_WriteString(const char *);
-	void eaDogM_WriteStringAtPos(const uint8_t, const uint8_t, char *);
+	void eaDogM_WriteStringAtPos(const uint8_t, const uint8_t, const char *);
 	void eaDogM_WriteIntAtPos(const uint8_t, const uint8_t, const uint8_t);
 	void eaDogM_WriteByteToCGRAM(const uint8_t, const uint8_t);
 	void set_lcd_dim(const bool);
