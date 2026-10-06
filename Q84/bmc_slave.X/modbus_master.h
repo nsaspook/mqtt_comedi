@@ -20,7 +20,7 @@
 extern "C" {
 #endif
 
-//#define HWCRC
+	//#define HWCRC
 #define EMETER_TRACE
 
 #define MB_MASTER
@@ -261,7 +261,7 @@ extern "C" {
 		F_wva = 2,
 		F_var = 3,
 		F_run = 4,
-		F_5 = 5,
+		F_usage = 5,
 		F_6 = 6,
 		F_7 = 7,
 		F_8 = 8,

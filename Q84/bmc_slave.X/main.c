@@ -863,6 +863,7 @@ int main(void)
 			static uint8_t switcher = INFO_VTERM;
 			char * ptr_log;
 
+
 			SPI_EADOG();
 			StartTimer(TMR_DISPLAY, DDELAY);
 
@@ -870,11 +871,20 @@ int main(void)
 				set_display_info(DIS_STR);
 			}
 			check_lcd_dim(false);
+
+#ifdef SLAVE_TIME
+			static float slave_usage = 0.0f;
+
+			slave_usage = lp_filter(((float) ((float) report_stat_ss.comm_ok * (float) report_stat_ss.last_slave_int_count)) / (float) ISR_TIME_SCALE, F_usage, true); // get a percentage to total cpu usage
+			if (slave_usage > 99.0f) {
+				slave_usage = 99.0f;
+			}
+#endif
+
 			/*
 			 * send text updates to CLCD
 			 */
 			if (r_string_ready) {
-				static float slave_usage = 0.0f;
 				bmc_logger();
 				/*
 				 * MAIN text screen
@@ -944,10 +954,6 @@ int main(void)
 				snprintf(get_vterm_ptr(1, DBUG_VTERM), MAX_TEXT, "4 %6.3fV,5 %6.3fV                      ", phy_chan4(adc_buffer[channel_ANA4]), phy_chan5(adc_buffer[channel_ANA5]));
 				snprintf(get_vterm_ptr(2, DBUG_VTERM), MAX_TEXT, "BMC %lu 0X%.2X %u                            ", spi_stat_ss.bmc_counts, spi_stat_ss.daq_conf, mxcmd_serial_errors);
 #ifdef SLAVE_TIME
-				slave_usage = ((float) ((float) report_stat_ss.comm_ok * (float) report_stat_ss.last_slave_int_count)) / (float) ISR_TIME_SCALE; // get a percentage to total cpu usage
-				if (slave_usage > 99.0f) {
-					slave_usage = 99.0f;
-				}
 				snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "S%lu C%u U%.2f%%                        ", report_stat_ss.last_slave_int_count, report_stat_ss.comm_ok, slave_usage);
 #else
 				snprintf(get_vterm_ptr(3, DBUG_VTERM), MAX_TEXT, "S%lu EMCC%lu                         ", report_stat_ss.last_slave_int_count, V.comm_count);
