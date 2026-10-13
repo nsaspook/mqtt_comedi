@@ -1,0 +1,9 @@
+modulo_inc
+modulo_dec
+ringBufS_init call:[memset,sizeof] noreturn:[memset]
+ringBufS_empty call:[return] noreturn:[return]
+ringBufS_full call:[return] noreturn:[return]
+ringBufS_get call:[modulo_inc,return] noreturn:[return]
+ringBufS_put call:[modulo_inc]
+ringBufS_put_dma
+ringBufS_flush call:[memset,sizeof] noreturn:[memset]

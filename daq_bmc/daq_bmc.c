@@ -87,7 +87,7 @@ for the FMx0 charge controller and for MODBUS power meters
 #include <linux/completion.h>
 #include <linux/gpio/consumer.h>
 
-#define bmc_version "version 1.32 "
+#define bmc_version "version 1.33 "
 #define spibmc_version "version 1.9 "
 
 //#define LED_LINK
@@ -347,10 +347,6 @@ module_param(di_count, uint, S_IRUGO);
 static uint32_t serial_count = 0;
 module_param(serial_count, uint, S_IRUGO);
 MODULE_PARM_DESC(ao_count, "total dac samples");
-static uint32_t hunk_count = 0;
-module_param(hunk_count, uint, S_IRUGO);
-static int32_t hunk_len = HUNK_LEN;
-module_param(hunk_len, int, S_IRUGO);
 static int32_t bmc_autoload = 1;
 module_param(bmc_autoload, int, S_IRUGO);
 MODULE_PARM_DESC(bmc_autoload, "boot autoload: default 1=load module");
@@ -369,8 +365,6 @@ MODULE_PARM_DESC(special_test, "special timing test: 1=enable");
 static int32_t lsamp_size = 0;
 module_param(lsamp_size, int, S_IRUGO);
 MODULE_PARM_DESC(lsamp_size, "16 or 32 bit lsampl size: 0=16 bit");
-static int32_t use_hunking = 0;
-module_param(use_hunking, int, S_IRUGO);
 static volatile int32_t daq_code = 0;
 
 struct bmc_packet_type {
@@ -520,7 +514,6 @@ struct spi_param_type {
 	struct spi_device *spi;
 	int32_t device_type;
 	const struct daqbmc_device *device_spi;
-	int32_t hunk_size; /* the number of needed values returned as data */
 	struct timer_list my_timer;
 	struct task_struct *daqbmc_task;
 };
@@ -558,23 +551,16 @@ struct daqbmc_private {
 	int32_t num_subdev;
 	unsigned long state_bits;
 	uint32_t ao_timer;
-	uint32_t ai_count, ao_count, ao_counter, hunk_count, do_count, di_count, mode_count;
+	uint32_t ai_count, ao_count, ao_counter, do_count, di_count;
 	uint32_t ai_conv_delay_usecs, ai_conv_delay_10nsecs, ai_cmd_delay_usecs;
 	int32_t ai_chan, ao_chan, ai_range, ao_range;
 	struct mutex drvdata_lock, cmd_lock;
-	uint32_t ai_hunk;
 	uint32_t run;
-	uint32_t use_hunking : 1;
-	uint32_t ai_mix : 1;
 	uint32_t ai_neverending : 1;
 	uint32_t ao_neverending : 1;
 	uint32_t timer : 1;
-	uint32_t ai_cmd_canceled : 1;
 	uint32_t ao_cmd_canceled : 1;
 	uint32_t timing_lockout : 1;
-	int32_t mix_chan;
-	uint32_t ai_scans; /*  length of scanlist */
-	int32_t ai_scans_left; /*  number left to finish */
 	uint32_t ao_scans; /*  length of scanlist */
 	struct spi_param_type *ai_spi;
 	struct spi_param_type *ao_spi;
@@ -596,18 +582,18 @@ static int32_t daqbmc_ao_cancel(struct comedi_device *,
 static void daqbmc_handle_ao_eoc(struct comedi_device *,
 	struct comedi_subdevice *);
 static void my_timer_ai_callback(struct timer_list *);
-static int32_t daqbmc_ai_get_sample(struct comedi_device *,
-	struct comedi_subdevice *);
+static int32_t daqbmc_ai_get_sample(const struct comedi_device *,
+	const struct comedi_subdevice *);
 static void daqbmc_ao_put_sample(struct comedi_device *,
 	struct comedi_subdevice *,
 	uint16_t);
 static void daqbmc_ao_put_samples(struct comedi_device *,
 	struct comedi_subdevice *,
-	uint16_t *);
-static int32_t bmc_spi_exchange(struct comedi_device *, struct bmc_packet_type *);
-static int32_t bmc_spi_setspeed(struct comedi_device *, uint32_t);
+	const uint16_t *);
+static int32_t bmc_spi_exchange(const struct comedi_device *, struct bmc_packet_type *);
+static int32_t bmc_spi_setspeed(const struct comedi_device *, uint32_t);
 static int32_t bmc_spi_packet(struct spi_device *, struct bmc_packet_type *, ktime_t);
-static int32_t daqbmc_bmc_get_config(struct comedi_device *);
+static int32_t daqbmc_bmc_get_config(const struct comedi_device *);
 static uint32_t daqbmc_bmc_get_mui(struct comedi_device *);
 
 /*
@@ -616,7 +602,7 @@ static uint32_t daqbmc_bmc_get_mui(struct comedi_device *);
  *	uses the GNUC release level for now
  *********************************************************************
  */
-static inline int32_t piBoardRev(struct comedi_device *dev)
+static inline int32_t piBoardRev(const struct comedi_device *dev)
 {
 #ifdef OPIZ3
 	int32_t boardRev = BMC_OPIZ3;
@@ -655,9 +641,9 @@ static int32_t bmc_spi_packet(struct spi_device *spi, struct bmc_packet_type * p
 /*
  * set spi clock speed
  */
-static int32_t bmc_spi_setspeed(struct comedi_device *dev, uint32_t spi_speed)
+static int32_t bmc_spi_setspeed(const struct comedi_device *dev, uint32_t spi_speed)
 {
-	struct comedi_subdevice *s = dev->read_subdev;
+	const struct comedi_subdevice *s = dev->read_subdev;
 	struct spi_param_type *spi_data = s->private;
 	struct spi_device *spi = spi_data->spi;
 	int32_t ret = 0;
@@ -675,9 +661,9 @@ static int32_t bmc_spi_setspeed(struct comedi_device *dev, uint32_t spi_speed)
 /*
  * My standard 9 byte SPI data packet with ~20us spacing between bytes
  */
-static int32_t bmc_spi_exchange(struct comedi_device *dev, struct bmc_packet_type * packet)
+static int32_t bmc_spi_exchange(const struct comedi_device *dev, struct bmc_packet_type * packet)
 {
-	struct comedi_subdevice *s = dev->read_subdev;
+	const struct comedi_subdevice *s = dev->read_subdev;
 	struct spi_param_type *spi_data = s->private;
 	struct spi_device *spi = spi_data->spi;
 	int32_t ret = 0;
@@ -824,7 +810,7 @@ static int32_t daqbmc_ao_thread_function(void *data)
  * AO async thread timer
  *
  */
-static void daqbmc_ao_start_pacer(struct comedi_device *dev,
+static void daqbmc_ao_start_pacer(const struct comedi_device *dev,
 	bool load_timers)
 {
 	struct daqbmc_private *devpriv = dev->private;
@@ -839,7 +825,7 @@ static void daqbmc_ao_start_pacer(struct comedi_device *dev,
 /*
  * DAC SPI channel and voltage gains
  */
-static void daqbmc_ao_set_chan_range(struct comedi_device *dev,
+static void daqbmc_ao_set_chan_range(const struct comedi_device *dev,
 	uint32_t chanspec,
 	char wait)
 {
@@ -896,7 +882,7 @@ static void daqbmc_ao_put_sample(struct comedi_device *dev,
  */
 static void daqbmc_ao_put_samples(struct comedi_device *dev,
 	struct comedi_subdevice *s,
-	uint16_t *value)
+	const uint16_t *value)
 {
 	daqbmc_ao_put_sample(dev, s, value[0]);
 }
@@ -904,8 +890,8 @@ static void daqbmc_ao_put_samples(struct comedi_device *dev,
 /*
  * returns one 12 bit value from the ADC device
  */
-static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
-	struct comedi_subdevice *s)
+static int32_t daqbmc_ai_get_sample(const struct comedi_device *dev,
+	const struct comedi_subdevice *s)
 {
 	struct daqbmc_private *devpriv = dev->private;
 	uint32_t chan;
@@ -951,7 +937,7 @@ static int32_t daqbmc_ai_get_sample(struct comedi_device *dev,
 static void daqbmc_handle_ao_eoc(struct comedi_device *dev,
 	struct comedi_subdevice * s)
 {
-	struct daqbmc_private *devpriv = dev->private;
+	const struct daqbmc_private *devpriv = dev->private;
 	struct comedi_cmd *cmd = &s->async->cmd;
 	uint16_t sampl_val;
 
@@ -986,7 +972,7 @@ static int32_t daqbmc_ao_inttrig(struct comedi_device *dev,
 	uint32_t trig_num)
 {
 	struct daqbmc_private *devpriv = dev->private;
-	struct comedi_cmd *cmd = &s->async->cmd;
+	const struct comedi_cmd *cmd = &s->async->cmd;
 	int32_t ret = 1;
 
 	if (unlikely(!devpriv)) {
@@ -1023,7 +1009,7 @@ static int32_t daqbmc_ao_inttrig(struct comedi_device *dev,
 static int32_t daqbmc_ao_cmd(struct comedi_device *dev,
 	struct comedi_subdevice * s)
 {
-	struct comedi_cmd *cmd = &s->async->cmd;
+	const struct comedi_cmd *cmd = &s->async->cmd;
 	struct daqbmc_private *devpriv = dev->private;
 	struct spi_param_type *spi_data = s->private;
 	struct spi_device *spi = spi_data->spi;
@@ -1057,12 +1043,11 @@ static int32_t daqbmc_ao_cmd(struct comedi_device *dev,
 	/* delay for alt mix command conversions */
 	pdata->mix_delay_usecs = pdata->mix_delay_usecs_calc;
 
-	/* for possible hunking of AO */
+	/* for possible AO */
 	if (cmd->stop_src == TRIG_COUNT) {
 		devpriv->ao_scans = cmd->chanlist_len * cmd->stop_arg;
 		devpriv->ao_neverending = false;
 	} else {
-		devpriv->ao_scans = hunk_len;
 		devpriv->ao_neverending = true;
 	}
 
@@ -1144,7 +1129,7 @@ static int32_t daqbmc_ao_cmdtest(struct comedi_device *dev,
 	struct comedi_cmd * cmd)
 {
 	const struct daqbmc_board *board = dev->board_ptr;
-	struct daqbmc_private *devpriv = dev->private;
+	const struct daqbmc_private *devpriv = dev->private;
 	struct spi_param_type *spi_data = s->private;
 	struct spi_device *spi = spi_data->spi;
 	struct comedi_spibmc *pdata = spi->dev.platform_data;
@@ -1244,7 +1229,7 @@ static int32_t daqbmc_ao_cmdtest(struct comedi_device *dev,
 static void my_timer_ai_callback(struct timer_list *t)
 {
 	struct daqbmc_private *devpriv = timer_container_of(devpriv, t, ai_timer);
-	struct comedi_device *dev = devpriv->dev;
+	const struct comedi_device *dev = devpriv->dev;
 
 	if (!dev) {
 		return;
@@ -1393,9 +1378,9 @@ static int daqbmc_do_insn_bits(struct comedi_device *dev,
  * Serial TX/RX SPI Q84 transaction, 24-bit data
  * This is memory mapped to the memory sub-device
  */
-static void serialWritePi(struct comedi_device *dev,
+static void serialWritePi(const struct comedi_device *dev,
 	uint32_t chan,
-	uint32_t *value)
+	const uint32_t *value)
 {
 	uint32_t val_value;
 	struct bmc_packet_type *packet = kzalloc(sizeof(*packet), GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC | GFP_DMA);
@@ -1425,7 +1410,7 @@ static void serialWritePi(struct comedi_device *dev,
 /*
  * returns data from the BMC data buffer
  */
-static int32_t daqbmc_sio_get_sample(struct comedi_device *dev,
+static int32_t daqbmc_sio_get_sample(const struct comedi_device *dev,
 	struct comedi_subdevice *s)
 {
 	uint32_t chan = 4;
@@ -1465,16 +1450,16 @@ static int daqbmc_sio_insn_write(struct comedi_device *dev,
 	struct comedi_insn *insn,
 	uint32_t * data)
 {
-	struct daqbmc_private *devpriv = dev->private;
+	const struct daqbmc_private *devpriv = dev->private;
 	unsigned int chan = CR_CHAN(insn->chanspec);
-	uint32_t val = 0;
+	//	uint32_t val = 0;
 
 	if (unlikely(!devpriv)) {
 		return -EFAULT;
 	}
 
 	if (insn->n > 0) {
-		val = data[insn->n - 1];
+		uint32_t val = data[insn->n - 1];
 		serialWritePi(dev, chan, &val);
 		data[1] = val;
 		serial_count++;
@@ -1488,7 +1473,7 @@ static int daqbmc_sio_insn_read(struct comedi_device *dev,
 	struct comedi_insn *insn,
 	uint32_t * data)
 {
-	struct daqbmc_private *devpriv = dev->private;
+	const struct daqbmc_private *devpriv = dev->private;
 	int32_t n;
 
 	if (unlikely(!devpriv)) {
@@ -1546,7 +1531,6 @@ static int32_t daqbmc_ai_rinsn(struct comedi_device *dev,
 		goto ai_read_exit;
 	}
 
-	devpriv->ai_hunk = false;
 	devpriv->ai_chan = CR_CHAN(insn->chanspec);
 	devpriv->ai_range = CR_RANGE(insn->chanspec);
 
@@ -1571,7 +1555,7 @@ static int32_t daqbmc_ao_winsn(struct comedi_device *dev,
 	struct comedi_insn *insn,
 	uint32_t * data)
 {
-	struct daqbmc_private *devpriv = dev->private;
+	const struct daqbmc_private *devpriv = dev->private;
 	uint32_t chan = CR_CHAN(insn->chanspec);
 	uint32_t n, val;
 
@@ -1591,14 +1575,10 @@ static int32_t daqbmc_ao_winsn(struct comedi_device *dev,
 static int32_t daqbmc_create_thread(struct comedi_device *dev,
 	struct daqbmc_private * devpriv)
 {
-	const char hunk_thread_name[] = "daqbmch", thread_name[] = "daqbmc";
+	const char thread_name[] = "daqbmc";
 	const char *name_ptr;
 
-	if (devpriv->use_hunking) {
-		name_ptr = hunk_thread_name;
-	} else {
-		name_ptr = thread_name;
-	}
+	name_ptr = thread_name;
 
 	devpriv->ao_spi->daqbmc_task =
 		kthread_create_on_node(&daqbmc_ao_thread_function,
@@ -1622,7 +1602,7 @@ static int32_t daqbmc_create_thread(struct comedi_device *dev,
  * and to set the Q84 model type
  * a return value of 0xff means no board detected
  */
-static int32_t daqbmc_bmc_get_config(struct comedi_device *dev)
+static int32_t daqbmc_bmc_get_config(const struct comedi_device *dev)
 {
 	struct daqbmc_private *devpriv = dev->private;
 	int32_t val = 0;
@@ -1770,13 +1750,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 		devpriv->ai_node = thisboard->ai_node;
 		devpriv->ao_node = thisboard->ao_node;
 		devpriv->smp = true;
-	} else {
-		use_hunking = false;
 	}
-	if (daqbmc_conf == 0 || daqbmc_conf == 1) { /* single transfers, ADC is in continuous conversion mode */
-		use_hunking = false;
-	}
-	devpriv->use_hunking = use_hunking; /* defaults to false */
 
 	if (speed_test) {
 		dev_info(dev->class_dev, "samples per second speed test mode\n");
@@ -1798,7 +1772,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	list_for_each_entry(pdata, &device_list, device_entry)
 	{
 		/*
-		 * use smaller SPI data buffers if we don't hunk
+		 * use smaller SPI data buffers
 		 */
 		pdata->tx_buff = kzalloc(SPI_BUFF_SIZE_NOHUNK, GFP_KERNEL | GFP_DMA);
 		if (!pdata->tx_buff) {
@@ -1857,7 +1831,6 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	devpriv->ai_cmd_delay_usecs = PIC18_CMDD_57Q84;
 	devpriv->ai_conv_delay_usecs = PIC18_CONVD_57Q84;
 	devpriv->ai_neverending = true;
-	devpriv->ai_mix = false;
 	devpriv->ai_conv_delay_10nsecs = CONV_SPEED;
 	devpriv->timing_lockout = false;
 
@@ -1895,13 +1868,6 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	if (ret) {
 		dev_err(dev->class_dev, "alloc subdevice(s) failed!\n");
 		goto daqbmc_kfree_exit;
-	}
-
-	/* daq_bmc ai */
-	if (devpriv->use_hunking) {
-		dev_info(dev->class_dev,
-			"hunk ai transfers enabled, length: %i\n",
-			hunk_len);
 	}
 
 #ifdef LED_LINK

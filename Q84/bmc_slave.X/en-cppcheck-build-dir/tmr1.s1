@@ -1,0 +1,11 @@
+TMR1_Initialize global:[timer1ReloadVal] call:[TMR1_SetInterruptHandler]
+TMR1_StartTimer
+TMR1_StopTimer
+TMR1_ReadTimer
+TMR1_WriteTimer
+TMR1_Reload global:[timer1ReloadVal] call:[TMR1_WriteTimer] noreturn:[TMR1_WriteTimer]
+TMR1_StartSinglePulseAcquisition
+TMR1_CheckGateValueStatus call:[return] noreturn:[return]
+TMR1_CallBack global:[TMR1_InterruptHandler] call:[TMR1_InterruptHandler] noreturn:[TMR1_InterruptHandler]
+TMR1_SetInterruptHandler global:[TMR1_InterruptHandler]
+TMR1_DefaultInterruptHandler

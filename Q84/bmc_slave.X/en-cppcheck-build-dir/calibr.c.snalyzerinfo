@@ -1,0 +1,6 @@
+set_calibration global:[HV_SCALAR4,HV_SCALAR5,HV_SCALE4_0,HV_SCALE4_1,HV_SCALE4_2,HV_SCALE4_3,HV_SCALE4_4,HV_SCALE4_5,HV_SCALE4_6,HV_SCALE5_0,HV_SCALE5_1,HV_SCALE5_2,HV_SCALE5_3,HV_SCALE5_4,HV_SCALE5_5,HV_SCALE5_6,ha_daq_calib]
+phy_chan4 global:[ADC_SCALE,ha_daq_calib] call:[return]
+phy_chan5 global:[ADC_SCALE,ha_daq_calib] call:[return]
+read_cal_data global:[r_cal] call:[CRC_GetCalculatedResult,CRC_Initialize,CRC_IsCrcBusy,CRC_StartCrc,CRC_WriteData,DATAEE_ReadByte,sizeof,while] noreturn:[DATAEE_ReadByte]
+write_cal_data global:[ha_daq_calib] call:[CRC_GetCalculatedResult,CRC_Initialize,CRC_IsCrcBusy,CRC_StartCrc,CRC_WriteData,DATAEE_WriteByte,sizeof,while] noreturn:[DATAEE_WriteByte]
+update_cal_data global:[ha_daq_calib,r_cal]
