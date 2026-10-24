@@ -145,7 +145,21 @@ void slaveo_rx_isr(void)
 	// DAC_GO_BYTES
 	if (serial_buffer_ss.dac_value) {
 		if (serial_buffer_ss.raw_index == DAC_GO_BYTES) {
-			V.bmc_ao = serial_buffer_ss.data[BMC_D0];
+			if (channel < 2) {
+				V.bmc_ao = serial_buffer_ss.data[BMC_D0];
+			} else {
+				if (channel == 2) {
+					dec_ippaddr_u = (uint32_t) serial_buffer_ss.data[BMC_D0];
+					dec_ippaddr_u += (uint32_t) serial_buffer_ss.data[BMC_D1] << 8;
+					dec_ippaddr_u += (uint32_t) serial_buffer_ss.data[BMC_D2] << 16;
+					dec_ippaddr_u += (uint32_t) serial_buffer_ss.data[BMC_D3] << 24;
+				} else {
+					dec_ippaddr_l = (uint32_t) serial_buffer_ss.data[BMC_D0];
+					dec_ippaddr_l += (uint32_t) serial_buffer_ss.data[BMC_D1] << 8;
+					dec_ippaddr_l += (uint32_t) serial_buffer_ss.data[BMC_D2] << 16;
+					dec_ippaddr_l += (uint32_t) serial_buffer_ss.data[BMC_D3] << 24;
+				}
+			}
 			serial_buffer_ss.dac_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
 			spi_stat_ss.txdone_bit++; // number of completed packets
@@ -326,6 +340,7 @@ void slaveo_rx_isr(void)
 
 	switch (command) {
 	case CMD_DAC_GO:
+		channel = data_in2 & LO_NIBBLE;
 		serial_buffer_ss.raw_index = BMC_D0;
 		serial_buffer_ss.dac_value = true;
 		break;

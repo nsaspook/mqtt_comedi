@@ -21,7 +21,7 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.76"
+#define VER	"V0.77"
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -88,6 +88,7 @@ extern "C" {
 	 * V0.74 reformat INFO and MAIN VTERM display data
 	 * V0.75 cleanup adc code
 	 * V0.76 cleanup code smells using cppcheck
+	 * V0.77 add ipaddress display from host
 	 */
 
 	/*
@@ -135,6 +136,8 @@ extern "C" {
 #define MAX_LINE        MAX_STRLEN+1
 #define MAX_TEXT        MAX_STRLEN+1
 #define MAX_HELP_STRLEN	32
+	
+#define SHOW_IPADDR
 
 #define MAX_INFO        63
 #define MAX_BUF         127

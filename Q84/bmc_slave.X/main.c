@@ -377,6 +377,7 @@ volatile uint8_t data_in2, adc_buffer_ptr = 0, adc_channel = 0, channel = 0, upp
 volatile uint16_t adc_buffer[AI_BUFFER_NUM] = {0}, adc_data_in = 0, out_buf = 0;
 uint16_t volt_whole, bat_amp_whole = AMP_WHOLE_ZERO, bat_amp_frac = AMP_WHOLE_ZERO, bat_amp_panel = AMP_WHOLE_ZERO, panel_watts, volt_fract, vf, vw, pvf, pvw, af, aw;
 uint8_t fw_state = 0;
+volatile uint32_t dec_ippaddr_u = 0, dec_ippaddr_l = 0;
 
 volatile uint16_t tickCount[TMR_COUNT] = {0};
 volatile uint8_t mode_sw = false, faker;
@@ -894,7 +895,11 @@ int main(void)
 #ifdef SHOW_SCALARS
 				snprintf(&ptr_log[3], MAX_TEXT, " %7.4f, %7.4f                   ", ha_daq_calib.scaler4, ha_daq_calib.scaler5);
 #else
+#ifdef SHOW_IPADDR
+				snprintf(&ptr_log[3], MAX_TEXT, "IP:%lu.%lu.%lu.%lu                  ", dec_ippaddr_u >> 8, dec_ippaddr_u & 0xff, dec_ippaddr_l >> 8, dec_ippaddr_l & 0xff);
+#else
 				snprintf(&ptr_log[3], MAX_TEXT, " %luSec, %u                   ", V.uptime_ticks, V.log_len);
+#endif
 #endif
 				// check for special DAQ configuration
 				if (spi_stat_ss.mui != 0x61DB5) {

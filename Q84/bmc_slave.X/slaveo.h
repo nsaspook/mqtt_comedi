@@ -140,6 +140,7 @@ extern "C" {
 	extern volatile bool r_string_ready, bmc_string_ready, update_bmc_string;
 	extern volatile struct bmc_buffer_type BMC4;
 	extern volatile char buffer[MAX_BMC_BUF], log_buffer[MAX_BMC_BUF];
+	extern volatile uint32_t dec_ippaddr_u, dec_ippaddr_l;
 	extern struct ha_daq_calib_type ha_daq_calib;
 
 	void init_slaveo(void);

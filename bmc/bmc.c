@@ -310,6 +310,7 @@ int main(int argc, char *argv[])
 			fprintf(fout, "Missing Analog subdevice(s)\n");
 			return -1;
 		}
+
 #endif
 		if (init_dio() < 0) {
 			fprintf(fout, "Missing Digital subdevice(s)\n");
@@ -324,7 +325,6 @@ int main(int argc, char *argv[])
 		fflush(fout);
 		while (true) {
 			usleep(MAIN_DELAY); // sample rate ~1 msec
-			//			set_dac_raw(0, sine_wave[i++]);
 			get_data_sample();
 
 			if (bmc.BOARD == bmcboard) {
@@ -342,6 +342,8 @@ int main(int argc, char *argv[])
 			}
 
 			if (ha_flag_vars_ss.runner) { // timer or trigger from mqtt
+				set_dac_raw(2, 64001);
+				set_dac_raw(3, 65000);
 				comedi_push_mqtt(); // send json formatted data to the mqtt server
 				ha_flag_vars_ss.runner = false;
 			}
