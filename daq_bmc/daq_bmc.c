@@ -87,7 +87,7 @@ for the FMx0 charge controller and for MODBUS power meters
 #include <linux/completion.h>
 #include <linux/gpio/consumer.h>
 
-#define bmc_version "version 1.33 "
+#define bmc_version "version 1.34 "
 #define spibmc_version "version 1.9 "
 
 //#define LED_LINK
@@ -460,9 +460,9 @@ static const struct daqbmc_board daqbmc_boards[] = {
 		.board_type = 0,
 		.n_aichan = 16,
 		.n_aichan_bits = 12,
-		.n_aochan = 1,
-		.n_aochan_mask = 0x01,
-		.n_aochan_bits = 8,
+		.n_aochan = 4,
+		.n_aochan_mask = 0x03,
+		.n_aochan_bits = 16,
 		.ai_ns_min_calc = 20000000,
 		.ao_ns_min_calc = 20000000,
 		.bmc_cs = 1,
@@ -586,10 +586,10 @@ static int32_t daqbmc_ai_get_sample(const struct comedi_device *,
 	const struct comedi_subdevice *);
 static void daqbmc_ao_put_sample(struct comedi_device *,
 	struct comedi_subdevice *,
-	uint16_t);
+	uint32_t);
 static void daqbmc_ao_put_samples(struct comedi_device *,
 	struct comedi_subdevice *,
-	const uint16_t *);
+	const uint32_t *);
 static int32_t bmc_spi_exchange(const struct comedi_device *, struct bmc_packet_type *);
 static int32_t bmc_spi_setspeed(const struct comedi_device *, uint32_t);
 static int32_t bmc_spi_packet(struct spi_device *, struct bmc_packet_type *, ktime_t);
@@ -843,7 +843,7 @@ static void daqbmc_ao_set_chan_range(const struct comedi_device *dev,
  */
 static void daqbmc_ao_put_sample(struct comedi_device *dev,
 	struct comedi_subdevice *s,
-	uint16_t value)
+	uint32_t value)
 {
 	const struct daqbmc_board *board = dev->board_ptr;
 	struct daqbmc_private *devpriv = dev->private;
@@ -859,11 +859,12 @@ static void daqbmc_ao_put_sample(struct comedi_device *dev,
 	range = devpriv->ao_range;
 
 	/* use single transfer for all bytes of the complete SPI transaction */
-	packet->bmc_byte_t[BMC_CMD] = CMD_DAC_GO;
+	packet->bmc_byte_t[BMC_CMD] = CMD_DAC_GO + chan;
 	packet->bmc_byte_t[BMC_D0] = (uint8_t) (value & 0xff);
 	packet->bmc_byte_t[BMC_D1] = (uint8_t) ((value >> 8)&0xff);
-	packet->bmc_byte_t[BMC_D2] = (uint8_t) (value & 0xff);
-	packet->bmc_byte_t[BMC_D3] = BMC_D3;
+	packet->bmc_byte_t[BMC_D2] = (uint8_t) (value >> 16 & 0xff);
+	packet->bmc_byte_t[BMC_D3] = (uint8_t) (value >> 24 & 0xff);
+	;
 	packet->bmc_byte_t[BMC_D4] = BMC_D4;
 	packet->bmc_byte_t[BMC_EXT] = (uint8_t) range;
 	packet->bmc_byte_t[BMC_CKSUM] = CHECKBYTE;
@@ -882,7 +883,7 @@ static void daqbmc_ao_put_sample(struct comedi_device *dev,
  */
 static void daqbmc_ao_put_samples(struct comedi_device *dev,
 	struct comedi_subdevice *s,
-	const uint16_t *value)
+	const uint32_t *value)
 {
 	daqbmc_ao_put_sample(dev, s, value[0]);
 }
@@ -939,7 +940,7 @@ static void daqbmc_handle_ao_eoc(struct comedi_device *dev,
 {
 	const struct daqbmc_private *devpriv = dev->private;
 	struct comedi_cmd *cmd = &s->async->cmd;
-	uint16_t sampl_val;
+	uint32_t sampl_val;
 
 	if (!comedi_buf_read_samples(s, &sampl_val, cmd->chanlist_len)) {
 		s->async->events |= COMEDI_CB_OVERFLOW;
