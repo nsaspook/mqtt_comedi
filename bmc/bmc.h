@@ -75,6 +75,8 @@ extern "C" {
 
 #define EXIT_CONFIG_WRITE_FAIL
 
+#define MIN_IP_CHAN 4
+
 	//#define USE_RELAYS
 
 	/*

@@ -1,5 +1,6 @@
 #include "bmc_mqtt.h"
 #include <math.h>
+#include <ifaddrs.h>
 
 #define COEF            12.0f
 #define channel_BADS 0xe
@@ -251,6 +252,7 @@ static double ac0_filter(const double);
 static double ac1_filter(const double);
 static double bsensor0_filter(const double);
 static double Volts_to_SOC(const double);
+static int get_ip_16bit(char *);
 
 struct ha_csv_type R = {
 	.benergy = DBENERGY, // default running value, updates per run
@@ -294,6 +296,8 @@ void showIP(void)
 			}
 			printf("\tInterface : <%s>\n", ifa->ifa_name);
 			printf("\t  Address : <%s>\n", host);
+
+			get_ip_16bit(host);
 
 			/*
 			 * match IP address to clients and topics
@@ -1344,4 +1348,40 @@ bool get_bmc_serial(void)
 		}
 	}
 	return ret;
+}
+
+static unsigned long ip_to_long(int a, int b, int c, int d)
+{
+	return((unsigned long) a << 24) |
+		((unsigned long) b << 16) |
+		((unsigned long) c << 8) |
+		(unsigned long) d;
+}
+
+static int octet_valid(int v)
+{
+	return(v >= 0 && v <= 255);
+}
+
+static int get_ip_16bit(char *host)
+{
+	int a, b, c, d;
+
+	if (sscanf(host, "%d.%d.%d.%d", &a, &b, &c, &d) != 4) {
+		printf("Error: invalid format. Use A.B.C.D\n");
+		return 1;
+	}
+
+	if (!octet_valid(a) || !octet_valid(b) || !octet_valid(c) || !octet_valid(d)) {
+		printf("Error: each octet must be 0-255.\n");
+		return 1;
+	}
+
+	addr16_h = ((unsigned long) a << 8) |
+		(unsigned long) b;
+	addr16_l = ((unsigned long) c << 8) |
+		(unsigned long) d;
+	addr32 = ip_to_long(a, b, c, d);
+
+	return 0;
 }
