@@ -26,9 +26,9 @@ extern "C" {
 #define DPVENERGY 300.0f
 #define DPVVOLTAGE 12.6f
 #define DSOC_MODE 2.0f
-	
-#define DBVOLTAGE_TOO_LOW	10.0f
-#define SOC_V_LOW		DBVOLTAGE_TOO_LOW+DBVOLTAGE_TOO_LOW
+
+#define DBVOLTAGE_TOO_LOW 10.0f
+#define SOC_V_LOW  DBVOLTAGE_TOO_LOW+DBVOLTAGE_TOO_LOW
 
 	struct bmc_settings {
 		double BENERGYV, BVOLTAGEV, BVFLOATV, PVENERGYV, PVVOLTAGEV, SOC_MODEV;
@@ -172,6 +172,7 @@ extern "C" {
 	char * validate_bmc_text(const char *, bool *);
 	extern struct bmc_settings S;
 	extern struct ha_csv_type R;
+	extern uint32_t addr16_h, addr16_l, addr32;
 
 	void mqtt_bmc_data(MQTTClient, const char *);
 	void delivered(void *, MQTTClient_deliveryToken);

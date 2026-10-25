@@ -36,7 +36,7 @@ extern "C" {
 #include "MQTTClient.h"
 #include "bmc_mqtt.h"
 
-#define LOG_VERSION     "V0.37"
+#define LOG_VERSION     "V0.38"
 #define MQTT_VERSION    "V3.11"
 #define TNAME  "maint9"
 #define LADDRESS        "tcp://127.0.0.1:1883"
@@ -74,6 +74,8 @@ extern "C" {
 #define ANA_BUFFERS     0x40
 
 #define EXIT_CONFIG_WRITE_FAIL
+
+#define MIN_IP_CHAN	4
 
 	//#define USE_RELAYS
 

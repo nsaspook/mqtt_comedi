@@ -67,15 +67,15 @@ extern "C" {
 	 * the sensor board has a onboard precision 5VDC reference/supply
 	 * Ax00_0_ZERO needs to set for each board
 	 */
-#define A200_0_ZERO		2.5220f // should be near 2.5VDC for zero Hall sensor current
-#define A200_0_SCALAR		133.05f // BATTERY 200 Amp scalar
-#define A200_0_ZERO_6		2.5220f
-#define A200_0_SCALAR_6		133.05f
-#define A100_0_ZERO		2.4000f // should be near 2.5VDC for zero Hall sensor current
-#define A100_0_SCALAR		59.05f // PV 100 Amp scalar
-#define A100_0_ZERO_6		2.3990f
-#define A100_0_SCALAR_6		59.05f 
-	
+#define A200_0_ZERO  2.5220f // should be near 2.5VDC for zero Hall sensor current
+#define A200_0_SCALAR  133.05f // BATTERY 200 Amp scalar
+#define A200_0_ZERO_6  2.5220f
+#define A200_0_SCALAR_6  133.05f
+#define A100_0_ZERO  2.4000f // should be near 2.5VDC for zero Hall sensor current
+#define A100_0_SCALAR  59.05f // PV 100 Amp scalar
+#define A100_0_ZERO_6  2.3990f
+#define A100_0_SCALAR_6  59.05f 
+
 #define BSENSOR0       0
 #define BSENSOR1       1
 
@@ -125,6 +125,13 @@ extern "C" {
 		channel_config = 0xE,
 		channel_init = 0xF
 	} ADC_channel_t; // the BMCboard will translate to the correct hardware channel
+
+	typedef enum {
+		daq0 = 0,
+		daq1 = 1,
+		ipadrh = 2,
+		ipadrl = 3,
+	} daq_chan_t;
 
 	union dio_buf_type {
 		uint32_t dio_buf;
@@ -179,7 +186,7 @@ extern "C" {
 	int get_data_sample(void);
 	double lp_filter(double, int, int);
 	double calc_fixups(double data, FIX_CODES fixup);
-	
+
 	void bump_serial(void);
 #ifdef __cplusplus
 }

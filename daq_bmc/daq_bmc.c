@@ -40,7 +40,7 @@ The DAQ-BMC appears in Comedi as a digital I/O subdevices with
 16 DO and 24 DI,
 
 Analog input subdevice with 16 possible single-ended channels set by the SPI slave device
-Analog output subdevice with 1 channel with onboard dac
+Analog output subdevice with 4 channels with onboard dac[0..1], channels [2..3] to receive IP address in two 16-bit parts
 
 Memory subdevice with serial r/w  ports [0..1], one RS232, the other TTL
 the TTL port is currently not used remotely on the Q84 by Comedi
@@ -87,8 +87,8 @@ for the FMx0 charge controller and for MODBUS power meters
 #include <linux/completion.h>
 #include <linux/gpio/consumer.h>
 
-#define bmc_version "version 1.34 "
-#define spibmc_version "version 1.9 "
+#define bmc_version "version 1.35 "
+#define spibmc_version "version 2.0 "
 
 //#define LED_LINK
 /*
@@ -98,9 +98,9 @@ for the FMx0 charge controller and for MODBUS power meters
    vm.min_free_kbytes=45056
    Reboot
  * 
- * reducing the CPU speed also helps fir 7+ kernels
+ * reducing the CPU speed also helps 7+ kernels stability on OPi 3W boards
  */
-#define SPI_DEBUG
+// #define SPI_DEBUG
 #ifdef LED_LINK
 #define RED_LED 0
 #define GREEN_LED 1
@@ -201,7 +201,7 @@ static const uint8_t CHECKBYTE = 0x57;
  * must be a define to init buffer sizes
  * normally 64
  */
-#define HUNK_LEN 64
+#define SPIBUF_LEN 64
 #define SPECIAL_LEN 64
 #define Q84_BYTES 9
 
@@ -524,7 +524,7 @@ struct spi_param_type {
 struct comedi_spibmc {
 	uint8_t *tx_buff;
 	uint8_t *rx_buff;
-	struct spi_transfer t[HUNK_LEN], one_t; // ping buffer
+	struct spi_transfer t[SPIBUF_LEN], one_t; // ping buffer
 	uint32_t ping_pong, upper_lower;
 	struct spi_message m[2];
 	uint32_t delay_usecs;
@@ -839,7 +839,7 @@ static void daqbmc_ao_set_chan_range(const struct comedi_device *dev,
 }
 
 /*
- * transfers one 16 bit value to the DAC device
+ * transfers one 16 bit value to the DAC device but passes a 32-bit value to the packet
  */
 static void daqbmc_ao_put_sample(struct comedi_device *dev,
 	struct comedi_subdevice *s,
@@ -1278,7 +1278,7 @@ static int32_t daqbmc_ao_cancel(struct comedi_device *dev,
 }
 
 /*
- * DO SPI Q84 transaction
+ * DO SPI Q84 transaction 24-bits on the packet, 16-bits on the DAQ board
  */
 static void digitalWritePi(struct comedi_device *dev,
 	uint32_t pin,
@@ -1311,7 +1311,7 @@ static void digitalWritePi(struct comedi_device *dev,
 }
 
 /*
- * DI SPI Q84 transaction
+ * DI SPI Q84 transaction 24-bits on the packet, 24-bits on the DAQ board
  */
 static int digitalReadPi(struct comedi_device *dev,
 	uint32_t * data)
@@ -1409,7 +1409,7 @@ static void serialWritePi(const struct comedi_device *dev,
 }
 
 /*
- * returns data from the BMC data buffer
+ * returns data from the BMC data buffer 24-bits
  */
 static int32_t daqbmc_sio_get_sample(const struct comedi_device *dev,
 	struct comedi_subdevice *s)
@@ -1453,7 +1453,6 @@ static int daqbmc_sio_insn_write(struct comedi_device *dev,
 {
 	const struct daqbmc_private *devpriv = dev->private;
 	unsigned int chan = CR_CHAN(insn->chanspec);
-	//	uint32_t val = 0;
 
 	if (unlikely(!devpriv)) {
 		return -EFAULT;

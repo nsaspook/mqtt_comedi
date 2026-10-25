@@ -105,6 +105,8 @@ static const char MQTT_HOST_STR[] = "MQTT_HOST";
 
 FILE *fout, *calfile; // logging stream and calibration data
 
+uint32_t addr16_h = 64001, addr16_l = 65000, addr32 = 0;
+
 int usleep(uint32_t); // for C11
 
 /* ripped from http://aquaticus.info/pwm-sine-wave */
@@ -301,8 +303,8 @@ int main(int argc, char *argv[])
 		}
 
 		while (true) {
-			set_dac_raw(0, sine_wave[255 - i++] << 4);
-			set_dac_raw(1, sine_wave[255 - j++] << 4);
+			set_dac_raw(daq0, sine_wave[255 - i++] << 4);
+			set_dac_raw(daq1, sine_wave[255 - j++] << 4);
 		}
 	} else {
 #ifndef DIGITAL_ONLY
@@ -341,7 +343,10 @@ int main(int argc, char *argv[])
 			}
 
 			if (ha_flag_vars_ss.runner) { // timer or trigger from mqtt
-				set_dac_raw(3, 254);
+				if (channels_ao >= MIN_IP_CHAN) {
+					set_dac_raw(ipadrh, addr16_h);
+					set_dac_raw(ipadrl, addr16_l);
+				}
 				comedi_push_mqtt(); // send json formatted data to the mqtt server
 				ha_flag_vars_ss.runner = false;
 			}
