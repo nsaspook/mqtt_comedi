@@ -291,9 +291,10 @@ static const uint8_t CMD_CHAR_GET = 0x10; /* Get RX buffer */
 static const uint8_t CMD_DUMMY_CFG = 0x40; /* stuff config data in SPI buffer */
 static const uint8_t CMD_DEAD = 0xff; /* This is usually a bad response */
 static const uint8_t GET_MUI = 0x0D; // read the 57Q84 chip id
+static const uint8_t GET_VER = 0x0E; // read the board firmware version
 
 static const int32_t MUI_RANGE_H = 0x250000;
-static const int32_t MUI_RANGE_L = 0x050000;
+static const int32_t MUI_RANGE_L = 0x040000;
 
 /*
  * SPI packet link BYTE id's
@@ -595,6 +596,7 @@ static int32_t bmc_spi_setspeed(const struct comedi_device *, uint32_t);
 static int32_t bmc_spi_packet(struct spi_device *, struct bmc_packet_type *, ktime_t);
 static int32_t daqbmc_bmc_get_config(const struct comedi_device *);
 static uint32_t daqbmc_bmc_get_mui(struct comedi_device *);
+static uint32_t daqbmc_bmc_get_ver(struct comedi_device *);
 
 /*
  * piBoardRev:
@@ -1693,13 +1695,50 @@ static uint32_t daqbmc_bmc_get_mui(struct comedi_device *dev)
 	val += (packet->bmc_byte_r[BMC_D3] << 16);
 	val += (packet->bmc_byte_r[BMC_D4] << 24);
 
-	devpriv->ai_count++;
 #ifdef SPI_DEBUG
 	dev_info(dev->class_dev, "MUI data downloaded from board\n");
 #endif
 	mutex_unlock(&devpriv->drvdata_lock);
-	clear_bit(SPI_AI_RUN, &devpriv->state_bits);
-	smp_mb__after_atomic();
+
+	kfree(packet);
+
+	return val;
+}
+
+/*
+ * read the 57Q84 board firmware version
+ */
+static uint32_t daqbmc_bmc_get_ver(struct comedi_device *dev)
+{
+	struct daqbmc_private *devpriv = dev->private;
+	uint32_t val = 0;
+
+	struct bmc_packet_type *packet = kzalloc(sizeof(*packet), GFP_KERNEL | GFP_NOWAIT | GFP_ATOMIC | GFP_DMA);
+	if (!packet) {
+		return CHECKBYTE;
+	}
+
+	mutex_lock(&devpriv->drvdata_lock);
+
+	packet->bmc_byte_t[BMC_CMD] = CMD_DUMMY_CFG + GET_VER;
+	packet->bmc_byte_t[BMC_D0] = BMC_D0;
+	packet->bmc_byte_t[BMC_D1] = BMC_D1;
+	packet->bmc_byte_t[BMC_D2] = BMC_D2;
+	packet->bmc_byte_t[BMC_D3] = CMD_DUMMY_CFG + GET_VER;
+	packet->bmc_byte_t[BMC_D4] = CMD_DUMMY_CFG + GET_VER;
+	packet->bmc_byte_t[BMC_EXT] = CMD_DUMMY_CFG + GET_VER;
+	packet->bmc_byte_t[BMC_CKSUM] = CHECKBYTE;
+	packet->bmc_byte_t[BMC_DUMMY] = CHECKBYTE;
+	bmc_spi_exchange(dev, packet);
+	val = (packet->bmc_byte_r[BMC_D1]);
+	val += (packet->bmc_byte_r[BMC_D2] << 8);
+	val += (packet->bmc_byte_r[BMC_D3] << 16);
+	val += (packet->bmc_byte_r[BMC_D4] << 24);
+
+#ifdef SPI_DEBUG
+	dev_info(dev->class_dev, "Firmware Version data downloaded from board\n");
+#endif
+	mutex_unlock(&devpriv->drvdata_lock);
 
 	kfree(packet);
 
@@ -1995,9 +2034,17 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	retconf = (daqbmc_bmc_get_mui(dev) & 0xffffff);
 	if ((retconf > MUI_RANGE_L) && (retconf < MUI_RANGE_H)) {
 		dev_info(dev->class_dev, "BMCBoard : MUI 0X%X \n", retconf);
-	} else {
-		dev_info(dev->class_dev, "BMCBoard : INVALID : MUI 0X%X \n", retconf);
+	} else { // try again
+		retconf = (daqbmc_bmc_get_mui(dev) & 0xffffff);
+		if ((retconf > MUI_RANGE_L) && (retconf < MUI_RANGE_H)) {
+			dev_info(dev->class_dev, "BMCBoard : MUI 0X%X second try\n", retconf);
+		} else {
+			dev_info(dev->class_dev, "BMCBoard : INVALID : MUI 0X%X \n", retconf);
+		}
 	}
+
+	retconf = (daqbmc_bmc_get_ver(dev) & 0xffff);
+	dev_info(dev->class_dev, "BMCBoard : Firmware 0X%X \n", retconf);
 
 	/*
 	 * All DAQ_BMC boards have the memory device interface
