@@ -33,7 +33,7 @@ extern "C" {
 #define RSTRING_BUF_SIZ	81
 #define MAX_BMC_BUF	512
 #define channel_BADS	0xe
-	
+
 #define ISR_TIMEMARK	255
 
 	/*
@@ -68,6 +68,7 @@ extern "C" {
 	static const uint8_t ADC_HV0 = 0x04; // 60+ volt ADC channel
 	static const uint8_t ADC_HV1 = 0x05; // 60+ volt ADC channel
 	static const uint8_t GET_MUI = 0x0D; // controller ID number
+	static const uint8_t GET_VER = 0x0E; // controller ID number
 
 	static const uint8_t PORT_GET_BYTES = 7;
 	static const uint8_t CHAR_GET_BYTES = 7;
@@ -76,7 +77,7 @@ extern "C" {
 	static const uint8_t PORT_GO_BYTES = 7;
 	static const uint8_t CHAR_GO_BYTES = 7;
 	static const uint8_t DAC_GO_BYTES = 7;
-	
+
 	struct spi_link_type_ss { // internal state table
 		uint8_t SPI_DATA : 1;
 		uint8_t ADC_DATA : 1;
@@ -93,7 +94,7 @@ extern "C" {
 		port_count, port_error_count, port_data_count, zombie_count,
 		char_count, char_error_count, rxof_bit, txdone_bit, txuf_bit,
 		slave_int_count, last_slave_int_count, slave_tx_count,
-		comm_count, idle_count, spi_error_count, spi_noerror_count;
+		comm_count, idle_count, spi_error_count, spi_noerror_count, ver;
 		volatile uint8_t daq_conf, comm_ok, raw_index;
 		uint16_t deviceid, devicerev;
 		volatile unsigned long long mui;
@@ -137,7 +138,7 @@ extern "C" {
 	extern V_data V;
 	volatile bool failure;
 	extern volatile uint8_t in_buf1, in_buf2, in_buf3;
-	extern volatile bool r_string_ready, bmc_string_ready, update_bmc_string;
+	extern volatile bool r_string_ready, update_bmc_string;
 	extern volatile struct bmc_buffer_type BMC4;
 	extern volatile char buffer[MAX_BMC_BUF], log_buffer[MAX_BMC_BUF];
 	extern volatile uint32_t dec_ippaddr_u, dec_ippaddr_l;

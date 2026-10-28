@@ -22,6 +22,7 @@ extern "C" {
 #include "modbus_master.h"
 
 #define VER	"V0.77"
+#define VER_N	0x00000077
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -136,7 +137,7 @@ extern "C" {
 #define MAX_LINE        MAX_STRLEN+1
 #define MAX_TEXT        MAX_STRLEN+1
 #define MAX_HELP_STRLEN	32
-	
+
 #define SHOW_IPADDR
 
 #define MAX_INFO        63
@@ -390,6 +391,13 @@ extern "C" {
 		uint32_t bat_time, fm80_time, q84_sequence;
 		uint16_t crc;
 	} EB_data;
+
+	typedef enum {
+		daq0 = 0,
+		daq1 = 1,
+		ipadrh = 2,
+		ipadrl = 3,
+	} daq_chan_t;
 
 	extern BM_type BM;
 

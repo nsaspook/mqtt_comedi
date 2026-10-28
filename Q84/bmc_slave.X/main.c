@@ -342,12 +342,14 @@ volatile struct spi_stat_type_ss spi_stat_ss = {
 	.daq_conf = 0,
 	.deviceid = 0,
 	.devicerev = 0,
+	.ver = VER_N,
 };
 volatile struct spi_stat_type_ss report_stat_ss = {
 	.bmc_counts = 0,
 	.slave_int_count = 0,
 	.last_bmc_counts = 0,
 	.last_slave_int_count = 0,
+	.ver = VER_N,
 };
 volatile struct serial_buffer_type_ss serial_buffer_ss = {
 	.data[BMC_CMD] = CHECKBYTE,
@@ -1310,7 +1312,6 @@ void bmc_logger(void)
 	BMC4.len = 512;
 	BMC4.pos = 0;
 	BMC4.bmc_flag = true;
-	bmc_string_ready = true; // CHAR_GO_BYTES
 }
 
 /*

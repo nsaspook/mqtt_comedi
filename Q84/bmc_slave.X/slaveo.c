@@ -17,7 +17,7 @@ volatile bool failure = false;
 volatile uint8_t in_buf1 = 0x19, in_buf2 = 0x57, in_buf3 = 0x07;
 static uint8_t *tmp_buf4 = (void *) &ha_daq_calib.scaler4;
 static uint8_t *tmp_buf5 = (void *) &ha_daq_calib.scaler5;
-volatile bool r_string_ready = false, bmc_string_ready = false, update_bmc_string = false;
+volatile bool r_string_ready = false, update_bmc_string = false;
 
 static void clear_slaveo_flags(void);
 
@@ -115,7 +115,6 @@ void slaveo_rx_isr(void)
 					serial_buffer_ss.r_string_index = 0;
 					serial_buffer_ss.r_string[serial_buffer_ss.r_string_index] = 0;
 					update_bmc_string = true; // print to log_buffer
-					bmc_string_ready = true; // display bmc data on first line
 					r_string_ready = true;
 					break;
 				default: // does nothing
@@ -142,23 +141,28 @@ void slaveo_rx_isr(void)
 		data_in2 = 0;
 	}
 
-	// DAC_GO_BYTES
+	// DAC_GO_BYTES also used to send ipaddress to be displayed
 	if (serial_buffer_ss.dac_value) {
 		if (serial_buffer_ss.raw_index == DAC_GO_BYTES) {
-			if (channel < 2) {
+			switch (channel) {
+			case daq1:
+			case daq0:
 				V.bmc_ao = serial_buffer_ss.data[BMC_D0];
-			} else {
-				if (channel == 2) {
-					dec_ippaddr_u = (uint32_t) serial_buffer_ss.data[BMC_D0];
-					dec_ippaddr_u += (uint32_t) serial_buffer_ss.data[BMC_D1] << 8;
-					dec_ippaddr_u += (uint32_t) serial_buffer_ss.data[BMC_D2] << 16;
-					dec_ippaddr_u += (uint32_t) serial_buffer_ss.data[BMC_D3] << 24;
-				} else {
-					dec_ippaddr_l = (uint32_t) serial_buffer_ss.data[BMC_D0];
-					dec_ippaddr_l += (uint32_t) serial_buffer_ss.data[BMC_D1] << 8;
-					dec_ippaddr_l += (uint32_t) serial_buffer_ss.data[BMC_D2] << 16;
-					dec_ippaddr_l += (uint32_t) serial_buffer_ss.data[BMC_D3] << 24;
-				}
+				break;
+			case ipadrh:
+				dec_ippaddr_u = (uint32_t) serial_buffer_ss.data[BMC_D0];
+				dec_ippaddr_u += (uint32_t) serial_buffer_ss.data[BMC_D1] << 8;
+				dec_ippaddr_u += (uint32_t) serial_buffer_ss.data[BMC_D2] << 16;
+				dec_ippaddr_u += (uint32_t) serial_buffer_ss.data[BMC_D3] << 24;
+				break;
+			case ipadrl:
+				dec_ippaddr_l = (uint32_t) serial_buffer_ss.data[BMC_D0];
+				dec_ippaddr_l += (uint32_t) serial_buffer_ss.data[BMC_D1] << 8;
+				dec_ippaddr_l += (uint32_t) serial_buffer_ss.data[BMC_D2] << 16;
+				dec_ippaddr_l += (uint32_t) serial_buffer_ss.data[BMC_D3] << 24;
+				break;
+			default: // does nothing
+				break;
 			}
 			serial_buffer_ss.dac_value = false;
 			serial_buffer_ss.raw_index = BMC_CMD;
@@ -300,6 +304,24 @@ void slaveo_rx_isr(void)
 					break;
 				}
 				break;
+			case GET_VER: // 32-bit integer for software version
+				switch (serial_buffer_ss.raw_index) {
+				case BMC_D0:
+					SPI2TXB = (uint8_t) spi_stat_ss.ver;
+					break;
+				case BMC_D1:
+					SPI2TXB = (uint8_t) (spi_stat_ss.ver >> 8);
+					break;
+				case BMC_D2:
+					SPI2TXB = (uint8_t) (spi_stat_ss.ver >> 16);
+					break;
+				case BMC_D3:
+					SPI2TXB = (uint8_t) (spi_stat_ss.ver >> 24);
+					break;
+				default:
+					SPI2TXB = CHECKBYTE;
+					break;
+				}
 			case 0x0C: // do ADC calibration functions
 				SPI2TXB = CHECKBYTE;
 				switch (serial_buffer_ss.raw_index) {
