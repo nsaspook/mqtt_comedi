@@ -1004,12 +1004,8 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.acvolts);
 				strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_acamps", BMC_MAXHOST);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.acamps);
-				strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_acwatts", BMC_MAXHOST);
-				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.acwatts);
 				strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_acwatts_gti", BMC_MAXHOST);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.acwatts_gti);
-				strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_acwatts_gti_abs", BMC_MAXHOST);
-				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.acwatts_gti_abs);
 				strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_acva", BMC_MAXHOST);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.acva);
 				strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_acvar", BMC_MAXHOST);
@@ -1018,18 +1014,23 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.acpf);
 				strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_achz", BMC_MAXHOST);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.achz);
-				strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_acwin", BMC_MAXHOST);
-				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.acwin);
-				strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_acwout", BMC_MAXHOST);
-				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.acwout);
-				strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_dcwin", BMC_MAXHOST);
-				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.dcwin);
 				strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_dcwout", BMC_MAXHOST);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.dcwout);
 				strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_panel_watts", BMC_MAXHOST);
 				cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.panel_watts);
 				break;
 			}
+
+			strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_dcwin", BMC_MAXHOST);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.dcwin);
+			strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_acwatts", BMC_MAXHOST);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.acwatts);
+			strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_acwin", BMC_MAXHOST);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.acwin);
+			strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_acwatts_gti_abs", BMC_MAXHOST);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.acwatts_gti_abs);
+			strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_acwout", BMC_MAXHOST);
+			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.acwout);
 
 			strncpy(&ha_daq_host.bname[ha_daq_host.hindex][mqtt_id_b], "bmc_bvolts", BMC_MAXHOST);
 			cJSON_AddNumberToObject(json, (const char *) &ha_daq_host.bname[ha_daq_host.hindex], R.bvolts);
