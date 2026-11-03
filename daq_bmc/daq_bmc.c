@@ -274,6 +274,7 @@ static const struct spi_delay CS_CHANGE_DELAY_USECS10 = {
  * This selects the chip select, not the interface number like spi0, spi1
  */
 static const uint32_t CS_BMC = 1; /*  BMCboard Q84 slave CS, spi0 on the RPi, spi1 on OPi  */
+static const bool change_cs = false; // toggle CS when set to false
 
 /*
  * PIC Slave commands
@@ -677,7 +678,7 @@ static int32_t bmc_spi_exchange(const struct comedi_device *dev, struct bmc_pack
 	}
 #ifdef LED_LINK
 	gpiod_set_value(red_led, 1);
-	gpiod_put(red_led);
+//	gpiod_put(red_led);
 #endif
 	/*
 	 * use nine spi transfers for the complete SPI transaction
@@ -691,7 +692,7 @@ static int32_t bmc_spi_exchange(const struct comedi_device *dev, struct bmc_pack
 	 */
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_CMD];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_CMD];
-	packet->one_t.cs_change = false;
+	packet->one_t.cs_change = change_cs;
 	packet->one_t.len = 1;
 	ret = bmc_spi_packet(spi, packet, slower);
 
@@ -700,32 +701,22 @@ static int32_t bmc_spi_exchange(const struct comedi_device *dev, struct bmc_pack
 	 */
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D0];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D0];
-	packet->one_t.cs_change = false;
-	packet->one_t.len = 1;
 	ret += bmc_spi_packet(spi, packet, slower);
 
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D1];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D1];
-	packet->one_t.cs_change = false;
-	packet->one_t.len = 1;
 	ret += bmc_spi_packet(spi, packet, slower);
 
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D2];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D2];
-	packet->one_t.cs_change = false;
-	packet->one_t.len = 1;
 	ret += bmc_spi_packet(spi, packet, slower);
 
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D3];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D3];
-	packet->one_t.cs_change = false;
-	packet->one_t.len = 1;
 	ret += bmc_spi_packet(spi, packet, slower);
 
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D4];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D4];
-	packet->one_t.cs_change = false;
-	packet->one_t.len = 1;
 	ret += bmc_spi_packet(spi, packet, slower);
 
 	/*
@@ -733,16 +724,12 @@ static int32_t bmc_spi_exchange(const struct comedi_device *dev, struct bmc_pack
 	 */
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_EXT];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_EXT];
-	packet->one_t.cs_change = false;
-	packet->one_t.len = 1;
 	ret += bmc_spi_packet(spi, packet, slower);
 	/*
 	 * packet [0..6] 8-bit added checksum
 	 */
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_CKSUM];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_CKSUM];
-	packet->one_t.cs_change = false;
-	packet->one_t.len = 1;
 	ret += bmc_spi_packet(spi, packet, slower);
 
 	/*
@@ -750,12 +737,10 @@ static int32_t bmc_spi_exchange(const struct comedi_device *dev, struct bmc_pack
 	 */
 	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_DUMMY];
 	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_DUMMY];
-	packet->one_t.cs_change = false;
-	packet->one_t.len = 1;
 	ret += bmc_spi_packet(spi, packet, slower);
 #ifdef LED_LINK
 	gpiod_set_value(red_led, 0);
-	gpiod_put(red_led);
+//	gpiod_put(red_led);
 #endif
 	return ret;
 }
@@ -1799,6 +1784,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	 * loop the spi device queue for needed devices
 	 */
 	if (list_empty(&device_list)) {
+		dev_info(dev->class_dev, "list_empty: spi_device_missing\n");
 		ret = -ENODEV;
 		goto daqbmc_kfree_exit;
 	}
@@ -1856,7 +1842,7 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	 * or missing special case device
 	 */
 	if (spi_device_missing) {
-		dev_info(dev->class_dev, "spi_device_missing\n");
+		dev_info(dev->class_dev, "device_missing: spi_device_missing\n");
 		ret = -ENODEV;
 		goto daqbmc_kfree_rx_exit;
 	}
@@ -1910,13 +1896,12 @@ static int32_t daqbmc_auto_attach(struct comedi_device *dev,
 	}
 
 #ifdef LED_LINK
-	red_led = gpiod_get(NULL, "gpio12", GPIOD_OUT_HIGH);
+	red_led = gpiod_get(dev->class_dev, "red", GPIOD_OUT_HIGH);
 	if (IS_ERR(red_led)) {
 		printk(KERN_ERR "RED LED GPIO request failed\n");
 	} else {
 		printk(KERN_ERR "RED LED GPIO request okay\n");
 	}
-	gpiod_direction_output(red_led, 0);
 #endif
 
 	s = &dev->subdevices[SUBDEV_AI]; // AI setup
@@ -2217,7 +2202,7 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 		packet->bmc_byte_t[BMC_CMD] = CMD_ZERO;
 		packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_CMD];
 		packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_CMD];
-		packet->one_t.cs_change = false;
+		packet->one_t.cs_change = change_cs;
 		packet->one_t.len = 1;
 
 		ret = 0;
