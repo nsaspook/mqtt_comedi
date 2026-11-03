@@ -1,0 +1,14 @@
+init_im_mb_master_timers global:[im_ptr,imd_ptr] call:[TMR3_SetInterruptHandler,TMR3_StartTimer] noreturn:[TMR3_StartTimer]
+iammeter_controller_work global:[ICDELAY,ISPACING,ITEDELAY,M,V,im_data1,im_dir1,modbus_im_data1,modbus_im_dir1] call:[UART3_Read,UART3_Write,UART3_is_rx_ready,clear_2hz,clear_500ahz,clear_500hz,get_500ahz,get_500hz,iammeter_modbus_read_check,iammeter_modbus_read_dir_check,modbus_rtu_send_msg,serial_trmt,sizeof] noreturn:[UART3_Write,clear_500hz]
+reset_iammeter_kwh global:[ITDELAY,ITEDELAY,M,wim_single,wim_three_forward,wim_three_reverse] call:[UART3_Read,UART3_Write,UART3_is_rx_ready,clear_2hz,clear_500ahz,clear_500hz,delay_ms,get_500hz,half_dup_rx,half_dup_tx,modbus_dcu_send_msg_im,modbus_read_dcu_check_im,serial_trmt,sizeof,while] noreturn:[UART3_Write,clear_500hz,while]
+iammeter_data_handler global:[em,em_ptr,em_tmp,emt,im,im_ptr,imd_tmp] call:[mb16_swap,mb32_swap,while] noreturn:[while]
+iammeter_dir_handler global:[imd_ptr,imd_tmp] call:[mb32_swap,while] noreturn:[while]
+iammeter_modbus_write_check global:[IRDELAY,M] call:[crc16,crc16_receive,get_500hz,log_crc_error,while] noreturn:[log_crc_error,while]
+iammeter_modbus_read_check global:[IRDELAY,M] call:[DataHandler,crc16,crc16_receive,get_500hz,log_crc_error,while] noreturn:[log_crc_error,while]
+iammeter_modbus_read_dir_check global:[IRDELAY,M] call:[DataHandler,crc16,crc16_receive,get_500hz,log_crc_error,while] noreturn:[log_crc_error]
+half_dup_tx
+half_dup_rx
+modbus_dcu_send_msg_im call:[memcpy]
+modbus_read_dcu_check_im global:[IRDELAY,M] call:[get_500hz,while] noreturn:[while]
+im_my_modbus_rx_32 global:[M]
+iammeter_version global:[em_info,modbus_name] call:[strncpy] noreturn:[strncpy]

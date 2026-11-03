@@ -1,0 +1,10 @@
+init_pz_mb_master_timers global:[pz_ptr] call:[TMR3_SetInterruptHandler,TMR3_StartTimer] noreturn:[TMR3_StartTimer]
+pzem_controller_work global:[M,PCDELAY,PSPACING,PTEDELAY,V,modbus_pz_4wirehz60,modbus_pz_data1,pz_data1,pz_hz1] call:[UART3_Read,UART3_Write,UART3_is_rx_ready,clear_2hz,clear_500ahz,clear_500hz,get_500ahz,get_500hz,modbus_rtu_send_msg,pzem_modbus_read_check,pzem_modbus_write_check,serial_trmt,sizeof] noreturn:[UART3_Write,clear_500hz]
+pzem_data_handler global:[em,em_ptr,em_tmp,emt,imd_tmp,pz_ptr] call:[while] noreturn:[while]
+pzem_modbus_write_check global:[M,PRDELAY] call:[crc16,crc16_receive,get_500hz,log_crc_error,while] noreturn:[log_crc_error,while]
+pzem_modbus_read_check global:[M,PRDELAY] call:[DataHandler,crc16,crc16_receive,get_500hz,log_crc_error,while] noreturn:[log_crc_error,while]
+pzem_modbus_read_dir_check global:[M,PRDELAY] call:[DataHandler,crc16,crc16_receive,get_500hz,log_crc_error,while] noreturn:[log_crc_error]
+half_dup_tx
+half_dup_rx
+pz_my_modbus_rx_32 global:[M]
+pzem_version global:[em_info,modbus_name] call:[strncpy] noreturn:[strncpy]

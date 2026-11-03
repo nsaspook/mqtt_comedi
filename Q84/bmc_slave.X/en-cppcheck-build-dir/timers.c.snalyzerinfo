@@ -1,0 +1,5 @@
+StartTimer global:[tickCount]
+TimerDone global:[tickCount]
+WaitMs call:[Nop,StartTimer,TimerDone] noreturn:[Nop]
+timer_ms_tick global:[tickCount]
+delay_ms call:[WaitMs] noreturn:[WaitMs]
