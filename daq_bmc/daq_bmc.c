@@ -87,7 +87,7 @@ for the FMx0 charge controller and for MODBUS power meters
 #include <linux/completion.h>
 #include <linux/gpio/consumer.h>
 
-#define bmc_version "version 1.35 "
+#define bmc_version "version 1.36 "
 #define spibmc_version "version 2.0 "
 
 //#define LED_LINK
@@ -678,7 +678,7 @@ static int32_t bmc_spi_exchange(const struct comedi_device *dev, struct bmc_pack
 	}
 #ifdef LED_LINK
 	gpiod_set_value(red_led, 1);
-//	gpiod_put(red_led);
+	//	gpiod_put(red_led);
 #endif
 	/*
 	 * use nine spi transfers for the complete SPI transaction
@@ -686,61 +686,23 @@ static int32_t bmc_spi_exchange(const struct comedi_device *dev, struct bmc_pack
 	 * with only a two byte FIFO on the Q84
 	 */
 	packet->one_t.speed_hz = spi->max_speed_hz;
+	packet->one_t.cs_change = change_cs;
+	packet->one_t.len = 1;
 
 	/*
 	 * send the cmd and 4-bit channel data
-	 */
-	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_CMD];
-	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_CMD];
-	packet->one_t.cs_change = change_cs;
-	packet->one_t.len = 1;
-	ret = bmc_spi_packet(spi, packet, slower);
-
-	/*
 	 * send the data
 	 */
-	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D0];
-	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D0];
-	ret += bmc_spi_packet(spi, packet, slower);
 
-	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D1];
-	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D1];
-	ret += bmc_spi_packet(spi, packet, slower);
+	for (int packet_index = BMC_CMD; packet_index <= BMC_DUMMY; packet_index++) {
+		packet->one_t.tx_buf = &packet->bmc_byte_t[packet_index];
+		packet->one_t.rx_buf = &packet->bmc_byte_r[packet_index];
+		ret += bmc_spi_packet(spi, packet, slower);
+	}
 
-	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D2];
-	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D2];
-	ret += bmc_spi_packet(spi, packet, slower);
-
-	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D3];
-	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D3];
-	ret += bmc_spi_packet(spi, packet, slower);
-
-	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_D4];
-	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_D4];
-	ret += bmc_spi_packet(spi, packet, slower);
-
-	/*
-	 * extended channel data
-	 */
-	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_EXT];
-	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_EXT];
-	ret += bmc_spi_packet(spi, packet, slower);
-	/*
-	 * packet [0..6] 8-bit added checksum
-	 */
-	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_CKSUM];
-	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_CKSUM];
-	ret += bmc_spi_packet(spi, packet, slower);
-
-	/*
-	 * dummy byte to transfer last byte of data
-	 */
-	packet->one_t.tx_buf = &packet->bmc_byte_t[BMC_DUMMY];
-	packet->one_t.rx_buf = &packet->bmc_byte_r[BMC_DUMMY];
-	ret += bmc_spi_packet(spi, packet, slower);
 #ifdef LED_LINK
 	gpiod_set_value(red_led, 0);
-//	gpiod_put(red_led);
+	//	gpiod_put(red_led);
 #endif
 	return ret;
 }
@@ -2206,7 +2168,7 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 		packet->one_t.len = 1;
 
 		ret = 0;
-		for (int i = BMC_CMD; i < BMC_DUMMY; i++) {
+		for (int i = BMC_CMD; i <= BMC_DUMMY; i++) {
 			ret = bmc_spi_packet(spi, packet, slower); // only one byte is transmitted per packet
 		}
 		daq_code = packet->bmc_byte_r[BMC_CMD];
