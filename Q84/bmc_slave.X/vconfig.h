@@ -21,8 +21,8 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.77"
-#define VER_N	0x00000077
+#define VER	"V0.78"
+#define VER_N	0x00000078
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -90,6 +90,7 @@ extern "C" {
 	 * V0.75 cleanup adc code
 	 * V0.76 cleanup code smells using cppcheck
 	 * V0.77 add ipaddress display from host
+	 * V0.78 remove extra spaces from log_format strings
 	 */
 
 	/*
@@ -190,25 +191,25 @@ extern "C" {
 #define DPVVOLTAGE	12.6f
 #define DSOC_MODE	2.0f // voltage scaler, 2.0f for 12 volt systems, 1.0f for 24V systems
 
-	const char log_format1[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%7.4f,%7.4f,%7.4f,%7.4f,1957,~EOT                                                  \r\n";
+	const char log_format1[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%7.4f,%7.4f,%7.4f,%7.4f,1957,~EOT \r\n";
 #define LOG_VARS1	BMC4.d_id,((float) em.vl3l1) / 10.0f,em_tmp.al1, ((float) em.wl1) / 10.0f, ((float) em.wl2) / 10.0f, \
 	((float) em.val1) / 10.0f, ((float) em.varl1) / 10.0f,  ((float) em.pfsys) / 10.0f, em_tmp.hz,vw, vf, pvw, pvf, bat_amp_whole - 128, \
 	bat_amp_frac - 128, bat_amp_panel - 128, panel_watts, BM.FM80_online, cc_mode, C.data_ok,BM.node_id, \
 	ha_daq_calib.scaler4, ha_daq_calib.scaler5, ha_daq_calib.A200_Z, ha_daq_calib.A200_S
 
-	const char log_format2[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%6.4f,%6.4f,%6.4f,%6.4f,1957,~EOT                                                  \r\n";
+	const char log_format2[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%6.4f,%6.4f,%6.4f,%6.4f,1957,~EOT \r\n";
 #define LOG_VARS2	BMC4.d_id,((float) em.vl1n) / 10.0f,((float) em.vl2n) / 10.0f, ((float) em.vl3n) / 10.0f, ((float) em.al2) / 1000.0f, \
 	((float) em.wl3) / 10.0f, ((float) em.wsys) / 10.0f,  ((float) em.pfl1) / 10.0f, ((float) em.pfl2) / 10.0f,vw, vf, pvw, pvf, bat_amp_whole - 128, \
 	bat_amp_frac - 128, bat_amp_panel - 128, BM.benergy, BM.FM80_online, cc_mode, C.data_ok,BM.node_id, \
 	imd_tmp.wl1, imd_tmp.wl2, imd_tmp.wl3, imd_tmp.varsys
 
-	const char log_format3[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%7.4f,%7.4f,%7.4f,%7.4f,1957,~EOT                                                  \r\n";
+	const char log_format3[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%7.4f,%7.4f,%7.4f,%7.4f,1957,~EOT \r\n";
 #define LOG_VARS3	BMC4.d_id,((float) em.vl3l1) / 10.0f,((float) em.al1) / 1000.0f, ((float) em.wl1) / 10.0f, ((float) em.wl2) / 10.0f, \
 	((float) em.val1) / 10.0f, ((float) em.varl1) / 10.0f,  ((float) em.pfsys) / 10.0f, ((float) emt.hz) / 1000.0f,vw, vf, pvw, pvf, bat_amp_whole - 128, \
 	bat_amp_frac - 128, bat_amp_panel - 128, panel_watts, BM.FM80_online, cc_mode, C.data_ok,BM.node_id, ha_daq_calib.scaler4, \
 	ha_daq_calib.scaler5, ha_daq_calib.A200_Z, ha_daq_calib.A200_S
 
-	const char log_format4[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%7.4f,%7.4f,%7.4f,%7.4f,1957,~EOT                                                  \r\n";
+	const char log_format4[] = "^,%d,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%3.2f,%d.%01d,%d.%01d,%d.%01d,%d,%d,%d,%d,%d,%llu,%7.4f,%7.4f,%7.4f,%7.4f,1957,~EOT \r\n";
 #define LOG_VARS4	BMC4.d_id,((float) em.vl3l1) / 10.0f,((float) em.al1) / 1000.0f, ((float) em.wl1) / 10.0f, ((float) em.wl2) / 10.0f, \
 	((float) em.val1) / 10.0f, ((float) em.varl1) / 10.0f,  ((float) em.pfsys) / 10.0f, ((float) emt.hz) / 1000.0f,vw, vf, pvw, pvf, bat_amp_whole - 128, \
 	bat_amp_frac - 128, bat_amp_panel - 128, panel_watts, BM.FM80_online, cc_mode, C.data_ok,BM.node_id, ha_daq_calib.scaler4, \

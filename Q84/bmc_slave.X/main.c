@@ -898,7 +898,20 @@ int main(void)
 				snprintf(&ptr_log[3], MAX_TEXT, " %7.4f, %7.4f                   ", ha_daq_calib.scaler4, ha_daq_calib.scaler5);
 #else
 #ifdef SHOW_IPADDR
-				snprintf(&ptr_log[3], MAX_TEXT, "IP:%lu.%lu.%lu.%lu                  ", dec_ippaddr_u >> 8, dec_ippaddr_u & 0xff, dec_ippaddr_l >> 8, dec_ippaddr_l & 0xff);
+				if (BMC4.d_id == DC1_CMD) {
+					snprintf(&ptr_log[3], MAX_TEXT, "IP:%lu.%lu.%lu.%lu                  ", dec_ippaddr_u >> 8, dec_ippaddr_u & 0xff, dec_ippaddr_l >> 8, dec_ippaddr_l & 0xff);
+				} else {
+					uint32_t seconds = V.uptime_ticks, minutes, hours, days;
+
+					days = (seconds - (seconds % (60ul * 60ul * 24ul))) / (60ul * 60ul * 24ul); // Get Days
+					seconds = (seconds % (60ul * 60ul * 24ul));
+					hours = (seconds - (seconds % (60ul * 60ul))) / (60ul * 60ul); // Get Hour
+					seconds = seconds % (60ul * 60ul);
+					minutes = (seconds - (seconds % 60ul)) / 60ul; // Get Minute
+					seconds = seconds % 60ul; // Seconds
+
+					snprintf(&ptr_log[3], MAX_TEXT, "%lu:%lu:%lu:%lu %u                   ", days, hours, minutes, seconds, V.log_len);
+				}
 #else
 				snprintf(&ptr_log[3], MAX_TEXT, " %luSec, %u                   ", V.uptime_ticks, V.log_len);
 #endif
