@@ -138,6 +138,7 @@ extern "C" {
 #define MAX_LINE        MAX_STRLEN+1
 #define MAX_TEXT        MAX_STRLEN+1
 #define MAX_HELP_STRLEN	32
+#define EXTRA_SPACES	18
 
 #define SHOW_IPADDR
 

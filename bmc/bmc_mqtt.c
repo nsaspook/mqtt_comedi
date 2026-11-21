@@ -90,13 +90,13 @@ struct ha_daq_hosts_type ha_daq_host = {
 	.hosts[5] = "10.1.1.166",
 	.hosts[6] = "10.1.1.35", // no HA server AUXBMC
 	.hosts[OPEN_HOST] = "10.1.1.255",
-	.mqtt[0] = "10.1.1.30",
+	.mqtt[0] = MQTT_HOST,
 	.mqtt[1] = MQTT_HOST, // no HA server
 	.mqtt[2] = MQTT_HOST, // no HA server
 	.mqtt[3] = "10.1.1.45",
 	.mqtt[4] = "10.1.1.40", // no HA server, has internal mqtt server
 	.mqtt[5] = MQTT_HOST,
-	.mqtt[6] = "10.1.1.35", // send data to here
+	.mqtt[6] = MQTT_HOST, // send data to here
 	.mqtt[OPEN_HOST] = MQTT_HOST,
 	.topics[0] = "comedi/bmc/data/bmc/1",
 	.topics[1] = "comedi/bmc/data/bmc/2",
@@ -501,9 +501,11 @@ bool use_cal_file(FILE * file, bool write)
 
 /** \file bmc_mqtt.c
  *
+ * boot startup init
  */
 void bmc_mqtt_init(void)
 {
+	usleep(SYSTEMD_DELAY); // for slow systemd systems with no rc.local support
 	E.mqtt_count = 0;
 	gethostname(hname, hname_len);
 	hname[12] = 0;
