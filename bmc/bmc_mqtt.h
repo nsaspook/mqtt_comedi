@@ -45,6 +45,7 @@ extern "C" {
 #define GTI_TOKEN_DELAY 300
 
 #define MAIN_DELAY      1250 // 1.0 msec comedi sample rate max
+#define SYSTEMD_DELAY	20 // 5 seconds for OPi systemd bootup and networking to get going, 20 us for RPi
 
 #define QOS             2
 

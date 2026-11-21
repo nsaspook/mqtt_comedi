@@ -2176,7 +2176,11 @@ static int32_t spibmc_spi_probe(struct spi_device * spi)
 		dev_info(&spi->dev, "spi I/O CMD_ZERO test returns %X, spi transfer return code %d\n", daq_code, ret);
 #endif
 	}
-
+	
+#ifdef SPI_DEBUG
+	dev_info(&spi->dev, "spi CS Probe: CS_BMC should be %d\n", (uint32_t) * spi->chip_select);
+#endif
+	
 	/* setup Comedi part of driver */
 	if ((uint32_t) * spi->chip_select == CS_BMC) {
 		ret = comedi_driver_register(&daqbmc_driver);
