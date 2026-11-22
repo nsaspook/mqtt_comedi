@@ -76,11 +76,20 @@
  * UART1 PVP JACK connector:: TTL TX-PIN 5, RX-PIN 7 VSS-PIN 6, interrupts, 115200 bps MB_RX/MB_TX
  *
  * Energy Meter Model
- * AUX IO pin 4, RF4,RF5,RF7 EMETER_CONF_TYPE, EMETER_CONF, EMETER_CONF_TYPE1
- * jumper RF5 to low/common for WEM30 meters
- * jumper RF4 and RF5 to low/common for PZEM meters
- * jumper RF7 to low/common for custom meters
- * all jumpers OPEN for EM540 meters
+ * AUX IO RF4,RF5,RF7 EMETER_CONF_TYPE, EMETER_CONF, EMETER_CONF_TYPE1
+ * 
+ * PIN 5:RF6 is not being used, yet
+ * Jumper PIN 4:RF5 to low/common for WEM30 meters
+ * Jumper PIN 3:RF4 and PIN 4:RF5 to low/common for PZEM meters
+ * Jumper PIN 6:RF7 to low/common for custom meters
+ * All jumper pins OPEN/NO JUMPER for EM540 meters
+ */
+
+/*
+ * DC-DC converter connections
+ * AUX IO : PIN 2 is supply VDD, PIN 1 is VSS
+ * VS TIC PWR : PIN 2 input +24VDC from DC-DC converter, PIN 1 VSS/GND/COMMON
+ * VS TIC PWR : PIN 1 and PIN 2 are reversed on the PCB.
  */
 
 // PIC18F57Q84 Configuration Bit Settings

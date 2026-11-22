@@ -240,7 +240,7 @@ TMR4_UART5_RX_EDGE 34
 TMR4_UART5_TX_EDGE 35
 TMR4_RESERVED_4 36
 ]
-"275 /public/bmc/Q84/bmc_slave.X/main.c
+"284 /public/bmc/Q84/bmc_slave.X/main.c
 [e E25500 . `uc
 SEQ_STATE_INIT 0
 SEQ_STATE_RX 1
@@ -288,7 +288,7 @@ G_VERSION 6
 G_SERIAL 7
 G_LAST 8
 ]
-"315
+"324
 [e E25996 status_type `uc
 STATUS_SLEEPING 0
 STATUS_FLOATING 1
@@ -297,7 +297,7 @@ STATUS_ABSORB 3
 STATUS_EQUALIZE 4
 STATUS_LAST 5
 ]
-"354
+"363
 [e E25840 daqbmc_packet_index `uc
 BMC_CMD 0
 BMC_D0 1
@@ -309,14 +309,14 @@ BMC_EXT 6
 BMC_CKSUM 7
 BMC_DUMMY 8
 ]
-"362
+"371
 [e E24968 EMETER_MODEL `uc
 EM540_M 0
 WEM30_M 1
 PZEM_M 2
 POWER_M 3
 ]
-"416
+"425
 [e E26278 state_type `uc
 state_init 0
 state_status 1
@@ -332,7 +332,7 @@ state_misc 10
 state_mx_status 11
 state_last 12
 ]
-"542
+"551
 [e E25039 APP_TIMERS `uc
 TMR_INTERNAL 0
 TMR_ADC 1
@@ -349,13 +349,13 @@ TMR_DERE 11
 TMR_RESTART 12
 TMR_COUNT 13
 ]
-"671
+"680
 [e E26003 fwrev_type `uc
 FW_P0 0
 FW_P1 1
 FW_P2 2
 ]
-"836
+"845
 [e E24208 . `uc
 channel_ANA0 0
 channel_ANA1 1
@@ -371,7 +371,7 @@ channel_DAC1 61
 channel_FVR_Buffer1 62
 channel_FVR_Buffer2 63
 ]
-"881
+"890
 [e E25283 filter_type `uc
 F_ac 0
 F_wac 1
@@ -1065,53 +1065,53 @@ G_LAST 8
 [v _modbus_read_dcu_check_im modbus_read_dcu_check_im `(a  1 s 1 modbus_read_dcu_check_im ]
 "570
 [v _iammeter_version iammeter_version `(v  1 e 1 0 ]
-"455 /public/bmc/Q84/bmc_slave.X/main.c
+"464 /public/bmc/Q84/bmc_slave.X/main.c
 [v _main main `(i  1 e 2 0 ]
-"1122
+"1131
 [v _onesec_io onesec_io `(v  1 e 1 0 ]
-"1143
+"1152
 [v _spinners spinners `(uc  1 e 1 0 ]
-"1161
+"1170
 [v _test_slave test_slave `(v  1 e 1 0 ]
-"1171
+"1180
 [v _SetBMCPriority SetBMCPriority `(v  1 e 1 0 ]
-"1188
+"1197
 [v _DeviceID_Read DeviceID_Read `(us  1 e 2 0 ]
-"1238
+"1247
 [v _send_mx_cmd send_mx_cmd `(v  1 s 1 send_mx_cmd ]
-"1251
+"1260
 [v _rec_mx_cmd rec_mx_cmd `(v  1 s 1 rec_mx_cmd ]
-"1289
+"1298
 [v _bmc_logger bmc_logger `(v  1 e 1 0 ]
-"1337
+"1346
 [v _volt_f volt_f `(v  1 s 1 volt_f ]
-"1353
+"1362
 [v _state_init_cb state_init_cb `(v  1 e 1 0 ]
-"1370
-[v _state_batteryv_cb state_batteryv_cb `(v  1 e 1 0 ]
 "1379
-[v _state_batterya_cb state_batterya_cb `(v  1 e 1 0 ]
+[v _state_batteryv_cb state_batteryv_cb `(v  1 e 1 0 ]
 "1388
+[v _state_batterya_cb state_batterya_cb `(v  1 e 1 0 ]
+"1397
 [v _state_fwrev_cb state_fwrev_cb `(v  1 s 1 state_fwrev_cb ]
-"1399
+"1408
 [v _state_time_cb state_time_cb `(v  1 s 1 state_time_cb ]
-"1409
+"1418
 [v _state_date_cb state_date_cb `(v  1 s 1 state_date_cb ]
-"1419
+"1428
 [v _state_restart_cb state_restart_cb `(v  1 s 1 state_restart_cb ]
-"1432
+"1441
 [v _state_misc_cb state_misc_cb `(v  1 e 1 0 ]
-"1448
+"1457
 [v _state_mx_log_cb state_mx_log_cb `(v  1 e 1 0 ]
-"1467
+"1476
 [v _state_watts_cb state_watts_cb `(v  1 e 1 0 ]
-"1480
+"1489
 [v _state_mx_status_cb state_mx_status_cb `(v  1 e 1 0 ]
-"1536
+"1545
 [v _state_status_cb state_status_cb `(v  1 e 1 0 ]
-"1590
+"1599
 [v _state_panelv_cb state_panelv_cb `(v  1 e 1 0 ]
-"1598
+"1607
 [v _analog_update analog_update `(us  1 s 2 analog_update ]
 "46 /public/bmc/Q84/bmc_slave.X/mc33996.c
 [v _mc33996_init mc33996_init `(a  1 e 1 0 ]
@@ -3443,7 +3443,7 @@ G_LAST 8
 [v _imt imt `VQES11124  1 e 128 0 ]
 [s S5049 terminal_type 43 `[32]uc 1 ack 32 0 `uc 1 mesgid 1 32 `uc 1 TID 1 33 `uc 1 mcode 1 34 `uc 1 mparm 1 35 `uc 1 cmdlen 1 36 `uc 1 log_seq 1 37 `uc 1 host_display_ack 1 38 :1:0 
 `E25473 1 info 1 39 `E25473 1 help_temp 1 40 `us 1 log_num 2 41 ]
-"275 /public/bmc/Q84/bmc_slave.X/main.c
+"284 /public/bmc/Q84/bmc_slave.X/main.c
 [s S5119 _op_t 9 `*.38(v 1 init_mb_master_timers 3 0 `*.38(v 1 info_ptr 3 3 `*.38(c 1 master_controller_work 3 6 ]
 [s S5127 V_data 538 `E25500 1 s_state 1 0 `E25509 1 ui_state 1 1 `[128]uc 1 buf 128 2 `[160]uc 1 terminal 160 130 `[64]uc 1 info 64 290 `VEul 1 uptime_ticks 4 354 `VEul 1 systemb 4 358 `VEul 1 tx_total 4 362 `VEul 1 rx_total 4 366 `VEul 1 bt_total 4 370 `VEul 1 br_total 4 374 `VEul 1 brn_total 4 378 `VEul 1 btn_total 4 382 `VEul 1 bmc_do 4 386 `VEul 1 bmc_di 4 390 `VEul 1 utc_ticks 4 394 `VEul 1 comm_count 4 398 `l 1 testing 4 402 `uc 1 stream 1 406 `uc 1 function 1 407 `uc 1 error 1 408 `uc 1 abort 1 409 `uc 1 msg_error 1 410 `uc 1 msg_ret 1 411 `uc 1 alarm 1 412 `uc 1 event 1 413 `E25509 1 ui_sw 1 414 `us 1 r_checksum 2 415 `us 1 t_checksum 2 417 `us 1 checksum_error 2 419 `us 1 timer_error 2 421 `us 1 ping 2 423 `us 1 mode_pwm 2 425 `us 1 equip_timeout 2 427 `us 1 sequences 2 429 `us 1 all_errors 2 431 `VEus 1 bmc_ao 2 433 `VEus 1 log_len 2 435 `uc 1 rbit 1 437 :1:0 
 `uc 1 wbit 1 437 :1:1 
@@ -3453,7 +3453,7 @@ G_LAST 8
 `S5049 1 response 43 439 `uc 1 uart 1 482 `uc 1 llid 1 483 `uc 1 sid 1 484 `uc 1 ping_count 1 485 `uc 1 euart 1 486 `uc 1 vterm 1 487 `uc 1 vterm_switch 1 488 `uc 1 uart_speed_fast 1 489 `VEuc 1 ticker 1 490 `a 1 flipper 1 491 `a 1 queue 1 492 `a 1 debug 1 493 `a 1 help 1 494 `a 1 stack 1 495 `a 1 help_id 1 496 `a 1 rerror 1 497 `a 1 speed_spin 1 498 `a 1 set_sequ 1 499 `a 1 log_s6f11 1 500 `a 1 log_abort 1 501 `a 1 log_char 1 502 `us 1 v_tx_line 2 503 `us 1 v_rx_line 2 505 `s 1 tx_volts 2 507 `s 1 rx_volts 2 509 `uc 1 tx_rs232 1 511 `uc 1 rx_rs232 1 512 `s 1 secs_value 2 513 `s 1 cmd_value 2 515 `ul 1 utc_cmd_value 4 517 `ul 1 di_fail 4 521 `ul 1 do_fail 4 525 `S5119 1 op 9 529 ]
 [v _V V `VES5127  1 e 538 0 ]
 [s S5218 . 22 `uc 1 type 1 0 `s 1 day 2 1 `s 1 amp_hours 2 3 `s 1 kilowatt_hours 2 5 `s 1 volts_peak 2 7 `s 1 amps_peak 2 9 `s 1 kilowatts_peak 2 11 `s 1 bat_min 2 13 `s 1 bat_max 2 15 `s 1 absorb_time 2 17 `s 1 float_time 2 19 `uc 1 select 1 21 ]
-"315
+"324
 [s S5231 BM_type 116 `VEa 1 two_sec_flag 1 0 `VEa 1 one_sec_flag 1 1 `VEa 1 FM80_charged 1 2 `VEa 1 pv_high 1 3 `VEa 1 pv_update 1 4 `VEa 1 once 1 5 `VE[3]a 1 a_switch 3 6 `VE[3]a 1 a_trigger 3 9 `VE[3]a 1 a_type 3 12 `VEus 1 pacing 2 15 `VEus 1 rx_count 2 17 `VEus 1 flush 2 19 `VEus 1 pv_prev 2 21 `VEus 1 day_check 2 23 `VEus 1 dim_delay 2 25 `VEus 1 benergy 2 27 `VEa 1 FM80_online 1 29 `VEa 1 FM80_io 1 30 `VEa 1 LOG 1 31 `VEa 1 display_dim 1 32 `VEa 1 display_update 1 33 `VEa 1 display_on 1 34 `VEa 1 fm80_restart 1 35 `VEa 1 fm80_soc_once 1 36 `VEuc 1 canbus_online 1 37 `VEuc 1 modbus_online 1 38 `VEuc 1 alt_display 1 39 `VE[3]uc 1 a_pin 3 40 `VEuc 1 spi_reset 1 43 `f 1 run_time 4 44 `f 1 net_balance 4 48 `f 1 Soc 4 52 `f 1 bvolts 4 56 `[10]us 1 mui 20 60 `[3]us 1 fwrev 6 80 `S5218 1 log 22 86 `VEuo 1 node_id 8 108 ]
 [v _BM BM `VES5231  1 e 116 0 ]
 [s S5276 spi_link_type_ss 1 `uc 1 SPI_DATA 1 0 :1:0 
@@ -3465,33 +3465,33 @@ G_LAST 8
 `uc 1 LOW_BITS 1 0 :1:6 
 `uc 1 ADC_RUN 1 0 :1:7 
 ]
-"339
+"348
 [v _spi_comm_ss spi_comm_ss `VES5276  1 e 1 0 ]
 [s S5285 spi_stat_type_ss 103 `VEul 1 adc_count 4 0 `VEul 1 dac_count 4 4 `VEul 1 bmc_counts 4 8 `VEul 1 last_bmc_counts 4 12 `VEul 1 spi_resets 4 16 `VEul 1 port_count 4 20 `VEul 1 port_error_count 4 24 `VEul 1 port_data_count 4 28 `VEul 1 zombie_count 4 32 `VEul 1 char_count 4 36 `VEul 1 char_error_count 4 40 `VEul 1 rxof_bit 4 44 `VEul 1 txdone_bit 4 48 `VEul 1 txuf_bit 4 52 `VEul 1 slave_int_count 4 56 `VEul 1 last_slave_int_count 4 60 `VEul 1 slave_tx_count 4 64 `VEul 1 comm_count 4 68 `VEul 1 idle_count 4 72 `VEul 1 spi_error_count 4 76 `VEul 1 spi_noerror_count 4 80 `VEul 1 ver 4 84 `VEuc 1 daq_conf 1 88 `VEuc 1 comm_ok 1 89 `VEuc 1 raw_index 1 90 `us 1 deviceid 2 91 `us 1 devicerev 2 93 `VEuo 1 mui 8 95 ]
-"340
+"349
 [v _spi_stat_ss spi_stat_ss `VES5285  1 e 103 0 ]
-"347
+"356
 [v _report_stat_ss report_stat_ss `VES5285  1 e 103 0 ]
 [s S5314 serial_buffer_type_ss 115 `VE[16]uc 1 data 16 0 `VE[81]uc 1 r_string 81 16 `VEuc 1 adcl 1 97 `VEuc 1 adc2 1 98 `VEuc 1 adch 1 99 `VEuc 1 command 1 100 `VEuc 1 raw_index 1 101 `VEuc 1 r_string_index 1 102 `VEuc 1 r_string_chan 1 103 `VEul 1 place 4 104 `VEa 1 dmake_value 1 108 `VEa 1 dget_value 1 109 `VEa 1 dac_value 1 110 `VEa 1 adc_value 1 111 `VEa 1 cfg_value 1 112 `VEa 1 cmake_value 1 113 `VEa 1 cget_value 1 114 ]
-"354
+"363
 [v _serial_buffer_ss serial_buffer_ss `VES5314  1 e 115 0 ]
 [s S5347 ha_daq_calib_type 38 `uo 1 bmc_id 8 0 `d 1 offset4 4 8 `d 1 scaler4 4 12 `d 1 offset5 4 16 `d 1 scaler5 4 20 `d 1 A200_Z 4 24 `d 1 A200_S 4 28 `a 1 done 1 32 `uc 1 c_zero_cal 1 33 :1:0 
 `uc 1 c_scale_cal 1 33 :1:1 
 `uc 1 c_do_cal 1 33 :1:2 
 `VEE24968 1 em_model 1 34 `us 1 checkmark 2 35 `uc 1 crc 1 37 ]
-"362
+"371
 [v _ha_daq_calib ha_daq_calib `VES5347  1 e 38 0 ]
-"378
+"387
 [v _data_in2 data_in2 `VEuc  1 e 1 0 ]
 [v _adc_buffer_ptr adc_buffer_ptr `VEuc  1 e 1 0 ]
 [v _adc_channel adc_channel `VEuc  1 e 1 0 ]
 [v _channel channel `VEuc  1 e 1 0 ]
 [v _upper upper `VEuc  1 e 1 0 ]
-"379
+"388
 [v _adc_buffer adc_buffer `VE[64]us  1 e 128 0 ]
 [v _adc_data_in adc_data_in `VEus  1 e 2 0 ]
 [v _out_buf out_buf `VEus  1 e 2 0 ]
-"380
+"389
 [v _volt_whole volt_whole `us  1 e 2 0 ]
 [v _bat_amp_whole bat_amp_whole `us  1 e 2 0 ]
 [v _bat_amp_frac bat_amp_frac `us  1 e 2 0 ]
@@ -3502,37 +3502,37 @@ G_LAST 8
 [v _vw vw `us  1 e 2 0 ]
 [v _pvf pvf `us  1 e 2 0 ]
 [v _pvw pvw `us  1 e 2 0 ]
-"381
+"390
 [v _fw_state fw_state `uc  1 e 1 0 ]
-"382
+"391
 [v _dec_ippaddr_u dec_ippaddr_u `VEul  1 e 4 0 ]
 [v _dec_ippaddr_l dec_ippaddr_l `VEul  1 e 4 0 ]
-"384
+"393
 [v _tickCount tickCount `VE[13]us  1 e 26 0 ]
-"385
+"394
 [v _mode_sw mode_sw `VEuc  1 e 1 0 ]
 [v _faker faker `VEuc  1 e 1 0 ]
-"415
+"424
 [v _abuf abuf `[32]us  1 s 64 abuf ]
 [v _cbuf cbuf `[34]us  1 s 68 cbuf ]
-"416
+"425
 [v _state state `VEE26278  1 e 1 0 ]
-"417
+"426
 [v _cc_mode cc_mode `VEus  1 e 2 0 ]
 [v _mx_code mx_code `VEus  1 e 2 0 ]
-"418
+"427
 [v _buffer buffer `VE[512]uc  1 e 512 0 ]
 [v _log_buffer log_buffer `VE[512]uc  1 e 512 0 ]
 [v _boot_char boot_char `VEuc  1 e 1 0 ]
 [s S5376 bmc_buffer_type 10 `*.39VEuc 1 buffer 2 0 `*.39VEuc 1 log_buffer 2 2 `VEus 1 len 2 4 `VEus 1 pos 2 6 `VEa 1 bmc_flag 1 8 `VEuc 1 d_id 1 9 ]
-"419
+"428
 [v _BMC4 BMC4 `VES5376  1 e 10 0 ]
-"424
+"433
 [v _timeout timeout `VEa  1 e 1 0 ]
 [s S5383 tm 24 `i 1 tm_sec 2 0 `i 1 tm_min 2 2 `i 1 tm_hour 2 4 `i 1 tm_mday 2 6 `i 1 tm_mon 2 8 `i 1 tm_year 2 10 `i 1 tm_wday 2 12 `i 1 tm_yday 2 14 `i 1 tm_isdst 2 16 `l 1 __tm_gmtoff 4 18 `*.32Cuc 1 __tm_zone 2 22 ]
-"426
+"435
 [v _bmc_newtime bmc_newtime `*.39S5383  1 e 2 0 ]
-"427
+"436
 [v _s s `*.39uc  1 s 2 s ]
 [v _speed_text speed_text `*.39uc  1 s 2 speed_text ]
 [s S9154 . 3 `Cuc 1 cmd 1 0 `us 1 out 2 1 ]
@@ -3829,32 +3829,32 @@ G_LAST 8
 [v _tic12400_fail_value tic12400_fail_value `VEl  1 e 4 0 ]
 "115
 [v _tic_rw tic_rw `S7202  1 e 16 0 ]
-"455 /public/bmc/Q84/bmc_slave.X/main.c
+"464 /public/bmc/Q84/bmc_slave.X/main.c
 [v _main main `(i  1 e 2 0 ]
 {
-"488
+"497
 {
 [v main@i i `uc  1 a 1 42 ]
-"491
+"500
 }
-"865
+"874
 {
-"879
+"888
 [v main@slave_usage slave_usage `f  1 s 4 slave_usage ]
-"867
+"876
 [v main@ptr_log ptr_log `*.39uc  1 a 2 40 ]
-"906
+"915
 {
-"907
+"916
 [v main@seconds seconds `ul  1 a 4 47 ]
 [v main@minutes minutes `ul  1 a 4 0 ]
 [v main@hours hours `ul  1 a 4 4 ]
 [v main@days days `ul  1 a 4 8 ]
-"917
+"926
 }
-"1086
+"1095
 }
-"1117
+"1126
 } 0
 "212 /public/bmc/Q84/bmc_slave.X/calibr.c
 [v _write_cal_data write_cal_data `(v  1 e 1 0 ]
@@ -3953,18 +3953,18 @@ G_LAST 8
 [v sprintf@f f `S13906  1 a 11 113 ]
 "23
 } 0
-"1143 /public/bmc/Q84/bmc_slave.X/main.c
+"1152 /public/bmc/Q84/bmc_slave.X/main.c
 [v _spinners spinners `(uc  1 e 1 0 ]
 {
 [v spinners@shape shape `uc  1 p 1 wreg ]
 [v spinners@reset reset `Cuc  1 p 1 37 ]
-"1145
+"1154
 [v spinners@s s `[6]uc  1 s 6 s ]
-"1146
+"1155
 [v spinners@c c `uc  1 a 1 41 ]
-"1148
+"1157
 [v spinners@shape shape `uc  1 p 1 42 ]
-"1156
+"1165
 } 1
 "101 /public/bmc/Q84/bmc_slave.X/mconfig.c
 [v _set_vterm set_vterm `(uc  1 e 1 0 ]
@@ -4069,11 +4069,11 @@ G_LAST 8
 [v CRC_ReverseValue@reverse reverse `ul  1 a 4 38 ]
 "168
 } 0
-"1238 /public/bmc/Q84/bmc_slave.X/main.c
+"1247 /public/bmc/Q84/bmc_slave.X/main.c
 [v _send_mx_cmd send_mx_cmd `(v  1 s 1 send_mx_cmd ]
 {
 [v send_mx_cmd@cmd cmd `*.39Cus  1 p 2 47 ]
-"1246
+"1255
 } 0
 "29 /public/bmc/Q84/bmc_slave.X/mxcmd.c
 [v _FM_tx_empty FM_tx_empty `(a  1 e 1 0 ]
@@ -4131,83 +4131,83 @@ G_LAST 8
 [v eaDogM_WriteString@len len `uc  1 a 1 46 ]
 "176
 } 0
-"1251 /public/bmc/Q84/bmc_slave.X/main.c
+"1260 /public/bmc/Q84/bmc_slave.X/main.c
 [v _rec_mx_cmd rec_mx_cmd `(v  1 s 1 rec_mx_cmd ]
 {
 [v rec_mx_cmd@DataHandler DataHandler `*.38(v  1 p 3 22 ]
 [v rec_mx_cmd@rec_len rec_len `Cuc  1 p 1 25 ]
-"1253
+"1262
 [v rec_mx_cmd@online_count online_count `us  1 s 2 online_count ]
-"1284
+"1293
 } 0
-"1432
+"1441
 [v _state_misc_cb state_misc_cb `(v  1 e 1 0 ]
 {
-"1446
+"1455
 } 0
-"1409
+"1418
 [v _state_date_cb state_date_cb `(v  1 s 1 state_date_cb ]
 {
-"1417
+"1426
 } 0
-"1399
+"1408
 [v _state_time_cb state_time_cb `(v  1 s 1 state_time_cb ]
 {
-"1407
+"1416
 } 0
-"1448
+"1457
 [v _state_mx_log_cb state_mx_log_cb `(v  1 e 1 0 ]
 {
-"1465
+"1474
 } 0
-"1388
+"1397
 [v _state_fwrev_cb state_fwrev_cb `(v  1 s 1 state_fwrev_cb ]
 {
-"1397
+"1406
 } 0
-"1480
+"1489
 [v _state_mx_status_cb state_mx_status_cb `(v  1 e 1 0 ]
 {
-"1534
+"1543
+} 0
+"1388
+[v _state_batterya_cb state_batterya_cb `(v  1 e 1 0 ]
+{
+"1395
 } 0
 "1379
-[v _state_batterya_cb state_batterya_cb `(v  1 e 1 0 ]
+[v _state_batteryv_cb state_batteryv_cb `(v  1 e 1 0 ]
 {
 "1386
 } 0
-"1370
-[v _state_batteryv_cb state_batteryv_cb `(v  1 e 1 0 ]
-{
-"1377
-} 0
-"1590
+"1599
 [v _state_panelv_cb state_panelv_cb `(v  1 e 1 0 ]
 {
-"1596
+"1605
 } 0
-"1419
+"1428
 [v _state_restart_cb state_restart_cb `(v  1 s 1 state_restart_cb ]
 {
-"1427
+"1436
 } 0
-"1536
+"1545
 [v _state_status_cb state_status_cb `(v  1 e 1 0 ]
 {
-"1538
+"1547
 [v state_status_cb@day_clocks day_clocks `us  1 s 2 day_clocks ]
-"1588
+"1597
 } 0
-"1353
+"1362
 [v _state_init_cb state_init_cb `(v  1 e 1 0 ]
 {
-"1355
+"1364
 [v state_init_cb@off_delay off_delay `uc  1 s 1 off_delay ]
-"1368
+"1377
 } 0
-"1467
+"1476
 [v _state_watts_cb state_watts_cb `(v  1 e 1 0 ]
 {
-"1478
+"1487
 } 0
 "155 /public/bmc/Q84/bmc_slave.X/mxcmd.c
 [v _lp_filter lp_filter `(f  1 e 4 0 ]
@@ -4231,11 +4231,11 @@ G_LAST 8
 [v Volts_to_SOC@soc soc `d  1 a 4 99 ]
 "271
 } 0
-"1337 /public/bmc/Q84/bmc_slave.X/main.c
+"1346 /public/bmc/Q84/bmc_slave.X/main.c
 [v _volt_f volt_f `(v  1 s 1 volt_f ]
 {
 [v volt_f@voltage voltage `Cus  1 p 2 53 ]
-"1341
+"1350
 } 0
 "7 /ldrv/microchip/xc8/v4.00/pic/sources/c99/common/lwmod.c
 [v ___lwmod __lwmod `(ui  1 e 2 0 ]
@@ -4931,12 +4931,12 @@ G_LAST 8
 [v get_vterm_ptr@line line `uc  1 p 1 42 ]
 "114
 } 1
-"1289 /public/bmc/Q84/bmc_slave.X/main.c
+"1298 /public/bmc/Q84/bmc_slave.X/main.c
 [v _bmc_logger bmc_logger `(v  1 e 1 0 ]
 {
-"1291
+"1300
 [v bmc_logger@d_id d_id `uc  1 s 1 d_id ]
-"1331
+"1340
 } 0
 "13 /ldrv/microchip/xc8/v4.00/pic/sources/c99/common/nf_snprintf.c
 [v _snprintf snprintf `(i  1 e 2 0 ]
@@ -5556,13 +5556,13 @@ G_LAST 8
 }
 "44
 } 1
-"1598 /public/bmc/Q84/bmc_slave.X/main.c
+"1607 /public/bmc/Q84/bmc_slave.X/main.c
 [v _analog_update analog_update `(us  1 s 2 analog_update ]
 {
 [v analog_update@channel channel `E24208  1 p 1 wreg ]
-"1600
+"1609
 [v analog_update@channel channel `E24208  1 p 1 37 ]
-"1606
+"1615
 } 1
 "223 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/adc.c
 [v _ADC_StartConversion ADC_StartConversion `(v  1 e 1 0 ]
@@ -5637,10 +5637,10 @@ G_LAST 8
 {
 "100
 } 0
-"1171 /public/bmc/Q84/bmc_slave.X/main.c
+"1180 /public/bmc/Q84/bmc_slave.X/main.c
 [v _SetBMCPriority SetBMCPriority `(v  1 e 1 0 ]
 {
-"1186
+"1195
 } 0
 "50 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/mcc.c
 [v _SYSTEM_Initialize SYSTEM_Initialize `(v  1 e 1 0 ]
@@ -5983,15 +5983,15 @@ G_LAST 8
 {
 "92
 } 0
-"1188 /public/bmc/Q84/bmc_slave.X/main.c
+"1197 /public/bmc/Q84/bmc_slave.X/main.c
 [v _DeviceID_Read DeviceID_Read `(us  1 e 2 0 ]
 {
 [v DeviceID_Read@address address `um  1 p 3 33 ]
-"1190
+"1199
 [v DeviceID_Read@deviceID deviceID `us  1 a 2 48 ]
-"1193
+"1202
 [v DeviceID_Read@tablePointer tablePointer `ul  1 a 4 50 ]
-"1216
+"1225
 } 0
 "168 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/tmr6.c
 [v _TMR6_ISR TMR6_ISR `IIL(v  1 e 1 0 ]
@@ -6062,10 +6062,10 @@ G_LAST 8
 {
 "200
 } 0
-"1122 /public/bmc/Q84/bmc_slave.X/main.c
+"1131 /public/bmc/Q84/bmc_slave.X/main.c
 [v _onesec_io onesec_io `(v  1 e 1 0 ]
 {
-"1140
+"1149
 } 0
 "481 /public/bmc/Q84/bmc_slave.X/slaveo.c
 [v _slaveo_time_isr slaveo_time_isr `(v  1 e 1 0 ]
@@ -6089,10 +6089,10 @@ G_LAST 8
 {
 "175
 } 0
-"1161 /public/bmc/Q84/bmc_slave.X/main.c
+"1170 /public/bmc/Q84/bmc_slave.X/main.c
 [v _test_slave test_slave `(v  1 e 1 0 ]
 {
-"1165
+"1174
 } 0
 "165 /public/bmc/Q84/bmc_slave.X/mcc_generated_files/tmr3.c
 [v _TMR3_ISR TMR3_ISR `IIL(v  1 e 1 0 ]
