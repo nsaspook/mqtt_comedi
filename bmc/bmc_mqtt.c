@@ -503,7 +503,7 @@ bool use_cal_file(FILE * file, bool write)
  */
 void bmc_mqtt_init(void)
 {
-	sleep(SYSTEMD_DELAY); // for slow systemd systems with no rc.local support
+	usleep(SYSTEMD_DELAY); // for slow systemd systems with no rc.local support
 	E.mqtt_count = 0;
 	gethostname(hname, hname_len);
 	hname[12] = 0;
