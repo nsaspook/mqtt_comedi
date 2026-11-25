@@ -97,6 +97,7 @@ extern "C" {
 		comm_count, idle_count, spi_error_count, spi_noerror_count, ver;
 		volatile uint8_t daq_conf, comm_ok, raw_index;
 		uint16_t deviceid, devicerev;
+		bool no_ports;
 		volatile unsigned long long mui;
 	};
 

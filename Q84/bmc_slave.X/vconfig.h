@@ -21,8 +21,8 @@ extern "C" {
 #include "calibr.h"
 #include "modbus_master.h"
 
-#define VER	"V0.78"
-#define VER_N	0x00000078
+#define VER	"V0.79"
+#define VER_N	0x00000079
 	/** \file vconfig.h
 	 * Software version and a brief doc for each version changes.
 	    Version for 57Q84.
@@ -91,6 +91,7 @@ extern "C" {
 	 * V0.76 cleanup code smells using cppcheck
 	 * V0.77 add ipaddress display from host
 	 * V0.78 remove extra spaces from log_format strings
+	 * V0.79 Fix WEM30 reactive power display issue when not a special display
 	 */
 
 	/*

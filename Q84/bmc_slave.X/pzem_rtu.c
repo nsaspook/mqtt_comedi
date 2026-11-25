@@ -205,7 +205,7 @@ int8_t pzem_controller_work(C_data * client)
 static void pzem_data_handler(void)
 {
 	/*
-	 * load PZEM data pointer wEMETER_TRACEith receive buffer to data structure
+	 * load PZEM data pointer with receive buffer to data structure
 	 * and munge the data into the correct local formats for client
 	 */
 #ifdef EMETER_TRACE

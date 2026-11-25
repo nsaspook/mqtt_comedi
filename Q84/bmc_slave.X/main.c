@@ -351,6 +351,7 @@ volatile struct spi_stat_type_ss spi_stat_ss = {
 	.daq_conf = 0,
 	.deviceid = 0,
 	.devicerev = 0,
+	.no_ports = false,
 	.ver = VER_N,
 };
 volatile struct spi_stat_type_ss report_stat_ss = {
@@ -504,6 +505,7 @@ int main(void)
 	if (spi_stat_ss.deviceid != F57Q84) {
 		if (spi_stat_ss.deviceid == F47Q84) {
 			spi_stat_ss.daq_conf |= 0x04; // Old daq Board
+			spi_stat_ss.no_ports = true;
 		} else { // mark as dead or bad board
 			spi_stat_ss.daq_conf = 0xff;
 			spi_stat_ss.devicerev = 0xff;
@@ -612,7 +614,7 @@ int main(void)
 			WaitMs(WLDELAY);
 		}
 
-		if ((spi_stat_ss.daq_conf & 0x04) == 0x00) { // the 47Q84 board has no EM540 or FM80 support
+		if ((spi_stat_ss.daq_conf & 0x04) == 0x00) { // the 47Q84 board has no Power Meter or FM80 support
 #ifdef MB_MASTER
 #ifdef MAIN_TRACE
 			TP1_SetLow();
@@ -929,10 +931,14 @@ int main(void)
 #endif
 #endif
 				// check for special DAQ configuration
-				if (spi_stat_ss.mui != 0x61DB5) {
-					snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %4.1fV %4.2fA           ", modbus_name[C.id_ok], imd_tmp.vl1l2 / 10.0f, (imd_tmp.al1));
+				if (spi_stat_ss.no_ports) {
+					snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "T2 %u, T4 %u T0 %u                      ", TMR2_ReadTimer(), TMR4, TMR0_ReadTimer() - 0x1B1E);
 				} else {
-					snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %4.1fV %4.1fW           ", modbus_name[C.id_ok], imd_tmp.vl3l1 / 10.0f, (em_tmp.wl3 / 100.0f));
+					if (spi_stat_ss.mui != 0x61DB5) {
+						snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %4.1fV %4.2fA           ", modbus_name[C.id_ok], imd_tmp.vl1l2 / 10.0f, (imd_tmp.al1));
+					} else {
+						snprintf(get_vterm_ptr(1, MAIN_VTERM), MAX_TEXT, "%s %4.1fV %4.1fW           ", modbus_name[C.id_ok], imd_tmp.vl3l1 / 10.0f, (em_tmp.wl3 / 100.0f));
+					}
 				}
 				if (BM.FM80_online) {
 					snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%s %s %d.%01dA %dA              ", FM80_name[BM.FM80_online], state_name[cc_mode], bat_amp_whole - 128, bat_amp_frac - 128, bat_amp_panel - 128);
@@ -942,11 +948,16 @@ int main(void)
 					snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "BAT %d.%01dV PV %d.%01dV                 ", vw, vf, pvw, pvf);
 #endif
 				} else {
-					snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%4.0f %4.0f %4.0fVa %2.0fHz            ", imd_tmp.wl1, imd_tmp.wl2, imd_tmp.wl3, (float) imd_tmp.hz);
-					if (ha_daq_calib.em_model == PZEM_M) {
-						snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%4.0f %4.0f %4.0fPh %2.0fW               ", imd_tmp.rpp1s, imd_tmp.rpp2s, imd_tmp.rpp3s, imd_tmp.tps);
+					if (spi_stat_ss.no_ports) {
+						snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%x data, %x raw, %x str                      ", data_in2, serial_buffer_ss.raw_index, serial_buffer_ss.r_string_index);
+						snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "S%lu P%lu                         ", report_stat_ss.last_slave_int_count, spi_stat_ss.txdone_bit);
 					} else {
-						snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%4.0f %4.0f %4.0f %4.0fW               ", imd_tmp.ap1s, imd_tmp.ap2s, imd_tmp.ap3s, imd_tmp.tps);
+						snprintf(get_vterm_ptr(2, MAIN_VTERM), MAX_TEXT, "%4.0f %4.0f %4.0fVA %2.0fHz            ", imd_tmp.wl1, imd_tmp.wl2, imd_tmp.wl3, (float) imd_tmp.hz);
+						if (ha_daq_calib.em_model == PZEM_M) {
+							snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%4.0f %4.0f %4.0fPh %2.0fW               ", imd_tmp.rpp1s, imd_tmp.rpp2s, imd_tmp.rpp3s, imd_tmp.tps);
+						} else {
+							snprintf(get_vterm_ptr(3, MAIN_VTERM), MAX_TEXT, "%4.0f %4.0f %4.0f %4.0fQ               ", imd_tmp.ap1s / 10.0f, imd_tmp.ap2s / 10.0f, imd_tmp.ap3s / 10.0f, imd_tmp.tps / 10.0f);
+						}
 					}
 				}
 				/*
@@ -965,19 +976,19 @@ int main(void)
 #endif
 				}
 				if ((ha_daq_calib.em_model == PZEM_M) || (ha_daq_calib.em_model == WEM30_M)) {
-					snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.1fR %3.2fPf                       ", (float) imd_tmp.hz, ((float) imd_tmp.varsys), (float) imd_tmp.pfsys);
+					snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.1fQ %3.2fPf                       ", (float) imd_tmp.hz, ((float) imd_tmp.varsys), (float) imd_tmp.pfsys);
 				} else {
-					snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.2fR %3.2fPf                       ", (float) emt.hz / 1000.0f, ((float) em.varsys), ((float) em.pfsys));
+					snprintf(get_vterm_ptr(2, INFO_VTERM), MAX_TEXT, "%4.2fHz %3.2fQ %3.2fPf                       ", (float) emt.hz / 1000.0f, ((float) em.varsys), ((float) em.pfsys));
 				}
 				// check for special DAQ configuration
 				if (spi_stat_ss.mui != 0x61DB5) {
 					if ((ha_daq_calib.em_model == PZEM_M) || (ha_daq_calib.em_model == WEM30_M)) {
 						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%3.2f %3.2f %3.2fPf                ", (float) imd_tmp.pfl1, (float) imd_tmp.pfl2, (float) imd_tmp.pfl3);
 					} else {
-						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.0fW %4.0fVa %3.2fPf             ", (float) em.wl1 / 10.0f, (float) em.val1 / 10.f, (float) em.pfl1 / 1000.0f);
+						snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%4.0fW %4.0fVA %3.2fPf             ", (float) em.wl1 / 10.0f, (float) em.val1 / 10.f, (float) em.pfl1 / 1000.0f);
 					}
 				} else {
-					snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%3.2fW %3.2fVa %3.2fPf             ", imd_tmp.ap1s * 1.0f, imd_tmp.rpp1s * 1.0f, (float) em.pfl3 / 10.0f);
+					snprintf(get_vterm_ptr(3, INFO_VTERM), MAX_TEXT, "%3.2fW %3.2fVA %3.2fPf             ", imd_tmp.ap1s * 1.0f, imd_tmp.rpp1s * 1.0f, (float) em.pfl3 / 10.0f);
 				}
 				/*
 				 * DBUG text screen
