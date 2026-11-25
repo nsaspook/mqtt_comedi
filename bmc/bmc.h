@@ -69,7 +69,7 @@ extern "C" {
 #define CAL_FILE_ALT        "/tmp/bmc_calfile.bin"
 
 #define MQTT_RECONN     3
-#define KAI             60
+#define KAI             2
 
 #define ANA_BUFFERS     0x40
 
