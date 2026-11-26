@@ -125,8 +125,8 @@ extern "C" {
 
 	struct ha_flag_type {
 		volatile MQTTClient_deliveryToken deliveredtoken, receivedtoken;
-		volatile bool runner, rec_ok;
-		volatile int32_t ha_id;
+		volatile bool runner, rec_ok, reconnect;
+		volatile int32_t ha_id, connection_error, connection_retry;
 		volatile int32_t var_update, energy_mode;
 	};
 

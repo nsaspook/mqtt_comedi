@@ -48,6 +48,8 @@ struct ha_flag_type ha_flag_vars_ss = {
 	.rec_ok = false,
 	.ha_id = COMEDI_ID,
 	.var_update = 0,
+	.reconnect = false,
+	.connection_error = 0,
 };
 
 // 24V LiFePO4 Battery to SOC data table slots, scale battery voltage to match
@@ -1072,6 +1074,20 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 
 		if ((client_status = MQTTClient_publishMessage(client_p, topic_p, &pubmsg, &token)) != MQTTCLIENT_SUCCESS) {
 			fprintf(fout, "%s MQTTClient_publishMessage error: %d\r\n", log_time(false), client_status);
+			if (ha_flag_vars_ss.connection_error++ > 3) {
+				if (ha_flag_vars_ss.reconnect == false) {
+					ha_flag_vars_ss.reconnect = true;
+					fprintf(fout, "%s Trying to reconnect MQTTClient.\r\n", log_time(false));
+					bmc_mqtt_init();
+				} else {
+					fprintf(fout, "%s MQTTClient reconnection failed.\r\n", log_time(false));
+					if (ha_flag_vars_ss.connection_retry++ > 10) {
+						ha_flag_vars_ss.reconnect = false;
+						ha_flag_vars_ss.connection_error = 0;
+						ha_flag_vars_ss.connection_retry = 0;
+					}
+				}
+			}
 			fflush(fout);
 		};
 		// a busy, wait loop for the async delivery thread to complete
