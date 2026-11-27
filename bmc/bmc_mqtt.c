@@ -1077,6 +1077,7 @@ void mqtt_bmc_data(MQTTClient client_p, const char * topic_p)
 				if (ha_flag_vars_ss.reconnect == false) {
 					ha_flag_vars_ss.reconnect = true;
 					fprintf(fout, "%s Trying to reconnect MQTTClient.\r\n", log_time(false));
+					MQTTClient_disconnect(client_p, 200);
 					bmc_mqtt_init();
 				} else {
 					fprintf(fout, "%s MQTTClient reconnection failed.\r\n", log_time(false));
